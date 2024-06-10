@@ -112,25 +112,22 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCommentReply(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)" class="member-name-link">addCommentReply</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCommentReply(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)" class="member-name-link">addCommentReply</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
  boolean&nbsp;isPublic,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Adds a reply to a comment.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCommentToElement(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)" class="member-name-link">addCommentToElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCommentToElement(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)" class="member-name-link">addCommentToElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  boolean&nbsp;isPublic,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Adds a comment to the element.</div>
@@ -166,14 +163,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Adds a tag (either private of public) to an element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearAcceptedAnswer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">clearAcceptedAnswer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearAcceptedAnswer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">clearAcceptedAnswer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;questionCommentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;answerCommentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Unlink a comment that contains an answer to a question posed in another comment.</div>
 </div>
@@ -195,7 +190,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Removes a tag from the repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CommentElementsResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">CommentElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findComments(java.lang.String,int,int,boolean,boolean,boolean,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findComments</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findComments(java.lang.String,int,int,boolean,boolean,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findComments</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;startsWith,
@@ -203,8 +198,6 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;ignoreCase,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of comment metadata elements that contain the search string.</div>
@@ -223,7 +216,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the list of the calling user's private tags containing the supplied string in either the name or description.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/NoteLogsResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">NoteLogsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findNoteLogs(java.lang.String,int,int,boolean,boolean,boolean,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findNoteLogs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findNoteLogs(java.lang.String,int,int,boolean,boolean,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findNoteLogs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;startsWith,
@@ -231,14 +224,12 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;ignoreCase,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of note log metadata elements that contain the search string.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/NotesResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">NotesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findNotes(java.lang.String,int,int,boolean,boolean,boolean,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findNotes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findNotes(java.lang.String,int,int,boolean,boolean,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findNotes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;startsWith,
@@ -246,8 +237,6 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;ignoreCase,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of note metadata elements that contain the search string.</div>
@@ -266,26 +255,20 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the list of tags containing the supplied string in either the name or description.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CommentElementsResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">CommentElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAttachedComments(java.lang.String,java.lang.String,int,int,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getAttachedComments</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAttachedComments(java.lang.String,java.lang.String,int,int,java.lang.String,java.lang.String)" class="member-name-link">getAttachedComments</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the comments attached to an element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CommentResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">CommentResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCommentByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getCommentByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCommentByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getCommentByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the requested comment.</div>
 </div>
@@ -311,62 +294,48 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the list of the calling user's private tags exactly matching the supplied name.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/NoteResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">NoteResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNoteByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getNoteByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNoteByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getNoteByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;noteGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the note metadata element with the supplied unique identifier.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/NoteLogResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">NoteLogResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNoteLogByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getNoteLogByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNoteLogByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getNoteLogByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;noteLogGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the note log metadata element with the supplied unique identifier.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/NoteLogsResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">NoteLogsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNoteLogsByName(java.lang.String,int,int,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getNoteLogsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNoteLogsByName(java.lang.String,int,int,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getNoteLogsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of note log metadata elements with a matching qualified or display name.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/NoteLogsResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">NoteLogsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNoteLogsForElement(java.lang.String,java.lang.String,int,int,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getNoteLogsForElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNoteLogsForElement(java.lang.String,java.lang.String,int,int,java.lang.String,java.lang.String)" class="member-name-link">getNoteLogsForElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of note log metadata elements attached to the element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/NotesResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">NotesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNotesForNoteLog(java.lang.String,java.lang.String,int,int,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getNotesForNoteLog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNotesForNoteLog(java.lang.String,java.lang.String,int,int,java.lang.String,java.lang.String)" class="member-name-link">getNotesForNoteLog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;noteLogGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of notes associated with a note log.</div>
 </div>
@@ -389,13 +358,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the list of tags exactly matching the supplied name.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeCommentFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)" class="member-name-link">removeCommentFromElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeCommentFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)" class="member-name-link">removeCommentFromElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Removes a comment added to the element by this user.</div>
@@ -429,37 +396,43 @@ loadScripts(document, 'script');</script>
 <div class="block">Removes a tag from the element that was added by this user.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupAcceptedAnswer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.RelationshipRequestBody)" class="member-name-link">setupAcceptedAnswer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupAcceptedAnswer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.feedbackmanager.rest.RelationshipRequestBody)" class="member-name-link">setupAcceptedAnswer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;questionCommentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;answerCommentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Link a comment that contains the best answer to a question posed in another comment.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateComment(java.lang.String,java.lang.String,boolean,boolean,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)" class="member-name-link">updateComment</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateComment(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)" class="member-name-link">updateComment</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
  boolean&nbsp;isMergeUpdate,
- boolean&nbsp;isPublic,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update an existing comment.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateTagDescription(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.feedbackmanager.rest.InformalTagUpdateRequestBody)" class="member-name-link">updateTagDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCommentVisibility(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">updateCommentVisibility</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
+ boolean&nbsp;isPublic,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ <a href="../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update an existing comment's visibility.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateTagDescription(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.feedbackmanager.rest.InformalTagUpdateRequestBody)" class="member-name-link">updateTagDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tagGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
  <a href="../rest/InformalTagUpdateRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">InformalTagUpdateRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Updates the description of an existing tag (either private or public).</div>
 </div>
 </div>
@@ -603,29 +576,25 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addCommentToElement(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)">
+<section class="detail" id="addCommentToElement(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)">
 <h3>addCommentToElement</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">addCommentToElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  boolean&nbsp;isPublic,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Adds a comment to the element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
-<dd><code>guid</code> - String - unique id for the element.</dd>
+<dd><code>elementGUID</code> - String - unique id for the element.</dd>
 <dd><code>isPublic</code> - is this visible to other people</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - containing type of comment enum and the text of the comment.</dd>
 <dt>Returns:</dt>
-<dd>guid for new comment object or
+<dd>elementGUID for new comment object or
  InvalidParameterException - one of the parameters is null or invalid or
  PropertyServerException - there is a problem adding the element properties to
                                    the metadata repository or
@@ -634,26 +603,24 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addCommentReply(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)">
+<section class="detail" id="addCommentReply(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)">
 <h3>addCommentReply</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">addCommentReply</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
  boolean&nbsp;isPublic,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Adds a reply to a comment.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
+<dd><code>elementGUID</code> - String - unique id for the anchor element.</dd>
 <dd><code>commentGUID</code> - String - unique id for an existing comment.  Used to add a reply to a comment.</dd>
 <dd><code>isPublic</code> - is this visible to other people</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - containing type of comment enum and the text of the comment.</dd>
 <dt>Returns:</dt>
 <dd>guid for new comment object or
@@ -665,16 +632,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateComment(java.lang.String,java.lang.String,boolean,boolean,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)">
+<section class="detail" id="updateComment(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)">
 <h3>updateComment</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateComment</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
  boolean&nbsp;isMergeUpdate,
- boolean&nbsp;isPublic,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Update an existing comment.</div>
 <dl class="notes">
@@ -682,11 +646,8 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
 <dd><code>commentGUID</code> - unique identifier for the comment to change.</dd>
 <dd><code>isMergeUpdate</code> - should the new properties be merged with existing properties (true) or completely replace them (false)?</dd>
-<dd><code>isPublic</code> - is this visible to other people</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - containing type of comment enum and the text of the comment.</dd>
 <dt>Returns:</dt>
 <dd>void or
@@ -697,15 +658,41 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setupAcceptedAnswer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.RelationshipRequestBody)">
+<section class="detail" id="updateCommentVisibility(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
+<h3>updateCommentVisibility</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateCommentVisibility</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
+ boolean&nbsp;isPublic,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
+ <a href="../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Update an existing comment's visibility.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server instances for this request.</dd>
+<dd><code>parentGUID</code> - String - unique id for the attached element.</dd>
+<dd><code>commentGUID</code> - unique identifier for the comment to change.</dd>
+<dd><code>isPublic</code> - is this visible to other people</dd>
+<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
+<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
+<dd><code>requestBody</code> - containing type of comment enum and the text of the comment.</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException one of the parameters is null or invalid.
+ PropertyServerException There is a problem updating the element properties in the metadata repository.
+ UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setupAcceptedAnswer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.feedbackmanager.rest.RelationshipRequestBody)">
 <h3>setupAcceptedAnswer</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setupAcceptedAnswer</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;questionCommentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;answerCommentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Link a comment that contains the best answer to a question posed in another comment.</div>
 <dl class="notes">
@@ -715,8 +702,6 @@ loadScripts(document, 'script');</script>
 <dd><code>answerCommentGUID</code> - unique identifier of the comment containing the accepted answer</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - properties to help with the mapping of the elements in the external asset manager and open metadata</dd>
 <dt>Returns:</dt>
 <dd>void or
@@ -727,16 +712,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="clearAcceptedAnswer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.EffectiveTimeQueryRequestBody)">
+<section class="detail" id="clearAcceptedAnswer(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)">
 <h3>clearAcceptedAnswer</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearAcceptedAnswer</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;questionCommentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;answerCommentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Unlink a comment that contains an answer to a question posed in another comment.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -745,8 +728,6 @@ loadScripts(document, 'script');</script>
 <dd><code>answerCommentGUID</code> - unique identifier of the comment containing the accepted answer</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - properties to help with the mapping of the elements in the external asset manager and open metadata</dd>
 <dt>Returns:</dt>
 <dd>void or
@@ -757,15 +738,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="removeCommentFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)">
+<section class="detail" id="removeCommentFromElement(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.feedbackmanager.rest.ReferenceableUpdateRequestBody)">
 <h3>removeCommentFromElement</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">removeCommentFromElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../rest/ReferenceableUpdateRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">ReferenceableUpdateRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Removes a comment added to the element by this user.</div>
 <dl class="notes">
@@ -775,8 +754,6 @@ loadScripts(document, 'script');</script>
 <dd><code>commentGUID</code> - String - unique id for the comment object</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - null request body needed to satisfy the HTTP Post request</dd>
 <dt>Returns:</dt>
 <dd>void or
@@ -788,15 +765,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getCommentByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.EffectiveTimeQueryRequestBody)">
+<section class="detail" id="getCommentByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <h3>getCommentByGUID</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/CommentResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">CommentResponse</a></span>&nbsp;<span class="element-name">getCommentByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;commentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker)</span></div>
 <div class="block">Return the requested comment.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -804,9 +778,6 @@ loadScripts(document, 'script');</script>
 <dd><code>commentGUID</code> - unique identifier for the comment object.</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - effectiveTime and asset manager identifiers</dd>
 <dt>Returns:</dt>
 <dd>comment properties or
   InvalidParameterException one of the parameters is null or invalid.
@@ -816,17 +787,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAttachedComments(java.lang.String,java.lang.String,int,int,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.EffectiveTimeQueryRequestBody)">
+<section class="detail" id="getAttachedComments(java.lang.String,java.lang.String,int,int,java.lang.String,java.lang.String)">
 <h3>getAttachedComments</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/CommentElementsResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">CommentElementsResponse</a></span>&nbsp;<span class="element-name">getAttachedComments</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker)</span></div>
 <div class="block">Return the comments attached to an element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -836,9 +804,6 @@ loadScripts(document, 'script');</script>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - effectiveTime and asset manager identifiers</dd>
 <dt>Returns:</dt>
 <dd>list of comments or
   InvalidParameterException one of the parameters is null or invalid.
@@ -848,7 +813,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findComments(java.lang.String,int,int,boolean,boolean,boolean,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
+<section class="detail" id="findComments(java.lang.String,int,int,boolean,boolean,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
 <h3>findComments</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/CommentElementsResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">CommentElementsResponse</a></span>&nbsp;<span class="element-name">findComments</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
@@ -858,8 +823,6 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;ignoreCase,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the list of comment metadata elements that contain the search string.
  The search string is treated as a regular expression.</div>
@@ -873,8 +836,6 @@ loadScripts(document, 'script');</script>
 <dd><code>ignoreCase</code> - should the search ignore case?</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - string to find in the properties</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements or
@@ -1172,7 +1133,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findNoteLogs(java.lang.String,int,int,boolean,boolean,boolean,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
+<section class="detail" id="findNoteLogs(java.lang.String,int,int,boolean,boolean,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
 <h3>findNoteLogs</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/NoteLogsResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">NoteLogsResponse</a></span>&nbsp;<span class="element-name">findNoteLogs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
@@ -1182,8 +1143,6 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;ignoreCase,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the list of note log metadata elements that contain the search string.
  The search string is treated as a regular expression.</div>
@@ -1197,8 +1156,6 @@ loadScripts(document, 'script');</script>
 <dd><code>ignoreCase</code> - should the search ignore case?</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - string to find in the properties</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements or
@@ -1209,15 +1166,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getNoteLogsByName(java.lang.String,int,int,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
+<section class="detail" id="getNoteLogsByName(java.lang.String,int,int,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
 <h3>getNoteLogsByName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/NoteLogsResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">NoteLogsResponse</a></span>&nbsp;<span class="element-name">getNoteLogsByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the list of note log metadata elements with a matching qualified or display name.
  There are no wildcards supported on this request.</div>
@@ -1228,8 +1183,6 @@ loadScripts(document, 'script');</script>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - name to search for and correlators</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements or
@@ -1240,17 +1193,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getNoteLogsForElement(java.lang.String,java.lang.String,int,int,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.EffectiveTimeQueryRequestBody)">
+<section class="detail" id="getNoteLogsForElement(java.lang.String,java.lang.String,int,int,java.lang.String,java.lang.String)">
 <h3>getNoteLogsForElement</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/NoteLogsResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">NoteLogsResponse</a></span>&nbsp;<span class="element-name">getNoteLogsForElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker)</span></div>
 <div class="block">Retrieve the list of note log metadata elements attached to the element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1260,9 +1210,6 @@ loadScripts(document, 'script');</script>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - asset manager identifiers</dd>
 <dt>Returns:</dt>
 <dd>list of associated metadata elements or
   InvalidParameterException  one of the parameters is invalid
@@ -1272,15 +1219,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getNoteLogByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.EffectiveTimeQueryRequestBody)">
+<section class="detail" id="getNoteLogByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <h3>getNoteLogByGUID</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/NoteLogResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">NoteLogResponse</a></span>&nbsp;<span class="element-name">getNoteLogByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;noteLogGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker)</span></div>
 <div class="block">Retrieve the note log metadata element with the supplied unique identifier.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1288,9 +1232,6 @@ loadScripts(document, 'script');</script>
 <dd><code>noteLogGUID</code> - unique identifier of the requested metadata element</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - correlators</dd>
 <dt>Returns:</dt>
 <dd>requested metadata element or
   InvalidParameterException  one of the parameters is invalid
@@ -1300,7 +1241,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findNotes(java.lang.String,int,int,boolean,boolean,boolean,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
+<section class="detail" id="findNotes(java.lang.String,int,int,boolean,boolean,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
 <h3>findNotes</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/NotesResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">NotesResponse</a></span>&nbsp;<span class="element-name">findNotes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
@@ -1310,8 +1251,6 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;ignoreCase,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
  <a href="../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the list of note metadata elements that contain the search string.
  The search string is treated as a regular expression.</div>
@@ -1325,8 +1264,6 @@ loadScripts(document, 'script');</script>
 <dd><code>startsWith</code> - does the value start with the supplied string?</dd>
 <dd><code>endsWith</code> - does the value end with the supplied string?</dd>
 <dd><code>ignoreCase</code> - should the search ignore case?</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
 <dd><code>requestBody</code> - string to find in the properties</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements or
@@ -1337,17 +1274,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getNotesForNoteLog(java.lang.String,java.lang.String,int,int,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.EffectiveTimeQueryRequestBody)">
+<section class="detail" id="getNotesForNoteLog(java.lang.String,java.lang.String,int,int,java.lang.String,java.lang.String)">
 <h3>getNotesForNoteLog</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/NotesResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">NotesResponse</a></span>&nbsp;<span class="element-name">getNotesForNoteLog</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;noteLogGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker)</span></div>
 <div class="block">Retrieve the list of notes associated with a note log.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1357,9 +1291,6 @@ loadScripts(document, 'script');</script>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - asset manager identifiers</dd>
 <dt>Returns:</dt>
 <dd>list of associated metadata elements or
   InvalidParameterException  one of the parameters is invalid
@@ -1369,15 +1300,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getNoteByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,org.odpi.openmetadata.viewservices.feedbackmanager.rest.EffectiveTimeQueryRequestBody)">
+<section class="detail" id="getNoteByGUID(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <h3>getNoteByGUID</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/NoteResponse.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">NoteResponse</a></span>&nbsp;<span class="element-name">getNoteByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;noteGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- boolean&nbsp;forLineage,
- boolean&nbsp;forDuplicateProcessing,
- <a href="../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.feedbackmanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker)</span></div>
 <div class="block">Retrieve the note metadata element with the supplied unique identifier.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -1385,9 +1313,6 @@ loadScripts(document, 'script');</script>
 <dd><code>noteGUID</code> - unique identifier of the requested metadata element</dd>
 <dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
 <dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>forLineage</code> - return elements marked with the Memento classification?</dd>
-<dd><code>forDuplicateProcessing</code> - do not merge elements marked as duplicates?</dd>
-<dd><code>requestBody</code> - asset manager identifiers</dd>
 <dt>Returns:</dt>
 <dd>matching metadata element or
   InvalidParameterException  one of the parameters is invalid
