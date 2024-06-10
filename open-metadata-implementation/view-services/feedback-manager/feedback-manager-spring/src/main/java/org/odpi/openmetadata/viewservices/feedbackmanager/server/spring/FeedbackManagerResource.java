@@ -44,12 +44,11 @@ public class FeedbackManagerResource
      * Adds a reply to a comment.
      *
      * @param serverName    name of the server instances for this request.
+     * @param elementGUID        String - unique id for the anchor element.
      * @param commentGUID   String - unique id for an existing comment.  Used to add a reply to a comment.
      * @param isPublic is this visible to other people
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody   containing type of comment enum and the text of the comment.
      *
      * @return elementGUID for new comment object or
@@ -58,7 +57,7 @@ public class FeedbackManagerResource
      *                                   the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/comments/{commentGUID}/replies")
+    @PostMapping(path = "/elements/{elementGUID}/comments/{commentGUID}/replies")
 
     @Operation(summary="addCommentReply",
                description="Adds a reply to a comment.",
@@ -66,19 +65,16 @@ public class FeedbackManagerResource
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public GUIDResponse addCommentReply(@PathVariable String                         serverName,
+                                        @PathVariable String                         elementGUID,
                                         @PathVariable String                         commentGUID,
                                         @RequestParam boolean                        isPublic,
                                         @RequestParam (required = false)
                                             String                         viewServiceURLMarker,
                                         @RequestParam (required = false, defaultValue = "asset-manager")
                                             String                         accessServiceURLMarker,
-                                        @RequestParam (required = false, defaultValue = "false")
-                                            boolean                        forLineage,
-                                        @RequestParam (required = false, defaultValue = "false")
-                                            boolean                        forDuplicateProcessing,
                                         @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.addCommentReply(serverName, commentGUID, isPublic, viewServiceURLMarker, accessServiceURLMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addCommentReply(serverName, elementGUID, commentGUID, isPublic, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 
 
@@ -90,8 +86,6 @@ public class FeedbackManagerResource
      * @param isPublic is this visible to other people
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody containing type of comment enum and the text of the comment.
      *
      * @return elementGUID for new comment object or
@@ -114,13 +108,9 @@ public class FeedbackManagerResource
                                                 String                         viewServiceURLMarker,
                                             @RequestParam (required = false, defaultValue = "asset-manager")
                                                 String                         accessServiceURLMarker,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                            boolean                        forLineage,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                            boolean                        forDuplicateProcessing,
                                             @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.addCommentToElement(serverName, elementGUID, isPublic, viewServiceURLMarker, accessServiceURLMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addCommentToElement(serverName, elementGUID, isPublic, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 
 
@@ -443,8 +433,6 @@ public class FeedbackManagerResource
      * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody search string and effective time.
      *
      * @return list of comment objects or
@@ -474,10 +462,6 @@ public class FeedbackManagerResource
                                                     String                         viewServiceURLMarker,
                                                 @RequestParam (required = false, defaultValue = "asset-manager")
                                                     String                         accessServiceURLMarker,
-                                                @RequestParam (required = false, defaultValue = "false")
-                                                              boolean                  forLineage,
-                                                @RequestParam (required = false, defaultValue = "false")
-                                                              boolean                  forDuplicateProcessing,
                                                 @RequestBody  SearchStringRequestBody  requestBody)
     {
         return restAPI.findComments(serverName,
@@ -488,8 +472,6 @@ public class FeedbackManagerResource
                                     ignoreCase,
                                     viewServiceURLMarker,
                                     accessServiceURLMarker,
-                                    forLineage,
-                                    forDuplicateProcessing,
                                     requestBody);
     }
 
@@ -610,8 +592,6 @@ public class FeedbackManagerResource
      * @param commentGUID  String - unique id for the comment object
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -633,14 +613,10 @@ public class FeedbackManagerResource
                                                      String                         viewServiceURLMarker,
                                                  @RequestParam (required = false, defaultValue = "asset-manager")
                                                      String                         accessServiceURLMarker,
-                                                 @RequestParam (required = false, defaultValue = "false")
-                                                 boolean                        forLineage,
-                                                 @RequestParam (required = false, defaultValue = "false")
-                                                  boolean                        forDuplicateProcessing,
                                                  @RequestBody(required = false)
                                                                 ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.removeCommentFromElement(serverName, elementGUID, commentGUID, viewServiceURLMarker, accessServiceURLMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeCommentFromElement(serverName, elementGUID, commentGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 
 
@@ -651,30 +627,21 @@ public class FeedbackManagerResource
      * @param commentGUID  unique identifier for the comment object.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties controlling the request
      * @return comment properties or
      *  InvalidParameterException one of the parameters is null or invalid.
      *  PropertyServerException there is a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    @PostMapping(path = "/comments/{commentGUID}")
+    @GetMapping(path = "/comments/{commentGUID}")
 
     public CommentResponse getComment(@PathVariable String                        serverName,
                                       @PathVariable String                        commentGUID,
                                       @RequestParam (required = false)
                                                  String                         viewServiceURLMarker,
                                       @RequestParam (required = false, defaultValue = "asset-manager")
-                                                 String                         accessServiceURLMarker,
-                                      @RequestParam (required = false, defaultValue = "false")
-                                             boolean                       forLineage,
-                                      @RequestParam (required = false, defaultValue = "false")
-                                             boolean                       forDuplicateProcessing,
-                                      @RequestBody(required = false)
-                                             EffectiveTimeQueryRequestBody requestBody)
+                                                 String                         accessServiceURLMarker)
     {
-        return restAPI.getCommentByGUID(serverName, commentGUID, viewServiceURLMarker, accessServiceURLMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getCommentByGUID(serverName, commentGUID, viewServiceURLMarker, accessServiceURLMarker);
     }
 
 
@@ -687,15 +654,12 @@ public class FeedbackManagerResource
      * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties controlling the request
      * @return list of comments or
      *  InvalidParameterException one of the parameters is null or invalid.
      *  PropertyServerException there is a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    @PostMapping(path = "/elements/{elementGUID}/comments/retrieve")
+    @GetMapping(path = "/elements/{elementGUID}/comments")
 
     public CommentElementsResponse getAttachedComments(@PathVariable String                        serverName,
                                                        @PathVariable String                        elementGUID,
@@ -704,15 +668,9 @@ public class FeedbackManagerResource
                                                        @RequestParam (required = false)
                                                            String                         viewServiceURLMarker,
                                                        @RequestParam (required = false, defaultValue = "asset-manager")
-                                                           String                         accessServiceURLMarker,
-                                                       @RequestParam (required = false, defaultValue = "false")
-                                                       boolean                       forLineage,
-                                                       @RequestParam (required = false, defaultValue = "false")
-                                                       boolean                       forDuplicateProcessing,
-                                                       @RequestBody(required = false)
-                                                       EffectiveTimeQueryRequestBody requestBody)
+                                                           String                         accessServiceURLMarker)
     {
-        return restAPI.getAttachedComments(serverName, elementGUID, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getAttachedComments(serverName, elementGUID, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker);
     }
 
 
@@ -823,11 +781,8 @@ public class FeedbackManagerResource
      * @param serverName   name of the server instances for this request.
      * @param commentGUID  unique identifier for the comment to change.
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
-     * @param isPublic      is this visible to other people
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -845,19 +800,52 @@ public class FeedbackManagerResource
     public VoidResponse   updateComment(@PathVariable String                         serverName,
                                         @PathVariable String                         commentGUID,
                                         @RequestParam (required = false, defaultValue = "false")
-                                        boolean                        isMergeUpdate,
-                                        @RequestParam boolean                        isPublic,
+                                                      boolean                        isMergeUpdate,
                                         @RequestParam (required = false)
-                                            String                         viewServiceURLMarker,
+                                                      String                         viewServiceURLMarker,
                                         @RequestParam (required = false, defaultValue = "asset-manager")
-                                            String                         accessServiceURLMarker,
-                                        @RequestParam (required = false, defaultValue = "false")
-                                        boolean                        forLineage,
-                                        @RequestParam (required = false, defaultValue = "false")
-                                        boolean                        forDuplicateProcessing,
+                                                      String                         accessServiceURLMarker,
                                         @RequestBody  ReferenceableUpdateRequestBody requestBody)
     {
-        return restAPI.updateComment(serverName, commentGUID, isMergeUpdate, isPublic, viewServiceURLMarker, accessServiceURLMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.updateComment(serverName, commentGUID, isMergeUpdate, viewServiceURLMarker, accessServiceURLMarker, requestBody);
+    }
+
+
+
+    /**
+     * Update an existing comment's visibility.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param commentGUID  unique identifier for the comment to change.
+     * @param isPublic is this visible to other people
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody  containing type of comment enum and the text of the comment.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/parents/{parentGUID}/comments/{commentGUID}/update-visibility")
+
+    @Operation(summary="updateComment",
+            description="Update an existing comment.",
+            externalDocs=@ExternalDocumentation(description="Element Feedback",
+                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
+    public VoidResponse   updateCommentVisibility(@PathVariable String               serverName,
+                                                  @PathVariable String               parentGUID,
+                                                  @PathVariable String               commentGUID,
+                                                  @RequestParam (required = false, defaultValue = "true")
+                                                      boolean                        isPublic,
+                                                  @RequestParam (required = false)
+                                                      String                         viewServiceURLMarker,
+                                                  @RequestParam (required = false, defaultValue = "asset-manager")
+                                                      String                         accessServiceURLMarker,
+                                                  @RequestBody  NullRequestBody requestBody)
+    {
+        return restAPI.updateCommentVisibility(serverName, parentGUID, commentGUID, isPublic, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 
 
@@ -869,8 +857,6 @@ public class FeedbackManagerResource
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -887,10 +873,6 @@ public class FeedbackManagerResource
                                                 String                         viewServiceURLMarker,
                                             @RequestParam (required = false, defaultValue = "asset-manager")
                                                 String                         accessServiceURLMarker,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                            boolean                 forLineage,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                            boolean                 forDuplicateProcessing,
                                             @RequestBody RelationshipRequestBody requestBody)
     {
         return restAPI.setupAcceptedAnswer(serverName,
@@ -898,8 +880,6 @@ public class FeedbackManagerResource
                                            answerCommentGUID,
                                            viewServiceURLMarker,
                                            accessServiceURLMarker,
-                                           forLineage,
-                                           forDuplicateProcessing,
                                            requestBody);
     }
 
@@ -912,8 +892,6 @@ public class FeedbackManagerResource
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return void or
@@ -930,19 +908,13 @@ public class FeedbackManagerResource
                                                           String                         viewServiceURLMarker,
                                             @RequestParam (required = false, defaultValue = "asset-manager")
                                                           String                         accessServiceURLMarker,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                       forLineage,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                                          boolean                       forDuplicateProcessing,
-                                            @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+                                            @RequestBody  NullRequestBody                requestBody)
     {
         return restAPI.clearAcceptedAnswer(serverName,
                                            questionCommentGUID,
                                            answerCommentGUID,
                                            viewServiceURLMarker,
                                            accessServiceURLMarker,
-                                           forLineage,
-                                           forDuplicateProcessing,
                                            requestBody);
     }
 
@@ -999,8 +971,6 @@ public class FeedbackManagerResource
      * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody search string and effective time.
      *
      * @return list of matching metadata elements or
@@ -1025,10 +995,6 @@ public class FeedbackManagerResource
                                                     String                         viewServiceURLMarker,
                                          @RequestParam (required = false, defaultValue = "asset-manager")
                                                     String                         accessServiceURLMarker,
-                                         @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                  forLineage,
-                                         @RequestParam (required = false, defaultValue = "false")
-                                                    boolean                  forDuplicateProcessing,
                                          @RequestBody  SearchStringRequestBody  requestBody)
     {
         return restAPI.findNoteLogs(serverName,
@@ -1039,8 +1005,6 @@ public class FeedbackManagerResource
                                     ignoreCase,
                                     viewServiceURLMarker,
                                     accessServiceURLMarker,
-                                    forLineage,
-                                    forDuplicateProcessing,
                                     requestBody);
     }
 
@@ -1054,8 +1018,6 @@ public class FeedbackManagerResource
      * @param pageSize maximum results that can be returned
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody name to search for and correlators
      *
      * @return list of matching metadata elements or
@@ -1072,13 +1034,9 @@ public class FeedbackManagerResource
                                                          String                         viewServiceURLMarker,
                                               @RequestParam (required = false, defaultValue = "asset-manager")
                                                          String                         accessServiceURLMarker,
-                                              @RequestParam (required = false, defaultValue = "false")
-                                                     boolean         forLineage,
-                                              @RequestParam (required = false, defaultValue = "false")
-                                                     boolean         forDuplicateProcessing,
                                               @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getNoteLogsByName(serverName, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getNoteLogsByName(serverName, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 
 
@@ -1091,16 +1049,13 @@ public class FeedbackManagerResource
      * @param pageSize maximum results that can be returned
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody name to search for and correlators
      *
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping("/elements/{elementGUID}/note-logs/retrieve")
+    @GetMapping("/elements/{elementGUID}/note-logs")
 
     public NoteLogsResponse getNoteLogsForElement(@PathVariable String          serverName,
                                                   @PathVariable String          elementGUID,
@@ -1109,15 +1064,9 @@ public class FeedbackManagerResource
                                                   @RequestParam (required = false)
                                                              String                         viewServiceURLMarker,
                                                   @RequestParam (required = false, defaultValue = "asset-manager")
-                                                             String                         accessServiceURLMarker,
-                                                  @RequestParam (required = false, defaultValue = "false")
-                                                         boolean         forLineage,
-                                                  @RequestParam (required = false, defaultValue = "false")
-                                                         boolean         forDuplicateProcessing,
-                                                  @RequestBody (required = false)
-                                                         EffectiveTimeQueryRequestBody requestBody)
+                                                             String                         accessServiceURLMarker)
     {
-        return restAPI.getNoteLogsForElement(serverName, elementGUID, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getNoteLogsForElement(serverName, elementGUID, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker);
     }
 
 
@@ -1128,31 +1077,22 @@ public class FeedbackManagerResource
      * @param noteLogGUID unique identifier of the requested metadata element
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return requested metadata element or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping("/note-logs/{noteLogGUID}/retrieve")
+    @GetMapping("/note-logs/{noteLogGUID}")
 
     public NoteLogResponse getNoteLogByGUID(@PathVariable String                        serverName,
                                             @PathVariable String                        noteLogGUID,
                                             @RequestParam (required = false)
                                                        String                         viewServiceURLMarker,
                                             @RequestParam (required = false, defaultValue = "asset-manager")
-                                                       String                         accessServiceURLMarker,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                       forLineage,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                       forDuplicateProcessing,
-                                            @RequestBody(required = false)
-                                                   EffectiveTimeQueryRequestBody requestBody)
+                                                       String                         accessServiceURLMarker)
     {
-        return restAPI.getNoteLogByGUID(serverName, noteLogGUID, viewServiceURLMarker, accessServiceURLMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getNoteLogByGUID(serverName, noteLogGUID, viewServiceURLMarker, accessServiceURLMarker);
     }
 
 
@@ -1173,8 +1113,6 @@ public class FeedbackManagerResource
      * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody search string and effective time.
      *
      * @return list of matching metadata elements or
@@ -1199,10 +1137,6 @@ public class FeedbackManagerResource
                                               String                         viewServiceURLMarker,
                                    @RequestParam (required = false, defaultValue = "asset-manager")
                                               String                         accessServiceURLMarker,
-                                   @RequestParam (required = false, defaultValue = "false")
-                                              boolean                  forLineage,
-                                   @RequestParam (required = false, defaultValue = "false")
-                                              boolean                  forDuplicateProcessing,
                                    @RequestBody  SearchStringRequestBody  requestBody)
     {
         return restAPI.findNotes(serverName,
@@ -1213,8 +1147,6 @@ public class FeedbackManagerResource
                                  ignoreCase,
                                  viewServiceURLMarker,
                                  accessServiceURLMarker,
-                                 forLineage,
-                                 forDuplicateProcessing,
                                  requestBody);
     }
 
@@ -1228,9 +1160,6 @@ public class FeedbackManagerResource
      * @param pageSize maximum results that can be returned
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
      *
      * @return list of associated metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1246,15 +1175,9 @@ public class FeedbackManagerResource
                                             @RequestParam (required = false)
                                                        String                         viewServiceURLMarker,
                                             @RequestParam (required = false, defaultValue = "asset-manager")
-                                                       String                         accessServiceURLMarker,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                       forLineage,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                                   boolean                       forDuplicateProcessing,
-                                            @RequestBody(required = false)
-                                                   EffectiveTimeQueryRequestBody requestBody)
+                                                       String                         accessServiceURLMarker)
     {
-        return restAPI.getNotesForNoteLog(serverName, noteLogGUID, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getNotesForNoteLog(serverName, noteLogGUID, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker);
     }
 
 
@@ -1265,31 +1188,22 @@ public class FeedbackManagerResource
      * @param noteGUID unique identifier of the requested metadata element
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
      *
      * @return matching metadata element or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping("/note-logs/notes/{noteGUID}/retrieve")
+    @PostMapping("/note-logs/notes/{noteGUID}")
 
     public NoteResponse getNoteByGUID(@PathVariable String                        serverName,
                                       @PathVariable String                        noteGUID,
                                       @RequestParam (required = false)
                                                  String                         viewServiceURLMarker,
                                       @RequestParam (required = false, defaultValue = "asset-manager")
-                                                 String                         accessServiceURLMarker,
-                                      @RequestParam (required = false, defaultValue = "false")
-                                             boolean                       forLineage,
-                                      @RequestParam (required = false, defaultValue = "false")
-                                             boolean                       forDuplicateProcessing,
-                                      @RequestBody(required = false)
-                                             EffectiveTimeQueryRequestBody requestBody)
+                                                 String                         accessServiceURLMarker)
     {
-        return restAPI.getNoteByGUID(serverName, noteGUID, viewServiceURLMarker, accessServiceURLMarker, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getNoteByGUID(serverName, noteGUID, viewServiceURLMarker, accessServiceURLMarker);
     }
 }
 

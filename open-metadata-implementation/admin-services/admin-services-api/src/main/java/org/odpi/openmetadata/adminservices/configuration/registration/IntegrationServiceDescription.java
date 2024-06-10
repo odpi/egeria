@@ -165,7 +165,7 @@ public enum IntegrationServiceDescription
                            "Store metadata with a third party technology that is focused on search efficiency.",
                            "https://egeria-project.org/services/omis/search-integrator/overview/",
                            DeployedImplementationType.SEARCH_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
-                           AccessServiceDescription.ASSET_CATALOG_OMAS,
+                           AccessServiceDescription.ASSET_CONSUMER_OMAS,
                            PermittedSynchronization.BOTH_DIRECTIONS),
 
     /**

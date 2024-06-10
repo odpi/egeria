@@ -39,11 +39,11 @@ Picked up JAVA_TOOL_OPTIONS:
  / /_/ // /  / // ___ |/ /_/ /   ___/ //  __// /   | |/ //  __// /    /  __ // // /  \ / /_ /  _// / // /  / / / /
  \____//_/  /_//_/  |_|\____/   /____/ \___//_/    |___/ \___//_/    /_/    /_/ \__/\//___//_/   \__//_/  /_/ /_/
 
- :: Powered by Spring Boot (v2.2.5.RELEASE) ::
+ :: Powered by Spring Boot (v3.1.4) ::
 ```
 
-Wed Mar 25 15:11:54 GMT 2020 No OMAG servers listed in startup configuration
-Wed Mar 25 15:11:58 GMT 2020 OMAG server platform ready for more configuration
+Mon Jun 10 09:12:09 BST 2024 No OMAG servers listed in startup configuration
+Mon Jun 10 09:12:09 BST 2024 OMAG server platform ready for more configuration
 
 All requests to egeria should be via https on port 9443
 
@@ -65,7 +65,7 @@ bash-4.4$
 ```
 ### Persisting data
 
-By default any data you create whilst the docker image is running will get written to the image, and may only get saved if you specifically commit. Best practice is to use a docker volume or mount point. More information on this can be found at [https://docs.docker.com/storage/#:~:text=Volumes%20are%20the%20best%20way,modify%20them%20at%20any%20time.](Docker docs).
+By default, any data you create whilst the docker image is running will get written to the image, and may only get saved if you specifically commit. Best practice is to use a docker volume or mount point. More information on this can be found at [https://docs.docker.com/storage/#:~:text=Volumes%20are%20the%20best%20way,modify%20them%20at%20any%20time.](Docker docs).
 
 Egeria saves all data when running to the `data` directory. In the docker image this is at `/deployments/platform/data`
 
@@ -115,7 +115,7 @@ INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRat
  / /_/ // /  / // ___ |/ /_/ /   ___/ //  __// /   | |/ //  __// /    /  __ // // /  \ / /_ /  _// / // /  / / / /
  \____//_/  /_//_/  |_|\____/   /____/ \___//_/    |___/ \___//_/    /_/    /_/ \__/\//___//_/   \__//_/  /_/ /_/
 
- :: Powered by Spring Boot (v2.3.3.RELEASE) ::
+ :: Powered by Spring Boot (v3.1.4) ::
 ```
 
 ### Reviewing additional label metadata in the image:

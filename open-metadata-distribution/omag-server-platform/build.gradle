@@ -63,8 +63,6 @@ dependencies {
 //    implementation project(':open-metadata-implementation:access-services:data-engine:data-engine-client')
     implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-client')
     implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-client')
-    implementation project(':open-metadata-implementation:access-services:data-privacy:data-privacy-client')
-    implementation project(':open-metadata-implementation:access-services:dev-ops:dev-ops-client')
     implementation project(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-client')
     implementation project(':open-metadata-implementation:access-services:digital-service:digital-service-client')
     implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-client')

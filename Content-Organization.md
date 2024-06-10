@@ -26,10 +26,8 @@ The Egeria core repository contains the core Egeria functionality, and is organi
     * **[community-profile](open-metadata-implementation/access-services/community-profile)** - manage personal profiles and communities.
     * **[data-engine](open-metadata-implementation/access-services/data-engine)** - exchange metadata with a data processing engine.
     * **[data-manager](open-metadata-implementation/access-services/data-manager)** - exchange metadata with a technology that manages collections of data.
-    * **[data-privacy](open-metadata-implementation/access-services/data-privacy)** - support a data privacy officer.
     * **[data-science](open-metadata-implementation/access-services/data-science)** - manage metadata for analytics.
     * **[design-model](open-metadata-implementation/access-services/design-model)** - manage content from design models.
-    * **[dev-ops](open-metadata-implementation/access-services/dev-ops)** - manage metadata for a devOps pipeline.
     * **[digital-architecture](open-metadata-implementation/access-services/digital-architecture)** - support the definition of data standards and models.
     * **[digital-service](open-metadata-implementation/access-services/digital-service)** - manage metadata for a Digital Service.
     * **[discovery-engine](open-metadata-implementation/access-services/discovery-engine)** - manage metadata for metadata discovery services.

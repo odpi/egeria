@@ -6,8 +6,8 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.NoteLog;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.OMAGGAFAPIResponse;
+import org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements.NoteLogElement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NoteLogsResponse extends OMAGGAFAPIResponse
 {
-    private List<NoteLog> elementList = null;
+    private List<NoteLogElement> elementList = null;
 
 
     /**
@@ -57,7 +57,7 @@ public class NoteLogsResponse extends OMAGGAFAPIResponse
      *
      * @return result object
      */
-    public List<NoteLog> getElementList()
+    public List<NoteLogElement> getElementList()
     {
         if (elementList == null)
         {
@@ -79,7 +79,7 @@ public class NoteLogsResponse extends OMAGGAFAPIResponse
      *
      * @param elementList result object
      */
-    public void setElementList(List<NoteLog> elementList)
+    public void setElementList(List<NoteLogElement> elementList)
     {
         this.elementList = elementList;
     }

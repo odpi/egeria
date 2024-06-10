@@ -63,13 +63,6 @@ It is called from the
 [Topic Integrator OMIS](../integration-services/topic-integrator).
 
 
-* **[data-privacy](data-privacy)** - support a data privacy officer.
-
-  The Data Privacy OMAS supports a privacy officer as they manage data privacy
-in their organization.
-This includes managing privacy impact assessments and reviews of software services
-that use personal data as they move through their development, deployment and use.
-
 * **[data-science](data-science)** - manage metadata for analytics.
 
   The Data Science OMAS provides access to metadata for data assets,
@@ -82,11 +75,6 @@ It is designed for data science and analytics management tools.
   The Design Model OMAS provides the ability to manage information from all types of design models.
 These models may come from tools or be part of a packaged standard.
 This content is useful for governance, system integration and software development.
-
-* **[dev-ops](dev-ops)** - manage metadata for a DevOps pipeline.
-  
-  The DevOps OMAS provides services for a DevOps pipeline to query and maintain metadata about systems, processes and
-software components that are being deployed into the information landscape.
 
 * **[digital-architecture](digital-architecture)** - support the design and architecture of the digital services
 that support the business.

@@ -140,6 +140,7 @@ public class FeedbackManagerRESTServices extends TokenController
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             handler.removeRatingFromElement(userId, guid);
         }
         catch (Exception error)
@@ -189,9 +190,10 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.addLikeToElement(userId, guid, isPublic);
         }
         catch (Exception error)
@@ -240,9 +242,10 @@ public class FeedbackManagerRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeLikeFromElement(userId, guid);
         }
         catch (Exception error)
@@ -259,27 +262,23 @@ public class FeedbackManagerRESTServices extends TokenController
      * Adds a comment to the element.
      *
      * @param serverName name of the server instances for this request
-     * @param guid  String - unique id for the element.
+     * @param elementGUID  String - unique id for the element.
      * @param isPublic is this visible to other people
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody containing type of comment enum and the text of the comment.
      *
-     * @return guid for new comment object or
+     * @return elementGUID for new comment object or
      * InvalidParameterException - one of the parameters is null or invalid or
      * PropertyServerException - there is a problem adding the element properties to
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public GUIDResponse addCommentToElement(String                         serverName,
-                                            String                         guid,
+                                            String                         elementGUID,
                                             boolean                        isPublic,
                                             String                         viewServiceURLMarker,
                                             String                         accessServiceURLMarker,
-                                            boolean                        forLineage,
-                                            boolean                        forDuplicateProcessing,
                                             ReferenceableUpdateRequestBody requestBody)
     {
         final String methodName = "addCommentToElement";
@@ -297,19 +296,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
+
             if (requestBody != null)
             {
                 if (requestBody.getElementProperties() instanceof CommentProperties commentProperties)
                 {
-                    CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-                    response.setGUID(handler.addCommentToElement(userId,
-                                                                 guid,
-                                                                 isPublic,
-                                                                 commentProperties,
-                                                                 requestBody.getEffectiveTime(),
-                                                                 forLineage,
-                                                                 forDuplicateProcessing));
+                    response.setGUID(handler.addCommentToElement(userId, elementGUID, isPublic, commentProperties));
                 }
                 else
                 {
@@ -335,12 +329,11 @@ public class FeedbackManagerRESTServices extends TokenController
      * Adds a reply to a comment.
      *
      * @param serverName name of the server instances for this request
+     * @param elementGUID  String - unique id for the anchor element.
      * @param commentGUID  String - unique id for an existing comment.  Used to add a reply to a comment.
      * @param isPublic is this visible to other people
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return guid for new comment object or
@@ -350,12 +343,11 @@ public class FeedbackManagerRESTServices extends TokenController
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public GUIDResponse addCommentReply(String                         serverName,
+                                        String                         elementGUID,
                                         String                         commentGUID,
                                         boolean                        isPublic,
                                         String                         viewServiceURLMarker,
                                         String                         accessServiceURLMarker,
-                                        boolean                        forLineage,
-                                        boolean                        forDuplicateProcessing,
                                         ReferenceableUpdateRequestBody requestBody)
     {
         final String methodName = "addCommentReply";
@@ -380,12 +372,10 @@ public class FeedbackManagerRESTServices extends TokenController
                     CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
                     response.setGUID(handler.addCommentReply(userId,
+                                                             elementGUID,
                                                              commentGUID,
                                                              isPublic,
-                                                             commentProperties,
-                                                             null,
-                                                             forLineage,
-                                                             forDuplicateProcessing));
+                                                             commentProperties));
                 }
                 else
                 {
@@ -413,11 +403,8 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param serverName   name of the server instances for this request.
      * @param commentGUID  unique identifier for the comment to change.
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
-     * @param isPublic is this visible to other people
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -428,11 +415,8 @@ public class FeedbackManagerRESTServices extends TokenController
     public VoidResponse   updateComment(String                         serverName,
                                         String                         commentGUID,
                                         boolean                        isMergeUpdate,
-                                        boolean                        isPublic,
                                         String                         viewServiceURLMarker,
                                         String                         accessServiceURLMarker,
-                                        boolean                        forLineage,
-                                        boolean                        forDuplicateProcessing,
                                         ReferenceableUpdateRequestBody requestBody)
     {
         final String methodName = "updateComment";
@@ -459,11 +443,7 @@ public class FeedbackManagerRESTServices extends TokenController
                     handler.updateComment(userId,
                                           commentGUID,
                                           isMergeUpdate,
-                                          isPublic,
-                                          commentProperties,
-                                          requestBody.getEffectiveTime(),
-                                          forLineage,
-                                          forDuplicateProcessing);
+                                          commentProperties);
                 }
                 else
                 {
@@ -485,6 +465,62 @@ public class FeedbackManagerRESTServices extends TokenController
     }
 
 
+
+    /**
+     * Update an existing comment's visibility.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param parentGUID  String - unique id for the attached element.
+     * @param commentGUID  unique identifier for the comment to change.
+     * @param isPublic is this visible to other people
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody  containing type of comment enum and the text of the comment.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @SuppressWarnings(value = "unused")
+    public VoidResponse   updateCommentVisibility(String          serverName,
+                                                  String          parentGUID,
+                                                  String          commentGUID,
+                                                  boolean         isPublic,
+                                                  String          viewServiceURLMarker,
+                                                  String          accessServiceURLMarker,
+                                                  NullRequestBody requestBody)
+    {
+        final String methodName = "updateCommentVisibility";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse  response = new VoidResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
+
+            handler.updateCommentVisibility(userId, parentGUID, commentGUID, isPublic);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
     /**
      * Link a comment that contains the best answer to a question posed in another comment.
      *
@@ -493,8 +529,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
@@ -507,8 +541,6 @@ public class FeedbackManagerRESTServices extends TokenController
                                             String                  answerCommentGUID,
                                             String                  viewServiceURLMarker,
                                             String                  accessServiceURLMarker,
-                                            boolean                 forLineage,
-                                            boolean                 forDuplicateProcessing,
                                             RelationshipRequestBody requestBody)
     {
         final String methodName = "setupAcceptedAnswer";
@@ -535,10 +567,7 @@ public class FeedbackManagerRESTServices extends TokenController
                     handler.setupAcceptedAnswer(userId,
                                                 questionCommentGUID,
                                                 answerCommentGUID,
-                                                feedbackProperties,
-                                                requestBody.getEffectiveTime(),
-                                                forLineage,
-                                                forDuplicateProcessing);
+                                                feedbackProperties.getIsPublic());
                 }
                 else
                 {
@@ -569,8 +598,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return void or
@@ -578,14 +605,13 @@ public class FeedbackManagerRESTServices extends TokenController
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse clearAcceptedAnswer(String                        serverName,
                                             String                        questionCommentGUID,
                                             String                        answerCommentGUID,
                                             String                        viewServiceURLMarker,
                                             String                        accessServiceURLMarker,
-                                            boolean                       forLineage,
-                                            boolean                       forDuplicateProcessing,
-                                            EffectiveTimeQueryRequestBody requestBody)
+                                            NullRequestBody               requestBody)
     {
         final String methodName = "clearAcceptedAnswer";
 
@@ -604,24 +630,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.clearAcceptedAnswer(userId,
-                                            questionCommentGUID,
-                                            answerCommentGUID,
-                                            requestBody.getEffectiveTime(),
-                                            forLineage,
-                                            forDuplicateProcessing);
-            }
-            else
-            {
-                handler.clearAcceptedAnswer(userId,
-                                            questionCommentGUID,
-                                            answerCommentGUID,
-                                            null,
-                                            forLineage,
-                                            forDuplicateProcessing);
-            }
+            handler.clearAcceptedAnswer(userId, questionCommentGUID, answerCommentGUID);
         }
         catch (Exception error)
         {
@@ -642,8 +651,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param commentGUID  String - unique id for the comment object
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody null request body needed to satisfy the HTTP Post request
      *
      * @return void or
@@ -658,8 +665,6 @@ public class FeedbackManagerRESTServices extends TokenController
                                                  String                         commentGUID,
                                                  String                         viewServiceURLMarker,
                                                  String                         accessServiceURLMarker,
-                                                 boolean                        forLineage,
-                                                 boolean                        forDuplicateProcessing,
                                                  ReferenceableUpdateRequestBody requestBody)
     {
         final String guidParameterName = "commentGUID";
@@ -680,22 +685,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                handler.removeComment(userId,
-                                      commentGUID,
-                                      requestBody.getEffectiveTime(),
-                                      forLineage,
-                                      forDuplicateProcessing);
-            }
-            else
-            {
-                handler.removeComment(userId,
-                                      commentGUID,
-                                      null,
-                                      forLineage,
-                                      forDuplicateProcessing);
-            }
+            handler.removeComment(userId, commentGUID);
         }
         catch (Exception error)
         {
@@ -714,9 +704,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param commentGUID  unique identifier for the comment object.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage               return elements marked with the Memento classification?
-     * @param forDuplicateProcessing   do not merge elements marked as duplicates?
-     * @param requestBody effectiveTime and asset manager identifiers
      * @return comment properties or
      *  InvalidParameterException one of the parameters is null or invalid.
      *  PropertyServerException there is a problem updating the element properties in the property server.
@@ -725,10 +712,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public CommentResponse getCommentByGUID(String                        serverName,
                                             String                        commentGUID,
                                             String                        viewServiceURLMarker,
-                                            String                        accessServiceURLMarker,
-                                            boolean                       forLineage,
-                                            boolean                       forDuplicateProcessing,
-                                            EffectiveTimeQueryRequestBody requestBody)
+                                            String                        accessServiceURLMarker)
     {
         final String methodName = "getComment";
 
@@ -747,22 +731,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getComment(userId,
-                                                       commentGUID,
-                                                       requestBody.getEffectiveTime(),
-                                                       forLineage,
-                                                       forDuplicateProcessing));
-            }
-            else
-            {
-                response.setElement(handler.getComment(userId,
-                                                       commentGUID,
-                                                       null,
-                                                       forLineage,
-                                                       forDuplicateProcessing));
-            }
+            response.setElement(handler.getComment(userId, commentGUID));
         }
         catch (Exception error)
         {
@@ -783,9 +752,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage               return elements marked with the Memento classification?
-     * @param forDuplicateProcessing   do not merge elements marked as duplicates?
-     * @param requestBody effectiveTime and asset manager identifiers
      * @return list of comments or
      *  InvalidParameterException one of the parameters is null or invalid.
      *  PropertyServerException there is a problem updating the element properties in the property server.
@@ -796,10 +762,7 @@ public class FeedbackManagerRESTServices extends TokenController
                                                        int                           startFrom,
                                                        int                           pageSize,
                                                        String                        viewServiceURLMarker,
-                                                       String                        accessServiceURLMarker,
-                                                       boolean                       forLineage,
-                                                       boolean                       forDuplicateProcessing,
-                                                       EffectiveTimeQueryRequestBody requestBody)
+                                                       String                        accessServiceURLMarker)
     {
         final String methodName = "getAttachedComments";
 
@@ -818,26 +781,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElementList(handler.getAttachedComments(userId,
-                                                                    elementGUID,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    requestBody.getEffectiveTime(),
-                                                                    forLineage,
-                                                                    forDuplicateProcessing));
-            }
-            else
-            {
-                response.setElementList(handler.getAttachedComments(userId,
-                                                                    elementGUID,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    null,
-                                                                    forLineage,
-                                                                    forDuplicateProcessing));
-            }
+            response.setElementList(handler.getAttachedComments(userId, elementGUID, startFrom, pageSize));
         }
         catch (Exception error)
         {
@@ -861,8 +805,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param ignoreCase should the search ignore case?
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody string to find in the properties
     *
      * @return list of matching metadata elements or
@@ -878,8 +820,6 @@ public class FeedbackManagerRESTServices extends TokenController
                                                 boolean                 ignoreCase,
                                                 String                  viewServiceURLMarker,
                                                 String                  accessServiceURLMarker,
-                                                boolean                 forLineage,
-                                                boolean                 forDuplicateProcessing,
                                                 SearchStringRequestBody requestBody)
     {
         final String methodName = "findComments";
@@ -904,10 +844,7 @@ public class FeedbackManagerRESTServices extends TokenController
                 response.setElementList(handler.findComments(userId,
                                                              instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
                                                              startFrom,
-                                                             pageSize,
-                                                             requestBody.getEffectiveTime(),
-                                                             forLineage,
-                                                             forDuplicateProcessing));
+                                                             pageSize));
             }
             else
             {
@@ -1564,8 +1501,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param ignoreCase should the search ignore case?
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1581,8 +1516,6 @@ public class FeedbackManagerRESTServices extends TokenController
                                          boolean                 ignoreCase,
                                          String                  viewServiceURLMarker,
                                          String                  accessServiceURLMarker,
-                                         boolean                 forLineage,
-                                         boolean                 forDuplicateProcessing,
                                          SearchStringRequestBody requestBody)
     {
         final String methodName = "findNoteLogs";
@@ -1607,10 +1540,7 @@ public class FeedbackManagerRESTServices extends TokenController
                 response.setElementList(handler.findNoteLogs(userId,
                                                              instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
                                                              startFrom,
-                                                             pageSize,
-                                                             requestBody.getEffectiveTime(),
-                                                             forLineage,
-                                                             forDuplicateProcessing));
+                                                             pageSize));
             }
             else
             {
@@ -1637,8 +1567,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param pageSize maximum results that can be returned
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody name to search for and correlators
      *
      * @return list of matching metadata elements or
@@ -1651,8 +1579,6 @@ public class FeedbackManagerRESTServices extends TokenController
                                               int             pageSize,
                                               String          viewServiceURLMarker,
                                               String          accessServiceURLMarker,
-                                              boolean         forLineage,
-                                              boolean         forDuplicateProcessing,
                                               NameRequestBody requestBody)
     {
         final String methodName = "getNoteLogsByName";
@@ -1670,22 +1596,9 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
+           CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-                response.setElementList(handler.getNoteLogsByName(userId,
-                                                                  requestBody.getName(),
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  requestBody.getEffectiveTime(),
-                                                                  forLineage,
-                                                                  forDuplicateProcessing));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NameRequestBody.class.getName());
-            }
+           response.setElementList(handler.getNoteLogsByName(userId, requestBody.getName(), startFrom, pageSize));
         }
         catch (Exception error)
         {
@@ -1708,9 +1621,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param pageSize maximum results that can be returned
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
      *
      * @return list of associated metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1722,10 +1632,7 @@ public class FeedbackManagerRESTServices extends TokenController
                                                   int                           startFrom,
                                                   int                           pageSize,
                                                   String                        viewServiceURLMarker,
-                                                  String                        accessServiceURLMarker,
-                                                  boolean                       forLineage,
-                                                  boolean                       forDuplicateProcessing,
-                                                  EffectiveTimeQueryRequestBody requestBody)
+                                                  String                        accessServiceURLMarker)
     {
         final String methodName = "getNotesForNoteLog";
 
@@ -1744,26 +1651,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElementList(handler.getNoteLogsForElement(userId,
-                                                                      elementGUID,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      requestBody.getEffectiveTime(),
-                                                                      forLineage,
-                                                                      forDuplicateProcessing));
-            }
-            else
-            {
-                response.setElementList(handler.getNoteLogsForElement(userId,
-                                                                      elementGUID,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      null,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing));
-            }
+            response.setElementList(handler.getNoteLogsForElement(userId, elementGUID, startFrom, pageSize));
         }
         catch (Exception error)
         {
@@ -1784,9 +1672,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param noteLogGUID unique identifier of the requested metadata element
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody correlators
      *
      * @return requested metadata element or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1796,10 +1681,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public NoteLogResponse getNoteLogByGUID(String                        serverName,
                                             String                        noteLogGUID,
                                             String                        viewServiceURLMarker,
-                                            String                        accessServiceURLMarker,
-                                            boolean                       forLineage,
-                                            boolean                       forDuplicateProcessing,
-                                            EffectiveTimeQueryRequestBody requestBody)
+                                            String                        accessServiceURLMarker)
     {
         final String methodName = "getNoteLogByGUID";
 
@@ -1817,22 +1699,7 @@ public class FeedbackManagerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElement(handler.getNoteLogByGUID(userId,
-                                                             noteLogGUID,
-                                                             requestBody.getEffectiveTime(),
-                                                             forLineage,
-                                                             forDuplicateProcessing));
-            }
-            else
-            {
-                response.setElement(handler.getNoteLogByGUID(userId,
-                                                             noteLogGUID,
-                                                             null,
-                                                             forLineage,
-                                                             forDuplicateProcessing));
-            }
+            response.setElement(handler.getNoteLogByGUID(userId, noteLogGUID));
         }
         catch (Exception error)
         {
@@ -1861,8 +1728,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param startsWith does the value start with the supplied string?
      * @param endsWith does the value end with the supplied string?
      * @param ignoreCase should the search ignore case?
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1878,8 +1743,6 @@ public class FeedbackManagerRESTServices extends TokenController
                                    boolean                 ignoreCase,
                                    String                  viewServiceURLMarker,
                                    String                  accessServiceURLMarker,
-                                   boolean                 forLineage,
-                                   boolean                 forDuplicateProcessing,
                                    SearchStringRequestBody requestBody)
     {
         final String methodName = "findNotes";
@@ -1904,10 +1767,7 @@ public class FeedbackManagerRESTServices extends TokenController
                 response.setElementList(handler.findNotes(userId,
                                                           instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
                                                           startFrom,
-                                                          pageSize,
-                                                          requestBody.getEffectiveTime(),
-                                                          forLineage,
-                                                          forDuplicateProcessing));
+                                                          pageSize));
             }
             else
             {
@@ -1934,9 +1794,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param pageSize maximum results that can be returned
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
      *
      * @return list of associated metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1948,10 +1805,7 @@ public class FeedbackManagerRESTServices extends TokenController
                                             int                           startFrom,
                                             int                           pageSize,
                                             String                        viewServiceURLMarker,
-                                            String                        accessServiceURLMarker,
-                                            boolean                       forLineage,
-                                            boolean                       forDuplicateProcessing,
-                                            EffectiveTimeQueryRequestBody requestBody)
+                                            String                        accessServiceURLMarker)
     {
         final String methodName = "getNotesForNoteLog";
 
@@ -1970,26 +1824,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-                response.setElementList(handler.getNotesForNoteLog(userId,
-                                                                   noteLogGUID,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   requestBody.getEffectiveTime(),
-                                                                   forLineage,
-                                                                   forDuplicateProcessing));
-            }
-            else
-            {
-                response.setElementList(handler.getNotesForNoteLog(userId,
-                                                                   noteLogGUID,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   null,
-                                                                   forLineage,
-                                                                   forDuplicateProcessing));
-            }
+            response.setElementList(handler.getNotesForNoteLog(userId, noteLogGUID, startFrom, pageSize));
         }
         catch (Exception error)
         {
@@ -2009,9 +1844,6 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param noteGUID unique identifier of the requested metadata element
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody asset manager identifiers
      *
      * @return matching metadata element or
      *  InvalidParameterException  one of the parameters is invalid
@@ -2021,10 +1853,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public NoteResponse getNoteByGUID(String                        serverName,
                                       String                        noteGUID,
                                       String                        viewServiceURLMarker,
-                                      String                        accessServiceURLMarker,
-                                      boolean                       forLineage,
-                                      boolean                       forDuplicateProcessing,
-                                      EffectiveTimeQueryRequestBody requestBody)
+                                      String                        accessServiceURLMarker)
     {
         final String methodName = "getNoteByGUID";
 
@@ -2040,24 +1869,10 @@ public class FeedbackManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            if (requestBody != null)
-            {
-
-                response.setElement(handler.getNoteByGUID(userId,
-                                                          noteGUID,
-                                                          requestBody.getEffectiveTime(),
-                                                          forLineage,
-                                                          forDuplicateProcessing));
-            }
-            else
-            {
-                response.setElement(handler.getNoteByGUID(userId,
-                                                          noteGUID,
-                                                          null,
-                                                          forLineage,
-                                                          forDuplicateProcessing));            }
+            response.setElement(handler.getNoteByGUID(userId, noteGUID));
         }
         catch (Exception error)
         {
