@@ -2,7 +2,7 @@
 # Copyright Contributors to the Egeria project
 
 FROM docker.io/library/alpine:3.19.1
-ARG version=4.4-SNAPSHOT
+ARG version=5.0
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown

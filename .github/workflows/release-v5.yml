@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the ODPi Egeria project.
 ---
-name: "Release v4"
+name: "Release v5"
 
 # Trigger when a Release is created in github
 # - does not run on modification (may be just text)
@@ -11,7 +11,7 @@ on:
   release:
     types:
       - created
-    branches: [main, egeria-release-4*]
+    branches: [main, egeria-release-5*]
 
   workflow_dispatch:
 
@@ -69,14 +69,14 @@ jobs:
       # Publish container images(egeria) to quay.io and docker.io
       - name: Copy the distribution content to be used in docker copy command
         run: |
-          mkdir -p ./open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly
-          cp -r open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${{ env.VERSION }}-distribution.tar.gz/. open-metadata-resources/open-metadata-deployment/docker/egeria/build/assembly
+          cp -f release.application.properties ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform/application.properties
+          cp -r ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/opt/sample-configs/*-* ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform/data
       - name: Build and push(egeria) to quay.io and docker.io
         uses: docker/build-push-action@v5
         with:
           push: true
           tags: odpi/egeria:${{ env.VERSION }}, odpi/egeria:stable, quay.io/odpi/egeria:${{ env.VERSION }}, quay.io/odpi/egeria:stable
-          context: ./open-metadata-resources/open-metadata-deployment/docker/egeria
+          context: ./open-metadata-deployment/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz
           platforms: linux/amd64,linux/arm64
       # Publish container images(egeria-configure) to quay.io and docker.io
       - name: Build and push(egeria-configure) to quay.io and docker.io
@@ -91,4 +91,4 @@ jobs:
         uses: actions/upload-artifact@v4.3.1
         with:
           name: Assemblies
-          path: open-metadata-distribution/open-metadata-assemblies/build/distributions/*.gz
+          path: open-metadata-distribution/omag-server-platform/build/distributions/*.gz
