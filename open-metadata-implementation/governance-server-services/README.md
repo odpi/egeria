@@ -12,9 +12,6 @@ More information about Governance Servers in general can be found in the [Admini
 However, each of the services below provide the principle service
 for a particular type of governance server.
 
-* **[data-engine-proxy-services](data-engine-proxy-services)** - bridge between data engines and the
-    [Data Engine OMAS](https://egeria-project.org/services/omas/data-engine/overview).
-
 * **[integration-daemon-services](integration-daemon-services)** - metadata exchange with third party tools.
 
 * **[engine-host-services](engine-host-services)** - running governance engines.

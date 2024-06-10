@@ -44,12 +44,6 @@ asset(s) and understand how these assets are being used and governed.
   The Community Profile OMAS supports the administration for a community and related user profiles.  These communities are
 involved in reviewing and crowd-sourcing knowledge about the data assets and their use.
 
-* **[data-engine](data-engine)** - exchange metadata with a data processing engine.
-                                   
-  The Data Engine OMAS provides APIs and events for a data movement/processing
-engine to record the changes it is making to the data landscape. 
-This information forms a key part of asset lineage.
-
 * **[data-manager](data-manager)** - exchange metadata with a data manager.
 
   The Data Manager OMAS provides technology-specific APIs to enable technologies that manage collections of data
@@ -136,11 +130,6 @@ These exceptions may be quality errors, missing or outdated information,
 invalid licensing, job failures, and many more.
 The Stewardship Action OMAS also enables the review and triage of the exceptions,
 simple remediation and status reporting.
-
-* **[subject-area](subject-area)** - develop a glossary.
-
-  The Subject Area OMAS is for tools that support subject-matter experts
-who are defining glossaries for a specific subject area, such as "customer data".
 
 ## Using the OMASs
 
