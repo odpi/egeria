@@ -10,8 +10,8 @@ needed by their consumers.
 
 * **[access-services-fvt](access-services-fvt)** - provides an FVT test suite for each of the Open Metadata Access Services (OMAS).
   They each focus on the functional correctness of a specific OMAS.  
-* **[open-types-fvt](open-types-fvt)** - uses code generated ot build a bean layer from the open metadata types
-and then tests the resulting beans.
+
+* **[fvt-utilities](fvt-utilities)** - provides utilities used by the FVTs.
 
 # NOTE
 
@@ -26,13 +26,11 @@ This is a current list of known port usage
 * 10445 Asset Owner
 * 10446 Data Manager
 * 10447 Digital Architecture
-* 10448 Subject Area 
-* 10450 Discovery Engine
 * 10451 Governance Engine
 * 10452 Governance Program
 * 10453 Analytics Modeling 
 * 10455 Stewardship Action
-* 10454 Glossary Author (view services)
+
 ----
 Return to [open-metadata-test](..)
 
