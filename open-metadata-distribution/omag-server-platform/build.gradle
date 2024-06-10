@@ -136,6 +136,13 @@ distributions {
                 fileMode = 0755
             }
             into('assembly') {
+                from(rootProject.projectDir) {
+                    include 'NOTICE'
+                    include 'LICENSE'
+                }
+                fileMode = 0755
+            }
+            into('assembly') {
                 // Describe the deployment layout
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/assembly" }
                 fileMode = 0755
