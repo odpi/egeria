@@ -6,8 +6,8 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.InformalTag;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.OMAGGAFAPIResponse;
+import org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements.InformalTagElement;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InformalTagResponse extends OMAGGAFAPIResponse
 {
-    private InformalTag tag = null;
+    private InformalTagElement tag = null;
 
     /**
      * Default constructor
@@ -57,7 +57,7 @@ public class InformalTagResponse extends OMAGGAFAPIResponse
      *
      * @return tag
      */
-    public InformalTag getTag()
+    public InformalTagElement getTag()
     {
         if (tag == null)
         {
@@ -65,7 +65,7 @@ public class InformalTagResponse extends OMAGGAFAPIResponse
         }
         else
         {
-            return new InformalTag(tag);
+            return new InformalTagElement(tag);
         }
     }
 
@@ -75,7 +75,7 @@ public class InformalTagResponse extends OMAGGAFAPIResponse
      *
      * @param tag  tag object
      */
-    public void setTag(InformalTag tag)
+    public void setTag(InformalTagElement tag)
     {
         this.tag = tag;
     }

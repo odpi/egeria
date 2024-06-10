@@ -60,6 +60,15 @@ public enum OpenMetadataType
           "11b20cb3-2149-47f9-ad0a-058332a3cb5f",
           "The description of a resource that needs to be catalogued and governed."),
 
+    /**
+     * The description of a collection of data.
+     */
+    DATA_ASSET("ca826f9e-7fb1-4005-921a-fee1c4cd221b",
+          "DataAsset",
+          OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+          "8661a98b-1a2e-4a33-bb71-078f48532385",
+          "The description of a collection of data."),
+
 
     /**
      * Well-defined sequence of activities performed by people or software components.
@@ -78,15 +87,6 @@ public enum OpenMetadataType
                    OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
                    "002a59fc-9ee8-4e7c-b18f-39e035128127",
                    "Physical infrastructure or software platform."),
-
-    /**
-     * Collection of related data, not necessarily stored together.
-     */
-    DATA_SET("1449911c-4f44-4c22-abc0-7540154feefb",
-             "DataSet",
-             OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
-             "353a074a-079b-47ad-914f-c27a6174a8ed",
-             "Collection of related data, not necessarily stored together."),
 
     /**
      * Links an Asset entity describing a collection of sample data that originates from the resource represented by the Referenceable entity.
@@ -737,10 +737,75 @@ public enum OpenMetadataType
                               "f5f7ed7d-bebe-454f-94aa-1029ff37ac6a",
                               "Links an informal tag to an item."),
 
+    /**
+     * An ordered list of related notes.
+     */
+    NOTE_LOG("646727c7-9ad4-46fa-b660-265489ad96c6",
+             "NoteLog",
+             OpenMetadataWikiPages.MODEL_0160_NOTES,
+             "cd8b86b2-115d-4a74-a6f3-8f3001a03c58",
+             "An ordered list of related notes."),
+
+    /**
+     * An entry in a note log.
+     */
+    NOTE_ENTRY("2a84d94c-ac6f-4be1-a72a-07dcec7b1fe3",
+               "NoteEntry",
+               OpenMetadataWikiPages.MODEL_0160_NOTES,
+               "33e3f368-d226-4dfe-895b-38e75a49b891",
+               "An entry in a note log."),
+
+    /**
+     * Links a note log to an item.
+     */
+    ATTACHED_NOTE_LOG_RELATIONSHIP("4f798c0c-6769-4a2d-b489-d2714d89e0a4",
+                                   "AttachedNoteLog",
+                                   OpenMetadataWikiPages.MODEL_0160_NOTES,
+                                   "6ea034cf-f669-480b-ab7e-5be658420a4e",
+                                   "Links a note log to an item."),
+
+    /**
+     * Link between a note log and one of its note log entries.
+     */
+    ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP("38edecc6-f385-4574-8144-524a44e3e712",
+                                         "AttachedNoteLogEntry",
+                                         OpenMetadataWikiPages.MODEL_0160_NOTES,
+                                         "b91a2d26-566b-4795-baea-78097556c227",
+                                         "Link between a note log and one of its note log entries."),
+
+    /**
+     * A person adding notes to a note log.
+     */
+    NOTE_LOG_AUTHOR("3a84d94c-ac6f-4be1-a72a-07dbec7b1fe3",
+                    "NoteLogAuthor",
+                    OpenMetadataWikiPages.MODEL_0160_NOTES,
+                    "58213b72-68b7-4259-938c-f0f5c59396b0",
+                    "A person adding notes to a note log."),
+
+
+    /**
+     * Links a note log to an author.
+     */
+    NOTE_LOG_AUTHORSHIP_RELATIONSHIP("8f798c0c-6769-4a2d-b489-12714d89e0a4",
+                                     "NoteLogAuthorship",
+                                     OpenMetadataWikiPages.MODEL_0160_NOTES,
+                                     "1f972f03-e7a7-4fd9-923e-bdbcdf37c4f9",
+                                     "Links a note log to an author."),
+
 
     /* ============================================================================================================================*/
     /* Area 2 - Assets                                                                                                             */
     /* ============================================================================================================================*/
+
+    /**
+     * Collection of related data, not necessarily stored together.
+     */
+    DATA_SET("1449911c-4f44-4c22-abc0-7540154feefb",
+             "DataSet",
+             OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
+             "353a074a-079b-47ad-914f-c27a6174a8ed",
+             "Collection of related data, not necessarily stored together."),
+
 
     /**
      * A physical store of data
@@ -750,6 +815,15 @@ public enum OpenMetadataType
                OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
                "186e8199-1987-4578-9799-c13a8eaa08b6",
                "A physical store of data."),
+
+    /**
+     * A data source that provides a constant stream of data, such as a sensor monitoring the environment.
+     */
+    DATA_FEED("e87836ad-f8bd-4c52-aecd-0f1872c692e5",
+             "DataFeed",
+             OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
+             "26776fcd-0f7c-49c6-874e-729898ec2193",
+             "A data source that provides a constant stream of data, such as a sensor monitoring the environment."),
 
     /**
      * The assets that provides data for a data set.

@@ -170,6 +170,11 @@ public enum OpenMetadataProperty
     TYPE("type", "CommentType", "Type of comment.", "Answer", "465c7ed7-74d4-4eb3-9e4c-9d47f06a0ebd"),
 
     /**
+     * Title
+     */
+    TITLE("title", "string", "Title", null, "c669dc73-3ae3-4350-95b7-4508a85bfc94"),
+
+    /**
      * Descriptive name of the tag.
      */
     TAG_NAME("tagName", "string", "Descriptive name of the tag.", null, "c6054168-4236-4de1-9ece-ebcb5597dbf4"),

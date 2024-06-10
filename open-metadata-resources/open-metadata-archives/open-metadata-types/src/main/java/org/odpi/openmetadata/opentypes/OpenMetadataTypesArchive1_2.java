@@ -370,6 +370,7 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addEntityDef(getAssetEntity());
         this.archiveBuilder.addEntityDef(getInfrastructureEntity());
         this.archiveBuilder.addEntityDef(getProcessEntity());
+        this.archiveBuilder.addEntityDef(getDataAssetEntity());
         this.archiveBuilder.addEntityDef(getDataSetEntity());
     }
 
@@ -609,6 +610,27 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
+
+    /**
+     * The DataSet entity describes a collection of related data.
+     *
+     * @return DataSet EntityDef
+     */
+    private EntityDef getDataAssetEntity()
+    {
+        /*
+         * Build the Entity
+         */
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_ASSET.typeGUID,
+                                                 OpenMetadataType.DATA_ASSET.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
+                                                 OpenMetadataType.DATA_ASSET.description,
+                                                 OpenMetadataType.DATA_ASSET.descriptionGUID,
+                                                 OpenMetadataType.DATA_ASSET.wikiURL);
+    }
+
+
+
     /**
      * The DataSet entity describes a collection of related data.
      *
@@ -619,20 +641,12 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Build the Entity
          */
-        final String guid            = OpenMetadataType.DATA_SET.typeGUID;
-        final String name            = OpenMetadataType.DATA_SET.typeName;
-        final String description     = OpenMetadataType.DATA_SET.description;
-        final String descriptionGUID = OpenMetadataType.DATA_SET.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.DATA_SET.wikiURL;
-
-        final String superTypeName   = OpenMetadataType.ASSET.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_SET.typeGUID,
+                                                 OpenMetadataType.DATA_SET.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_ASSET.typeName),
+                                                 OpenMetadataType.DATA_SET.description,
+                                                 OpenMetadataType.DATA_SET.descriptionGUID,
+                                                 OpenMetadataType.DATA_SET.wikiURL);
     }
 
 
@@ -661,70 +675,29 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getMediaTypeEnum()
     {
-        final String guid            = "9548390c-69f5-4dc6-950d-6fdffb257b56";
-        final String name            = "MediaType";
-        final String description     = "Defines the type of media.";
-        final String descriptionGUID = null;
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(MediaType.getOpenTypeGUID(),
+                                                        MediaType.getOpenTypeName(),
+                                                        MediaType.getOpenTypeDescription(),
+                                                        MediaType.getOpenTypeDescriptionGUID(),
+                                                        MediaType.getOpenTypeDescriptionWiki());
 
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef            elementDef;
 
-        List<EnumElementDef> elementDefs = new ArrayList<>();
-        EnumElementDef       elementDef;
+        for (MediaType enumValue : MediaType.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValue.getOrdinal(),
+                                                         enumValue.getName(),
+                                                         enumValue.getDescription(),
+                                                         enumValue.getDescriptionGUID());
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Image";
-        final String element1Description     = "The media is an image.";
-        final String element1DescriptionGUID = null;
+            elementDefs.add(elementDef);
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Audio";
-        final String element2Description     = "The media is an audio recording.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Document";
-        final String element3Description     = "The media is a text document, probably rich text.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "Video";
-        final String element4Description     = "The media is a video recording.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 99;
-        final String element5Value           = "Other";
-        final String element5Description     = "Another type of media, probably not supported.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValue.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -734,70 +707,29 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getMediaUsageEnum()
     {
-        final String guid            = "c6861a72-7485-48c9-8040-876f6c342b61";
-        final String name            = "MediaUsage";
-        final String description     = "Defines how a related media reference should be used.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(MediaUsage.getOpenTypeGUID(),
+                                                        MediaUsage.getOpenTypeName(),
+                                                        MediaUsage.getOpenTypeDescription(),
+                                                        MediaUsage.getOpenTypeDescriptionGUID(),
+                                                        MediaUsage.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Icon";
-        final String element1Description     = "Provides a small image to represent the asset in tree views and graphs.";
-        final String element1DescriptionGUID = null;
+        for (MediaUsage enumValue : MediaUsage.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValue.getOrdinal(),
+                                                         enumValue.getName(),
+                                                         enumValue.getDescription(),
+                                                         enumValue.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Thumbnail";
-        final String element2Description     = "Provides a small image about the asset that can be used in lists.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Illustration";
-        final String element3Description     = "Illustrates how the asset works or what it contains. It is complementary to the asset's description.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "UsageGuidance";
-        final String element4Description     = "Provides guidance to a person on how to use the asset.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 99;
-        final String element5Value           = "Other";
-        final String element5Description     = "Another usage.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValue.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -6926,18 +6858,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getNoteEntryEntity()
     {
-        final String guid            = "2a84d94c-ac6f-4be1-a72a-07dcec7b1fe3";
-        final String name            = "NoteEntry";
-        final String description     = "An entry in a note log.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.NOTE_ENTRY.typeGUID,
+                                                                OpenMetadataType.NOTE_ENTRY.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                OpenMetadataType.NOTE_ENTRY.description,
+                                                                OpenMetadataType.NOTE_ENTRY.descriptionGUID,
+                                                                OpenMetadataType.NOTE_ENTRY.wikiURL);
 
         /*
          * Build the attributes
@@ -6945,23 +6871,17 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "title";
-        final String attribute1Description     = "Title of the note entry.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "text";
-        final String attribute2Description     = "Text of the note entry.";
-        final String attribute2DescriptionGUID = null;
         final String attribute3Name            = OpenMetadataProperty.IS_PUBLIC.name;
         final String attribute3Description     = "Is the note visible to more than the note log authors?";
         final String attribute3DescriptionGUID = null;
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.TITLE.name,
+                                                           OpenMetadataProperty.TITLE.description,
+                                                           OpenMetadataProperty.TITLE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.TEXT.name,
+                                                           OpenMetadataProperty.TEXT.description,
+                                                           OpenMetadataProperty.TEXT.descriptionGUID);
         properties.add(property);
         property = archiveHelper.getBooleanTypeDefAttribute(attribute3Name,
                                                             attribute3Description,
@@ -6976,35 +6896,22 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getNoteLogAuthorEntity()
     {
-        final String guid            = "3a84d94c-ac6f-4be1-a72a-07dbec7b1fe3";
-        final String name            = "NoteLogAuthor";
-        final String description     = "A person adding notes to a note log.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "PersonRole";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.NOTE_LOG_AUTHOR.typeGUID,
+                                                 OpenMetadataType.NOTE_LOG_AUTHOR.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE_TYPE_NAME),
+                                                 OpenMetadataType.NOTE_LOG_AUTHOR.description,
+                                                 OpenMetadataType.NOTE_LOG_AUTHOR.descriptionGUID,
+                                                 OpenMetadataType.NOTE_LOG_AUTHOR.wikiURL);
     }
 
 
     private EntityDef getNoteLogEntity()
     {
-        final String guid            = "646727c7-9ad4-46fa-b660-265489ad96c6";
-        final String name            = "NoteLog";
-        final String description     = "An ordered list of related notes.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.NOTE_LOG.typeGUID,
+                                                                OpenMetadataType.NOTE_LOG.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                OpenMetadataType.NOTE_LOG.description,
+                                                                OpenMetadataType.NOTE_LOG.descriptionGUID);
 
         /*
          * Build the attributes
@@ -7044,19 +6951,13 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getAttachedNoteLogRelationship()
     {
-        final String guid            = "4f798c0c-6769-4a2d-b489-d2714d89e0a4";
-        final String name            = "AttachedNoteLog";
-        final String description     = "Links a note log to an item.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.description,
+                                                                                OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.descriptionGUID,
+                                                                                OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -7080,7 +6981,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "NoteLog";
+        final String                     end2EntityType               = OpenMetadataType.NOTE_LOG.typeName;
         final String                     end2AttributeName            = "noteLogs";
         final String                     end2AttributeDescription     = "Log of related notes.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -7116,26 +7017,20 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getNoteLogAuthorshipRelationship()
     {
-        final String guid            = "8f798c0c-6769-4a2d-b489-12714d89e0a4";
-        final String name            = "NoteLogAuthorship";
-        final String description     = "Links a note log to an author.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.NOTE_LOG_AUTHORSHIP_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.NOTE_LOG_AUTHORSHIP_RELATIONSHIP.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.NOTE_LOG_AUTHORSHIP_RELATIONSHIP.description,
+                                                                                OpenMetadataType.NOTE_LOG_AUTHORSHIP_RELATIONSHIP.descriptionGUID,
+                                                                                OpenMetadataType.NOTE_LOG_AUTHORSHIP_RELATIONSHIP.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "NoteLogAuthor";
+        final String                     end1EntityType               = OpenMetadataType.NOTE_LOG_AUTHOR.typeName;
         final String                     end1AttributeName            = "authors";
         final String                     end1AttributeDescription     = "Person contributing to the note log.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -7152,7 +7047,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "NoteLog";
+        final String                     end2EntityType               = OpenMetadataType.NOTE_LOG.typeName;
         final String                     end2AttributeName            = "authoredNoteLogs";
         final String                     end2AttributeDescription     = "Note log containing contributions.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -7171,26 +7066,20 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getAttachedNoteLogEntryRelationship()
     {
-        final String guid            = "38edecc6-f385-4574-8144-524a44e3e712";
-        final String name            = "AttachedNoteLogEntry";
-        final String description     = "Link between a note log and one of its note log entries.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.description,
+                                                                                OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.descriptionGUID,
+                                                                                OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "NoteLog";
+        final String                     end1EntityType               = OpenMetadataType.NOTE_LOG.typeName;
         final String                     end1AttributeName            = "logs";
         final String                     end1AttributeDescription     = "Logs that this entry relates.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -7207,7 +7096,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "NoteEntry";
+        final String                     end2EntityType               = OpenMetadataType.NOTE_ENTRY.typeName;
         final String                     end2AttributeName            = "entries";
         final String                     end2AttributeDescription     = "Accumulated notes.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -7735,20 +7624,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getDataStoreEntity()
     {
-        final String guid            = OpenMetadataType.DATA_STORE.typeGUID;
-        final String name            = OpenMetadataType.DATA_STORE.typeName;
-        final String description     = OpenMetadataType.DATA_STORE.description;
-        final String descriptionGUID = OpenMetadataType.DATA_STORE.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.DATA_STORE.wikiURL;
-
-        final String superTypeName = OpenMetadataType.ASSET.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID,
-                                                                descriptionWiki);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_STORE.typeGUID,
+                                                                OpenMetadataType.DATA_STORE.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_ASSET.typeName),
+                                                                OpenMetadataType.DATA_STORE.description,
+                                                                OpenMetadataType.DATA_STORE.descriptionGUID,
+                                                                OpenMetadataType.DATA_STORE.wikiURL);
 
         /*
          * Build the attributes
@@ -7756,20 +7637,13 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.STORE_CREATE_TIME.name;
-        final String attribute1Description     = OpenMetadataProperty.STORE_CREATE_TIME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.STORE_CREATE_TIME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.STORE_UPDATE_TIME.name;
-        final String attribute2Description     = OpenMetadataProperty.STORE_UPDATE_TIME.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.STORE_UPDATE_TIME.descriptionGUID;
-
-        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
+        property = archiveHelper.getDateTypeDefAttribute(OpenMetadataProperty.STORE_CREATE_TIME.name,
+                                                         OpenMetadataProperty.STORE_CREATE_TIME.description,
+                                                         OpenMetadataProperty.STORE_CREATE_TIME.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
+        property = archiveHelper.getDateTypeDefAttribute(OpenMetadataProperty.STORE_UPDATE_TIME.name,
+                                                         OpenMetadataProperty.STORE_UPDATE_TIME.description,
+                                                         OpenMetadataProperty.STORE_UPDATE_TIME.descriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);

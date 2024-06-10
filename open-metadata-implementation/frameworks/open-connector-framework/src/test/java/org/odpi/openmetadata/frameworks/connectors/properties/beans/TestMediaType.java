@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaUsage;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaType;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -13,10 +13,10 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the MediaUsage enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the MediaType enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class TestRelatedMediaUsage
+public class TestMediaType
 {
     private List<Integer> existingOrdinals = null;
 
@@ -45,37 +45,37 @@ public class TestRelatedMediaUsage
     /**
      * Validated the values of the enum.
      */
-    @Test public void testRelatedMediaUsageValues()
+    @Test public void testRelatedMediaTypeValues()
     {
         existingOrdinals = new ArrayList<>();
 
-        MediaUsage testValue;
+        MediaType testValue;
 
-        testValue = MediaUsage.ICON;
-
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = MediaUsage.THUMBNAIL;
+        testValue = MediaType.IMAGE;
 
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = MediaUsage.ILLUSTRATION;
+        testValue = MediaType.AUDIO;
 
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = MediaUsage.USAGE_GUIDANCE;
+        testValue = MediaType.DOCUMENT;
 
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = MediaUsage.OTHER;
+        testValue = MediaType.VIDEO;
+
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = MediaType.OTHER;
 
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
@@ -95,7 +95,7 @@ public class TestRelatedMediaUsage
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(MediaUsage.ICON);
+            jsonString = objectMapper.writeValueAsString(MediaType.VIDEO);
         }
         catch (Throwable  exc)
         {
@@ -104,7 +104,7 @@ public class TestRelatedMediaUsage
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, MediaUsage.class) == MediaUsage.ICON);
+            assertTrue(objectMapper.readValue(jsonString, MediaType.class) == MediaType.VIDEO);
         }
         catch (Throwable  exc)
         {
@@ -118,6 +118,6 @@ public class TestRelatedMediaUsage
      */
     @Test public void testToString()
     {
-        assertTrue(MediaUsage.USAGE_GUIDANCE.toString().contains("MediaUsage"));
+        assertTrue(MediaType.IMAGE.toString().contains("MediaType"));
     }
 }

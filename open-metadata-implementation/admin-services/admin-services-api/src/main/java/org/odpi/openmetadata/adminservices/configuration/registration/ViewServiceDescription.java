@@ -238,6 +238,69 @@ public enum ViewServiceDescription
                             "Maintain classifications and relationships used to organize open metadata elements.",
                             "https://egeria-project.org/services/omvs/valid-metadata/overview/",
                             AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Manage the metadata about the assets managed by a DevOps pipeline.
+     */
+    DEVOPS_PIPELINE (819,
+                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      "DevOps Pipeline",
+                                      "DevOps Pipeline OMVS",
+                                      "devops-pipeline",
+                                      "Maintain the metadata about the assets managed by a DevOps pipeline.",
+                                      "https://egeria-project.org/services/omvs/devops-pipeline/overview/",
+                                      AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceFullName()),
+
+
+    /**
+     * Set up and review rules and security tags to protect data and systems.
+     */
+    SECURITY_OFFICER (820,
+                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                      "Security Officer",
+                      "Security Officer OMVS",
+                      "security-officer",
+                      "Set up and review rules and security tags to protect data and systems.",
+                      "https://egeria-project.org/services/omvs/security-officer/overview/",
+                      AccessServiceDescription.SECURITY_MANAGER_OMAS.getAccessServiceFullName()),
+
+
+    /**
+     * Manage governance of privacy.
+     */
+    PRIVACY_OFFICER (821,
+                     ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                     "Privacy Officer",
+                     "Privacy Officer OMVS",
+                     "privacy-officer",
+                     "Manage the governance of privacy.",
+                     "https://egeria-project.org/services/omvs/privacy-officer/overview/",
+                      AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Manage governance of data.
+     */
+    DATA_OFFICER (822,
+                  ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                  "Data Officer",
+                  "Data Officer OMVS",
+                  "data-officer",
+                  "Manage the governance of data.",
+                  "https://egeria-project.org/services/omvs/data-officer/overview/",
+                  AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Describe teams and organizational structure.
+     */
+    PEOPLE_ORGANIZER (823,
+                  ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                  "People Organizer",
+                  "People Organizer OMVS",
+                  "people-organizer",
+                  "Describe teams and organizational structure.",
+                  "https://egeria-project.org/services/omvs/people-organizer/overview/",
+                  AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName()),
+
     ;
 
 

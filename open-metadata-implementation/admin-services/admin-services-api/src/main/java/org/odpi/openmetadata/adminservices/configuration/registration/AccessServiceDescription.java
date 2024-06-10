@@ -12,19 +12,6 @@ import java.io.Serializable;
 public enum AccessServiceDescription implements Serializable
 {
     /**
-     * Search and understand your assets.
-     */
-    ASSET_CATALOG_OMAS               (200,
-                                      ComponentDevelopmentStatus.DEPRECATED,
-                                      "Asset Catalog",
-                                      "Asset Catalog OMAS",
-                                      "asset-catalog",
-                                      "Search and understand your assets.",
-                                      "https://egeria-project.org/services/omas/asset-catalog/overview/",
-                                      ServiceOperationalStatus.NOT_IMPLEMENTED,
-                                      ServiceOperationalStatus.ENABLED),
-
-    /**
      * Access assets through connectors.
      */
     ASSET_CONSUMER_OMAS              (201,
@@ -142,19 +129,6 @@ public enum AccessServiceDescription implements Serializable
                                       ServiceOperationalStatus.ENABLED),
 
     /**
-     * Manage governance of privacy.
-     */
-    DATA_PRIVACY_OMAS                (211,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
-                                      "Data Privacy",
-                                      "Data Privacy OMAS",
-                                      "data-privacy",
-                                      "Manage governance of privacy.",
-                                      "https://egeria-project.org/services/omas/data-privacy/overview/",
-                                      ServiceOperationalStatus.NOT_IMPLEMENTED,
-                                      ServiceOperationalStatus.NOT_IMPLEMENTED),
-
-    /**
      * Create and manage data science definitions and models.
      */
     DATA_SCIENCE_OMAS                (212,
@@ -177,19 +151,6 @@ public enum AccessServiceDescription implements Serializable
                                       "design-model",
                                       "Exchange design model content with tools and standard packages.",
                                       "https://egeria-project.org/services/omas/design-model/overview/",
-                                      ServiceOperationalStatus.NOT_IMPLEMENTED,
-                                      ServiceOperationalStatus.NOT_IMPLEMENTED),
-
-    /**
-     * Manage the metadata about the assets managed by a DevOps pipeline.
-     */
-    DEVOPS_OMAS                      (214,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
-                                      "DevOps",
-                                      "DevOps OMAS",
-                                      "devops",
-                                      "Manage the metadata about the assets managed by a DevOps pipeline.",
-                                      "https://egeria-project.org/services/omas/dev-ops/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.NOT_IMPLEMENTED),
 
@@ -296,19 +257,6 @@ public enum AccessServiceDescription implements Serializable
                                       "https://egeria-project.org/services/omas/security-manager/overview/",
                                      ServiceOperationalStatus.NOT_IMPLEMENTED,
                                      ServiceOperationalStatus.ENABLED),
-
-    /**
-     * Set up rules and security tags to protect data.
-     */
-    SECURITY_OFFICER_OMAS            (223,
-                                      ComponentDevelopmentStatus.DEPRECATED,
-                                      "Security Officer",
-                                      "Security Officer OMAS",
-                                      "security-officer",
-                                      "Set up rules and security tags to protect data.",
-                                      "https://egeria-project.org/services/omas/security-officer/overview/",
-                                      ServiceOperationalStatus.NOT_IMPLEMENTED,
-                                      ServiceOperationalStatus.NOT_IMPLEMENTED),
 
     /**
      * Interact with software development tools.

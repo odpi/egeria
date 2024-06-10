@@ -6,10 +6,9 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.InformalTag;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.OMAGGAFAPIResponse;
+import org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements.InformalTagElement;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class InformalTagsResponse extends OMAGGAFAPIResponse
 {
-    private List<InformalTag> tags = null;
+    private List<InformalTagElement> tags = null;
 
 
     /**
@@ -60,7 +59,7 @@ public class InformalTagsResponse extends OMAGGAFAPIResponse
      *
      * @return list of informal tags
      */
-    public List<InformalTag> getTags()
+    public List<InformalTagElement> getTags()
     {
         if (tags == null)
         {
@@ -72,11 +71,11 @@ public class InformalTagsResponse extends OMAGGAFAPIResponse
         }
         else
         {
-            List<InformalTag>  clonedList = new ArrayList<>();
+            List<InformalTagElement>  clonedList = new ArrayList<>();
 
-            for (InformalTag  existingElement : tags)
+            for (InformalTagElement  existingElement : tags)
             {
-                clonedList.add(new InformalTag(existingElement));
+                clonedList.add(new InformalTagElement(existingElement));
             }
 
             return clonedList;
@@ -89,7 +88,7 @@ public class InformalTagsResponse extends OMAGGAFAPIResponse
      *
      * @param tags list
      */
-    public void setTags(List<InformalTag> tags)
+    public void setTags(List<InformalTagElement> tags)
     {
         this.tags = tags;
     }

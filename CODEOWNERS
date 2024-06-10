@@ -25,9 +25,7 @@ open-metadata-implementation/access-services/asset-owner/ @mandy-chessell
 open-metadata-implementation/access-services/community-profile/ @mandy-chessell
 open-metadata-implementation/access-services/data-manager/ @mandy-chessell
 open-metadata-implementation/access-services/data-engine/ @popa-raluca @lcpopa
-open-metadata-implementation/access-services/data-privacy/ @mandy-chessell
 open-metadata-implementation/access-services/design-model/ @mandy-chessell
-open-metadata-implementation/access-services/dev-ops/ @mandy-chessell
 open-metadata-implementation/access-services/digital-architecture/ @mandy-chessell
 open-metadata-implementation/access-services/digital-service/ @mandy-chessell
 open-metadata-implementation/access-services/discovery-engine/ @mandy-chessell
