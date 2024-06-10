@@ -7,20 +7,20 @@
 # You may wish to alter this file to override the set of languages analyzed,
 # or to provide custom queries or build logic.
 ---
-name: "CodeQL Analysis v4"
+name: "CodeQL Analysis v5"
 
 on:
   push:
-    branches: [main, egeria-release-4*]
+    branches: [main, egeria-release-5*]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [main, egeria-release-4*]
+    branches: [main, egeria-release-5*]
   workflow_dispatch:
 
 jobs:
   analyze:
     if: ${{ github.repository == 'odpi/egeria'}}
-    name: "CodeQL Build v4"
+    name: "CodeQL Build v5"
     runs-on: ubuntu-latest
     permissions:
       actions: read
