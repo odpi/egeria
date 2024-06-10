@@ -28,7 +28,7 @@ Content-Type: application/json
 {
   "class" : "NameRequestBody",
   "namePropertyName" : "pathName",
-  "name" : "/Code/ODPi/egeria-core/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-4.4-SNAPSHOT-distribution.tar.gz/assembly/platform/sample-data/oak-dene-drop-foot-weekly-measurements/week9.csv"
+  "name" : "/Code/ODPi/egeria-core/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.0-distribution.tar.gz/assembly/platform/sample-data/oak-dene-drop-foot-weekly-measurements/week9.csv"
 }
 
 
@@ -41,7 +41,7 @@ Content-Type: application/json
 {
   "class" : "NameRequestBody",
   "namePropertyName" : "pathName",
-  "name" : "/Code/ODPi/egeria-core/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-4.4-SNAPSHOT-distribution.tar.gz/assembly/platform/sample-data/oak-dene-drop-foot-weekly-measurements/week9.csv"
+  "name" : "/Code/ODPi/egeria-core/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.0-distribution.tar.gz/assembly/platform/sample-data/oak-dene-drop-foot-weekly-measurements/week9.csv"
 }
 
 

@@ -10,7 +10,7 @@
     <parent>
         <artifactId>egeria</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>4.4-SNAPSHOT</version>
+        <version>5.0</version>
     </parent>
 
     <name>Add module name here</name>

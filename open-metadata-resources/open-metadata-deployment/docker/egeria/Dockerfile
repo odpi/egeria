@@ -17,7 +17,7 @@
 #FROM registry.access.redhat.com/ubi9/openjdk-17-runtime
 FROM registry.access.redhat.com/ubi9/openjdk-17
 
-ARG version=4.4-SNAPSHOT
+ARG version=5.0
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
