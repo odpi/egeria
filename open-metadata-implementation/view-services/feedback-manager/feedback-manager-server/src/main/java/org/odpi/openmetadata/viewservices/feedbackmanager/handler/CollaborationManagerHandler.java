@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetad
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -24,6 +25,7 @@ import org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements.*;
 import org.odpi.openmetadata.viewservices.feedbackmanager.properties.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -977,8 +979,35 @@ public class CollaborationManagerHandler
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
+        final String methodName = "getTagsByName";
+        final String nameParameterName = "tag";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(tag, nameParameterName, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.NAME.name);
+
+        List<OpenMetadataElement> openMetadataElements = client.findMetadataElements(userId,
+                                                                                     OpenMetadataType.COLLECTION.typeName,
+                                                                                     null,
+                                                                                     propertyHelper.getSearchPropertiesByName(propertyNames, tag),
+                                                                                     null,
+                                                                                     null,
+                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                     SequencingOrder.PROPERTY_ASCENDING,
+                                                                                     false,
+                                                                                     false,
+                                                                                     new Date(),
+                                                                                     startFrom,
+                                                                                     pageSize);
+
+
         return null;
     }
+
+
 
 
     /**

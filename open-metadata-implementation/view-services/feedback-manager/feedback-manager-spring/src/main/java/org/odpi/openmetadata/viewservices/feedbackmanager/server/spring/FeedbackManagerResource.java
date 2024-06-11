@@ -389,40 +389,6 @@ public class FeedbackManagerResource
 
 
     /**
-     * Return the list of the calling user's private informal tags exactly matching the supplied name.
-     *
-     * @param serverName name of the server instances for this request.
-     * @param requestBody name of tag.
-     * @param startFrom  index of the list to start from (0 for start).
-     * @param pageSize   maximum number of elements to return.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @return list of tag objects or
-     * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/tags/private/by-name")
-
-    @Operation(summary="getMyTagsByName",
-               description="Return the list of the calling user's private informal tags exactly matching the supplied name.",
-               externalDocs=@ExternalDocumentation(description="Informal Tag",
-                                                   url="https://egeria-project.org/concepts/informal-tag/"))
-
-    public InformalTagsResponse getMyTagsByName(@PathVariable String          serverName,
-                                                @RequestParam int             startFrom,
-                                                @RequestParam int             pageSize,
-                                                @RequestParam (required = false)
-                                                    String                         viewServiceURLMarker,
-                                                @RequestParam (required = false, defaultValue = "asset-manager")
-                                                    String                         accessServiceURLMarker,
-                                                @RequestBody  NameRequestBody requestBody)
-    {
-        return restAPI.getMyTagsByName(serverName, requestBody, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker);
-    }
-
-
-    /**
      * Return the list of comments containing the supplied string.
      *
      * @param serverName name of the server instances for this request.
