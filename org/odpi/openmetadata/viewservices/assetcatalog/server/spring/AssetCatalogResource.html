@@ -138,6 +138,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a list of assets that come from the requested metadata collection.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/AssetCatalogSupportedTypes.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetCatalogSupportedTypes</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetTypes(java.lang.String)" class="member-name-link">getAssetTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the subtypes for asset.</div>
+</div>
 </div>
 </div>
 </div>
@@ -170,6 +175,24 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="getAssetTypes(java.lang.String)">
+<h3>getAssetTypes</h3>
+<div class="member-signature"><span class="annotations">@GetMapping(path="/assets/types")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/AssetCatalogSupportedTypes.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetCatalogSupportedTypes</a></span>&nbsp;<span class="element-name">getAssetTypes</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="block">Return the subtypes for asset.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dt>Returns:</dt>
+<dd>the supported types from Asset Consumer OMAS or
+  PropertyServerException if a configuration on the backend
+  InvalidParameterException if parameter validation fails
+  UserNotAuthorizedException security access problem</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="getAssetGraph(java.lang.String,java.lang.String,int,int)">
 <h3>getAssetGraph</h3>
