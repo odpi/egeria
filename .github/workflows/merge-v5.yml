@@ -84,7 +84,7 @@ jobs:
       - name: Set Release version env variable
         run: |
           echo "VERSION=$(./gradlew properties --no-daemon --console=plain -q | grep '^version:' | awk '{printf $2}')" >> $GITHUB_ENV
-      # Publish container images(egeria) to quay.io and docker.io
+      # Publish container images(egeria-platform) to quay.io and docker.io
       - name: Copy the distribution content to be used in docker copy command
         run: |
           cp -f container.application.properties ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform/application.properties
@@ -95,15 +95,15 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: odpi/egeria:${{ env.VERSION }}, odpi/egeria:latest, quay.io/odpi/egeria:${{ env.VERSION }}, quay.io/odpi/egeria:latest
+          tags: odpi/egeria-platform:${{ env.VERSION }}, odpi/egeria-platform:latest, quay.io/odpi/egeria-platform:${{ env.VERSION }}, quay.io/odpi/egeria-platform:latest
           context: ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz
           platforms: linux/amd64,linux/arm64
-      - name: Build and push(egeria) to quay.io and docker.io (no tag latest)
+      - name: Build and push(egeria-platform) to quay.io and docker.io (no tag latest)
         if: ${{ github.ref != 'refs/heads/main'}}
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: odpi/egeria:${{ env.VERSION }}, quay.io/odpi/egeria:${{ env.VERSION }}
+          tags: odpi/egeria-platform:${{ env.VERSION }}, quay.io/odpi/egeria-platform:${{ env.VERSION }}
           context: ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz
           platforms: linux/amd64,linux/arm64
       # Publish container images(egeria-configure) to quay.io and docker.io
