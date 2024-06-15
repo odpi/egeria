@@ -1129,67 +1129,6 @@ public class FeedbackManagerRESTServices extends TokenController
 
 
     /**
-     * Return the list of the calling user's private tags exactly matching the supplied name.
-     *
-     * @param serverName name of the server instances for this request
-     * @param requestBody name of tag.
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     *
-     * @return tag list or
-     * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public InformalTagsResponse getMyTagsByName(String          serverName,
-                                                NameRequestBody requestBody,
-                                                int             startFrom,
-                                                int             pageSize,
-                                                String          viewServiceURLMarker,
-                                                String          accessServiceURLMarker)
-    {
-        final String methodName = "getMyTagsByName";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        InformalTagsResponse response = new InformalTagsResponse();
-        AuditLog             auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setTags(handler.getMyTagsByName(userId,
-                                                         requestBody.getName(),
-                                                         startFrom,
-                                                         pageSize));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NameRequestBody.class.getName());
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
      * Return the list of tags containing the supplied string in either the name or description.
      *
      * @param serverName name of the server to route the request to

@@ -28,7 +28,7 @@ public enum AccessServiceDescription implements Serializable
      * Publish asset lineage.
      */
     ASSET_LINEAGE_OMAS               (203,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Asset Lineage",
                                       "Asset Lineage OMAS",
                                       "asset-lineage",
@@ -106,7 +106,7 @@ public enum AccessServiceDescription implements Serializable
      * Exchange process models and lineage with a data engine.
      */
     DATA_ENGINE_OMAS                 (209,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.DEPRECATED,
                                       "Data Engine",
                                       "Data Engine OMAS",
                                       "data-engine",
@@ -158,7 +158,7 @@ public enum AccessServiceDescription implements Serializable
      * Design of the digital services for an organization.
      */
     DIGITAL_ARCHITECTURE_OMAS        (215,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Digital Architecture",
                                       "Digital Architecture OMAS",
                                       "digital-architecture",
@@ -223,7 +223,7 @@ public enum AccessServiceDescription implements Serializable
      * Manage the governance program.
      */
     GOVERNANCE_PROGRAM_OMAS          (220,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Governance Program",
                                       "Governance Program OMAS",
                                       "governance-program",
@@ -236,7 +236,7 @@ public enum AccessServiceDescription implements Serializable
      * Manage governance related projects.
      */
     PROJECT_MANAGEMENT_OMAS          (221,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Project Management",
                                       "Project Management OMAS",
                                       "project-management",

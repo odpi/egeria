@@ -40,7 +40,6 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:jdbc-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
-    //implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:file-survey-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:report-generating-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors')
@@ -55,12 +54,10 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:postgres-server-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
-//    implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
     implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-client')
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-client')
     implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-client')
-//    implementation project(':open-metadata-implementation:access-services:data-engine:data-engine-client')
     implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-client')
     implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-client')
     implementation project(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-client')
@@ -71,7 +68,6 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:project-management:project-management-client')
     implementation project(':open-metadata-implementation:access-services:security-manager:security-manager-client')
     implementation project(':open-metadata-implementation:access-services:software-developer:software-developer-client')
-//    implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
     implementation project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-client')
     implementation project(':open-metadata-implementation:engine-services:survey-action:survey-action-client')
     implementation project(':open-metadata-implementation:engine-services:governance-action:governance-action-client')
@@ -85,12 +81,10 @@ dependencies {
     implementation project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:security-integrator:security-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-client')
-//    implementation project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-client')
     implementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-client')
     implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-client')
     implementation project(':open-metadata-implementation:governance-server-services:lineage-warehouse-services:lineage-warehouse-services-client')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
-//    implementation project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
     implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample')
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility')
@@ -108,7 +102,6 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample')
-//    implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-categories-sample')
 }
 
 distributions {
@@ -212,7 +205,6 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:jdbc-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors').jar }
-                //from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:lineage-warehouse-connectors:lineage-warehouse-janus-connector').jar }
@@ -286,6 +278,7 @@ distributions {
                 from(rootProject.projectDir) {
                     include 'content-packs/CoreContentPack.omarchive'
                     include 'content-packs/SimpleCatalog.omarchive'
+                    include 'content-packs/CocoComboArchive.omarchive'
                 }
                 fileMode = 0755
             }
@@ -324,7 +317,6 @@ distributions {
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-subject-area-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample').shadowJar }
-                //from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-categories-sample').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:glossary-workflow-samples').shadowJar }
                 from { project(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample').shadowJar }
                 rename { String fileName ->
