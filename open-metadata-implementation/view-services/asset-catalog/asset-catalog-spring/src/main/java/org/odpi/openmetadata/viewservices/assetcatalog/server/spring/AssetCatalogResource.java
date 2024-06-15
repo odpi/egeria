@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.rest.AssetGraphRespons
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.AssetSearchMatchesListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
+import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetCatalogSupportedTypes;
 import org.odpi.openmetadata.viewservices.assetcatalog.server.AssetCatalogRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,28 @@ public class AssetCatalogResource
      */
     public AssetCatalogResource()
     {
+    }
+
+
+    /**
+     * Return the subtypes for asset.
+     *
+     * @param serverName name of the server to route the request to
+     * @return the supported types from Asset Consumer OMAS or
+     *  PropertyServerException if a configuration on the backend
+     *  InvalidParameterException if parameter validation fails
+     *  UserNotAuthorizedException security access problem
+     */
+    @GetMapping( path = "/assets/types")
+
+    @Operation(summary="getAssetTypes",
+            description="Return the subtypes for asset.",
+            externalDocs=@ExternalDocumentation(description="Assets",
+                    url="https://egeria-project.org/concepts/asset/"))
+
+    public AssetCatalogSupportedTypes getAssetTypes(@PathVariable String serverName)
+    {
+        return restAPI.getSupportedTypes(serverName);
     }
 
 
