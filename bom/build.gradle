@@ -81,7 +81,7 @@ ext {
     mockitoVersion = '4.11.0'
     plexusVersion = '4.0.0'
     postgresVersion = '42.7.2'
-    nettyVersion = '4.1.107.Final'
+    nettyVersion = '4.1.111.Final'
     prometheusVersion = '1.12.4'
     quartzVersion = '2.3.2'
     reflectionsVersion = '0.10.2'
