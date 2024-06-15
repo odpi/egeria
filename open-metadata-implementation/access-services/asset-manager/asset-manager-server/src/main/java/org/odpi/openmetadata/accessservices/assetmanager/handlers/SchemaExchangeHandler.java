@@ -281,7 +281,11 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                           methodName);
             if (anchorEntity != null)
             {
-                builder.setAnchors(userId, anchorGUID, anchorEntity.getType().getTypeDefName(), methodName);
+                builder.setAnchors(userId,
+                                   anchorGUID,
+                                   anchorEntity.getType().getTypeDefName(),
+                                   schemaTypeHandler.getDomainName(anchorEntity),
+                                   methodName);
             }
         }
 

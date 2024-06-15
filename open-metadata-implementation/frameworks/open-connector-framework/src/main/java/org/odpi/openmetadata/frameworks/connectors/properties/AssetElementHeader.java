@@ -190,22 +190,6 @@ public abstract class AssetElementHeader extends AssetPropertyElementBase
     }
 
 
-    /**
-     * Returns the URL to access the properties object in the metadata repository.
-     * If no url is available then null is returned.
-     *
-     * @return String URL
-     */
-    public String getURL()
-    {
-        if (elementBaseBean == null)
-        {
-            return null;
-        }
-
-        return elementBaseBean.getURL();
-    }
-
 
     /**
      * Return the list of classifications associated with the asset.

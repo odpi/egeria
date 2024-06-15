@@ -1,0 +1,56 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+#
+# For most projects, this workflow file will not need changing; you simply need
+# to commit it to your repository.
+#
+# You may wish to alter this file to override the set of languages analyzed,
+# or to provide custom queries or build logic.
+---
+name: "CodeQL Analysis v5"
+
+on:
+  push:
+    branches: [main, egeria-release-5*]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [main, egeria-release-5*]
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    if: ${{ github.repository == 'odpi/egeria'}}
+    name: "CodeQL Build v5"
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.0
+      - uses: gradle/wrapper-validation-action@v2
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3.25.7
+        with:
+          languages: java
+          queries: security-and-quality
+          ram: 4096
+      - name: Build
+        uses: gradle/gradle-build-action@v3
+        with:
+          # codeQL requires a full before/after build to compare results. Caching can result in action failing
+          #cache-read-only: true
+          cache-disabled: true
+          arguments: -x javadoc -x test build -PskipOpenTypesFVT
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3.25.7
+        with:
+          ram: 4096

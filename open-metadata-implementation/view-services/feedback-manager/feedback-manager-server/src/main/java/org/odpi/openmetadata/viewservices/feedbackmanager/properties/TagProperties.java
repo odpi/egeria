@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * InformalTagProperties stores information about a tag connected to an asset.
+ * TagProperties stores information about a tag connected to an asset.
  * InformalTags provide informal classifications to assets
  * and can be added at any time.
  * <br><br>

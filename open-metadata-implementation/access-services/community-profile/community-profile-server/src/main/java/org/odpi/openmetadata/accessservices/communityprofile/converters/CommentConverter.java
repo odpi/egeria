@@ -164,38 +164,20 @@ public class CommentConverter<B> extends CommunityProfileOMASConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.OWNER_TYPE_PROPERTY_NAME);
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataProperty.COMMENT_TYPE.name);
 
-                if (instancePropertyValue instanceof EnumPropertyValue)
+                if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                 {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
-                    switch (enumPropertyValue.getOrdinal())
+                    commentType = switch (enumPropertyValue.getOrdinal())
                     {
-                        case 0:
-                            commentType = CommentType.STANDARD_COMMENT;
-                            break;
-
-                        case 1:
-                            commentType = CommentType.QUESTION;
-                            break;
-
-                        case 2:
-                            commentType = CommentType.ANSWER;
-                            break;
-
-                        case 3:
-                            commentType = CommentType.SUGGESTION;
-                            break;
-
-                        case 4:
-                            commentType = CommentType.USAGE_EXPERIENCE;
-                            break;
-
-                        case 99:
-                            commentType = CommentType.OTHER;
-                            break;
-                    }
+                        case 0 -> CommentType.STANDARD_COMMENT;
+                        case 1 -> CommentType.QUESTION;
+                        case 2 -> CommentType.ANSWER;
+                        case 3 -> CommentType.SUGGESTION;
+                        case 4 -> CommentType.USAGE_EXPERIENCE;
+                        case 99 -> CommentType.OTHER;
+                        default -> commentType;
+                    };
                 }
             }
         }

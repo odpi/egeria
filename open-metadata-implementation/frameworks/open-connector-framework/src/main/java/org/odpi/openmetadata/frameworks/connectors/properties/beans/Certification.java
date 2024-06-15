@@ -374,7 +374,6 @@ public class Certification extends Referenceable
                        ", custodian='" + custodian + '\'' +
                        ", recipient='" + recipient + '\'' +
                        ", notes='" + notes + '\'' +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +

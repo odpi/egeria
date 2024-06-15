@@ -39,9 +39,12 @@ import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConne
 import org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
+import org.odpi.openmetadata.archiveutilities.openconnectors.control.FileSystemPlaceholderProperty;
+import org.odpi.openmetadata.archiveutilities.openconnectors.control.HostPlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -116,9 +119,9 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private final OMRSArchiveBuilder      archiveBuilder;
     private final GovernanceArchiveHelper archiveHelper;
 
-    private final Map<String, String> parentValidValueQNameToGUIDMap = new HashMap<>();
+    private final Map<String, String> parentValidValueQNameToGUIDMap  = new HashMap<>();
     private final Map<String, String> deployedImplementationTypeGUIDs = new HashMap<>();
-    private final Map<String, String> openMetadataTypeGUIDs = new HashMap<>();
+    private final Map<String, String> openMetadataTypeGUIDs           = new HashMap<>();
 
 
     /**
@@ -225,6 +228,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                              resourceUseParentSetGUID,
                                              resourceUseParentSetGUID,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
                                              resourceUse.getQualifiedName(),
                                              resourceUse.getResourceUse(),
@@ -265,6 +269,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                              projectPhaseParentSetGUID,
                                              projectPhaseParentSetGUID,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
                                              projectStatus.getQualifiedName(),
                                              projectStatus.getName(),
@@ -298,6 +303,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                              projectHealthParentSetGUID,
                                              projectHealthParentSetGUID,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
                                              projectHealth.getQualifiedName(),
                                              projectHealth.getName(),
@@ -327,6 +333,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                              projectStatusParentSetGUID,
                                              projectStatusParentSetGUID,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
                                              projectStatus.getQualifiedName(),
                                              projectStatus.getName(),
@@ -356,6 +363,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                              collectionTypeParentSetGUID,
                                              collectionTypeParentSetGUID,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
                                              collectionType.getQualifiedName(),
                                              collectionType.getName(),
@@ -571,7 +579,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         /*
          * The access services are found in the Metadata Access Server and Metadata Access Point OMAG Servers.
          */
-        String serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName());
+        String serverTypeGUID  = serverTypeGUIDs.get(ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName());
         String serverTypeGUID2 = serverTypeGUIDs.get(ServerTypeClassification.METADATA_ACCESS_STORE.getServerTypeName());
 
         for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
@@ -640,7 +648,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                             ResourceUse.CALLED_SERVICE.getResourceUse(),
                                                             ResourceUse.CALLED_SERVICE.getDescription());
 
-            String governanceEngineGUID = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceEngineDeployedImplementationType());
+            String governanceEngineGUID  = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceEngineDeployedImplementationType());
             String governanceServiceGUID = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceServiceDeployedImplementationType());
 
             if (governanceEngineGUID != null)
@@ -865,10 +873,10 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         String apiIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(OpenAPIMonitorIntegrationProvider.class.getName(),
                                                                                    null,
                                                                                    OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":OpenAPIIntegrationConnector",
-                                                                                     "OpenAPIIntegrationConnector",
-                                                                                     "Catalogs REST APIs through the Open API Specification.",
-                                                                                     null,
-                                                                                     null);
+                                                                                   "OpenAPIIntegrationConnector",
+                                                                                   "Catalogs REST APIs through the Open API Specification.",
+                                                                                   null,
+                                                                                   null);
 
         archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
                                                         "OpenAPICataloguer",
@@ -955,11 +963,14 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         this.addAtlasServerCatalogTemplate();
         this.addKafkaServerCatalogTemplate();
         this.addKafkaTopicCatalogTemplate();
+        this.addMacBookProCatalogTemplate();
+        this.addFileSystemTemplate();
+        this.addUNIXFileSystemTemplate();
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
          */
-        archiveHelper.saveGUIDs();
+        archiveHelper.saveUsedGUIDs();
 
         /*
          * The completed archive is ready to be packaged up and returned
@@ -973,12 +984,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      *
      * @param enumConsumingTypeName entity type name
      * @param enumConsumingProperty attribute name
-     * @param enumTypeName type name for enum
-     * @param openMetadataEnums list of valid values
+     * @param enumTypeName          type name for enum
+     * @param openMetadataEnums     list of valid values
      */
-    private void addOpenMetadataEnumValidNames(String                 enumConsumingTypeName,
-                                               String                 enumConsumingProperty,
-                                               String                 enumTypeName,
+    private void addOpenMetadataEnumValidNames(String enumConsumingTypeName,
+                                               String enumConsumingProperty,
+                                               String enumTypeName,
                                                List<OpenMetadataEnum> openMetadataEnums)
     {
         String parentSetGUID = this.getParentSet(null, enumConsumingTypeName, enumConsumingProperty, null);
@@ -990,6 +1001,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                              parentSetGUID,
                                              parentSetGUID,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
                                              constructValidValueQualifiedName(enumConsumingTypeName,
                                                                               enumConsumingProperty,
@@ -1016,10 +1028,10 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      *
      * @param enumConsumingTypeName entity type name
      * @param enumConsumingProperty attribute name
-     * @param openMetadataEnums list of valid values
+     * @param openMetadataEnums     list of valid values
      */
-    private void addOpenMetadataEnumValidIdentifiers(String                 enumConsumingTypeName,
-                                                     String                 enumConsumingProperty,
+    private void addOpenMetadataEnumValidIdentifiers(String enumConsumingTypeName,
+                                                     String enumConsumingProperty,
                                                      List<OpenMetadataEnum> openMetadataEnums)
     {
         String parentSetGUID = this.getParentSet(null, enumConsumingTypeName, enumConsumingProperty, null);
@@ -1031,6 +1043,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                              parentSetGUID,
                                              parentSetGUID,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                              OpenMetadataType.VALID_VALUE_SET.typeName,
                                              constructValidValueQualifiedName(enumConsumingTypeName,
                                                                               enumConsumingProperty,
@@ -1065,14 +1078,14 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         createDataFileCatalogTemplate(DeployedImplementationType.FILE, basicFileConnectorTypeGUID, null);
         createDataFileCatalogTemplate(DeployedImplementationType.DATA_FILE, basicFileConnectorTypeGUID, null);
         createDataFileCatalogTemplate(DeployedImplementationType.CSV_FILE, new CSVFileStoreProvider().getConnectorType().getGUID(), null);
-        createDataFileCatalogTemplate(DeployedImplementationType.AVRO_FILE, basicFileConnectorTypeGUID,  null);
-        createDataFileCatalogTemplate(DeployedImplementationType.JSON_FILE, basicFileConnectorTypeGUID,  null);
+        createDataFileCatalogTemplate(DeployedImplementationType.AVRO_FILE, basicFileConnectorTypeGUID, null);
+        createDataFileCatalogTemplate(DeployedImplementationType.JSON_FILE, basicFileConnectorTypeGUID, null);
         createDataFileCatalogTemplate(DeployedImplementationType.PARQUET_FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.SPREADSHEET_FILE, basicFileConnectorTypeGUID,  null);
+        createDataFileCatalogTemplate(DeployedImplementationType.SPREADSHEET_FILE, basicFileConnectorTypeGUID, null);
         createDataFileCatalogTemplate(DeployedImplementationType.XML_FILE, basicFileConnectorTypeGUID, null);
         createDataFileCatalogTemplate(DeployedImplementationType.DOCUMENT, basicFileConnectorTypeGUID, null);
         createDataFileCatalogTemplate(DeployedImplementationType.AUDIO_DATA_FILE, basicFileConnectorTypeGUID, null);
-        createDataFileCatalogTemplate(DeployedImplementationType.VIDEO_DATA_FILE, basicFileConnectorTypeGUID,  null);
+        createDataFileCatalogTemplate(DeployedImplementationType.VIDEO_DATA_FILE, basicFileConnectorTypeGUID, null);
         createDataFileCatalogTemplate(DeployedImplementationType.THREE_D_IMAGE_DATA_FILE, basicFileConnectorTypeGUID, null);
         createDataFileCatalogTemplate(DeployedImplementationType.RASTER_DATA_FILE, basicFileConnectorTypeGUID, null);
         createDataFileCatalogTemplate(DeployedImplementationType.VECTOR_DATA_FILE, basicFileConnectorTypeGUID, null);
@@ -1094,20 +1107,20 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * The template consists of a DataFile asset plus an optional connection, linked
      * to the supplied connector type and an endpoint,
      *
-     * @param connectorTypeGUID connector type to link to the connection
+     * @param connectorTypeGUID          connector type to link to the connection
      * @param deployedImplementationType deployed implementation type to link the template to
-     * @param configurationProperties configuration properties
+     * @param configurationProperties    configuration properties
      */
-    private   void createDataFileCatalogTemplate(DeployedImplementationType     deployedImplementationType,
-                                                 String                         connectorTypeGUID,
-                                                 Map<String, Object>            configurationProperties)
+    private void createDataFileCatalogTemplate(DeployedImplementationType deployedImplementationType,
+                                               String connectorTypeGUID,
+                                               Map<String, Object> configurationProperties)
     {
-        final String methodName    = "createDataFileCatalogTemplate";
+        final String methodName = "createDataFileCatalogTemplate";
 
-        String               qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + FilesPlaceholderProperty.PATH_NAME.getPlaceholder();
-        String               versionIdentifier = "V1.0";
+        String               qualifiedName      = FilesPlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + deployedImplementationType.getDeployedImplementationType() + ":" + FilesPlaceholderProperty.PATH_NAME.getPlaceholder();
+        String               versionIdentifier  = "V1.0";
         Map<String, Object>  extendedProperties = new HashMap<>();
-        List<Classification> classifications = new ArrayList<>();
+        List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FilesPlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, FilesPlaceholderProperty.PATH_NAME.getPlaceholder());
@@ -1133,6 +1146,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                         deployedImplementationType.getAssociatedTypeName(),
+                                                        OpenMetadataType.ASSET.typeName,
                                                         qualifiedName + ":Endpoint",
                                                         FilesPlaceholderProperty.PATH_NAME.getPlaceholder() + " endpoint",
                                                         null,
@@ -1152,7 +1166,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                             connectorTypeGUID,
                                                             endpointGUID,
                                                             assetGUID,
-                                                            deployedImplementationType.getAssociatedTypeName());
+                                                            deployedImplementationType.getAssociatedTypeName(),
+                                                            OpenMetadataType.ASSET.typeName);
 
         archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
 
@@ -1162,6 +1177,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
                                                FilesPlaceholderProperty.getDataFilesPlaceholderPropertyTypes());
     }
 
@@ -1172,17 +1188,17 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * to the supplied connector type and an endpoint,
      *
      * @param deployedImplementationType info for the template
-     * @param connectorTypeGUID connector type to link to the connection
+     * @param connectorTypeGUID          connector type to link to the connection
      */
-    private   void createFolderCatalogTemplate(DeployedImplementationType     deployedImplementationType,
-                                               String                         connectorTypeGUID)
+    private void createFolderCatalogTemplate(DeployedImplementationType deployedImplementationType,
+                                             String connectorTypeGUID)
     {
-        final String methodName    = "createFolderCatalogTemplate";
+        final String methodName = "createFolderCatalogTemplate";
 
-        String               qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + FilesPlaceholderProperty.PATH_NAME.getPlaceholder();
-        String               versionIdentifier = "V1.0";
+        String               qualifiedName      = FilesPlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + deployedImplementationType.getDeployedImplementationType() + ":" + FilesPlaceholderProperty.PATH_NAME.getPlaceholder();
+        String               versionIdentifier  = "V1.0";
         Map<String, Object>  extendedProperties = new HashMap<>();
-        List<Classification> classifications = new ArrayList<>();
+        List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FilesPlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, FilesPlaceholderProperty.PATH_NAME.getPlaceholder());
@@ -1205,6 +1221,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         {
             String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                             deployedImplementationType.getAssociatedTypeName(),
+                                                            OpenMetadataType.ASSET.typeName,
                                                             qualifiedName + ":Endpoint",
                                                             FilesPlaceholderProperty.PATH_NAME + " endpoint",
                                                             null,
@@ -1224,7 +1241,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                 connectorTypeGUID,
                                                                 endpointGUID,
                                                                 assetGUID,
-                                                                deployedImplementationType.getAssociatedTypeName());
+                                                                deployedImplementationType.getAssociatedTypeName(),
+                                                                OpenMetadataType.ASSET.typeName);
 
             archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
         }
@@ -1235,6 +1253,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
                                                FilesPlaceholderProperty.getFolderPlaceholderPropertyTypes());
     }
 
@@ -1245,17 +1264,17 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * to the supplied connector type and an endpoint,
      *
      * @param deployedImplementationType values for the template
-     * @param connectorTypeGUID connector type to link to the connection
+     * @param connectorTypeGUID          connector type to link to the connection
      */
-    private   void createDataSetCatalogTemplate(DeployedImplementationType     deployedImplementationType,
-                                                String                         connectorTypeGUID)
+    private void createDataSetCatalogTemplate(DeployedImplementationType deployedImplementationType,
+                                              String connectorTypeGUID)
     {
-        final String methodName    = "createDataSetCatalogTemplate";
+        final String methodName = "createDataSetCatalogTemplate";
 
-        String               qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + FilesPlaceholderProperty.DATA_SET_NAME.getPlaceholder();
-        String               versionIdentifier = "V1.0";
+        String               qualifiedName      = FilesPlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + deployedImplementationType.getDeployedImplementationType() + ":" + FilesPlaceholderProperty.DATA_SET_NAME.getPlaceholder();
+        String               versionIdentifier  = "V1.0";
         Map<String, Object>  extendedProperties = new HashMap<>();
-        List<Classification> classifications = new ArrayList<>();
+        List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FilesPlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FORMULA.name, FilesPlaceholderProperty.FORMULA.getPlaceholder());
@@ -1289,7 +1308,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                 connectorTypeGUID,
                                                                 null,
                                                                 assetGUID,
-                                                                deployedImplementationType.getAssociatedTypeName());
+                                                                deployedImplementationType.getAssociatedTypeName(),
+                                                                OpenMetadataType.ASSET.typeName);
 
             archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
         }
@@ -1300,6 +1320,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
                                                FilesPlaceholderProperty.getDataSetPlaceholderPropertyTypes());
     }
 
@@ -1310,17 +1331,17 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * to the supplied connector type and an endpoint,
      *
      * @param deployedImplementationType description for the template
-     * @param connectorTypeGUID connector type to link to the connection
+     * @param connectorTypeGUID          connector type to link to the connection
      */
-    private   void createSoftwareFileCatalogTemplate(DeployedImplementationType deployedImplementationType,
-                                                     String                     connectorTypeGUID)
+    private void createSoftwareFileCatalogTemplate(DeployedImplementationType deployedImplementationType,
+                                                   String connectorTypeGUID)
     {
-        final String methodName    = "createSoftwareFileCatalogTemplate";
+        final String methodName = "createSoftwareFileCatalogTemplate";
 
-        String               qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + FilesPlaceholderProperty.PATH_NAME.getPlaceholder();
-        String               versionIdentifier = "V1.0";
+        String               qualifiedName      = FilesPlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + deployedImplementationType.getDeployedImplementationType() + ":" + FilesPlaceholderProperty.PATH_NAME.getPlaceholder();
+        String               versionIdentifier  = "V1.0";
         Map<String, Object>  extendedProperties = new HashMap<>();
-        List<Classification> classifications = new ArrayList<>();
+        List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FilesPlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, FilesPlaceholderProperty.PATH_NAME.getPlaceholder());
@@ -1351,6 +1372,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         {
             String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                             deployedImplementationType.getAssociatedTypeName(),
+                                                            OpenMetadataType.ASSET.typeName,
                                                             qualifiedName + ":Endpoint",
                                                             FilesPlaceholderProperty.PATH_NAME.getPlaceholder() + " endpoint",
                                                             null,
@@ -1370,7 +1392,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                 connectorTypeGUID,
                                                                 endpointGUID,
                                                                 assetGUID,
-                                                                deployedImplementationType.getAssociatedTypeName());
+                                                                deployedImplementationType.getAssociatedTypeName(),
+                                                                OpenMetadataType.ASSET.typeName);
 
             archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
         }
@@ -1381,6 +1404,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
                                                FilesPlaceholderProperty.getSoftwareFilesPlaceholderPropertyTypes());
     }
 
@@ -1390,43 +1414,45 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
      * to the supplied connector type and an endpoint,
      *
-     * @param deployedImplementationType deployed implementation type for the technology
-     * @param softwareCapabilityType type of the associated capability
-     * @param softwareCapabilityName name for the associated capability
-     * @param serverName name for the server
-     * @param userId userId for the connection
-     * @param password password for the connection
-     * @param connectorTypeGUID connector type to link to the connection
-     * @param networkAddress network address for the endpoint
-     * @param configurationProperties  additional properties for the connection
-     * @param replacementAttributeTypes attributes that should have a replacement value to successfully use the template
-     * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
+     * @param deployedImplementationType       deployed implementation type for the technology
+     * @param softwareCapabilityType           type of the associated capability
+     * @param softwareCapabilityName           name for the associated capability
+     * @param softwareCapabilityClassification classification for the software capability (or null)
+     * @param serverName                       name for the server
+     * @param userId                           userId for the connection
+     * @param password                         password for the connection
+     * @param connectorTypeGUID                connector type to link to the connection
+     * @param networkAddress                   network address for the endpoint
+     * @param configurationProperties          additional properties for the connection
+     * @param replacementAttributeTypes        attributes that should have a replacement value to successfully use the template
+     * @param placeholderPropertyTypes         placeholder variables used in the supplied parameters
      */
-    private   void createSoftwareServerCatalogTemplate(DeployedImplementationType     deployedImplementationType,
-                                                       DeployedImplementationType     softwareCapabilityType,
-                                                       String                         softwareCapabilityName,
-                                                       String                         serverName,
-                                                       String                         userId,
-                                                       String                         password,
-                                                       String                         connectorTypeGUID,
-                                                       String                         networkAddress,
-                                                       Map<String, Object>            configurationProperties,
-                                                       List<ReplacementAttributeType> replacementAttributeTypes,
-                                                       List<PlaceholderPropertyType>  placeholderPropertyTypes)
+    private void createSoftwareServerCatalogTemplate(DeployedImplementationType deployedImplementationType,
+                                                     DeployedImplementationType softwareCapabilityType,
+                                                     String softwareCapabilityName,
+                                                     Classification softwareCapabilityClassification,
+                                                     String serverName,
+                                                     String userId,
+                                                     String password,
+                                                     String connectorTypeGUID,
+                                                     String networkAddress,
+                                                     Map<String, Object> configurationProperties,
+                                                     List<ReplacementAttributeType> replacementAttributeTypes,
+                                                     List<PlaceholderPropertyType> placeholderPropertyTypes)
     {
         final String methodName = "createSoftwareServerCatalogTemplate";
 
-        String               qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
-        String               versionIdentifier = "V1.0";
-        String               description = deployedImplementationType.getDescription();
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
+        String               versionIdentifier  = "V1.0";
+        String               description        = deployedImplementationType.getDescription();
         Map<String, Object>  extendedProperties = new HashMap<>();
-        List<Classification> classifications = new ArrayList<>();
+        List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                deployedImplementationType.getDeployedImplementationType());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
-                                                                    "Create a SoftwareServer with an associated SoftwareCapability and Connection.",
+                                                                    "Create a " + deployedImplementationType.getDeployedImplementationType() + " SoftwareServer with an associated SoftwareCapability and Connection.",
                                                                     "V1.0",
                                                                     null, methodName));
 
@@ -1449,8 +1475,10 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                             null,
                                             null,
                                             null,
+                                            softwareCapabilityClassification,
                                             assetGUID,
-                                            deployedImplementationType.getAssociatedTypeName());
+                                            deployedImplementationType.getAssociatedTypeName(),
+                                            OpenMetadataType.ASSET.typeName);
 
         archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + ":" + softwareCapabilityName,
                                                                  qualifiedName,
@@ -1462,6 +1490,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                         deployedImplementationType.getAssociatedTypeName(),
+                                                        OpenMetadataType.ASSET.typeName,
                                                         qualifiedName + ":Endpoint",
                                                         serverName + " endpoint",
                                                         null,
@@ -1481,7 +1510,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                             connectorTypeGUID,
                                                             endpointGUID,
                                                             assetGUID,
-                                                            deployedImplementationType.getAssociatedTypeName());
+                                                            deployedImplementationType.getAssociatedTypeName(),
+                                                            OpenMetadataType.ASSET.typeName);
 
         archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
 
@@ -1491,10 +1521,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         archiveHelper.addReplacementAttributes(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
                                                replacementAttributeTypes);
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
                                                placeholderPropertyTypes);
     }
 
@@ -1506,11 +1538,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     {
         JDBCResourceConnectorProvider provider = new JDBCResourceConnectorProvider();
 
-        List<PlaceholderPropertyType>  placeholderPropertyTypes = PostgresPlaceholderProperty.getPostgresServerPlaceholderPropertyTypes();
+        List<PlaceholderPropertyType> placeholderPropertyTypes = PostgresPlaceholderProperty.getPostgresServerPlaceholderPropertyTypes();
 
         this.createSoftwareServerCatalogTemplate(DeployedImplementationType.POSTGRESQL_SERVER,
                                                  DeployedImplementationType.POSTGRESQL_DATABASE_MANAGER,
                                                  "DBMS",
+                                                 null,
                                                  PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder(),
                                                  PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
                                                  PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
@@ -1531,11 +1564,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     {
         ApacheAtlasRESTProvider provider = new ApacheAtlasRESTProvider();
 
-        List<PlaceholderPropertyType>  placeholderPropertyTypes = AtlasPlaceholderProperty.getPlaceholderPropertyTypes();
+        List<PlaceholderPropertyType> placeholderPropertyTypes = AtlasPlaceholderProperty.getPlaceholderPropertyTypes();
 
         this.createSoftwareServerCatalogTemplate(DeployedImplementationType.APACHE_ATLAS_SERVER,
                                                  DeployedImplementationType.ASSET_CATALOG,
                                                  "MetadataCatalog",
+                                                 null,
                                                  AtlasPlaceholderProperty.SERVER_NAME.getPlaceholder(),
                                                  AtlasPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  AtlasPlaceholderProperty.CONNECTION_PASSWORD.getPlaceholder(),
@@ -1556,11 +1590,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     {
         ApacheKafkaAdminProvider provider = new ApacheKafkaAdminProvider();
 
-        List<PlaceholderPropertyType>  placeholderPropertyTypes = KafkaPlaceholderProperty.getKafkaServerPlaceholderPropertyTypes();
+        List<PlaceholderPropertyType> placeholderPropertyTypes = KafkaPlaceholderProperty.getKafkaServerPlaceholderPropertyTypes();
 
         this.createSoftwareServerCatalogTemplate(DeployedImplementationType.APACHE_KAFKA_SERVER,
                                                  DeployedImplementationType.APACHE_KAFKA_EVENT_BROKER,
-                                                 "EventBroker",
+                                                 OpenMetadataType.EVENT_BROKER.typeName,
+                                                 null,
                                                  KafkaPlaceholderProperty.SERVER_NAME.getPlaceholder(),
                                                  null,
                                                  null,
@@ -1575,8 +1610,185 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Create a template got a type of asset and link it to the associated deployed implementation type.
-     * The template consists of a asset linked to a connection, that is in turn linked
+     * Create a template for a software server and link it to the associated deployed implementation type.
+     * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
+     * to the supplied connector type and an endpoint,
+     *
+     * @param deployedImplementationType       deployed implementation type for the technology
+     * @param softwareCapabilityType           type of the associated capability
+     * @param softwareCapabilityName           name for the associated capability
+     * @param softwareCapabilityClassification classification for the software capability (or null)
+     */
+    private void createHostCatalogTemplate(DeployedImplementationType     deployedImplementationType,
+                                           DeployedImplementationType     softwareCapabilityType,
+                                           String                         softwareCapabilityName,
+                                           Classification                 softwareCapabilityClassification)
+    {
+        final String methodName = "createHostCatalogTemplate";
+
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + HostPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder();
+        String               description        = deployedImplementationType.getDescription();
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications    = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                               deployedImplementationType.getDeployedImplementationType());
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    "Create a " + deployedImplementationType.getDeployedImplementationType() + " Host with an associated SoftwareCapability.",
+                                                                    "V1.0",
+                                                                    null, methodName));
+
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  HostPlaceholderProperty.HOST_NAME.getPlaceholder(),
+                                                  HostPlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                  description,
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+
+        if (softwareCapabilityType != null)
+        {
+            archiveHelper.addSoftwareCapability(softwareCapabilityType.getAssociatedTypeName(),
+                                                qualifiedName + ":" + softwareCapabilityName,
+                                                softwareCapabilityName,
+                                                null,
+                                                softwareCapabilityType.getDeployedImplementationType(),
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                softwareCapabilityClassification,
+                                                assetGUID,
+                                                deployedImplementationType.getAssociatedTypeName(),
+                                                OpenMetadataType.ASSET.typeName);
+
+            archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + ":" + softwareCapabilityName,
+                                                                     qualifiedName,
+                                                                     null,
+                                                                     null,
+                                                                     null,
+                                                                     null,
+                                                                     1);
+        }
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               HostPlaceholderProperty.getPlaceholderPropertyTypes());
+    }
+
+
+    private void addMacBookProCatalogTemplate()
+    {
+        final String methodName = "addMacBookProCatalogTemplate";
+
+        Classification classification = archiveHelper.getFileSystemClassification("APFS", "Enabled", methodName);
+
+        createHostCatalogTemplate(DeployedImplementationType.MACBOOK_PRO,
+                                  DeployedImplementationType.UNIX_FILE_SYSTEM,
+                                  "Local File System",
+                                  classification);
+    }
+
+
+    /**
+     * Create a template for a software server and link it to the associated deployed implementation type.
+     * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
+     * to the supplied connector type and an endpoint,
+     *
+     * @param deployedImplementationType deployed implementation type for the technology
+     * @param softwareCapabilityClassification optional classification for the associated capability
+     * @param softwareCapabilityName name for the associated capability
+     * @param replacementAttributeTypes attributes that should have a replacement value to successfully use the template
+     * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
+     */
+    private   void createSoftwareCapabilityCatalogTemplate(DeployedImplementationType     deployedImplementationType,
+                                                           String                         softwareCapabilityName,
+                                                           Classification                 softwareCapabilityClassification,
+                                                           List<ReplacementAttributeType> replacementAttributeTypes,
+                                                           List<PlaceholderPropertyType>  placeholderPropertyTypes)
+    {
+        String               qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + softwareCapabilityName;
+        String               versionIdentifier = "V1.0";
+        String               description = deployedImplementationType.getDescription();
+        Map<String, Object>  extendedProperties = new HashMap<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                               deployedImplementationType.getDeployedImplementationType());
+
+        String capabilityGUID = archiveHelper.addSoftwareCapability(deployedImplementationType.getAssociatedTypeName(),
+                                                                    qualifiedName + ":" + softwareCapabilityName,
+                                                                    softwareCapabilityName,
+                                                                    description,
+                                                                    deployedImplementationType.getDeployedImplementationType(),
+                                                                    versionIdentifier,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    extendedProperties,
+                                                                    softwareCapabilityClassification,
+                                                                    null,
+                                                                    deployedImplementationType.getAssociatedTypeName(),
+                                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName);
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, capabilityGUID);
+
+        archiveHelper.addReplacementAttributes(capabilityGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                               replacementAttributeTypes);
+
+        archiveHelper.addPlaceholderProperties(capabilityGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                               placeholderPropertyTypes);
+    }
+
+    private void addFileSystemTemplate()
+    {
+        final String methodName = "addFileSystemTemplate";
+
+        Classification fileSystemClassification = archiveHelper.getFileSystemClassification(FileSystemPlaceholderProperty.FORMAT.getPlaceholder(),
+                                                                                            FileSystemPlaceholderProperty.ENCRYPTION.getPlaceholder(),
+                                                                                            methodName);
+
+        createSoftwareCapabilityCatalogTemplate(DeployedImplementationType.FILE_SYSTEM,
+                                                FileSystemPlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder(),
+                                                fileSystemClassification,
+                                                null,
+                                                FileSystemPlaceholderProperty.getPlaceholderPropertyTypes());
+    }
+
+
+    private void addUNIXFileSystemTemplate()
+    {
+        final String methodName = "addUNIXFileSystemTemplate";
+
+        Classification fileSystemClassification = archiveHelper.getFileSystemClassification(FileSystemPlaceholderProperty.FORMAT.getPlaceholder(),
+                                                                                            FileSystemPlaceholderProperty.ENCRYPTION.getPlaceholder(),
+                                                                                            methodName);
+
+        createSoftwareCapabilityCatalogTemplate(DeployedImplementationType.UNIX_FILE_SYSTEM,
+                                                FileSystemPlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder(),
+                                                fileSystemClassification,
+                                                null,
+                                                FileSystemPlaceholderProperty.getPlaceholderPropertyTypes());
+    }
+
+
+
+    /**
+     * Create a template for a type of asset and link it to the associated deployed implementation type.
+     * The template consists of an asset linked to a connection, that is in turn linked
      * to the supplied connector type and an endpoint,
      *
      * @param deployedImplementationType deployed implementation type for the technology
@@ -1637,6 +1849,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                         deployedImplementationType.getAssociatedTypeName(),
+                                                        OpenMetadataType.ASSET.typeName,
                                                         qualifiedName + ":Endpoint",
                                                         assetName + " endpoint",
                                                         null,
@@ -1656,7 +1869,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                             connectorTypeGUID,
                                                             endpointGUID,
                                                             assetGUID,
-                                                            deployedImplementationType.getAssociatedTypeName());
+                                                            deployedImplementationType.getAssociatedTypeName(),
+                                                            OpenMetadataType.ASSET.typeName);
 
         archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
 
@@ -1666,10 +1880,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         archiveHelper.addReplacementAttributes(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
                                                replacementAttributeTypes);
 
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
                                                placeholderPropertyTypes);
     }
 
@@ -1809,6 +2025,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                  parentSetGUID,
                                                                  parentSetGUID,
                                                                  OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                                 OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                  OpenMetadataType.VALID_VALUE_SET.typeName,
                                                                  qualifiedName,
                                                                  openMetadataType.typeName,
@@ -1827,6 +2044,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             String externalReferenceGUID = this.archiveHelper.addExternalReference(null,
                                                                                    validValueGUID,
                                                                                    OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                                    qualifiedName + "_wikiLink",
                                                                                    "More information about open metadata type: " + openMetadataType.typeName,
                                                                                    null,
@@ -1897,6 +2115,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                  parentSetGUID,
                                                                  parentSetGUID,
                                                                  OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                                 OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                  OpenMetadataType.VALID_VALUE_SET.typeName,
                                                                  qualifiedName,
                                                                  deployedImplementationType,
@@ -1915,6 +2134,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             String externalReferenceGUID = this.archiveHelper.addExternalReference(null,
                                                                                    validValueGUID,
                                                                                    OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                                    qualifiedName + "_wikiLink",
                                                                                    "More information about deployedImplementationType: " + deployedImplementationType,
                                                                                    null,
@@ -2000,6 +2220,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                          parentSetGUID,
                                          parentSetGUID,
                                          OpenMetadataType.VALID_VALUE_SET.typeName,
+                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          OpenMetadataType.VALID_VALUE_SET.typeName,
                                          qualifiedName,
                                          fileTypeName,
@@ -2050,6 +2271,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                          parentSetGUID,
                                          parentSetGUID,
                                          OpenMetadataType.VALID_VALUE_SET.typeName,
+                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          OpenMetadataType.VALID_VALUE_SET.typeName,
                                          qualifiedName,
                                          fileName,
@@ -2110,6 +2332,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                          parentSetGUID,
                                          parentSetGUID,
                                          OpenMetadataType.VALID_VALUE_SET.typeName,
+                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          OpenMetadataType.VALID_VALUE_SET.typeName,
                                          qualifiedName,
                                          fileExtension,
@@ -2164,6 +2387,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                          parentSetGUID,
                                          parentSetGUID,
                                          OpenMetadataType.VALID_VALUE_SET.typeGUID,
+                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                          OpenMetadataType.VALID_VALUE_SET.typeName,
                                          qualifiedName,
                                          attributeName,
@@ -2220,6 +2444,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                          grandParentSetGUID,
                                                          grandParentSetGUID,
                                                          OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                          OpenMetadataType.VALID_VALUE_SET.typeName,
                                                          parentQualifiedName,
                                                          parentDisplayName,
@@ -2689,6 +2914,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             String governanceActionTypeGUID = archiveHelper.addGovernanceActionType(null,
                                                                                     governanceEngineGUID,
                                                                                     governanceEngineTypeName,
+                                                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                                     "Egeria:GovernanceActionType:" + governanceEngineName + ":" + governanceRequestType,
                                                                                     governanceRequestType + " (" + governanceEngineName + ")",
                                                                                     governanceActionDescription.governanceServiceDescription,
@@ -3281,14 +3507,49 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                       String                      governanceEngineName,
                                       GovernanceActionDescription governanceActionDescription)
     {
-        final String governanceRequestType = "survey-folder";
+        final String topLevelOnlyRequestType       = "survey-folder";
+        final String topLevelAndFileRequestType    = "survey-folder-and-files";
+        final String allFoldersRequestType         = "survey-all-folders";
+        final String allFoldersAndFilesRequestType = "survey-all-folders-and-files";
 
         this.addRequestType(governanceEngineGUID,
                             governanceEngineName,
                             OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
-                            governanceRequestType,
+                            topLevelOnlyRequestType,
                             null,
                             null,
+                            governanceActionDescription);
+
+        final Map<String, String> requestParameters = new HashMap<>();
+
+        requestParameters.put(FolderRequestParameter.ANALYSIS_LEVEL.getName(), "TOP_LEVEL_AND_FILES");
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                            topLevelAndFileRequestType,
+                            null,
+                            requestParameters,
+                            governanceActionDescription);
+
+        requestParameters.put(FolderRequestParameter.ANALYSIS_LEVEL.getName(), "ALL_FOLDERS");
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                            allFoldersRequestType,
+                            null,
+                            requestParameters,
+                            governanceActionDescription);
+
+        requestParameters.put(FolderRequestParameter.ANALYSIS_LEVEL.getName(), "ALL_FOLDERS_AND_FILES");
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                            allFoldersAndFilesRequestType,
+                            null,
+                            requestParameters,
                             governanceActionDescription);
     }
 
@@ -3402,6 +3663,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:GetDayOfWeek",
                                                                         "Get the day of the Week",
                                                                         null,
@@ -3438,6 +3700,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:MondayTask",
                                                                         "Output Monday's task",
                                                                         null,
@@ -3475,6 +3738,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         String step3GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:TuesdayTask",
                                                                         "Output Tuesday's task",
                                                                         null,
@@ -3512,6 +3776,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         String step4GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:WednesdayTask",
                                                                         "Output Wednesday's task",
                                                                         null,
@@ -3549,6 +3814,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         String step5GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:ThursdayTask",
                                                                         "Output Thursday's task",
                                                                         null,
@@ -3586,6 +3852,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         String step6GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:FridayTask",
                                                                         "Output Friday's task",
                                                                         null,
@@ -3623,6 +3890,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         String step7GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:SaturdayTask",
                                                                         "Output Saturday's task",
                                                                         null,
@@ -3661,6 +3929,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         String step8GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
                                                                         "Egeria:DailyGovernanceActionProcess:SundayTask",
                                                                         "Output Sunday's task",
                                                                         null,

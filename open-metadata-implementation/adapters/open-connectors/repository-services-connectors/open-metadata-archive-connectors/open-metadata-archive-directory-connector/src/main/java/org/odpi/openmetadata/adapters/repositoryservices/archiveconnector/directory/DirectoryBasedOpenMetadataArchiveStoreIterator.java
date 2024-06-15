@@ -50,6 +50,7 @@ public class DirectoryBasedOpenMetadataArchiveStoreIterator<T extends Repository
     }
 
     @Override
+    @SuppressWarnings(value = "unchecked")
     public T next()
     {
         final String methodName = "next";

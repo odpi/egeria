@@ -110,7 +110,6 @@ public class SearchKeyword extends ElementBase
                 ", description='" + description + '\'' +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
                 ", headerVersion=" + getHeaderVersion() +

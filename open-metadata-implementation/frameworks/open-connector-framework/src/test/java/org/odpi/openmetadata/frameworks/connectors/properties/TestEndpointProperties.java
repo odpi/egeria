@@ -40,7 +40,6 @@ public class TestEndpointProperties
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
-        testObject.setURL("TestURL");
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestQualifiedName");
@@ -67,7 +66,6 @@ public class TestEndpointProperties
 
         testObject.setType(type);
         testObject.setGUID("TestDifferentGUID");
-        testObject.setURL("TestURL");
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestQualifiedName");
@@ -94,7 +92,6 @@ public class TestEndpointProperties
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
-        testObject.setURL("TestURL");
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestQualifiedName");
@@ -119,7 +116,6 @@ public class TestEndpointProperties
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getURL().equals("TestURL"));
         assertTrue(resultObject.getClassifications() == null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
@@ -142,7 +138,6 @@ public class TestEndpointProperties
     {
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getQualifiedName() == null);

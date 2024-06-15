@@ -512,6 +512,8 @@ public class AutomatedCurationRESTServices extends TokenController
                 OpenMetadataStoreClient openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
                 response.setGUID(openHandler.createMetadataElementFromTemplate(userId,
+                                                                               requestBody.getExternalSourceGUID(),
+                                                                               requestBody.getExternalSourceName(),
                                                                                requestBody.getTypeName(),
                                                                                requestBody.getAnchorGUID(),
                                                                                requestBody.getIsOwnAnchor(),
@@ -960,19 +962,19 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getGovernanceActionProcessesByName(userId,
-                                                                                instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                                                startFrom,
-                                                                                pageSize,
-                                                                                requestBody.getEffectiveTime()));
+                response.setElements(handler.findGovernanceActionProcesses(userId,
+                                                                           instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           requestBody.getEffectiveTime()));
             }
             else
             {
-                response.setElements(handler.getGovernanceActionProcessesByName(userId,
-                                                                                instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
-                                                                                startFrom,
-                                                                                pageSize,
-                                                                                new Date()));
+                response.setElements(handler.findGovernanceActionProcesses(userId,
+                                                                           instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           new Date()));
             }
         }
         catch (Exception error)

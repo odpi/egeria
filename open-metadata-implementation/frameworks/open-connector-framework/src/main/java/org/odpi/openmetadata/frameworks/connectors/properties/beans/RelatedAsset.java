@@ -109,16 +109,7 @@ public class RelatedAsset extends Asset
                        ", displayDescription='" + getDisplayDescription() + '\'' +
                        ", abbreviation='" + getAbbreviation() + '\'' +
                        ", usage='" + getUsage() + '\'' +
-                       ", connectionDescription='" + getConnectionDescription() + '\'' +
                        ", resourceDescription='" + getResourceDescription() + '\'' +
-                       ", owner='" + getOwner() + '\'' +
-                       ", ownerTypeName='" + getOwnerTypeName() + '\'' +
-                       ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
-                       ", ownerType=" + getOwnerType() +
-                       ", zoneMembership=" + getZoneMembership() +
-                       ", assetOrigin=" + getAssetOrigin() +
-                       ", referenceData=" + isReferenceData() +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +

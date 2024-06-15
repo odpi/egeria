@@ -653,7 +653,7 @@ public class NoteLogExchangeHandler extends ExchangeHandlerBase
      * Create a new metadata element to represent a note.
      *
      * @param userId calling user
-     * @param elementGUID unique identifier of the element where the note is located
+     * @param noteLogGUID unique identifier of the element where the note is located
      * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param assetManagerIsHome  ensure that only the asset manager can update this element
      * @param noteProperties properties for the note
@@ -669,7 +669,7 @@ public class NoteLogExchangeHandler extends ExchangeHandlerBase
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createNote(String                        userId,
-                             String                        elementGUID,
+                             String                        noteLogGUID,
                              MetadataCorrelationProperties correlationProperties,
                              boolean                       assetManagerIsHome,
                              NoteProperties                noteProperties,
@@ -682,7 +682,7 @@ public class NoteLogExchangeHandler extends ExchangeHandlerBase
     {
         final String propertiesParameterName     = "noteProperties";
         final String qualifiedNameParameterName  = "noteProperties.qualifiedName";
-        final String elementGUIDParameterName    = "elementGUID";
+        final String elementGUIDParameterName    = "noteLogGUID";
 
         invalidParameterHandler.validateObject(noteProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(noteProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
@@ -690,7 +690,8 @@ public class NoteLogExchangeHandler extends ExchangeHandlerBase
         String noteGUID = noteHandler.attachNewNote(userId,
                                                     getExternalSourceGUID(correlationProperties, assetManagerIsHome),
                                                     getExternalSourceName(correlationProperties, assetManagerIsHome),
-                                                    elementGUID,
+                                                    noteLogGUID,
+                                                    noteLogGUID,
                                                     elementGUIDParameterName,
                                                     noteProperties.getQualifiedName(),
                                                     noteProperties.getTitle(),

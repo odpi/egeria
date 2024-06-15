@@ -53,13 +53,10 @@ public class TestAssetDetail
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
-        testObject.setURL("TestURL");
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setResourceName("TestResourceName");
-        testObject.setOwner("TestOwner");
-        testObject.setConnectionDescription("TestShortDescription");
         testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 
@@ -86,13 +83,11 @@ public class TestAssetDetail
 
         testObject.setType(type);
         testObject.setGUID("TestDifferentGUID");
-        testObject.setURL("TestURL");
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setResourceName("TestResourceName");
-        testObject.setOwner("TestOwner");
-        testObject.setConnectionDescription("TestShortDescription");
+
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetDetail(testObject,
@@ -118,13 +113,10 @@ public class TestAssetDetail
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
-        testObject.setURL("TestURL");
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestDifferentQualifiedName");
         testObject.setResourceName("TestResourceName");
-        testObject.setOwner("TestOwner");
-        testObject.setConnectionDescription("TestShortDescription");
         testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 

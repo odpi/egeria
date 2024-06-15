@@ -185,7 +185,8 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         }
         else if (annotation instanceof ResourceProfileAnnotation resourceProfileAnnotation)
         {
-            builder.setResourceProfileSubtypeProperties(resourceProfileAnnotation.getLength(),
+            builder.setResourceProfileSubtypeProperties(resourceProfileAnnotation.getProfilePropertyNames(),
+                                                        resourceProfileAnnotation.getLength(),
                                                         resourceProfileAnnotation.getInferredDataType(),
                                                         resourceProfileAnnotation.getInferredFormat(),
                                                         resourceProfileAnnotation.getInferredLength(),
@@ -195,6 +196,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                         resourceProfileAnnotation.getProfileEndDate(),
                                                         resourceProfileAnnotation.getProfileProperties(),
                                                         resourceProfileAnnotation.getProfileFlags(),
+                                                        resourceProfileAnnotation.getProfileDates(),
                                                         resourceProfileAnnotation.getProfileCounts(),
                                                         resourceProfileAnnotation.getProfileDoubles(),
                                                         resourceProfileAnnotation.getValueList(),
@@ -616,7 +618,11 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
 
         if ((anchorEntity != null) && (anchorEntity.getGUID() != null))
         {
-            builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
+            builder.setAnchors(userId,
+                               anchorEntity.getGUID(),
+                               anchorEntity.getType().getTypeDefName(),
+                               this.getDomainName(anchorEntity),
+                               methodName);
         }
 
         String annotationReviewGUID = this.createBeanInRepository(userId,

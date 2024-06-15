@@ -29,7 +29,6 @@ public class RatingProperties
 {
     private StarRating starRating = null;
     private String     review     = null;
-    private String     user       = null;
 
     /**
      * Default constructor
@@ -49,31 +48,9 @@ public class RatingProperties
     {
         if (template != null)
         {
-            user = template.getUser();
             starRating = template.getStarRating();
             review = template.getReview();
         }
-    }
-
-
-    /**
-     * Return the user id of the person who created the rating.  Null means the user id is not known.
-     *
-     * @return String user
-     */
-    public String getUser() {
-        return user;
-    }
-
-
-    /**
-     * Set up the user id of the person who created the rating.  Null means the user id is not known.
-     *
-     * @param user string
-     */
-    public void setUser(String user)
-    {
-        this.user = user;
     }
 
 
@@ -131,7 +108,6 @@ public class RatingProperties
         return "RatingProperties{" +
                 "starRating=" + starRating +
                 ", review='" + review + '\'' +
-                ", user='" + user + '\'' +
                 '}';
     }
 
@@ -155,8 +131,7 @@ public class RatingProperties
         }
         RatingProperties rating = (RatingProperties) objectToCompare;
         return getStarRating() == rating.getStarRating() &&
-                Objects.equals(getReview(), rating.getReview()) &&
-                Objects.equals(getUser(), rating.getUser());
+                Objects.equals(getReview(), rating.getReview());
     }
 
 
@@ -168,6 +143,6 @@ public class RatingProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(starRating, review, user);
+        return Objects.hash(starRating, review);
     }
 }
