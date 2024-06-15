@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -19,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum StewardshipActionEventType implements Serializable
+public enum StewardshipActionEventType
 {
     /**
      * An event that is not recognized by the local server.
@@ -81,8 +79,6 @@ public enum StewardshipActionEventType implements Serializable
      */
     ELEMENT_HOME_CHANGED   (11, "Element Home Changed",  "An element's home has changed."),
     ;
-
-    private static final long     serialVersionUID = 1L;
 
     private  final int      eventTypeCode;
     private  final String   eventTypeName;

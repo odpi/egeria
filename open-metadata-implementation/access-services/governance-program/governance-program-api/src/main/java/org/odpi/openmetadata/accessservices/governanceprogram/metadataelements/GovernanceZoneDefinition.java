@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceZoneDefinition extends GovernanceZoneElement
 {
-    private static final long    serialVersionUID = 1L;
-
     private ElementStub       parentGovernanceZone  = null;
     private List<ElementStub> nestedGovernanceZones = null;
     private List<ElementStub> associatedGovernanceDefinitions = null;

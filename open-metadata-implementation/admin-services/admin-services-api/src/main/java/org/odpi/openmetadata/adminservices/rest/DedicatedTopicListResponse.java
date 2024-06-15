@@ -22,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DedicatedTopicListResponse extends AdminServicesAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private DedicatedTopicList dedicatedTopicList = null;
 
 

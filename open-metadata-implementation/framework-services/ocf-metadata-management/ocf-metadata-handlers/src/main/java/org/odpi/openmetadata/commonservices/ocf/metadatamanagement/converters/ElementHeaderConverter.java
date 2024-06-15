@@ -115,7 +115,6 @@ public class ElementHeaderConverter
 
             bean.setOrigin(elementOrigin);
             bean.setGUID(entity.getGUID());
-            bean.setURL(entity.getInstanceURL());
         }
         else if (typeName != null)
         {

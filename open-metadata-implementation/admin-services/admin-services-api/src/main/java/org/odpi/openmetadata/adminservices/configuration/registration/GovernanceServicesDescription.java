@@ -4,18 +4,16 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
 
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
-import java.io.Serializable;
-
 /**
  * GovernanceServicesDescription provides a list of subsystems that support the various governance servers.
  */
-public enum GovernanceServicesDescription implements Serializable
+public enum GovernanceServicesDescription
 {
     /**
      * Store and query asset lineage.
      */
     LINEAGE_WAREHOUSE_SERVICES(190,
-                               ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                               ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                "Lineage Warehouse Services",
                                "lineage-warehouse",
                                "Store and query asset lineage",
@@ -41,7 +39,7 @@ public enum GovernanceServicesDescription implements Serializable
      * Integrate Data Engines that are not self-capable of integrating directly with the Data Engine OMAS.
      */
     DATA_ENGINE_PROXY_SERVICES       (192,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.DEPRECATED,
                                       "Data Engine Proxy Services",
                                       "data-engine-proxy",
                                       "Integrate Data Engines that are not self-capable of integrating directly with the Data Engine OMAS.",
@@ -76,9 +74,6 @@ public enum GovernanceServicesDescription implements Serializable
                                       AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
                                       ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName()),
     ;
-
-
-    private static final long serialVersionUID = 1L;
 
     private final int                        serviceCode;
     private final ComponentDevelopmentStatus serviceDevelopmentStatus;

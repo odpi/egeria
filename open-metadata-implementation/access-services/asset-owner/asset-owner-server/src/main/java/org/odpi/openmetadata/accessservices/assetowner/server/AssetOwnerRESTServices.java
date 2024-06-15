@@ -20,7 +20,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
@@ -196,13 +195,6 @@ public class AssetOwnerRESTServices
                                                                                 methodName,
                                                                                 instanceHandler.getRepositoryHelper(userId, serverName, methodName));
 
-                int ownerTypeOrdinal = 0;
-
-                if (requestBody.getOwnerType() != null)
-                {
-                    ownerTypeOrdinal = requestBody.getOwnerType().getOpenTypeOrdinal();
-                }
-
                 Date effectiveTime = new Date();
                 String assetGUID = handler.createAssetInRepository(userId,
                                                                    null,
@@ -211,12 +203,12 @@ public class AssetOwnerRESTServices
                                                                    requestBody.getName(),
                                                                    requestBody.getVersionIdentifier(),
                                                                    requestBody.getDescription(),
-                                                                   requestBody.getZoneMembership(),
-                                                                   requestBody.getOwner(),
-                                                                   ownerTypeOrdinal,
-                                                                   requestBody.getOriginOrganizationGUID(),
-                                                                   requestBody.getOriginBusinessCapabilityGUID(),
-                                                                   requestBody.getOtherOriginValues(),
+                                                                   null,
+                                                                   null,
+                                                                   0,
+                                                                   null,
+                                                                   null,
+                                                                   null,
                                                                    requestBody.getAdditionalProperties(),
                                                                    assetTypeGUID,
                                                                    assetTypeName,
@@ -233,6 +225,7 @@ public class AssetOwnerRESTServices
                     this.maintainSupplementaryProperties(userId,
                                                          assetGUID,
                                                          assetGUIDParameterName,
+                                                         OpenMetadataType.ASSET.typeName,
                                                          OpenMetadataType.ASSET.typeName,
                                                          requestBody.getQualifiedName(),
                                                          requestBody,
@@ -387,6 +380,7 @@ public class AssetOwnerRESTServices
                     this.maintainSupplementaryProperties(userId,
                                                          assetGUID,
                                                          assetGUIDParameterName,
+                                                         OpenMetadataType.ASSET.typeName,
                                                          OpenMetadataType.ASSET.typeName,
                                                          requestBody.getQualifiedName(),
                                                          requestBody,
@@ -1078,7 +1072,7 @@ public class AssetOwnerRESTServices
 
             if (relationship.getProperties() != null)
             {
-                if (OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME.equals(relationship.getType().getTypeDefName()))
+                if (OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName.equals(relationship.getType().getTypeDefName()))
                 {
                     DataContentForDataSetProperties properties = new DataContentForDataSetProperties();
 
@@ -1281,7 +1275,11 @@ public class AssetOwnerRESTServices
                                                                     methodName);
         if (assetEntity != null)
         {
-            schemaTypeBuilder.setAnchors(userId, assetGUID, assetEntity.getType().getTypeDefName(), methodName);
+            schemaTypeBuilder.setAnchors(userId,
+                                         assetGUID,
+                                         assetEntity.getType().getTypeDefName(),
+                                         OpenMetadataType.ASSET.typeName,
+                                         methodName);
         }
 
         String schemaTypeGUID = handler.addSchemaType(userId,
@@ -1457,7 +1455,11 @@ public class AssetOwnerRESTServices
                     assetTypeName = anchorEntity.getType().getTypeDefName();
                 }
 
-                schemaAttributeBuilder.setAnchors(userId, assetGUID, assetTypeName, methodName);
+                schemaAttributeBuilder.setAnchors(userId,
+                                                  assetGUID,
+                                                  assetTypeName,
+                                                  OpenMetadataType.ASSET.typeName,
+                                                  methodName);
             }
 
             if (schemaAttribute.getAttributeType() != null)
@@ -1482,7 +1484,11 @@ public class AssetOwnerRESTServices
 
                 if (assetGUID != null)
                 {
-                    attributeSchemaTypeBuilder.setAnchors(userId, assetGUID, assetTypeName, methodName);
+                    attributeSchemaTypeBuilder.setAnchors(userId,
+                                                          assetGUID,
+                                                          assetTypeName,
+                                                          OpenMetadataType.ASSET.typeName,
+                                                          methodName);
                 }
                 schemaAttributeBuilder.setSchemaType(userId, attributeSchemaTypeBuilder, methodName);
 
@@ -1756,7 +1762,11 @@ public class AssetOwnerRESTServices
 
                     if (anchorEntity != null)
                     {
-                        builder.setAnchors(userId, anchorGUID, anchorEntity.getType().getTypeDefName(), methodName);
+                        builder.setAnchors(userId,
+                                           anchorGUID,
+                                           anchorEntity.getType().getTypeDefName(),
+                                           OpenMetadataType.ASSET.typeName,
+                                           methodName);
                     }
                 }
 
@@ -1896,7 +1906,10 @@ public class AssetOwnerRESTServices
                 invalidParameterHandler.validateUserId(userId, methodName);
                 invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
                 invalidParameterHandler.validateObject(requestBody, propertiesParameterName, methodName);
-                invalidParameterHandler.validateName(requestBody.getQualifiedName(), qualifiedNameParameterName, methodName);
+                if (! isMergeUpdate)
+                {
+                    invalidParameterHandler.validateName(requestBody.getQualifiedName(), qualifiedNameParameterName, methodName);
+                }
 
                 SchemaTypeBuilder builder = this.getSchemaTypeBuilder(requestBody,
                                                                       instanceHandler.getRepositoryHelper(userId, serverName, methodName),
@@ -2739,7 +2752,11 @@ public class AssetOwnerRESTServices
 
                         if (anchorEntity != null)
                         {
-                            schemaAttributeBuilder.setAnchors(userId, assetGUID, anchorEntity.getType().getTypeDefName(), methodName);
+                            schemaAttributeBuilder.setAnchors(userId,
+                                                              assetGUID,
+                                                              anchorEntity.getType().getTypeDefName(),
+                                                              OpenMetadataType.ASSET.typeName,
+                                                              methodName);
                         }
                     }
 
@@ -2834,7 +2851,11 @@ public class AssetOwnerRESTServices
 
                     if (anchorEntity != null)
                     {
-                        schemaAttributeBuilder.setAnchors(userId, assetGUID, anchorEntity.getType().getTypeDefName(), methodName);
+                        schemaAttributeBuilder.setAnchors(userId,
+                                                          assetGUID,
+                                                          anchorEntity.getType().getTypeDefName(),
+                                                          OpenMetadataType.ASSET.typeName,
+                                                          methodName);
                     }
                 }
 
@@ -4265,26 +4286,12 @@ public class AssetOwnerRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-                String ownerTypeName = requestBody.getOwnerTypeName();
-
-                if ((ownerTypeName == null) && (requestBody.getOwnerType() != null))
-                {
-                    if (requestBody.getOwnerType() == AssetOwnerType.USER_ID)
-                    {
-                        ownerTypeName = OpenMetadataType.USER_IDENTITY_TYPE_NAME;
-                    }
-                    else if (requestBody.getOwnerType() == AssetOwnerType.PROFILE_ID)
-                    {
-                        ownerTypeName = OpenMetadataType.ACTOR_PROFILE_TYPE_NAME;
-                    }
-                }
-
                 handler.addOwner(userId,
                                  assetGUID,
                                  assetGUIDParameterName,
                                  OpenMetadataType.ASSET.typeName,
                                  requestBody.getOwnerId(),
-                                 ownerTypeName,
+                                 requestBody.getOwnerTypeName(),
                                  requestBody.getOwnerPropertyName(),
                                  false,
                                  false,
@@ -5240,6 +5247,7 @@ public class AssetOwnerRESTServices
      * @param elementGUID unique identifier for the element connected to the supplementary properties
      * @param elementGUIDParameterName name of guid parameter
      * @param elementTypeName type of element
+     * @param elementDomainName type of element
      * @param elementQualifiedName unique name for the element connected to the supplementary properties
      * @param supplementaryProperties properties to save
      * @param isMergeUpdate should the new properties be merged with the existing properties, or replace them entirely
@@ -5254,6 +5262,7 @@ public class AssetOwnerRESTServices
                                          String                     elementGUID,
                                          String                     elementGUIDParameterName,
                                          String                     elementTypeName,
+                                         String                     elementDomainName,
                                          String                     elementQualifiedName,
                                          SupplementaryProperties    supplementaryProperties,
                                          boolean                    isMergeUpdate,
@@ -5269,6 +5278,7 @@ public class AssetOwnerRESTServices
                                                          elementGUID,
                                                          elementGUIDParameterName,
                                                          elementTypeName,
+                                                         elementDomainName,
                                                          elementQualifiedName,
                                                          supplementaryProperties.getDisplayName(),
                                                          supplementaryProperties.getDisplaySummary(),
@@ -5287,6 +5297,7 @@ public class AssetOwnerRESTServices
                                                          elementGUID,
                                                          elementGUIDParameterName,
                                                          elementTypeName,
+                                                         elementDomainName,
                                                          elementQualifiedName,
                                                          null,
                                                          null,

@@ -5,7 +5,7 @@
 
 ###
 # =====================================================================================================================
-# Managed the authentication token.  Run this request to create/refresh the token.
+# Manage the authentication token.  Run this request to create/refresh the token.
 
 # @name Token (RequestBody)
 POST {{baseURL}}/api/token
@@ -252,14 +252,6 @@ Content-Type: application/json
 @standard=
 @organization=
 @identifier=
-
-####
-# @name findTypesByExternalId
-# Return the types that are linked to the elements from the specified standard.
-#
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/external-id?standard={{standard}}&organization={{organization}}&identifier={{identifier}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
 
 ####
 # @name getSubTypes

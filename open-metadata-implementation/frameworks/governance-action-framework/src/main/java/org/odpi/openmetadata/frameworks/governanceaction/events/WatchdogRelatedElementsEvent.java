@@ -28,8 +28,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class WatchdogRelatedElementsEvent extends WatchdogGovernanceEvent
 {
-    private static final long      serialVersionUID = 1L;
-
     private RelatedMetadataElements relatedMetadataElements = null;
     private RelatedMetadataElements previousRelatedMetadataElements = null;
 

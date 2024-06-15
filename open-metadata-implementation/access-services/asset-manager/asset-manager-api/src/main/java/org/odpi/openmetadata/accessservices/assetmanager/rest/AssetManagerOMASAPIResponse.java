@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.rest;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
-import java.io.Serial;
 import java.util.Arrays;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -32,9 +31,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class AssetManagerOMASAPIResponse extends FFDCResponseBase
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

@@ -30,8 +30,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class SupplementaryProperties extends ReferenceableProperties
 {
-    private static final long     serialVersionUID = 1L;
-
     private String displayName  = null;
     private String summary      = null;
     private String description  = null;

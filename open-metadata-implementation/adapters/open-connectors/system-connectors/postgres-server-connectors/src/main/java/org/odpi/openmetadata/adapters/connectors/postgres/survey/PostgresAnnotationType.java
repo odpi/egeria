@@ -6,11 +6,9 @@ package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -18,60 +16,62 @@ import java.util.Map;
  */
 public enum PostgresAnnotationType
 {
-    DATABASE_SIZES("Capture Database Sizes",
-                   OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                   "Extract the sizes of the visible databases.",
-                   "The databases listed are the ones that are visible to the survey action connector.  A size of zero means the the database size can not be extracted. Otherwise the profileCount value is set to the size in bytes of each database.",
-                   null),
-
     DATABASE_TABLE_SIZES("Capture Database Table Sizes",
-                 OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                 "Extract the sizes of the visible tables in a database.",
-                 "Tables listed include their database name and schema name.  If tables are missing, check the security permissions of the survey service's database userId.",
-                 null),
+                         OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
+                         "Extract the sizes of the visible tables in a database.",
+                         "Tables listed include their database name and schema name.  If tables are missing, check the security permissions of the survey service's database userId.",
+                         null,
+                         null),
 
     DATABASE_SCHEMA_TABLE_SIZES("Capture Table Sizes for a Database Schema",
-                         OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                         "Extract the sizes of the visible tables in a database schema.",
-                         "Tables listed include their database name and schema name.  If tables are missing, check the security permissions of the survey service's database userId.",
-                         null),
+                                OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
+                                "Extract the sizes of the visible tables in a database schema.",
+                                "Tables listed include their database name and schema name.  If tables are missing, check the security permissions of the survey service's database userId.",
+                                null,
+                                null),
 
     DATABASE_METRICS("Capture Database Metrics",
                    OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
                    "Capture summary statistics about a database.",
-                   "This annotation retrieves statistics about individual tables and columns, and aggregates them into a summary for the database.",
-                   PostgresMetric.getDatabaseMetrics()),
+                   "This annotation retrieves statistics about a database and its usage.",
+                   null,
+                   RelationalDatabaseMetric.getMetrics()),
     SCHEMA_METRICS("Capture Database Schema Metrics",
-                  OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
-                  "Capture summary statistics about the database tables in a database schema.",
-                  "This annotation retrieves statistics about individual tables and columns, and aggregates them into a summary for the schema.",
-                  PostgresMetric.getSchemaMetrics()),
+                   OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
+                   "Capture summary statistics about the database tables in a database schema.",
+                   "This annotation retrieves statistics about individual tables and columns, and aggregates them into a summary for the schema.",
+                   null,
+                   RelationalSchemaMetric.getMetrics()),
 
     TABLE_METRICS("Capture Database Table Metrics",
-                OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
-                "Capture summary statistics about a database table.",
-                "This annotation retrieves statistics about individual columns and aggregates them into a summary for the table.",
-                PostgresMetric.getTableMetrics()),
+                  OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
+                  "Capture summary statistics about a database table.",
+                  "This annotation retrieves statistics about individual columns and aggregates them into a summary for the table.",
+                  null,
+                  RelationalTableMetric.getMetrics()),
 
     COLUMN_METRICS("Capture Database Column Metrics",
-                  OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
-                  "Capture summary statistics about a database column.",
-                  "This annotation retrieves statistics about an individual column.",
-                  PostgresMetric.getColumnMetrics()),
+                   OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
+                   "Capture summary statistics about a database column.",
+                   "This annotation retrieves statistics about an individual column.",
+                   null,
+                   RelationalColumnMetric.getMetrics()),
 
     COLUMN_VALUES("Capture Frequent Values for Column",
                   OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
                   "Capture the most common values stored in the column and their frequencies.",
                   "This annotation extracts the statistics maintained by the database.",
+                  null,
                   null),
     ;
 
 
-    public final String               name;
-    public final String               openMetadataTypeName;
-    public final String               summary;
-    public final String               explanation;
-    public final List<PostgresMetric> metrics;
+    public final String             name;
+    public final String             openMetadataTypeName;
+    public final String             summary;
+    public final String             explanation;
+    public final List<String>       profilePropertyNames;
+    public final List<SurveyMetric> metrics;
 
 
     /**
@@ -81,18 +81,21 @@ public enum PostgresAnnotationType
      * @param openMetadataTypeName the open metadata type used for this annotation type
      * @param summary short explanation of the annotation type
      * @param explanation explanation of the annotation type
+     * @param profilePropertyNames list of property names filled out in the ResourceProfileAnnotation
      * @param metrics optional metrics
      */
     PostgresAnnotationType(String                name,
                            String                openMetadataTypeName,
                            String                summary,
                            String                explanation,
-                           List<PostgresMetric>  metrics)
+                           List<String>          profilePropertyNames,
+                           List<SurveyMetric>    metrics)
     {
         this.name                 = name;
         this.openMetadataTypeName = openMetadataTypeName;
         this.summary              = summary;
         this.explanation          = explanation;
+        this.profilePropertyNames = profilePropertyNames;
         this.metrics              = metrics;
     }
 
@@ -107,7 +110,7 @@ public enum PostgresAnnotationType
     {
         List<AnnotationTypeType> annotationTypeTypes = new ArrayList<>();
 
-        annotationTypeTypes.add(PostgresAnnotationType.DATABASE_SIZES.getAnnotationTypeType());
+        annotationTypeTypes.add(PostgresAnnotationType.DATABASE_METRICS.getAnnotationTypeType());
 
         return annotationTypeTypes;
     }
@@ -122,9 +125,9 @@ public enum PostgresAnnotationType
     {
         List<AnnotationTypeType> annotationTypeTypes = new ArrayList<>();
 
-        for (PostgresAnnotationType atlasAnnotationType : PostgresAnnotationType.values())
+        for (PostgresAnnotationType postgresAnnotationType : PostgresAnnotationType.values())
         {
-            annotationTypeTypes.add(atlasAnnotationType.getAnnotationTypeType());
+            annotationTypeTypes.add(postgresAnnotationType.getAnnotationTypeType());
         }
 
         return annotationTypeTypes;
@@ -187,6 +190,17 @@ public enum PostgresAnnotationType
 
 
     /**
+     * Return the list of property names that make up this profile entry
+     *
+     * @return list of property names
+     */
+    public List<String> getProfilePropertyNames()
+    {
+        return profilePropertyNames;
+    }
+
+
+    /**
      * Return the description of this annotation type that can be used in a Connector Provider for a
      * Survey Action Service.
      *
@@ -206,9 +220,9 @@ public enum PostgresAnnotationType
         {
             Map<String, String> metricsMap = new HashMap<>();
 
-            for (PostgresMetric postgresMetric : metrics)
+            for (SurveyMetric relationalDatabaseMetric : metrics)
             {
-                metricsMap.put(postgresMetric.getName(), postgresMetric.getDescription());
+                metricsMap.put(relationalDatabaseMetric.getDisplayName(), relationalDatabaseMetric.getDescription());
             }
 
             annotationTypeType.setOtherPropertyValues(metricsMap);

@@ -57,7 +57,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
         this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
         this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot);
     }
 
@@ -133,6 +132,13 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
     }
 
+
+    /**
+     * Get the maximum paging size.
+     *
+     * @return maxPagingSize new value
+     */
+    public int getMaxPagingSize() { return  invalidParameterHandler.getMaxPagingSize(); }
 
     /**
      * Convert the date into a long to send in URL.
@@ -3934,7 +3940,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                             additionalProperties = new HashMap<>();
                         }
 
-                        additionalProperties.put("placeholderName",
+                        additionalProperties.put(propertyType + "Name",
                                                  propertyHelper.getStringProperty(serviceURLMarker,
                                                                                   OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
                                                                                   refDataElement.getElement().getElementProperties(),
@@ -3962,5 +3968,4 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         return null;
     }
-
 }

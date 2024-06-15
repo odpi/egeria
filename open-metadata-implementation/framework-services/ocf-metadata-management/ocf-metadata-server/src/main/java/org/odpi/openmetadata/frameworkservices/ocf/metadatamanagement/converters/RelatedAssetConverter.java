@@ -15,8 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
+
 
 
 /**
@@ -70,7 +69,6 @@ public class RelatedAssetConverter<B> extends OCFConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @SuppressWarnings(value="deprecation")
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         Relationship relationship,
@@ -99,66 +97,14 @@ public class RelatedAssetConverter<B> extends OCFConverter<B>
                 bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
                 bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                 bean.setResourceName(this.removeName(instanceProperties));
-                bean.setName(bean.getResourceName());
                 bean.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                 bean.setResourceDescription(this.removeDescription(instanceProperties));
-                bean.setDescription(bean.getResourceDescription());
-
-                /* Note this value should be in the classification */
-                bean.setOwner(this.removeOwner(instanceProperties));
-                /* Note this value should be in the classification */
-                bean.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
-                /* Note this value should be in the classification */
-                bean.setZoneMembership(this.removeZoneMembership(instanceProperties));
 
                 /*
                  * Any remaining properties are returned in the extended properties.  They are
                  * assumed to be defined in a subtype.
                  */
                 bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                /*
-                 * The values in the classifications override the values in the main properties of the Asset's entity.
-                 * Having these properties in the main entity is deprecated.
-                 */
-                instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME, entity);
-
-                bean.setZoneMembership(this.getZoneMembership(instanceProperties));
-
-                instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
-
-                bean.setOwner(this.getOwner(instanceProperties));
-                bean.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
-
-                instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
-
-                Map<String, String> originMap = this.getOtherOriginValues(instanceProperties);
-
-                String orgOriginValue = this.getOriginOrganizationGUID(instanceProperties);
-                String bizOriginValue = this.getOriginBusinessCapabilityGUID(instanceProperties);
-
-                if ((orgOriginValue != null) || (bizOriginValue != null))
-                {
-                    if (originMap == null)
-                    {
-                        originMap = new HashMap<>();
-                    }
-
-                    if (orgOriginValue != null)
-                    {
-                        originMap.put(OpenMetadataType.ORGANIZATION_PROPERTY_NAME, orgOriginValue);
-                    }
-
-                    if (bizOriginValue != null)
-                    {
-                        originMap.put(OpenMetadataType.BUSINESS_CAPABILITY_PROPERTY_NAME, bizOriginValue);
-                    }
-                }
-
-                bean.setAssetOrigin(originMap);
-
-                // todo set up SecurityTags and the governance classifications - needs some common methods with the AssetConverter
-
 
                 if (relationship != null)
                 {
@@ -173,10 +119,8 @@ public class RelatedAssetConverter<B> extends OCFConverter<B>
 
                     TypeDef typeDef = repositoryHelper.getTypeDefByName(methodName, relationship.getType().getTypeDefName());
 
-                    if (typeDef instanceof RelationshipDef)
+                    if (typeDef instanceof RelationshipDef relationshipDef)
                     {
-                        RelationshipDef relationshipDef = (RelationshipDef)typeDef;
-
                         RelationshipEndDef endDef;
 
                         if (relatedAssetAtEndOne)

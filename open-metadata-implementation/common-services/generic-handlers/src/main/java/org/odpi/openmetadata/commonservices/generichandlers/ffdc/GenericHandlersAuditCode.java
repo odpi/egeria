@@ -104,7 +104,7 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
      * OMAG-GENERIC-HANDLERS-0008 - Ignoring unnecessary update to {0} entity with unique identifier {1} through method {2} by user {3}
      */
     IGNORING_UNNECESSARY_ENTITY_UPDATE("OMAG-GENERIC-HANDLERS-0008",
-                                       AuditLogRecordSeverityLevel.INFO,
+                                       AuditLogRecordSeverityLevel.TRACE,
                                        "Ignoring unnecessary update to {0} entity with unique identifier {1} through method {2} by user {3}",
                                        "No update is made to the entity in the repository because the new properties are the same as the old. In order to determine that the update is unnecessary, Egeria has retrieved the existing entity from the repository and compared it to the new values.",
                                        "Determine if the processing by Egeria is the most efficient way to detect if an update is required to the entity and make adjustments to the caller's logic if appropriate."),
@@ -113,7 +113,7 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
      * OMAG-GENERIC-HANDLERS-0009 - Ignoring unnecessary update to {0} relationship with unique identifier {1} through method {2} by user {3}
      */
     IGNORING_UNNECESSARY_RELATIONSHIP_UPDATE("OMAG-GENERIC-HANDLERS-0009",
-                                             AuditLogRecordSeverityLevel.INFO,
+                                             AuditLogRecordSeverityLevel.TRACE,
                                              "Ignoring unnecessary update to {0} relationship with unique identifier {1} through method {2} by user {3}",
                                              "No update is made to the relationship in the repository because the new properties are the same as the old. In order to determine that the update is unnecessary, Egeria has retrieved the existing relationship from the repository and compared it to the new values.",
                                              "Determine if the processing by Egeria is the most efficient way to detect if an update is required to the relationship and make adjustments to the caller's logic if appropriate."),
@@ -122,7 +122,7 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
      * OMAG-GENERIC-HANDLERS-0010 - Ignoring unnecessary update to {0} classification attached to entity with unique identifier {1} through method {2} by user {3}
      */
     IGNORING_UNNECESSARY_CLASSIFICATION_UPDATE("OMAG-GENERIC-HANDLERS-0010",
-                                               AuditLogRecordSeverityLevel.INFO,
+                                               AuditLogRecordSeverityLevel.TRACE,
                                                "Ignoring unnecessary update to {0} classification attached to entity with unique identifier {1} through method {2} by user {3}",
                                                "No update is made to the classification in the repository because the new properties are the same as the old. In order to determine that the update is unnecessary, Egeria has retrieved the existing entity from the repository and compared the classification properties to the new values.",
                                                "Determine if the processing by Egeria is the most efficient way to detect if an update is required to the classification and make adjustments to the caller's logic if appropriate."),

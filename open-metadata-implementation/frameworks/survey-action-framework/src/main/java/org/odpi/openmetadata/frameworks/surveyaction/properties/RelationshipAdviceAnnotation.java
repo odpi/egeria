@@ -23,9 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelationshipAdviceAnnotation extends DataFieldAnnotation
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String              relatedEntityGUID = null;
     private String              relationshipTypeName = null;
     private Map<String, String> relationshipProperties = null;

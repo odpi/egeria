@@ -35,6 +35,10 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
     private static final String intMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName() + ">";
     private static final String longMapTypeGUID = "8fa603dd-c2c5-43fc-8ff4-92141f2414ae";
     private static final String longMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName() + ">";
+    private static final String dateMapTypeGUID = "ee293c68-e34d-4885-a512-f927d35a5893";
+    private static final String dateMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName() + ">";
+    private static final String doubleMapTypeGUID = "17211869-ed39-4ba9-bead-ffd967df65a8";
+    private static final String doubleMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE.getName() + ">";
     private static final String objectMapTypeGUID = "8fa603dd-c2c5-43fc-8ff4-92141f2414ad";
     private static final String objectMapTypeName = "map<" + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName() + "," + PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN.getName() + ">";
 
@@ -626,6 +630,159 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         if (properties != null)
         {
             retrievedProperty = this.getLongMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+                log.debug("Properties left: " + properties);
+            }
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    @Override
+    public Map<String, Date> getDateMapFromProperty(String             sourceName,
+                                                    String             propertyName,
+                                                    InstanceProperties properties,
+                                                    String             methodName)
+    {
+        Map<String, Object>   mapFromProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
+
+        if (mapFromProperty != null)
+        {
+            Map<String, Date>  dateMap = new HashMap<>();
+
+            for (String mapPropertyName : mapFromProperty.keySet())
+            {
+                Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
+
+                if (actualPropertyValue != null)
+                {
+                    Long timestamp = (Long)actualPropertyValue;
+
+                    dateMap.put(mapPropertyName, new Date(timestamp));
+                }
+            }
+
+            if (! dateMap.isEmpty())
+            {
+                return dateMap;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    @Override
+    public Map<String, Date> removeDateMapFromProperty(String             sourceName,
+                                                       String             propertyName,
+                                                       InstanceProperties properties,
+                                                       String             methodName)
+    {
+        Map<String, Date>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getDateMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+                log.debug("Properties left: " + properties);
+            }
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    @Override
+    public Map<String, Double> getDoubleMapFromProperty(String             sourceName,
+                                                        String             propertyName,
+                                                        InstanceProperties properties,
+                                                        String             methodName)
+    {
+        Map<String, Object>   mapFromProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
+
+        if (mapFromProperty != null)
+        {
+            Map<String, Double>  doubleMap = new HashMap<>();
+
+            for (String mapPropertyName : mapFromProperty.keySet())
+            {
+                Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
+
+                if (actualPropertyValue != null)
+                {
+                    doubleMap.put(mapPropertyName, Double.parseDouble(actualPropertyValue.toString()));
+                }
+            }
+
+            if (! doubleMap.isEmpty())
+            {
+                return doubleMap;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    @Override
+    public Map<String, Double> removeDoubleMapFromProperty(String             sourceName,
+                                                           String             propertyName,
+                                                           InstanceProperties properties,
+                                                           String             methodName)
+    {
+        Map<String, Double>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getDoubleMapFromProperty(sourceName, propertyName, properties, methodName);
 
             if (retrievedProperty != null)
             {
@@ -1469,6 +1626,52 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @return instance properties object.
      */
     @Override
+    public InstanceProperties addDoublePropertyToInstance(String             sourceName,
+                                                          InstanceProperties properties,
+                                                          String             propertyName,
+                                                          double             propertyValue,
+                                                          String             methodName)
+    {
+        InstanceProperties  resultingProperties;
+
+        log.debug("Adding property " + propertyName + " for " + methodName);
+
+        if (properties == null)
+        {
+            log.debug("First property");
+
+            resultingProperties = new InstanceProperties();
+        }
+        else
+        {
+            resultingProperties = properties;
+        }
+
+
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE);
+        primitivePropertyValue.setPrimitiveValue(propertyValue);
+
+        resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+        return resultingProperties;
+    }
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add. Property may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    @Override
     public InstanceProperties addFloatPropertyToInstance(String             sourceName,
                                                          InstanceProperties properties,
                                                          String             propertyName,
@@ -1954,6 +2157,80 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @return instance properties object.
      */
     @Override
+    public InstanceProperties addDateMapPropertyToInstance(String             sourceName,
+                                                           InstanceProperties properties,
+                                                           String             propertyName,
+                                                           Map<String, Date>  mapValues,
+                                                           String             methodName)
+    {
+        if (mapValues != null)
+        {
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            if (! mapValues.isEmpty())
+            {
+                InstanceProperties  resultingProperties;
+
+                if (properties == null)
+                {
+                    resultingProperties = new InstanceProperties();
+                    resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
+                }
+                else
+                {
+                    resultingProperties = properties;
+                }
+
+
+                /*
+                 * The values of a map property are stored as an embedded InstanceProperties object.
+                 */
+                InstanceProperties  mapInstanceProperties  = this.addDatePropertyMapToInstance(sourceName,
+                                                                                               null,
+                                                                                               propertyName,
+                                                                                               mapValues,
+                                                                                               methodName);
+
+                /*
+                 * If there was content in the map then the resulting InstanceProperties are added as
+                 * a property to the resulting properties.
+                 */
+                if (mapInstanceProperties != null)
+                {
+                    MapPropertyValue mapPropertyValue = new MapPropertyValue();
+
+                    mapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+                    mapPropertyValue.setMapValues(mapInstanceProperties);
+                    mapPropertyValue.setTypeGUID(dateMapTypeGUID);
+                    mapPropertyValue.setTypeName(dateMapTypeName);
+
+                    resultingProperties.setProperty(propertyName, mapPropertyValue);
+
+                    log.debug("Returning instanceProperty: " + resultingProperties);
+
+                    return resultingProperties;
+                }
+            }
+        }
+
+        log.debug("Null property");
+        return properties;
+    }
+
+
+    /**
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    @Override
     public InstanceProperties addLongMapPropertyToInstance(String             sourceName,
                                                            InstanceProperties properties,
                                                            String             propertyName,
@@ -2014,6 +2291,79 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         return properties;
     }
 
+
+    /**
+     * If the supplied map property is not null, add it to an instance properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    @Override
+    public InstanceProperties addDoubleMapPropertyToInstance(String               sourceName,
+                                                             InstanceProperties   properties,
+                                                             String               propertyName,
+                                                             Map<String, Double>  mapValues,
+                                                             String               methodName)
+    {
+        if (mapValues != null)
+        {
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            if (! mapValues.isEmpty())
+            {
+                InstanceProperties  resultingProperties;
+
+                if (properties == null)
+                {
+                    resultingProperties = new InstanceProperties();
+                    resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
+                }
+                else
+                {
+                    resultingProperties = properties;
+                }
+
+
+                /*
+                 * The values of a map property are stored as an embedded InstanceProperties object.
+                 */
+                InstanceProperties  mapInstanceProperties  = this.addDoublePropertyMapToInstance(sourceName,
+                                                                                                null,
+                                                                                                 propertyName,
+                                                                                                 mapValues,
+                                                                                                 methodName);
+
+                /*
+                 * If there was content in the map then the resulting InstanceProperties are added as
+                 * a property to the resulting properties.
+                 */
+                if (mapInstanceProperties != null)
+                {
+                    MapPropertyValue mapPropertyValue = new MapPropertyValue();
+
+                    mapPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+                    mapPropertyValue.setMapValues(mapInstanceProperties);
+                    mapPropertyValue.setTypeGUID(doubleMapTypeGUID);
+                    mapPropertyValue.setTypeName(doubleMapTypeName);
+
+                    resultingProperties.setProperty(propertyName, mapPropertyValue);
+
+                    log.debug("Returning instanceProperty: " + resultingProperties);
+
+                    return resultingProperties;
+                }
+            }
+        }
+
+        log.debug("Null property");
+        return properties;
+    }
 
 
     /**
@@ -2520,7 +2870,6 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
     }
 
 
-
     /**
      * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
      * as a separate property in instance properties unless it is null.  If the instance properties object
@@ -2570,6 +2919,139 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getGUID());
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
+                }
+            }
+
+            if (propertyCount > 0)
+            {
+                log.debug("Returning instanceProperty: " + resultingProperties);
+
+                return resultingProperties;
+            }
+        }
+
+        log.debug("Null property");
+        return properties;
+    }
+
+    /**
+     * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
+     * as a separate property in instance properties unless it is null.  If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    @Override
+    public InstanceProperties addDatePropertyMapToInstance(String              sourceName,
+                                                           InstanceProperties  properties,
+                                                           String              propertyName,
+                                                           Map<String, Date>   mapValues,
+                                                           String              methodName)
+    {
+        if ((mapValues != null) && (! mapValues.isEmpty()))
+        {
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            InstanceProperties  resultingProperties;
+
+            if (properties == null)
+            {
+                resultingProperties = new InstanceProperties();
+                resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+            int propertyCount = 0;
+
+            for (String mapPropertyName : mapValues.keySet())
+            {
+                Date mapPropertyValue = mapValues.get(mapPropertyName);
+
+                if (mapPropertyValue != null)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue.getTime());
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
+                }
+            }
+
+            if (propertyCount > 0)
+            {
+                log.debug("Returning instanceProperty: " + resultingProperties);
+
+                return resultingProperties;
+            }
+        }
+
+        log.debug("Null property");
+        return properties;
+    }
+
+
+    /**
+     * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
+     * as a separate property in instance properties unless it is null.  If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    @Override
+    public InstanceProperties addDoublePropertyMapToInstance(String                sourceName,
+                                                             InstanceProperties    properties,
+                                                             String                propertyName,
+                                                             Map<String, Double>   mapValues,
+                                                             String                methodName)
+    {
+        if ((mapValues != null) && (! mapValues.isEmpty()))
+        {
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            InstanceProperties  resultingProperties;
+
+            if (properties == null)
+            {
+                resultingProperties = new InstanceProperties();
+                resultingProperties.setHeaderVersion(InstanceProperties.CURRENT_INSTANCE_PROPERTIES_HEADER_VERSION);
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+            int propertyCount = 0;
+
+            for (String mapPropertyName : mapValues.keySet())
+            {
+                Double mapPropertyValue = mapValues.get(mapPropertyName);
+
+                if (mapPropertyValue != null)
+                {
+                    PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                    primitivePropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
+                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE);
+                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE.getGUID());
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
                 }

@@ -13,8 +13,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceAc
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedEngineActionElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceActionElement extends ReferenceableProperties implements MetadataElement, Serializable
+public class GovernanceActionElement extends ReferenceableProperties implements MetadataElement
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private ElementHeader                        elementHeader            = null;
     private int                                  domainIdentifier         = 0;
     private String                               displayName              = null;

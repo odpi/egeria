@@ -3,12 +3,11 @@
 
 package org.odpi.openmetadata.frameworks.governanceaction.properties;
 
-import java.io.Serializable;
 
 /**
  * OpenMetadataTypeDefStatus is an enum that describes the status of a specific typeDef.
  */
-public enum OpenMetadataTypeDefStatus implements Serializable
+public enum OpenMetadataTypeDefStatus
 {
     /**
      * ActiveTypeDef - OpenMetadataTypeDef available and in use.  This is the default value equivalent to null.
@@ -24,8 +23,6 @@ public enum OpenMetadataTypeDefStatus implements Serializable
      * DeprecatedTypeDef - This typeDef should not be used because it has been deprecated.
      */
     DEPRECATED_TYPEDEF (3,  "DeprecatedTypeDef", "This typeDef should not be used because it has been deprecated.");
-
-    private static final long    serialVersionUID = 1L;
 
     private final int     ordinal;
     private final String  name;

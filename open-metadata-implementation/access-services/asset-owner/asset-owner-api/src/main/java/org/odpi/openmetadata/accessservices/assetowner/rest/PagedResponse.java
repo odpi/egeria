@@ -28,8 +28,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class PagedResponse extends FFDCResponseBase
 {
-    private static final long    serialVersionUID = 1L;
-
     private int        startingFromElement = 0;
 
     /**

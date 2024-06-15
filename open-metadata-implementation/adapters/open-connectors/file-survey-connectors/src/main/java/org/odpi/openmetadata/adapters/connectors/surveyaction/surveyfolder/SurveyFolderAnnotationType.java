@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileDirectoryMetric;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public enum SurveyFolderAnnotationType
                  OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
                  "Count up the number of files and directories under the surveyed directory that have specific characteristics.",
                  "Count the number of directories and files under the starting directory.",
-                 FolderMetric.getMetrics()),
+                 FileDirectoryMetric.getMetrics()),
 
     PROFILE_FILE_EXTENSIONS("Profile File Extensions",
                  OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
@@ -56,9 +57,15 @@ public enum SurveyFolderAnnotationType
 
     MISSING_REF_DATA("Missing File Reference Data",
                        OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName,
-                       "Report on files that could not be classified using the file reference data.",
-                       "The survey process uses reference data to classify the purpose of files based on their file name.  This annotation captures all of the file names that could not be matched to the reference data. If any of these reveal files that are important to your organization then the reference data should be enhanced to include these files.",
+                       "List of files that could not be classified using the file reference data.",
+                       "The survey service uses reference data to classify the purpose of files based on their file name.  This annotation captures all of the file names that could not be matched to the reference data. If any of these reveal files that are important to your organization then the reference data should be enhanced to include these files.",
                        null),
+
+    INACCESSIBLE_FILES("Inaccessible files",
+                     OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName,
+                     "List of files that the survey service was unable to retrieve the basic attributes for.",
+                     "The survey service retrieves the basic attributes of a file as part of its profiling effort.  A file I/O error uses reference data to classify the purpose of files based on their file name.  This annotation captures all of the file names that could not be matched to the reference data. If any of these reveal files that are important to your organization then the reference data should be enhanced to include these files.",
+                     null),
 
     ;
 
@@ -66,8 +73,8 @@ public enum SurveyFolderAnnotationType
     public final String             name;
     public final String             openMetadataTypeName;
     public final String             summary;
-    public final String             explanation;
-    public final List<FolderMetric> metrics;
+    public final String                    explanation;
+    public final List<FileDirectoryMetric> metrics;
 
 
     /**
@@ -83,7 +90,7 @@ public enum SurveyFolderAnnotationType
                                String              openMetadataTypeName,
                                String              summary,
                                String              explanation,
-                               List<FolderMetric>  metrics)
+                               List<FileDirectoryMetric>  metrics)
     {
         this.name                 = name;
         this.openMetadataTypeName = openMetadataTypeName;
@@ -185,9 +192,9 @@ public enum SurveyFolderAnnotationType
         {
             Map<String, String> metricsMap = new HashMap<>();
 
-            for (FolderMetric folderMetric : metrics)
+            for (FileDirectoryMetric fileDirectoryMetric : metrics)
             {
-                metricsMap.put(folderMetric.getName(), folderMetric.getDescription());
+                metricsMap.put(fileDirectoryMetric.getDisplayName(), fileDirectoryMetric.getDescription());
             }
 
             annotationTypeType.setOtherPropertyValues(metricsMap);

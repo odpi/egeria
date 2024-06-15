@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Meaning extends ElementBase
 {
-    private static final long     serialVersionUID = 1L;
-
     /*
      * Attributes of a meaning object definition
      */
@@ -111,8 +109,7 @@ public class Meaning extends ElementBase
     public String toString()
     {
         return "Meaning{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

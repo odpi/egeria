@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColum
 import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseForeignKeyProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DatabasePrimaryKeyProperties;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,10 +23,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DatabaseColumnElement  implements MetadataElement, Serializable
+public class DatabaseColumnElement  implements MetadataElement
 {
-    private static final long serialVersionUID = 1L;
-
     private ElementHeader                elementHeader = null;
     private DatabaseColumnProperties     databaseColumnProperties = null;
 

@@ -24,8 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class StewardshipActionOMASAPIResponse extends FFDCResponseBase
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.governanceengine.rest;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,10 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = UpdateGovernanceEngineRequestBody.class, name = "UpdateGovernanceEngineRequestBody")
         })
-public class NewGovernanceEngineRequestBody implements Serializable
+public class NewGovernanceEngineRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private String qualifiedName        = null;
     private String displayName          = null;
     private String description          = null;

@@ -40,7 +40,6 @@ public class TestRating
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
-        testObject.setURL("TestURL");
         testObject.setClassifications(classifications);
 
         testObject.setReview("TestReview");
@@ -60,7 +59,6 @@ public class TestRating
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getURL().equals("TestURL"));
         assertTrue(resultObject.getClassifications() == null);
 
         assertTrue(resultObject.getStarRating().equals(StarRating.FOUR_STARS));
@@ -78,7 +76,6 @@ public class TestRating
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getStarRating() == null);
@@ -89,7 +86,6 @@ public class TestRating
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getStarRating() == null);

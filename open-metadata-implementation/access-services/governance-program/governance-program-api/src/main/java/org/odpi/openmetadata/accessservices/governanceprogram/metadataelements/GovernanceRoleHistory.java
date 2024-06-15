@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceRoleHistory extends GovernanceRoleAppointee
 {
-    private static final long serialVersionUID = 1L;
-
     private List<GovernanceAppointee> predecessors = null;
     private List<GovernanceAppointee> successors   = null;
 

@@ -27,9 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ResourceMeasureAnnotation extends Annotation
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private Map<String, String> resourceProperties = null;
 
 

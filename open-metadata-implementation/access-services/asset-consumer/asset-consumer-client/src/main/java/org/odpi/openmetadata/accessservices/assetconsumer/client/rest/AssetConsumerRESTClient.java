@@ -2,10 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.client.rest;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagsResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -91,8 +88,6 @@ public class AssetConsumerRESTClient extends OCFRESTClient
     }
 
 
-
-
     /**
      * Issue a GET REST call that returns a GlossaryTermResponse object.
      *
@@ -147,6 +142,61 @@ public class AssetConsumerRESTClient extends OCFRESTClient
     }
 
 
+
+    /**
+     * Issue a GET REST call that returns an AssetGraphResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AssetGraphResponse callAssetGraphGetRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object... params) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        AssetGraphResponse restResult = this.callGetRESTCall(methodName, AssetGraphResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a AssetSearchMatchesListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the REST API call
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AssetSearchMatchesListResponse callAssetSearchMatchesListPostRESTCall(String    methodName,
+                                                                                 String    urlTemplate,
+                                                                                 Object    requestBody,
+                                                                                 Object... params) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
+    {
+        AssetSearchMatchesListResponse restResult =  this.callPostRESTCall(methodName, AssetSearchMatchesListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
     /**
      * Issue a GET REST call that returns a TagResponse object.
      *
@@ -171,33 +221,6 @@ public class AssetConsumerRESTClient extends OCFRESTClient
 
         return restResult;
     }
-
-
-    /**
-     * Issue a GET REST call that returns a TagsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return TagsResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    public TagsResponse callInformalTagListGetRESTCall(String    methodName,
-                                                       String    urlTemplate,
-                                                       Object... params) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
-    {
-        TagsResponse restResult = this.callGetRESTCall(methodName, TagsResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
 
 
     /**

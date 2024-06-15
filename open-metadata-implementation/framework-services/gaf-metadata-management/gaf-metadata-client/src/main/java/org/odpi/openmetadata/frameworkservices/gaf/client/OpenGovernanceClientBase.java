@@ -38,29 +38,6 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     protected final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     protected final NullRequestBody         nullRequestBody = new NullRequestBody();
 
-    /**
-     * Create a new client with no authentication embedded in the HTTP request.
-     *
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     *                                   REST API calls.
-     */
-    public OpenGovernanceClientBase(String                    serviceURLMarker,
-                                    String                    serverName,
-                                    String                    serverPlatformURLRoot) throws InvalidParameterException
-    {
-        final String methodName = "Constructor (no security)";
-
-        this.serviceURLMarker = serviceURLMarker;
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-        this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot);
-    }
 
 
     /**
@@ -121,6 +98,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
         this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword);
+
     }
 
 

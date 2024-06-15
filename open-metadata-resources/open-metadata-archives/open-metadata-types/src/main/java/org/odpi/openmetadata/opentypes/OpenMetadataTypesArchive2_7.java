@@ -328,7 +328,7 @@ public class OpenMetadataTypesArchive2_7
 
     private TypeDefPatch updateEngineActionEntity()
     {
-        final String typeName = "EngineAction";
+        final String typeName = OpenMetadataType.ENGINE_ACTION.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

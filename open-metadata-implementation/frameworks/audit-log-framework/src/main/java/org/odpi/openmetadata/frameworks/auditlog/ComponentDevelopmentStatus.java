@@ -36,8 +36,6 @@ public enum ComponentDevelopmentStatus
     private final String name;
     private final String description;
 
-    private static final long     serialVersionUID = 1L;
-
 
     /**
      * Constructor to set up the instance of this enum.

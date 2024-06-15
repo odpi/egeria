@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.governanceserver.events;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,9 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IntegrationConnectorConfigurationEvent extends GovernanceServerEvent
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String integrationConnectorGUID = null;
     private String integrationConnectorName = null;
 

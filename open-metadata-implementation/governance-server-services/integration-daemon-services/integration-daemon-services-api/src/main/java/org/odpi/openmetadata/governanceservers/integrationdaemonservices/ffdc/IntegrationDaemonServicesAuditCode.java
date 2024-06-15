@@ -429,22 +429,21 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                               "Ensure that the connector is running successfully."),
 
     /**
-     * INTEGRATION-DAEMON-SERVICES-0041 - The integration daemon thread is refreshing integration connector {0} for the first time in the {1} integration daemon instance
+     * INTEGRATION-DAEMON-SERVICES-0041 - Integration connector {0} is refreshing for the first time in the {1} integration daemon
      */
     DAEMON_CONNECTOR_FIRST_REFRESH("INTEGRATION-DAEMON-SERVICES-0041",
                                    AuditLogRecordSeverityLevel.INFO,
-                           "The integration daemon thread is refreshing integration connector {0} for the first time in " +
-                                           "the {1} integration daemon instance",
-                           "The thread is about to call refresh() on the integration connectors hosted in this daemon.",
+                           "Integration connector {0} is refreshing for the first time in the {1} integration daemon",
+                           "The thread is about to call refresh() on the integration connector hosted in this daemon for the first time.",
                            "Ensure that the connector does not report any errors during the refresh processing."),
 
     /**
-     * INTEGRATION-DAEMON-SERVICES-0042 - The integration daemon thread is refreshing integration connector {0} in integration daemon {1}
+     * INTEGRATION-DAEMON-SERVICES-0042 - Integration connector {0} is refreshing again in {1} integration daemon
      */
     DAEMON_CONNECTOR_REFRESH("INTEGRATION-DAEMON-SERVICES-0042",
                              AuditLogRecordSeverityLevel.INFO,
-                             "The integration daemon thread is refreshing integration connector {0} in integration daemon {1}",
-                             "The thread is about to call refresh() on the integration connectors hosted in this daemon.",
+                             "Integration connector {0} is refreshing again in {1} integration daemon",
+                             "The thread is about to call refresh() on the integration connector hosted in this daemon.",
                              "Ensure that the connector does not report any errors during the refresh processing."),
 
     /**
@@ -584,6 +583,37 @@ public enum IntegrationDaemonServicesAuditCode implements AuditLogMessageSet
                                      "User {0} has updated the connection for the integration connector {1} in integration daemon {2}",
                                      "The connector will be restarted once the new connection is in place.",
                                      "Ensure that the connector does not report any errors during the restart processing as it operates with this new connection information."),
+
+
+    /**
+     * INTEGRATION-DAEMON-SERVICES-0060 - The integration connector refresh thread for integration connector {0} has started
+     */
+    REFRESH_THREAD_STARTING("INTEGRATION-DAEMON-SERVICES-0060",
+                           AuditLogRecordSeverityLevel.STARTUP,
+                           "The integration connector refresh thread for integration connector {0} has started",
+                           "The thread will periodically call refresh() on the integration connector.  " +
+                                   "The time between each refresh is set up in the configuration for the integration connector.",
+                           "Ensure that the integration connector is running successfully."),
+
+    /**
+     * INTEGRATION-DAEMON-SERVICES-0064 - The integration connector refresh thread for integration connector {0} is shutting down
+     */
+    REFRESH_THREAD_TERMINATING("INTEGRATION-DAEMON-SERVICES-0064",
+                              AuditLogRecordSeverityLevel.SHUTDOWN,
+                              "The integration connector refresh thread for integration connector {0} is shutting down",
+                              "The thread will stop calling refresh() on the integration connectors hosted in this daemon and stop running.",
+                              "Ensure that the thread terminates without errors."),
+
+    /**
+     * INTEGRATION-DAEMON-SERVICES-0065 - The integration connector refresh thread for integration connector {0} caught a {1} exception  containing message {2}
+     */
+    REFRESH_THREAD_CONNECTOR_ERROR("INTEGRATION-DAEMON-SERVICES-0065",
+                                  AuditLogRecordSeverityLevel.EXCEPTION,
+                                  "The integration connector refresh thread for integration connector {0} caught a {1} exception containing message {2}",
+                                  "The integration connector thread will revisit this connector at the next refresh time.",
+                                  "Use the message from the exception and knowledge of the integration connector's behavior to " +
+                                          "track down and resolve the cause of the error and then restart the connector.  " +
+                                           "The integration connector refresh thread will then continue to call the connector."),
 
     ;
 

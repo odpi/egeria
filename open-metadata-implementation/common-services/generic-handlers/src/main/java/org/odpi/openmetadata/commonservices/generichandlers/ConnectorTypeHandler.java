@@ -460,7 +460,11 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                 serviceName,
                                                                 serverName);
 
-        builder.setAnchors(userId, null, OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME, methodName);
+        builder.setAnchors(userId,
+                           null,
+                           OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
+                           OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
+                           methodName);
 
         return this.createBeanFromTemplate(userId,
                                            externalSourceGUID,

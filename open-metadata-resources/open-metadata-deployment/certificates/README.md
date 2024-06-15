@@ -9,7 +9,7 @@ The truststore keeps the list of certificates for trusted servers and the keysto
 The `gensamplecerts.sh` script is used for generating self-signed certificates for the OMAG Server Platform, Egeria UI Platform and REACT UI presentation server.
 Once the certificates are created, the script copies them into the right locations to be picked up by the build.
 
-- The root directory for egeria gets the `truststore.p12` and the `keystore.p12` for the OMAG Server Platform.  This is copied into the distribution when the assembly is created.
+- The root directory for egeria gets the `truststore.p12` and the `keystore.p12` for the OMAG Server Platform.  This is copied into the distributions when the assembly is created.
 - The same truststore and the specialized keystore for the Egeria UI Platform are copied into `egeria/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/resources` which results in them being included in the jar file for this application.
 
 ## Set up to run
@@ -17,15 +17,15 @@ Once the certificates are created, the script copies them into the right locatio
 The `gensamplecerts.sh` script uses `openssl`.  The default version for Linux is ok, but the version on the Mac is `libressl` by default and you need to use `brew install openssl@3` to install the genuine openssl library and then:
 
 ```bash
-$ export PATH="/usr/local/opt/openssl@3/bin:$PATH"
+$ export PATH="/opt/homebrew/opt/openssl@3/bin:$PATH"
 $ ./gensamplecerts.sh
 ```
 
 The next time you run the build, the new certificates are incorporated in the distribution.
 
-After running the script, be sure to check in all of the updated files into GitHub since they contain counts.
+After running the script, be sure to check in all the updated files into GitHub since they contain counts.
 
-It is possible to reset all of the counts by setting CA_CLEAN environment variable.  However, this should not be the normal process. 
+It is possible to reset all the counts by setting CA_CLEAN environment variable.  However, this should not be the normal process. 
 
 ## Using the certificates
 

@@ -199,7 +199,11 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                       serviceName,
                                                       serverName);
 
-        builder.setAnchors(userId, null, OpenMetadataType.GLOSSARY_TYPE_NAME, methodName);
+        builder.setAnchors(userId,
+                           null,
+                           OpenMetadataType.GLOSSARY_TYPE_NAME,
+                           OpenMetadataType.GLOSSARY_TYPE_NAME,
+                           methodName);
 
         return this.createBeanFromTemplate(userId,
                                            externalSourceGUID,
@@ -270,7 +274,10 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
 
         String typeName = OpenMetadataType.GLOSSARY_TYPE_NAME;
 

@@ -21,15 +21,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SolutionViewServiceConfig extends ViewServiceConfig
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     /* There are no additional properties yet */
 
     /**
      * Default constructor for use with Jackson libraries
      */
-    public SolutionViewServiceConfig() {
+    public SolutionViewServiceConfig()
+    {
         super();
     }
 

@@ -16,9 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * Stores information about a rating connected to an asset.  Ratings provide informal feedback on the quality of assets
  * and can be added at any time.
- *
  * Ratings have the userId of the person who added it, a star rating and an optional review comment.
- *
  * The content of the rating is a personal judgement (which is why the user's id is in the object)
  * and there is no formal review of the ratings.  However, they can be used as a basis for crowd-sourcing
  * feedback to asset owners.
@@ -28,8 +26,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Rating extends ElementBase
 {
-    private static final long     serialVersionUID = 1L;
-
     /*
      * Attributes of a Rating
      */
@@ -161,8 +157,7 @@ public class Rating extends ElementBase
     public String toString()
     {
         return "Rating{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

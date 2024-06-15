@@ -133,8 +133,6 @@ public enum AssetOwnerAuditCode implements AuditLogMessageSet
                               "bus.  Once this is resolved, restart the server."),
     ;
 
-    private static final long    serialVersionUID = 1L;
-
     private final String                      logMessageId;
     private final AuditLogRecordSeverityLevel severity;
     private final String                      logMessage;

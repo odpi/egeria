@@ -15,9 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * The Comment bean stores information about a comment connected to an asset.  Comments provide informal feedback to assets
  * and can be added at any time.
- *
  * Comments have the userId of the person who added the feedback, along with their comment text.
- *
  * The content of the comment is a personal statement (which is why the user's id is in the comment)
  * and there is no formal review of the content.
  */
@@ -26,8 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Comment extends Referenceable
 {
-    private static final long     serialVersionUID = 1L;
-
     protected CommentType commentType = null;
     protected String      commentText = null;
     protected String      user        = null;
@@ -165,7 +161,6 @@ public class Comment extends Referenceable
                        ", commentText='" + commentText + '\'' +
                        ", user='" + user + '\'' +
                        ", isPublic=" + isPublic +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +

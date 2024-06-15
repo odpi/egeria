@@ -32,6 +32,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AssignmentScopeProperties.class, name = "AssignmentScopeProperties"),
                 @JsonSubTypes.Type(value = StakeholderProperties.class, name = "StakeholderProperties"),
                 @JsonSubTypes.Type(value = ProfileLocationProperties.class, name = "ProfileLocationProperties"),
+                @JsonSubTypes.Type(value = ProjectTeamProperties.class, name = "ProjectTeamProperties"),
         })
 public class RelationshipProperties
 {

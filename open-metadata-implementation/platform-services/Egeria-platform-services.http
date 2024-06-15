@@ -8,13 +8,13 @@ GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-pla
 ###
 # @name Get Platform Security Connection
 # Retrieve the Connection object used to create the connector that verifies the authorization of users calling the platform and admin services.
-GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/platform/security/connection
+GET {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/security/connection
 
 ###
 # @name Set Platform Security Connection
 # Set up the connection for the platform security connector.  This connector verifies the authorization of any user calling the platform or admin services.  This call is preconfigured to set up the sample platform security connector.  This allows only the Coco Pharmaceuticals IT administrator, `garygeeke`, to issue platform calls.
 # Once you have set up this security connector in your OMAG Server Platform, the default user `me` in the `Egeria` environment will no longer be authorized to issue REST calls to the server (try some of the requests that were "working" earlier to verify this).  To switch the user to one that the OMAG Server Platform will accept, click on the eye symbol (top right), then click on `edit` and change the current value of `user` to `garygeeke`.
-POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/platform/security/connection
+POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/security/connection
 Content-Type: application/json
 
 {
@@ -32,7 +32,7 @@ Content-Type: application/json
 ###
 # @name Delete Platform Security Connection
 # Remove the currently configured Platform Security Connection.  This means that no security checks will be performed by the OMAG Server Platform.
-DELETE {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/platform/security/connection
+DELETE {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/security/connection
 
 ###
 # @name Get registered access services

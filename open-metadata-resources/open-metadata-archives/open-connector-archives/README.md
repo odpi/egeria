@@ -4,7 +4,7 @@
 # Open Connector Archives
 
 The open connector archives module implements a utility to build the 
-`OpenConnectorsArchive.omarchive` [open metadata archive](https://egeria-project.org/concepts/open-metadata-archive/).
+`CoreContentPack.omarchive` [open metadata archive](https://egeria-project.org/concepts/open-metadata-archive/).
 
 This archive contains the metadata descriptions for each of the connectors supplied by Egeria.
 These connectors follow the [Open Connector Framework (OCF)](https://egeria-project.org/frameworks/ocf/overview/).

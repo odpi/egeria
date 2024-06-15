@@ -1407,6 +1407,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                                  endpointGUID,
                                                  endpointGUIDParameterName,
                                                  OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                 OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                  endpointProperties.getQualifiedName(),
                                                  endpointProperties,
                                                  true,
@@ -1527,7 +1528,10 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(endpointGUID, endpointGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(endpointProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(endpointProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(endpointProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         endpointHandler.updateEndpoint(userId,
                                        this.getExternalSourceGUID(correlationProperties),
@@ -1554,6 +1558,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
         this.maintainSupplementaryProperties(userId,
                                              endpointGUID,
                                              endpointGUIDParameterName,
+                                             OpenMetadataType.ENDPOINT_TYPE_NAME,
                                              OpenMetadataType.ENDPOINT_TYPE_NAME,
                                              endpointProperties.getQualifiedName(),
                                              endpointProperties,

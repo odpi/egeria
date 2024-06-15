@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -46,9 +45,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @SuppressWarnings(value = "deprecation")
 public class SchemaType extends SchemaElement
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     protected String              versionNumber    = null;
     protected String              author           = null;
     protected String              usage            = null;
@@ -323,21 +319,9 @@ public class SchemaType extends SchemaElement
                 ", searchKeywords=" + searchKeywords +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
-                ", url='" + url + '\'' +
                 ", extendedProperties=" + extendedProperties +
                 ", cloneSchemaElement=" + cloneSchemaElement() +
                 ", cloneSchemaType=" + cloneSchemaType() +
-                ", isDeprecated=" + getIsDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", calculatedValue=" + getIsCalculatedValue() +
-                ", expression='" + getExpression() + '\'' +
-                ", meanings=" + getMeanings() +
-                ", searchKeywords=" + getSearchKeywords() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", URL='" + getURL() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
                 ", GUID='" + getGUID() + '\'' +
                 ", classifications=" + getClassifications() +
                 ", status=" + getStatus() +

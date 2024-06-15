@@ -75,8 +75,8 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
             placeholderPropertyValues  = template.getPlaceholderPropertyValues();
             parentRelationshipTypeName = template.getParentRelationshipTypeName();
             parentRelationshipProperties = template.getParentRelationshipProperties();
-            parentAtEnd1 = template.getParentAtEnd1();
-            effectiveTime = template.getEffectiveTime();
+            parentAtEnd1                 = template.getParentAtEnd1();
+            effectiveTime                = template.getEffectiveTime();
         }
     }
 
@@ -443,7 +443,6 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
                        ", externalSourceName='" + getExternalSourceName() + '\'' +
                        '}';
     }
-
 
     /**
      * Equals method that returns true if containing properties are the same.

@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -18,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum AnnotationStatus implements Serializable
+public enum AnnotationStatus
 {
     /**
      * Annotation has been created but not reviewed.
@@ -59,8 +57,6 @@ public enum AnnotationStatus implements Serializable
      * Annotation has not had a status assigned
      */
     UNKNOWN_STATUS      (99, "Unknown",  "Annotation has not had a status assigned", "a9fc9231-f04a-40c4-99b1-4a1058063f5e");
-
-    private static final long     serialVersionUID = 1L;
 
     private static final String ENUM_TYPE_GUID  = "71187df6-ef66-4f88-bc03-cd3c7f925165";
     private static final String ENUM_TYPE_NAME  = "AnnotationStatus";

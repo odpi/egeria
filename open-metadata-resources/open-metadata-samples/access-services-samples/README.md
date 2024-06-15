@@ -5,13 +5,11 @@
 
 The following samples show how to use the Open Metadata Access Services (OMASs) clients.
 
+* **[Asset Management Samples](asset-management-samples)** illustrates how to work with assets.
 * **[Governance Program OMAS Client Samples](governance-program-client-samples)** illustrates how to create and maintain
 definitions related to a governance program.
 
 * **[Glossary Workflow Samples](glossary-workflow-samples)** show how to manage updates to glossary terms.
-
-* **[Subject Area OMAS Client Samples](subject-area-client-samples)** illustrates how to create and maintain
-semantic information in glossaries.  This includes glossary terms and subject areas.
 
 
 ----

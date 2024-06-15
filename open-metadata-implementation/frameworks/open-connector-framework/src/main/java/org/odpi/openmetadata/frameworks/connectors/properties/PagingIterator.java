@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -43,9 +42,6 @@ import java.util.List;
  */
 public class PagingIterator extends PropertyBase implements Iterator<ElementBase>
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     /**
      * Maximum that can be returned on each retrieve
      */

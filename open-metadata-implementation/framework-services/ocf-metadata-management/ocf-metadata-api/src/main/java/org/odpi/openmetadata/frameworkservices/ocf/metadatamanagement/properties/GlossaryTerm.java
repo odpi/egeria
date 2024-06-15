@@ -214,7 +214,6 @@ public class GlossaryTerm extends Referenceable
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';

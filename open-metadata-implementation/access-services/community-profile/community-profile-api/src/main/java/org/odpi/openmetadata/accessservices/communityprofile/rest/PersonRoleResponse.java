@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PersonRoleResponse extends CommunityProfileOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private PersonRoleElement element = null;
 
 

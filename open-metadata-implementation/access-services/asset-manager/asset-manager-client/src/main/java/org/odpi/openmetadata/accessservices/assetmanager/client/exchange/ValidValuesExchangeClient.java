@@ -701,23 +701,23 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                    properties.getAttributeName());
 
             elementProperties = propertyHelper.addIntProperty(elementProperties,
-                                                              OpenMetadataType.CONFIDENCE_PROPERTY_NAME,
+                                                              OpenMetadataProperty.CONFIDENCE.name,
                                                               properties.getConfidence());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.STEWARD_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.STEWARD.name,
                                                                  properties.getSteward());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.STEWARD_TYPE_NAME.name,
                                                                  properties.getStewardTypeName());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
                                                                  properties.getStewardPropertyName());
             
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.NOTES_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.NOTES.name,
                                                                  properties.getNotes());
 
             openMetadataStoreClient.createRelatedElementsInStore(userId,

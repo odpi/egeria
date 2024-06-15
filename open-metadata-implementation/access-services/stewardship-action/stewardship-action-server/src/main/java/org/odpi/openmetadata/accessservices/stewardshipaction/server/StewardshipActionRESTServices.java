@@ -429,11 +429,11 @@ public class StewardshipActionRESTServices
                                                                                               relationship.getProperties(),
                                                                                               methodName));
                             duplicateProperties.setStewardTypeName(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                                                                      OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                                                      OpenMetadataProperty.STEWARD_TYPE_NAME.name,
                                                                                                       relationship.getProperties(),
                                                                                                       methodName));
                             duplicateProperties.setStewardPropertyName(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                                                                          OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                                          OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
                                                                                                           relationship.getProperties(),
                                                                                                           methodName));
                             duplicateProperties.setSource(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
@@ -441,7 +441,7 @@ public class StewardshipActionRESTServices
                                                                                              relationship.getProperties(),
                                                                                              methodName));
                             duplicateProperties.setNotes(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                                                            OpenMetadataType.NOTES_PROPERTY_NAME,
+                                                                                            OpenMetadataProperty.NOTES.name,
                                                                                             relationship.getProperties(),
                                                                                             methodName));
 
@@ -531,13 +531,13 @@ public class StewardshipActionRESTServices
 
                 properties = repositoryHelper.addStringPropertyToInstance(instanceHandler.getServiceName(),
                                                                           properties,
-                                                                          OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.STEWARD_TYPE_NAME.name,
                                                                           requestBody.getStewardTypeName(),
                                                                           methodName);
 
                 properties = repositoryHelper.addStringPropertyToInstance(instanceHandler.getServiceName(),
                                                                           properties,
-                                                                          OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
                                                                           requestBody.getStewardPropertyName(),
                                                                           methodName);
 
@@ -549,7 +549,7 @@ public class StewardshipActionRESTServices
 
                 properties = repositoryHelper.addStringPropertyToInstance(instanceHandler.getServiceName(),
                                                                           properties,
-                                                                          OpenMetadataType.NOTES_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.NOTES.name,
                                                                           requestBody.getNotes(),
                                                                           methodName);
 

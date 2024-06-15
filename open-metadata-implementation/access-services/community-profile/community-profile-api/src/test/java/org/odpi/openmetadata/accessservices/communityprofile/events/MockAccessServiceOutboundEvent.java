@@ -7,8 +7,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.events;
  */
 public class MockAccessServiceOutboundEvent extends CommunityProfileOutboundEvent
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

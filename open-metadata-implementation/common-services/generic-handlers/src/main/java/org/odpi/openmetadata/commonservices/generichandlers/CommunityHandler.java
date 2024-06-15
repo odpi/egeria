@@ -204,7 +204,11 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
                                                         serviceName,
                                                         serverName);
 
-        builder.setAnchors(userId, null, OpenMetadataType.COMMUNITY_TYPE_NAME, methodName);
+        builder.setAnchors(userId,
+                           null,
+                           OpenMetadataType.COMMUNITY_TYPE_NAME,
+                           OpenMetadataType.COMMUNITY_TYPE_NAME,
+                           methodName);
 
 
         return this.createBeanFromTemplate(userId,
@@ -276,7 +280,11 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(communityGUID, communityGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
 
         String typeName = OpenMetadataType.COMMUNITY_TYPE_NAME;
 

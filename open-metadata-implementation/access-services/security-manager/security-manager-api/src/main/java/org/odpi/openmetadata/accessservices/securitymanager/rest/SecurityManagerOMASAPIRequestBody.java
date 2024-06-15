@@ -23,11 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                       @JsonSubTypes.Type(value = PathNameRequestBody.class, name = "PathNameRequestBody")
 
               })
-public abstract class SecurityManagerOMASAPIRequestBody implements java.io.Serializable
+public abstract class SecurityManagerOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
-
     /**
      * Default constructor
      */

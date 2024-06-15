@@ -10,8 +10,6 @@ import java.util.Objects;
  */
 public class SubjectAreaClassificationProperties extends ClassificationProperties
 {
-    private static final long     serialVersionUID = 1L;
-
     private String subjectAreaName  = null;
 
 

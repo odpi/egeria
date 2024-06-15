@@ -39,6 +39,25 @@ public enum PostgresAuditCode implements AuditLogMessageSet
                        "The survey terminates.",
                        "This may not be an error if there are no user database on the database server.  If there are, check the permissions associated with the database userId."),
 
+    /**
+     * POSTGRES-CONNECTOR-0003 - The {0} integration connector has catalogued PostgreSQL Database {1} ({2})
+     */
+    CATALOGED_DATABASE( "POSTGRES-CONNECTOR-0003",
+                  AuditLogRecordSeverityLevel.INFO,
+                  "The {0} integration connector has catalogued PostgreSQL Database {1} ({2})",
+                  "The integration connector looks for another database.",
+                  "This is an information message showing that the integration connector has found a new database."),
+
+
+    /**
+     * POSTGRES-CONNECTOR-0004 - he {0} integration connector is skipping PostgreSQL Database {1} ({2}) because it is already catalogued
+     */
+    SKIPPING_DATABASE( "POSTGRES-CONNECTOR-0004",
+                        AuditLogRecordSeverityLevel.INFO,
+                        "The {0} integration connector is skipping PostgreSQL Database {1} ({2}) because it is already catalogued",
+                        "The integration connector continues, looking for another database.",
+                        "This is an information message showing that the integration connector is working, but does not need to do any processing on this database."),
+
     ;
 
     private final String                     logMessageId;

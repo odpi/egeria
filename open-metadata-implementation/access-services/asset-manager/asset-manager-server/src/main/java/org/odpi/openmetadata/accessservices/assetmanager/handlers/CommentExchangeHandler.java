@@ -254,7 +254,10 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(commentGUID, commentGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(commentProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(commentProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(commentProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         int commentType = CommentType.STANDARD_COMMENT.getOrdinal();
 

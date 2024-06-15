@@ -19,8 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Deprecated
 public class SoftwareServerCapabilityElement extends SoftwareCapabilityElement
 {
-    private static final long serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

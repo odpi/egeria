@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

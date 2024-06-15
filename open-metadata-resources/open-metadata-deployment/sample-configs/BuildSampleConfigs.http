@@ -29,6 +29,13 @@ POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simp
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/access-services/no-topics
 
 ###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/SimpleCatalog.omarchive
+
+###
 # ---------------------------------------------
 # Metadata Assess Store: active-metadata-store
 #
@@ -74,7 +81,7 @@ POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/acti
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/open-metadata-archives/file
 Content-Type: text/plain
 
-content-packs/OpenConnectorsArchive.omarchive
+content-packs/CoreContentPack.omarchive
 
 
 ###
@@ -101,13 +108,13 @@ Content-Type: application/json
 {
   "class": "ViewServiceRequestBody",
   "omagserverName": "active-metadata-store",
-  "omagserverPlatformRootURL": "{{baseURL}}",
+  "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
   "resourceEndpoints": [
     {
       "class": "ResourceEndpointConfig",
       "resourceCategory": "Platform",
       "platformName": "Platform:9443",
-      "platformRootURL": "{{baseURL}}",
+      "platformRootURL": "{{egeriaEndpoint}}",
       "description": "This is the default OMAG Server Platform."
     },
     {
@@ -202,7 +209,7 @@ Content-Type: application/json
       "engineUserId": "generalnpa"
     }
   ],
-  "omagserverPlatformRootURL": "{{baseURL}}",
+  "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
   "omagserverName": "active-metadata-store"
 }
 
@@ -229,7 +236,7 @@ Content-Type: application/json
 
 {
     "class": "IntegrationGroupConfig",
-    "omagserverPlatformRootURL": "{{baseURL}}",
+    "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
     "omagserverName" : "active-metadata-store",
     "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:DefaultIntegrationGroup"
 }

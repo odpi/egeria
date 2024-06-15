@@ -32,8 +32,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class GovernedReferenceable extends Referenceable
 {
-    private static final long     serialVersionUID = 1L;
-
     protected List<Meaning>                           meanings                                = null;
     protected List<SearchKeyword>                     searchKeywords                          = null;
 
@@ -138,8 +136,7 @@ public class GovernedReferenceable extends Referenceable
     public String toString()
     {
         return "GovernedReferenceable{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

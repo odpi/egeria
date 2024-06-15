@@ -22,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ExternalReferenceLinkRequestBody extends DataManagerOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private String linkId          = null;
     private String linkDescription = null;
 

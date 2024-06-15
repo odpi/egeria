@@ -9,10 +9,8 @@ import java.util.Objects;
 /**
  * TranslationDetail provides translated strings for an open metadata element for a specific language/locale.
  */
-public class TranslationDetail implements Serializable
+public class TranslationDetail
 {
-    private static final long   serialVersionUID = 1L;
-
     private String              language               = null;
     private String              codeSet                = null;
     private String              locale                 = null;

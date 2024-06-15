@@ -15,6 +15,11 @@ public enum OpenMetadataProperty
     GUID("guid", "string", "Unique identifier of an open metadata entity or relationship.", "f1ad7bbe-1d9f-4149-b87c-205bbd174b55", "f1ad7bbe-1d9f-4149-b87c-205bbd174b55"),
 
     /**
+     * The unique identifier for the metadata collection that is the home for a metadata element.
+     */
+    METADATA_COLLECTION_ID("metadataCollectionId", "string", "The unique identifier for the metadata collection that is the home for a metadata element.", "151b9d80-8417-41c4-8f04-3ab90a387196", "01d7e832-ef18-4451-8e4c-4ba972292a8e"),
+
+    /**
      * Unique identifier of an open metadata entity, classification or relationship.
      */
     TYPE_NAME("typeName", "string", "Unique name of an open metadata entity,classification or relationship.", "Asset", "7c5a7e83-2709-4789-b014-d23082a659bd"),
@@ -70,6 +75,11 @@ public enum OpenMetadataProperty
     ANCHOR_TYPE_NAME("anchorTypeName", "string", "Unique name of the type of the anchor.", "Asset", "605c9dd5-fa79-4457-b299-9169c5567f97"),
 
     /**
+     * Unique name of the domain of the anchor.  This is an Open Metadata Type Name that either directly inherits from OpenMetadataRoot or Referenceable.
+     */
+    ANCHOR_DOMAIN_NAME("anchorDomainName", "string", "Unique name of the domain of the anchor.  This is an Open Metadata Type Name that either directly inherits from OpenMetadataRoot or Referenceable.", "Asset", "00ba532f-792f-4b78-8940-b5a9fd72f854"),
+
+    /**
      * Unique identifier for the entity.
      */
     QUALIFIED_NAME("qualifiedName", "string", "Unique identifier for the entity.", "SoftwareServer:MyAsset:MyAssetName", "e31e5b9b-0f96-42a9-8e67-0e3fc66ad305"),
@@ -105,31 +115,24 @@ public enum OpenMetadataProperty
     DEPLOYED_IMPLEMENTATION_TYPE("deployedImplementationType", "string", "Name of a particular type of technology.  It is more specific than the open metadata types and increases the precision in which technology is catalogued.  This helps human understanding and enables connectors and other actions to be targeted to the right technology.", "PostgreSQL Database Server", "2f71cd9f-c614-4531-a5ae-3bcb6a6a1918"),
 
     /**
-     * Name of a particular type of technology.  It is more specific than the open metadata types and increases the precision in which technology is catalogued.  This helps human understanding and enables connectors and other actions to be targeted to the right technology.
-     */
-    @Deprecated
-    TYPE("type", "string", "Deprecated property, use deployedImplementationType.", null, "2f71cd9f-c614-4531-a5ae-3bcb6a6a1918"),
-
-    /**
      * Identifier of the person or process who is accountable for the proper management of the element or related resource.
      */
     OWNER("owner", "string", "Identifier of the person or process who is accountable for the proper management of the element or related resource.", null, "8b3e49d6-987c-4f2f-b624-ba91e5d28b33"),
 
     /**
-     * Type of identifier used for owner property.
+     * Type of element that describes the owner.
      */
-    @Deprecated
-    OWNER_TYPE("ownerType", "AssetOwnerType", "Type of identifier used for owner property.", "USER_ID", "142b2bbf-0f2f-4c1e-b10e-850cd208b31c"),
+    OWNER_TYPE_NAME("ownerTypeName", "string", "Type of element that describes the owner.", "PersonRole", "c0acfbc6-4250-437b-9aa3-ce3d5a3bd490"),
+
+    /**
+     * Name of the property from the element used to identify the owner.
+     */
+    OWNER_PROPERTY_NAME("ownerPropertyName", "string", "Name of the property from the element used to identify the owner.", "qualifiedName", "9d1fdeb4-132a-4ec7-8312-dc9362e4f2f7"),
 
     /**
      * The list of governance zones that this asset belongs to.
      */
     ZONE_MEMBERSHIP("zoneMembership", "array<string>", "The list of governance zones that this asset belongs to.", null, "2af69520-6991-4097-aa94-543127b73066"),
-
-    /**
-     * Description of the last change to the asset's metadata.
-     */
-    LATEST_CHANGE("latestChange", "string", "Description of the last change to the asset's metadata.", null, "756cf128-12e5-456e-97d7-843e7efec11b"),
 
     /**
      * Formula that describes the behaviour of the element.  May include placeholders for queryIds
@@ -145,6 +148,41 @@ public enum OpenMetadataProperty
      * Is this element visible to all, or only the author?
      */
     IS_PUBLIC("isPublic", "boolean",  "Is this element visible to all, or only the author?", "true", "e7a8eaa8-4358-4dd3-8d82-2ab3c118cfe4"),
+
+    /**
+     * Rating level provided.
+     */
+    STARS("stars", "StarRating", "Rating level provided.", "***", "896fd016-fad1-43dc-87a9-3ee577d8d898"),
+
+    /**
+     * Additional comments associated with the rating.
+     */
+    REVIEW("review", "string", "Additional comments associated with the rating.", null, "ae1ef693-6264-44ee-8014-23a283ad3b0e"),
+
+    /**
+     * Feedback comments or additional information.
+     */
+    TEXT("text", "string", "Feedback comments or additional information.", null, "baef44c7-e345-46ef-b8f7-a4d7fbcf77d7"),
+
+    /**
+     * Type of comment.
+     */
+    TYPE("type", "CommentType", "Type of comment.", "Answer", "465c7ed7-74d4-4eb3-9e4c-9d47f06a0ebd"),
+
+    /**
+     * Title
+     */
+    TITLE("title", "string", "Title", null, "c669dc73-3ae3-4350-95b7-4508a85bfc94"),
+
+    /**
+     * Descriptive name of the tag.
+     */
+    TAG_NAME("tagName", "string", "Descriptive name of the tag.", null, "c6054168-4236-4de1-9ece-ebcb5597dbf4"),
+
+    /**
+     * More detail on the meaning of the tag.
+     */
+    TAG_DESCRIPTION("tagDescription", "string", "More detail on the meaning of the tag.", null, "e8fc2fc9-afae-47cd-b5f0-f7c374fb6ea4"),
 
     /**
      * Description of the technique used to create the sample.
@@ -369,7 +407,22 @@ public enum OpenMetadataProperty
     /**
      * User identifier for the steward performing the review.
      */
-    STEWARD("Steward", "string", "User identifier for the steward performing the review.", null, "6777fa1e-3289-4896-a032-1097b4ad78b2"),
+    STEWARD("steward", "string", "Unique identifier for the steward performing the action.", null, "6777fa1e-3289-4896-a032-1097b4ad78b2"),
+
+    /**
+     * Type name of the Actor entity identifying the steward.
+     */
+    STEWARD_TYPE_NAME("stewardTypeName", "string", "Type name of the Actor entity identifying the steward.", "Person", "b4c4637d-b196-4268-86a2-c6daf444dd7d"),
+
+    /**
+     * Property name for the steward's unique identifier (typically guid or qualifiedName).
+     */
+    STEWARD_PROPERTY_NAME("stewardPropertyName", "string", "Property name for the steward's unique identifier (typically guid or qualifiedName).", "guid", "b9e55ebe-43fb-4eb0-8485-6ef22e07f0a8"),
+
+    /**
+     * Notes on why decision were made relating to this element, and other useful information.
+     */
+    NOTES("notes", "string", "Notes on why decision were made relating to this element, and other useful information.", null, "577281c3-82f8-4c1d-ad95-04ef5919e57c"),
 
     /**
      * Notes provided by the steward.
@@ -512,6 +565,21 @@ public enum OpenMetadataProperty
     INFERRED_SCALE("inferredScale", "int", "Inferred scale applied to the data based on the data values.", null, "bd28ec07-01bd-4db4-9377-33b15097ded4"),
 
     /**
+     * Time at which the profiling started collecting data.
+     */
+    PROFILE_PROPERTY_NAMES("profilePropertyNames", "array<string>", "List of property names used in this annotation.", "[profileEndDate, profileCounts]", "210e2977-6803-4fce-93e8-15547168d459"),
+
+    /**
+     * Time at which the profiling started collecting data.
+     */
+    PROFILE_START_DATE("profileStartDate", "date", "Time at which the profiling started collecting data.", null, "6bee91ad-4eae-4292-ab28-ff1e5404e74d"),
+
+    /**
+     * Time at which the profiling stopped collecting data.
+     */
+    PROFILE_END_DATE("profileEndDate", "date", "Time at which the profiling stopped collecting data.", null, "9f31776f-f567-40aa-92cd-b990131dbdb8"),
+
+    /**
      * Additional profile properties discovered during the analysis.
      */
     PROFILE_PROPERTIES("profileProperties", "map<string, string>", "Additional profile properties discovered during the analysis.", null, "53f5e89d-6730-4ae5-bfbf-62d4512eff58"),
@@ -522,9 +590,19 @@ public enum OpenMetadataProperty
     PROFILE_FLAGS("profileFlags", "map<string, boolean>", "Additional flags (booleans) discovered during the analysis.", null, "b7b28f24-5464-4cab-8c6b-10bc11ed6118"),
 
     /**
+     * Relevant dates discovered during the analysis.
+     */
+    PROFILE_DATES("profileDates", "map<string, date>", "Relevant dates discovered during the analysis.", null, "7d700cc5-b56c-4aeb-8416-7cf8d17d16c2"),
+
+    /**
      * Additional counts discovered during the analysis.
      */
     PROFILE_COUNTS("profileCounts", "map<string, long>", "Additional counts discovered during the analysis.", null, "6550a7b0-4ab2-4188-b32f-c1576f4bcedc"),
+
+    /**
+     * Additional large counts discovered during the analysis.
+     */
+    PROFILE_DOUBLES("profileDoubles", "map<string, double>", "Additional large counts discovered during the analysis.", null, "e77933c9-64c6-476f-bd0f-e905838fb7fa"),
 
     /**
      * List of individual values in the data.
@@ -788,7 +866,7 @@ public enum OpenMetadataProperty
     EXT_INSTANCE_VERSION("externalInstanceVersion" , "long", "The latest version of the element in the external system.", null, "349199e2-5781-4413-8550-c85241e20cc5"),
 
     /**
-     * Additional properties to aid the mapping to the the element in an external metadata source.
+     * Additional properties to aid the mapping to the element in an external metadata source.
      */
     MAPPING_PROPERTIES("mappingProperties", "map<string, string>", "Additional properties to aid the mapping to the the element in an external metadata source.", null, "8161e120-993b-490c-bf66-cb9fd85192fc"),
 
@@ -808,14 +886,19 @@ public enum OpenMetadataProperty
     KEY_PATTERN("keyPattern", "KeyPattern", "Type of identifier that identifies its lifecycle, for example, its scope and whether the value is reused.", null, "a8805753-865d-4860-ab95-1e83c3eaf01d"),
 
     /**
-     * Description of how the element can be used.
+     * Guidance on how the element should be used.
      */
-    USAGE("usage"   , "string", "Description of how the element can be used.", null, "e92f8669-5a07-4130-9ad6-62aadca7a505"),
+    USAGE("usage"   , "string", "Guidance on how the element should be used.", null, "e92f8669-5a07-4130-9ad6-62aadca7a505"),
 
     /**
      * Details of where the element was sourced from.
      */
-    SOURCE("source"   , "string", "Details of where the element was sourced from.", null, "9c40c4e3-1d6d-45fd-8df0-f1a2e09db636"),
+    SOURCE("source"   , "string", "Details of the organization, person or process that created the element, or provided the information used to create the element.", null, "9c40c4e3-1d6d-45fd-8df0-f1a2e09db636"),
+
+    /**
+     * Level of confidence in the correctness of the element.
+     */
+    CONFIDENCE("confidence"   , "int", "Level of confidence in the correctness of the element. 0=unknown; 1=low confidence; 100=total confidence.", "100", "26dd007a-cff3-45e7-963d-2a753c2b7000"),
 
     /**
      * The integration connector needs to use blocking calls to a third party technology and so needs to run in its own thread.
@@ -906,6 +989,11 @@ public enum OpenMetadataProperty
      * Defines the provenance and confidence that a member belongs in a collection.
      */
     MEMBERSHIP_STATUS("membershipStatus", CollectionMemberStatus.getOpenTypeName(), CollectionMemberStatus.getOpenTypeDescription(), CollectionMemberStatus.PROPOSED.getName(), "e304a92d-60d2-4605-8e3f-d338bd33e6d3"),
+
+    /**
+     * Description of how the member is used, or why it is useful in this collection.
+     */
+    MEMBERSHIP_RATIONALE("membershipRationale", "string", "Description of how the member is used, or why it is useful in this collection.", null, "f4c0da71-f8e8-4d05-a92c-5a1e6b4a263e"),
 
     /**
      * Defines the sequencing for a collection.
@@ -1000,11 +1088,6 @@ public enum OpenMetadataProperty
     ACTION_STATUS("actionStatus", EngineActionStatus.getOpenTypeName(), EngineActionStatus.getOpenTypeDescription(), EngineActionStatus.ACTIVATING.getName(), "c2d8fd79-0c16-4e01-888f-2ae7a9cdf11d"),
 
     /**
-     * Defines the current execution status of an engine action.
-     */
-    TARGET_FOR_ACTION_STATUS("status", EngineActionStatus.getOpenTypeName(), EngineActionStatus.getOpenTypeDescription(), EngineActionStatus.ACTIVATING.getName(), "8c9f0f64-6f58-46c7-aafc-b634d173f3de"),
-
-    /**
      * Different types of activities.
      */
     ACTIVITY_TYPE("type", GlossaryTermActivityType.getOpenTypeName(), GlossaryTermActivityType.getOpenTypeDescription(), GlossaryTermActivityType.PROJECT.getName(), "6949c588-d7ab-441f-be03-a97b1dc2900b"),
@@ -1015,14 +1098,25 @@ public enum OpenMetadataProperty
     TERM_RELATIONSHIP_STATUS("status", GlossaryTermRelationshipStatus.getOpenTypeName(), GlossaryTermRelationshipStatus.getOpenTypeDescription(), GlossaryTermRelationshipStatus.DRAFT.getName(), "5cc02a53-2428-434a-9b97-883eae896552"),
 
     /**
-     * Defines the provenance and confidence of a term assignment.
+     * Defines the provenance and confidence of a semantic assignment.
      */
-    TERM_ASSIGNMENT_STATUS("status", GlossaryTermAssignmentStatus.getOpenTypeName(), GlossaryTermAssignmentStatus.getOpenTypeDescription(), GlossaryTermAssignmentStatus.IMPORTED.getName(), "d842dfdd-f080-4539-9a3c-eacdf0a03d07"),
+    TERM_ASSIGNMENT_STATUS("termAssignmentStatus", GlossaryTermAssignmentStatus.getOpenTypeName(), GlossaryTermAssignmentStatus.getOpenTypeDescription(), GlossaryTermAssignmentStatus.IMPORTED.getName(), "d842dfdd-f080-4539-9a3c-eacdf0a03d07"),
 
     /**
      * Defines the provenance and confidence of a data class assignment.
      */
-    DATA_CLASS_ASSIGNMENT_STATUS("status", DataClassAssignmentStatus.getOpenTypeName(), DataClassAssignmentStatus.getOpenTypeDescription(), DataClassAssignmentStatus.IMPORTED.getName(), "71e53cf4-7158-4054-b7f8-da643a34d2da"),
+    DATA_CLASS_ASSIGNMENT_STATUS("dataClassAssignmentStatus", DataClassAssignmentStatus.getOpenTypeName(), DataClassAssignmentStatus.getOpenTypeDescription(), DataClassAssignmentStatus.IMPORTED.getName(), "71e53cf4-7158-4054-b7f8-da643a34d2da"),
+
+    /**
+     * An indication of the relative position in which this work item should be tackled compared to others in the overall work list.
+     */
+    PRIORITY("priority", "int", "An indication of the relative position in which this work item should be tackled compared to others in the overall work list.", "10", "6168ae13-f6ee-49e7-9f21-693e7a401926"),
+
+    /**
+     * Metadata properties embedded in the media file.
+     */
+    EMBEDDED_METADATA("embeddedMetadata", "map<string,string>", "Metadata properties embedded in the media file.", null, "af5a6693-e14c-489e-a76c-1a45248e9dbd"),
+
 
     ;
 

@@ -51,6 +51,9 @@ public class AutomatedCurationResource
      * Retrieve the list of deployed implementation type metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
+     * @param startsWith does the value start with the supplied string?
+     * @param endsWith does the value end with the supplied string?
+     * @param ignoreCase should the search ignore case?
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody string to find in the properties
@@ -67,11 +70,18 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/deployed-implementation-type"))
 
     public TechnologyTypeSummaryListResponse findTechnologyTypes(@PathVariable String                  serverName,
+                                                                 @RequestParam (required = false, defaultValue = "false")
+                                                                               boolean                 startsWith,
+                                                                 @RequestParam (required = false, defaultValue = "false")
+                                                                               boolean                 endsWith,
+                                                                 @RequestParam (required = false, defaultValue = "true")
+                                                                               boolean                 ignoreCase,
                                                                  @RequestParam int                     startFrom,
                                                                  @RequestParam int                     pageSize,
-                                                                 @RequestBody  FilterRequestBody       requestBody)
+                                                                 @RequestBody  (required = false)
+                                                                               FilterRequestBody       requestBody)
     {
-        return restAPI.findTechnologyTypes(serverName, startFrom, pageSize, requestBody);
+        return restAPI.findTechnologyTypes(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
 
 
@@ -410,7 +420,8 @@ public class AutomatedCurationResource
                                                                                                boolean                 endsWith,
                                                                                  @RequestParam (required = false, defaultValue = "false")
                                                                                                boolean                 ignoreCase,
-                                                                                 @RequestBody  FilterRequestBody       requestBody)
+                                                                                 @RequestBody  (required = false)
+                                                                                               FilterRequestBody       requestBody)
     {
         return restAPI.findGovernanceActionProcesses(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
@@ -710,7 +721,8 @@ public class AutomatedCurationResource
                                                                         boolean                 endsWith,
                                                           @RequestParam (required = false, defaultValue = "false")
                                                                         boolean                 ignoreCase,
-                                                          @RequestBody  FilterRequestBody       requestBody)
+                                                          @RequestBody  (required = false)
+                                                                        FilterRequestBody       requestBody)
     {
         return restAPI.findEngineActions(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }

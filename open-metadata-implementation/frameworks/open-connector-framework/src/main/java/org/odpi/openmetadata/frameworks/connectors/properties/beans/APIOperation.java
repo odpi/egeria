@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -26,9 +25,6 @@ public class APIOperation extends SchemaType
     protected  SchemaType  headerSchemaType   = null;
     protected  SchemaType  requestSchemaType  = null;
     protected  SchemaType  responseSchemaType = null;
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /**
      * Default constructor used by subclasses
@@ -191,7 +187,6 @@ public class APIOperation extends SchemaType
                 ", meanings=" + getMeanings() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
                 '}';
     }

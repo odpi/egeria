@@ -206,7 +206,10 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(operatingPlatformGUID, operatingPlatformGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
 
         String typeName = OpenMetadataType.OPERATING_PLATFORM.typeName;
 
@@ -295,7 +298,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                   externalSourceName,
                                   hostGUID,
                                   hostGUIDParameterName,
-                                  OpenMetadataType.HOST_TYPE_NAME,
+                                  OpenMetadataType.HOST.typeName,
                                   operatingPlatformGUID,
                                   operatingPlatformGUIDParameterName,
                                   OpenMetadataType.OPERATING_PLATFORM.typeName,
@@ -351,7 +354,7 @@ public class OperatingPlatformHandler<B> extends OpenMetadataAPIGenericHandler<B
                                       externalSourceName,
                                       hostGUID,
                                       hostGUIDParameterName,
-                                      OpenMetadataType.HOST_TYPE_NAME,
+                                      OpenMetadataType.HOST.typeName,
                                       operatingPlatformGUID,
                                       operatingPlatformGUIDParameterName,
                                       OpenMetadataType.OPERATING_PLATFORM.typeGUID,

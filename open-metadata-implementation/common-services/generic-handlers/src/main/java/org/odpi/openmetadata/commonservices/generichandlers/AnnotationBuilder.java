@@ -50,20 +50,25 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     /*
      * Attributes for the ResourceProfileAnnotation
      */
-    private int                  length            = 0;
-    private String               inferredDataType  = null;
-    private String               inferredFormat    = null;
-    private int                  inferredLength    = 0;
-    private int                  inferredPrecision = 0;
-    private int                  inferredScale     = 0;
-    private Map<String, String>  profileProperties = null;
-    private Map<String, Boolean> profileFlags      = null;
-    private Map<String, Long>    profileCounts     = null;
-    private List<String>         valueList         = null;
-    private Map<String, Integer> valueCount        = null;
-    private String               valueRangeFrom    = null;
-    private String               valueRangeTo      = null;
-    private String               averageValue      = null;
+    private List<String>         profilePropertyNames = null;
+    private int                  length               = 0;
+    private String               inferredDataType     = null;
+    private String               inferredFormat       = null;
+    private int                  inferredLength       = 0;
+    private int                  inferredPrecision    = 0;
+    private int                  inferredScale        = 0;
+    private Date                 profileStartDate     = null;
+    private Date                 profileEndDate       = null;
+    private Map<String, String>  profileProperties    = null;
+    private Map<String, Boolean> profileFlags         = null;
+    private Map<String, Date>    profileDates         = null;
+    private Map<String, Long>    profileCounts        = null;
+    private Map<String, Double>  profileDoubles       = null;
+    private List<String>         valueList            = null;
+    private Map<String, Integer> valueCount           = null;
+    private String               valueRangeFrom       = null;
+    private String               valueRangeTo         = null;
+    private String               averageValue         = null;
 
     /*
      * Attributes for the ResourceMeasurementAnnotation and ResourcePhysicalStatusAnnotation
@@ -203,50 +208,65 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     /**
      * Add properties for annotation subtype.
      *
+     * @param profilePropertyNames list of property names filled out in this annotation
      * @param length length of the data field.  Assumes static predefined lengths
      * @param inferredDataType name of the data type that the discovery service believes the field is
      * @param inferredFormat name of the data format that the discovery service believes the field is
      * @param inferredLength length of the data field that has been deduced from the data stored
      * @param inferredPrecision precision of the data field that has been deduced from the data stored
      * @param inferredScale inferred scale used in other properties
+     * @param profileStartDate profiling start time
+     * @param profileEndDate profiling stop time
      * @param profileProperties the map of properties that make up the profile
      * @param profileFlags a set of boolean flags describing different aspects of the data
+     * @param profileDates a set of relevant dates describing different aspects of the data
      * @param profileCounts the map of different profiling counts that have been calculated
+     * @param profileDoubles the map of different large profiling counts that have been calculated
      * @param valueList the list of values found in the data field
      * @param valueCount  a map of values to value count for the data field
      * @param valueRangeFrom the lowest value of the data stored in this data field
      * @param valueRangeTo the upper value of the data stored in this data field
      * @param averageValue the average (mean) value of the values stored in the data field
      */
-    void setResourceProfileSubtypeProperties(int                  length,
+    void setResourceProfileSubtypeProperties(List<String>         profilePropertyNames,
+                                             int                  length,
                                              String               inferredDataType,
                                              String               inferredFormat,
                                              int                  inferredLength,
                                              int                  inferredPrecision,
                                              int                  inferredScale,
+                                             Date                 profileStartDate,
+                                             Date                 profileEndDate,
                                              Map<String, String>  profileProperties,
                                              Map<String, Boolean> profileFlags,
+                                             Map<String, Date>    profileDates,
                                              Map<String, Long>    profileCounts,
+                                             Map<String, Double>  profileDoubles,
                                              List<String>         valueList,
                                              Map<String, Integer> valueCount,
                                              String               valueRangeFrom,
                                              String               valueRangeTo,
                                              String               averageValue)
     {
-        this.length            = length;
-        this.inferredDataType  = inferredDataType;
-        this.inferredFormat    = inferredFormat;
-        this.inferredLength    = inferredLength;
-        this.inferredPrecision = inferredPrecision;
-        this.inferredScale     = inferredScale;
-        this.profileProperties = profileProperties;
-        this.profileFlags      = profileFlags;
-        this.profileCounts     = profileCounts;
-        this.valueList         = valueList;
-        this.valueCount        = valueCount;
-        this.valueRangeFrom    = valueRangeFrom;
-        this.valueRangeTo      = valueRangeTo;
-        this.averageValue      = averageValue;
+        this.profilePropertyNames = profilePropertyNames;
+        this.length               = length;
+        this.inferredDataType     = inferredDataType;
+        this.inferredFormat       = inferredFormat;
+        this.inferredLength       = inferredLength;
+        this.inferredPrecision    = inferredPrecision;
+        this.inferredScale        = inferredScale;
+        this.profileStartDate     = profileStartDate;
+        this.profileEndDate       = profileEndDate;
+        this.profileProperties    = profileProperties;
+        this.profileFlags         = profileFlags;
+        this.profileDates         = profileDates;
+        this.profileCounts        = profileCounts;
+        this.profileDoubles       = profileDoubles;
+        this.valueList            = valueList;
+        this.valueCount           = valueCount;
+        this.valueRangeFrom       = valueRangeFrom;
+        this.valueRangeTo         = valueRangeTo;
+        this.averageValue         = averageValue;
     }
 
 
@@ -531,6 +551,12 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     private InstanceProperties addResourceProfileAnnotationInstanceProperties(InstanceProperties properties,
                                                                               String             methodName)
     {
+        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                       properties,
+                                                                       OpenMetadataProperty.PROFILE_PROPERTY_NAMES.name,
+                                                                       profilePropertyNames,
+                                                                       methodName);
+
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
                                                                OpenMetadataProperty.LENGTH.name,
@@ -567,6 +593,18 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
                                                                inferredScale,
                                                                methodName);
 
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataProperty.PROFILE_START_DATE.name,
+                                                                profileStartDate,
+                                                                methodName);
+
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataProperty.PROFILE_END_DATE.name,
+                                                                profileEndDate,
+                                                                methodName);
+
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
                                                                      OpenMetadataProperty.PROFILE_PROPERTIES.name,
@@ -579,11 +617,23 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
                                                                       profileFlags,
                                                                       methodName);
 
+        properties = repositoryHelper.addDateMapPropertyToInstance(serviceName,
+                                                                   properties,
+                                                                   OpenMetadataProperty.PROFILE_DATES.name,
+                                                                   profileDates,
+                                                                   methodName);
+
         properties = repositoryHelper.addLongMapPropertyToInstance(serviceName,
                                                                    properties,
                                                                    OpenMetadataProperty.PROFILE_COUNTS.name,
                                                                    profileCounts,
                                                                    methodName);
+
+        properties = repositoryHelper.addDoubleMapPropertyToInstance(serviceName,
+                                                                     properties,
+                                                                     OpenMetadataProperty.PROFILE_DOUBLES.name,
+                                                                     profileDoubles,
+                                                                     methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,

@@ -7,8 +7,6 @@ package org.odpi.openmetadata.accessservices.projectmanagement.rest;
  */
 public class MockAPIResponse extends ProjectManagementOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

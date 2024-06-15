@@ -36,8 +36,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public abstract class SchemaElement extends GovernedReferenceable
 {
-    private static final long     serialVersionUID = 1L;
-
     protected boolean isDeprecated = false;
     protected String  displayName = null;
     protected String  description = null;
@@ -245,7 +243,6 @@ public abstract class SchemaElement extends GovernedReferenceable
                 ", searchKeywords=" + getSearchKeywords() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
                 ", headerVersion=" + getHeaderVersion() +

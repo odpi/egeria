@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LiteralSchemaType extends SchemaType
 {
-    private static final long     serialVersionUID = 1L;
-
     protected  String dataType   = null;
     protected  String fixedValue = null;
 
@@ -124,8 +122,7 @@ public class LiteralSchemaType extends SchemaType
     public String toString()
     {
         return "LiteralSchemaType{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

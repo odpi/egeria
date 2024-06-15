@@ -26,6 +26,7 @@ public class ProjectProperties extends ReferenceableProperties
     private String projectPhase   = null;
     private String projectHealth  = null;
     private String projectStatus  = null;
+    private int    priority       = 0;
     private Date   startDate      = null;
     private Date   plannedEndDate = null;
 
@@ -53,9 +54,10 @@ public class ProjectProperties extends ReferenceableProperties
             this.identifier = template.getIdentifier();
             this.name = template.getName();
             this.description   = template.getDescription();
-            this.projectStatus = template.getProjectPhase();
-            this.projectStatus = template.getProjectHealth();
+            this.projectPhase = template.getProjectPhase();
+            this.projectHealth = template.getProjectHealth();
             this.projectStatus = template.getProjectStatus();
+            this.priority = template.getPriority();
             this.startDate     = template.getStartDate();
             this.plannedEndDate = template.getPlannedEndDate();
         }
@@ -196,6 +198,27 @@ public class ProjectProperties extends ReferenceableProperties
 
 
     /**
+     * Return the priority of this project.
+     *
+     * @return int
+     */
+    public int getPriority()
+    {
+        return priority;
+    }
+
+
+    /**
+     * Set up the priority of this project.
+     *
+     * @param priority int
+     */
+    public void setPriority(int priority)
+    {
+        this.priority = priority;
+    }
+
+    /**
      * Return the date that the project was created.
      *
      * @return date
@@ -269,6 +292,7 @@ public class ProjectProperties extends ReferenceableProperties
                        ", health='" + projectHealth + '\'' +
                        ", status='" + projectStatus + '\'' +
                        ", startDate=" + startDate +
+                       ", priority=" + priority +
                        ", plannedEndDate=" + plannedEndDate +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -290,29 +314,12 @@ public class ProjectProperties extends ReferenceableProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         ProjectProperties that = (ProjectProperties) objectToCompare;
-        return Objects.equals(identifier, that.identifier) &&
-                       Objects.equals(name, that.name) &&
-                       Objects.equals(description, that.description) &&
-                       Objects.equals(projectPhase, that.projectPhase) &&
-                       Objects.equals(projectHealth, that.projectHealth) &&
-                       Objects.equals(projectStatus, that.projectStatus) &&
-                       Objects.equals(startDate, that.startDate) &&
-                       Objects.equals(plannedEndDate, that.plannedEndDate);
+        return priority == that.priority && Objects.equals(identifier, that.identifier) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(projectPhase, that.projectPhase) && Objects.equals(projectHealth, that.projectHealth) && Objects.equals(projectStatus, that.projectStatus) && Objects.equals(startDate, that.startDate) && Objects.equals(plannedEndDate, that.plannedEndDate);
     }
-
 
     /**
      * Return hash code for this object
@@ -322,6 +329,6 @@ public class ProjectProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), identifier, name, description, projectPhase, projectHealth, projectStatus, startDate, plannedEndDate);
+        return Objects.hash(super.hashCode(), identifier, name, description, projectPhase, projectHealth, projectStatus, priority, startDate, plannedEndDate);
     }
 }

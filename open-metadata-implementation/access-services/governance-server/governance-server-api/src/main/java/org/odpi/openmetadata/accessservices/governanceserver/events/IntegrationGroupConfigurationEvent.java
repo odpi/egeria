@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.governanceserver.events;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -27,9 +26,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class IntegrationGroupConfigurationEvent extends GovernanceServerEvent
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String integrationGroupGUID = null;
     private String integrationGroupName = null;
 

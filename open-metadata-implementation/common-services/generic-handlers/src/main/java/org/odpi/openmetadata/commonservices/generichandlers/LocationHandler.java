@@ -207,7 +207,11 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-        locationBuilder.setAnchors(userId, null, OpenMetadataType.LOCATION_TYPE_NAME, methodName);
+        locationBuilder.setAnchors(userId,
+                                   null,
+                                   OpenMetadataType.LOCATION_TYPE_NAME,
+                                   OpenMetadataType.LOCATION_TYPE_NAME,
+                                   methodName);
 
 
         return this.createBeanFromTemplate(userId,

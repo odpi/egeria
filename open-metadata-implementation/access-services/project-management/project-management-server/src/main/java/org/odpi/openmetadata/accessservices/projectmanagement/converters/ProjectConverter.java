@@ -107,6 +107,7 @@ public class ProjectConverter<B> extends ProjectManagementOMASConverter<B>
                     projectProperties.setProjectStatus(this.removeProjectStatus(instanceProperties));
                     projectProperties.setProjectHealth(this.removeProjectHealth(instanceProperties));
                     projectProperties.setProjectPhase(this.removeProjectPhase(instanceProperties));
+                    projectProperties.setPriority(this.removeIntPriority(instanceProperties));
                     projectProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
                     projectProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
 

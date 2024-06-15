@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -23,10 +22,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceAppointee implements Serializable, MetadataElement
+public class GovernanceAppointee implements MetadataElement
 {
-    private static final long          serialVersionUID = 1L;
-
     private ElementHeader  elementHeader = null;
     private ProfileElement profile   = null;
     private Date           startDate = null;

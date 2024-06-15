@@ -20,8 +20,6 @@ import java.util.Objects;
  */
 public abstract class AssetElementHeader extends AssetPropertyElementBase
 {
-    private static final long     serialVersionUID = 1L;
-
     private ElementBase elementBaseBean = null;
 
 
@@ -191,22 +189,6 @@ public abstract class AssetElementHeader extends AssetPropertyElementBase
         return elementBaseBean.getStatus();
     }
 
-
-    /**
-     * Returns the URL to access the properties object in the metadata repository.
-     * If no url is available then null is returned.
-     *
-     * @return String URL
-     */
-    public String getURL()
-    {
-        if (elementBaseBean == null)
-        {
-            return null;
-        }
-
-        return elementBaseBean.getURL();
-    }
 
 
     /**

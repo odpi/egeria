@@ -7,8 +7,6 @@ package org.odpi.openmetadata.accessservices.datascience.rest;
  */
 public class MockAPIResponse extends DataScienceOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

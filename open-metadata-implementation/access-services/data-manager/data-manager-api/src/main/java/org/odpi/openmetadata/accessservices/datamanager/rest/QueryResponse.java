@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class QueryResponse extends DataManagerOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private QueryElement element = null;
 
 

@@ -14,12 +14,14 @@ import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourcePhysicalStatusAnnotation;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +38,8 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
     private Connector connector = null;
+
+    private Map<String, SchemaDetails> schemaDetailsMap = new HashMap<>();
 
 
     /**
@@ -69,11 +73,11 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
                                    methodName);
                 return;
             }
-            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.SOFTWARE_SERVER.typeName))
+            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.RELATIONAL_DATABASE_TYPE_NAME))
             {
                 super.throwWrongTypeOfAsset(assetUniverse.getGUID(),
                                             assetUniverse.getType().getTypeName(),
-                                            OpenMetadataType.SOFTWARE_SERVER.typeName,
+                                            OpenMetadataType.RELATIONAL_DATABASE_TYPE_NAME,
                                             methodName);
                 return;
             }
@@ -90,34 +94,38 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
             DataSource jdbcDataSource = assetConnector.getDataSource();
             Connection jdbcConnection = jdbcDataSource.getConnection();
 
-            final String pg_statsSQLCommand = "SELECT schemaname, tablename, attname, avg_width, most_common_vals, most_common_elements from pg_stats;";
+            String databaseName = assetConnector.getDatabaseName();
+            List<String> validDatabases = new ArrayList<>();
+            validDatabases.add(databaseName);
+
+            annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
+
+            PostgresDatabaseStatsExtractor databaseStatsExtractor = new PostgresDatabaseStatsExtractor(validDatabases, jdbcConnection, this);
+
+            List<Annotation> annotations = databaseStatsExtractor.getStatistics();
+
+
+
+            final String pg_statsSQLCommand = "SELECT schemaname, tablename, attname, avg_width, most_common_vals, most_common_elems from pg_stats;";
 
             PreparedStatement preparedStatement = jdbcConnection.prepareStatement(pg_statsSQLCommand);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            final String pg_tablesSQLCommand = "SELECT schemaname, tablename, tableowner, tablespace, hasindexes, hasrules, has_triggers from pg_tables;";
 
-            preparedStatement = jdbcConnection.prepareStatement(pg_statsSQLCommand);
+            final String pg_stat_user_tablesSQLCommand = "SELECT schemaname, relname, seq_tup_read, n_tup_ins, n_tup_upd, n_tup_del from pg_catalog.pg_stat_user_tables;";
+
+            preparedStatement = jdbcConnection.prepareStatement(pg_stat_user_tablesSQLCommand);
+
+            resultSet = preparedStatement.executeQuery();
+
+            final String pg_tablesSQLCommand = "SELECT schemaname, tablename, tableowner, tablespace, hasindexes, hasrules, hastriggers from pg_tables;";
+
+            preparedStatement = jdbcConnection.prepareStatement(pg_tablesSQLCommand);
 
             resultSet = preparedStatement.executeQuery();
 
             annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
-
-            ResourcePhysicalStatusAnnotation measurementAnnotation = new ResourcePhysicalStatusAnnotation();
-
-            measurementAnnotation.setAnnotationType(PostgresAnnotationType.DATABASE_SIZES.getName());
-            measurementAnnotation.setSummary(PostgresAnnotationType.DATABASE_SIZES.getSummary());
-            measurementAnnotation.setExplanation(PostgresAnnotationType.DATABASE_SIZES.getExplanation());
-
-
-            Map<String, String> dataSourceProperties = new HashMap<>();
-
-
-
-            measurementAnnotation.setResourceProperties(dataSourceProperties);
-
-            annotationStore.addAnnotation(measurementAnnotation, surveyContext.getAssetGUID());
         }
         catch (ConnectorCheckedException error)
         {
@@ -147,20 +155,19 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
     }
 
 
-    static class schemaDetails
+    static class SchemaDetails
     {
-        private String schemaName = null;
-
-        private List<TableDetails> tables = null;
+        Map<String, TableDetails> tables = new HashMap<>();
     }
 
     static class TableDetails
     {
-        private String tableName = null;
-
-
+        String tableOwner = null;
+        boolean hasIndexes = false;
+        boolean hasRules   = false;
+        boolean hasTriggers = false;
+        Map<String, ColumnDetails> columns = new HashMap<>();
     }
-
 
     static class ColumnDetails
     {

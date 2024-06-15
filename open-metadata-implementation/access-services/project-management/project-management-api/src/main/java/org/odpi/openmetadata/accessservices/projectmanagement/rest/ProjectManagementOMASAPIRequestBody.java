@@ -25,11 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = ExternalSourceRequestBody.class, name = "ExternalSourceRequestBody"),
         })
-public abstract class ProjectManagementOMASAPIRequestBody implements java.io.Serializable
+public abstract class ProjectManagementOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
-
     /**
      * Default constructor
      */

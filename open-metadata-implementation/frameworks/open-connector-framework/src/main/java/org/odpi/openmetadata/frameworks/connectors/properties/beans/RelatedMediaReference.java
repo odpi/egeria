@@ -5,8 +5,8 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.RelatedMediaType;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.RelatedMediaUsage;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaUsage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +24,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedMediaReference extends ExternalReference
 {
-    private static final long     serialVersionUID = 1L;
-
     /*
      * Attributes of a related media reference
      */
-    protected RelatedMediaType        mediaType      = null;
-    protected List<RelatedMediaUsage> mediaUsageList = null;
+    protected MediaType        mediaType      = null;
+    protected List<MediaUsage> mediaUsageList = null;
 
 
     /**
@@ -64,7 +62,7 @@ public class RelatedMediaReference extends ExternalReference
      *
      * @return related media type enum
      */
-    public RelatedMediaType getMediaType() { return mediaType; }
+    public MediaType getMediaType() { return mediaType; }
 
 
     /**
@@ -72,7 +70,7 @@ public class RelatedMediaReference extends ExternalReference
      *
      * @param mediaType related media type enum
      */
-    public void setMediaType(RelatedMediaType mediaType)
+    public void setMediaType(MediaType mediaType)
     {
         this.mediaType = mediaType;
     }
@@ -81,9 +79,9 @@ public class RelatedMediaReference extends ExternalReference
     /**
      * Return the list of recommended uses for the related media.  Null means no usage guidance is available.
      *
-     * @return List of RelatedMediaUsage
+     * @return List of MediaUsage
      */
-    public List<RelatedMediaUsage> getMediaUsageList()
+    public List<MediaUsage> getMediaUsageList()
     {
         if (mediaUsageList == null)
         {
@@ -101,7 +99,7 @@ public class RelatedMediaReference extends ExternalReference
      *
      * @param mediaUsageList List of recommended uses for this media
      */
-    public void setMediaUsageList(List<RelatedMediaUsage> mediaUsageList)
+    public void setMediaUsageList(List<MediaUsage> mediaUsageList)
     {
         this.mediaUsageList = mediaUsageList;
     }
@@ -116,8 +114,7 @@ public class RelatedMediaReference extends ExternalReference
     public String toString()
     {
         return "RelatedMediaReference{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

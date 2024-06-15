@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -18,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum SchemaAttributeCategory implements Serializable
+public enum SchemaAttributeCategory
 {
     /**
      * The schema type is unknown.
@@ -53,8 +51,6 @@ public enum SchemaAttributeCategory implements Serializable
     private final int      schemaTypeCode;
     private final String   schemaTypeName;
     private final String   schemaTypeDescription;
-
-    private static final long     serialVersionUID = 1L;
 
     /**
      * Constructor to set up the instance of this enum.

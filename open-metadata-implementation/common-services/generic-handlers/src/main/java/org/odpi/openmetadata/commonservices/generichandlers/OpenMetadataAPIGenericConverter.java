@@ -1764,7 +1764,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.MEMBERSHIP_RATIONALE_PROPERTY_NAME,
+                                                         OpenMetadataProperty.MEMBERSHIP_RATIONALE.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -2464,29 +2464,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         return null;
     }
 
-
-    /**
-     * Retrieve the zone membership from the properties of the zone membership classification.
-     *
-     * @param instanceProperties properties from the classification
-     * @return list of zone names
-     */
-    protected List<String> removeZoneMembership(InstanceProperties instanceProperties)
-    {
-        final String methodName = "removeZoneMembership";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringArrayProperty(serviceName,
-                                                              OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME,
-                                                              instanceProperties,
-                                                              methodName);
-        }
-
-        return null;
-    }
-
-
     /**
      * Retrieve the zoneName from the properties.
      *
@@ -2530,27 +2507,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         return null;
     }
 
-    /**
-     * Retrieve the zone membership from the properties of the zone membership classification.
-     *
-     * @param instanceProperties properties from the classification
-     * @return list of zone names
-     */
-    protected List<String> getZoneMembership(InstanceProperties instanceProperties)
-    {
-        final String methodName = "getZoneMembership";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.getStringArrayProperty(serviceName,
-                                                           OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME,
-                                                           instanceProperties,
-                                                           methodName);
-        }
-
-        return null;
-    }
-
 
     /**
      * Extract and delete the owner property from the supplied instance properties.
@@ -2565,187 +2521,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.OWNER_PROPERTY_NAME,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the owner property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from classification
-     * @return string text or null
-     */
-    protected String getOwner(InstanceProperties instanceProperties)
-    {
-        final String methodName = "getOwner";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataType.OWNER_PROPERTY_NAME,
-                                                      instanceProperties,
-                                                      methodName);
-        }
-
-        return null;
-    }
-
-
-
-    /**
-     * Extract the ownerTypeName property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from classification
-     * @return string text or null
-     */
-    protected String getOwnerTypeName(InstanceProperties instanceProperties)
-    {
-        final String methodName = "getOwnerTypeName";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataType.OWNER_TYPE_NAME_PROPERTY_NAME,
-                                                      instanceProperties,
-                                                      methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the ownerPropertyName property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from classification
-     * @return string text or null
-     */
-    protected String getOwnerPropertyName(InstanceProperties instanceProperties)
-    {
-        final String methodName = "getOwnerPropertyName";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataType.OWNER_PROPERTY_NAME_PROPERTY_NAME,
-                                                      instanceProperties,
-                                                      methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the ownerType property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from classification
-     * @return ordinal or 0 for not specified
-     */
-    protected int getOwnerTypeOrdinal(InstanceProperties instanceProperties)
-    {
-        final String methodName = "getOwnerTypeOrdinal";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.getEnumPropertyOrdinal(serviceName,
-                                                           OpenMetadataType.OWNER_TYPE_PROPERTY_NAME,
-                                                           instanceProperties,
-                                                           methodName);
-        }
-
-        return 0;
-    }
-
-
-    /**
-     * Extract the ownerType property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from classification
-     * @return ordinal or 0 for not specified
-     */
-    protected int removeOwnerTypeOrdinal(InstanceProperties instanceProperties)
-    {
-        final String methodName = "removeOwnerTypeOrdinal";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                              OpenMetadataType.OWNER_TYPE_PROPERTY_NAME,
-                                                              instanceProperties,
-                                                              methodName);
-        }
-
-        return 0;
-    }
-
-
-    /**
-     * Extract and delete the ownerPropertyName property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from classification
-     * @return string
-     */
-    protected String removeOwnerPropertyName(InstanceProperties instanceProperties)
-
-    {
-        final String methodName = "removeClassificationPropertyName";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.OWNER_PROPERTY_NAME_PROPERTY_NAME,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract and delete the ownerTypeName property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from classification
-     * @return string
-     */
-    protected String removeOwnerTypeName(InstanceProperties instanceProperties)
-
-    {
-        final String methodName = "removeTypePropertyName";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.OWNER_TYPE_NAME_PROPERTY_NAME,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract and delete the roleTypeName property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from classification
-     * @return string
-     */
-    protected String removeRoleTypeName(InstanceProperties instanceProperties)
-
-    {
-        final String methodName = "removeRoleTypeName";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.ROLE_TYPE_NAME_PROPERTY_NAME,
+                                                         OpenMetadataProperty.OWNER.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -3164,34 +2940,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the database type property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return string name or null
-     */
-    @SuppressWarnings(value = "deprecation")
-    protected String removeDatabaseType(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "removeDatabaseType";
-
-        if (instanceProperties != null)
-        {
-            String type1 = repositoryHelper.removeStringProperty(serviceName,
-                                                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                 instanceProperties,
-                                                                 methodName);
-            String type2 = repositoryHelper.removeStringProperty(serviceName,
-                                                                 OpenMetadataProperty.TYPE.name,
-                                                                 instanceProperties,
-                                                                 methodName);
-            return type1 == null ? type2 : type1;
-        }
-
-        return null;
-    }
-
-
-    /**
      * Extract and delete the database version property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
@@ -3203,15 +2951,10 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         if (instanceProperties != null)
         {
-            String version1 = repositoryHelper.removeStringProperty(serviceName,
-                                                                    OpenMetadataType.DATABASE_VERSION_PROPERTY_NAME,
-                                                                    instanceProperties,
-                                                                    methodName);
-            String version2 = repositoryHelper.removeStringProperty(serviceName,
-                                                                    OpenMetadataType.DATABASE_VERSION_PROPERTY_NAME_DEP,
-                                                                    instanceProperties,
-                                                                    methodName);
-            return version1 == null ? version2 : version1;
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataType.DATABASE_VERSION_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
         }
 
         return null;
@@ -3334,26 +3077,16 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param instanceProperties properties from entity
      * @return string text or null
      */
-    @SuppressWarnings(value = "deprecation")
     protected String removeDeployedImplementationType(InstanceProperties  instanceProperties)
     {
         final String methodName = "removeDeployedImplementationType";
 
         if (instanceProperties != null)
         {
-            String type = repositoryHelper.removeStringProperty(serviceName,
-                                                                OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                instanceProperties,
-                                                                methodName);
-            if (type == null)
-            {
-                type = repositoryHelper.removeStringProperty(serviceName,
-                                                             OpenMetadataProperty.TYPE.name,
-                                                             instanceProperties,
-                                                             methodName);
-            }
-
-            return type;
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                         instanceProperties,
+                                                         methodName);
         }
 
         return null;
@@ -3481,72 +3214,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         }
 
         return false;
-    }
-
-
-    /**
-     * Extract and delete the anchorGUID property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return string name or null
-     */
-    protected String removeAnchorGUID(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "removeAnchorGUID";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.ANCHOR_GUID.name,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract and delete the anchorTypeName property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return string name or null
-     */
-    protected String removeAnchorTypeName(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "removeAnchorTypeName";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
-                                                         instanceProperties,
-                                                         methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the anchorGUID property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return string name or null
-     */
-    protected String getAnchorGUID(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "getAnchorGUID";
-
-        if (instanceProperties != null)
-        {
-            return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataProperty.ANCHOR_GUID.name,
-                                                      instanceProperties,
-                                                      methodName);
-        }
-
-        return null;
     }
 
 
@@ -4661,7 +4328,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract the priority property from the supplied instance properties.
+     * Extract the priority(importance) property from the supplied instance properties.
      *
      * @param instanceProperties properties from governance entities
      * @return string property or null
@@ -4673,7 +4340,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.PRIORITY_PROPERTY_NAME,
+                                                         OpenMetadataType.IMPORTANCE_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -6341,7 +6008,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getIntProperty(serviceName,
-                                                   OpenMetadataType.CONFIDENCE_PROPERTY_NAME,
+                                                   OpenMetadataProperty.CONFIDENCE.name,
                                                    instanceProperties,
                                                    methodName);
         }
@@ -6363,7 +6030,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataType.STEWARD_PROPERTY_NAME,
+                                                      OpenMetadataProperty.STEWARD.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -6386,7 +6053,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                      OpenMetadataProperty.STEWARD_TYPE_NAME.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -6408,7 +6075,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                      OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -6431,7 +6098,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataType.NOTES_PROPERTY_NAME,
+                                                      OpenMetadataProperty.NOTES.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -6827,7 +6494,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeIntProperty(serviceName,
-                                                      OpenMetadataType.CONFIDENCE_PROPERTY_NAME,
+                                                      OpenMetadataProperty.CONFIDENCE.name,
                                                       instanceProperties,
                                                       methodName);
         }
@@ -7167,6 +6834,49 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract the profileStartDate property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from annotation entities
+     * @return date
+     */
+    protected Date removeProfileStartDate(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeProfileStartDate";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataProperty.PROFILE_START_DATE.name,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the profileEndDate property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from annotation entities
+     * @return date
+     */
+    protected Date removeProfileEndDate(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeProfileEndDate";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataProperty.PROFILE_END_DATE.name,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+    /**
      * Extract the profileProperties property from the supplied instance properties.
      *
      * @param instanceProperties properties from annotation entities
@@ -7182,6 +6892,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                                                 OpenMetadataProperty.PROFILE_PROPERTIES.name,
                                                                 instanceProperties,
                                                                 methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the profilePropertyNames property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from annotation entities
+     * @return list of names
+     */
+    protected List<String> removeProfilePropertyNames(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeProfilePropertyNames";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringArrayProperty(serviceName,
+                                                              OpenMetadataProperty.PROFILE_PROPERTY_NAMES.name,
+                                                              instanceProperties,
+                                                              methodName);
         }
 
         return null;
@@ -7211,6 +6943,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract the profileDates property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from annotation entities
+     * @return map of name to boolean pairs
+     */
+    protected Map<String, Date> removeProfileDates(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeProfileDates";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateMapFromProperty(serviceName,
+                                                              OpenMetadataProperty.PROFILE_DATES.name,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the profileCounts property from the supplied instance properties.
      *
      * @param instanceProperties properties from annotation entities
@@ -7226,6 +6980,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                                               OpenMetadataProperty.PROFILE_COUNTS.name,
                                                               instanceProperties,
                                                               methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the profileCounts property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from annotation entities
+     * @return map of name to long pairs
+     */
+    protected Map<String, Double> removeProfileDoubles(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeProfileDoubles";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDoubleMapFromProperty(serviceName,
+                                                                OpenMetadataProperty.PROFILE_DOUBLES.name,
+                                                                instanceProperties,
+                                                                methodName);
         }
 
         return null;

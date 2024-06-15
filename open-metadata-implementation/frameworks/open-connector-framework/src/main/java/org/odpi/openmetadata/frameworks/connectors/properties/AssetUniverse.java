@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
-import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,9 +24,6 @@ import java.util.Objects;
  */
 public class AssetUniverse extends AssetDetail
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     protected List<Meaning> meanings       = null;
     protected AssetFeedback feedback       = null;
     protected Locations     knownLocations = null;
@@ -265,15 +261,7 @@ public class AssetUniverse extends AssetDetail
                        ", name='" + getResourceName() + '\'' +
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
-                       ", shortDescription='" + getConnectionDescription() + '\'' +
                        ", description='" + getDisplayDescription() + '\'' +
-                       ", ownerTypeName='" + getOwnerTypeName() + '\'' +
-                       ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
-                       ", ownerType=" + getOwnerType() +
-                       ", zoneMembership=" + getZoneMembership() +
-                       ", assetOrigin=" + getAssetOrigin() +
-                       ", referenceData=" + isReferenceData() +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +

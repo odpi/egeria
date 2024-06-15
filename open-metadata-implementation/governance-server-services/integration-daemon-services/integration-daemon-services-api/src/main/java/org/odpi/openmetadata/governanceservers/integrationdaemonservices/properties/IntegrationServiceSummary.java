@@ -21,11 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class IntegrationServiceSummary implements Serializable
+public class IntegrationServiceSummary
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private int                              integrationServiceId          = 0;
     private String                           integrationServiceFullName    = null;
     private String                           integrationServiceURLMarker   = null;

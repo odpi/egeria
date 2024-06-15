@@ -463,7 +463,10 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(glossaryProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(glossaryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(glossaryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         this.validateExternalIdentifier(userId,
                                         glossaryGUID,
@@ -1606,7 +1609,10 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryCategoryGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(glossaryCategoryProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(glossaryCategoryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(glossaryCategoryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         this.validateExternalIdentifier(userId,
                                         glossaryCategoryGUID,

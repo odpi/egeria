@@ -9,8 +9,6 @@ import java.util.Objects;
  */
 public class GovernanceStatusIdentifierProperties extends ReferenceableProperties
 {
-    private static final long     serialVersionUID = 1L;
-
     private int    levelIdentifier = 0;
     private String displayName     = null;
     private String description     = null;
