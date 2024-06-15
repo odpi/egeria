@@ -24,7 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = TagResponse.class, name = "TagResponse"),
         @JsonSubTypes.Type(value = PagedResponse.class, name = "PagedResponse"),
-        @JsonSubTypes.Type(value = GlossaryTermResponse.class, name = "GlossaryTermResponse")
+        @JsonSubTypes.Type(value = AssetGraphResponse.class, name = "AssetGraphResponse"),
+        @JsonSubTypes.Type(value = AssetSearchMatchesListResponse.class, name = "AssetSearchMatchesListResponse")
               })
 public abstract class AssetConsumerOMASAPIResponse extends FFDCResponseBase
 {

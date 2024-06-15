@@ -32,7 +32,7 @@ data-serving solution.  The asset manager is also called by the
 [Lineage Integrator OMIS](../integration-services/lineage-integrator) to capture design lineage
 from data engines and other processing services.
 It also supports the [Glossary Browser OMVS](../view-services/glossary-browser) and
-[Glossary Workflow OMVS](../view-services/glossary-workflow).
+[Glossary Manager OMVS](../view-services/glossary-manager).
 
 * **[asset-owner](asset-owner)** - manage metadata and feedback for owned assets.
 
@@ -43,12 +43,6 @@ asset(s) and understand how these assets are being used and governed.
   
   The Community Profile OMAS supports the administration for a community and related user profiles.  These communities are
 involved in reviewing and crowd-sourcing knowledge about the data assets and their use.
-
-* **[data-engine](data-engine)** - exchange metadata with a data processing engine.
-                                   
-  The Data Engine OMAS provides APIs and events for a data movement/processing
-engine to record the changes it is making to the data landscape. 
-This information forms a key part of asset lineage.
 
 * **[data-manager](data-manager)** - exchange metadata with a data manager.
 
@@ -63,13 +57,6 @@ It is called from the
 [Topic Integrator OMIS](../integration-services/topic-integrator).
 
 
-* **[data-privacy](data-privacy)** - support a data privacy officer.
-
-  The Data Privacy OMAS supports a privacy officer as they manage data privacy
-in their organization.
-This includes managing privacy impact assessments and reviews of software services
-that use personal data as they move through their development, deployment and use.
-
 * **[data-science](data-science)** - manage metadata for analytics.
 
   The Data Science OMAS provides access to metadata for data assets,
@@ -82,11 +69,6 @@ It is designed for data science and analytics management tools.
   The Design Model OMAS provides the ability to manage information from all types of design models.
 These models may come from tools or be part of a packaged standard.
 This content is useful for governance, system integration and software development.
-
-* **[dev-ops](dev-ops)** - manage metadata for a DevOps pipeline.
-  
-  The DevOps OMAS provides services for a DevOps pipeline to query and maintain metadata about systems, processes and
-software components that are being deployed into the information landscape.
 
 * **[digital-architecture](digital-architecture)** - support the design and architecture of the digital services
 that support the business.
@@ -135,13 +117,6 @@ These projects and campaigns may be for governance projects, or generic data use
   The Security Manager OMAS provides the services to exchange security tags with access control and data
 protection technology services.  It is called by the [Security Integrator OMIS](../integration-services/security-integrator).
 
-* **[security-officer](security-officer)** - set up rules to protect data.
-
-  The Security Officer OMAS provides the services to support the definition of roles and 
-rules for managing the protection of metadata and assets, plus work with the audit
-logs captured by the open metadata and governance tools.
-It is typically used by the security, compliance and auditing teams.
-
 * **[software-developer](software-developer)** - deliver useful metadata to software developers.
 
   The Software Development OMAS provides access to metadata needed to build compliant APIs,
@@ -155,11 +130,6 @@ These exceptions may be quality errors, missing or outdated information,
 invalid licensing, job failures, and many more.
 The Stewardship Action OMAS also enables the review and triage of the exceptions,
 simple remediation and status reporting.
-
-* **[subject-area](subject-area)** - develop a glossary.
-
-  The Subject Area OMAS is for tools that support subject-matter experts
-who are defining glossaries for a specific subject area, such as "customer data".
 
 ## Using the OMASs
 

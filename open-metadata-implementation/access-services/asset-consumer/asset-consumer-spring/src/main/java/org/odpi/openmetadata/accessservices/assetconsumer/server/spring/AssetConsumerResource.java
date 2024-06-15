@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.rest.RatingRequestBody
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -369,6 +370,74 @@ public class AssetConsumerResource
 
 
     /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param userId the userId of the requesting user.
+     * @param assetGUID  uniqueId for the connection.
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return graph of elements or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException there is a problem retrieving the connected asset properties from the property server or
+     * UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the property server or
+     * NoConnectedAssetException there is no asset associated with this connection or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @GetMapping(path = "/assets/{assetGUID}/as-graph")
+
+    @Operation(summary="getAssetGraph",
+            description="Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.",
+            externalDocs=@ExternalDocumentation(description="Assets",
+                    url="https://egeria-project.org/concepts/asset/"))
+
+    public AssetGraphResponse getAssetGraph(@PathVariable String serverName,
+                                            @PathVariable String userId,
+                                            @PathVariable String assetGUID,
+                                            @RequestParam(required = false, defaultValue = "0")
+                                                          int   startFrom,
+                                            @RequestParam(required = false, defaultValue = "0")
+                                                          int   pageSize)
+    {
+        return restAPI.getAssetGraph(serverName, userId, assetGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Locate string value in elements that are anchored to assets.  The search string may be a regEx.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId calling user
+     * @param requestBody string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of results for assets that match the search string or
+     * InvalidParameterException the searchString is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    @PostMapping(path = "/assets-in-domain/by-search-string")
+
+    @Operation(summary="findAssetsInDomain",
+            description="Locate string value in elements that are anchored to assets.  The search string is a regular expression (regEx).",
+            externalDocs=@ExternalDocumentation(description="Assets",
+                    url="https://egeria-project.org/concepts/asset/"))
+
+    public AssetSearchMatchesListResponse findAssetsInDomain(@PathVariable String                  serverName,
+                                                             @PathVariable String                  userId,
+                                                             @RequestParam(required = false, defaultValue = "0")
+                                                                           int                     startFrom,
+                                                             @RequestParam(required = false, defaultValue = "0")
+                                                                           int                     pageSize,
+                                                             @RequestBody  SearchStringRequestBody requestBody)
+    {
+        return restAPI.findAssetsInDomain(serverName, userId, requestBody, startFrom, pageSize);
+    }
+
+
+    /**
      * Return a list of assets with the requested search string in their name, qualified name or description.
      *
      * @param serverName name of the server instances for this request
@@ -458,6 +527,40 @@ public class AssetConsumerResource
                                             @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getAssetsByName(serverName, userId, requestBody, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return a list of assets that come from the requested metadata collection.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId calling user
+     * @param metadataCollectionId guid to search for
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param requestBody optional type name to restrict search by
+     *
+     * @return list of unique identifiers for Assets with the requested name or
+     * InvalidParameterException the name is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    @PostMapping(path = "/assets/by-metadata-collection-id/{metadataCollectionId}")
+
+    @Operation(summary="getAssetsByMetadataCollectionId",
+            description="Return a list of assets that come from the requested metadata collection.",
+            externalDocs=@ExternalDocumentation(description="Assets",
+                    url="https://egeria-project.org/concepts/asset/"))
+
+    public AssetsResponse getAssetsByMetadataCollectionId(@PathVariable String          serverName,
+                                                          @PathVariable String          userId,
+                                                          @PathVariable String          metadataCollectionId,
+                                                          @RequestParam int             startFrom,
+                                                          @RequestParam int             pageSize,
+                                                          @RequestBody(required = false)
+                                                                        NameRequestBody requestBody)
+    {
+        return restAPI.getAssetsByMetadataCollectionId(serverName, userId, metadataCollectionId, startFrom, pageSize, requestBody);
     }
 
 

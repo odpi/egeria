@@ -261,15 +261,7 @@ public class AssetUniverse extends AssetDetail
                        ", name='" + getResourceName() + '\'' +
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
-                       ", shortDescription='" + getConnectionDescription() + '\'' +
                        ", description='" + getDisplayDescription() + '\'' +
-                       ", ownerTypeName='" + getOwnerTypeName() + '\'' +
-                       ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
-                       ", ownerType=" + getOwnerType() +
-                       ", zoneMembership=" + getZoneMembership() +
-                       ", assetOrigin=" + getAssetOrigin() +
-                       ", referenceData=" + isReferenceData() +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +

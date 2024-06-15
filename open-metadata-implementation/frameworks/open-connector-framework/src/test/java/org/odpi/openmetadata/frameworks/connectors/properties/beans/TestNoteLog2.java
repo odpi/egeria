@@ -43,7 +43,6 @@ public class TestNoteLog2
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
-        testObject.setURL("TestURL");
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestQualifiedName");
@@ -65,7 +64,6 @@ public class TestNoteLog2
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getURL().equals("TestURL"));
         assertTrue(resultObject.getClassifications() == null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
@@ -85,7 +83,6 @@ public class TestNoteLog2
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getQualifiedName() == null);
@@ -98,7 +95,6 @@ public class TestNoteLog2
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getQualifiedName() == null);

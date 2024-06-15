@@ -11,7 +11,6 @@ plugins {
 dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    runtimeOnly project(':open-metadata-implementation:frameworks:open-discovery-framework')
     runtimeOnly project(':open-metadata-implementation:frameworks:governance-action-framework')
     runtimeOnly project(':open-metadata-implementation:frameworks:survey-action-framework')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')

@@ -1631,7 +1631,7 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                                   PropertyServerException
     {
         final String qualifiedNameParameterName = "qualifiedName";
-        final String requestParamsURLTemplate   = "?isMergeUpdate={3}&isPublic={4}forLineage={5}&forDuplicateProcessing={6}";
+        final String requestParamsURLTemplate   = "?isMergeUpdate={3}&isPublic={4}&forLineage={5}&forDuplicateProcessing={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);

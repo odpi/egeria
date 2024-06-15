@@ -122,8 +122,7 @@ public class LiteralSchemaType extends SchemaType
     public String toString()
     {
         return "LiteralSchemaType{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

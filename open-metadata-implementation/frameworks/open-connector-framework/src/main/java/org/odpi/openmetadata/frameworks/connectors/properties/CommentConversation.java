@@ -105,7 +105,6 @@ public class CommentConversation extends Comment
                        ", commentText='" + getCommentText() + '\'' +
                        ", user='" + getUser() + '\'' +
                        ", isPublic=" + getIsPublic() +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +

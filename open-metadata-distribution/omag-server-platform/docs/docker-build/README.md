@@ -32,7 +32,7 @@ found under the images managed by that daemon.  For example, if you are using
 [Docker Desktop](https://www.docker.com/products/docker-desktop/),
 the docker image is located in the **Images** tab.
 
-To run the resulting image from the command line, use `docker run -p 9443:9443  odpi/egeria-platform:{tagName}`, again replacing `{tagName}` with your chosen tag.
+To run the resulting image from the command line, use `docker run -p 9443:9443 -p 9092:9092 odpi/egeria-platform:{tagName}`, again replacing `{tagName}` with your chosen tag.
 
 
 

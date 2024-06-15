@@ -55,7 +55,8 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
         /*
          * Set up the default handler.
          */
-        CollaborationManagerHandler collaborationManagerHandler = new CollaborationManagerHandler(remoteServerName,
+        CollaborationManagerHandler collaborationManagerHandler = new CollaborationManagerHandler(serverName,
+                                                                                                  remoteServerName,
                                                                                                   remoteServerURL,
                                                                                                   auditLog,
                                                                                                   AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceURLMarker(),
@@ -99,7 +100,8 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
                         {
                             if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
                             {
-                                collaborationManagerHandler = new CollaborationManagerHandler(remoteServerName,
+                                collaborationManagerHandler = new CollaborationManagerHandler(serverName,
+                                                                                              remoteServerName,
                                                                                               remoteServerURL,
                                                                                               auditLog,
                                                                                               accessServiceDescription.getAccessServiceURLMarker(),
@@ -126,7 +128,8 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
                 {
                     if (accessServiceDescription.getAccessServiceURLMarker().equals(accessServiceURLMarker))
                     {
-                        collaborationManagerHandler = new CollaborationManagerHandler(remoteServerName,
+                        collaborationManagerHandler = new CollaborationManagerHandler(serverName,
+                                                                                      remoteServerName,
                                                                                       remoteServerURL,
                                                                                       auditLog,
                                                                                       accessServiceURLMarker,

@@ -204,7 +204,11 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
                                                         serviceName,
                                                         serverName);
 
-        builder.setAnchors(userId, null, OpenMetadataType.COMMUNITY_TYPE_NAME, methodName);
+        builder.setAnchors(userId,
+                           null,
+                           OpenMetadataType.COMMUNITY_TYPE_NAME,
+                           OpenMetadataType.COMMUNITY_TYPE_NAME,
+                           methodName);
 
 
         return this.createBeanFromTemplate(userId,

@@ -15,6 +15,11 @@ public enum OpenMetadataProperty
     GUID("guid", "string", "Unique identifier of an open metadata entity or relationship.", "f1ad7bbe-1d9f-4149-b87c-205bbd174b55", "f1ad7bbe-1d9f-4149-b87c-205bbd174b55"),
 
     /**
+     * The unique identifier for the metadata collection that is the home for a metadata element.
+     */
+    METADATA_COLLECTION_ID("metadataCollectionId", "string", "The unique identifier for the metadata collection that is the home for a metadata element.", "151b9d80-8417-41c4-8f04-3ab90a387196", "01d7e832-ef18-4451-8e4c-4ba972292a8e"),
+
+    /**
      * Unique identifier of an open metadata entity, classification or relationship.
      */
     TYPE_NAME("typeName", "string", "Unique name of an open metadata entity,classification or relationship.", "Asset", "7c5a7e83-2709-4789-b014-d23082a659bd"),
@@ -70,6 +75,11 @@ public enum OpenMetadataProperty
     ANCHOR_TYPE_NAME("anchorTypeName", "string", "Unique name of the type of the anchor.", "Asset", "605c9dd5-fa79-4457-b299-9169c5567f97"),
 
     /**
+     * Unique name of the domain of the anchor.  This is an Open Metadata Type Name that either directly inherits from OpenMetadataRoot or Referenceable.
+     */
+    ANCHOR_DOMAIN_NAME("anchorDomainName", "string", "Unique name of the domain of the anchor.  This is an Open Metadata Type Name that either directly inherits from OpenMetadataRoot or Referenceable.", "Asset", "00ba532f-792f-4b78-8940-b5a9fd72f854"),
+
+    /**
      * Unique identifier for the entity.
      */
     QUALIFIED_NAME("qualifiedName", "string", "Unique identifier for the entity.", "SoftwareServer:MyAsset:MyAssetName", "e31e5b9b-0f96-42a9-8e67-0e3fc66ad305"),
@@ -105,31 +115,24 @@ public enum OpenMetadataProperty
     DEPLOYED_IMPLEMENTATION_TYPE("deployedImplementationType", "string", "Name of a particular type of technology.  It is more specific than the open metadata types and increases the precision in which technology is catalogued.  This helps human understanding and enables connectors and other actions to be targeted to the right technology.", "PostgreSQL Database Server", "2f71cd9f-c614-4531-a5ae-3bcb6a6a1918"),
 
     /**
-     * Name of a particular type of technology.  It is more specific than the open metadata types and increases the precision in which technology is catalogued.  This helps human understanding and enables connectors and other actions to be targeted to the right technology.
-     */
-    @Deprecated
-    TYPE("type", "string", "Deprecated property, use deployedImplementationType.", null, "2f71cd9f-c614-4531-a5ae-3bcb6a6a1918"),
-
-    /**
      * Identifier of the person or process who is accountable for the proper management of the element or related resource.
      */
     OWNER("owner", "string", "Identifier of the person or process who is accountable for the proper management of the element or related resource.", null, "8b3e49d6-987c-4f2f-b624-ba91e5d28b33"),
 
     /**
-     * Type of identifier used for owner property.
+     * Type of element that describes the owner.
      */
-    @Deprecated
-    OWNER_TYPE("ownerType", "AssetOwnerType", "Type of identifier used for owner property.", "USER_ID", "142b2bbf-0f2f-4c1e-b10e-850cd208b31c"),
+    OWNER_TYPE_NAME("ownerTypeName", "string", "Type of element that describes the owner.", "PersonRole", "c0acfbc6-4250-437b-9aa3-ce3d5a3bd490"),
+
+    /**
+     * Name of the property from the element used to identify the owner.
+     */
+    OWNER_PROPERTY_NAME("ownerPropertyName", "string", "Name of the property from the element used to identify the owner.", "qualifiedName", "9d1fdeb4-132a-4ec7-8312-dc9362e4f2f7"),
 
     /**
      * The list of governance zones that this asset belongs to.
      */
     ZONE_MEMBERSHIP("zoneMembership", "array<string>", "The list of governance zones that this asset belongs to.", null, "2af69520-6991-4097-aa94-543127b73066"),
-
-    /**
-     * Description of the last change to the asset's metadata.
-     */
-    LATEST_CHANGE("latestChange", "string", "Description of the last change to the asset's metadata.", null, "756cf128-12e5-456e-97d7-843e7efec11b"),
 
     /**
      * Formula that describes the behaviour of the element.  May include placeholders for queryIds
@@ -145,6 +148,41 @@ public enum OpenMetadataProperty
      * Is this element visible to all, or only the author?
      */
     IS_PUBLIC("isPublic", "boolean",  "Is this element visible to all, or only the author?", "true", "e7a8eaa8-4358-4dd3-8d82-2ab3c118cfe4"),
+
+    /**
+     * Rating level provided.
+     */
+    STARS("stars", "StarRating", "Rating level provided.", "***", "896fd016-fad1-43dc-87a9-3ee577d8d898"),
+
+    /**
+     * Additional comments associated with the rating.
+     */
+    REVIEW("review", "string", "Additional comments associated with the rating.", null, "ae1ef693-6264-44ee-8014-23a283ad3b0e"),
+
+    /**
+     * Feedback comments or additional information.
+     */
+    TEXT("text", "string", "Feedback comments or additional information.", null, "baef44c7-e345-46ef-b8f7-a4d7fbcf77d7"),
+
+    /**
+     * Type of comment.
+     */
+    TYPE("type", "CommentType", "Type of comment.", "Answer", "465c7ed7-74d4-4eb3-9e4c-9d47f06a0ebd"),
+
+    /**
+     * Title
+     */
+    TITLE("title", "string", "Title", null, "c669dc73-3ae3-4350-95b7-4508a85bfc94"),
+
+    /**
+     * Descriptive name of the tag.
+     */
+    TAG_NAME("tagName", "string", "Descriptive name of the tag.", null, "c6054168-4236-4de1-9ece-ebcb5597dbf4"),
+
+    /**
+     * More detail on the meaning of the tag.
+     */
+    TAG_DESCRIPTION("tagDescription", "string", "More detail on the meaning of the tag.", null, "e8fc2fc9-afae-47cd-b5f0-f7c374fb6ea4"),
 
     /**
      * Description of the technique used to create the sample.
@@ -529,6 +567,11 @@ public enum OpenMetadataProperty
     /**
      * Time at which the profiling started collecting data.
      */
+    PROFILE_PROPERTY_NAMES("profilePropertyNames", "array<string>", "List of property names used in this annotation.", "[profileEndDate, profileCounts]", "210e2977-6803-4fce-93e8-15547168d459"),
+
+    /**
+     * Time at which the profiling started collecting data.
+     */
     PROFILE_START_DATE("profileStartDate", "date", "Time at which the profiling started collecting data.", null, "6bee91ad-4eae-4292-ab28-ff1e5404e74d"),
 
     /**
@@ -545,6 +588,11 @@ public enum OpenMetadataProperty
      * Additional flags (booleans) discovered during the analysis.
      */
     PROFILE_FLAGS("profileFlags", "map<string, boolean>", "Additional flags (booleans) discovered during the analysis.", null, "b7b28f24-5464-4cab-8c6b-10bc11ed6118"),
+
+    /**
+     * Relevant dates discovered during the analysis.
+     */
+    PROFILE_DATES("profileDates", "map<string, date>", "Relevant dates discovered during the analysis.", null, "7d700cc5-b56c-4aeb-8416-7cf8d17d16c2"),
 
     /**
      * Additional counts discovered during the analysis.

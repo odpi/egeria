@@ -187,7 +187,6 @@ public class APIOperation extends SchemaType
                 ", meanings=" + getMeanings() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
                 '}';
     }

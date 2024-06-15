@@ -77,7 +77,7 @@ public class VerifyAssetGovernanceActionConnector extends VerificationGovernance
                                 {
                                     noZones = false;
                                 }
-                                else if (propertyHelper.isTypeOf(classification, OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_NAME))
+                                else if (propertyHelper.isTypeOf(classification, OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName))
                                 {
                                     noOwner = false;
                                 }

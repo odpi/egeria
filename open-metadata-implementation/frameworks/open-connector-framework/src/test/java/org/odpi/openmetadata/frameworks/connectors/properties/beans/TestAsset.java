@@ -46,7 +46,6 @@ public class TestAsset
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
-        testObject.setURL("TestURL");
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestQualifiedName");
@@ -59,10 +58,6 @@ public class TestAsset
         testObject.setDisplaySummary("TestDisplaySummary");
         testObject.setAbbreviation("TestAbbreviation");
         testObject.setUsage("TestUsage");
-        testObject.setConnectionDescription("TestConnectionDescription");
-        testObject.setOwner("TestOwner");
-        testObject.setOwnerType(AssetOwnerType.USER_ID);
-        testObject.setZoneMembership(zoneMembership);
         testObject.setExtendedProperties(assetProperties);
 
         return testObject;
@@ -74,12 +69,10 @@ public class TestAsset
      *
      * @param resultObject object returned by the test
      */
-    @SuppressWarnings(value="deprecation")
     private void validateResultObject(Asset resultObject)
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getURL().equals("TestURL"));
         assertTrue(resultObject.getClassifications() == null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
@@ -92,12 +85,6 @@ public class TestAsset
         assertTrue(resultObject.getDisplaySummary().equals("TestDisplaySummary"));
         assertTrue(resultObject.getAbbreviation().equals("TestAbbreviation"));
         assertTrue(resultObject.getUsage().equals("TestUsage"));
-        assertTrue(resultObject.getName().equals("TestResourceName"));
-        assertTrue(resultObject.getDescription().equals("TestResourceDescription"));
-        assertTrue(resultObject.getConnectionDescription().equals("TestConnectionDescription"));
-        assertTrue(resultObject.getOwner().equals("TestOwner"));
-        assertTrue(resultObject.getOwnerType() == AssetOwnerType.USER_ID);
-        assertTrue(resultObject.getZoneMembership() != null);
         assertTrue(resultObject.getExtendedProperties() == null);
     }
 
@@ -111,7 +98,6 @@ public class TestAsset
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getQualifiedName() == null);
@@ -119,16 +105,12 @@ public class TestAsset
 
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getResourceDescription() == null);
-        assertTrue(nullObject.getConnectionDescription() == null);
-        assertTrue(nullObject.getOwner() == null);
-        assertTrue(nullObject.getZoneMembership() == null);
         assertTrue(nullObject.getExtendedProperties() == null);
 
         nullObject = new Asset(null);
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getQualifiedName() == null);
@@ -136,16 +118,7 @@ public class TestAsset
 
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getResourceDescription() == null);
-        assertTrue(nullObject.getConnectionDescription() == null);
-        assertTrue(nullObject.getOwner() == null);
-        assertTrue(nullObject.getZoneMembership() == null);
         assertTrue(nullObject.getExtendedProperties() == null);
-
-        nullObject = new Asset();
-
-        nullObject.setZoneMembership(new ArrayList<>());
-
-        assertTrue(nullObject.getZoneMembership() == null);
     }
 
 
@@ -180,41 +153,6 @@ public class TestAsset
         assertTrue(retrievedPropertyMap != null);
         assertFalse(retrievedPropertyMap.isEmpty());
         assertTrue("propertyValue".equals(retrievedPropertyMap.get("propertyName")));
-    }
-
-
-    /**
-     * Validate that asset properties are managed properly
-     */
-    @Test public void testZoneMembership()
-    {
-        List<String> zoneList;
-        Asset        testObject = new Asset();
-
-        assertTrue(testObject.getZoneMembership() == null);
-
-        zoneList = null;
-        testObject = new Asset();
-        testObject.setZoneMembership(zoneList);
-
-        assertTrue(testObject.getZoneMembership() == null);
-
-        zoneList = new ArrayList<>();
-        testObject = new Asset();
-        testObject.setZoneMembership(zoneList);
-
-        assertTrue(testObject.getZoneMembership() == null);
-
-        zoneList.add("zone1");
-        zoneList.add("zone2");
-        testObject = new Asset();
-        testObject.setZoneMembership(zoneList);
-
-        List<String>   retrievedZoneList = testObject.getZoneMembership();
-
-        assertTrue(retrievedZoneList != null);
-        assertFalse(retrievedZoneList.isEmpty());
-        assertTrue(retrievedZoneList.size() == 2);
     }
 
 

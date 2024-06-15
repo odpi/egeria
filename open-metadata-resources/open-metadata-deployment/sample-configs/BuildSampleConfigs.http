@@ -108,13 +108,13 @@ Content-Type: application/json
 {
   "class": "ViewServiceRequestBody",
   "omagserverName": "active-metadata-store",
-  "omagserverPlatformRootURL": "{{baseURL}}",
+  "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
   "resourceEndpoints": [
     {
       "class": "ResourceEndpointConfig",
       "resourceCategory": "Platform",
       "platformName": "Platform:9443",
-      "platformRootURL": "{{baseURL}}",
+      "platformRootURL": "{{egeriaEndpoint}}",
       "description": "This is the default OMAG Server Platform."
     },
     {
@@ -209,7 +209,7 @@ Content-Type: application/json
       "engineUserId": "generalnpa"
     }
   ],
-  "omagserverPlatformRootURL": "{{baseURL}}",
+  "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
   "omagserverName": "active-metadata-store"
 }
 
@@ -236,7 +236,7 @@ Content-Type: application/json
 
 {
     "class": "IntegrationGroupConfig",
-    "omagserverPlatformRootURL": "{{baseURL}}",
+    "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
     "omagserverName" : "active-metadata-store",
     "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:DefaultIntegrationGroup"
 }
