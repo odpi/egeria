@@ -11,7 +11,7 @@ to the development and validation process associated with the model.
 
 It also supports the packaging of the model into software components for consumption
 by the [Software Developer OMAS](../software-developer), [Digital Architecture OMAS](../digital-architecture)
-and [DevOps OMAS](../dev-ops) since the models ultimately provide the implementation of software
+and [It Infrastructure OMAS](../it-infrastructure) since the models ultimately provide the implementation of software
 components that form part of the implementation of a [digital service](../digital-service).
 
 * [Documentation](https://egeria-project.org/services/omas/data-science/overview)

@@ -305,7 +305,11 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
             AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(parentEntity, methodName);
             if (anchorIdentifiers != null)
             {
-                schemaAttributeBuilder.setAnchors(userId, anchorIdentifiers.anchorGUID, anchorIdentifiers.anchorTypeName, methodName);
+                schemaAttributeBuilder.setAnchors(userId,
+                                                  anchorIdentifiers.anchorGUID,
+                                                  anchorIdentifiers.anchorTypeName,
+                                                  anchorIdentifiers.anchorDomainName,
+                                                  methodName);
             }
             SchemaTypeBuilder schemaTypeBuilder = schemaAttributeBuilder.getSchemaTypeBuilder();
 

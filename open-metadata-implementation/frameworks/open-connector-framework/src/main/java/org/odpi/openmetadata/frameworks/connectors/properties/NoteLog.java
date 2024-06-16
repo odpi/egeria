@@ -81,7 +81,6 @@ public class NoteLog extends NoteLogHeader
     {
         return "NoteLog{" +
                        "notes=" + notes +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +

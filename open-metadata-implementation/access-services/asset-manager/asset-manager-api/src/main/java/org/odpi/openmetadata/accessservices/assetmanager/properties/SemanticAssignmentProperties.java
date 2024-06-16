@@ -21,13 +21,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SemanticAssignmentProperties extends RelationshipProperties
 {
-    private String               expression  = null;
+    private String                       expression  = null;
     private String                       description = null;
     private GlossaryTermAssignmentStatus status      = null;
     private int                          confidence  = 0;
-    private String               createdBy   = null;
-    private String               steward     = null;
-    private String               source      = null;
+    private String                       createdBy   = null;
+    private String                       steward     = null;
+    private String                       source      = null;
 
 
     /**

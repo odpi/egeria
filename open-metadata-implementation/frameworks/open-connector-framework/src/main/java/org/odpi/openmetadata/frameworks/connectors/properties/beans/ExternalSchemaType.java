@@ -119,7 +119,6 @@ public class ExternalSchemaType extends SchemaType
                 ", searchKeywords=" + getSearchKeywords() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
                 ", headerVersion=" + getHeaderVersion() +

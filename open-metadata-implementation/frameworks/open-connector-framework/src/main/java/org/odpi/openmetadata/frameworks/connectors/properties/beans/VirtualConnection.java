@@ -132,7 +132,6 @@ public class VirtualConnection extends Connection
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", type=" + getType() +
                        ", GUID='" + getGUID() + '\'' +
-                       ", URL='" + getURL() + '\'' +
                        ", classifications=" + getClassifications() +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", headerVersion=" + getHeaderVersion() +

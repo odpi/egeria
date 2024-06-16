@@ -6,8 +6,8 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Note;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.OMAGGAFAPIResponse;
+import org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements.NoteElement;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NoteResponse extends OMAGGAFAPIResponse
 {
-    private Note element = null;
+    private NoteElement element = null;
 
 
     /**
@@ -57,7 +57,7 @@ public class NoteResponse extends OMAGGAFAPIResponse
      *
      * @return bean
      */
-    public Note getElement()
+    public NoteElement getElement()
     {
         return element;
     }
@@ -68,7 +68,7 @@ public class NoteResponse extends OMAGGAFAPIResponse
      *
      * @param element  bean
      */
-    public void setElement(Note element)
+    public void setElement(NoteElement element)
     {
         this.element = element;
     }

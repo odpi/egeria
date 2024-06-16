@@ -51,11 +51,11 @@ public enum SurveyServiceAuditCode implements AuditLogMessageSet
 
 
     /**
-     * SURVEY-ACTION-SERVICE-0004 - The survey action service {0} is surveying the {1} folder (directory)
+     * SURVEY-ACTION-SERVICE-0004 - The survey action service {0} is surveying the {1} folder (directory) with an analysis level of {2}
      */
     SURVEYING_FOLDER("SURVEY-ACTION-SERVICE-0004",
                      AuditLogRecordSeverityLevel.INFO,
-                     "The survey action service {0} is surveying the {1} folder (directory)",
+                     "The survey action service {0} is surveying the {1} folder (directory) with an analysis level of {2}",
                      "This message shows that the starting folder to survey.",
                      "No specific action is required.  This message is marking the start of the survey process."),
 

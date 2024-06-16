@@ -116,7 +116,6 @@ public class SchemaTypeChoice extends SchemaType
                 "schemaOptions=" + schemaOptions +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
                 ", headerVersion=" + getHeaderVersion() +

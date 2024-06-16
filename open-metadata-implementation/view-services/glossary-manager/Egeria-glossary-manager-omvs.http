@@ -1,0 +1,412 @@
+# Egeria-glossary-manager-omvs
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+
+###
+# group: Glossaries
+# @name Create a glossary
+# Create a SoftwareServerCapability entity to represent the Asset Manager.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+	"class" : "ReferenceableRequestBody",
+	"elementProperties" : 
+		{
+			"class" : "GlossaryProperties",
+			"qualifiedName" : "MyGlossary",
+			"displayName" : "My Glossary",
+			"description" : "This is an example glossary"
+		}
+}
+
+
+###
+# group: Glossaries
+# @name Retrieve a glossary by GUID
+# This call retrieves the glossar's GUID.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/retrieve
+Content-Type: application/json
+
+{
+	"class" : "AssetManagerIdentifiersRequestBody",
+	 "assetManagerGUID" : "{{externalSourceGUID}}",
+	 "assetManagerName" : "{{externalSourceName}}"
+}
+
+###
+# group: Glossaries
+# @name Retrieve a glossary By Name
+# This call retrieves the details of the Abu Dhabi glossary and checks the adGlossaryGUID is set up properly.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/by-name
+Content-Type: application/json
+
+{
+    "class" : "NameRequestBody",
+    "name" : "Glossary: Abu Dhabi Glossary"
+}
+
+###
+# group: Glossaries
+# @name Find all glossaries
+# This call retrieves the details of the Abu Dhabi glossary and checks the adGlossaryGUID is set up properly.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/by-search-string?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+	"class" : "SearchStringRequestBody",
+	 "searchString" : ".*"
+}
+
+###
+# group: Glossaries
+# @name Delete a glossary
+# Remove a glossary from the repository.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/remove
+Content-Type: application/json
+
+{	
+	"class" : "MetadataCorrelationProperties",
+	"assetManagerGUID" : "{{assetManagerGUID}}",
+	"assetManagerName" : "{{assetManagerName}}",
+	"externalIdentifier" : "extGlossary",
+	"keyPattern" : "LOCAL_KEY"
+}
+
+###
+# group: Glossaries
+# @name Create a category
+# Save the returned guid in the domain1GUID variable.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/categories
+Content-Type: application/json
+
+{
+	"class" : "ReferenceableRequestBody",
+	"elementProperties" : 
+		{
+			"class" : "GlossaryCategoryProperties",
+			"qualifiedName" : "GlossaryCategory: myCategory1",
+			"displayName" : "MyCategory 1",
+			"description" : "This is category 1 for my glossary."
+		}
+}
+
+###
+# group: Glossaries
+# @name Retrieve ALL the categories for my glossary
+# This call retrieves the details of the Abu Dhabi glossary and checks the adGlossaryGUID is set up properly.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/categories/retrieve?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Create a controlled glossary term in a glossary
+# Add the returned guid as orgGlossaryTerm1GUID variable.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/terms/new-controlled
+Content-Type: application/json
+
+{
+	"class" : "ReferenceableRequestBody",
+	"elementProperties" : 
+		{
+			"class" : "GlossaryTermProperties",
+			"qualifiedName" : "GlossaryTerm: term name : {{$isoTimestamp}}",
+			"displayName" : "term name",
+            "summary" : "This is the short description.",
+			"description" : "This is the long description of the term.",
+            "abbreviation" : "GT",
+            "examples" : "Add examples and descriptions here.",
+            "usage" : "This is how the concept described by the glossary term is used.",
+            "publishVersionIdentifier" : "V1.0",
+            "additionalProperties" :
+            {
+               "propertyName1" : "xxxx",
+               "propertyName2" : "xxxx" 
+            }
+		},
+    "initialStatus" : "DRAFT"
+}
+
+###
+# group: Glossaries
+# @name Create a copy of a glossary term
+# Add the returned guid as adGlossaryTerm1GUID variable.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/terms/from-template/{{glossaryTermGUID}}
+Content-Type: application/json
+
+{
+	"class" : "GlossaryTemplateRequestBody",
+	"elementProperties" : 
+		{
+			"class" : "TemplateProperties",
+			"qualifiedName" : "GlossaryTerm: term name : {{$isoTimestamp}}",
+			"displayName" : "term name",
+            "versionIdentifier" : "V1.0"
+		},
+    "glossaryTermStatus" : "PROPOSED"
+}
+
+###
+# group: Glossaries
+# @name Add the data field values classification to the glossary term
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/is-data-field
+Content-Type: application/json
+
+{
+	"class" : "ClassificationRequestBody",
+	"properties" : 
+		{
+			"class" : "DataFieldValuesProperties",
+			"defaultValue" : "Add default value here",
+            "sampleValues" : [ "Sample Value 1", "Sample Value 2"],
+            "dataPattern" : ["add data pattern here"],
+            "namePattern" : ["add column pattern here"]
+		}
+}
+
+###
+# group: Glossaries
+# @name Add the confidentiality classification to the glossary term
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/elements/{{glossaryTermGUID}}/confidentiality
+Content-Type: application/json
+
+{
+	"class" : "ClassificationRequestBody",
+	"properties" : 
+		{
+			"class" : "GovernanceClassificationProperties",
+			"levelIdentifier" : 1
+		}
+}
+
+###
+# group: Glossaries
+# @name Add the subject area classification to the glossary term
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/elements/{{glossaryTermGUID}}/subject-area-member
+Content-Type: application/json
+
+{
+	"class" : "ClassificationRequestBody",
+	"properties" : 
+		{
+			"class" : "SubjectAreaMemberProperties",
+			"subjectAreaName" : "Healthcare"
+		}
+}
+
+###
+# group: Glossaries
+# @name Update a glossary term in a glossary
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/update?
+    isMergeUpdate=true
+Content-Type: application/json
+
+{
+	"class" : "ReferenceableRequestBody",
+	"elementProperties" : 
+		{
+			"class" : "GlossaryTermProperties",
+			"description" : "This is the long description of the term. And this is some more text."
+		},
+        "updateDescription" : "Final updates based on in-house review comments."
+}
+
+###
+# group: Glossaries
+# @name Update a glossary term's version identfier
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/update?
+    isMergeUpdate=true
+Content-Type: application/json
+
+{
+	"class" : "ReferenceableRequestBody",
+	"elementProperties" : 
+		{
+			"class" : "GlossaryTermProperties",
+            "publishVersionIdentifier" : "V1.1"
+		}
+}
+
+###
+# group: Glossaries
+# @name Add a glossary term to a cateogry
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/categories/{{glossaryCategoryGUID}}/terms/{{glossaryTermGUID}}
+Content-Type: application/json
+
+{
+    "class" : "RelationshipRequestBody",
+    "properties" : {
+        "class" : "GlossaryTermCategorization"
+     }
+}
+
+###
+# group: Glossaries
+# @name Remove a glossary term from a category
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/categories/{{glossaryCategoryGUID}}/terms/{{glossaryTermGUID}}/remove
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Change the status of a glossary term in a glossary
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/status
+Content-Type: application/json
+
+{
+	"class" : "GlossaryTermStatusRequestBody",
+    "glossaryTermStatus" : "ACTIVE"
+}
+
+###
+# group: Glossaries
+# @name Undo an update to the glossary term
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/undo
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Retrieve ALL the glossary terms in a glossary
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/{{glossaryGUID}}/terms/retrieve?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Retrieve ALL the glossary terms in a category
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/categories/{{glossaryCategoryGUID}}/terms/retrieve?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Retrieve a glossary term 's relationships
+# This call retrieves details of the glossary terms linked to this glossary term.  Notice the original org 1 glossary term is linked via the "SourcedFrom" relationship..
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/related-terms?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Retrieve the DRAFT glossary terms from a glossary
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/by-search-string?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+    "class" : "GlossarySearchStringRequestBody",
+    "searchString" : ".*",
+    "glossaryGUID" : "{{glossaryGUID}}",
+    "limitResultsByStatus" : ["DRAFT"]
+}
+
+###
+# group: Glossaries
+# @name Retrieve the ACTIVE and PREPARED glossary terms from a glossary
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/by-search-string?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+    "class" : "GlossarySearchStringRequestBody",
+    "searchString" : ".*",
+    "glossaryGUID" : "{{glossaryGUID}}",
+    "limitResultsByStatus" : ["ACTIVE", "PREPARED"]
+}
+
+###
+# group: Glossaries
+# @name Retrieve a glossary term by GUID
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/retrieve
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Retrieve the versions of the glossary term
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/history?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Retrieve the revision log for a glossary term
+# Add the returned guid as orgGlossaryTerm1_RevisionLogGUID variable.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/elements/{{glossaryTermGUID}}/note-logs/retrieve?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Retrieve the revision history for a glossary term
+# This revision history is created automatically.  The text is supplied on the update request.  If no text is supplied, the value "None" is show.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/note-logs/{{glossaryTermRevisionLogGUID}}/notes/retrieve?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Search for term by version identifier
+POST {{baseURL}}/servers/{{viewServer}}/open-metadata/framework-services/asset-manager/open-metadata-store/users/{{user}}/metadata-elements/by-search-specification?
+    startFrom=0&
+    pageSize=0&
+    forLineage=false&
+    forDuplicateProcessing=false&
+    effectiveTime=0
+Content-Type: application/json
+
+{
+    "class" : "FindRequestBody",
+    "metadataElementTypeName" : "GlossaryTerm",
+    "searchProperties" : {
+        "class" : "SearchProperties",
+        "conditions" : [{
+            "class" : "PropertyCondition",
+            "property" : "publishVersionIdentifier",
+            "operator" : "EQ",
+            "value" : {
+                "class" : "PrimitiveTypePropertyValue",
+                "primitiveTypeCategory" : "OM_PRIMITIVE_TYPE_STRING",
+                "primitiveValue" : "V1.0",
+                "typeName" : "string"
+                }
+        }],
+        "matchCriteria" : "ALL"
+    }
+}
+
+###
+# group: Glossaries
+# @name Delete a. glossary term
+# This call retrieves the details of the Abu Dhabi glossary and checks the adGlossaryGUID is set up properly.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-browser/glossaries/terms/{{glossaryTermGUID}}/remove
+Content-Type: application/json

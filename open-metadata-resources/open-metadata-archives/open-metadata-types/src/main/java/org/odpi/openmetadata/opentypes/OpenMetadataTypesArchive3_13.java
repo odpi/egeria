@@ -562,18 +562,12 @@ public class OpenMetadataTypesArchive3_13
 
     private EntityDef getDataFeedEntity()
     {
-        final String guid            = "e87836ad-f8bd-4c52-aecd-0f1872c692e5";
-        final String name            = "DataFeed";
-        final String description     = "A data source that provides a constant stream of data, such as a sensor monitoring the environment.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.ASSET.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_FEED.typeGUID,
+                                                 OpenMetadataType.DATA_FEED.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_ASSET.typeName),
+                                                 OpenMetadataType.DATA_FEED.description,
+                                                 OpenMetadataType.DATA_FEED.descriptionGUID,
+                                                 OpenMetadataType.DATA_FEED.wikiURL);
     }
 
 

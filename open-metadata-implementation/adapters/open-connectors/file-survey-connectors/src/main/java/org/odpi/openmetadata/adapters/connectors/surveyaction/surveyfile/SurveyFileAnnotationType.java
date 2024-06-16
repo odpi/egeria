@@ -6,6 +6,8 @@ package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileMetric;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.SurveyMetric;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,11 +28,11 @@ public enum SurveyFileAnnotationType
     ;
 
 
-    public final String           name;
-    public final String           openMetadataTypeName;
-    public final String           summary;
-    public final String           explanation;
-    public final List<FileMetric> metrics;
+    public final String             name;
+    public final String             openMetadataTypeName;
+    public final String             summary;
+    public final String             explanation;
+    public final List<SurveyMetric> metrics;
 
 
     /**
@@ -46,7 +48,7 @@ public enum SurveyFileAnnotationType
                              String              openMetadataTypeName,
                              String              summary,
                              String              explanation,
-                             List<FileMetric>    metrics)
+                             List<SurveyMetric>  metrics)
     {
         this.name                 = name;
         this.openMetadataTypeName = openMetadataTypeName;
@@ -148,9 +150,9 @@ public enum SurveyFileAnnotationType
         {
             Map<String, String> metricsMap = new HashMap<>();
 
-            for (FileMetric folderMetric : metrics)
+            for (SurveyMetric folderMetric : metrics)
             {
-                metricsMap.put(folderMetric.getName(), folderMetric.getDescription());
+                metricsMap.put(folderMetric.getDisplayName(), folderMetric.getDescription());
             }
 
             annotationTypeType.setOtherPropertyValues(metricsMap);

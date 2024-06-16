@@ -89,14 +89,6 @@ public class FileProperties extends DataStoreProperties
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", owner='" + getOwner() + '\'' +
-                       ", ownerTypeName='" + getOwnerTypeName() + '\'' +
-                       ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
-                       ", ownerType=" + getOwnerType() +
-                       ", zoneMembership=" + getZoneMembership() +
-                       ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
-                       ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
-                       ", otherOriginValues=" + getOtherOriginValues() +
                        ", pathName='" + getPathName() + '\'' +
                        ", createTime=" + getCreateTime() +
                        ", modifiedTime=" + getModifiedTime() +

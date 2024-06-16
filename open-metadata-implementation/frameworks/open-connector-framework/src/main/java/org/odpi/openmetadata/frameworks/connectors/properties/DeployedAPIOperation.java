@@ -105,7 +105,6 @@ public  class DeployedAPIOperation extends APIOperation
                        ", headerSchemaType=" + getHeaderSchemaType() +
                        ", requestSchemaType=" + getRequestSchemaType() +
                        ", responseSchemaType=" + getResponseSchemaType() +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +

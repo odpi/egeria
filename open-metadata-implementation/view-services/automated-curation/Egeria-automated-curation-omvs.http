@@ -5,7 +5,7 @@
 
 ###
 # =====================================================================================================================
-# Managed the authentication token.  Run this request to create/refresh the token.
+# Manage the authentication token.  Run this request to create/refresh the token.
 
 # @name Token (RequestBody)
 POST {{baseURL}}/api/token
@@ -19,6 +19,7 @@ Content-Type: application/json
 > {% client.global.set("token", response.body); %}
 
 ###
+# =====================================================================================================================
 # The technology types provide the reference data to guide the curator.  They are extracted from the valid
 # values for deployedImplementationType
 #
@@ -30,9 +31,6 @@ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/tec
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{
-  "filter" : ""
-}
 
 ###
 @typeName=SoftwareServer
@@ -53,7 +51,19 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "filter" : "PostgreSQL"
+   "filter" : "Add search string here"
+}
+
+
+###
+# @name findTechnologyTypes (PostgreSQL related technologies)
+# Retrieve the list of deployed implementation type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "PostgreSQL"
 }
 
 
@@ -65,7 +75,30 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
+  "filter" : "Add technology name here"
+}
+
+
+###
+# @name getTechnologyTypeDetail (PostgreSQL Server)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
   "filter" : "PostgreSQL Server"
+}
+
+###
+# @name getTechnologyTypeDetail (folders)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "FileFolder"
 }
 
 ###
@@ -113,6 +146,24 @@ Content-Type: application/json
 #   "parentAtEnd1" : "",
 #   "effectiveTime" : ""
 # }
+
+###
+# @name createElementFromTemplate (folder)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "379e6c05-9cfa-4d31-a837-0ed4eee6482a",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "pathName" : "Add full path name here, eg a/b/c/myFolder",
+    "folderName" : "Add directory name without enclosing directory names, eg myFolder"
+  }
+}
+
 
 ###
 # @name createElementFromTemplate (Apache Kafka Server)

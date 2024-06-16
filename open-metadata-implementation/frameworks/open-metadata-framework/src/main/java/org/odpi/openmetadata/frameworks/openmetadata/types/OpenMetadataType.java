@@ -60,6 +60,15 @@ public enum OpenMetadataType
           "11b20cb3-2149-47f9-ad0a-058332a3cb5f",
           "The description of a resource that needs to be catalogued and governed."),
 
+    /**
+     * The description of a collection of data.
+     */
+    DATA_ASSET("ca826f9e-7fb1-4005-921a-fee1c4cd221b",
+          "DataAsset",
+          OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+          "8661a98b-1a2e-4a33-bb71-078f48532385",
+          "The description of a collection of data."),
+
 
     /**
      * Well-defined sequence of activities performed by people or software components.
@@ -78,15 +87,6 @@ public enum OpenMetadataType
                    OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
                    "002a59fc-9ee8-4e7c-b18f-39e035128127",
                    "Physical infrastructure or software platform."),
-
-    /**
-     * Collection of related data, not necessarily stored together.
-     */
-    DATA_SET("1449911c-4f44-4c22-abc0-7540154feefb",
-             "DataSet",
-             OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
-             "353a074a-079b-47ad-914f-c27a6174a8ed",
-             "Collection of related data, not necessarily stored together."),
 
     /**
      * Links an Asset entity describing a collection of sample data that originates from the resource represented by the Referenceable entity.
@@ -223,6 +223,89 @@ public enum OpenMetadataType
                       OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
                       "6da11871-b04e-4973-beb5-4b1aac37e164",
                       "Hardware and base software that supports an IT system."),
+
+    /**
+     * Named IT infrastructure system that supports multiple software platforms and servers.
+     */
+    HOST("1abd16db-5b8a-4fd9-aee5-205db3febe99",
+         "Host",
+         OpenMetadataWikiPages.MODEL_0035_HOSTS,
+         "2f97b8f6-a136-4e30-8fc2-4fc129a4f272",
+         "Named IT infrastructure system that supports multiple software platforms and servers."),
+
+    /**
+     * A group of hosts operating together to provide a scalable platform.
+     */
+    HOST_CLUSTER("9794f42f-4c9f-4fe6-be84-261f0a7de890",
+                 "HostCluster",
+                 OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                 "cfa602ae-5109-4ae0-8e8c-d066f8f3fe2d",
+                 "A group of hosts operating together to provide a scalable platform."),
+
+    /**
+     * Identifies a host as a member of a host cluster.
+     */
+    HOST_CLUSTER_MEMBER_RELATIONSHIP("1a1c3933-a583-4b0c-9e42-c3691296a8e0",
+                 "HostClusterMember",
+                 OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                 "0381865a-4230-4689-ba10-7f8d511bc3b0",
+                 "Identifies a host as a member of a host cluster."),
+
+    /**
+     * A computer that is hosting software directly on its operating system.
+     */
+    BARE_METAL_COMPUTER("8ef355d4-5cd7-4038-8337-62671b088920",
+                        "BareMetalComputer",
+                        OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                        "05e43e67-63c6-4133-af07-a19f5c5b33d6",
+                        "A computer that is hosting software directly on its operating system."),
+
+    /**
+     * A virtual machine that uses a hypervisor to virtualize hardware.
+     */
+    VIRTUAL_MACHINE("28452091-6b27-4f40-8e31-47ce34f58387",
+                    "VirtualMachine",
+                    OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                    "d8eef565-11b0-4e0c-8700-c80641405b8d",
+                    "A virtual machine that uses a hypervisor to virtualize hardware."),
+
+
+    /**
+     * Container-based virtual host that mimics a cut-down operating system.
+     */
+    VIRTUAL_CONTAINER("e2393236-100f-4ac0-a5e6-ce4e96c521e7",
+                    "VirtualContainer",
+                    OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                    "af2ae526-9f7b-4244-9bfc-819b7a902cb6",
+                    "Container-based virtual host that mimics a cut-down operating system."),
+
+
+    /**
+     * A virtual container using the docker platform.
+     */
+    DOCKER_CONTAINER("9882b8aa-eba3-4a30-94c6-43117efd11cc",
+                     "DockerContainer",
+                     OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                     "85e33f77-f595-4e68-8d1f-baf16ecd230b",
+                     "A virtual container using the docker platform."),
+
+    /**
+     * A cluster of nodes for big data workloads.
+     */
+    HADOOP_CLUSTER("abc27cf7-e526-4d1b-9c25-7dd60a7993e4",
+                   "HadoopCluster",
+                   OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                   "2851a6e4-a0a1-471d-8c73-1b666244789d",
+                   "A cluster of nodes for big data workloads."),
+
+    /**
+     * A host cluster managing containerized applications.
+     */
+    KUBERNETES_CLUSTER("101f1c93-7f5d-44e2-9ea4-5cf21726ba5c",
+                       "KubernetesCluster",
+                       OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                       "3c0401e0-846c-4d6a-adb4-cba2d83a0390",
+                       "A host cluster managing containerized applications."),
 
     /**
      * Characteristics of the operating system in use within a host.
@@ -572,6 +655,25 @@ public enum OpenMetadataType
           "12780d85-66e8-45b3-9d0e-ef4bebbf1ed9",
           "An action assigned to an individual."),
 
+
+    /**
+     * Quantitative feedback related to an item.
+     */
+    RATING("7299d721-d17f-4562-8286-bcd451814478",
+           "Rating",
+           OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+           "bd05b809-b094-431d-905d-dad65bbe6484",
+           "Quantitative feedback related to an item."),
+
+    /**
+     * Links a rating to an item.
+     */
+    ATTACHED_RATING_RELATIONSHIP("0aaad9e9-9cc5-4ad8-bc2e-c1099bab6344",
+                                 "AttachedRating",
+                                 OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+                                 "87ea2c02-dae5-4d7d-8bc8-c4f2589026b0",
+                                 "Links a rating to an item."),
+
     /**
      * Descriptive feedback or discussion related to the attached element.
      */
@@ -581,9 +683,129 @@ public enum OpenMetadataType
             "af656cd2-a73c-421f-9429-4b6749cb6f09",
             "Descriptive feedback or discussion related to the attached element."),
 
+    /**
+     * Links a comment to an item, or another comment.
+     */
+    ATTACHED_COMMENT_RELATIONSHIP("0d90501b-bf29-4621-a207-0c8c953bdac9",
+                                  "AttachedComment",
+                                  OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+                                  "7025c1a3-2026-422e-92f3-cf7d65832713",
+                                  "Links a comment to an item, or another comment."),
+
+    /**
+     * Identifies a comment as answering a question asked in another comment.
+     */
+    ACCEPTED_ANSWER_RELATIONSHIP("ecf1a3ca-adc5-4747-82cf-10ec590c5c69",
+                                 "AcceptedAnswer",
+                                 OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+                                 "2f207a82-e7e2-4fd6-9a91-c6055f287f66",
+                                 "Identifies a comment as answering a question asked in another comment."),
+
+    /**
+     * Boolean type of rating expressing a favorable impression.
+     */
+    LIKE("deaa5ca0-47a0-483d-b943-d91c76744e01",
+         "Like",
+         OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+         "b2bbaacb-c547-41b9-9bb2-e11d55bf74f7",
+         "Boolean type of rating expressing a favorable impression."),
+
+    /**
+     * Links a like to an item.
+     */
+    ATTACHED_LIKE_RELATIONSHIP("e2509715-a606-415d-a995-61d00503dad4",
+                               "AttachedLike",
+                               OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+                               "727783d2-de50-44f9-b5bc-d21a23b1a203",
+                               "Links a like to an item."),
+
+    /**
+     * A descriptive tag for an item.
+     */
+    INFORMAL_TAG("ba846a7b-2955-40bf-952b-2793ceca090a",
+                 "InformalTag",
+                 OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+                 "74bf2e98-b334-4cc8-b89f-a03239a7b574",
+                 "A descriptive tag for an item."),
+
+    /**
+     * Links an informal tag to an item.
+     */
+    ATTACHED_TAG_RELATIONSHIP("4b1641c4-3d1a-4213-86b2-d6968b6c65ab",
+                              "AttachedTag",
+                              OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+                              "f5f7ed7d-bebe-454f-94aa-1029ff37ac6a",
+                              "Links an informal tag to an item."),
+
+    /**
+     * An ordered list of related notes.
+     */
+    NOTE_LOG("646727c7-9ad4-46fa-b660-265489ad96c6",
+             "NoteLog",
+             OpenMetadataWikiPages.MODEL_0160_NOTES,
+             "cd8b86b2-115d-4a74-a6f3-8f3001a03c58",
+             "An ordered list of related notes."),
+
+    /**
+     * An entry in a note log.
+     */
+    NOTE_ENTRY("2a84d94c-ac6f-4be1-a72a-07dcec7b1fe3",
+               "NoteEntry",
+               OpenMetadataWikiPages.MODEL_0160_NOTES,
+               "33e3f368-d226-4dfe-895b-38e75a49b891",
+               "An entry in a note log."),
+
+    /**
+     * Links a note log to an item.
+     */
+    ATTACHED_NOTE_LOG_RELATIONSHIP("4f798c0c-6769-4a2d-b489-d2714d89e0a4",
+                                   "AttachedNoteLog",
+                                   OpenMetadataWikiPages.MODEL_0160_NOTES,
+                                   "6ea034cf-f669-480b-ab7e-5be658420a4e",
+                                   "Links a note log to an item."),
+
+    /**
+     * Link between a note log and one of its note log entries.
+     */
+    ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP("38edecc6-f385-4574-8144-524a44e3e712",
+                                         "AttachedNoteLogEntry",
+                                         OpenMetadataWikiPages.MODEL_0160_NOTES,
+                                         "b91a2d26-566b-4795-baea-78097556c227",
+                                         "Link between a note log and one of its note log entries."),
+
+    /**
+     * A person adding notes to a note log.
+     */
+    NOTE_LOG_AUTHOR("3a84d94c-ac6f-4be1-a72a-07dbec7b1fe3",
+                    "NoteLogAuthor",
+                    OpenMetadataWikiPages.MODEL_0160_NOTES,
+                    "58213b72-68b7-4259-938c-f0f5c59396b0",
+                    "A person adding notes to a note log."),
+
+
+    /**
+     * Links a note log to an author.
+     */
+    NOTE_LOG_AUTHORSHIP_RELATIONSHIP("8f798c0c-6769-4a2d-b489-12714d89e0a4",
+                                     "NoteLogAuthorship",
+                                     OpenMetadataWikiPages.MODEL_0160_NOTES,
+                                     "1f972f03-e7a7-4fd9-923e-bdbcdf37c4f9",
+                                     "Links a note log to an author."),
+
+
     /* ============================================================================================================================*/
     /* Area 2 - Assets                                                                                                             */
     /* ============================================================================================================================*/
+
+    /**
+     * Collection of related data, not necessarily stored together.
+     */
+    DATA_SET("1449911c-4f44-4c22-abc0-7540154feefb",
+             "DataSet",
+             OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
+             "353a074a-079b-47ad-914f-c27a6174a8ed",
+             "Collection of related data, not necessarily stored together."),
+
 
     /**
      * A physical store of data
@@ -593,6 +815,15 @@ public enum OpenMetadataType
                OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
                "186e8199-1987-4578-9799-c13a8eaa08b6",
                "A physical store of data."),
+
+    /**
+     * A data source that provides a constant stream of data, such as a sensor monitoring the environment.
+     */
+    DATA_FEED("e87836ad-f8bd-4c52-aecd-0f1872c692e5",
+             "DataFeed",
+             OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
+             "26776fcd-0f7c-49c6-874e-729898ec2193",
+             "A data source that provides a constant stream of data, such as a sensor monitoring the environment."),
 
     /**
      * The assets that provides data for a data set.
@@ -1008,6 +1239,15 @@ public enum OpenMetadataType
                                OpenMetadataWikiPages.MODEL_0422_GOVERNANCE_ACTION_CLASS,
                                "12f769eb-f0a1-4d21-8afb-e005cc6ca2c5",
                                "Defines how critical the related data items are to the organization."),
+
+    /**
+     * Who is responsible for making decisions on the management and governance of this element.
+     */
+    OWNERSHIP_CLASSIFICATION("8139a911-a4bd-432b-a9f4-f6d11c511abe",
+                             "Ownership",
+                             OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
+                             "a2825a97-ba55-4fd9-bc04-4d7adbd66f57",
+                             "Who is responsible for making decisions on the management and governance of this element."),
 
     /**
      * A collection of related governance services of the same type.
@@ -2011,42 +2251,6 @@ public enum OpenMetadataType
      */
     public static final String ADJACENT_LOCATION_TYPE_NAME = "AdjacentLocation";
 
-
-    /**
-     * 1abd16db-5b8a-4fd9-aee5-205db3febe99
-     */
-    public static final String HOST_TYPE_GUID = "1abd16db-5b8a-4fd9-aee5-205db3febe99";
-
-    /**
-     * Host - inherits from ITInfrastructure
-     */
-    public static final String HOST_TYPE_NAME = "Host";
-
-
-
-    /**
-     * 9794f42f-4c9f-4fe6-be84-261f0a7de890
-     */
-    public static final String HOST_CLUSTER_TYPE_GUID = "9794f42f-4c9f-4fe6-be84-261f0a7de890";
-
-    /**
-     * HostCluster - inherits from Host
-     */
-    public static final String HOST_CLUSTER_TYPE_NAME = "HostCluster";
-
-
-
-    /**
-     * e2393236-100f-4ac0-a5e6-ce4e96c521e7
-     */
-    public static final String VIRTUAL_CONTAINER_TYPE_GUID = "e2393236-100f-4ac0-a5e6-ce4e96c521e7";
-
-    /**
-     * VirtualContainer
-     */
-    public static final String VIRTUAL_CONTAINER_TYPE_NAME = "VirtualContainer";
-
-
     /**
      * operatingSystem
      */
@@ -2066,46 +2270,6 @@ public enum OpenMetadataType
      * HostOperatingPlatform - End1 = Host; End2 = OperatingPlatform
      */
     public static final String HOST_OPERATING_PLATFORM_TYPE_NAME = "HostOperatingPlatform";
-
-    /**
-     * e5bd6acf-932c-4d9c-85ff-941a8e4451db
-     */
-    public static final String OPERATING_PLATFORM_MANIFEST_TYPE_GUID = "e5bd6acf-932c-4d9c-85ff-941a8e4451db";  /* from Area 0 */
-
-    /**
-     * OperatingPlatformManifest - End1 = OperatingPlatform; End2 = Collection
-     */
-    public static final String OPERATING_PLATFORM_MANIFEST_TYPE_NAME = "OperatingPlatformManifest";
-
-    /**
-     * e328ae6e-0b16-4490-9883-c953b4258841
-     */
-    public static final String SOFTWARE_PACKAGE_MANIFEST_TYPE_GUID = "e328ae6e-0b16-4490-9883-c953b4258841";
-
-    /**
-     * SoftwarePackageManifest - Classification attached to Collection
-     */
-    public static final String SOFTWARE_PACKAGE_MANIFEST_TYPE_NAME = "SoftwarePackageManifest";
-
-    /**
-     * 1a1c3933-a583-4b0c-9e42-c3691296a8e0
-     */
-    public static final String HOST_CLUSTER_MEMBER_TYPE_GUID = "1a1c3933-a583-4b0c-9e42-c3691296a8e0";  /* from Area 0 */
-
-    /**
-     * HostClusterMember - End1 = HostCluster; End2 = Host (Member)
-     */
-    public static final String HOST_CLUSTER_MEMBER_TYPE_NAME = "HostClusterMember";
-
-    /**
-     * 4b981d89-e356-4d9b-8f17-b3a8d5a86676
-     */
-    public static final String DEPLOYED_VIRTUAL_CONTAINER_TYPE_GUID = "4b981d89-e356-4d9b-8f17-b3a8d5a86676";  /* from Area 0 */
-
-    /**
-     * DeployedVirtualContainer - End1 = Host; End2 = VirtualContainer (running on host)
-     */
-    public static final String DEPLOYED_VIRTUAL_CONTAINER_TYPE_NAME = "DeployedVirtualContainer";
 
     /**
      * 2b8bfab4-8023-4611-9833-82a0dc95f187
@@ -2235,56 +2399,6 @@ public enum OpenMetadataType
      * SoftwareService - inherits from SoftwareServerCapability
      */
     public static final String SOFTWARE_SERVICE_TYPE_NAME = "SoftwareService";
-
-    /**
-     * 5b7f340e-7dc9-45c0-a636-c20605147c94
-     */
-    public static final String APPLICATION_SERVICE_TYPE_GUID = "5b7f340e-7dc9-45c0-a636-c20605147c94";
-
-    /**
-     * ApplicationService - inherits from SoftwareService
-     */
-    public static final String APPLICATION_SERVICE_TYPE_NAME = "ApplicationService";
-
-    /**
-     * 92f7fe27-cd2f-441c-a084-156821aa5bca8
-     */
-    public static final String METADATA_INTEGRATION_SERVICE_TYPE_GUID = "92f7fe27-cd2f-441c-a084-156821aa5bca8";
-
-    /**
-     * MetadataIntegrationService - inherits from SoftwareService
-     */
-    public static final String METADATA_INTEGRATION_SERVICE_TYPE_NAME = "MetadataIntegrationService";
-
-    /**
-     * 0bc3a16a-e8ed-4ad0-a302-0773365fdef0
-     */
-    public static final String METADATA_ACCESS_SERVICE_TYPE_GUID = "0bc3a16a-e8ed-4ad0-a302-0773365fdef0";
-
-    /**
-     * MetadataAccessService - inherits from SoftwareService
-     */
-    public static final String METADATA_ACCESS_SERVICE_TYPE_NAME = "MetadataAccessService";
-
-    /**
-     * 90880f0b-c7a3-4d1d-93cc-0b877f27cd33
-     */
-    public static final String ENGINE_HOSTING_SERVICE_TYPE_GUID = "90880f0b-c7a3-4d1d-93cc-0b877f27cd33";
-
-    /**
-     * EngineHostingService - inherits from SoftwareService
-     */
-    public static final String ENGINE_HOSTING_SERVICE_TYPE_NAME = "EngineHostingService";
-
-    /**
-     * 1f83fc7c-75bb-491d-980d-ff9a6f80ae02
-     */
-    public static final String USER_VIEW_SERVICE_TYPE_GUID = "1f83fc7c-75bb-491d-980d-ff9a6f80ae02";
-
-    /**
-     * UserViewService - inherits from SoftwareService
-     */
-    public static final String USER_VIEW_SERVICE_TYPE_NAME = "UserViewService";
 
     /**
      * e0430f59-f021-411a-9d81-883e1ff3f6f6
@@ -2515,13 +2629,6 @@ public enum OpenMetadataType
 
     public static final String START_TIME_PROPERTY_NAME   = "startTime";                          /* from Area 1 */
     public static final String END_TIME_PROPERTY_NAME     = "endTime";                          /* from Area 1 */
-    public static final String OBJECTIVE_PROPERTY_NAME    = "objective";                          /* from Area 1 */
-    public static final String MINUTES_PROPERTY_NAME      = "minutes";                          /* from Area 1 */
-    public static final String MEETING_TYPE_PROPERTY_NAME = "meetingType";                          /* from Area 1 */
-
-    public static final String MEETINGS_RELATIONSHIP_TYPE_GUID = "a05f918e-e7e2-419d-8016-5b37406df63a";
-    public static final String MEETINGS_RELATIONSHIP_TYPE_NAME = "Meetings";   /* from Area 1 */
-    /* End1 = Meeting; End 2 = Referenceable */
 
     /**
      * 93dbc58d-c826-4bc2-b36f-195148d46f86
@@ -2693,25 +2800,6 @@ public enum OpenMetadataType
     public static final String NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_NAME = "AttachedNoteLogEntry";
     /* End1 = NoteLog; End 2 = NoteEntry */
 
-
-    /*
-    Added warning suppression for SonarCloud since the below constants contain the pattern
-         ..AUTH..="GUID"
-         which looks exactly like
-         myAuth = SECURITY_SECRET
-         which is reported as a security risk.
-    */
-    @SuppressWarnings("java:S6418")
-    public static final String NOTE_LOG_AUTHOR_RELATIONSHIP_TYPE_GUID = "8f798c0c-6769-4a2d-b489-12714d89e0a4";
-
-    public static final String NOTE_LOG_AUTHOR_RELATIONSHIP_TYPE_NAME = "NoteLogAuthorship";
-    /* End1 = NoteLogAuthor; End 2 = NoteLog */
-
-    @SuppressWarnings("java:S6418")
-    public static final String NOTE_LOG_AUTHOR_TYPE_GUID = "3a84d94c-ac6f-4be1-a72a-07dbec7b1fe3";
-    public static final String NOTE_LOG_AUTHOR_TYPE_NAME = "NoteLogAuthor";              /* from Area 1 */
-    /* PersonRole */
-
     public static final String NOTE_TYPE_GUID = "2a84d94c-ac6f-4be1-a72a-07dcec7b1fe3";
     public static final String NOTE_TYPE_NAME = "NoteEntry";              /* from Area 1 */
     /* Referenceable */
@@ -2861,7 +2949,7 @@ public enum OpenMetadataType
     public static final String CONNECTOR_TYPE_DIRECTORY_TYPE_GUID = "9678ef11-ed7e-404b-a041-736df7514339";
 
     /**
-     * ConnectorTypeDirectory - aatached to Collection
+     * ConnectorTypeDirectory - attached to Collection
      */
     public static final String CONNECTOR_TYPE_DIRECTORY_TYPE_NAME = "ConnectorTypeDirectory";
 
@@ -3763,30 +3851,6 @@ public enum OpenMetadataType
 
     public static final String ASSET_ZONES_CLASSIFICATION_GUID = "a1c17a86-9fd3-40ca-bb9b-fe83c6981deb";
     public static final String ASSET_ZONES_CLASSIFICATION_NAME = "AssetZoneMembership";
-
-    public static final String ZONE_MEMBERSHIP_PROPERTY_NAME = "zoneMembership";                       /* from Area 4 */
-
-    public static final String PROJECT_CHARTER_TYPE_GUID = "f96b5a32-42c1-4a74-8f77-70a81cec783d";
-    public static final String PROJECT_CHARTER_TYPE_NAME = "ProjectCharter";
-    /* Referenceable */
-
-    public static final String PROJECT_CHARTER_LINK_TYPE_GUID = "f081808d-545a-41cb-a9aa-c4f074a16c78";
-    public static final String PROJECT_CHARTER_LINK_TYPE_NAME = "ProjectCharterLink";
-    /* End1 = Project; End 2 = ProjectCharter */
-
-    public static final String PURPOSES_PROPERTY_NAME     = "purposes";                                /* from Area 4 */
-
-    public static final String ASSET_OWNERSHIP_CLASSIFICATION_GUID = "d531c566-03d2-470a-be69-6f52cabd5fb9";
-    public static final String ASSET_OWNERSHIP_CLASSIFICATION_NAME = "AssetOwnership";
-
-    public static final String OWNERSHIP_CLASSIFICATION_TYPE_GUID = "8139a911-a4bd-432b-a9f4-f6d11c511abe";
-    public static final String OWNERSHIP_CLASSIFICATION_TYPE_NAME = "Ownership";
-
-    public static final String OWNER_PROPERTY_NAME               = "owner";                                /* from Area 4 */
-    public static final String OWNER_TYPE_PROPERTY_NAME          = "ownerType"; /* deprecated */
-    public static final String OWNER_TYPE_NAME_PROPERTY_NAME     = "ownerTypeName";
-    public static final String OWNER_PROPERTY_NAME_PROPERTY_NAME = "ownerPropertyName";
-
 
     public static final String GOVERNANCE_METRIC_TYPE_GUID = "9ada8e7b-823c-40f7-adf8-f164aabda77e";
     public static final String GOVERNANCE_METRIC_TYPE_NAME = "GovernanceMetric";

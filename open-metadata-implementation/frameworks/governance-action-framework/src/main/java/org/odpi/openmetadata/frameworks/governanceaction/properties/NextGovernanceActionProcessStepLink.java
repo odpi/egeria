@@ -66,18 +66,18 @@ public class NextGovernanceActionProcessStepLink
      */
     public ElementStub getPreviousProcessStep()
     {
-        return nextProcessStep;
+            return previousProcessStep;
     }
 
 
     /**
      * Set up details of the previous governance action process step
      *
-     * @param nextProcessStep governance action process step properties
+     * @param previousProcessStep governance action process step properties
      */
-    public void setPreviousProcessStep(ElementStub nextProcessStep)
+    public void setPreviousProcessStep(ElementStub previousProcessStep)
     {
-        this.nextProcessStep = nextProcessStep;
+        this.previousProcessStep = previousProcessStep;
     }
 
 

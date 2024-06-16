@@ -191,6 +191,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
         List<String>        templateAnchorGUIDs  = new ArrayList<>(); /* List of anchor GUIDs associated with the template - to allow nested anchors to be handled */
         String              beanAnchorGUID       = null; /* value of the anchor to set into the new beans */
         String              beanAnchorTypeName   = null; /* value of the anchor to set into the new beans */
+        String              beanAnchorDomainName = null; /* value of the anchor to set into the new beans */
 
         /**
          * Standard toString for logging
@@ -208,6 +209,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                     ", templateAnchorGUIDs=" + templateAnchorGUIDs +
                     ", beanAnchorGUID='" + beanAnchorGUID + '\'' +
                     ", beanAnchorTypeName='" + beanAnchorTypeName + '\'' +
+                    ", beanAnchorDomainName='" + beanAnchorDomainName + '\'' +
                     '}';
         }
     }
@@ -357,6 +359,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                      */
                     templateProgress.beanAnchorGUID = templateAnchorEntity.getGUID();
                     templateProgress.beanAnchorTypeName = templateAnchorEntity.getType().getTypeDefName();
+                    templateProgress.beanAnchorDomainName = this.getDomainName(templateAnchorEntity);
                 }
 
                 templateProgress.templateAnchorGUIDs.add(templateAnchorEntity.getGUID());
@@ -368,7 +371,11 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                  * A bean anchor has been set up on a previous iteration.  This value is typically set when the top-level bean is created
                  * from the template.  The alternative is that the top-level template bean has an anchor.
                  */
-                propertyBuilder.setAnchors(userId, templateProgress.beanAnchorGUID, templateProgress.beanAnchorTypeName, methodName);
+                propertyBuilder.setAnchors(userId,
+                                           templateProgress.beanAnchorGUID,
+                                           templateProgress.beanAnchorTypeName,
+                                           templateProgress.beanAnchorDomainName,
+                                           methodName);
             }
 
             /*
@@ -464,6 +471,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
             {
                 templateProgress.beanAnchorGUID = newEntityGUID;
                 templateProgress.beanAnchorTypeName = templateEntity.getType().getTypeDefName();
+                templateProgress.beanAnchorDomainName = this.getDomainName(templateEntity);
             }
 
             if (deepCopy)

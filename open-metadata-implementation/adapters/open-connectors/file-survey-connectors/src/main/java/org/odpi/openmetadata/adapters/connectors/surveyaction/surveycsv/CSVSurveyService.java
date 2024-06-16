@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector;
-import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileMetric;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileMetric;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.SurveyFileAnnotationType;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -229,19 +229,19 @@ public class CSVSurveyService extends SurveyActionServiceConnector
 
             Map<String, String> dataSourceProperties = new HashMap<>();
 
-            dataSourceProperties.put(FileMetric.FILE_NAME.name, fileClassification.getFileName());
-            dataSourceProperties.put(FileMetric.PATH_NAME.name, fileClassification.getPathName());
-            dataSourceProperties.put(FileMetric.FILE_EXTENSION.name, fileClassification.getFileExtension());
-            dataSourceProperties.put(FileMetric.FILE_TYPE.name, fileClassification.getFileType());
-            dataSourceProperties.put(FileMetric.DEPLOYED_IMPLEMENTATION_TYPE.name, fileClassification.getDeployedImplementationType());
-            dataSourceProperties.put(FileMetric.ENCODING.name, fileClassification.getEncoding());
-            dataSourceProperties.put(FileMetric.ASSET_TYPE_NAME.name, fileClassification.getAssetTypeName());
-            dataSourceProperties.put(FileMetric.CAN_READ.name, Boolean.toString(fileClassification.isCanRead()));
-            dataSourceProperties.put(FileMetric.CAN_WRITE.name, Boolean.toString(fileClassification.isCanWrite()));
-            dataSourceProperties.put(FileMetric.CAN_EXECUTE.name, Boolean.toString(fileClassification.isCanExecute()));
-            dataSourceProperties.put(FileMetric.IS_SYM_LINK.name, Boolean.toString(fileClassification.isSymLink()));
-            dataSourceProperties.put(FileMetric.IS_HIDDEN.name, Boolean.toString(fileClassification.isHidden()));
-            dataSourceProperties.put(FileMetric.RECORD_COUNT.name, Long.toString(recordCount));
+            dataSourceProperties.put(FileMetric.FILE_NAME.displayName, fileClassification.getFileName());
+            dataSourceProperties.put(FileMetric.PATH_NAME.displayName, fileClassification.getPathName());
+            dataSourceProperties.put(FileMetric.FILE_EXTENSION.displayName, fileClassification.getFileExtension());
+            dataSourceProperties.put(FileMetric.FILE_TYPE.displayName, fileClassification.getFileType());
+            dataSourceProperties.put(FileMetric.DEPLOYED_IMPLEMENTATION_TYPE.displayName, fileClassification.getDeployedImplementationType());
+            dataSourceProperties.put(FileMetric.ENCODING.displayName, fileClassification.getEncoding());
+            dataSourceProperties.put(FileMetric.ASSET_TYPE_NAME.displayName, fileClassification.getAssetTypeName());
+            dataSourceProperties.put(FileMetric.CAN_READ.displayName, Boolean.toString(fileClassification.isCanRead()));
+            dataSourceProperties.put(FileMetric.CAN_WRITE.displayName, Boolean.toString(fileClassification.isCanWrite()));
+            dataSourceProperties.put(FileMetric.CAN_EXECUTE.displayName, Boolean.toString(fileClassification.isCanExecute()));
+            dataSourceProperties.put(FileMetric.IS_SYM_LINK.displayName, Boolean.toString(fileClassification.isSymLink()));
+            dataSourceProperties.put(FileMetric.IS_HIDDEN.displayName, Boolean.toString(fileClassification.isHidden()));
+            dataSourceProperties.put(FileMetric.RECORD_COUNT.displayName, Long.toString(recordCount));
 
             measurementAnnotation.setResourceProperties(dataSourceProperties);
 

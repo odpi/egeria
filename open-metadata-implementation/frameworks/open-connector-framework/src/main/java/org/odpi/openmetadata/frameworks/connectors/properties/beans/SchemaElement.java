@@ -243,7 +243,6 @@ public abstract class SchemaElement extends GovernedReferenceable
                 ", searchKeywords=" + getSearchKeywords() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
                 ", headerVersion=" + getHeaderVersion() +
