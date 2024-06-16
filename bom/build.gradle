@@ -55,7 +55,7 @@ ext {
     jacksonaslVersion = '1.9.14-atlassian-6'
     jakartaannotationVersion = '2.1.1'
     jakartapersistenceVersion = '3.1.0'
-    jakartavalidationVersion = '3.0.2'
+    jakartavalidationVersion = '3.1.0'
     janusVersion = '0.6.4'
     javassistVersion = '3.29.2-GA'
     jaxbVersion = '2.3.1'
