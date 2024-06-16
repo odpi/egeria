@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.projectmanagement.client.converters
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectTeamMember;
 import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectTeamProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
@@ -57,8 +56,6 @@ public class TeamMemberConverter<B> extends ProjectManagementConverterBase<B>
 
             if (returnBean instanceof ProjectTeamMember bean)
             {
-                ProjectTeamProperties projectTeamProperties = new ProjectTeamProperties();
-
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass,
                                                                      relatedMetadataElement,
                                                                      relatedMetadataElement.getRelationshipGUID(),
@@ -72,6 +69,8 @@ public class TeamMemberConverter<B> extends ProjectManagementConverterBase<B>
                  */
                 if (relatedMetadataElement.getRelationshipProperties() != null)
                 {
+                    ProjectTeamProperties projectTeamProperties = new ProjectTeamProperties();
+
                     elementProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
 
                     projectTeamProperties.setTeamRole(this.removeTeamRole(elementProperties));
@@ -83,10 +82,8 @@ public class TeamMemberConverter<B> extends ProjectManagementConverterBase<B>
                      * assumed to be defined in a subtype.
                      */
                     projectTeamProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
-                }
-                else
-                {
-                    handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
+
+                    bean.setProjectTeamProperties(projectTeamProperties);
                 }
 
                 bean.setMember(super.getElementStub(beanClass, relatedMetadataElement.getElement(), methodName));

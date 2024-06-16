@@ -298,7 +298,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
             List<String> activeCatalogTargets = new ArrayList<>();
 
             int startFrom   = 0;
-            int maxPageSize = 0;
+            int maxPageSize = integrationContext.getMaxPageSize();
 
             List<CatalogTarget> catalogTargets = this.getContext().getCatalogTargets(startFrom, maxPageSize);
 
@@ -396,15 +396,15 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
         /*
          * Seems to be new - but we need to check that this is not matching the endpoint catalog target.
          */
-        if ((this.getContext().isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.DATA_FOLDER.typeName)) &&
+        if ((this.getContext().isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.FILE_FOLDER.typeName)) &&
                     ((catalogTarget.getCatalogTargetName() == null) || (CATALOG_TARGET_NAME.equals(catalogTarget.getCatalogTargetName()))))
         {
             /*
              * It is the right type of catalog target.  We now need the path name associated with this catalog target.
              */
-            FileFolderElement fileFolderElement = this.getFolderElement(catalogTarget.getRelationshipGUID());
+            FileFolderElement fileFolderElement = this.getFolderElement(catalogTarget.getCatalogTargetElement().getGUID());
 
-            if ((fileFolderElement != null) && (fileFolderElement.getFileFolderProperties().getPathName() != null))
+            if ((fileFolderElement != null) && (fileFolderElement.getFileFolderProperties() != null) && (fileFolderElement.getFileFolderProperties().getPathName() != null))
             {
                 /*
                  * Create a file object to perform the comparison on the absolute path name.

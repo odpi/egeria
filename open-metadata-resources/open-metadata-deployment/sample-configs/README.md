@@ -8,16 +8,22 @@ This directory contains the server configurations for five [OMAG Servers](https:
 * **simple-metadata-store** is a [Metadata Access Store](https://egeria-project.org/concepts/metadata-access-store/)
   that provides REST APIs for retrieving and maintaining open metadata.
   This server is set up to use a repository that keeps its metadata in memory.
-  This means that each time the server is restarted, it starts with an empty repository.
+  It loads the [Simple Catalog Content Pack](https://egeria-project.org/content-packs/simple-content-pack/overview/).
+  This means that each time the server is restarted, it starts with just the content of the Simple Catalog Content Pack
+  in its repository.  
 
-The next set of servers use Apache Kafka to send and receive events.
+The `simple-metadata-store` server is not configured to use Apache Kafka and so it does not produce events
+when metadata is changed. The next set of servers make use of Apache Kafka to both send and receive events.
 The Apache Kafka broker should be listening at `localhost:9092`.
 
 * **active-metadata-store** is a [Metadata Access Store](https://egeria-project.org/concepts/metadata-access-store/)
   that supports both REST APIs for retrieving and maintaining open metadata along with
   event notifications each time there is change in the metadata.  It is storing its
   metadata in an XTDB key-value repository stored on the local file system
-  under the `platform/data/servers/active-metadata-store` directory.
+  under the `platform/data/servers/active-metadata-store` directory.  This means that any
+  metadata that you create will still be in the repository when you restart this server.
+  (The repository can be cleared by deleting the `platform/data/servers/active-metadata-store/repository` directory.)
+  This server automatically loads the [Core ]
 
 * **integration-daemon** is an [Integration Daemon](https://egeria-project.org/concepts/integration-daemon/)
   that catalogs files stored on the filesystem.  It is set up to catalog any file located in `sample-data/data-files`

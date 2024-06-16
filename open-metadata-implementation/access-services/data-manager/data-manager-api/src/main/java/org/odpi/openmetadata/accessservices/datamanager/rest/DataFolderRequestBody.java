@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataFolderRequestBody extends FileFolderProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String externalSourceGUID         = null;
     private String externalSourceName         = null;
     private String connectorProviderClassName = null;

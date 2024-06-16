@@ -271,6 +271,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                  assetGUID,
                                                  assetGUIDParameterName,
                                                  OpenMetadataType.ASSET.typeName,
+                                                 OpenMetadataType.ASSET.typeName,
                                                  assetProperties.getQualifiedName(),
                                                  assetProperties,
                                                  true,
@@ -471,7 +472,10 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(assetProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         this.validateExternalIdentifier(userId,
                                         assetGUID,
@@ -508,6 +512,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         this.maintainSupplementaryProperties(userId,
                                              assetGUID,
                                              assetGUIDParameterName,
+                                             OpenMetadataType.ASSET.typeName,
                                              OpenMetadataType.ASSET.typeName,
                                              assetProperties.getQualifiedName(),
                                              assetProperties,
@@ -979,7 +984,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
 
             if (relationship.getProperties() != null)
             {
-                if (OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME.equals(relationship.getType().getTypeDefName()))
+                if (OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName.equals(relationship.getType().getTypeDefName()))
                 {
                     DataContentForDataSetProperties properties = new DataContentForDataSetProperties();
 

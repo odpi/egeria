@@ -1225,12 +1225,12 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1Name            = "domainIdentifier";
         final String attribute1Description     = "Identifier used in governance definitions to show which governance domain they belong to.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "displayName";
-        final String attribute2Description     = "Name of the domain in common use.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "description";
-        final String attribute3Description     = "Description of the domain to clarify its meaning/scope.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute2Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute3Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
                                                         attribute1Description,
@@ -1273,12 +1273,12 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1Name            = "levelIdentifier";
         final String attribute1Description     = "Numeric value for the classification level";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "displayName";
-        final String attribute2Description     = "Short descriptive name in common use";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "description";
-        final String attribute3Description     = "Explanation of the meaning of this level of the classification";
-        final String attribute3DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute2Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute3Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
                                                         attribute1Description,

@@ -8,9 +8,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainSetProperties;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,10 +21,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceDomainElement implements Serializable
+public class GovernanceDomainElement
 {
-    private static final long serialVersionUID = 1L;
-
     private ElementHeader              elementHeader = null;
     private GovernanceDomainProperties properties    = null;
 

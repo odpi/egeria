@@ -26,10 +26,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = MetadataSourceRequestBody.class, name = "MetadataSourceRequestBody"),
 
               })
-public abstract class ITInfrastructureOMASAPIRequestBody implements java.io.Serializable
+public abstract class ITInfrastructureOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
 
     /**
      * Default constructor

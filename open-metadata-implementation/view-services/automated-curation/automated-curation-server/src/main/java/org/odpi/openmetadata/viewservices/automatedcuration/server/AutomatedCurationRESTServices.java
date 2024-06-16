@@ -12,15 +12,10 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetResponse;
 import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetsResponse;
@@ -33,7 +28,10 @@ import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeR
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeSummaryListResponse;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -48,8 +46,6 @@ public class AutomatedCurationRESTServices extends TokenController
 
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AutomatedCurationRESTServices.class),
                                                                             instanceHandler.getServiceName());
-
-    private final PropertyHelper propertyHelper = new PropertyHelper();
 
     /**
      * Default constructor
@@ -77,6 +73,9 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public TechnologyTypeSummaryListResponse findTechnologyTypes(String            serverName,
+                                                                 boolean           startsWith,
+                                                                 boolean           endsWith,
+                                                                 boolean           ignoreCase,
                                                                  int               startFrom,
                                                                  int               pageSize,
                                                                  FilterRequestBody requestBody)
@@ -94,21 +93,43 @@ public class AutomatedCurationRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ValidValuesAssetOwner handler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
+
+            Date effectiveTime = new Date();
+
             if (requestBody != null)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                ValidValuesAssetOwner handler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
+                effectiveTime = requestBody.getEffectiveTime();
+            }
 
-                List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                              "Egeria:ValidMetadataValue.*(.*" + requestBody.getFilter() + ".*)",
-                                                                              startFrom,
-                                                                              pageSize,
-                                                                              requestBody.getEffectiveTime());
-                response.setElements(this.getTechnologySummaries(validValues));
+            List<ValidValueElement> validValues = handler.findValidValues(userId,
+                                                                          "Egeria:ValidMetadataValue:.*:deployedImplementationType-.*",
+                                                                          startFrom,
+                                                                          pageSize,
+                                                                          effectiveTime);
+
+            if ((requestBody != null) && (requestBody.getFilter() != null) && (! requestBody.getFilter().isBlank()) && (validValues != null))
+            {
+                List<ValidValueElement> filteredValidValues = new ArrayList<>();
+                String searchString = instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase);
+
+                for (ValidValueElement validValue : validValues)
+                {
+                    if ((validValue != null) && (validValue.getValidValueProperties() != null) && (validValue.getValidValueProperties().getPreferredValue() != null))
+                    {
+                        if (validValue.getValidValueProperties().getPreferredValue().matches(searchString))
+                        {
+                            filteredValidValues.add(validValue);
+                        }
+                    }
+                }
+
+                response.setElements(this.getTechnologySummaries(filteredValidValues));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElements(this.getTechnologySummaries(validValues));
             }
         }
         catch (Exception error)
@@ -203,7 +224,7 @@ public class AutomatedCurationRESTServices extends TokenController
                 if (requestBody != null)
                 {
                     List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                                  "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-(.*)",
+                                                                                  "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-.*",
                                                                                   startFrom,
                                                                                   pageSize,
                                                                                   requestBody.getEffectiveTime());
@@ -212,7 +233,7 @@ public class AutomatedCurationRESTServices extends TokenController
                 else
                 {
                     List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                                  "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-(.*)",
+                                                                                  "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-.*",
                                                                                   startFrom,
                                                                                   pageSize,
                                                                                   new Date());
@@ -248,8 +269,8 @@ public class AutomatedCurationRESTServices extends TokenController
     public TechnologyTypeReportResponse getTechnologyTypeDetail(String            serverName,
                                                                 FilterRequestBody requestBody)
     {
-        final String methodName = "getTechnologyTypesForOpenMetadataType";
-        final String parameterName = "requestBody.string";
+        final String methodName = "getTechnologyTypeDetail";
+        final String parameterName = "requestBody.filter";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -273,7 +294,7 @@ public class AutomatedCurationRESTServices extends TokenController
                     OpenMetadataStoreClient  openHandler        = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
                     List<ValidValueElement> validValues = validValuesHandler.findValidValues(userId,
-                                                                                             "Egeria:ValidMetadataValue:.*:deployedImplementationType-.*" + requestBody.getFilter() + ".*",
+                                                                                             "Egeria:ValidMetadataValue:.*:deployedImplementationType-.*",
                                                                                              0,
                                                                                              0,
                                                                                              requestBody.getEffectiveTime());
@@ -284,7 +305,9 @@ public class AutomatedCurationRESTServices extends TokenController
 
                         for (ValidValueElement validValueElement : validValues)
                         {
-                            if (validValueElement != null)
+                            if ((validValueElement != null) &&
+                                    (validValueElement.getValidValueProperties() != null) &&
+                                    (requestBody.getFilter().equals(validValueElement.getValidValueProperties().getPreferredValue())))
                             {
                                 report.setTechnologyTypeGUID(validValueElement.getElementHeader().getGUID());
                                 report.setQualifiedName(validValueElement.getValidValueProperties().getQualifiedName());
@@ -423,6 +446,8 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                                                                                                  0, 0);
 
                                 report.setExternalReferences(externalReferenceElements);
+
+                                break;
                             }
                         }
 
@@ -487,6 +512,8 @@ public class AutomatedCurationRESTServices extends TokenController
                 OpenMetadataStoreClient openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
                 response.setGUID(openHandler.createMetadataElementFromTemplate(userId,
+                                                                               requestBody.getExternalSourceGUID(),
+                                                                               requestBody.getExternalSourceName(),
                                                                                requestBody.getTypeName(),
                                                                                requestBody.getAnchorGUID(),
                                                                                requestBody.getIsOwnAnchor(),
@@ -681,6 +708,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the integration connector definition.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse removeCatalogTarget(String          serverName,
                                             String          integrationConnectorGUID,
                                             String          metadataElementGUID,
@@ -701,16 +729,9 @@ public class AutomatedCurationRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
+            OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
 
-                handler.removeCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.removeCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID);
         }
         catch (Exception error)
         {
@@ -936,20 +957,24 @@ public class AutomatedCurationRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-                response.setElements(handler.getGovernanceActionProcessesByName(userId,
-                                                                                instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                                                startFrom,
-                                                                                pageSize,
-                                                                                requestBody.getEffectiveTime()));
+                response.setElements(handler.findGovernanceActionProcesses(userId,
+                                                                           instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           requestBody.getEffectiveTime()));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElements(handler.findGovernanceActionProcesses(userId,
+                                                                           instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           new Date()));
             }
         }
         catch (Exception error)
@@ -1333,11 +1358,11 @@ public class AutomatedCurationRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
                 response.setElements(handler.findEngineActions(userId,
                                                                instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
                                                                startFrom,
@@ -1345,7 +1370,10 @@ public class AutomatedCurationRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElements(handler.findEngineActions(userId,
+                                                               instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                               startFrom,
+                                                               pageSize));
             }
         }
         catch (Exception error)

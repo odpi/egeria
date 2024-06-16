@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -26,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum ProcessStatus implements Serializable
+public enum ProcessStatus
 {
     UNKNOWN   (ElementStatus.UNKNOWN),
     DRAFT     (ElementStatus.DRAFT),
@@ -35,9 +33,6 @@ public enum ProcessStatus implements Serializable
     ACTIVE    (ElementStatus.ACTIVE);
 
     private final ElementStatus elementStatus;
-
-    private static final long     serialVersionUID = 1L;
-
 
     /**
      * Constructor to set up the instance of this enum.

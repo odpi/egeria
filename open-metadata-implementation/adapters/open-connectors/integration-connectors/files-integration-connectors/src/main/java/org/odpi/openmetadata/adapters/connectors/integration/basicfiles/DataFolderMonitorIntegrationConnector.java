@@ -79,64 +79,71 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
 
         for (DirectoryToMonitor directoryToMonitor : directoriesToMonitor)
         {
-            try
+            if (super.isActive())
             {
-                if (fileChanged.getAbsolutePath().startsWith(directoryToMonitor.directoryFile.getAbsolutePath()))
+                try
                 {
-                    /*
-                     * The directory matches this directory.
-                     */
-                    if (directoryToMonitor.dataFolderElement == null)
+                    if (fileChanged.getAbsolutePath().startsWith(directoryToMonitor.directoryFile.getAbsolutePath()))
                     {
-                        directoryToMonitor.dataFolderElement = this.getFolderElement(directoryToMonitor.directoryFile);
-                    }
-
-                    if (directoryToMonitor.dataFolderElement != null)
-                    {
-                        Date lastRecordedChange = directoryToMonitor.dataFolderElement.getFileFolderProperties().getModifiedTime();
-
-                        if ((lastRecordedChange == null) || (lastRecordedChange.before(new Date(directoryToMonitor.directoryFile.lastModified()))))
+                        /*
+                         * The directory matches this directory.
+                         */
+                        if (directoryToMonitor.dataFolderElement == null)
                         {
-                            FileFolderProperties properties = new FileFolderProperties();
+                            directoryToMonitor.dataFolderElement = this.getFolderElement(directoryToMonitor.directoryFile);
+                        }
 
-                            properties.setModifiedTime(modifiedTime);
-                            this.getContext().updateDataFolderInCatalog(directoryToMonitor.dataFolderElement.getElementHeader().getGUID(), true,
-                                                                        properties);
+                        if (directoryToMonitor.dataFolderElement != null)
+                        {
+                            Date lastRecordedChange = directoryToMonitor.dataFolderElement.getFileFolderProperties().getModifiedTime();
 
-                            if (auditLog != null)
+                            if ((lastRecordedChange == null) || (lastRecordedChange.before(new Date(directoryToMonitor.directoryFile.lastModified()))))
                             {
-                                auditLog.logMessage(methodName,
-                                                    BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED_FOR_FILE.getMessageDefinition(
-                                                            connectorName,
-                                                            directoryToMonitor.directoryFile.getAbsolutePath(),
-                                                            modifiedTime.toString(),
-                                                            fileChanged.getAbsolutePath()));
+                                FileFolderProperties properties = new FileFolderProperties();
+
+                                properties.setModifiedTime(modifiedTime);
+                                this.getContext().updateDataFolderInCatalog(directoryToMonitor.dataFolderElement.getElementHeader().getGUID(), true,
+                                                                            properties);
+
+                                if (auditLog != null)
+                                {
+                                    auditLog.logMessage(methodName,
+                                                        BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED_FOR_FILE.getMessageDefinition(
+                                                                connectorName,
+                                                                directoryToMonitor.directoryFile.getAbsolutePath(),
+                                                                modifiedTime.toString(),
+                                                                fileChanged.getAbsolutePath()));
+                                }
                             }
                         }
                     }
                 }
-            }
-            catch (Exception error)
-            {
-                if (auditLog != null)
+                catch (Exception error)
                 {
-                    String folderGUID = null;
-
-                    if (directoryToMonitor.dataFolderElement != null)
+                    if (auditLog != null)
                     {
-                        folderGUID = directoryToMonitor.dataFolderElement.getElementHeader().getGUID();
+                        String folderGUID = null;
+
+                        if (directoryToMonitor.dataFolderElement != null)
+                        {
+                            folderGUID = directoryToMonitor.dataFolderElement.getElementHeader().getGUID();
+                        }
+
+                        auditLog.logException(methodName,
+                                              BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_FOLDER_UPDATE.getMessageDefinition(
+                                                      error.getClass().getName(),
+                                                      connectorName,
+                                                      folderGUID,
+                                                      directoryToMonitor.directoryFile.getAbsolutePath(),
+                                                      error.getMessage()),
+                                              error);
+
                     }
-
-                    auditLog.logException(methodName,
-                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_FOLDER_UPDATE.getMessageDefinition(
-                                                  error.getClass().getName(),
-                                                  connectorName,
-                                                  folderGUID,
-                                                  directoryToMonitor.directoryFile.getAbsolutePath(),
-                                                  error.getMessage()),
-                                          error);
-
                 }
+            }
+            else
+            {
+                break;
             }
         }
     }

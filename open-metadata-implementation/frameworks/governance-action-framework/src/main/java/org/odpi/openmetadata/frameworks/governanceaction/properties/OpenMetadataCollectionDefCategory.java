@@ -9,8 +9,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.ArrayTypePropert
 import org.odpi.openmetadata.frameworks.governanceaction.search.MapTypePropertyValue;
 import org.odpi.openmetadata.frameworks.governanceaction.search.StructTypePropertyValue;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -24,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OpenMetadataCollectionDefCategory implements Serializable
+public enum OpenMetadataCollectionDefCategory
 {
     /**
      * Unknown collection type
@@ -45,8 +43,6 @@ public enum OpenMetadataCollectionDefCategory implements Serializable
      * A record with a variety of values.
      */
     OM_COLLECTION_STRUCT  (3, "struct<>",        0, StructTypePropertyValue.class.getName());
-
-    private static final long serialVersionUID = 1L;
 
     private  final int         code;
     private  final String      name;

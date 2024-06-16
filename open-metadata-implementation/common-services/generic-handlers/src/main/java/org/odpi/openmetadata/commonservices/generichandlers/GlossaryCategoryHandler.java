@@ -357,7 +357,10 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryCategoryGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
 
         String typeName = OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME;
 

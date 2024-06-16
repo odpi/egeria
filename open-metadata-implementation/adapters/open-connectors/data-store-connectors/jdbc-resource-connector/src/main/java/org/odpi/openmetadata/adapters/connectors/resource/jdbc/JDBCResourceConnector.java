@@ -179,6 +179,17 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
 
     /**
+     * Return the name of the database.
+     *
+     * @return string name
+     */
+    public String getDatabaseName()
+    {
+        return jdbcDatabaseName;
+    }
+
+
+    /**
      * Return the DataSource implementation for this database.  This supports creating the connection to the database.
      *
      * @return DataSource

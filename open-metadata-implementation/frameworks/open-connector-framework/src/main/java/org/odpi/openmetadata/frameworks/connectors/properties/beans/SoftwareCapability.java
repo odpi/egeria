@@ -19,8 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SoftwareCapability extends Referenceable
 {
-    private static final long    serialVersionUID = 1L;
-
     protected String displayName     = null;
     protected String description     = null;
     protected String typeDescription = null;
@@ -200,8 +198,7 @@ public class SoftwareCapability extends Referenceable
     public String toString()
     {
         return "SoftwareCapability{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

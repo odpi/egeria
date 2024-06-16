@@ -79,7 +79,14 @@ public class ProjectManagerRESTServices extends TokenController
 
             ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
 
-            response.setElements(handler.getLinkedProjects(userId, parentGUID, requestBody.getFilter(), startFrom, pageSize));
+            if (requestBody != null)
+            {
+                response.setElements(handler.getLinkedProjects(userId, parentGUID, requestBody.getFilter(), startFrom, pageSize));
+            }
+            else
+            {
+                response.setElements(handler.getLinkedProjects(userId, parentGUID, null, startFrom, pageSize));
+            }
         }
         catch (Exception error)
         {
@@ -128,7 +135,14 @@ public class ProjectManagerRESTServices extends TokenController
 
             ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
 
-            response.setElements(handler.getProjectMembers(userId, projectGUID, requestBody.getFilter(), startFrom, pageSize));
+            if (requestBody != null)
+            {
+                response.setElements(handler.getProjectMembers(userId, projectGUID, requestBody.getFilter(), startFrom, pageSize));
+            }
+            else
+            {
+                response.setElements(handler.getProjectMembers(userId, projectGUID, null, startFrom, pageSize));
+            }
         }
         catch (Exception error)
         {
@@ -175,7 +189,14 @@ public class ProjectManagerRESTServices extends TokenController
 
             ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
 
-            response.setElements(handler.getClassifiedProjects(userId, requestBody.getFilter(), startFrom, pageSize));
+            if (requestBody != null)
+            {
+                response.setElements(handler.getClassifiedProjects(userId, requestBody.getFilter(), startFrom, pageSize));
+            }
+            else
+            {
+                response.setElements(handler.getClassifiedProjects(userId, null, startFrom, pageSize));
+            }
         }
         catch (Exception error)
         {
@@ -228,10 +249,20 @@ public class ProjectManagerRESTServices extends TokenController
 
             ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
 
-            response.setElements(handler.findProjects(userId,
-                                                      instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
-                                                      startFrom,
-                                                      pageSize));
+            if (requestBody != null)
+            {
+                response.setElements(handler.findProjects(userId,
+                                                          instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                          startFrom,
+                                                          pageSize));
+            }
+            else
+            {
+                response.setElements(handler.findProjects(userId,
+                                                          "",
+                                                          startFrom,
+                                                          pageSize));
+            }
         }
         catch (Exception error)
         {
@@ -278,10 +309,20 @@ public class ProjectManagerRESTServices extends TokenController
 
             ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
 
-            response.setElements(handler.getProjectsByName(userId,
-                                                           requestBody.getFilter(),
-                                                           startFrom,
-                                                           pageSize));
+            if (requestBody != null)
+            {
+                response.setElements(handler.getProjectsByName(userId,
+                                                               requestBody.getFilter(),
+                                                               startFrom,
+                                                               pageSize));
+            }
+            else
+            {
+                response.setElements(handler.getProjectsByName(userId,
+                                                               null,
+                                                               startFrom,
+                                                               pageSize));
+            }
         }
         catch (Exception error)
         {

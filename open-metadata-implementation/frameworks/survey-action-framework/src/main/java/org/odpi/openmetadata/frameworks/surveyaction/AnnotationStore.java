@@ -895,15 +895,20 @@ public class AnnotationStore
             else if (annotation instanceof ResourceProfileAnnotation resourceProfileAnnotation)
             {
                 builder.setDataProfileSubtypeProperties(OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
+                                                        resourceProfileAnnotation.getProfilePropertyNames(),
                                                         resourceProfileAnnotation.getLength(),
                                                         resourceProfileAnnotation.getInferredDataType(),
                                                         resourceProfileAnnotation.getInferredFormat(),
                                                         resourceProfileAnnotation.getInferredLength(),
                                                         resourceProfileAnnotation.getInferredPrecision(),
                                                         resourceProfileAnnotation.getInferredScale(),
+                                                        resourceProfileAnnotation.getProfileStartDate(),
+                                                        resourceProfileAnnotation.getProfileEndDate(),
                                                         resourceProfileAnnotation.getProfileProperties(),
                                                         resourceProfileAnnotation.getProfileFlags(),
+                                                        resourceProfileAnnotation.getProfileDates(),
                                                         resourceProfileAnnotation.getProfileCounts(),
+                                                        resourceProfileAnnotation.getProfileDoubles(),
                                                         resourceProfileAnnotation.getValueList(),
                                                         resourceProfileAnnotation.getValueCount(),
                                                         resourceProfileAnnotation.getValueRangeFrom(),
@@ -1111,20 +1116,25 @@ public class AnnotationStore
         /*
          * Attributes for the DataProfileAnnotation
          */
-        private int                  length            = 0;
-        private String               inferredDataType  = null;
-        private String               inferredFormat    = null;
-        private int                  inferredLength    = 0;
-        private int                  inferredPrecision = 0;
-        private int                  inferredScale     = 0;
-        private Map<String, String>  profileProperties = null;
-        private Map<String, Boolean> profileFlags      = null;
-        private Map<String, Long>    profileCounts     = null;
-        private List<String>         valueList         = null;
-        private Map<String, Integer> valueCount        = null;
-        private String               valueRangeFrom    = null;
-        private String               valueRangeTo      = null;
-        private String               averageValue      = null;
+        private List<String>         profilePropertyNames = null;
+        private int                  length               = 0;
+        private String               inferredDataType     = null;
+        private String               inferredFormat       = null;
+        private int                  inferredLength       = 0;
+        private int                  inferredPrecision    = 0;
+        private int                  inferredScale        = 0;
+        private Date                 profileStartDate     = null;
+        private Date                 profileEndDate       = null;
+        private Map<String, String>  profileProperties    = null;
+        private Map<String, Boolean> profileFlags         = null;
+        private Map<String, Date>    profileDates         = null;
+        private Map<String, Long>    profileCounts        = null;
+        private Map<String, Double>  profileDoubles       = null;
+        private List<String>         valueList            = null;
+        private Map<String, Integer> valueCount           = null;
+        private String               valueRangeFrom       = null;
+        private String               valueRangeTo         = null;
+        private String               averageValue         = null;
 
         /*
          * Attributes for the DataSourceMeasurementAnnotation and DataSourcePhysicalStatusAnnotation
@@ -1305,15 +1315,20 @@ public class AnnotationStore
          * Add properties for annotation subtype.
          *
          * @param annotationTypeName unique type name of annotation
+         * @param profilePropertyNames list of property names filled out in this annotation
          * @param length length of the data field.  Assumes static predefined lengths
          * @param inferredDataType name of the data type that the discovery service believes the field is
          * @param inferredFormat name of the data format that the discovery service believes the field is
          * @param inferredLength length of the data field that has been deduced from the data stored
          * @param inferredPrecision precision of the data field that has been deduced from the data stored
          * @param inferredScale inferred scale used in other properties
+         * @param profileStartDate start of profile data capture
+         * @param profileEndDate end of profile data capture
          * @param profileProperties the map of properties that make up the profile
          * @param profileFlags a set of boolean flags describing different aspects of the data
+         * @param profileDates a set of relevant dates describing different aspects of the data
          * @param profileCounts the map of different profiling counts that have been calculated
+         * @param profileDoubles the map of different large profiling counts that have been calculated
          * @param valueList the list of values found in the data field
          * @param valueCount  a map of values to value count for the data field
          * @param valueRangeFrom the lowest value of the data stored in this data field
@@ -1321,15 +1336,20 @@ public class AnnotationStore
          * @param averageValue the average (mean) value of the values stored in the data field
          */
         void setDataProfileSubtypeProperties(String               annotationTypeName,
+                                             List<String>         profilePropertyNames,
                                              int                  length,
                                              String               inferredDataType,
                                              String               inferredFormat,
                                              int                  inferredLength,
                                              int                  inferredPrecision,
                                              int                  inferredScale,
+                                             Date                 profileStartDate,
+                                             Date                 profileEndDate,
                                              Map<String, String>  profileProperties,
                                              Map<String, Boolean> profileFlags,
+                                             Map<String, Date>    profileDates,
                                              Map<String, Long>    profileCounts,
+                                             Map<String, Double>  profileDoubles,
                                              List<String>         valueList,
                                              Map<String, Integer> valueCount,
                                              String               valueRangeFrom,
@@ -1340,20 +1360,25 @@ public class AnnotationStore
             {
                 this.openMetadataTypeName = annotationTypeName;
             }
-            this.length             = length;
-            this.inferredDataType   = inferredDataType;
-            this.inferredFormat     = inferredFormat;
-            this.inferredLength     = inferredLength;
-            this.inferredPrecision  = inferredPrecision;
-            this.inferredScale      = inferredScale;
-            this.profileProperties  = profileProperties;
-            this.profileFlags       = profileFlags;
-            this.profileCounts      = profileCounts;
-            this.valueList          = valueList;
-            this.valueCount         = valueCount;
-            this.valueRangeFrom     = valueRangeFrom;
-            this.valueRangeTo       = valueRangeTo;
-            this.averageValue       = averageValue;
+            this.profilePropertyNames = profilePropertyNames;
+            this.length               = length;
+            this.inferredDataType     = inferredDataType;
+            this.inferredFormat       = inferredFormat;
+            this.inferredLength       = inferredLength;
+            this.inferredPrecision    = inferredPrecision;
+            this.inferredScale        = inferredScale;
+            this.profileStartDate     = profileStartDate;
+            this.profileEndDate       = profileEndDate;
+            this.profileProperties    = profileProperties;
+            this.profileFlags         = profileFlags;
+            this.profileDates         = profileDates;
+            this.profileCounts        = profileCounts;
+            this.profileDoubles       = profileDoubles;
+            this.valueList            = valueList;
+            this.valueCount           = valueCount;
+            this.valueRangeFrom       = valueRangeFrom;
+            this.valueRangeTo         = valueRangeTo;
+            this.averageValue         = averageValue;
         }
 
 
@@ -1661,6 +1686,10 @@ public class AnnotationStore
          */
         private ElementProperties addDataProfileAnnotationElementProperties(ElementProperties properties)
         {
+            properties = propertyHelper.addStringArrayProperty(properties,
+                                                               OpenMetadataProperty.PROFILE_PROPERTY_NAMES.name,
+                                                               profilePropertyNames);
+
             properties = propertyHelper.addIntProperty(properties,
                                                        OpenMetadataProperty.LENGTH.name,
                                                        length);
@@ -1685,6 +1714,14 @@ public class AnnotationStore
                                                        OpenMetadataProperty.INFERRED_SCALE.name,
                                                        inferredScale);
 
+            properties = propertyHelper.addDateProperty(properties,
+                                                        OpenMetadataProperty.PROFILE_START_DATE.name,
+                                                        profileStartDate);
+
+            properties = propertyHelper.addDateProperty(properties,
+                                                        OpenMetadataProperty.PROFILE_END_DATE.name,
+                                                        profileEndDate);
+
             properties = propertyHelper.addStringMapProperty(properties,
                                                              OpenMetadataProperty.PROFILE_PROPERTIES.name,
                                                              profileProperties);
@@ -1693,9 +1730,17 @@ public class AnnotationStore
                                                               OpenMetadataProperty.PROFILE_FLAGS.name,
                                                               profileFlags);
 
+            properties = propertyHelper.addDateMapProperty(properties,
+                                                           OpenMetadataProperty.PROFILE_DATES.name,
+                                                           profileDates);
+
             properties = propertyHelper.addLongMapProperty(properties,
                                                            OpenMetadataProperty.PROFILE_COUNTS.name,
                                                            profileCounts);
+
+            properties = propertyHelper.addDoubleMapProperty(properties,
+                                                             OpenMetadataProperty.PROFILE_DOUBLES.name,
+                                                             profileDoubles);
 
             properties = propertyHelper.addStringArrayProperty(properties,
                                                                OpenMetadataProperty.VALUE_LIST.name,
@@ -2101,9 +2146,12 @@ public class AnnotationStore
                 annotation.setInferredLength(this.removeInferredLength(remainingProperties));
                 annotation.setInferredPrecision(this.removeInferredPrecision(remainingProperties));
                 annotation.setInferredScale(this.removeInferredScale(remainingProperties));
+                annotation.setProfileStartDate(this.removeProfileStartDate(remainingProperties));
+                annotation.setProfileEndDate(this.removeProfileEndDate(remainingProperties));
                 annotation.setProfileProperties(this.removeProfileProperties(remainingProperties));
                 annotation.setProfileFlags(this.removeProfileFlags(remainingProperties));
                 annotation.setProfileCounts(this.removeProfileCounts(remainingProperties));
+                annotation.setProfileDoubles(this.removeProfileDoubles(remainingProperties));
                 annotation.setValueList(this.removeValueList(remainingProperties));
                 annotation.setValueCount(this.removeValueCount(remainingProperties));
                 annotation.setValueRangeFrom(this.removeValueRangeFrom(remainingProperties));

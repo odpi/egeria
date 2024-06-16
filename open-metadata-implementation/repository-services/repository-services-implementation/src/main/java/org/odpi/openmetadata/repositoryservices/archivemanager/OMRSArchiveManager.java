@@ -349,7 +349,6 @@ public class OMRSArchiveManager
     /**
      * The InstanceStore is in three parts: an optional list of entities followed by an optional list
      * of relationships followed by an optional list of classifications.
-     *
      * It is possible that this archive has been processed before
      * and so any duplicates detected are ignored.  However, conflicting instances are detected.
      * Any problems found in applying the archive contents are recorded on the audit log.
@@ -482,10 +481,8 @@ public class OMRSArchiveManager
                 }
             }
 
-            if (instanceProcessor instanceof OMRSInstanceEventProcessorClassificationExtension)
+            if (instanceProcessor instanceof OMRSInstanceEventProcessorClassificationExtension classificationInstanceProcessor)
             {
-                OMRSInstanceEventProcessorClassificationExtension classificationInstanceProcessor = (OMRSInstanceEventProcessorClassificationExtension)instanceProcessor;
-
                 if (classifications != null)
                 {
                     for (ClassificationEntityExtension classificationEntityExtension : classifications)

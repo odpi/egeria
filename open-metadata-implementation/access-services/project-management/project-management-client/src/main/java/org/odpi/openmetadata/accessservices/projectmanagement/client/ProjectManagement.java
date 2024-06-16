@@ -671,11 +671,11 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
             for (RelatedMetadataElement relatedMetadataElement : linkedProjects)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.PROJECT.typeName))
+                if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.PROJECT.typeName))
                 {
                     ProjectElement projectElement = projectConverter.getNewBean(projectBeanClass, relatedMetadataElement, methodName);
 
-                    if ((projectStatus == null) || (projectStatus.equals(projectElement.getProperties().getProjectStatus())))
+                    if ((projectStatus == null) || (projectStatus.isBlank()) || (projectStatus.equals(projectElement.getProperties().getProjectStatus())))
                     {
                         filteredProjects.add(projectElement);
                     }
@@ -714,26 +714,23 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                                                                               UserNotAuthorizedException
     {
         final String methodName = "getClassifiedProjects";
+        final String parameterName = "classificationName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+        invalidParameterHandler.validateName(classificationName, parameterName, methodName);
 
-        SearchClassifications searchClassifications = null;
+        SearchClassifications searchClassifications =  new SearchClassifications();
 
-        if (classificationName != null)
-        {
-            searchClassifications = new SearchClassifications();
+        List<ClassificationCondition> classificationConditions = new ArrayList<>();
+        ClassificationCondition       classificationCondition  = new ClassificationCondition();
 
-            List<ClassificationCondition> classificationConditions = new ArrayList<>();
-            ClassificationCondition       classificationCondition  = new ClassificationCondition();
+        classificationCondition.setName(classificationName);
 
-            classificationCondition.setName(classificationName);
+        classificationConditions.add(classificationCondition);
 
-            classificationConditions.add(classificationCondition);
-
-            searchClassifications.setConditions(classificationConditions);
-            searchClassifications.setMatchCriteria(MatchCriteria.ALL);
-        }
+        searchClassifications.setConditions(classificationConditions);
+        searchClassifications.setMatchCriteria(MatchCriteria.ALL);
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
                                                                                                       OpenMetadataType.PROJECT.typeName,
@@ -801,7 +798,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
             {
                 if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName))
                 {
-                    if ((teamRole == null) || (OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName.equals(teamRole)))
+                    if ((teamRole == null) || (teamRole.isBlank()) || (OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName.equals(teamRole)))
                     {
                         ProjectTeamMember projectTeamMember = teamMemberConverter.getNewBean(projectMemberBeanClass, relatedMetadataElement, methodName);
 
@@ -827,7 +824,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
             if (! teamMembers.isEmpty())
             {
-                return null;
+                return teamMembers;
             }
         }
 

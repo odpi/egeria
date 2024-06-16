@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
 
 import java.util.*;
 
@@ -34,26 +33,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     (Sourced from attribute abbreviation within GlossaryTerm - model 0330)</li>
  *     <li>usage - A description of how the resource is used by the business.
  *     (Sourced from attribute usage within GlossaryTerm - model 0330)</li>
- *     <li>connectionDescription - short description about the asset.
- *     (Sourced from assetSummary within ConnectionsToAsset relationship - model 0205)</li>
- *     <li>description - full description of the asset.
- *     (Sourced from attribute description within Asset - model 0010)</li>
- *     <li>owner - name of the person or organization that owns the asset.
- *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
- *     <li>ownerTypeName - name of the element type identifying the person or organization that owns the asset.
- *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
- *     <li>ownerPropertyName - name of the property identifying person or organization that owns the asset.
- *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
- *     <li>ownerType - type of the person or organization that owns the asset.
- *     (Sourced from classification AssetOwnership attached to Asset - model 0445)</li>
- *     <li>zoneMembership - name of the person or organization that owns the asset.
- *     (Sourced from classification AssetZoneMemberShip attached to Asset - model 0424)</li>
- *     <li>assetOrigin - origin identifiers describing the source of the asset.
- *     (Sourced from classification AssetOrigin attached to Asset - model 0440)</li>
- *     <li>latestChange - description of last update to the asset.
- *     (Sourced from classification LatestChange attached to Asset - model 0010)</li>
- *     <li>isReferenceData - flag to show if asset contains reference data.
- *     (Sourced from classification ReferenceData within Asset - model 0524)</li>
  *     <li>classifications - list of all classifications assigned to the asset</li>
  *     <li>extendedProperties - list of properties assigned to the asset from the Asset subclasses</li>
  *     <li>additionalProperties - list of properties assigned to the asset as additional properties</li>
@@ -64,8 +43,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Asset extends GovernedReferenceable
 {
-    private static final long     serialVersionUID = 1L;
-
     protected String              resourceName          = null;
     protected String              resourceDescription   = null;
     protected String              versionIdentifier     = null;
@@ -74,20 +51,6 @@ public class Asset extends GovernedReferenceable
     protected String              displayDescription    = null;
     protected String              abbreviation          = null;
     protected String              usage                 = null;
-    protected String              connectionDescription = null;
-    protected String              owner                 = null;
-    protected String              ownerTypeName         = null;
-    protected String         ownerPropertyName = null;
-    protected AssetOwnerType ownerType         = null;
-    protected List<String>   zoneMembership    = null;
-    protected Map<String, String> origin                = null;
-    protected boolean             isReferenceData       = false;
-
-    /*
-     * Deprecated properties
-     */
-    protected String name        = null;
-    protected String description = null;
 
 
     /**
@@ -117,17 +80,6 @@ public class Asset extends GovernedReferenceable
             displayDescription     = template.getDisplayDescription();
             abbreviation           = template.getAbbreviation();
             usage                  = template.getUsage();
-            connectionDescription  = template.getConnectionDescription();
-            owner                  = template.getOwner();
-            ownerTypeName          = template.getOwnerTypeName();
-            ownerPropertyName      = template.getOwnerPropertyName();
-            ownerType              = template.getOwnerType();
-            zoneMembership         = template.getZoneMembership();
-            origin                 = template.getAssetOrigin();
-            isReferenceData        = template.isReferenceData();
-
-            description            = template.getDescription();
-            name                   = template.getName();
         }
     }
 
@@ -151,6 +103,27 @@ public class Asset extends GovernedReferenceable
     public void setResourceName(String name)
     {
         this.resourceName = name;
+    }
+
+
+    /**
+     * Return the description associated with the resource.
+     *
+     * @return text
+     */
+    public String getResourceDescription()
+    {
+        return resourceDescription;
+    }
+
+    /**
+     * Set up the description associated with the resource.
+     *
+     * @param resourceDescription text
+     */
+    public void setResourceDescription(String resourceDescription)
+    {
+        this.resourceDescription = resourceDescription;
     }
 
 
@@ -293,295 +266,6 @@ public class Asset extends GovernedReferenceable
 
 
     /**
-     * Returns the short description of the asset from relationship with Connection.
-     *
-     * @return shortDescription String
-     */
-    public String getConnectionDescription()
-    {
-        return connectionDescription;
-    }
-
-
-    /**
-     * Set up the short description of the asset from relationship with Connection.
-     *
-     * @param connectionDescription String text
-     */
-    public void setConnectionDescription(String connectionDescription)
-    {
-        this.connectionDescription = connectionDescription;
-    }
-
-
-    /**
-     * Returns the stored description property for the asset.
-     * If no description is provided then null is returned.
-     *
-     * @return description String text
-     */
-    public String getResourceDescription()
-    {
-        return resourceDescription;
-    }
-
-
-    /**
-     * Set up the stored description property associated with the asset.
-     *
-     * @param description String text
-     */
-    public void setResourceDescription(String description)
-    {
-        this.resourceDescription = description;
-    }
-
-
-    /**
-     * Returns the name of the owner for this asset.
-     *
-     * @return owner String
-     */
-    public String getOwner() {
-        return owner;
-    }
-
-
-    /**
-     * Set up the name of the owner for this asset.
-     *
-     * @param owner String name
-     */
-    public void setOwner(String owner)
-    {
-        this.owner = owner;
-    }
-
-
-    /**
-     * Returns the name of the type used to identify of the owner for this asset.
-     *
-     * @return owner String
-     */
-    public String getOwnerTypeName()
-    {
-        return ownerTypeName;
-    }
-
-
-    /**
-     * Set up the name of the type used to identify the owner for this asset.
-     *
-     * @param ownerTypeName String name
-     */
-    public void setOwnerTypeName(String ownerTypeName)
-    {
-        this.ownerTypeName = ownerTypeName;
-    }
-
-
-    /**
-     * Returns the property name used to identify the owner for this asset.
-     *
-     * @return owner String
-     */
-    public String getOwnerPropertyName()
-    {
-        return ownerPropertyName;
-    }
-
-
-    /**
-     * Set up the property name used to identify the owner for this asset.
-     *
-     * @param ownerPropertyName String name
-     */
-    public void setOwnerPropertyName(String ownerPropertyName)
-    {
-        this.ownerPropertyName = ownerPropertyName;
-    }
-
-
-    /**
-     * Return the type of owner stored in the owner property.
-     *
-     * @return AssetOwnerType enum
-     */
-    public AssetOwnerType getOwnerType()
-    {
-        return ownerType;
-    }
-
-
-    /**
-     * Set up the owner type for this asset.
-     *
-     * @param ownerType AssetOwnerType enum
-     */
-    public void setOwnerType(AssetOwnerType ownerType)
-    {
-        this.ownerType = ownerType;
-    }
-
-
-    /**
-     * Return the names of the zones that this asset is a member of.
-     *
-     * @return list of zone names
-     */
-    public List<String> getZoneMembership()
-    {
-        if (zoneMembership == null)
-        {
-            return null;
-        }
-        else if (zoneMembership.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(zoneMembership);
-        }
-    }
-
-
-    /**
-     * Set up the names of the zones that this asset is a member of.
-     *
-     * @param zoneMembership list of zone names
-     */
-    public void setZoneMembership(List<String> zoneMembership)
-    {
-        this.zoneMembership = zoneMembership;
-    }
-
-
-    /**
-     * Return the properties that characterize where this asset is from.
-     *
-     * @return map of name value pairs, all strings
-     */
-    public Map<String, String> getAssetOrigin()
-    {
-        if (origin == null)
-        {
-            return null;
-        }
-        else if (origin.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(origin);
-        }
-    }
-
-
-    /**
-     * Set up the properties that characterize where this asset is from.
-     *
-     * @param origin map of name value pairs, all strings
-     */
-    public void setAssetOrigin(Map<String, String> origin)
-    {
-        this.origin = origin;
-    }
-
-
-    /**
-     * Return a boolean to see if the asset has been marked as reference data.
-     *
-     * @return true if the asset contains reference data
-     */
-    public boolean isReferenceData()
-    {
-        return isReferenceData;
-    }
-
-
-    /**
-     * Set up the boolean to see if the asset has been marked as reference data.
-     *
-     * @param referenceData true if the asset contains reference data
-     */
-    public void setReferenceData(boolean referenceData)
-    {
-        isReferenceData = referenceData;
-    }
-
-
-    /**
-     * Return the name of the resource that this asset represents.
-     *
-     * @return string resource name
-     */
-    @Deprecated
-    public String getName()
-    {
-        if (name == null)
-        {
-            if (resourceName != null)
-            {
-                return resourceName;
-            }
-
-            return displayName;
-        }
-
-        return name;
-    }
-
-
-    /**
-     * Set up the name of the resource that this asset represents.
-     *
-     * @param name string resource name
-     */
-    @Deprecated
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-
-    /**
-     * Returns the stored description property for the asset.
-     * If no description is provided then null is returned.
-     *
-     * @return description String text
-     */
-    @Deprecated
-    public String getDescription()
-    {
-        if (description == null)
-        {
-            if (resourceDescription != null)
-            {
-                return resourceDescription;
-            }
-
-            return displayDescription;
-        }
-
-        return description;
-    }
-
-
-    /**
-     * Set up the stored description property associated with the asset.
-     *
-     * @param description String text
-     */
-    @Deprecated
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -598,19 +282,6 @@ public class Asset extends GovernedReferenceable
                        ", displayDescription='" + displayDescription + '\'' +
                        ", abbreviation='" + abbreviation + '\'' +
                        ", usage='" + usage + '\'' +
-                       ", connectionDescription='" + connectionDescription + '\'' +
-                       ", owner='" + owner + '\'' +
-                       ", ownerTypeName='" + ownerTypeName + '\'' +
-                       ", ownerPropertyName='" + ownerPropertyName + '\'' +
-                       ", ownerType=" + ownerType +
-                       ", zoneMembership=" + zoneMembership +
-                       ", origin=" + origin +
-                       ", isReferenceData=" + isReferenceData +
-                       ", name='" + name + '\'' +
-                       ", description='" + description + '\'' +
-                       ", assetOrigin=" + getAssetOrigin() +
-                       ", referenceData=" + isReferenceData() +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
@@ -639,7 +310,7 @@ public class Asset extends GovernedReferenceable
         {
             return true;
         }
-        if (! (objectToCompare instanceof Asset))
+        if (! (objectToCompare instanceof Asset asset))
         {
             return false;
         }
@@ -647,19 +318,14 @@ public class Asset extends GovernedReferenceable
         {
             return false;
         }
-        Asset asset = (Asset) objectToCompare;
-        return isReferenceData == asset.isReferenceData && Objects.equals(resourceName, asset.resourceName) && Objects.equals(
-                resourceDescription, asset.resourceDescription) && Objects.equals(versionIdentifier,
-                                                                                  asset.versionIdentifier) && Objects.equals(
-                displayName, asset.displayName) && Objects.equals(displaySummary, asset.displaySummary) && Objects.equals(
-                displayDescription, asset.displayDescription) && Objects.equals(abbreviation, asset.abbreviation) && Objects.equals(
-                usage, asset.usage) && Objects.equals(connectionDescription, asset.connectionDescription) && Objects.equals(owner,
-                                                                                                                            asset.owner) && Objects.equals(
-                ownerTypeName, asset.ownerTypeName) && Objects.equals(ownerPropertyName,
-                                                                      asset.ownerPropertyName) && ownerType == asset.ownerType && Objects.equals(
-                zoneMembership, asset.zoneMembership) && Objects.equals(origin, asset.origin) && Objects.equals(name,
-                                                                                                                asset.name) && Objects.equals(
-                description, asset.description);
+        return Objects.equals(resourceName, asset.resourceName) &&
+                Objects.equals(resourceDescription, asset.resourceDescription) &&
+                Objects.equals(versionIdentifier, asset.versionIdentifier) &&
+                Objects.equals(displayName, asset.displayName) &&
+                Objects.equals(displaySummary, asset.displaySummary) &&
+                Objects.equals(displayDescription, asset.displayDescription) &&
+                Objects.equals(abbreviation, asset.abbreviation) &&
+                Objects.equals(usage, asset.usage);
     }
 
 
@@ -671,8 +337,7 @@ public class Asset extends GovernedReferenceable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), resourceName, resourceDescription, versionIdentifier, displayName, displaySummary, displayDescription,
-                            abbreviation, usage, connectionDescription, owner, ownerTypeName, ownerPropertyName, ownerType, zoneMembership, origin,
-                            isReferenceData, name, description);
+        return Objects.hash(super.hashCode(), resourceName, resourceDescription, versionIdentifier,
+                            displayName, displaySummary, displayDescription, abbreviation, usage);
     }
 }

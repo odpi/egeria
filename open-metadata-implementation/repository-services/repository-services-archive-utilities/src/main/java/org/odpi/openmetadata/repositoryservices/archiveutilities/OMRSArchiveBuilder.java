@@ -185,7 +185,6 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
     /**
      * Set up archive header and initialize the maps assuming it is building a new archive.
-     *
      * It passes parameters used to build the open metadata archive's property header including the
      * default license string.  This determines the license and copyright for all instances in the
      * archive that do not have their own explicit license string.  The default license string

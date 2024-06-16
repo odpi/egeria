@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ComplexSchemaType;
 
-import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -14,9 +13,6 @@ import java.util.Objects;
  */
 public  class NestedSchemaType extends ComplexSchemaType
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     protected SchemaAttributes  schemaAttributes = null;
 
 
@@ -97,7 +93,6 @@ public  class NestedSchemaType extends ComplexSchemaType
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", assetClassifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';

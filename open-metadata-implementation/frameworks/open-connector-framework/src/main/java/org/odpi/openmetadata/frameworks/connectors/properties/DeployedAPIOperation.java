@@ -13,8 +13,6 @@ import java.util.Objects;
  */
 public  class DeployedAPIOperation extends APIOperation
 {
-    private static final long     serialVersionUID = 1L;
-
     protected SchemaAttributes headerAttributes   = null;
     protected SchemaAttributes requestAttributes  = null;
     protected SchemaAttributes responseAttributes = null;
@@ -107,7 +105,6 @@ public  class DeployedAPIOperation extends APIOperation
                        ", headerSchemaType=" + getHeaderSchemaType() +
                        ", requestSchemaType=" + getRequestSchemaType() +
                        ", responseSchemaType=" + getResponseSchemaType() +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +

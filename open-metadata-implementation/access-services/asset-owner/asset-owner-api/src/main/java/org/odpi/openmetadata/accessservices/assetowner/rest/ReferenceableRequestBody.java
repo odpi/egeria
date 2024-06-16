@@ -26,8 +26,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ReferenceableRequestBody extends AssetOwnerOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                  anchorGUID = null;
     private ReferenceableProperties properties = null;
 

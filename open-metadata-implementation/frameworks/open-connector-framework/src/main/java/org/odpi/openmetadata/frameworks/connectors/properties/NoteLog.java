@@ -20,8 +20,6 @@ import java.util.Objects;
  */
 public class NoteLog extends NoteLogHeader
 {
-    private static final long     serialVersionUID = 1L;
-
     protected Notes notes = null;
 
     /**
@@ -83,7 +81,6 @@ public class NoteLog extends NoteLogHeader
     {
         return "NoteLog{" +
                        "notes=" + notes +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +

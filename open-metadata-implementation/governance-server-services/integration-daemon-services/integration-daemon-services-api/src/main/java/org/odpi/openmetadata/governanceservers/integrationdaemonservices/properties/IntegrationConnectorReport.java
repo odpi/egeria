@@ -23,11 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class IntegrationConnectorReport implements Serializable
+public class IntegrationConnectorReport
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String                     connectorId              = null;
     private String                     connectorName            = null;
     private Connection                 connection               = null;

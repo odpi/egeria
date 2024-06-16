@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,13 +22,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceActionTypeElement implements Serializable
+public class GovernanceActionTypeElement
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    private ElementHeader                  elementHeader        = null;
-    private GovernanceActionTypeProperties actionTypeProperties = null;
+    private ElementHeader                          elementHeader        = null;
+    private GovernanceActionTypeProperties         actionTypeProperties = null;
+    private Map<String, List<Map<String, String>>> specification        = null;
 
 
     /**
@@ -51,6 +49,7 @@ public class GovernanceActionTypeElement implements Serializable
         {
             elementHeader        = template.getElementHeader();
             actionTypeProperties = template.getActionTypeProperties();
+            specification        = template.getSpecification();
         }
     }
 
@@ -99,6 +98,28 @@ public class GovernanceActionTypeElement implements Serializable
 
 
     /**
+     * Return the specification for the governance action.
+     *
+     * @return specification map
+     */
+    public Map<String, List<Map<String, String>>> getSpecification()
+    {
+        return specification;
+    }
+
+
+    /**
+     * Set up the specification for the governance action.
+     *
+     * @param specification specification map
+     */
+    public void setSpecification(Map<String, List<Map<String, String>>> specification)
+    {
+        this.specification = specification;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -106,12 +127,12 @@ public class GovernanceActionTypeElement implements Serializable
     @Override
     public String toString()
     {
-        return "GovernanceActionProcessStepElement{" +
-                       "elementHeader=" + elementHeader +
-                       ", processStepProperties=" + actionTypeProperties +
-                       '}';
+        return "GovernanceActionTypeElement{" +
+                "elementHeader=" + elementHeader +
+                ", actionTypeProperties=" + actionTypeProperties +
+                ", specification=" + specification +
+                '}';
     }
-
 
     /**
      * Return comparison result based on the content of the properties.
@@ -136,7 +157,8 @@ public class GovernanceActionTypeElement implements Serializable
         }
         GovernanceActionTypeElement that = (GovernanceActionTypeElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(actionTypeProperties, that.actionTypeProperties);
+                Objects.equals(actionTypeProperties, that.actionTypeProperties) &&
+                Objects.equals(specification, that.specification);
     }
 
 
@@ -148,6 +170,6 @@ public class GovernanceActionTypeElement implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, actionTypeProperties);
+        return Objects.hash(super.hashCode(), elementHeader, actionTypeProperties, specification);
     }
 }

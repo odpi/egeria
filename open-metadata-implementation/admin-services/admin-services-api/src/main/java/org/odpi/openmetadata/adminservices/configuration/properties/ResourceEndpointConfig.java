@@ -21,9 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ResourceEndpointConfig extends AdminServicesConfigHeader
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String              resourceCategory       = null;  // should be set to { "Platform" | "Server" }
     private String              description            = null;  // a descriptive string that describes the endpoint - can be displayed to a UI user
     private String              platformRootURL        = null;  // the root URL of the platform - always "platform" whether the resource is a platform or server running on the platform

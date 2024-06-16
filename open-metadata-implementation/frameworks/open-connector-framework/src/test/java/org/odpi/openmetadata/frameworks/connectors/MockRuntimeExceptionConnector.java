@@ -247,8 +247,6 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
      */
     private class ProtectedConnection extends ConnectionProperties
     {
-        private static final long     serialVersionUID = 1L;
-
         private ProtectedConnection(ConnectionProperties templateConnection)
         {
             super(templateConnection);

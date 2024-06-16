@@ -8,10 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionProcessStepHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionTypeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -296,6 +293,9 @@ public class OpenGovernanceRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                List<String> supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName);
+
                 GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
                                                                                                                                   serverName,
                                                                                                                                   methodName);
@@ -305,16 +305,18 @@ public class OpenGovernanceRESTServices
                     searchStringParameterName = requestBody.getSearchStringParameterName();
                 }
 
-                response.setElements(handler.findGovernanceActionTypes(userId,
-                                                                       requestBody.getSearchString(),
-                                                                       searchStringParameterName,
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       false,
-                                                                       false,
-                                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                       new Date(),
-                                                                       methodName));
+                List<GovernanceActionTypeElement> governanceActionTypeElements = handler.findGovernanceActionTypes(userId,
+                                                                                                                   requestBody.getSearchString(),
+                                                                                                                   searchStringParameterName,
+                                                                                                                   startFrom,
+                                                                                                                   pageSize,
+                                                                                                                   false,
+                                                                                                                   false,
+                                                                                                                   supportedZones,
+                                                                                                                   new Date(),
+                                                                                                                   methodName);
+
+                response.setElements(addGovernanceActionTypeSpecification(userId, handler, supportedZones, governanceActionTypeElements));
             }
             else
             {
@@ -329,6 +331,58 @@ public class OpenGovernanceRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+
+    /**
+     * Add the specification to each of the elements returned.
+     *
+     * @param userId calling user
+     * @param handler generic handler
+     * @param supportedZones supported zones
+     * @param elements retrieved elements.
+     * @return elements plus specifications
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    private List<GovernanceActionTypeElement> addGovernanceActionTypeSpecification
+                                                               (String                                                     userId,
+                                                               OpenMetadataAPIGenericHandler<GovernanceActionTypeElement> handler,
+                                                               List<String>                                               supportedZones,
+                                                               List<GovernanceActionTypeElement>                          elements) throws InvalidParameterException,
+                                                                                                                                           PropertyServerException,
+                                                                                                                                           UserNotAuthorizedException
+    {
+        if (elements != null)
+        {
+            final String elementGUIDParameterName = "governanceActionTypeGUID";
+
+            List<GovernanceActionTypeElement> results = new ArrayList<>();
+
+            for (GovernanceActionTypeElement element : elements)
+            {
+                if (element != null)
+                {
+                    element.setSpecification(handler.getSpecification(userId,
+                                                                      element.getElementHeader().getGUID(),
+                                                                      elementGUIDParameterName,
+                                                                      OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                                                      supportedZones));
+
+                    results.add(element);
+                }
+                else
+                {
+                    results.add(null);
+                }
+            }
+
+            return results;
+        }
+
+        return null;
+    }
+
 
 
     /**
@@ -368,6 +422,7 @@ public class OpenGovernanceRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                List<String> supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName);
                 GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
                                                                                                                                   serverName,
                                                                                                                                   methodName);
@@ -377,14 +432,16 @@ public class OpenGovernanceRESTServices
                     nameParameterName = requestBody.getNameParameterName();
                 }
 
-                response.setElements(handler.getGovernanceActionTypesByName(userId,
-                                                                            requestBody.getName(),
-                                                                            nameParameterName,
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                            null,
-                                                                            methodName));
+                List<GovernanceActionTypeElement> governanceActionTypeElements = handler.getGovernanceActionTypesByName(userId,
+                                                                                                                        requestBody.getName(),
+                                                                                                                        nameParameterName,
+                                                                                                                        startFrom,
+                                                                                                                        pageSize,
+                                                                                                                        supportedZones,
+                                                                                                                        null,
+                                                                                                                        methodName);
+
+                response.setElements(addGovernanceActionTypeSpecification(userId, handler, supportedZones, governanceActionTypeElements));
             }
             else
             {
@@ -420,6 +477,7 @@ public class OpenGovernanceRESTServices
                                                                       String governanceActionTypeGUID)
     {
         final String methodName = "getGovernanceActionTypeByGUID";
+        final String elementGUIDParameterName = "governanceActionTypeGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -429,15 +487,24 @@ public class OpenGovernanceRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            List<String> supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName);
             GovernanceActionTypeHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionTypeHandler(userId,
                                                                                                                               serverName,
                                                                                                                               methodName);
 
-            response.setElement(handler.getGovernanceActionTypeByGUID(userId,
-                                                                      governanceActionTypeGUID,
-                                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                      null,
-                                                                      methodName));
+            GovernanceActionTypeElement element = handler.getGovernanceActionTypeByGUID(userId,
+                                                                                        governanceActionTypeGUID,
+                                                                                        supportedZones,
+                                                                                        null,
+                                                                                        methodName);
+
+            element.setSpecification(handler.getSpecification(userId,
+                                                              element.getElementHeader().getGUID(),
+                                                              elementGUIDParameterName,
+                                                              OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                                              supportedZones));
+
+            response.setElement(element);
         }
         catch (Exception error)
         {
@@ -860,23 +927,26 @@ public class OpenGovernanceRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                List<String> supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName);
                 AssetHandler<GovernanceActionProcessElement> handler = instanceHandler.getGovernanceActionProcessHandler(userId,
                                                                                                                          serverName,
                                                                                                                          methodName);
 
-                response.setElements(handler.findBeans(userId,
-                                                       requestBody.getSearchString(),
-                                                       searchStringParameterName,
-                                                       OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
-                                                       OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                                       false,
-                                                       false,
-                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                       null,
-                                                       startFrom,
-                                                       pageSize,
-                                                       new Date(),
-                                                       methodName));
+                List<GovernanceActionProcessElement> results = handler.findBeans(userId,
+                                                                                 requestBody.getSearchString(),
+                                                                                 searchStringParameterName,
+                                                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
+                                                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                 false,
+                                                                                 false,
+                                                                                 supportedZones,
+                                                                                 null,
+                                                                                 startFrom,
+                                                                                 pageSize,
+                                                                                 new Date(),
+                                                                                 methodName);
+
+                response.setElements(addGovernanceActionProcessSpecification(userId, handler, supportedZones, results));
             }
             else
             {
@@ -890,6 +960,57 @@ public class OpenGovernanceRESTServices
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
+    }
+
+
+    /**
+     * Add the specification to each of the elements returned.
+     *
+     * @param userId calling user
+     * @param handler generic handler
+     * @param supportedZones supported zones
+     * @param elements retrieved elements.
+     * @return elements plus specifications
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    private List<GovernanceActionProcessElement> addGovernanceActionProcessSpecification
+                                                                 (String                                                        userId,
+                                                                  OpenMetadataAPIGenericHandler<GovernanceActionProcessElement> handler,
+                                                                  List<String>                                                  supportedZones,
+                                                                  List<GovernanceActionProcessElement>                          elements) throws InvalidParameterException,
+                                                                                                                                                 PropertyServerException,
+                                                                                                                                                 UserNotAuthorizedException
+    {
+        if (elements != null)
+        {
+            final String elementGUIDParameterName = "governanceActionProcessGUID";
+
+            List<GovernanceActionProcessElement> results = new ArrayList<>();
+
+            for (GovernanceActionProcessElement element : elements)
+            {
+                if (element != null)
+                {
+                    element.setSpecification(handler.getSpecification(userId,
+                                                                      element.getElementHeader().getGUID(),
+                                                                      elementGUIDParameterName,
+                                                                      OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                      supportedZones));
+
+                    results.add(element);
+                }
+                else
+                {
+                    results.add(null);
+                }
+            }
+
+            return results;
+        }
+
+        return null;
     }
 
 
@@ -929,22 +1050,25 @@ public class OpenGovernanceRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                List<String> supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName);
                 AssetHandler<GovernanceActionProcessElement> handler = instanceHandler.getGovernanceActionProcessHandler(userId,
                                                                                                                          serverName,
                                                                                                                          methodName);
 
-                response.setElements(handler.findAssetsByName(userId,
-                                                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
-                                                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                                              requestBody.getName(),
-                                                              nameParameterName,
-                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                              startFrom,
-                                                              pageSize,
-                                                              false,
-                                                              false,
-                                                              requestBody.getEffectiveTime(),
-                                                              methodName));
+                List<GovernanceActionProcessElement> results = handler.findAssetsByName(userId,
+                                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
+                                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                        requestBody.getName(),
+                                                                                        nameParameterName,
+                                                                                        supportedZones,
+                                                                                        startFrom,
+                                                                                        pageSize,
+                                                                                        false,
+                                                                                        false,
+                                                                                        requestBody.getEffectiveTime(),
+                                                                                        methodName);
+
+                response.setElements(addGovernanceActionProcessSpecification(userId, handler, supportedZones, results));
             }
             else
             {
@@ -990,17 +1114,26 @@ public class OpenGovernanceRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            List<String> supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName);
             AssetHandler<GovernanceActionProcessElement> handler = instanceHandler.getGovernanceActionProcessHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getBeanFromRepository(userId,
-                                                              processGUID,
+            GovernanceActionProcessElement element = handler.getBeanFromRepository(userId,
+                                                                                   processGUID,
+                                                                                   processGUIDParameterName,
+                                                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                   false,
+                                                                                   false,
+                                                                                   supportedZones,
+                                                                                   new Date(),
+                                                                                   methodName);
+
+            element.setSpecification(handler.getSpecification(userId,
+                                                              element.getElementHeader().getGUID(),
                                                               processGUIDParameterName,
                                                               OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                                              false,
-                                                              false,
-                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                              new Date(),
-                                                              methodName));
+                                                              supportedZones));
+
+            response.setElement(element);
         }
         catch (Exception error)
         {
@@ -1530,6 +1663,7 @@ public class OpenGovernanceRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                List<String> supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName);
                 GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
                                                                                                                                                        serverName,
                                                                                                                                                        methodName);
@@ -1539,16 +1673,18 @@ public class OpenGovernanceRESTServices
                     searchStringParameterName = requestBody.getSearchStringParameterName();
                 }
 
-                response.setElements(handler.findGovernanceActionProcessSteps(userId,
-                                                                              requestBody.getSearchString(),
-                                                                              searchStringParameterName,
-                                                                              startFrom,
-                                                                              pageSize,
-                                                                              false,
-                                                                              false,
-                                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                              new Date(),
-                                                                              methodName));
+                List<GovernanceActionProcessStepElement> results = handler.findGovernanceActionProcessSteps(userId,
+                                                                                                            requestBody.getSearchString(),
+                                                                                                            searchStringParameterName,
+                                                                                                            startFrom,
+                                                                                                            pageSize,
+                                                                                                            false,
+                                                                                                            false,
+                                                                                                            supportedZones,
+                                                                                                            new Date(),
+                                                                                                            methodName);
+
+                response.setElements(addGovernanceActionProcessStepSpecification(userId, handler, supportedZones, results));
             }
             else
             {
@@ -1562,6 +1698,56 @@ public class OpenGovernanceRESTServices
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
+    }
+
+
+    /**
+     * Add the specification to each of the elements returned.
+     *
+     * @param userId calling user
+     * @param handler generic handler
+     * @param supportedZones supported zones
+     * @param elements retrieved elements.
+     * @return elements plus specifications
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    private List<GovernanceActionProcessStepElement> addGovernanceActionProcessStepSpecification(String                                                            userId,
+                                                                                                 OpenMetadataAPIGenericHandler<GovernanceActionProcessStepElement> handler,
+                                                                                                 List<String>                                                      supportedZones,
+                                                                                                 List<GovernanceActionProcessStepElement>                          elements) throws InvalidParameterException,
+                                                                                                                                                                                    PropertyServerException,
+                                                                                                                                                                                    UserNotAuthorizedException
+    {
+        if (elements != null)
+        {
+            final String elementGUIDParameterName = "governanceActionProcessStepGUID";
+
+            List<GovernanceActionProcessStepElement> results = new ArrayList<>();
+
+            for (GovernanceActionProcessStepElement element : elements)
+            {
+                if (element != null)
+                {
+                    element.setSpecification(handler.getSpecification(userId,
+                                                                      element.getElementHeader().getGUID(),
+                                                                      elementGUIDParameterName,
+                                                                      OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                      supportedZones));
+
+                    results.add(element);
+                }
+                else
+                {
+                    results.add(null);
+                }
+            }
+
+            return results;
+        }
+
+        return null;
     }
 
 
@@ -1602,6 +1788,7 @@ public class OpenGovernanceRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                List<String> supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName);
                 GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
                                                                                                                                                        serverName,
                                                                                                                                                        methodName);
@@ -1611,14 +1798,16 @@ public class OpenGovernanceRESTServices
                     nameParameterName = requestBody.getNameParameterName();
                 }
 
-                response.setElements(handler.getGovernanceActionProcessStepsByName(userId,
-                                                                                   requestBody.getName(),
-                                                                                   nameParameterName,
-                                                                                   startFrom,
-                                                                                   pageSize,
-                                                                                   instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                                   null,
-                                                                                   methodName));
+                List<GovernanceActionProcessStepElement> results = handler.getGovernanceActionProcessStepsByName(userId,
+                                                                                                                 requestBody.getName(),
+                                                                                                                 nameParameterName,
+                                                                                                                 startFrom,
+                                                                                                                 pageSize,
+                                                                                                                 supportedZones,
+                                                                                                                 null,
+                                                                                                                 methodName);
+
+                response.setElements(addGovernanceActionProcessStepSpecification(userId, handler, supportedZones, results));
             }
             else
             {
@@ -1654,6 +1843,7 @@ public class OpenGovernanceRESTServices
                                                                                     String processStepGUID)
     {
         final String methodName = "getGovernanceActionProcessStepByGUID";
+        final String elementGUIDParameterName = "processStepGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1663,15 +1853,24 @@ public class OpenGovernanceRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            List<String> supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName);
             GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
                                                                                                                                                    serverName,
                                                                                                                                                    methodName);
 
-            response.setElement(handler.getGovernanceActionProcessStepByGUID(userId,
-                                                                             processStepGUID,
-                                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                             null,
-                                                                             methodName));
+            GovernanceActionProcessStepElement element = handler.getGovernanceActionProcessStepByGUID(userId,
+                                                                                                      processStepGUID,
+                                                                                                      supportedZones,
+                                                                                                      null,
+                                                                                                      methodName);
+
+            element.setSpecification(handler.getSpecification(userId,
+                                                              element.getElementHeader().getGUID(),
+                                                              elementGUIDParameterName,
+                                                              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                              supportedZones));
+
+            response.setElement(element);
         }
         catch (Exception error)
         {

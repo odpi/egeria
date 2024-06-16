@@ -388,7 +388,10 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(schemaTypeProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
         requestBody.setElementProperties(schemaTypeProperties);
@@ -1152,7 +1155,10 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(schemaAttributeProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         SchemaAttributeRequestBody requestBody = new SchemaAttributeRequestBody();
         requestBody.setElementProperties(schemaAttributeProperties);

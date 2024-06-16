@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
 
 import javax.sql.DataSource;
@@ -84,8 +85,6 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
 
             annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
-            Map<String, Long> databases = new HashMap<>();
-
             DataSource jdbcDataSource = assetConnector.getDataSource();
             Connection jdbcConnection = jdbcDataSource.getConnection();
 
@@ -95,6 +94,8 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
+            List<String> validDatabases = new ArrayList<>();
+
             while (resultSet.next())
             {
                 /*
@@ -103,17 +104,16 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
                 if ((! resultSet.getBoolean("datistemplate")) &&
                         (resultSet.getBoolean("datallowconn")))
                 {
-                    long oid = resultSet.getLong("oid");
                     String databaseName = resultSet.getString("datname");
 
-                    databases.put(databaseName, oid);
+                    validDatabases.add(databaseName);
                 }
             }
 
             resultSet.close();
             preparedStatement.close();
 
-            if (databases.isEmpty())
+            if (validDatabases.isEmpty())
             {
                 auditLog.logMessage(methodName, PostgresAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
                                                                                                     assetStore.getAssetProperties().getQualifiedName(),
@@ -121,44 +121,22 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
             }
             else
             {
-                Map<String, Long> profileCounts = new HashMap<>();
+                PostgresDatabaseStatsExtractor statsExtractor = new PostgresDatabaseStatsExtractor(validDatabases,
+                                                                                                   jdbcConnection,
+                                                                                                   this);
 
-                for (String databaseName : databases.keySet())
+                List<Annotation> databaseStatistics = statsExtractor.getStatistics();
+
+                if (databaseStatistics != null)
                 {
-                    final String sqlCommand2 = "SELECT pg_database_size(" + databases.get(databaseName) + ");";
-
-                    preparedStatement = jdbcConnection.prepareStatement(sqlCommand2);
-                    try
+                    for (Annotation annotation : databaseStatistics)
                     {
-                        resultSet = preparedStatement.executeQuery();
-
-                        if (resultSet.next())
+                        if (super.isActive())
                         {
-                            profileCounts.put(databaseName, resultSet.getLong("pg_database_size"));
-                        }
-                        else
-                        {
-                            profileCounts.put(databaseName, 0L);
+                            annotationStore.addAnnotation(annotation, surveyContext.getAssetGUID());
                         }
                     }
-                    catch (Exception noSize)
-                    {
-                        profileCounts.put(databaseName, 0L);
-                    }
-
-                    resultSet.close();
-                    preparedStatement.close();
                 }
-
-                ResourceProfileAnnotation annotation = new ResourceProfileAnnotation();
-
-                annotation.setAnnotationType(PostgresAnnotationType.DATABASE_SIZES.getName());
-                annotation.setSummary(PostgresAnnotationType.DATABASE_SIZES.getSummary());
-                annotation.setExplanation(PostgresAnnotationType.DATABASE_SIZES.getExplanation());
-
-                annotation.setProfileCounts(profileCounts);
-
-                annotationStore.addAnnotation(annotation, surveyContext.getAssetGUID());
             }
         }
         catch (ConnectorCheckedException error)

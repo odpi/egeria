@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -21,10 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class StewardshipActionOutTopicEvent implements Serializable
+public class StewardshipActionOutTopicEvent
 {
-    private static final long      serialVersionUID = 1L;
-
     private long                       eventVersionId    = 1L;
     private StewardshipActionEventType eventType         = null;
     private Date                       eventTime         = null;

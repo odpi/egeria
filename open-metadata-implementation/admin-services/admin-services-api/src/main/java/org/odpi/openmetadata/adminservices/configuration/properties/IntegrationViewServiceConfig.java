@@ -28,9 +28,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class IntegrationViewServiceConfig extends ViewServiceConfig
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private List<ResourceEndpointConfig> resourceEndpoints;
 
     /**

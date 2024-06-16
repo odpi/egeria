@@ -28,8 +28,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset
  */
 public abstract class RelatedAssetProperties extends RelatedAsset
 {
-    private static final long     serialVersionUID = 1L;
-
     /*
      * AssetUniverse extends AssetDetails which extends AssetSummary.  The interaction with the metadata repository
      * pulls the asset universe in one single network interaction and the caller can then explore the metadata
@@ -127,8 +125,7 @@ public abstract class RelatedAssetProperties extends RelatedAsset
     public String toString()
     {
         return "RelatedAssetProperties{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

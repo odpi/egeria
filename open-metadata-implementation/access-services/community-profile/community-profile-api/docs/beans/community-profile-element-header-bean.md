@@ -4,7 +4,7 @@
 # CommunityProfileElementHeader Bean
 
 This bean provides the common root for CommunityProfile OMAS's
-beans.  It supports Serializable.
+beans. 
 
 
 ----

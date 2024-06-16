@@ -27,8 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class License extends Referenceable
 {
-    private static final long     serialVersionUID = 1L;
-
     /*
      * properties of a license
      */
@@ -346,8 +344,7 @@ public class License extends Referenceable
     public String toString()
     {
         return "License{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

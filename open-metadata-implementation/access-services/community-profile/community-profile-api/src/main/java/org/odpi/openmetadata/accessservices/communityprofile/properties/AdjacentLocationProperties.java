@@ -17,9 +17,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AdjacentLocationProperties extends RelationshipProperties
 {
-    private static final long serialVersionUID = 1L;
-
-
     /**
      * Default constructor
      */

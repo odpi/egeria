@@ -219,7 +219,10 @@ public class GovernanceMetricHandler<B> extends ReferenceableHandler<B>
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceMetricGUID, governanceMetricGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
 
         String typeName = OpenMetadataType.GOVERNANCE_METRIC_TYPE_NAME;
 

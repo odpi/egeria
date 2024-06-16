@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
-import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -24,9 +23,6 @@ import java.util.Objects;
  */
 public class AssetDetail extends AssetSummary
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     protected ExternalIdentifiers    externalIdentifiers    = null;
     protected RelatedMediaReferences relatedMediaReferences = null;
     protected NoteLogs               noteLogs               = null;
@@ -303,16 +299,7 @@ public class AssetDetail extends AssetSummary
                        ", certifications=" + certifications +
                        ", schema=" + schema +
                        ", displayName='" + getDisplayName() + '\'' +
-                       ", shortDescription='" + getConnectionDescription() + '\'' +
                        ", description='" + getDisplayDescription() + '\'' +
-                       ", owner='" + getOwner() + '\'' +
-                       ", ownerTypeName='" + getOwnerTypeName() + '\'' +
-                       ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
-                       ", ownerType=" + getOwnerType() +
-                       ", zoneMembership=" + getZoneMembership() +
-                       ", assetOrigin=" + getAssetOrigin() +
-                       ", referenceData=" + isReferenceData() +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +

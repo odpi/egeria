@@ -8,6 +8,10 @@ The Open Metadata View Services (OMVS) provide task oriented, domain-specific se
 
 The view services are as follows:
 
+* **[Action Author](action-author)** - define governance actions.
+
+  The Action Author OMVS is used to create and maintain governance actions: governance action types and governance action processes.
+
 * **[Asset Catalog](asset-catalog)** - search for assets.
 
   The Asset Catalog OMVS provides search and query capabilities for tools and applications to support an asset catalog function. It supports search requests for assets with specific characteristics and returns summaries of the matching assets, plus methods to allow drill-down into the details of a specific asset to related metadata.
@@ -15,6 +19,10 @@ The view services are as follows:
 * **[Automated Curation](automated-curation)** - run governance actions.
 
   The Automated Curation OMVS provides search and query capabilities for technology types and then the ability to run associated governance actions.
+
+* **[Classification Manager](classification-manager) - manage classifications on open metadata.
+
+  The Classification Manager OMVS enables the caller to add classifications and governance relationships to open metadata elements.
 
 * **[Collection Manager](collection-manager)** - manage collections of assets and other elements.
 
@@ -36,29 +44,29 @@ The view services are as follows:
 
   The Project Manager OMVS provides the REST APIs to create projects and related elements such as project manager roles.  The projects can be nested and they can be classified to describe the type of project.  For example, one type of classification for a project is *Campaign*, another is *Task*.
 
-* **[Glossary Author](glossary-author)** - develop new glossary terms and categories.
-
-  The Glossary Author OMVS is for user interfaces supporting the creating and editing of glossary content, such as glossary terms and categories.  The changes made are immediately visible to all users.
-
 * **[Glossary Browser](glossary-browser)** - search and view the contents of specific glossaries and their links to governance definitions and assets.
 
   The Glossary Browser OMVS is for user interfaces that wish to provide search facilities within a single glossary (or glossaries) along with the ability to browse the structure of the glossary and view an element within a glossary along with connected governance classifications, governance definitions, user feedback and attached assets.
 
-* **[Glossary Workflow](glossary-workflow)** - develop new glossary terms and categories in a controlled workflow process.
+* **[Glossary Manager](glossary-manager)** - develop new glossary terms and categories in a controlled workflow process.
 
-  The Glossary Workflow OMVS is for user interfaces supporting the creation and editing of glossary content, such as glossary terms and categories, in a controlled workflow process.  This means that as terms and categories are created, updated and deleted, these changes are invisible to the general user until they are approved.
+  The Glossary Manager OMVS is for user interfaces supporting the creation and editing of glossary content, such as glossary terms and categories, in a controlled workflow process.  This means that as terms and categories are created, updated and deleted, these changes are invisible to the general user until they are approved.
 
 * **[Reference Data](reference-data)** - manage reference data.
 
   The Reference Data OMVS is a REST API designed to support user interfaces (UIs) that maintain reference data values and their mappings.
 
+* **[Template Manager](template-manager)** - locate and maintain templates.
+
+  The Template Manager OMVS is a REST API designed to support user interfaces (UIs) that support the management of templates that are used when creating new metadata.
+
 * **[Valid Metadata](reference-data)** - manage valid values for metadata.
 
   The Valid Metadata OMVS is a REST API designed to support user interfaces (UIs) that query and/or maintain list of valid values for open metadata attributes.
 
-* **[Template Manager](template-manager)** - locate and maintain templates.
+* **[Glossary Author](glossary-author)** - develop new glossary terms and categories.
 
-  The Template Manager OMVS is a REST API designed to support user interfaces (UIs) that support the management of templates that are used when creating new metadata.
+  The Glossary Author OMVS is for user interfaces supporting the creating and editing of glossary content, such as glossary terms and categories.  The changes made are immediately visible to all users.
 
 * **[Repository Explorer](rex-view)** - explorer interface to inspect instances across a cohort of repositories.
 

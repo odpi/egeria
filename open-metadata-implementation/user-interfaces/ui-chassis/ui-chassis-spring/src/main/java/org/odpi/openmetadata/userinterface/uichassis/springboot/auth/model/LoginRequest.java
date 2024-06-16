@@ -1,7 +1,0 @@
-/* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.userinterface.uichassis.springboot.auth.model;
-
-public record LoginRequest(String username, String password) {
-
-}

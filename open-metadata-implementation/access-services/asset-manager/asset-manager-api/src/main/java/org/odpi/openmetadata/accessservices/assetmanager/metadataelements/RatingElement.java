@@ -9,8 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,11 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RatingElement implements MetadataElement, Serializable
+public class RatingElement implements MetadataElement
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private ElementHeader                   elementHeader         = null;
     private List<MetadataCorrelationHeader> correlationHeaders    = null;
     private RatingProperties                properties            = null;

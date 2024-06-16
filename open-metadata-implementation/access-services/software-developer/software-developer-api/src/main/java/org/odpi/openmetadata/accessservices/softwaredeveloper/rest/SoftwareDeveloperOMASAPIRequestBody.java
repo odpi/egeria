@@ -20,11 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
         })
-public abstract class SoftwareDeveloperOMASAPIRequestBody implements java.io.Serializable
+public abstract class SoftwareDeveloperOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
-
     /**
      * Default constructor
      */

@@ -4,6 +4,9 @@
 @viewServer=view-server
 
 ###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
 # @name Token (RequestBody)
 POST {{baseURL}}/api/token
 Content-Type: application/json
@@ -14,6 +17,7 @@ Content-Type: application/json
 }
 
 > {% client.global.set("token", response.body); %}
+
 
 ###
 # @name Get My Profile
@@ -43,9 +47,17 @@ Authorization: Bearer {{token}}
 
 
 ###
-# @name find ToDo
+# @name find ToDos in a specific status
 # Retrieve the to dos that match the search string. The toDoStatus is optional.  If not specified than ToDos in any status are returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/to-dos/find-by-search-string/?startFrom=0&pageSize=0&startsWith=true
+#
+# Valid values for toDoStatus are:
+# * "OPEN" - The to do has been documented but no action taken.
+# * "IN_PROGRESS" - The assigned person is working on the action defined in the to do.
+# * "WAITING" - The assigned person is unable to proceed because another action needs to complete first, or a needed resource is unavailable.
+# * "COMPLETE" - The requested action is complete.
+# * "ABANDONED" - The requested action has been abandoned and will never complete.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/to-dos/find-by-search-string?startFrom=0&pageSize=0&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -54,4 +66,44 @@ Content-Type: application/json
   "searchString" : "enter search value",
   "toDoStatus" : "OPEN"
  }
+
+
+###
+# @name find ToDos in any status
+# Retrieve the to dos that match the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/to-dos/find-by-search-string?startFrom=0&pageSize=0&startsWith=true&endsWith=false&ignoreCase=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ToDoStatusSearchString",
+  "searchString" : "enter search value"
+}
+
+
+###
+# @name find all ToDos by status
+# Retrieve the to dos that match the specific status.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/to-dos/find-by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ToDoStatusSearchString",
+  "searchString" : "",
+  "toDoStatus" : "IN_PROGRESS"
+}
+
+
+###
+# @name find all ToDos in any status
+# Retrieve all the to dos, irrespective of content or status
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/to-dos/find-by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ToDoStatusSearchString",
+  "searchString" : ""
+}
 

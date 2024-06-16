@@ -11,10 +11,8 @@ import java.io.Serializable;
  * The registration is dynamic because access services from third parties can be written and run in the
  * OMAGServerPlatform.
  */
-public class AccessServiceRegistrationEntry implements Serializable
+public class AccessServiceRegistrationEntry
 {
-    private static final long     serialVersionUID    = 1L;
-
     private static final String   defaultTopicRoot    = "omas.";
     private static final String   defaultInTopicLeaf  = ".inTopic";
     private static final String   defaultOutTopicLeaf = ".outTopic";

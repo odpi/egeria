@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -31,13 +30,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ElementBase extends ElementHeader
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     /*
      * Common header for first class elements from a metadata repository
      */
-    protected String              url  = null;
     protected Map<String, Object> extendedProperties = null;
 
     /**
@@ -60,32 +55,8 @@ public class ElementBase extends ElementHeader
 
         if (template != null)
         {
-            url                = template.getURL();
             extendedProperties = template.getExtendedProperties();
         }
-    }
-
-
-    /**
-     * Returns the URL to access the properties object in the metadata repository.
-     * If no url is available then null is returned.
-     *
-     * @return String URL
-     */
-    public String getURL()
-    {
-        return url;
-    }
-
-
-    /**
-     * Set up the URL of this element.
-     *
-     * @param url String
-     */
-    public void setURL(String url)
-    {
-        this.url = url;
     }
 
 
@@ -133,9 +104,7 @@ public class ElementBase extends ElementHeader
     public String toString()
     {
         return "ElementBase{" +
-                       "url='" + url + '\'' +
-                       ", extendedProperties=" + extendedProperties +
-                       ", URL='" + getURL() + '\'' +
+                       "extendedProperties=" + extendedProperties +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +
@@ -160,7 +129,7 @@ public class ElementBase extends ElementHeader
         {
             return true;
         }
-        if (! (objectToCompare instanceof ElementBase))
+        if (! (objectToCompare instanceof ElementBase that))
         {
             return false;
         }
@@ -168,8 +137,7 @@ public class ElementBase extends ElementHeader
         {
             return false;
         }
-        ElementBase that = (ElementBase) objectToCompare;
-        return Objects.equals(url, that.url) && Objects.equals(extendedProperties, that.extendedProperties);
+        return Objects.equals(extendedProperties, that.extendedProperties);
     }
 
 
@@ -181,6 +149,6 @@ public class ElementBase extends ElementHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), url, extendedProperties);
+        return Objects.hash(super.hashCode(), extendedProperties);
     }
 }

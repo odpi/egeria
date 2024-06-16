@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SubjectAreaDefinition extends SubjectAreaElement
 {
-    private static final long    serialVersionUID = 1L;
-
     private String            parentSubjectAreaGUID           = null;
     private List<String>      nestedSubjectAreaGUIDs          = null;
     private List<ElementStub> associatedGovernanceDefinitions = null;

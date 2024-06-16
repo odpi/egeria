@@ -1153,7 +1153,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "content-packs/OpenConnectorsArchive.omarchive"
+													"raw": "content-packs/CoreContentPack.omarchive"
 												},
 												"url": {
 													"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/open-metadata-archives/file",

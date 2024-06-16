@@ -132,8 +132,7 @@ public class OpenIntegrationResource
      * @param serverName name of the service to route the request to.
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
-     * @param anchorGUID element to attach the integration report to
-     * @param anchorTypeName typeName of the anchor for the integration report
+     * @param elementGUID element to attach the integration report to
      * @param properties properties of the report
      *
      * @return void or
@@ -141,7 +140,7 @@ public class OpenIntegrationResource
      *  UserNotAuthorizedException user not authorized to issue this request,
      *  PropertyServerException problem with the metadata server.
      */
-    @PostMapping(path = "/integration-reports/{anchorGUID}/{anchorTypeName}/new")
+    @PostMapping(path = "/elements/{elementGUID}/integration-reports")
 
     @Operation(summary="publishIntegrationReport",
             description="Create a new integration report for an element (identified by anchorGUID).",
@@ -151,11 +150,10 @@ public class OpenIntegrationResource
     public VoidResponse publishIntegrationReport(@PathVariable String                      serverName,
                                                  @PathVariable String                      serviceURLMarker,
                                                  @PathVariable String                      userId,
-                                                 @PathVariable String                      anchorGUID,
-                                                 @PathVariable String                      anchorTypeName,
+                                                 @PathVariable String                      elementGUID,
                                                  @RequestBody  IntegrationReportProperties properties)
     {
-        return restAPI.publishIntegrationReport(serverName, serviceURLMarker, userId, anchorGUID, anchorTypeName, properties);
+        return restAPI.publishIntegrationReport(serverName, serviceURLMarker, userId, elementGUID, properties);
     }
 
 

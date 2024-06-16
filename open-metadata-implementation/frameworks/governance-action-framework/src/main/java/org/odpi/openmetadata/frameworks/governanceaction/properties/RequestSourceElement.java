@@ -18,10 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RequestSourceElement implements Serializable
+public class RequestSourceElement
 {
-    private static final long      serialVersionUID = 1L;
-
     private String              requestSourceName       = null;
     private OpenMetadataElement requestSourceElement    = null;
     private String              originGovernanceService = null;

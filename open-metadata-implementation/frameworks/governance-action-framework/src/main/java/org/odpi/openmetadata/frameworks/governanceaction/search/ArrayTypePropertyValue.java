@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ArrayTypePropertyValue extends PropertyValue
 {
-    private static final long    serialVersionUID = 1L;
-
     private int               arrayCount  = 0;
     private ElementProperties arrayValues = null;
 

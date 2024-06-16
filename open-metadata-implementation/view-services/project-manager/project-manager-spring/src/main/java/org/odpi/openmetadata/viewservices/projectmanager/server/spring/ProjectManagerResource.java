@@ -119,7 +119,7 @@ public class ProjectManagerResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/metadata-elements/{projectGUID}/projects/team")
+    @PostMapping(path = "/projects/{projectGUID}/team")
     @Operation(summary="getProjectTeam",
             description="Returns the list of actors that are linked off of the project.  " +
                     "This includes the project managers. The optional request body allows a teamRole to be " +
@@ -173,7 +173,8 @@ public class ProjectManagerResource
                                                           int               startFrom,
                                             @RequestParam (required = false, defaultValue = "0")
                                                           int               pageSize,
-                                            @RequestBody  FilterRequestBody requestBody)
+                                            @RequestBody  (required = false)
+                                                          FilterRequestBody requestBody)
     {
         return restAPI.findProjects(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
@@ -203,7 +204,8 @@ public class ProjectManagerResource
                                                                int               startFrom,
                                                  @RequestParam(required = false, defaultValue = "0")
                                                                int               pageSize,
-                                                 @RequestBody  FilterRequestBody requestBody)
+                                                 @RequestBody(required = false)
+                                                               FilterRequestBody requestBody)
     {
         return restAPI.getProjectsByName(serverName, startFrom, pageSize, requestBody);
     }
@@ -419,7 +421,8 @@ public class ProjectManagerResource
     public VoidResponse removeFromProjectTeam(@PathVariable String          serverName,
                                               @PathVariable String          projectGUID,
                                               @PathVariable String          actorGUID,
-                                              @RequestBody  NullRequestBody requestBody)
+                                              @RequestBody(required = false)
+                                                            NullRequestBody requestBody)
     {
         return restAPI.removeFromProjectTeam(serverName, projectGUID, actorGUID, requestBody);
     }

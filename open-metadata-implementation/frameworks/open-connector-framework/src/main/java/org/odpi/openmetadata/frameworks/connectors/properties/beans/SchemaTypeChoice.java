@@ -22,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SchemaTypeChoice extends SchemaType
 {
-    private static final long   serialVersionUID = 1L;
-
     private List<SchemaType>  schemaOptions = null;
 
     /**
@@ -118,7 +116,6 @@ public class SchemaTypeChoice extends SchemaType
                 "schemaOptions=" + schemaOptions +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
                 ", headerVersion=" + getHeaderVersion() +

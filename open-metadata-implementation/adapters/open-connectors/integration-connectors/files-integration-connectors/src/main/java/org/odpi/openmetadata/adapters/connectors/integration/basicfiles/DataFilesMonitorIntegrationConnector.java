@@ -244,16 +244,23 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
         {
             for (File file : filesArray)
             {
-                if (file != null)
+                if (super.isActive())
                 {
-                    if (file.isDirectory())
+                    if (file != null)
                     {
-                        this.catalogDirectory(file, localMethodName);
+                        if (file.isDirectory())
+                        {
+                            this.catalogDirectory(file, localMethodName);
+                        }
+                        else
+                        {
+                            this.catalogFile(file, methodName);
+                        }
                     }
-                    else
-                    {
-                        this.catalogFile(file, methodName);
-                    }
+                }
+                else
+                {
+                    break;
                 }
             }
         }
@@ -366,6 +373,10 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                             }
                         }
                     }
+                }
+                else
+                {
+                    updateFileInCatalog(file);
                 }
             }
             catch (Exception error)

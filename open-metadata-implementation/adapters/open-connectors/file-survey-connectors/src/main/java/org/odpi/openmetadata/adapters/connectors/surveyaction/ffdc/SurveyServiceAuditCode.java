@@ -51,11 +51,11 @@ public enum SurveyServiceAuditCode implements AuditLogMessageSet
 
 
     /**
-     * SURVEY-ACTION-SERVICE-0004 - The survey action service {0} is surveying the {1} folder (directory)
+     * SURVEY-ACTION-SERVICE-0004 - The survey action service {0} is surveying the {1} folder (directory) with an analysis level of {2}
      */
     SURVEYING_FOLDER("SURVEY-ACTION-SERVICE-0004",
                      AuditLogRecordSeverityLevel.INFO,
-                     "The survey action service {0} is surveying the {1} folder (directory)",
+                     "The survey action service {0} is surveying the {1} folder (directory) with an analysis level of {2}",
                      "This message shows that the starting folder to survey.",
                      "No specific action is required.  This message is marking the start of the survey process."),
 
@@ -67,6 +67,16 @@ public enum SurveyServiceAuditCode implements AuditLogMessageSet
                      "The survey action service {0} is has surveyed {1} files and folders (directories)",
                      "This message shows that the progress of the survey.",
                      "No specific action is required.  This message is marking the progress of the survey process."),
+
+    /**
+     * SURVEY-ACTION-SERVICE-0001 - The survey action service received an unexpected exception {0} during method {1}; the error message was: {2}
+     */
+    FILE_IO_ERROR("SURVEY-ACTION-SERVICE-0006",
+                         AuditLogRecordSeverityLevel.ERROR,
+                         "The survey action service {0} received an unexpected IO exception {1} when it attempted to access the attributes of file {2}; the error message was: {3}",
+                         "The file is skipped and will not appear in the totals for this folder.  However a separate request for action annotation with a log file of all of the inaccessible files is created.",
+                         "If this file is of interest and you want it to be included in the survey report, use the details from the error message to determine the cause of the access error; retry the survey once it is resolved."),
+
     ;
 
     private final String                     logMessageId;

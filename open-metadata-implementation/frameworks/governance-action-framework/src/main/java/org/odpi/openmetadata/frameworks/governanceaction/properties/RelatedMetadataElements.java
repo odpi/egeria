@@ -24,8 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedMetadataElements extends ElementControlHeader
 {
-    private static final long serialVersionUID = 1L;
-
     private String            relationshipGUID       = null;
     private ElementType       relationshipType       = null;
     private Date              effectiveFromTime      = null;

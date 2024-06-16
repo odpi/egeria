@@ -16,8 +16,6 @@ import java.util.Objects;
  */
 public abstract class AssetDescriptor extends AssetPropertyElementBase
 {
-    private static final long     serialVersionUID = 1L;
-
     protected Asset assetBean;
 
     /*

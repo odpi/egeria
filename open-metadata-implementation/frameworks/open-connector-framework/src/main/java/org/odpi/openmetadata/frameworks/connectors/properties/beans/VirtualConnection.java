@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,9 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VirtualConnection extends Connection
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     /*
      * Attributes of a virtual connection
      */
@@ -136,7 +132,6 @@ public class VirtualConnection extends Connection
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", type=" + getType() +
                        ", GUID='" + getGUID() + '\'' +
-                       ", URL='" + getURL() + '\'' +
                        ", classifications=" + getClassifications() +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", headerVersion=" + getHeaderVersion() +

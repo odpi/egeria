@@ -19,8 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedAsset extends Asset
 {
-    private static final long     serialVersionUID = 1L;
-
     private String relationshipName = null;
     private String attributeName    = null;
 
@@ -111,16 +109,7 @@ public class RelatedAsset extends Asset
                        ", displayDescription='" + getDisplayDescription() + '\'' +
                        ", abbreviation='" + getAbbreviation() + '\'' +
                        ", usage='" + getUsage() + '\'' +
-                       ", connectionDescription='" + getConnectionDescription() + '\'' +
                        ", resourceDescription='" + getResourceDescription() + '\'' +
-                       ", owner='" + getOwner() + '\'' +
-                       ", ownerTypeName='" + getOwnerTypeName() + '\'' +
-                       ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
-                       ", ownerType=" + getOwnerType() +
-                       ", zoneMembership=" + getZoneMembership() +
-                       ", assetOrigin=" + getAssetOrigin() +
-                       ", referenceData=" + isReferenceData() +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +

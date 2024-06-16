@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.assetowner.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
 
 import java.util.Objects;
 
@@ -21,8 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OwnerRequestBody extends AssetOwnerOMASAPIRequestBody
 {
-    private AssetOwnerType ownerType = null;
-    private String         ownerId   = null;
+    private String    ownerId   = null;
     private String    ownerTypeName = null;
     private String    ownerPropertyName = null;
 
@@ -45,35 +43,10 @@ public class OwnerRequestBody extends AssetOwnerOMASAPIRequestBody
 
         if (template != null)
         {
-            this.ownerType = template.getOwnerType();
             this.ownerId = template.getOwnerId();
             this.ownerTypeName = template.getOwnerTypeName();
             this.ownerPropertyName = template.getOwnerPropertyName();
         }
-    }
-    
-
-    /**
-     * Return the type of owner.
-     * 
-     * @return string
-     */
-    @Deprecated
-    public AssetOwnerType getOwnerType()
-    {
-        return ownerType;
-    }
-
-
-    /**
-     * Set up the type of owner.
-     * 
-     * @param ownerType string
-     */
-    @Deprecated
-    public void setOwnerType(AssetOwnerType ownerType)
-    {
-        this.ownerType = ownerType;
     }
 
 
@@ -152,8 +125,7 @@ public class OwnerRequestBody extends AssetOwnerOMASAPIRequestBody
     public String toString()
     {
         return "OwnerRequestBody{" +
-                       "ownerType=" + ownerType +
-                       ", ownerId='" + ownerId + '\'' +
+                       "ownerId='" + ownerId + '\'' +
                        ", ownerTypeName='" + ownerTypeName + '\'' +
                        ", ownerPropertyName='" + ownerPropertyName + '\'' +
                        '}';
@@ -178,10 +150,9 @@ public class OwnerRequestBody extends AssetOwnerOMASAPIRequestBody
             return false;
         }
         OwnerRequestBody that = (OwnerRequestBody) objectToCompare;
-        return ownerType == that.ownerType &&
-                       Objects.equals(ownerId, that.ownerId) &&
-                       Objects.equals(ownerTypeName, that.ownerTypeName) &&
-                       Objects.equals(ownerPropertyName, that.ownerPropertyName);
+        return Objects.equals(ownerId, that.ownerId) &&
+               Objects.equals(ownerTypeName, that.ownerTypeName) &&
+               Objects.equals(ownerPropertyName, that.ownerPropertyName);
     }
 
 
@@ -193,6 +164,6 @@ public class OwnerRequestBody extends AssetOwnerOMASAPIRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(getOwnerType(), getOwnerId(), getOwnerTypeName(), getOwnerPropertyName());
+        return Objects.hash(getOwnerId(), getOwnerTypeName(), getOwnerPropertyName());
     }
 }

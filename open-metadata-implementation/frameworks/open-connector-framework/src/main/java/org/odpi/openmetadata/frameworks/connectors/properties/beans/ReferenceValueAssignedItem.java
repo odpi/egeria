@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ReferenceValueAssignedItem extends ReferenceValue
 {
-    private static final long         serialVersionUID = 1L;
-
     private Referenceable       assignedItem        = null;
 
 

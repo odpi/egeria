@@ -281,7 +281,11 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
                                                                           methodName);
             if (anchorEntity != null)
             {
-                builder.setAnchors(userId, anchorGUID, anchorEntity.getType().getTypeDefName(), methodName);
+                builder.setAnchors(userId,
+                                   anchorGUID,
+                                   anchorEntity.getType().getTypeDefName(),
+                                   schemaTypeHandler.getDomainName(anchorEntity),
+                                   methodName);
             }
         }
 
@@ -460,7 +464,10 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(schemaTypeProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         this.validateExternalIdentifier(userId,
                                         schemaTypeGUID,

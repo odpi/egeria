@@ -4,13 +4,14 @@ package org.odpi.openmetadata.frameworks.openmetadata.refdata;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages;
 
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
  * DeployedImplementationType describes the standard deployed implementation types supplied with Egeria. These are encoded in the
- * OpenConnectorsArchive.omarchive and are available in the open metadata repository as valid values.
+ * CoreContentPack.omarchive and are available in the open metadata repository as valid values.
  */
 public enum DeployedImplementationType
 {
@@ -25,34 +26,14 @@ public enum DeployedImplementationType
                "https://egeria-project.org/concepts/asset/"),
 
     /**
-     * A file stored on a file system.
+     * A file containing externally accessible data - other fields provide information on the internal format.
      */
     FILE("File",
          DeployedImplementationType.DATA_ASSET,
          OpenMetadataType.DATA_FILE.typeName,
          null,
-         "A file stored on a file system.",
-         "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
-
-    /**
-     * A file containing externally accessible data - other fields provide information on the internal format.
-     */
-    DATA_FILE("Data File",
-              DeployedImplementationType.FILE,
-              OpenMetadataType.DATA_FILE.typeName,
-              null,
-              "A file containing externally accessible data - other fields provide information on the internal format.",
-              "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
-
-    /**
-     * A file containing externally accessible data - other fields provide information on the internal format.
-     */
-    CSV_FILE("Data File",
-              DeployedImplementationType.DATA_FILE,
-              OpenMetadataType.CSV_FILE.typeName,
-             null,
-              "A file containing comma-separated (or similar delimited) data.",
-              "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
+         OpenMetadataType.DATA_FILE.description,
+         OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
 
     /**
      * A file containing program logic.
@@ -62,28 +43,244 @@ public enum DeployedImplementationType
                  OpenMetadataType.DATA_FILE.typeName,
                  null,
                  "A file containing program logic.",
-                 "https://egeria-project.org/types/2/0280-Software-Development-Assets/"),
-
-    /**
-     * A file containing log records.
-     */
-    LOG_FILE("Log File",
-             DeployedImplementationType.FILE,
-             OpenMetadataType.DATA_FILE.typeName,
-             null,
-             "A file containing log records.",
-             "https://egeria-project.org/types/2/0223-Events-and-Logs/"),
+                 OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS),
 
 
     /**
-     * A file containing an organized collection of files.
+     * A file containing program logic.
      */
-    ARCHIVE_FILE("Archive File",
+    DATA_FILE("Data File",
                  DeployedImplementationType.FILE,
                  OpenMetadataType.DATA_FILE.typeName,
                  null,
-                 "A file containing an organized collection of files.",
-                 "https://egeria-project.org/types/2/0226-Archive-Files/"),
+                 "A file containing data.  This may be structured data, text or some form or media file.",
+                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
+
+
+
+    /**
+     * CSV Data File.
+     */
+    CSV_FILE("CSV Data File",
+              DeployedImplementationType.DATA_FILE,
+              OpenMetadataType.CSV_FILE.typeName,
+             null,
+             OpenMetadataType.CSV_FILE.description,
+             OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
+
+    /**
+     * Avro Data File
+     */
+    AVRO_FILE("Avro Data File",
+             DeployedImplementationType.DATA_FILE,
+             OpenMetadataType.AVRO_FILE.typeName,
+             null,
+              OpenMetadataType.AVRO_FILE.description,
+              OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
+
+    /**
+     * JSON Data File
+     */
+    JSON_FILE("JSON Data File",
+              DeployedImplementationType.DATA_FILE,
+              OpenMetadataType.JSON_FILE.typeName,
+              null,
+              OpenMetadataType.JSON_FILE.description,
+              OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
+
+
+    /**
+     * Parquet Data File
+     */
+    PARQUET_FILE("Parquet Data File",
+                  DeployedImplementationType.DATA_FILE,
+                  OpenMetadataType.PARQUET_FILE.typeName,
+              null,
+              OpenMetadataType.PARQUET_FILE.description,
+                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
+
+
+    /**
+     * Spreadsheet Data File
+     */
+    SPREADSHEET_FILE("Spreadsheet Data File",
+                     DeployedImplementationType.DATA_FILE,
+                     OpenMetadataType.SPREADSHEET_FILE.typeName,
+                     null,
+                     OpenMetadataType.SPREADSHEET_FILE.description,
+                     OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
+
+
+    /**
+     * XML Data File
+     */
+    XML_FILE("XML Data File",
+             DeployedImplementationType.DATA_FILE,
+             OpenMetadataType.XML_FILE.typeName,
+             null,
+             OpenMetadataType.XML_FILE.description,
+             OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
+
+
+    /**
+     * Document File
+     */
+    DOCUMENT("Document File",
+             DeployedImplementationType.DATA_FILE,
+             OpenMetadataType.DOCUMENT.typeName,
+             null,
+             OpenMetadataType.DOCUMENT.description,
+             OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES),
+
+
+    /**
+     * Audio Data File
+     */
+    AUDIO_DATA_FILE("Audio Data File",
+                    DeployedImplementationType.DATA_FILE,
+                    OpenMetadataType.AUDIO_FILE.typeName,
+                    null,
+                    OpenMetadataType.AUDIO_FILE.description,
+                    OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES),
+
+
+    /**
+     * Video Data File
+     */
+    VIDEO_DATA_FILE("Video Data File",
+                    DeployedImplementationType.DATA_FILE,
+                    OpenMetadataType.VIDEO_FILE.typeName,
+                    null,
+                    OpenMetadataType.VIDEO_FILE.description,
+                    OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES),
+
+
+    /**
+     * 3D Image Data File
+     */
+    THREE_D_IMAGE_DATA_FILE("3D Image Data File",
+                    DeployedImplementationType.DATA_FILE,
+                    OpenMetadataType.THREE_D_IMAGE_FILE.typeName,
+                    null,
+                    OpenMetadataType.THREE_D_IMAGE_FILE.description,
+                    OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES),
+
+    /**
+     * Raster Data File
+     */
+    RASTER_DATA_FILE("Raster Data File",
+                    DeployedImplementationType.DATA_FILE,
+                    OpenMetadataType.RASTER_FILE.typeName,
+                    null,
+                    OpenMetadataType.RASTER_FILE.description,
+                    OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES),
+
+    /**
+     * Vector Data File
+     */
+    VECTOR_DATA_FILE("Vector Data File",
+                    DeployedImplementationType.DATA_FILE,
+                    OpenMetadataType.VECTOR_FILE.typeName,
+                    null,
+                    OpenMetadataType.VECTOR_FILE.description,
+                    OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES),
+
+
+    /**
+     * Source Code File
+     */
+    SOURCE_CODE_FILE("Source Code File",
+                 DeployedImplementationType.PROGRAM_FILE,
+                 OpenMetadataType.SOURCE_CODE_FILE.typeName,
+                 null,
+                 OpenMetadataType.SOURCE_CODE_FILE.description,
+                 OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS),
+
+    /**
+     * Build Instruction File
+     */
+    BUILD_FILE("Build Instruction File",
+                     DeployedImplementationType.PROGRAM_FILE,
+                     OpenMetadataType.BUILD_INSTRUCTION_FILE.typeName,
+                     null,
+                     OpenMetadataType.BUILD_INSTRUCTION_FILE.description,
+                     OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS),
+
+    /**
+     * Executable File
+     */
+    EXECUTABLE_FILE("Executable File",
+               DeployedImplementationType.PROGRAM_FILE,
+               OpenMetadataType.EXECUTABLE_FILE.typeName,
+               null,
+               OpenMetadataType.EXECUTABLE_FILE.description,
+               OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS),
+
+
+    /**
+     * Script File
+     */
+    SCRIPT_FILE("Script File",
+                DeployedImplementationType.PROGRAM_FILE,
+                OpenMetadataType.SCRIPT_FILE.typeName,
+                null,
+                OpenMetadataType.SCRIPT_FILE.description,
+                OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS),
+
+
+    /**
+     * Properties File
+     */
+    PROPERTIES_FILE("Properties File",
+                DeployedImplementationType.PROGRAM_FILE,
+                OpenMetadataType.PROPERTIES_FILE.typeName,
+                null,
+                OpenMetadataType.PROPERTIES_FILE.description,
+                OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS),
+
+
+    /**
+     * YAML File
+     */
+   YAML_FILE("YAML File",
+                    DeployedImplementationType.PROPERTIES_FILE,
+                    OpenMetadataType.YAML_FILE.typeName,
+                    null,
+                    OpenMetadataType.YAML_FILE.description,
+                    OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS),
+
+
+    /**
+     * Log File
+     */
+    LOG_FILE("Log File",
+             DeployedImplementationType.DATA_FILE,
+             OpenMetadataType.LOG_FILE.typeName,
+             null,
+             OpenMetadataType.LOG_FILE.description,
+             OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS),
+
+
+    /**
+     * Archive File
+     */
+    ARCHIVE_FILE("Archive File",
+                 DeployedImplementationType.DATA_FILE,
+                 OpenMetadataType.ARCHIVE_FILE.typeName,
+                 null,
+                 OpenMetadataType.ARCHIVE_FILE.description,
+                 OpenMetadataWikiPages.MODEL_0226_ARCHIVE_FILES),
+
+
+    /**
+     * Keystore File
+     */
+    KEYSTORE_FILE("Keystore File",
+                 DeployedImplementationType.DATA_FILE,
+                 OpenMetadataType.KEYSTORE_FILE.typeName,
+                 null,
+                  OpenMetadataType.KEYSTORE_FILE.description,
+                 OpenMetadataWikiPages.MODEL_0226_ARCHIVE_FILES),
 
 
     /**
@@ -94,7 +291,7 @@ public enum DeployedImplementationType
                 OpenMetadataType.FILE_FOLDER.typeName,
                 null,
                 "A directory (folder) that holds files that are potential data sources.",
-                "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
+                OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
 
 
     /**
@@ -105,7 +302,7 @@ public enum DeployedImplementationType
                 OpenMetadataType.DATA_FOLDER.typeName,
                 null,
                 "A directory (folder) that holds files representing a single data source.",
-                "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
+                OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
 
 
     /**
@@ -171,6 +368,50 @@ public enum DeployedImplementationType
                               "https://www.postgresql.org/"),
 
     /**
+     * A computer (hardware) with operating system for running software.
+     */
+    BARE_METAL_COMPUTER("Bare Metal Computer",
+                        null,
+                        OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                        null,
+                        "A computer (hardware) with operating system for running software.",
+                        OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
+     * A portable computer with screen, keyboard and battery power.
+     */
+    LAPTOP_COMPUTER("Laptop Computer",
+                        DeployedImplementationType.BARE_METAL_COMPUTER,
+                        OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                        null,
+                        "A portable computer with screen, keyboard and battery power.",
+                        OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
+     * A professional laptop supplied by Apple that runs the macOS operating system.
+     */
+    MACBOOK_PRO("Apple MacBook Pro",
+                DeployedImplementationType.LAPTOP_COMPUTER,
+                OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                null,
+                "A professional laptop supplied by Apple that runs the macOS operating system.",
+                OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
+     * A small hardware server enclosed in a protective case that can sit under a desk.
+     */
+    SMALL_FORM_FACTOR_COMPUTER("Small Form Factor (SFF) Computer",
+                               DeployedImplementationType.BARE_METAL_COMPUTER,
+                               OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                               null,
+                               "A small hardware server enclosed in a protective case that can sit under a desk.",
+                               OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
      * A callable software server.
      */
     SOFTWARE_SERVER("Software Server",
@@ -178,7 +419,7 @@ public enum DeployedImplementationType
                     OpenMetadataType.SOFTWARE_SERVER.typeName,
                     null,
                     "A callable software server.",
-                    "https://egeria-project.org/types/0/0040-Software-Servers/"),
+                    OpenMetadataWikiPages.MODEL_0040_SOFTWARE_SERVERS),
 
 
     /**
@@ -189,7 +430,7 @@ public enum DeployedImplementationType
                     OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                     null,
                     "A callable software capability supporting specific types of assets.",
-                    "https://egeria-project.org/types/0/0042-Software-Capabilities/"),
+                        OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES),
 
 
     /**
@@ -251,7 +492,18 @@ public enum DeployedImplementationType
                 OpenMetadataType.DATA_MANAGER.typeName,
                 OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
                 "A system that manages hierarchically organized files on persistent storage.",
-                "https://egeria-project.org/types/0/0056-Resource-Managers/"),
+                OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS),
+
+
+    /**
+     * A UNIX capability that manages hierarchically organized files on persistent storage.
+     */
+    UNIX_FILE_SYSTEM("UNIX File System",
+                     DeployedImplementationType.SOFTWARE_CAPABILITY,
+                     OpenMetadataType.DATA_MANAGER.typeName,
+                     OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
+                     "A Unix capability that manages hierarchically organized files on persistent storage.",
+                     OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS),
 
 
     /**
@@ -262,7 +514,7 @@ public enum DeployedImplementationType
                   OpenMetadataType.CATALOG.typeName,
                   OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
                   "A catalog of metadata that describes assets such as deployed systems, data sources and processes.",
-                "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
+                  OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
 
 
     /**
@@ -270,21 +522,21 @@ public enum DeployedImplementationType
      */
     API_MANAGER("API Manager",
                 DeployedImplementationType.SOFTWARE_CAPABILITY,
-                  OpenMetadataType.API_MANAGER.typeName,
-                  null,
-                  "A software capability that provides callable APIs.",
-                  "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
+                OpenMetadataType.API_MANAGER.typeName,
+                null,
+                "A software capability that provides callable APIs.",
+                OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
 
 
     /**
      * A software capability that provides callable APIs supporting the REST protocol.
      */
     REST_API_MANAGER("REST API Manager",
-                DeployedImplementationType.API_MANAGER,
-                OpenMetadataType.API_MANAGER.typeName,
-                null,
-                "A software capability that provides callable APIs supporting the REST protocol.",
-                "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
+                     DeployedImplementationType.API_MANAGER,
+                     OpenMetadataType.API_MANAGER.typeName,
+                     null,
+                     "A software capability that provides callable APIs supporting the REST protocol.",
+                     OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
 
     /**
      * A system that manages the asynchronous exchange of messages (events) from once to potentially many recipients.  Typically, this exchange of events is organized into groups called topics.
@@ -294,7 +546,7 @@ public enum DeployedImplementationType
                   OpenMetadataType.EVENT_BROKER.typeName,
                  null,
                   "A system that manages the asynchronous exchange of messages (events) from once to potentially many recipients.  Typically, this exchange of events is organized into groups called topics.",
-                  "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
+                 OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
 
 
     /**
@@ -305,7 +557,7 @@ public enum DeployedImplementationType
                                 OpenMetadataType.DATABASE_MANAGER.typeName,
                                 null,
                                 "A capability that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).",
-                                "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
+                                OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
 
     /**
      * A system that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).
@@ -315,7 +567,7 @@ public enum DeployedImplementationType
                                 OpenMetadataType.DATABASE_MANAGER.typeName,
                                 null,
                                 "The PostgreSQL capability that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).",
-                                "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
+                                OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
 
 
     /**
@@ -325,7 +577,7 @@ public enum DeployedImplementationType
                          DeployedImplementationType.SOFTWARE_SERVER,
                          OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName,
                          null,
-                         "An Open Metadata and Governance (OMAG) platform for running one to many OMAG Servers.",
+                         "An Open Metadata and Governance (OMAG) runtime for running one to many OMAG Servers.",
                          "https://egeria-project.org/concepts/omag-server-platform/"),
 
     /**
@@ -333,7 +585,7 @@ public enum DeployedImplementationType
      */
     OMAG_SERVER_RUNTIME("OMAG Server Runtime",
                         DeployedImplementationType.SOFTWARE_SERVER,
-                        OpenMetadataType.SOFTWARE_SERVER.typeName,
+                        OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName,
                         null,
                         "An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.",
                         "https://egeria-project.org/concepts/omag-server-runtime/"),
@@ -347,7 +599,7 @@ public enum DeployedImplementationType
                   OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME,
                        null,
                   "A deployable software component.",
-                  "https://egeria-project.org/types/2/0215-Software-Components/"),
+                       OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS),
 
     /**
      * A pluggable software component that conforms to the Open Connector Framework (OCF).

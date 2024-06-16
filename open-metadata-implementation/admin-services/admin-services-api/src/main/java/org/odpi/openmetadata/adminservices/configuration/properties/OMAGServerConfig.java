@@ -60,9 +60,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OMAGServerConfig extends AdminServicesConfigHeader
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     public static final String         VERSION_ONE = "V1.0";
     public static final String         VERSION_TWO = "V2.0";
     public static final List<String>   COMPATIBLE_VERSIONS = new ArrayList<>(List.of(VERSION_TWO));
@@ -72,7 +69,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      */
     public  static final String  defaultLocalServerType                   = null;
     private static final String  defaultLocalOrganizationName             = null;
-    private static final String  defaultLocalServerURL                    = "https://localhost:9443";
+    private static final String  defaultLocalServerURL                    = "{{egeriaEndpoint}}";
     private static final String  defaultLocalServerUserId                 = "OMAGServer";
     public  static final int     defaultMaxPageSize                       = 1000;
 

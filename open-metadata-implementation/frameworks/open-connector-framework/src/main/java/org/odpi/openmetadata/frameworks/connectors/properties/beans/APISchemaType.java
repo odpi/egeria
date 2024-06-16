@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class APISchemaType extends SchemaType
 {
-    private static final long     serialVersionUID = 1L;
-
     protected  int operationCount = 0;
 
     /**
@@ -113,7 +111,6 @@ public class APISchemaType extends SchemaType
                 ", extendedProperties=" + getExtendedProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
                 '}';
     }

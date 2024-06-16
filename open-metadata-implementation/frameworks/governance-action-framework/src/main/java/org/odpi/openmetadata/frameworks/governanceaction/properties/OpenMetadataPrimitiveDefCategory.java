@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -19,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OpenMetadataPrimitiveDefCategory implements Serializable
+public enum OpenMetadataPrimitiveDefCategory
 {
     /**
      * java.lang.Object
@@ -85,8 +83,6 @@ public enum OpenMetadataPrimitiveDefCategory implements Serializable
      * java.lang.Long
      */
     OM_PRIMITIVE_TYPE_DATE      (12, "date",       "java.lang.Long",        "1bef35ca-d4f9-48db-87c2-afce4649362d");
-
-    private static final long serialVersionUID = 1L;
 
     private final int    code;
     private final String name;

@@ -4,17 +4,11 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
 
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 /**
  * ViewServiceRegistrationEntry is used by a view service to register its admin services interface.
  */
-public class ViewServiceRegistrationEntry implements Serializable
+public class ViewServiceRegistrationEntry
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private int                            viewServiceCode;
     private ComponentDevelopmentStatus     viewServiceDevelopmentStatus;
     private String                         viewServiceName;

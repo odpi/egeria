@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementContr
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
-import java.io.Serial;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,9 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedMetadataElement extends ElementControlHeader
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String              relationshipGUID       = null;
     private Date                effectiveFromTime      = null;
     private Date                effectiveToTime        = null;

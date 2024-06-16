@@ -34,6 +34,8 @@ You will see the platform logo plus other messages describing its startup config
 ```
 Once the "platform ready" message is displayed, its REST APIs are active and you can configure servers and services within them.
 
+If you are new to Egeria, try the ["Getting started with Egeria"](https://getting-started-with-egeria.pdr-associates.com/introduction.html) blogs.  Alternatively, the [Egeria documentation website](https://egeria-project.org) includes:
+
 * [Configuring the OMAG Server Platform](https://egeria-project.org/guides/admin/configuring-the-omag-server-platform/) describes the different configuration options available for the OMAG Server Platform.
 * [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform/) describes how the platform works.
 * [Configuring OMAG Servers](https://egeria-project.org/guides/admin/servers/) describes how to configure servers to run on your platform.

@@ -1,17 +1,22 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
-# Egeria's assembly
+# Egeria's Distribution
 
 The contents of this directory were initially created by the gradle build script
 from the [egeria.git](https://github.com/odpi/egeria) repository.
 It has two parts to it:
 
-* All the files and built images for egeria are under the `assembly` directory.  
-  Each directory contains a `README.md` that describes its contents.
+* All the files and built images for egeria are under the `assembly` directory. 
+  Each directory contains a `README.md` that describes its contents and how to use it.
 * A `Docker` build file used to create a docker image.
 * A directory called `dist` that contains the start up script run when a docker image built
   from this directory is run.
+
+## Running Egeria natively on this, or another, machine
+
+Change to the `assembly/platform` directory and follow the instructions in its `README.md` file.
+
 
 ## Creating a docker image
 
@@ -27,7 +32,7 @@ found under the images managed by that daemon.  For example, if you are using
 [Docker Desktop](https://www.docker.com/products/docker-desktop/),
 the docker image is located in the **Images** tab.
 
-To run the resulting image from the command line, use `docker run -p 9443:9443  odpi/egeria-platform:{tagName}`, again replacing `{tagName}` with your chosen tag.
+To run the resulting image from the command line, use `docker run -p 9443:9443 -p 9092:9092 odpi/egeria-platform:{tagName}`, again replacing `{tagName}` with your chosen tag.
 
 
 

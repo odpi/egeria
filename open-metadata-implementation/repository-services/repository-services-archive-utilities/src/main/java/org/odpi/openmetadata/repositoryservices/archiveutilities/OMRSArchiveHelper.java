@@ -755,7 +755,7 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
 
 
     /**
-     * Return an attribute with the supplied name and description that is of a map from string to boolean.
+     * Return an attribute with the supplied name and description that is of a map from string to long.
      * It is set up to be optional,
      * indexable (useful for searches) but the value does not need to be unique.
      * These are the typical values used for most open metadata attribute.
@@ -792,7 +792,81 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
 
 
     /**
-     * Return an attribute with the supplied name and description that is of a map from string to boolean.
+     * Return an attribute with the supplied name and description that is of a map from string to double.
+     * It is set up to be optional,
+     * indexable (useful for searches) but the value does not need to be unique.
+     * These are the typical values used for most open metadata attribute.
+     * They can be changed by the caller once the TypeDefAttribute is returned.
+     *
+     * @param attributeName name of the attribute
+     * @param attributeDescription short description for the attribute
+     * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
+     * @return  TypeDefAttribute of type string
+     */
+    public TypeDefAttribute  getMapStringDoubleTypeDefAttribute(String      attributeName,
+                                                                String      attributeDescription,
+                                                                String      attributeDescriptionGUID)
+    {
+        TypeDefAttribute     attribute = new TypeDefAttribute();
+
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
+        attribute.setAttributeName(attributeName);
+        attribute.setAttributeDescription(attributeDescription);
+        attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
+        attribute.setAttributeType(this.archiveBuilder.getCollectionDef("map<string,double>"));
+        attribute.setAttributeCardinality(AttributeCardinality.AT_MOST_ONE);
+        attribute.setValuesMinCount(0);
+        attribute.setValuesMaxCount(1);
+        attribute.setIndexable(true);
+        attribute.setUnique(false);
+        attribute.setDefaultValue(null);
+        attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
+        return attribute;
+    }
+
+
+    /**
+     * Return an attribute with the supplied name and description that is of a map from string to date.
+     * It is set up to be optional,
+     * indexable (useful for searches) but the value does not need to be unique.
+     * These are the typical values used for most open metadata attribute.
+     * They can be changed by the caller once the TypeDefAttribute is returned.
+     *
+     * @param attributeName name of the attribute
+     * @param attributeDescription short description for the attribute
+     * @param attributeDescriptionGUID guid of the glossary term that describes this attribute.
+     * @return  TypeDefAttribute of type string
+     */
+    public TypeDefAttribute  getMapStringDateTypeDefAttribute(String      attributeName,
+                                                              String      attributeDescription,
+                                                              String      attributeDescriptionGUID)
+    {
+        TypeDefAttribute     attribute = new TypeDefAttribute();
+
+        attribute.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
+        attribute.setAttributeName(attributeName);
+        attribute.setAttributeDescription(attributeDescription);
+        attribute.setAttributeDescriptionGUID(attributeDescriptionGUID);
+        attribute.setAttributeType(this.archiveBuilder.getCollectionDef("map<string,date>"));
+        attribute.setAttributeCardinality(AttributeCardinality.AT_MOST_ONE);
+        attribute.setValuesMinCount(0);
+        attribute.setValuesMaxCount(1);
+        attribute.setIndexable(true);
+        attribute.setUnique(false);
+        attribute.setDefaultValue(null);
+        attribute.setExternalStandardMappings(null);
+
+        attribute.setAttributeStatus(TypeDefAttributeStatus.ACTIVE_ATTRIBUTE);
+
+        return attribute;
+    }
+
+
+    /**
+     * Return an attribute with the supplied name and description that is of a map from string to integer.
      * It is set up to be optional,
      * indexable (useful for searches) but the value does not need to be unique.
      * These are the typical values used for most open metadata attribute.
@@ -1465,7 +1539,14 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         instanceAuditHeader.setType(type);
         instanceAuditHeader.setUpdatedBy(null);
         instanceAuditHeader.setUpdateTime(null);
-        instanceAuditHeader.setVersion(1L);
+        if (creationDate == null)
+        {
+            instanceAuditHeader.setVersion(1L);
+        }
+        else
+        {
+            instanceAuditHeader.setVersion(creationDate.getTime());
+        }
         instanceAuditHeader.setStatus(status);
     }
 

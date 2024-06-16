@@ -27,8 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ReferenceValue extends PropertyBase
 {
-    private static final long         serialVersionUID = 1L;
-
     private int    confidence = 0;
     private String steward    = null;
     private String notes      = null;

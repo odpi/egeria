@@ -1072,7 +1072,10 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(schemaTypeProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(schemaTypeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/{2}?isMergeUpdate={3}";
 
@@ -1702,7 +1705,10 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaAttributeGUID, schemaAttributeGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(schemaAttributeProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(schemaAttributeProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}?isMergeUpdate={3}";
 
@@ -2325,47 +2331,6 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         assetZones,
-                                        serverName,
-                                        userId,
-                                        assetGUID);
-    }
-
-
-    /**
-     * Update the owner information for a specific asset.
-     *
-     * @param userId calling user
-     * @param assetGUID unique identifier for the asset to update
-     * @param ownerId userId or profileGUID of the owner - or null to clear the field
-     * @param ownerType indicator of the type of identifier provided above - or null to clear the field
-     * @throws InvalidParameterException userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Override
-    @Deprecated
-    public void updateAssetOwner(String    userId,
-                                 String    assetGUID,
-                                 String    ownerId,
-                                 AssetOwnerType ownerType) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
-    {
-        final String   methodName = "updateAssetOwner";
-
-        final String   assetGUIDParameter = "assetGUID";
-        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/owner";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
-
-        OwnerRequestBody requestBody = new OwnerRequestBody();
-        requestBody.setOwnerId(ownerId);
-        requestBody.setOwnerType(ownerType);
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        urlTemplate,
-                                        requestBody,
                                         serverName,
                                         userId,
                                         assetGUID);

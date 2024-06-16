@@ -84,38 +84,12 @@ public class FileFolderConverter<B> extends AssetConverter<B>
                     folderProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
                     folderProperties.setModifiedTime(this.removeStoreUpdateTime(instanceProperties));
 
-                    /* Note this value should be in the classification */
-                    folderProperties.setOwner(this.removeOwner(instanceProperties));
-                    /* Note this value should be in the classification */
-                    folderProperties.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
-                    /* Note this value should be in the classification */
-                    folderProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
-
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
                     folderProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     folderProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                    /*
-                     * The values in the classifications override the values in the main properties of the Asset's entity.
-                     * Having these properties in the main entity is deprecated.
-                     */
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME, entity);
-
-                    folderProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
-
-                    folderProperties.setOwner(this.getOwner(instanceProperties));
-                    folderProperties.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
-
-                    folderProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                    folderProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                    folderProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
 
                     instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName, entity);
 

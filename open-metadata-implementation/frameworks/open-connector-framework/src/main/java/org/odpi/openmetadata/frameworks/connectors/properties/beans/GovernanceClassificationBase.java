@@ -32,8 +32,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class GovernanceClassificationBase extends ElementClassificationHeader
 {
-    private static final long     serialVersionUID = 1L;
-
     private int    governanceStatus    = 0;
     private int    confidence          = 0;
     private String steward             = null;

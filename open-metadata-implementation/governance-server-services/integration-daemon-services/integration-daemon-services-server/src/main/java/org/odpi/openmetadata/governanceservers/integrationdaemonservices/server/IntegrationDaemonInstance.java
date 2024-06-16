@@ -15,7 +15,6 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handler
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationDaemonThread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,6 @@ import java.util.Map;
  */
 public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 {
-    private final IntegrationDaemonThread                integrationDaemonThread;
     private final Map<String, IntegrationServiceHandler> integrationServiceHandlers;
     private final Map<String, IntegrationGroupHandler>   integrationGroupHandlers;
     private final IntegrationConnectorCacheMap           integrationConnectorCacheMap;
@@ -41,7 +39,6 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
      * @param auditLog link to the repository responsible for servicing the REST calls.
      * @param localServerUserId userId to use for local server initiated actions
      * @param maxPageSize max number of results to return on single request.
-     * @param integrationDaemonThread handler managing the threading for the active integration connectors in this server.
      * @param integrationServiceHandlers handler for all the active integration services in this server.
      */
     IntegrationDaemonInstance(String                                 serverName,
@@ -49,14 +46,12 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
                               AuditLog                               auditLog,
                               String                                 localServerUserId,
                               int                                    maxPageSize,
-                              IntegrationDaemonThread                integrationDaemonThread,
                               Map<String, IntegrationServiceHandler> integrationServiceHandlers,
                               Map<String, IntegrationGroupHandler>   integrationGroupHandlers,
                               IntegrationConnectorCacheMap           integrationConnectorCacheMap)
     {
         super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
 
-        this.integrationDaemonThread = integrationDaemonThread;
         this.integrationServiceHandlers = integrationServiceHandlers;
         this.integrationGroupHandlers = integrationGroupHandlers;
         this.integrationConnectorCacheMap = integrationConnectorCacheMap;
@@ -532,14 +527,6 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
     public void shutdown()
     {
         final String actionDescription = "Server shutdown";
-
-        /*
-         * Shutdown the threads running the connectors.
-         */
-        if (integrationDaemonThread != null)
-        {
-            integrationDaemonThread.stop();
-        }
 
         /*
          * This shuts down the connectors and stops any dedicated threads.

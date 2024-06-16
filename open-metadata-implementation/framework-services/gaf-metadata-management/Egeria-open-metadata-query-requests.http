@@ -6,7 +6,7 @@
 
 ###
 # Working with entities
-@elementGUID=2864a998-61f6-4251-a619-c73e85559fd5
+@elementGUID=add guid here
 
 
 ###
@@ -28,7 +28,7 @@ Content-Type: application/json
 {
   "class" : "NameRequestBody",
   "namePropertyName" : "pathName",
-  "name" : "/Code/ODPi/egeria-core/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-4.4-SNAPSHOT-distribution.tar.gz/assembly/platform/sample-data/oak-dene-drop-foot-weekly-measurements/week9.csv"
+  "name" : "/Code/ODPi/egeria-core/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.1-SNAPSHOT-distribution.tar.gz/assembly/platform/sample-data/oak-dene-drop-foot-weekly-measurements/week9.csv"
 }
 
 
@@ -41,7 +41,7 @@ Content-Type: application/json
 {
   "class" : "NameRequestBody",
   "namePropertyName" : "pathName",
-  "name" : "/Code/ODPi/egeria-core/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-4.4-SNAPSHOT-distribution.tar.gz/assembly/platform/sample-data/oak-dene-drop-foot-weekly-measurements/week9.csv"
+  "name" : "/Code/ODPi/egeria-core/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.1-SNAPSHOT-distribution.tar.gz/assembly/platform/sample-data/oak-dene-drop-foot-weekly-measurements/week9.csv"
 }
 
 
@@ -97,7 +97,7 @@ Content-Type: application/json
 # @name getAllRelatedMetadataElements
 # Retrieve the metadata elements connected to the supplied element.
 GET {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/related-elements/{{elementGUID}}/any-type?
-    startingAtEnd=1&
+    startingAtEnd=0&
     startFrom=0&
     pageSize=0
 

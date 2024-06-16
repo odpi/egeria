@@ -23,7 +23,7 @@ public class PostgresServerSurveyActionProvider extends SurveyActionServiceProvi
     /*
      * Unique identifier for the connector type.
      */
-    private static final String connectorTypeGUID = "225f53a4-be5e-4008-b3a9-5dcf25f92514";
+    private static final String connectorTypeGUID = "3e47db62-5407-4cbd-ba54-1ce6612af6f9";
     private static final String connectorQualifiedName = "Egeria:SurveyActionService:RelationalDatabaseServer:PostgreSQL";
     private static final String connectorDisplayName = "Survey for a PostgreSQL Database Server";
     private static final String connectorTypeDescription = "Surveys the databases, their tables and columns, found in a PostgreSQL database server";

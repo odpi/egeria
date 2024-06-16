@@ -31,8 +31,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class GovernanceExpectationsProperties extends ClassificationProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private Map<String, Integer> counts = null;
     private Map<String, String>  values = null;
     private Map<String, Boolean> flags  = null;

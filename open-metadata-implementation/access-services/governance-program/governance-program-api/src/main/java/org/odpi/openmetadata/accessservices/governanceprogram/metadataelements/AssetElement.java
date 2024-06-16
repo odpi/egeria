@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.governanceprogram.metadataelements;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.AssetProperties;
 
-import java.io.Serializable;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -42,10 +41,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AssetElement implements MetadataElement, Serializable
+public class AssetElement implements MetadataElement
 {
-    private static final long     serialVersionUID = 1L;
-
     private ElementHeader   elementHeader = null;
     private AssetProperties properties    = null;
     

@@ -2248,7 +2248,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 {
                     InstanceProperties actionTargetProperties = actionTarget.getProperties();
 
-                    if (actionTargetProperties.getPropertyValue(OpenMetadataProperty.TARGET_FOR_ACTION_STATUS.name) == null)
+                    if (actionTargetProperties.getPropertyValue(OpenMetadataProperty.ACTION_STATUS.name) == null)
                     {
                         InstanceProperties newActionTargetProperties;
 
@@ -2947,19 +2947,19 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             newActionTargetProperties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                                    newActionTargetProperties,
-                                                                                   OpenMetadataType.START_DATE_PROPERTY_NAME,
+                                                                                   OpenMetadataProperty.START_DATE.name,
                                                                                    startDate,
                                                                                    methodName);
 
             newActionTargetProperties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                                    newActionTargetProperties,
-                                                                                   OpenMetadataType.COMPLETION_DATE_PROPERTY_NAME,
+                                                                                   OpenMetadataProperty.COMPLETION_DATE.name,
                                                                                    completionDate,
                                                                                    methodName);
 
             newActionTargetProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      newActionTargetProperties,
-                                                                                     OpenMetadataType.COMPLETION_MESSAGE_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.COMPLETION_MESSAGE.name,
                                                                                      completionMessage,
                                                                                      methodName);
 

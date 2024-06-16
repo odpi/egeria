@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Like extends ElementBase
 {
-    private static final long     serialVersionUID = 1L;
-
     protected String     user       = null;
     protected boolean    isPublic   = false;
 
@@ -104,8 +102,7 @@ public class Like extends ElementBase
     public String toString()
     {
         return "Like{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

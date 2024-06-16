@@ -5,7 +5,7 @@
 
 ###
 # =====================================================================================================================
-# Managed the authentication token.  Run this request to create/refresh the token.
+# Manage the authentication token.  Run this request to create/refresh the token.
 
 # @name Token (RequestBody)
 POST {{baseURL}}/api/token
@@ -19,6 +19,7 @@ Content-Type: application/json
 > {% client.global.set("token", response.body); %}
 
 ###
+# =====================================================================================================================
 # The technology types provide the reference data to guide the curator.  They are extracted from the valid
 # values for deployedImplementationType
 #
@@ -30,9 +31,6 @@ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/tec
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{
-  "filter" : ""
-}
 
 ###
 @typeName=SoftwareServer
@@ -53,7 +51,19 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "filter" : "PostgreSQL"
+   "filter" : "Add search string here"
+}
+
+
+###
+# @name findTechnologyTypes (PostgreSQL related technologies)
+# Retrieve the list of deployed implementation type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "PostgreSQL"
 }
 
 
@@ -65,7 +75,30 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
+  "filter" : "Add technology name here"
+}
+
+
+###
+# @name getTechnologyTypeDetail (PostgreSQL Server)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
   "filter" : "PostgreSQL Server"
+}
+
+###
+# @name getTechnologyTypeDetail (folders)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "FileFolder"
 }
 
 ###
@@ -115,6 +148,24 @@ Content-Type: application/json
 # }
 
 ###
+# @name createElementFromTemplate (folder)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "379e6c05-9cfa-4d31-a837-0ed4eee6482a",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "pathName" : "Add full path name here, eg a/b/c/myFolder",
+    "folderName" : "Add directory name without enclosing directory names, eg myFolder"
+  }
+}
+
+
+###
 # @name createElementFromTemplate (Apache Kafka Server)
 # Create a new element from a template.
 # Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
@@ -145,12 +196,34 @@ Content-Type: application/json
   "isOwnAnchor" : true,
   "placeholderPropertyValues" : {
     "serverName" : "DemoPostgreSQL1",
-    "hostIdentifier" : "egeria.pdr-associates.com",
+    "hostIdentifier" : "coco.com",
     "portNumber" : "5432",
     "databaseUserId" : "surveyor",
     "databasePassword" : "secret"
   }
 }
+
+###
+# @name createElementFromTemplate (PostgreSQL Relational Database)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "3d398b3f-7ae6-4713-952a-409f3dea8520",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "hostIdentifier" : "egeria.pdr-associates.com",
+    "portNumber" : "5432",
+    "serverName" : "DemoPostgreSQL1",
+    "databaseName" : "my_database",
+    "databaseUserId" : "surveyor",
+    "databasePassword" : "secret"
+  }
+}
+
 
 ###
 # =====================================================================================================================
@@ -216,7 +289,27 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "filter" : "AssetSurvey"
+   "filter" : "add search string here"
+}
+
+
+###
+# @name getAllGovernanceActionTypes
+# Retrieve the list of governance action type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name findGovernanceActionTypes (Asset Survey)
+# Retrieve the list of governance action type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "AssetSurvey"
 }
 
 
@@ -228,17 +321,24 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "filter" : "Egeria:GovernanceActionType:2adeb8f1-0f59-4970-b6f2-6cc25d4d2402survey-kafka-server"
+   "filter" : "Egeria:GovernanceActionType:AssetSurvey:survey-kafka-server"
 }
 
 ###
 
-@governanceActionTypeGUID=e2575dc7-3309-4b15-95ee-4766d6808f4e
+@governanceActionTypeGUID=add guid here
 
 ###
 # @name getGovernanceActionTypeByGUID
 # Retrieve the governance action type metadata element with the supplied unique identifier.
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/{{governanceActionTypeGUID}}
+Authorization: Bearer {{token}}
+
+
+###
+# @name getGovernanceActionTypeByGUID (Survey Folder)
+# Retrieve the governance action type metadata element with the supplied unique identifier.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/2f988d28-8fb6-4e11-83a3-63b9ae6ef031
 Authorization: Bearer {{token}}
 
 
@@ -264,6 +364,15 @@ Content-Type: application/json
 
 
 ###
+# @name getAllGovernanceActionProcesses
+# Retrieve the list of governance action process metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/by-search-string?
+    startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
 # @name getGovernanceActionProcessesByName
 # Retrieve the list of governance action process metadata elements with a matching qualified or display name.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/by-name?
@@ -284,10 +393,24 @@ Authorization: Bearer {{token}}
 
 
 ###
+# @name getGovernanceActionProcessByGUID (Daily Process)
+# Retrieve the governance action process metadata element with the supplied unique identifier.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/dde1e255-6d0c-4589-b4a6-17e7d01db5ab
+Authorization: Bearer {{token}}
+
+
+###
 # @name getGovernanceActionProcessGraph
 # Retrieve the governance action process metadata element with the supplied unique identifier
 # along with the flow definition describing its implementation.
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/{{processGUID}}/graph
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/{{processGUID}}/graph
+Authorization: Bearer {{token}}
+
+###
+# @name getGovernanceActionProcessGraph (Daily Process)
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/dde1e255-6d0c-4589-b4a6-17e7d01db5ab/graph
 Authorization: Bearer {{token}}
 
 
@@ -362,12 +485,12 @@ Content-Type: application/json
 
 {
   "class" : "InitiateGovernanceActionTypeRequestBody",
-  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:2adeb8f1-0f59-4970-b6f2-6cc25d4d2402survey-folder",
+  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:AssetSurvey:survey-folder",
   "actionTargets": [
     {
       "class" : "NewActionTarget",
       "actionTargetName": "folderToSurvey",
-      "actionTargetGUID": "c0c71ae5-c115-438f-ac25-8ac297881768"
+      "actionTargetGUID": "add folder guid here"
     } ]
 }
 
@@ -380,7 +503,7 @@ Content-Type: application/json
 
 {
   "class" : "InitiateGovernanceActionTypeRequestBody",
-  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:2adeb8f1-0f59-4970-b6f2-6cc25d4d2402survey-kafka-server",
+  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:AssetSurvey:survey-kafka-server",
   "actionTargets": [
     {
       "class" : "NewActionTarget",
@@ -398,7 +521,7 @@ Content-Type: application/json
 
 {
   "class" : "InitiateGovernanceActionTypeRequestBody",
-  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:2adeb8f1-0f59-4970-b6f2-6cc25d4d2402survey-postgres-server",
+  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:AssetSurvey:survey-postgres-server",
   "actionTargets": [
     {
       "class" : "NewActionTarget",
@@ -408,10 +531,28 @@ Content-Type: application/json
 }
 
 ###
+# @name initiateGovernanceActionType (PostgreSQL Relational Database)
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "InitiateGovernanceActionTypeRequestBody",
+  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:AssetSurvey:survey-postgres-database",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "postgresDatabase",
+      "actionTargetGUID": "781f06d2-9fd5-4add-b3ca-28ade52bdf91"
+    } ]
+}
+
+###
 # Full request body for initiateGovernanceActionType
 #{
 #    "class" : "InitiateGovernanceActionTypeRequestBody",
-#    "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:2adeb8f1-0f59-4970-b6f2-6cc25d4d2402survey-folder",
+#    "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:AssetSurvey:survey-folder",
 #    "requestParameters": {
 #        "parameterName1" : "parameterValue1",
 #        "parameterName2" : "parameterValue2"
@@ -463,7 +604,7 @@ Content-Type: application/json
 #
 ###
 
-@engineActionGUID=ba70c389-3398-4a18-afc7-4711ec63d08d
+@engineActionGUID=add guid here
 
 ###
 # @name getEngineAction
@@ -504,6 +645,15 @@ Content-Type: application/json
 {
   "filter" : "add string here"
 }
+
+
+###
+# @name getAllEngineActions
+# Retrieve the list of engine action metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/by-search-string?
+    startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
 
 ###

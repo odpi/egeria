@@ -2,13 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices;
 
-
-import java.io.Serializable;
-
 /**
  * OMAGServiceMode sets up whether an open metadata and governance service (OMAS) is enabled or not.
  */
-public enum OMAGServiceMode implements Serializable
+public enum OMAGServiceMode
 {
     /**
      * The open metadata and governance service is available and running.
@@ -19,8 +16,6 @@ public enum OMAGServiceMode implements Serializable
      * The open metadata and governance service is disabled.
      */
     DISABLED         (0, "Disabled",        "The open metadata and governance service is disabled.");
-
-    private static final long serialVersionUID = 1L;
 
     private final int    typeCode;
     private final String typeName;

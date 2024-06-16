@@ -56,7 +56,7 @@ public class GlossaryBrowserResource
     @Operation(summary="getGlossaryTermStatuses",
                description="Return the list of glossary term status enum values.  These values are used in a glossary workflow to describe the state of the content of the term.",
                externalDocs=@ExternalDocumentation(description="Controlled glossary terms",
-                                                   url="https://egeria-project.org/services/omvs/glossary-workflow/overview/#controlled-glossary-terms"))
+                                                   url="https://egeria-project.org/services/omvs/glossary-manager/overview/#controlled-glossary-terms"))
 
 
     public GlossaryTermStatusListResponse getGlossaryTermStatuses(@PathVariable String serverName)
@@ -76,7 +76,7 @@ public class GlossaryBrowserResource
     @Operation(summary="getGlossaryTermRelationshipStatuses",
                description="Return the list of glossary term relationship status enum values.  These values are stored in a term-to-term, or term-to-category, relationship and are used to indicate how much the relationship should be trusted.",
                externalDocs=@ExternalDocumentation(description="Relationship statuses",
-                                                   url="https://egeria-project.org/services/omvs/glossary-workflow/overview/#relationship-statuses"))
+                                                   url="https://egeria-project.org/services/omvs/glossary-manager/overview/#relationship-statuses"))
 
     public GlossaryTermRelationshipStatusListResponse getGlossaryTermRelationshipStatuses(@PathVariable String serverName)
     {

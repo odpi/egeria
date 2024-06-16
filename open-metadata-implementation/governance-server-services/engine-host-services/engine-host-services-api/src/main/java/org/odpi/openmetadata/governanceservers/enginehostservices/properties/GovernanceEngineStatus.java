@@ -44,8 +44,6 @@ public enum GovernanceEngineStatus
     DISABLED    (4, "Disabled", "The governance engine has been disabled. It is waiting to be enabled before " +
                                                                    "it can service any more governance requests.");
 
-    private static final long serialVersionUID = 1L;
-
     private final int    ordinal;
     private final String statusName;
     private final String statusDescription;

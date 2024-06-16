@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SchemaAttributeRequestBody extends SchemaAttributeProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String externalSourceGUID = null;
     private String externalSourceName = null;
 

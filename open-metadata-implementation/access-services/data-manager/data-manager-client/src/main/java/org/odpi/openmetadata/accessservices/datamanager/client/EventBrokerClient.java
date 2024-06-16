@@ -262,7 +262,10 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(topicGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(topicProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(topicProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(topicProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         final String urlTemplate = serverPlatformURLRoot + topicURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
 

@@ -29,6 +29,7 @@ public class OMRSArchiveGUIDMap
 
     private final String              guidMapFileName;
     private Map<String, String> idToGUIDMap;
+    private Map<String, String> usedIdToGUIDMap = new HashMap<>();
 
 
     /**
@@ -78,6 +79,7 @@ public class OMRSArchiveGUIDMap
     public  void setGUID(String  id, String  guid)
     {
         idToGUIDMap.put(id, guid);
+        usedIdToGUIDMap.put(id, guid);
     }
 
 
@@ -95,9 +97,9 @@ public class OMRSArchiveGUIDMap
         if (guid == null)
         {
             guid = UUID.randomUUID().toString();
-
-            idToGUIDMap.put(id, guid);
         }
+
+        setGUID(id, guid);
 
         return guid;
     }
@@ -111,7 +113,14 @@ public class OMRSArchiveGUIDMap
      */
     public String  queryGUID(String id)
     {
-        return idToGUIDMap.get(id);
+        String guid = idToGUIDMap.get(id);
+
+        if (guid != null)
+        {
+            usedIdToGUIDMap.put(id, guid);
+        }
+
+        return guid;
     }
 
 
@@ -120,6 +129,8 @@ public class OMRSArchiveGUIDMap
      */
     public void  saveGUIDs()
     {
+        System.out.println("Writing to Id File: " + guidMapFileName);
+
         File         idFile = new File(guidMapFileName);
 
         try
@@ -146,6 +157,39 @@ public class OMRSArchiveGUIDMap
     }
 
 
+
+    /**
+     * Save the map to a file
+     */
+    public void  saveUsedGUIDs()
+    {
+        System.out.println("Writing to Id File: " + guidMapFileName);
+
+        File         idFile = new File(guidMapFileName);
+
+        try
+        {
+            if (usedIdToGUIDMap.isEmpty())
+            {
+                log.debug("Deleting id file because map is empty: " + guidMapFileName);
+
+                idFile.delete();
+            }
+            else
+            {
+                log.debug("Writing id file " + guidMapFileName);
+
+                String mapContents = OBJECT_WRITER.writeValueAsString(usedIdToGUIDMap);
+
+                FileUtils.writeStringToFile(idFile, mapContents, (String)null,false);
+            }
+        }
+        catch (Exception  exc)
+        {
+            log.error("Unusable Map Store :(", exc);
+        }
+    }
+
     /**
      * Return the size of the map.
      *
@@ -153,13 +197,27 @@ public class OMRSArchiveGUIDMap
      */
     public int getSize()
     {
-        if (idToGUIDMap != null)
-        {
-            return idToGUIDMap.size();
-        }
-        else
+        if (idToGUIDMap == null)
         {
             return 0;
         }
+
+        return idToGUIDMap.size();
+    }
+
+
+    /**
+     * Return the size of the map.
+     *
+     * @return int (zero if the map is null)
+     */
+    public int getUsedSize()
+    {
+        if (usedIdToGUIDMap == null)
+        {
+            return 0;
+        }
+
+        return usedIdToGUIDMap.size();
     }
 }

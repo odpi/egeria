@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -24,15 +22,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum CommunityMembershipType implements Serializable
+public enum CommunityMembershipType
 {
     CONTRIBUTOR   (0,  "Contributor",   "Individual is able to be a contributing member of the community."),
     ADMINISTRATOR (1,  "Administrator", "Individual is able to administer the community."),
     LEADER        (2,  "Leader",        "Individual sets the direction of the community."),
     OBSERVER      (3,  "Observer",      "Individual is receiving notifications about the community."),
     OTHER         (99, "Other",         "Another meaning.");
-
-    private static final long serialVersionUID = 1L;
 
     private final int            ordinal;
     private final String         name;

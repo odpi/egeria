@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 
-import java.io.Serial;
 import java.util.Iterator;
 
 /**
@@ -16,9 +15,6 @@ import java.util.Iterator;
  */
 public abstract class CommentReplies extends PropertyIteratorBase implements Iterator<CommentConversation>
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
      *

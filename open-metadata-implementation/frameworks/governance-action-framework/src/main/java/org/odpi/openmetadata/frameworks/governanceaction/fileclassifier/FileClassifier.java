@@ -13,6 +13,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidVal
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,10 +76,12 @@ public class FileClassifier
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException problem connecting to the open metadata repositories
      * @throws UserNotAuthorizedException insufficient access
+     * @throws IOException unable to access the attributes of the file
      */
     public FileClassification classifyFile(String pathName)  throws InvalidParameterException,
                                                                     PropertyServerException,
-                                                                    UserNotAuthorizedException
+                                                                    UserNotAuthorizedException,
+                                                                    IOException
     {
         return classifyFile(new File(pathName));
     }
@@ -92,8 +98,28 @@ public class FileClassifier
      */
     public FileClassification classifyFile(File file) throws InvalidParameterException,
                                                              PropertyServerException,
-                                                             UserNotAuthorizedException
+                                                             UserNotAuthorizedException,
+                                                             IOException
     {
+        Date creationTime = null;
+        Date lastModifiedTime = null;
+        Date lastAccessedTime = null;
+
+        BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+
+        if (attr.creationTime() != null)
+        {
+            creationTime = new Date(attr.creationTime().toMillis());
+        }
+        if (attr.lastModifiedTime() != null)
+        {
+            lastModifiedTime = new Date(attr.lastModifiedTime().toMillis());
+        }
+        if (attr.lastAccessTime() != null)
+        {
+            lastAccessedTime = new Date(attr.lastAccessTime().toMillis());
+        }
+
         String fileExtension = getFileExtension(file.getName());
 
         FileReferenceDataCache fileReferenceDataCache = getFileReferenceDataCache(file.getName(),
@@ -102,6 +128,9 @@ public class FileClassifier
         return new FileClassification(file.getName(),
                                       file.getAbsolutePath(),
                                       fileExtension,
+                                      creationTime,
+                                      lastModifiedTime,
+                                      lastAccessedTime,
                                       file.canRead(),
                                       file.canWrite(),
                                       file.canExecute(),
@@ -110,7 +139,8 @@ public class FileClassifier
                                       fileReferenceDataCache.fileType,
                                       fileReferenceDataCache.deployedImplementationType,
                                       fileReferenceDataCache.encoding,
-                                      fileReferenceDataCache.assetTypeName);
+                                      fileReferenceDataCache.assetTypeName,
+                                      attr.size());
     }
 
 

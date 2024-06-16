@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -326,18 +327,18 @@ public class OpenMetadataTypesArchive3_9
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Name to use when displaying reference in a list.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
         final String attribute2Name            = "referenceTitle";
         final String attribute2Description     = "Full publication title of the external source.";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "referenceAbstract";
         final String attribute3Description     = "Summary of the key messages in the external source.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "description";
-        final String attribute4Description     = "Description of the external source.  For example, its significance and use.";
-        final String attribute4DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute4Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute5Name            = "authors";
         final String attribute5Description     = "List of authors for the external source.";
         final String attribute5DescriptionGUID = null;
