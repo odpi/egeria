@@ -45,7 +45,7 @@ ext {
     groovyVersion = '3.0.15'
     guavaVersion = '33.2.1-jre'
     hamcrestVersion = '2.2'
-    hdrhistogramVersion = '2.1.12'
+    hdrhistogramVersion = '2.2.2'
     hibernatevalidatorVersion = '8.0.1.Final'
     // TODO There is now a version 5 codestream of the next 2 http dependencies
     httpclientVersion = '4.5.14'
