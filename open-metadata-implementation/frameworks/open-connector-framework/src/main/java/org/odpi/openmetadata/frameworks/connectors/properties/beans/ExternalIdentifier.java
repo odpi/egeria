@@ -364,7 +364,6 @@ public class ExternalIdentifier extends Referenceable
                        ", scopeDescription='" + scopeDescription + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", GUID='" + getGUID() + '\'' +
                        ", classifications=" + getClassifications() +

@@ -5,7 +5,7 @@
 
 ###
 # =====================================================================================================================
-# Managed the authentication token.  Run this request to create/refresh the token.
+# Manage the authentication token.  Run this request to create/refresh the token.
 
 # @name Token (RequestBody)
 POST {{baseURL}}/api/token

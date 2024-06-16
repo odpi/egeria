@@ -70,6 +70,7 @@ public class FolderSurveyServiceProvider extends SurveyActionServiceProvider
 
         super.supportedActionTargetTypes.add(actionTargetType);
         super.producedAnnotationTypes = SurveyFolderAnnotationType.getAnnotationTypeTypes();
+        super.supportedRequestParameters = FolderRequestParameter.getRequestParameterTypes();
 
 
         /*

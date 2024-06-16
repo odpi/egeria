@@ -93,7 +93,6 @@ public  class DeployedAPISchemaType extends APISchemaType
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", assetClassifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';

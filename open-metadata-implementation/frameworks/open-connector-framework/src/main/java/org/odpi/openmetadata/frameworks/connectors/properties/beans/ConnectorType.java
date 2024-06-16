@@ -604,7 +604,6 @@ public class ConnectorType extends Referenceable
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", type=" + getType() +
                        ", GUID='" + getGUID() + '\'' +
-                       ", URL='" + getURL() + '\'' +
                        ", classifications=" + getClassifications() +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", headerVersion=" + getHeaderVersion() +

@@ -138,8 +138,7 @@ public class Note extends Referenceable
     public String toString()
     {
         return "Note{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

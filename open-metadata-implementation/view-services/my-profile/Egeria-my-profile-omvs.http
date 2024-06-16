@@ -4,6 +4,9 @@
 @viewServer=view-server
 
 ###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
 # @name Token (RequestBody)
 POST {{baseURL}}/api/token
 Content-Type: application/json
@@ -14,6 +17,7 @@ Content-Type: application/json
 }
 
 > {% client.global.set("token", response.body); %}
+
 
 ###
 # @name Get My Profile

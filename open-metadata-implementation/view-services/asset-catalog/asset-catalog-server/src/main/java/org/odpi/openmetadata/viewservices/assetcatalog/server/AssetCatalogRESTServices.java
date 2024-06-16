@@ -3,33 +3,43 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.assetcatalog.server;
 
+import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.OpenMetadataStoreClient;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetGraph;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetSearchMatches;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataElement;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataRelationship;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.AssetGraphResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.AssetSearchMatchesListResponse;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.assetcatalog.beans.*;
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.*;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 /**
- * The AssetCatalogRESTServices provides the implementation of the Asset Catalog Open Metadata View Service (OMVS).
+ * The AssetCatalogUIRESTServices provides the implementation of the Asset Catalog Open Metadata View Service (OMVS).
  * This interface provides view interfaces for glossary UIs.
  */
 
@@ -54,6 +64,183 @@ public class AssetCatalogRESTServices extends TokenController
     public AssetCatalogRESTServices()
     {
     }
+
+
+    /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param serverName name of the server instances for this request
+     * @param assetGUID  unique name for the connection.
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return graph of elements or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public AssetGraphResponse getAssetGraph(String   serverName,
+                                            String   assetGUID,
+                                            int      startFrom,
+                                            int      pageSize)
+    {
+        final String parameterName = "assetGUID";
+        final String methodName    = "getAssetGraph";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        AssetGraphResponse response = new AssetGraphResponse();
+        AuditLog           auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetConsumer handler = instanceHandler.getAssetConsumerClient(userId, serverName, methodName);
+
+            response.setAssetGraph(handler.getAssetGraph(userId, assetGUID, startFrom, pageSize));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.  The search string is interpreted as a regular expression (RegEx).
+     *
+     * @param serverName name of the server instances for this request
+     * @param requestBody string to search for in text
+     * @param startsWith does the value start with the supplied string?
+     * @param endsWith does the value end with the supplied string?
+     * @param ignoreCase should the search ignore case?
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of results for assets that match the search string or
+     * InvalidParameterException the searchString is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    public AssetSearchMatchesListResponse findAssetsInDomain(String            serverName,
+                                                             FilterRequestBody requestBody,
+                                                             boolean           startsWith,
+                                                             boolean           endsWith,
+                                                             boolean           ignoreCase,
+                                                             int               startFrom,
+                                                             int               pageSize)
+    {
+        final String methodName = "findAssetsInDomain";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        AssetSearchMatchesListResponse response = new AssetSearchMatchesListResponse();
+        AuditLog                       auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetConsumer handler = instanceHandler.getAssetConsumerClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setSearchMatches(handler.findAssetsInDomain(userId,
+                                                                     instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                                     startFrom,
+                                                                     pageSize));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return a list of assets that come from the requested metadata collection.
+     *
+     * @param serverName name of the server instances for this request
+     * @param metadataCollectionId guid to search for
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param requestBody optional type name to restrict search by
+     *
+     * @return list of unique identifiers for Assets with the requested name or
+     * InvalidParameterException the name is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    public AssetsResponse getAssetsByMetadataCollectionId(String            serverName,
+                                                          String            metadataCollectionId,
+                                                          int               startFrom,
+                                                          int               pageSize,
+                                                          FilterRequestBody requestBody)
+    {
+        final String methodName = "getAssetsByMetadataCollectionId";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        AssetsResponse response = new AssetsResponse();
+        AuditLog       auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetConsumer handler = instanceHandler.getAssetConsumerClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setAssets(handler.getAssetsByMetadataCollectionId(userId,
+                                                                           metadataCollectionId,
+                                                                           requestBody.getFilter(),
+                                                                           startFrom,
+                                                                           pageSize));
+            }
+            else
+            {
+                response.setAssets(handler.getAssetsByMetadataCollectionId(userId,
+                                                                           metadataCollectionId,
+                                                                           null,
+                                                                           startFrom,
+                                                                           pageSize));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
 
 
     /**

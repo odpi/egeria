@@ -85,7 +85,6 @@ public class StructSchemaType extends ComplexSchemaType
                 ", meanings=" + getMeanings() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';

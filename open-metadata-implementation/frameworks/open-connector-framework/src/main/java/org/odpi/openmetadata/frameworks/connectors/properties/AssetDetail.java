@@ -299,16 +299,7 @@ public class AssetDetail extends AssetSummary
                        ", certifications=" + certifications +
                        ", schema=" + schema +
                        ", displayName='" + getDisplayName() + '\'' +
-                       ", shortDescription='" + getConnectionDescription() + '\'' +
                        ", description='" + getDisplayDescription() + '\'' +
-                       ", owner='" + getOwner() + '\'' +
-                       ", ownerTypeName='" + getOwnerTypeName() + '\'' +
-                       ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
-                       ", ownerType=" + getOwnerType() +
-                       ", zoneMembership=" + getZoneMembership() +
-                       ", assetOrigin=" + getAssetOrigin() +
-                       ", referenceData=" + isReferenceData() +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +

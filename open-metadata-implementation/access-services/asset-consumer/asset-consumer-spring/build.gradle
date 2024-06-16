@@ -6,6 +6,7 @@
 
 dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-api')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-server')
     implementation 'org.springframework:spring-web'

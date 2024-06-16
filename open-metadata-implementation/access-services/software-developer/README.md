@@ -21,7 +21,7 @@ to use for particular situations along with details of reference data values and
 Using these services augments the software component model for the software capability.
 
 Finally, it enables the documentation of the packaging as the components are moved into the
-[DevOps Pipeline](../dev-ops).
+[DevOps Pipeline](../it-infrastructure).
 
 * [Documentation](https://egeria-project.org/services/omas/software-developer/overview)
 

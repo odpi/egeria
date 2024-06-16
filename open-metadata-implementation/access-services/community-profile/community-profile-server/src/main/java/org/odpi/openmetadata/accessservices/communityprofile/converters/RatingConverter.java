@@ -167,38 +167,20 @@ public class RatingConverter<B> extends CommunityProfileOMASConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.OWNER_TYPE_PROPERTY_NAME);
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.STARS_PROPERTY_NAME);
 
-                if (instancePropertyValue instanceof EnumPropertyValue)
+                if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                 {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
-                    switch (enumPropertyValue.getOrdinal())
+                    starRating = switch (enumPropertyValue.getOrdinal())
                     {
-                        case 0:
-                            starRating = StarRating.NOT_RECOMMENDED;
-                            break;
-
-                        case 1:
-                            starRating = StarRating.ONE_STAR;
-                            break;
-
-                        case 2:
-                            starRating = StarRating.TWO_STARS;
-                            break;
-
-                        case 3:
-                            starRating = StarRating.THREE_STARS;
-                            break;
-
-                        case 4:
-                            starRating = StarRating.FOUR_STARS;
-                            break;
-
-                        case 99:
-                            starRating = StarRating.FIVE_STARS;
-                            break;
-                    }
+                        case 0 -> StarRating.NOT_RECOMMENDED;
+                        case 1 -> StarRating.ONE_STAR;
+                        case 2 -> StarRating.TWO_STARS;
+                        case 3 -> StarRating.THREE_STARS;
+                        case 4 -> StarRating.FOUR_STARS;
+                        case 99 -> StarRating.FIVE_STARS;
+                        default -> starRating;
+                    };
                 }
             }
         }

@@ -108,8 +108,7 @@ public class NoteLogHeader extends Referenceable
     public String toString()
     {
         return "NoteLogHeader{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

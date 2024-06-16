@@ -1499,6 +1499,11 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                           anchorsClassification.getProperties(),
                                                                                           methodName);
 
+                    anchorIdentifiers.anchorDomainName = repositoryHelper.getStringProperty(serviceName,
+                                                                                            OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name,
+                                                                                                        anchorsClassification.getProperties(),
+                                                                                            methodName);
+
                     if (anchorIdentifiers.anchorGUID == null)
                     {
                         /*
@@ -1672,6 +1677,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                      anchorsProperties,
                                                                                      OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
                                                                                      anchorIdentifiers.anchorTypeName,
+                                                                                     methodName);
+
+                    anchorsProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     anchorsProperties,
+                                                                                     OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name,
+                                                                                     anchorIdentifiers.anchorDomainName,
                                                                                      methodName);
                 }
 
@@ -2864,8 +2875,9 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      */
     public static class AnchorIdentifiers
     {
-        String anchorGUID = null;
-        String anchorTypeName = null;
+        public String anchorGUID = null;
+        String anchorTypeName   = null;
+        String anchorDomainName = null;
     }
 
 
@@ -2966,6 +2978,14 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
             anchorIdentifiers.anchorGUID = targetGUID;
             anchorIdentifiers.anchorTypeName = targetTypeName;
+        }
+
+        if ((anchorIdentifiers != null) &&
+                (anchorIdentifiers.anchorGUID != null) &&
+                (anchorIdentifiers.anchorTypeName != null) &&
+                (anchorIdentifiers.anchorDomainName == null))
+        {
+            anchorIdentifiers.anchorDomainName = this.getDomainName(anchorIdentifiers.anchorTypeName);
         }
 
         return anchorIdentifiers;
@@ -3720,7 +3740,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param serviceSuppliedSupportedZones suported zones for this call
+     * @param serviceSuppliedSupportedZones supported zones for this call
      * @param builder builder to receive the anchor (if appropriate).
      * @param methodName calling method
      *
@@ -3756,9 +3776,59 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
             if (anchorEntity != null)
             {
-                builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
+                builder.setAnchors(userId,
+                                   anchorEntity.getGUID(),
+                                   anchorEntity.getType().getTypeDefName(),
+                                   this.getDomainName(anchorEntity),
+                                   methodName);
             }
         }
+    }
+
+
+    /**
+     * Return the domain name of an entity.
+     *
+     * @param instance entity
+     * @return domain name
+     */
+    public String getDomainName(EntitySummary  instance)
+    {
+        return getDomainName(instance.getType().getTypeDefName());
+    }
+
+
+
+    /**
+     * Return the domain name of an type.
+     *
+     * @param typeName type to check
+     * @return domain name
+     */
+    public String getDomainName(String  typeName)
+    {
+        String anchorDomainName = typeName;
+
+        List<TypeDefLink> superTypes = repositoryHelper.getSuperTypes(serviceName, typeName);
+
+        if (superTypes != null)
+        {
+            /*
+             * The super types are listed in increasing levels of abstraction.
+             * Eg [DataSet, Asset, Referenceable, OpenMetadataRoot].
+             * In this example, the domain is Asset (one below Referenceable).
+             */
+            for (TypeDefLink typeDefLink : superTypes)
+            {
+                if ((! OpenMetadataType.OPEN_METADATA_ROOT.typeName.equals(typeDefLink.getName())) &&
+                        (! OpenMetadataType.REFERENCEABLE.typeName.equals(typeDefLink.getName())))
+                {
+                    anchorDomainName = typeDefLink.getName();
+                }
+            }
+        }
+
+        return anchorDomainName;
     }
 
 
@@ -3771,6 +3841,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param beanGUIDTypeName type of bean
      * @param anchorGUID unique identifier of the anchor
      * @param anchorTypeName unique name of the type of the anchor
+     * @param anchorDomainName unique name of the type of the anchor
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -3786,6 +3857,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                          String  beanGUIDTypeName,
                                          String  anchorGUID,
                                          String  anchorTypeName,
+                                         String  anchorDomainName,
                                          boolean forLineage,
                                          boolean forDuplicateProcessing,
                                          Date    effectiveTime,
@@ -3807,7 +3879,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                            beanGUIDTypeName,
                                            OpenMetadataType.ANCHORS_CLASSIFICATION.typeGUID,
                                            OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
-                                           builder.getAnchorsProperties(anchorGUID, anchorTypeName, methodName),
+                                           builder.getAnchorsProperties(anchorGUID, anchorTypeName, anchorDomainName, methodName),
                                            false,
                                            forLineage,
                                            forDuplicateProcessing,
@@ -4116,6 +4188,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param elementGUID element for the
      * @param elementGUIDParameterName name of guid parameter
      * @param elementTypeName type of element
+     * @param elementDomainName domain of element
      * @param elementQualifiedName qualified name of the linked element
      * @param displayName  display name for the term
      * @param summary short description
@@ -4136,6 +4209,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                 String  elementGUID,
                                                 String  elementGUIDParameterName,
                                                 String  elementTypeName,
+                                                String  elementDomainName,
                                                 String  elementQualifiedName,
                                                 String  displayName,
                                                 String  summary,
@@ -4202,6 +4276,11 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                                     classificationProperties,
                                                                                                     OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
                                                                                                     elementTypeName,
+                                                                                                    methodName);
+                            classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                    classificationProperties,
+                                                                                                    OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name,
+                                                                                                    elementDomainName,
                                                                                                     methodName);
                             Classification classification = repositoryHelper.getNewClassification(serviceName,
                                                                                                   null,
@@ -5669,6 +5748,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                            externalSourceName,
                                            entityTypeGUID,
                                            entityTypeName,
+                                           null,
                                            propertyBuilder,
                                            false,
                                            effectiveTime,
@@ -5684,6 +5764,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param entityTypeGUID unique identifier of the type of entity to create
      * @param entityTypeName unique name of the type of entity to create
+     * @param entityDomainName unique name of the type of entity's domain
      * @param propertyBuilder builder pre-populated with the properties and classifications of the new entity
      * @param isOwnAnchor flag to indicate if the new entity should be anchored to itself
      * @param effectiveTime the time that the retrieved elements must be effective for
@@ -5698,6 +5779,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                          String                        externalSourceName,
                                          String                        entityTypeGUID,
                                          String                        entityTypeName,
+                                         String                        entityDomainName,
                                          OpenMetadataAPIGenericBuilder propertyBuilder,
                                          boolean                       isOwnAnchor,
                                          Date                          effectiveTime,
@@ -5712,7 +5794,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             /*
              * A null anchorGUID meant that the element is its own Anchor.
              */
-            propertyBuilder.setAnchors(userId, null, entityTypeName, methodName);
+            propertyBuilder.setAnchors(userId, null, entityTypeName, entityDomainName, methodName);
         }
 
         validateNewEntityRequest(userId,

@@ -133,10 +133,7 @@ public class Location extends Referenceable
     public String toString()
     {
         return "Location{" +
-                       "url='" + url + '\'' +
-                       ", extendedProperties=" + extendedProperties +
-                       ", URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + extendedProperties +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

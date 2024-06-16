@@ -69,6 +69,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
         String governanceDomainSetGUID = archiveHelper.addCollection(OpenMetadataType.COLLECTION.typeName,
                                                                      null,
                                                                      OpenMetadataType.COLLECTION.typeName,
+                                                                     OpenMetadataType.COLLECTION.typeName,
                                                                      OpenMetadataType.GOVERNANCE_DOMAIN_SET_CLASSIFICATION_NAME,
                                                                      "GovernanceDomainSet:Coco Pharmaceuticals",
                                                                      "Coco Pharmaceuticals Governance Domains",
