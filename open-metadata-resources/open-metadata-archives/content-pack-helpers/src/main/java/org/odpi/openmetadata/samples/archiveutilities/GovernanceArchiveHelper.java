@@ -164,11 +164,13 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                   extendedProperties);
 
             this.addSupportedTemplateTypes(connectorGUID,
-                                                     DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
-                                                     connectorProvider.getSupportedTemplateTypes());
+                                           DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                           OpenMetadataType.ASSET.typeName,
+                                           connectorProvider.getSupportedTemplateTypes());
 
             this.addSupportedConfigurationProperties(connectorGUID,
                                                      DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                     OpenMetadataType.ASSET.typeName,
                                                      connectorProvider.getSupportedConfigurationProperties());
 
             String endpointGUID = null;
@@ -176,6 +178,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
             {
                 endpointGUID = super.addEndpoint(connectorGUID,
                                                  DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                 OpenMetadataType.ASSET.typeName,
                                                  qualifiedName + "_endpoint",
                                                  displayName + "'s first catalog target",
                                                  "Endpoint for integration connector: " + qualifiedName,
@@ -196,7 +199,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                         connectorTypeGUID,
                                                         endpointGUID,
                                                         connectorGUID,
-                                                        DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName());
+                                                        DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                        OpenMetadataType.ASSET.typeName);
 
             if ((connectorGUID != null) && (connectionGUID != null))
             {
@@ -247,6 +251,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                            source,
                                            additionalProperties,
                                            extendedProperties,
+                                           null,
+                                           null,
                                            null,
                                            null);
     }
@@ -356,10 +362,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
             {
                 this.addSupportedConfigurationProperties(serviceGUID,
                                                          deployedImplementationType.getAssociatedTypeName(),
+                                                         OpenMetadataType.ASSET.typeName,
                                                          serviceProvider.getSupportedConfigurationProperties());
 
                 this.addSupportedTemplateTypes(serviceGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
                                                serviceProvider.getSupportedTemplateTypes());
 
                 String connectionGUID = super.addConnection(qualifiedName + "_implementation",
@@ -374,7 +382,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                             connectorTypeGUID,
                                                             null,
                                                             serviceGUID,
-                                                            deployedImplementationType.getAssociatedTypeName());
+                                                            deployedImplementationType.getAssociatedTypeName(),
+                                                            OpenMetadataType.ASSET.typeName);
 
                 if (connectionGUID != null)
                 {
@@ -385,36 +394,44 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 {
                     addSupportedRequestTypes(serviceGUID,
                                              deployedImplementationType.getAssociatedTypeName(),
+                                             OpenMetadataType.ASSET.typeName,
                                              governanceServiceProviderBase.getSupportedRequestTypes());
 
                     addSupportedRequestParameters(serviceGUID,
                                                   deployedImplementationType.getAssociatedTypeName(),
+                                                  OpenMetadataType.ASSET.typeName,
                                                   governanceServiceProviderBase.getSupportedRequestParameters());
 
                     addSupportedActionTargets(serviceGUID,
                                               deployedImplementationType.getAssociatedTypeName(),
+                                              OpenMetadataType.ASSET.typeName,
                                               governanceServiceProviderBase.getSupportedActionTargetTypes());
 
                     addProducedRequestParameters(serviceGUID,
-                                                  deployedImplementationType.getAssociatedTypeName(),
-                                                  governanceServiceProviderBase.getProducedRequestParameters());
+                                                 deployedImplementationType.getAssociatedTypeName(),
+                                                 OpenMetadataType.ASSET.typeName,
+                                                 governanceServiceProviderBase.getProducedRequestParameters());
 
                     addProducedActionTargets(serviceGUID,
-                                              deployedImplementationType.getAssociatedTypeName(),
-                                              governanceServiceProviderBase.getProducedActionTargetTypes());
+                                             deployedImplementationType.getAssociatedTypeName(),
+                                             OpenMetadataType.ASSET.typeName,
+                                             governanceServiceProviderBase.getProducedActionTargetTypes());
 
                     addProducedGuards(serviceGUID,
                                       deployedImplementationType.getAssociatedTypeName(),
+                                      OpenMetadataType.ASSET.typeName,
                                       governanceServiceProviderBase.getProducedGuards());
 
                     if (serviceProvider instanceof SurveyActionServiceProvider surveyActionServiceProvider)
                     {
                         addSupportedAnalysisSteps(serviceGUID,
                                                   deployedImplementationType.getAssociatedTypeName(),
+                                                  OpenMetadataType.ASSET.typeName,
                                                   surveyActionServiceProvider.getSupportedAnalysisSteps());
 
                         addProducedAnnotationTypes(serviceGUID,
                                                    deployedImplementationType.getAssociatedTypeName(),
+                                                   OpenMetadataType.ASSET.typeName,
                                                    surveyActionServiceProvider.getProducedAnnotationTypes());
                     }
                 }
@@ -436,10 +453,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param parentGUID unique identifier of template
      * @param parentTypeName type of template
+     * @param parentDomainName domain of template
      * @param replacementAttributeTypes list of reference values
      */
     public void addReplacementAttributes(String                         parentGUID,
                                          String                         parentTypeName,
+                                         String                         parentDomainName,
                                          List<ReplacementAttributeType> replacementAttributeTypes)
     {
         if (replacementAttributeTypes != null)
@@ -469,6 +488,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
+                                                           parentDomainName,
                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":PlaceholderProperty:" + replacementAttributeType.getName(),
                                                            replacementAttributeType.getName(),
@@ -498,10 +518,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param parentGUID unique identifier of template
      * @param parentTypeName type of template
+     * @param parentDomainName domain of template
      * @param placeholderPropertyTypes list of reference values
      */
     public void addPlaceholderProperties(String                        parentGUID,
                                          String                        parentTypeName,
+                                         String                        parentDomainName,
                                          List<PlaceholderPropertyType> placeholderPropertyTypes)
     {
         if (placeholderPropertyTypes != null)
@@ -531,6 +553,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
+                                                           parentDomainName,
                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":PlaceholderProperty:" + placeholderPropertyType.getName(),
                                                            placeholderPropertyType.getName(),
@@ -560,10 +583,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param parentGUID unique identifier of template
      * @param parentTypeName type of template
+     * @param parentDomainName domain of template
      * @param templateTypes list of reference values
      */
     public void addSupportedTemplateTypes(String             parentGUID,
                                           String             parentTypeName,
+                                          String             parentDomainName,
                                           List<TemplateType> templateTypes)
     {
         if (templateTypes != null)
@@ -592,6 +617,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
+                                                           parentDomainName,
                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":SupportedTemplate:" + templateType.getTemplateName(),
                                                            templateType.getTemplateName(),
@@ -620,10 +646,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param parentGUID unique identifier of governance service/action
      * @param parentTypeName type of parent
+     * @param parentDomainName domain of template
      * @param configurationPropertyTypes list of reference values
      */
     public void addSupportedConfigurationProperties(String                          parentGUID,
                                                     String                          parentTypeName,
+                                                    String                          parentDomainName,
                                                     List<ConfigurationPropertyType> configurationPropertyTypes)
     {
         if (configurationPropertyTypes != null)
@@ -655,6 +683,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
+                                                           parentDomainName,
                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":SupportedConfigurationProperty:" + configurationPropertyType.getName(),
                                                            configurationPropertyType.getName(),
@@ -684,10 +713,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param parentGUID unique identifier of governance service/action
      * @param parentTypeName type of parent
+     * @param parentDomainName domain of template
      * @param supportedRequestTypes list of reference values
      */
     public void addSupportedRequestTypes(String                parentGUID,
                                          String                parentTypeName,
+                                         String                parentDomainName,
                                          List<RequestTypeType> supportedRequestTypes)
     {
         if (supportedRequestTypes != null)
@@ -707,6 +738,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
+                                                           parentDomainName,
                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":SupportedRequestType:" + supportedRequestType.getRequestType(),
                                                            supportedRequestType.getRequestType(),
@@ -736,10 +768,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param parentGUID unique identifier of governance service/action
      * @param parentTypeName type of parent
+     * @param parentDomainName domain of template
      * @param supportedRequestParameters list of reference values
      */
     public void addSupportedRequestParameters(String                     parentGUID,
                                               String                     parentTypeName,
+                                              String                     parentDomainName,
                                               List<RequestParameterType> supportedRequestParameters)
     {
         if (supportedRequestParameters != null)
@@ -769,6 +803,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
+                                                           parentDomainName,
                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":SupportedRequestParameter:" + supportedRequestParameter.getName(),
                                                            supportedRequestParameter.getName(),
@@ -798,10 +833,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param parentGUID unique identifier of governance service/action
      * @param parentTypeName type of parent
+     * @param parentDomainName domain of template
      * @param actionTargetTypes list of reference values
      */
     public void addSupportedActionTargets(String                 parentGUID,
                                           String                 parentTypeName,
+                                          String                 parentDomainName,
                                           List<ActionTargetType> actionTargetTypes)
     {
         if (actionTargetTypes != null)
@@ -831,6 +868,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
+                                                           parentDomainName,
                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":SupportedActionTarget:" + supportedActionTarget.getName(),
                                                            supportedActionTarget.getName(),
@@ -860,10 +898,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param parentGUID unique identifier of governance service/action
      * @param parentTypeName type of parent
+     * @param parentDomainName domain of template
      * @param analysisStepTypes list of reference values
      */
     public void addSupportedAnalysisSteps(String                 parentGUID,
                                           String                 parentTypeName,
+                                          String                 parentDomainName,
                                           List<AnalysisStepType> analysisStepTypes)
     {
         if (analysisStepTypes != null)
@@ -883,6 +923,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
+                                                           parentDomainName,
                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":SupportedAnalysisStep:" + analysisStepType.getName(),
                                                            analysisStepType.getName(),
@@ -912,10 +953,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param parentGUID unique identifier of governance service/action
      * @param parentTypeName type of parent
+     * @param parentDomainName domain of template
      * @param annotationTypeTypes list of reference values
      */
     public void addProducedAnnotationTypes(String                   parentGUID,
                                            String                   parentTypeName,
+                                           String                   parentDomainName,
                                            List<AnnotationTypeType> annotationTypeTypes)
     {
         if (annotationTypeTypes != null)
@@ -939,6 +982,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
+                                                           parentDomainName,
                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":ProducedAnnotationType:" + annotationTypeType.getName(),
                                                            annotationTypeType.getOpenMetadataTypeName() + ":" + annotationTypeType.getName(),
@@ -968,10 +1012,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param parentGUID unique identifier of governance service/action
      * @param parentTypeName type of parent
+     * @param parentDomainName domain of template
      * @param producedRequestParameters list of reference values
      */
     public void addProducedRequestParameters(String                     parentGUID,
                                              String                     parentTypeName,
+                                             String                     parentDomainName,
                                              List<RequestParameterType> producedRequestParameters)
     {
         if (producedRequestParameters != null)
@@ -1001,6 +1047,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
+                                                           parentDomainName,
                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":ProducedRequestParameter:" + producedRequestParameter.getName(),
                                                            producedRequestParameter.getName(),
@@ -1030,10 +1077,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param parentGUID unique identifier of governance service/action
      * @param parentTypeName type of parent
+     * @param parentDomainName domain of template
      * @param actionTargetTypes list of reference values
      */
     public void addProducedActionTargets(String                 parentGUID,
                                          String                 parentTypeName,
+                                         String                 parentDomainName,
                                          List<ActionTargetType> actionTargetTypes)
     {
         if (actionTargetTypes != null)
@@ -1063,6 +1112,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
+                                                           parentDomainName,
                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":ProducedActionTarget:" + actionTargetType.getName(),
                                                            actionTargetType.getName(),
@@ -1092,10 +1142,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param parentGUID unique identifier of governance service/action
      * @param parentTypeName type of parent
+     * @param parentDomainName domain of template
      * @param guardTypes list of reference values
      */
     public void addProducedGuards(String          parentGUID,
                                   String          parentTypeName,
+                                  String          parentDomainName,
                                   List<GuardType> guardTypes)
     {
         if (guardTypes != null)
@@ -1117,6 +1169,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
+                                                           parentDomainName,
                                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":ProducedGuard:" + guardType.getGuard(),
                                                            guardType.getGuard(),
@@ -1185,6 +1238,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                            source,
                                            additionalProperties,
                                            extendedProperties,
+                                           null,
+                                           null,
                                            null,
                                            null);
     }
@@ -1287,6 +1342,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * @param typeName name of subtype to use - default is GovernanceActionType
      * @param anchorGUID unique identifier of the anchor
      * @param anchorTypeName type name of the anchor
+     * @param anchorDomainName type name of the anchor's domain
      * @param qualifiedName unique name for the capability
      * @param displayName display name for the capability
      * @param description description about the capability
@@ -1308,6 +1364,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
     public String addGovernanceActionType(String                     typeName,
                                           String                     anchorGUID,
                                           String                     anchorTypeName,
+                                          String                     anchorDomainName,
                                           String                     qualifiedName,
                                           String                     displayName,
                                           String                     description,
@@ -1350,7 +1407,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 entityClassifications = new ArrayList<>();
             }
 
-            entityClassifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, methodName));
+            entityClassifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, methodName));
         }
 
         EntityDetail assetEntity = archiveHelper.getEntityDetail(actionTypeName,
@@ -1363,30 +1420,37 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
         addSupportedRequestParameters(assetEntity.getGUID(),
                                       actionTypeName,
+                                      OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                       supportedRequestParameters);
 
         addSupportedActionTargets(assetEntity.getGUID(),
                                   actionTypeName,
+                                  OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                   supportedActionTargets);
 
         addSupportedAnalysisSteps(assetEntity.getGUID(),
                                   actionTypeName,
+                                  OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                   supportedAnalysisSteps);
 
         addProducedAnnotationTypes(assetEntity.getGUID(),
                                    actionTypeName,
+                                   OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                    supportedAnnotationTypes);
 
         addProducedRequestParameters(assetEntity.getGUID(),
                                      actionTypeName,
+                                     OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                      producedRequestParameters);
 
         addProducedActionTargets(assetEntity.getGUID(),
                                  actionTypeName,
+                                 OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                  producedActionTargets);
 
         addProducedGuards(assetEntity.getGUID(),
                           actionTypeName,
+                          OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                           producedGuards);
 
         return assetEntity.getGUID();
@@ -1399,6 +1463,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * @param typeName name of subtype to use - default is GovernanceActionProcessStep
      * @param anchorGUID unique identifier of the anchor
      * @param anchorTypeName type name of the anchor
+     * @param anchorDomainName type name of the anchor's domain
      * @param qualifiedName unique name for the capability
      * @param displayName display name for the capability
      * @param description description about the capability
@@ -1421,6 +1486,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
     public String addGovernanceActionProcessStep(String                     typeName,
                                                  String                     anchorGUID,
                                                  String                     anchorTypeName,
+                                                 String                     anchorDomainName,
                                                  String                     qualifiedName,
                                                  String                     displayName,
                                                  String                     description,
@@ -1465,7 +1531,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 entityClassifications = new ArrayList<>();
             }
 
-            entityClassifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, methodName));
+            entityClassifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, methodName));
         }
 
         EntityDetail assetEntity = archiveHelper.getEntityDetail(actionTypeName,
@@ -1478,30 +1544,37 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
         addSupportedRequestParameters(assetEntity.getGUID(),
                                       actionTypeName,
+                                      OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                       supportedRequestParameters);
 
         addSupportedActionTargets(assetEntity.getGUID(),
                                   actionTypeName,
+                                  OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                   supportedActionTargets);
 
         addSupportedAnalysisSteps(assetEntity.getGUID(),
                                   actionTypeName,
+                                  OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                   supportedAnalysisSteps);
 
         addProducedAnnotationTypes(assetEntity.getGUID(),
                                    actionTypeName,
+                                   OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                    supportedAnnotationTypes);
 
         addProducedRequestParameters(assetEntity.getGUID(),
                                      actionTypeName,
+                                     OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                      producedRequestParameters);
 
         addProducedActionTargets(assetEntity.getGUID(),
                                  actionTypeName,
+                                 OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                                  producedActionTargets);
 
         addProducedGuards(assetEntity.getGUID(),
                           actionTypeName,
+                          OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
                           producedGuards);
 
         return assetEntity.getGUID();

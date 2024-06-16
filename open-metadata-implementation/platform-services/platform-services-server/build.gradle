@@ -30,7 +30,7 @@ dependencies {
     implementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-registration')
     implementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-server')
     implementation project(':open-metadata-implementation:governance-server-services:lineage-warehouse-services:lineage-warehouse-services-server')
-    implementation project(':open-metadata-implementation:governance-server-services:data-engine-proxy-services:data-engine-proxy-services-server')
+//    implementation project(':open-metadata-implementation:governance-server-services:data-engine-proxy-services:data-engine-proxy-services-server')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }

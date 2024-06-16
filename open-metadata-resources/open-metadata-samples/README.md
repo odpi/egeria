@@ -5,15 +5,13 @@
   
 The open metadata samples illustrate how to use the various APIs of Egeria.
 
-* [Open Metadata Access Services (OMASs) samples](access-services-samples) - illustrations of how to run each of
-the access services.
+* [Open Metadata Access Services (OMASs) samples](access-services-samples) - illustrations of how to call some of the access services.
 
-* [Open Metadata Security samples](open-metadata-security-samples) - illustrations of how to
-implement the Open Metadata Security Connectors.
+* [Admin Services samples](admin-services-samples) - illustrations of how to call some of the admin services.
 
-* [Postman REST API scripts for ODPi Egeria](postman-rest-samples) - collections of pre-canned calls to Egeria's REST APIs.
+* [Open Metadata Security samples](open-metadata-security-samples) - illustrations of how to implement the Open Metadata Security Connectors.
 
-
+* [Sample Metadata](sample-metadata) - illustrations of how to implement Open Metadata Archives.
 
 ----
 * Return to [open-metadata-resources](..)

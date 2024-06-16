@@ -131,8 +131,10 @@ public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
                                                         null,
                                                         null,
                                                         null,
+                                                        null,
                                                         serverGUID,
-                                                        OpenMetadataType.SOFTWARE_SERVER.typeName);
+                                                        OpenMetadataType.SOFTWARE_SERVER.typeName,
+                                                        OpenMetadataType.ASSET.typeName);
                     archiveHelper.addSupportedSoftwareCapabilityRelationship(softwareCapabilityQName,
                                                                              systemDefinition.getQualifiedName(),
                                                                              null,

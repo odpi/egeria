@@ -225,13 +225,12 @@ public class OpenIntegrationRESTServices
 
 
     /**
-     * Create a new integration report for an element (identified by anchorGUID).
+     * Create a new integration report for an element (identified by elementGUID).
      *
      * @param serverName name of the service to route the request to.
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
-     * @param anchorGUID element to attach the integration report to
-     * @param anchorTypeName typeName of the anchor for the integration report
+     * @param elementGUID element to attach the integration report to
      * @param properties properties of the report
      *
      * @return void or
@@ -242,8 +241,7 @@ public class OpenIntegrationRESTServices
     public VoidResponse publishIntegrationReport(String                      serverName,
                                                  String                      serviceURLMarker,
                                                  String                      userId,
-                                                 String                      anchorGUID,
-                                                 String                      anchorTypeName,
+                                                 String                      elementGUID,
                                                  IntegrationReportProperties properties)
     {
         final String methodName = "publishIntegrationReport";
@@ -258,7 +256,10 @@ public class OpenIntegrationRESTServices
             OpenIntegrationHandler handler = instanceHandler.getOpenIntegrationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName,methodName);
-            handler.publishIntegrationReport(userId, anchorGUID, anchorTypeName, properties);
+            handler.publishIntegrationReport(userId,
+                                             elementGUID,
+                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                             properties);
         }
         catch (Exception error)
         {

@@ -93,7 +93,6 @@ public  class NestedSchemaType extends ComplexSchemaType
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", assetClassifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';

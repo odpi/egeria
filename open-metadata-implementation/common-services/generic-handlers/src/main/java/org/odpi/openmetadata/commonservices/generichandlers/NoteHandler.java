@@ -78,6 +78,7 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
      * @param anchorGUID    head of the note chain
      * @param noteLogGUID    String - unique id for a referenceable entity that the note is to be attached to.
      * @param noteLogGUIDParameterName name of parameter that supplied the entity's unique identifier.
+     * @param suppliedQualifiedName   ordinal of note enum.
      * @param title   ordinal of note enum.
      * @param text   String - the text of the note.
      * @param effectiveFrom the date when this element is active - null for active now
@@ -99,6 +100,7 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
                                  String      anchorGUID,
                                  String      noteLogGUID,
                                  String      noteLogGUIDParameterName,
+                                 String      suppliedQualifiedName,
                                  String      title,
                                  String      text,
                                  Date        effectiveFrom,
@@ -122,7 +124,13 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
          * A note is a referenceable.  It needs a unique qualified name.  There is no obvious value to use so
          * a UUID is used to create a unique string.
          */
-        String qualifiedName = "Note:" + new Date().getTime();
+        String qualifiedName = "NoteLog:" + noteLogGUID + ":Note:" + new Date().getTime();
+
+        if (suppliedQualifiedName != null)
+        {
+            qualifiedName = suppliedQualifiedName;
+        }
+
         NoteBuilder builder = new NoteBuilder(qualifiedName,
                                               title,
                                               text,

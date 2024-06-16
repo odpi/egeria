@@ -557,7 +557,11 @@ public class DataFieldHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         if (anchorEntity != null)
         {
-            builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
+            builder.setAnchors(userId,
+                               anchorEntity.getGUID(),
+                               anchorEntity.getType().getTypeDefName(),
+                               this.getDomainName(anchorEntity),
+                               methodName);
         }
 
         String dataFieldGUID = this.createBeanInRepository(userId,

@@ -316,6 +316,7 @@ class ExchangeHandlerBase
                                                                   correlationProperties.getAssetManagerGUID(),
                                                                   assetManagerGUIDParameterName,
                                                                   correlationProperties.getAssetManagerName(),
+                                                                  OpenMetadataType.CATALOG.typeName,
                                                                   OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                   getPermittedSynchronization(correlationProperties.getSynchronizationDirection()),
                                                                   correlationProperties.getSynchronizationDescription(),
@@ -487,6 +488,7 @@ class ExchangeHandlerBase
      * @param elementGUID unique identifier for the element connected to the supplementary properties
      * @param elementGUIDParameterName name of guid parameter
      * @param elementTypeName type of element
+     * @param elementTypeName domain of element
      * @param elementQualifiedName unique name for the element connected to the supplementary properties
      * @param supplementaryProperties properties to save
      * @param isMergeUpdate should the new properties be merged with the existing properties, or replace them entirely
@@ -502,6 +504,7 @@ class ExchangeHandlerBase
                                          String                  elementGUID,
                                          String                  elementGUIDParameterName,
                                          String                  elementTypeName,
+                                         String                  elementDomainName,
                                          String                  elementQualifiedName,
                                          SupplementaryProperties supplementaryProperties,
                                          boolean                 isMergeUpdate,
@@ -518,6 +521,7 @@ class ExchangeHandlerBase
                                                                       elementGUID,
                                                                       elementGUIDParameterName,
                                                                       elementTypeName,
+                                                                      elementDomainName,
                                                                       elementQualifiedName,
                                                                       supplementaryProperties.getDisplayName(),
                                                                       supplementaryProperties.getSummary(),
@@ -536,6 +540,7 @@ class ExchangeHandlerBase
                                                                       elementGUID,
                                                                       elementGUIDParameterName,
                                                                       elementTypeName,
+                                                                      elementDomainName,
                                                                       elementQualifiedName,
                                                                       null,
                                                                       null,
@@ -705,6 +710,7 @@ class ExchangeHandlerBase
                                       elementGUID,
                                       noteLogGUID,
                                       noteLogParameterName,
+                                      null,
                                       updateTitle,
                                       noteText,
                                       null,

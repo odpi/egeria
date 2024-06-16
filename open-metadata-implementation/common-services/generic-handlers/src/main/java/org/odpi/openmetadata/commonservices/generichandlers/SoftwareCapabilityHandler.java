@@ -147,6 +147,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                             externalSourceName,
                                                             OpenMetadataType.DATA_MANAGER.typeGUID,
                                                             OpenMetadataType.DATA_MANAGER.typeName,
+                                                            OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                             builder,
                                                             true,
                                                             effectiveTime,
@@ -258,6 +259,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                             externalSourceName,
                                                             typeGUID,
                                                             typeName,
+                                                            OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                             builder,
                                                             true,
                                                             effectiveTime,
@@ -318,7 +320,11 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                           serviceName,
                                                                           serverName);
 
-        builder.setAnchors(userId, null, OpenMetadataType.SOFTWARE_CAPABILITY.typeName, methodName);
+        builder.setAnchors(userId,
+                           null,
+                           OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                           OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                           methodName);
 
         return this.createBeanFromTemplate(userId,
                                            externalSourceGUID,

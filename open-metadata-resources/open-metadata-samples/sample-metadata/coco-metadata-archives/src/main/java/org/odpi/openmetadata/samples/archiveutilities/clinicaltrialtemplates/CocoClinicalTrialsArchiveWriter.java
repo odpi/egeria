@@ -197,6 +197,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
 
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                         FileType.CSV_FILE.getAssetSubTypeName(),
+                                                        OpenMetadataType.ASSET.typeName,
                                                         "CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_endpoint",
                                                         null,
                                                         null,
@@ -219,11 +220,15 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                                             connectorTypeGUID,
                                                             endpointGUID,
                                                             assetGUID,
-                                                            FileType.CSV_FILE.getAssetSubTypeName());
+                                                            FileType.CSV_FILE.getAssetSubTypeName(),
+                                                            OpenMetadataType.ASSET.typeName);
 
         archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
 
-        archiveHelper.addPlaceholderProperties(assetGUID, FileType.CSV_FILE.getAssetSubTypeName(), PlaceholderProperty.getPlaceholderPropertyTypes());
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               FileType.CSV_FILE.getAssetSubTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               PlaceholderProperty.getPlaceholderPropertyTypes());
 
         String licenseTypeGUID = archiveHelper.getGUID(LicenseTypeDefinition.CLINICAL_TRIAL_LICENSE.getQualifiedName());
 

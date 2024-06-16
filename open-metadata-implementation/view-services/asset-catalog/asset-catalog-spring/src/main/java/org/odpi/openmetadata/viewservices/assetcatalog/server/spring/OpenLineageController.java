@@ -17,7 +17,7 @@ import org.odpi.openmetadata.viewservices.assetcatalog.rest.LineageSearchRequest
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.LineageSearchResponse;
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.LineageTypesResponse;
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.LineageVertexResponse;
-import org.odpi.openmetadata.viewservices.assetcatalog.server.AssetCatalogRESTServices;
+import org.odpi.openmetadata.viewservices.assetcatalog.server.AssetCatalogUIRESTServices;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,7 +44,7 @@ public class OpenLineageController
 {
     private final RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
 
-    private final AssetCatalogRESTServices restAPI = new AssetCatalogRESTServices();
+    private final AssetCatalogUIRESTServices restAPI = new AssetCatalogUIRESTServices();
 
     /**
      * Return the nodes and relationships that describe the know ultimate sources of the starting element.

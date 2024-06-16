@@ -6,10 +6,9 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.OMAGGAFAPIResponse;
+import org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements.CommentElement;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class CommentElementsResponse extends OMAGGAFAPIResponse
 {
 
-    private List<Comment> elementList = null;
+    private List<CommentElement> elementList = null;
 
 
     /**
@@ -59,7 +58,7 @@ public class CommentElementsResponse extends OMAGGAFAPIResponse
      *
      * @return result object
      */
-    public List<Comment> getElementList()
+    public List<CommentElement> getElementList()
     {
         if (elementList == null)
         {
@@ -81,7 +80,7 @@ public class CommentElementsResponse extends OMAGGAFAPIResponse
      *
      * @param elementList result object
      */
-    public void setElementList(List<Comment> elementList)
+    public void setElementList(List<CommentElement> elementList)
     {
         this.elementList = elementList;
     }

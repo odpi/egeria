@@ -26,7 +26,6 @@ public class CommentProperties extends ReferenceableProperties
 {
     private CommentType commentType = null;
     private String      commentText = null;
-    private String      user        = null;
 
     /**
      * Default constructor
@@ -52,7 +51,6 @@ public class CommentProperties extends ReferenceableProperties
              * Copy the values from the supplied comment.
              */
             commentType = template.getCommentType();
-            user        = template.getUser();
             commentText = template.getCommentText();
         }
     }
@@ -103,28 +101,6 @@ public class CommentProperties extends ReferenceableProperties
 
 
     /**
-     * Return the user id of the person who created the comment.  Null means the user id is not known.
-     *
-     * @return String commenting user
-     */
-    public String getUser()
-    {
-        return user;
-    }
-
-
-    /**
-     * Set up the user id of the person who created the comment.  Null means the user id is not known.
-     *
-     * @param user String commenting user
-     */
-    public void setUser(String user)
-    {
-        this.user = user;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -135,7 +111,6 @@ public class CommentProperties extends ReferenceableProperties
         return "CommentProperties{" +
                 "commentType=" + commentType +
                 ", commentText='" + commentText + '\'' +
-                ", user='" + user + '\'' +
                 "} " + super.toString();
     }
 
@@ -162,8 +137,7 @@ public class CommentProperties extends ReferenceableProperties
         }
         CommentProperties that = (CommentProperties) objectToCompare;
         return commentType == that.commentType &&
-                       Objects.equals(commentText, that.commentText) &&
-                       Objects.equals(user, that.user);
+                       Objects.equals(commentText, that.commentText);
     }
 
 
@@ -175,6 +149,6 @@ public class CommentProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), commentType, commentText, user);
+        return Objects.hash(super.hashCode(), commentType, commentText);
     }
 }
