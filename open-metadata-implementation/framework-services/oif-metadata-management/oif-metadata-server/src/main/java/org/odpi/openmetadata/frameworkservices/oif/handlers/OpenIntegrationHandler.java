@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworkservices.oif.builder.IntegrationReportBuil
 import org.odpi.openmetadata.frameworkservices.oif.converters.CatalogTargetConverter;
 import org.odpi.openmetadata.frameworkservices.oif.converters.IntegrationReportConverter;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -158,81 +159,99 @@ public class OpenIntegrationHandler
 
 
     /**
-     * Create a new integration report for an element (identified by anchorGUID).
+     * Create a new integration report for an element (identified by elementGUID).
      *
      * @param userId calling user
-     * @param anchorGUID element to attach the integration report to
-     * @param anchorTypeName typeName of the anchor for the integration report
-     * @param properties properties of the report
+     * @param elementGUID element to attach the integration report to
+         * @param properties properties of the report
      *
      * @throws InvalidParameterException one of the parameters is null or invalid,
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem with the metadata server.
      */
     public void publishIntegrationReport(String                      userId,
-                                         String                      anchorGUID,
-                                         String                      anchorTypeName,
+                                         String                      elementGUID,
+                                         List<String>                serviceSupportedZones,
                                          IntegrationReportProperties properties) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
         final String methodName              = "publishIntegrationReport";
-        final String guidParameterName       = "anchorGUID";
+        final String guidParameterName       = "elementGUID";
         final String reportGUIDParameterName = "reportGUID";
         final String propertiesParameterName = "properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
-        IntegrationReportBuilder builder = new IntegrationReportBuilder(properties.getServerName(),
-                                                                        properties.getConnectorId(),
-                                                                        properties.getConnectorName(),
-                                                                        properties.getRefreshStartDate(),
-                                                                        properties.getRefreshCompletionDate(),
-                                                                        properties.getCreatedElements(),
-                                                                        properties.getUpdatedElements(),
-                                                                        properties.getDeletedElements(),
-                                                                        properties.getAdditionalProperties(),
-                                                                        OpenMetadataType.INTEGRATION_REPORT_TYPE_GUID,
-                                                                        OpenMetadataType.INTEGRATION_REPORT_TYPE_NAME,
-                                                                        integrationReportHandler.getRepositoryHelper(),
-                                                                        integrationGroupHandler.getServiceName(),
-                                                                        integrationGroupHandler.getServerName());
+        EntityDetail entity = integrationReportHandler.getEntityFromRepository(userId,
+                                                                               elementGUID,
+                                                                               null,
+                                                                               OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                               null,
+                                                                               null,
+                                                                               false,
+                                                                               false,
+                                                                               serviceSupportedZones,
+                                                                               new Date(),
+                                                                               methodName);
 
-
-        builder.setAnchors(userId, anchorGUID, anchorTypeName, methodName);
-
-        String reportGUID = integrationReportHandler.createBeanInRepository(userId,
-                                                                            null,
-                                                                            null,
+        if (entity != null)
+        {
+            IntegrationReportBuilder builder = new IntegrationReportBuilder(properties.getServerName(),
+                                                                            properties.getConnectorId(),
+                                                                            properties.getConnectorName(),
+                                                                            properties.getRefreshStartDate(),
+                                                                            properties.getRefreshCompletionDate(),
+                                                                            properties.getCreatedElements(),
+                                                                            properties.getUpdatedElements(),
+                                                                            properties.getDeletedElements(),
+                                                                            properties.getAdditionalProperties(),
                                                                             OpenMetadataType.INTEGRATION_REPORT_TYPE_GUID,
                                                                             OpenMetadataType.INTEGRATION_REPORT_TYPE_NAME,
-                                                                            builder,
-                                                                            new Date(),
-                                                                            methodName);
+                                                                            integrationReportHandler.getRepositoryHelper(),
+                                                                            integrationGroupHandler.getServiceName(),
+                                                                            integrationGroupHandler.getServerName());
 
-        if (reportGUID != null)
-        {
-            integrationReportHandler.linkElementToElement(userId,
-                                                          null,
-                                                          null,
-                                                          anchorGUID,
-                                                          guidParameterName,
-                                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                          reportGUID,
-                                                          reportGUIDParameterName,
-                                                          OpenMetadataType.INTEGRATION_REPORT_TYPE_NAME,
-                                                          true,
-                                                          true,
-                                                          integrationReportHandler.getSupportedZones(),
-                                                          OpenMetadataType.RELATED_INTEGRATION_REPORT_TYPE_GUID,
-                                                          OpenMetadataType.RELATED_INTEGRATION_REPORT_TYPE_NAME,
-                                                          null,
-                                                          null,
-                                                          null,
-                                                          null,
-                                                          methodName);
+
+            builder.setAnchors(userId,
+                               entity.getGUID(),
+                               entity.getType().getTypeDefName(),
+                               integrationReportHandler.getDomainName(entity),
+                               methodName);
+
+            String reportGUID = integrationReportHandler.createBeanInRepository(userId,
+                                                                                null,
+                                                                                null,
+                                                                                OpenMetadataType.INTEGRATION_REPORT_TYPE_GUID,
+                                                                                OpenMetadataType.INTEGRATION_REPORT_TYPE_NAME,
+                                                                                builder,
+                                                                                new Date(),
+                                                                                methodName);
+
+            if (reportGUID != null)
+            {
+                integrationReportHandler.linkElementToElement(userId,
+                                                              null,
+                                                              null,
+                                                              entity.getGUID(),
+                                                              guidParameterName,
+                                                              OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                              reportGUID,
+                                                              reportGUIDParameterName,
+                                                              OpenMetadataType.INTEGRATION_REPORT_TYPE_NAME,
+                                                              true,
+                                                              true,
+                                                              integrationReportHandler.getSupportedZones(),
+                                                              OpenMetadataType.RELATED_INTEGRATION_REPORT_TYPE_GUID,
+                                                              OpenMetadataType.RELATED_INTEGRATION_REPORT_TYPE_NAME,
+                                                              null,
+                                                              null,
+                                                              null,
+                                                              null,
+                                                              methodName);
+            }
         }
     }
 

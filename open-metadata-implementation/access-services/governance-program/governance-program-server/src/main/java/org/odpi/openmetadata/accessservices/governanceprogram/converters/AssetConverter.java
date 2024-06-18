@@ -124,13 +124,6 @@ public class AssetConverter<B> extends GovernanceProgramOMASConverter<B>
                     assetProperties.setResourceName(this.removeName(instanceProperties));
                     assetProperties.setResourceDescription(this.removeDescription(instanceProperties));
 
-                    /* Note this value should be in the classification and have been incorporated into the element header already */
-                    this.removeOwner(instanceProperties);
-                    /* Note this value should be in the classification and have been incorporated into the element header already */
-                    this.removeOwnerTypeOrdinal(instanceProperties);
-                    /* Note this value should be in the classification and have been incorporated into the element header already */
-                    this.removeZoneMembership(instanceProperties);
-
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.

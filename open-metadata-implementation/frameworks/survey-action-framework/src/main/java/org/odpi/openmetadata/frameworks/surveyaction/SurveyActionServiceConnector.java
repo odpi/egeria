@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.surveyaction;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
@@ -9,12 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.Connections;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.surveyaction.ffdc.SAFAuditCode;
 import org.odpi.openmetadata.frameworks.surveyaction.ffdc.SAFErrorCode;
 
@@ -33,6 +30,8 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
                                                                                     AuditLoggingComponent,
                                                                                     VirtualConnectorExtension
 {
+    protected static ObjectMapper objectMapper = new ObjectMapper();
+
     protected String          surveyActionServiceName = "<Unknown>";
     protected SurveyContext   surveyContext           = null;
     protected AuditLog        auditLog                = null;
@@ -81,6 +80,34 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
     public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
     {
         this.embeddedConnectors = embeddedConnectors;
+    }
+
+
+    /**
+     * Convert the supplied properties object to a JSON String.
+     *
+     * @param properties properties object
+     * @return properties as a JSON String
+     * @throws PropertyServerException parsing error
+     */
+    public String getJSONProperties(Object properties) throws PropertyServerException
+    {
+        final String methodName = "getJSONProperties";
+
+        try
+        {
+            return objectMapper.writeValueAsString(properties);
+        }
+        catch (JsonProcessingException parsingError)
+        {
+            throw new PropertyServerException(SAFErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(surveyActionServiceName,
+                                                                                                     parsingError.getClass().getName(),
+                                                                                                     methodName,
+                                                                                                     parsingError.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              parsingError);
+        }
     }
 
 

@@ -1,0 +1,146 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+---
+name: "Merge v5"
+
+# Trigger after code is merged. only on main repo
+# - does not run on modification (may be just text)
+
+on:
+  push:
+    branches: [main, egeria-release-5*]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    permissions:
+      # for gh-pages
+      contents: write
+    runs-on: ubuntu-latest
+    name: "Merge v5"
+    if: startsWith(github.repository,'odpi/')
+    steps:
+      - uses: actions/checkout@v4.1.0
+        name: Checkout source
+      - uses: gradle/wrapper-validation-action@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      # Build first - lombok & other pre-processing may be needed. safer...
+      - name: build and publish to maven central
+        if: ${{ github.ref == 'refs/heads/main'}}
+        uses: gradle/gradle-build-action@v3
+        with:
+          cache-read-only: false
+          arguments: build publish
+        # Import secrets needed for code signing and distribution
+        env:
+          OSSRH_GPG_KEYID: ${{ secrets.OSSRH_GPG_KEYID }}
+          OSSRH_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
+          OSSRH_GPG_PRIVATE_KEY: ${{ secrets.OSSRH_GPG_PRIVATE_KEY }}
+          ORG_GRADLE_PROJECT_mavenRepoPass: ${{ secrets.OSSRH_TOKEN }}
+          ORG_GRADLE_PROJECT_mavenRepoUser: ${{ secrets.OSSRH_USERNAME }}
+      # In other cases just build but don't publish
+      - name: build (no publish to maven central)
+        if: ${{ github.ref != 'refs/heads/main'}}
+        uses: gradle/gradle-build-action@v3
+        with:
+          cache-read-only: false
+          arguments: build
+      # Now aggregate javadoc - main only
+      - name: build
+        if: ${{ github.ref == 'refs/heads/main'}}
+        uses: gradle/gradle-build-action@v3
+        with:
+          cache-read-only: false
+          arguments: aggregateJavadoc
+      - name: publish aggregate javadoc
+        if: ${{ github.ref == 'refs/heads/main'}}
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: build/docs/javadoc
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to container registry (Quay.io)
+        uses: docker/login-action@v3
+        with:
+          registry: quay.io
+          username: ${{ secrets.QUAY_IO_USERNAME }}
+          password: ${{ secrets.QUAY_IO_ACCESS_TOKEN }}
+      - name: Login to container registry (Docker Hub)
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      # QEMU is needed for ARM64 build for egeria-configure
+      # egeria-configure needs to install utilities
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set Release version env variable
+        run: |
+          echo "VERSION=$(./gradlew properties --no-daemon --console=plain -q | grep '^version:' | awk '{printf $2}')" >> $GITHUB_ENV
+      # Publish container images(egeria-platform) to quay.io and docker.io
+      - name: Copy the distribution content to be used in docker copy command
+        run: |
+          cp -f container.application.properties ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform/application.properties
+          mkdir -p ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.0-distribution.tar.gz/assembly/platform/data/servers
+          cp -r ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/opt/sample-configs/*-* ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform/data/servers
+      - name: Build and push(egeria) to quay.io and docker.io (tag latest only for main!)
+        if: ${{ github.ref == 'refs/heads/main'}}
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: odpi/egeria-platform:${{ env.VERSION }}, odpi/egeria-platform:latest, quay.io/odpi/egeria-platform:${{ env.VERSION }}, quay.io/odpi/egeria-platform:latest
+          context: ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz
+          platforms: linux/amd64,linux/arm64
+      - name: Build and push(egeria-platform) to quay.io and docker.io (no tag latest)
+        if: ${{ github.ref != 'refs/heads/main'}}
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: odpi/egeria-platform:${{ env.VERSION }}, quay.io/odpi/egeria-platform:${{ env.VERSION }}
+          context: ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz
+          platforms: linux/amd64,linux/arm64
+      # Publish container images(egeria-configure) to quay.io and docker.io
+      - name: Build and push(egeria-configure) to quay.io and docker.io (tag latest)
+        if: ${{ github.ref == 'refs/heads/main'}}
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: odpi/egeria-configure:${{ env.VERSION }}, odpi/egeria-configure:latest, quay.io/odpi/egeria-configure:${{ env.VERSION }}, quay.io/odpi/egeria-configure:latest
+          context: ./open-metadata-resources/open-metadata-deployment/docker/configure
+          platforms: linux/amd64,linux/arm64
+      # --
+      # Publish container images(egeria-configure) to quay.io and docker.io
+      - name: Build and push(egeria-configure) to quay.io and docker.io (no tag latest)
+        if: ${{ github.ref != 'refs/heads/main'}}
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: odpi/egeria-configure:${{ env.VERSION }}, quay.io/odpi/egeria-configure:${{ env.VERSION }}
+          context: ./open-metadata-resources/open-metadata-deployment/docker/configure
+          platforms: linux/amd64,linux/arm64
+      # --
+      - name: Upload Log of any dependency failures
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: Dependency Analysis Report (on failure)
+          path: build/reports/dependency-analysis/build-health-report.txt
+          if-no-files-found: ignore
+      # Mostly for verification - not published to the release itself for now
+      - name: Upload assemblies
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: Assemblies
+          path: open-metadata-distribution/omag-server-platform/build/distributions/*.gz
+      - name: Upload Test coverage report
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: Jacoco Coverage Report
+          path: build/reports/jacoco/codeCoverageReport
+          if-no-files-found: ignore

@@ -28,16 +28,12 @@ OCF connectors also provide detailed metadata about the resources they access.
 (called governance action services) that take action to assess and correct a situation that is harmful to the data,
 or the organization in some way.
 
-* **[Open Discovery Framework (ODF)](open-discovery-framework)** provides the interfaces and base implementations for components
-(called discovery services) that access data-related assets and extract characteristics 
-about the data that can be stored in an open metadata repository.
-
 * **[Survey Action Framework (SAF)](survey-action-framework)** provides the interfaces and base implementations for components
   (called survey action services) that survey and extract characteristics
   about the real-world resources and stores them in an open metadata repository.
 
-* **[Event Action Framework (EAF)](context-event-framework)** provides the interfaces and base implementations for components
-  (called event action services) that manage context events and time-based services.
+* **[Context Event Framework (CEF)](context-event-framework)** provides the interfaces and base implementations for components
+  (called context event services) that manage context events and time-based services.
 
 
 

@@ -818,9 +818,14 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                 ElementProperties classificationProperties = propertyHelper.addStringProperty(null,
                                                                                               OpenMetadataProperty.ANCHOR_GUID.name,
                                                                                               parent.getElementGUID());
+
                 classificationProperties = propertyHelper.addStringProperty(classificationProperties,
                                                                             OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
                                                                             parent.getType().getTypeName());
+
+                classificationProperties = propertyHelper.addStringProperty(classificationProperties,
+                                                                            OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name,
+                                                                            propertyHelper.getDomainName(parent));
 
                 openMetadataStoreClient.classifyMetadataElementInStore(userId,
                                                                        collectionGUID,

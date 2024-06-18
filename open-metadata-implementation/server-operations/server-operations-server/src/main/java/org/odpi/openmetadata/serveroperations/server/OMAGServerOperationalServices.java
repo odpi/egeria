@@ -39,7 +39,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
 import org.odpi.openmetadata.governanceservers.lineagewarehouse.admin.LineageWarehouseOperationalServices;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
@@ -1238,36 +1237,9 @@ public class OMAGServerOperationalServices
                                               List<String>                    activatedServiceList) throws OMAGConfigurationErrorException
     {
         /*
-         * Initialize the Data Engine Proxy Services.  This is a governance server that extracts metadata about processes from
-         * a data engine.
-         */
-        if (ServerTypeClassification.DATA_ENGINE_PROXY.equals(serverTypeClassification))
-        {
-            instance.setServerServiceActiveStatus(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(), ServerActiveStatus.STARTING);
-
-            DataEngineProxyOperationalServices operationalDataEngineProxyServices
-                    = new DataEngineProxyOperationalServices(configuration.getLocalServerName(),
-                                                             configuration.getLocalServerId(),
-                                                             configuration.getLocalServerUserId(),
-                                                             configuration.getLocalServerPassword());
-
-            instance.setOperationalDataEngineProxyServices(operationalDataEngineProxyServices);
-            operationalDataEngineProxyServices.initialize(configuration.getDataEngineProxyConfig(),
-                                                          operationalRepositoryServices.getAuditLog(
-                                                                  GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceCode(),
-                                                                  GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceDevelopmentStatus(),
-                                                                  GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                                                  GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceDescription(),
-                                                                  GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceWiki()));
-
-            activatedServiceList.add(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName());
-            instance.setServerServiceActiveStatus(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
-        }
-
-        /*
          * Initialize the Engine Host Services for the Engine Host OMAG server.  This is a governance server for running governance engines.
          */
-        else if (ServerTypeClassification.ENGINE_HOST.equals(serverTypeClassification))
+        if (ServerTypeClassification.ENGINE_HOST.equals(serverTypeClassification))
         {
             instance.setServerServiceActiveStatus(GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName(), ServerActiveStatus.STARTING);
 
@@ -1410,18 +1382,6 @@ public class OMAGServerOperationalServices
 
             try
             {
-                /*
-                 * Shutdown the data engine proxy services
-                 */
-                if (instance.getOperationalDataEngineProxyServices() != null)
-                {
-                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(), ServerActiveStatus.STOPPING);
-
-                    instance.getOperationalDataEngineProxyServices().disconnect();
-
-                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(), ServerActiveStatus.INACTIVE);
-                }
-
                 /*
                  * Shutdown the access services
                  */

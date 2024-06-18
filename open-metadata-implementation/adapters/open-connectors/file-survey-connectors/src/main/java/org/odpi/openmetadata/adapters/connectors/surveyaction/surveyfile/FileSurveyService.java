@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStore;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.extractors.FileStatsExtractor;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
@@ -14,12 +15,12 @@ import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileMeasurement;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileMetric;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourcePhysicalStatusAnnotation;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,41 +82,18 @@ public class FileSurveyService extends SurveyActionServiceConnector
 
             File file = assetConnector.getFile();
 
-            BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
-
             annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
 
-            FileClassifier fileClassifier = surveyContext.getFileClassifier();
-            FileClassification fileClassification = fileClassifier.classifyFile(file);
+            FileStatsExtractor fileStatsExtractor = new FileStatsExtractor(file,
+                                                                           surveyContext.getFileClassifier(),
+                                                                           this);
 
-            ResourcePhysicalStatusAnnotation measurementAnnotation = new ResourcePhysicalStatusAnnotation();
+            Annotation measurementAnnotation = fileStatsExtractor.getAnnotation();
 
-            measurementAnnotation.setAnnotationType(SurveyFileAnnotationType.MEASUREMENTS.getName());
-            measurementAnnotation.setSummary(SurveyFileAnnotationType.MEASUREMENTS.getSummary());
-            measurementAnnotation.setExplanation(SurveyFileAnnotationType.MEASUREMENTS.getExplanation());
-            measurementAnnotation.setCreateTime(fileClassification.getCreationTime());
-            measurementAnnotation.setModifiedTime(fileClassification.getLastModifiedTime());
-            measurementAnnotation.setLastAccessedTime(fileClassification.getLastAccessedTime());
-            measurementAnnotation.setSize(assetConnector.getFileLength());
-
-            Map<String, String> dataSourceProperties = new HashMap<>();
-
-            dataSourceProperties.put(FileMetric.FILE_NAME.name, fileClassification.getFileName());
-            dataSourceProperties.put(FileMetric.PATH_NAME.name, fileClassification.getPathName());
-            dataSourceProperties.put(FileMetric.FILE_EXTENSION.name, fileClassification.getFileExtension());
-            dataSourceProperties.put(FileMetric.FILE_TYPE.name, fileClassification.getFileType());
-            dataSourceProperties.put(FileMetric.DEPLOYED_IMPLEMENTATION_TYPE.name, fileClassification.getDeployedImplementationType());
-            dataSourceProperties.put(FileMetric.ENCODING.name, fileClassification.getEncoding());
-            dataSourceProperties.put(FileMetric.ASSET_TYPE_NAME.name, fileClassification.getAssetTypeName());
-            dataSourceProperties.put(FileMetric.CAN_READ.name, Boolean.toString(fileClassification.isCanRead()));
-            dataSourceProperties.put(FileMetric.CAN_WRITE.name, Boolean.toString(fileClassification.isCanWrite()));
-            dataSourceProperties.put(FileMetric.CAN_EXECUTE.name, Boolean.toString(fileClassification.isCanExecute()));
-            dataSourceProperties.put(FileMetric.IS_SYM_LINK.name, Boolean.toString(fileClassification.isSymLink()));
-            dataSourceProperties.put(FileMetric.IS_HIDDEN.name, Boolean.toString(fileClassification.isHidden()));
-
-            measurementAnnotation.setResourceProperties(dataSourceProperties);
-
-            annotationStore.addAnnotation(measurementAnnotation, surveyContext.getAssetGUID());
+            if (measurementAnnotation != null)
+            {
+                annotationStore.addAnnotation(measurementAnnotation, surveyContext.getAssetGUID());
+            }
         }
         catch (ConnectorCheckedException error)
         {

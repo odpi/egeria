@@ -4,12 +4,15 @@ package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataElement;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataRelationship;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 
 
 /**
@@ -72,11 +75,11 @@ class AssetConsumerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    AssetHandler<OpenMetadataAPIDummyBean> getAssetHandler(String userId,
-                                                           String serverName,
-                                                           String serviceOperationName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    AssetHandler<Asset> getAssetHandler(String userId,
+                                        String serverName,
+                                        String serviceOperationName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
 
         AssetConsumerServicesInstance instance = (AssetConsumerServicesInstance)super.getServerServiceInstance(userId,
@@ -86,6 +89,68 @@ class AssetConsumerInstanceHandler extends OMASServiceInstanceHandler
         if (instance != null)
         {
             return instance.getAssetHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    ReferenceableHandler<MetadataElement> getMetadataElementHandler(String userId,
+                                                                    String serverName,
+                                                                    String serviceOperationName) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+
+        AssetConsumerServicesInstance instance = (AssetConsumerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                               serverName,
+                                                                                                               serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getMetadataElementHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    ReferenceableHandler<MetadataRelationship> getMetadataRelationshipHandler(String userId,
+                                                                              String serverName,
+                                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
+    {
+
+        AssetConsumerServicesInstance instance = (AssetConsumerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                               serverName,
+                                                                                                               serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getMetadataRelationshipHandler();
         }
 
         return null;

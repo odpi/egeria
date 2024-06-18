@@ -865,8 +865,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
-                                           OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeGUID,
+                                           OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName,
                                            builder.getOwnershipProperties(owner, ownerTypeName, ownerPropertyName, methodName),
                                            true,
                                            forLineage,
@@ -909,8 +909,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                 beanGUID,
                                                 beanGUIDParameterName,
                                                 beanGUIDTypeName,
-                                                OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeGUID,
+                                                OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -956,7 +956,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                          OpenMetadataType.REFERENCEABLE.typeGUID,
-                                                                                         OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
+                                                                                         OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -989,12 +989,12 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
                         Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                                      entity,
-                                                                                                     OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
+                                                                                                     OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName,
                                                                                                      methodName);
                         if (classification != null)
                         {
                             String name = repositoryHelper.getStringProperty(serviceName,
-                                                                             OpenMetadataType.OWNER_PROPERTY_NAME,
+                                                                             OpenMetadataProperty.OWNER.name,
                                                                              classification.getProperties(),
                                                                              methodName);
 

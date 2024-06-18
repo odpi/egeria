@@ -191,6 +191,7 @@ public class CocoSustainabilityArchiveWriter extends CocoBaseArchiveWriter
                 archiveHelper.addExternalReference(null,
                                                    glossaryTermGUID,
                                                    OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                   OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                    "ExternalReference:" + glossaryTermDefinition.getName(),
                                                    null,
                                                    null,

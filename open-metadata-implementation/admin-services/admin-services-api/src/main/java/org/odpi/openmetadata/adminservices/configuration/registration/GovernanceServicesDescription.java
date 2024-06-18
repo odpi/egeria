@@ -13,7 +13,7 @@ public enum GovernanceServicesDescription
      * Store and query asset lineage.
      */
     LINEAGE_WAREHOUSE_SERVICES(190,
-                               ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                               ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                "Lineage Warehouse Services",
                                "lineage-warehouse",
                                "Store and query asset lineage",
@@ -39,7 +39,7 @@ public enum GovernanceServicesDescription
      * Integrate Data Engines that are not self-capable of integrating directly with the Data Engine OMAS.
      */
     DATA_ENGINE_PROXY_SERVICES       (192,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.DEPRECATED,
                                       "Data Engine Proxy Services",
                                       "data-engine-proxy",
                                       "Integrate Data Engines that are not self-capable of integrating directly with the Data Engine OMAS.",

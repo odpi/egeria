@@ -112,15 +112,15 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                   externalSourceName,
                                   hostClusterGUID,
                                   hostClusterGUIDParameterName,
-                                  OpenMetadataType.HOST_CLUSTER_TYPE_NAME,
+                                  OpenMetadataType.HOST_CLUSTER.typeName,
                                   hostGUID,
                                   hostGUIDParameterName,
-                                  OpenMetadataType.HOST_TYPE_NAME,
+                                  OpenMetadataType.HOST.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.HOST_CLUSTER_MEMBER_TYPE_GUID,
-                                  OpenMetadataType.HOST_CLUSTER_MEMBER_TYPE_NAME,
+                                  OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.typeName,
                                   null,
                                   effectiveFrom,
                                   effectiveTo,
@@ -168,130 +168,19 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                       externalSourceName,
                                       hostClusterGUID,
                                       hostClusterGUIDParameterName,
-                                      OpenMetadataType.HOST_CLUSTER_TYPE_NAME,
+                                      OpenMetadataType.HOST_CLUSTER.typeName,
                                       hostGUID,
                                       hostGUIDParameterName,
-                                      OpenMetadataType.HOST_TYPE_GUID,
-                                      OpenMetadataType.HOST_TYPE_NAME,
+                                      OpenMetadataType.HOST.typeGUID,
+                                      OpenMetadataType.HOST.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.HOST_CLUSTER_MEMBER_TYPE_GUID,
-                                      OpenMetadataType.HOST_CLUSTER_MEMBER_TYPE_NAME,
+                                      OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
 
-
-    /**
-     * Create a relationship between a host cluster and a host.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param hostGUID unique identifier of the host
-     * @param hostGUIDParameterName parameter supplying the hostGUID
-     * @param virtualContainerGUID unique identifier of the virtual container deployed on the host
-     * @param virtualContainerGUIDParameterName parameter supplying the virtualContainerGUID
-     * @param effectiveFrom starting time for this relationship (null for all time)
-     * @param effectiveTo ending time for this relationship
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void setupHostDeployedVirtualContainer(String  userId,
-                                                  String  externalSourceGUID,
-                                                  String  externalSourceName,
-                                                  String  hostGUID,
-                                                  String  hostGUIDParameterName,
-                                                  String  virtualContainerGUID,
-                                                  String  virtualContainerGUIDParameterName,
-                                                  Date    effectiveFrom,
-                                                  Date    effectiveTo,
-                                                  boolean forLineage,
-                                                  boolean forDuplicateProcessing,
-                                                  Date    effectiveTime,
-                                                  String  methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        this.linkElementToElement(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  hostGUID,
-                                  hostGUIDParameterName,
-                                  OpenMetadataType.HOST_TYPE_NAME,
-                                  virtualContainerGUID,
-                                  virtualContainerGUIDParameterName,
-                                  OpenMetadataType.VIRTUAL_CONTAINER_TYPE_NAME,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  supportedZones,
-                                  OpenMetadataType.DEPLOYED_VIRTUAL_CONTAINER_TYPE_GUID,
-                                  OpenMetadataType.DEPLOYED_VIRTUAL_CONTAINER_TYPE_NAME,
-                                  null,
-                                  effectiveFrom,
-                                  effectiveTo,
-                                  effectiveTime,
-                                  methodName);
-    }
-
-
-    /**
-     * Remove a relationship between a host cluster and a host member.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param hostGUID unique identifier of the host
-     * @param hostGUIDParameterName parameter supplying the virtualContainerGUID
-     * @param virtualContainerGUID unique identifier of the virtual container deployed on the host
-     * @param virtualContainerGUIDParameterName parameter supplying the virtualContainerGUID
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void clearHostDeployedVirtualContainer(String  userId,
-                                                  String  externalSourceGUID,
-                                                  String  externalSourceName,
-                                                  String  hostGUID,
-                                                  String  hostGUIDParameterName,
-                                                  String  virtualContainerGUID,
-                                                  String  virtualContainerGUIDParameterName,
-                                                  boolean forLineage,
-                                                  boolean forDuplicateProcessing,
-                                                  Date    effectiveTime,
-                                                  String  methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        this.unlinkElementFromElement(userId,
-                                      false,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      hostGUID,
-                                      hostGUIDParameterName,
-                                      OpenMetadataType.HOST_TYPE_NAME,
-                                      virtualContainerGUID,
-                                      virtualContainerGUIDParameterName,
-                                      OpenMetadataType.VIRTUAL_CONTAINER_TYPE_GUID,
-                                      OpenMetadataType.VIRTUAL_CONTAINER_TYPE_NAME,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      OpenMetadataType.DEPLOYED_VIRTUAL_CONTAINER_TYPE_GUID,
-                                      OpenMetadataType.DEPLOYED_VIRTUAL_CONTAINER_TYPE_NAME,
-                                      effectiveTime,
-                                      methodName);
-    }
 
 
     /**
@@ -818,7 +707,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                   externalSourceName,
                                   hostGUID,
                                   hostGUIDParameterName,
-                                  OpenMetadataType.HOST_TYPE_NAME,
+                                  OpenMetadataType.HOST.typeName,
                                   networkGUID,
                                   networkGUIDParameterName,
                                   OpenMetadataType.NETWORK_TYPE_NAME,
@@ -874,7 +763,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                       externalSourceName,
                                       hostGUID,
                                       hostGUIDParameterName,
-                                      OpenMetadataType.HOST_TYPE_NAME,
+                                      OpenMetadataType.HOST.typeName,
                                       networkGUID,
                                       networkGUIDParameterName,
                                       OpenMetadataType.NETWORK_TYPE_GUID,
@@ -1048,7 +937,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                            externalSourceName,
                                            hostGUID,
                                            hostGUIDParameterName,
-                                           OpenMetadataType.HOST_TYPE_NAME,
+                                           OpenMetadataType.HOST.typeName,
                                            OpenMetadataType.CLOUD_PROVIDER_CLASSIFICATION_GUID,
                                            OpenMetadataType.CLOUD_PROVIDER_CLASSIFICATION_NAME,
                                            builder.getCloudProviderProperties(providerName, methodName),
@@ -1093,7 +982,7 @@ public class ITInfrastructureHandler<B> extends AssetHandler<B>
                                                 externalSourceName,
                                                 hostGUID,
                                                 hostGUIDParameterName,
-                                                OpenMetadataType.HOST_TYPE_NAME,
+                                                OpenMetadataType.HOST.typeName,
                                                 OpenMetadataType.CLOUD_PROVIDER_CLASSIFICATION_GUID,
                                                 OpenMetadataType.CLOUD_PROVIDER_CLASSIFICATION_NAME,
                                                 forLineage,

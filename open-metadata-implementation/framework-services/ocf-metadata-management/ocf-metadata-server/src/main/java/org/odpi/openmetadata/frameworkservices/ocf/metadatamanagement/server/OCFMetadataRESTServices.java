@@ -427,7 +427,6 @@ public class OCFMetadataRESTServices
      * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId     String   userId of user making request.
      * @param assetGUID  String   unique id for asset.
-     * @param connectionGUID  unique id for connection used to access asset.
      * @param methodName calling method
      *
      * @return a bean with the basic properties about the asset or
@@ -441,7 +440,6 @@ public class OCFMetadataRESTServices
                                            String   serviceURLName,
                                            String   userId,
                                            String   assetGUID,
-                                           String   connectionGUID,
                                            String   methodName)
     {
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -464,31 +462,6 @@ public class OCFMetadataRESTServices
 
             Date effectiveTime = new Date();
 
-            String assetSummary = null;
-            if (connectionGUID != null)
-            {
-                Relationship relationship = assetHandler.getUniqueAttachmentLink(userId,
-                                                                                 assetGUID,
-                                                                                 assetGUIDParameterName,
-                                                                                 OpenMetadataType.ASSET.typeName,
-                                                                                 OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
-                                                                                 OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
-                                                                                 connectionGUID,
-                                                                                 OpenMetadataType.CONNECTION_TYPE_NAME,
-                                                                                 0,
-                                                                                 false,
-                                                                                 false,
-                                                                                 effectiveTime,
-                                                                                 methodName);
-
-                if (relationship != null)
-                {
-                    assetSummary = repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
-                                                                      OpenMetadataType.ASSET_SUMMARY_PROPERTY_NAME,
-                                                                      relationship.getProperties(),
-                                                                      methodName);
-                }
-            }
             Asset asset = assetHandler.getBeanFromRepository(userId,
                                                              assetGUID,
                                                              assetGUIDParameterName,
@@ -500,7 +473,6 @@ public class OCFMetadataRESTServices
                                                              methodName);
             if (asset != null)
             {
-                asset.setConnectionDescription(assetSummary);
                 EntityDetail glossaryEntity = assetHandler.getSupplementaryProperties(assetGUID,
                                                                                       assetGUIDParameterName,
                                                                                       OpenMetadataType.ASSET.typeName,
@@ -565,6 +537,7 @@ public class OCFMetadataRESTServices
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @SuppressWarnings(value = "unused")
     public AssetResponse getConnectedAssetSummary(String   serverName,
                                                   String   serviceURLName,
                                                   String   userId,
@@ -573,7 +546,7 @@ public class OCFMetadataRESTServices
     {
         final String methodName = "getConnectedAssetSummary";
 
-        return this.getAssetResponse(serverName, serviceURLName, userId, assetGUID, connectionGUID, methodName);
+        return this.getAssetResponse(serverName, serviceURLName, userId, assetGUID, methodName);
     }
 
 
@@ -598,7 +571,7 @@ public class OCFMetadataRESTServices
     {
         final String        methodName = "getAssetSummary";
 
-        return this.getAssetResponse(serverName, serviceURLName, userId, assetGUID, null, methodName);
+        return this.getAssetResponse(serverName, serviceURLName, userId, assetGUID, methodName);
     }
 
 
@@ -1905,7 +1878,7 @@ public class OCFMetadataRESTServices
                                                       effectiveTime,
                                                       methodName))
                 {
-                    response = getAssetResponse(serverName, serviceURLName, userId, guid, null, methodName);
+                    response = getAssetResponse(serverName, serviceURLName, userId, guid, methodName);
                 }
                 else
                 {
@@ -1928,7 +1901,7 @@ public class OCFMetadataRESTServices
                                                                                   effectiveTime,
                                                                                   methodName))
                     {
-                        response = getAssetResponse(serverName, serviceURLName, userId, anchorEntity.getGUID(), null, methodName);
+                        response = getAssetResponse(serverName, serviceURLName, userId, anchorEntity.getGUID(), methodName);
                     }
                 }
             }

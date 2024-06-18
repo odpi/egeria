@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.RelatedMediaType;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.RelatedMediaUsage;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaUsage;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -22,8 +22,8 @@ public class TestRelatedMediaReference
 {
     private ElementType                 type                 = new ElementType();
     private List<ElementClassification> classifications      = new ArrayList<>();
-    private Map<String, String>     additionalProperties = new HashMap<>();
-    private List<RelatedMediaUsage> relatedMediaUsage    = new ArrayList<>();
+    private Map<String, String> additionalProperties = new HashMap<>();
+    private List<MediaUsage>    mediaUsage           = new ArrayList<>();
 
 
 
@@ -47,7 +47,6 @@ public class TestRelatedMediaReference
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
-        testObject.setURL("TestURL");
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestQualifiedName");
@@ -61,8 +60,8 @@ public class TestRelatedMediaReference
         testObject.setVersion("TestVersion");
         testObject.setOrganization("TestOrganization");
 
-        testObject.setMediaType(RelatedMediaType.VIDEO);
-        testObject.setMediaUsageList(relatedMediaUsage);
+        testObject.setMediaType(MediaType.VIDEO);
+        testObject.setMediaUsageList(mediaUsage);
 
 
         return testObject;
@@ -78,7 +77,6 @@ public class TestRelatedMediaReference
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getURL().equals("TestURL"));
         assertTrue(resultObject.getClassifications() == null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
@@ -92,8 +90,8 @@ public class TestRelatedMediaReference
         assertTrue(resultObject.getVersion().equals("TestVersion"));
         assertTrue(resultObject.getOrganization().equals("TestOrganization"));
 
-        assertTrue(resultObject.getMediaType().equals(RelatedMediaType.VIDEO));
-        assertTrue(resultObject.getMediaUsageList().equals(relatedMediaUsage));
+        assertTrue(resultObject.getMediaType().equals(MediaType.VIDEO));
+        assertTrue(resultObject.getMediaUsageList().equals(mediaUsage));
     }
 
 
@@ -106,7 +104,6 @@ public class TestRelatedMediaReference
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getQualifiedName() == null);
@@ -127,7 +124,6 @@ public class TestRelatedMediaReference
 
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getQualifiedName() == null);
@@ -164,7 +160,7 @@ public class TestRelatedMediaReference
         assertFalse(getTestObject().equals(differentObject));
 
         differentObject = getTestObject();
-        differentObject.setMediaType(RelatedMediaType.AUDIO);
+        differentObject.setMediaType(MediaType.AUDIO);
         assertFalse(getTestObject().equals(differentObject));
     }
 

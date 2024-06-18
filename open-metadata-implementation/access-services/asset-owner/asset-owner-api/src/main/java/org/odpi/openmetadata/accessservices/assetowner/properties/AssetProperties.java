@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
 
 import java.util.*;
 
@@ -27,19 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     (Sourced from assetSummary within ConnectionsToAsset - model 0205)</li>
  *     <li>description - full description of the asset.
  *     (Sourced from attribute description within Asset - model 0010)</li>
- *     <li>owner - name of the person or organization that owns the asset.
- *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
- *     <li>ownerTypeName - name of the element type identifying the person or organization that owns the asset.
- *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
- *     <li>ownerPropertyName - name of the property identifying person or organization that owns the asset.
- *     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
- *     <li>ownerType - type of the person or organization that owns the asset.
- *     (Sourced from classification AssetOwnership attached to Asset - model 0445)</li>
- *     <li>zoneMembership - name of the person or organization that owns the asset.
- *     (Sourced from classification AssetZoneMemberShip attached to Asset - model 0424)</li>
- *     <li>origin - origin identifiers describing the source of the asset.
- *     (Sourced from classification AssetOrigin attached to Asset - model 0440)</li>
- *     <li>classifications - list of all classifications assigned to the asset</li>
+  *     <li>classifications - list of all classifications assigned to the asset</li>
  *     <li>extendedProperties - list of properties assigned to the asset from the Asset subclasses</li>
  *     <li>additionalProperties - list of properties assigned to the asset as additional properties</li>
  * </ul>
@@ -59,14 +46,6 @@ public class AssetProperties extends SupplementaryProperties
     private String              name                         = null;
     private String              versionIdentifier            = null;
     private String              description                  = null;
-    private String         owner         = null;
-    private AssetOwnerType ownerType     = null;
-    private String         ownerTypeName = null;
-    private String              ownerPropertyName            = null;
-    private List<String>        zoneMembership               = null;
-    private String              originOrganizationGUID       = null;
-    private String              originBusinessCapabilityGUID = null;
-    private Map<String, String> otherOriginValues            = null;
 
 
     /**
@@ -91,14 +70,6 @@ public class AssetProperties extends SupplementaryProperties
             name                         = template.getName();
             versionIdentifier            = template.getVersionIdentifier();
             description                  = template.getDescription();
-            owner                        = template.getOwner();
-            ownerTypeName                = template.getOwnerTypeName();
-            ownerPropertyName            = template.getOwnerPropertyName();
-            ownerType                    = template.getOwnerType();
-            zoneMembership               = template.getZoneMembership();
-            originOrganizationGUID       = template.getOriginOrganizationGUID();
-            originBusinessCapabilityGUID = template.getOriginBusinessCapabilityGUID();
-            otherOriginValues            = template.getOtherOriginValues();
         }
     }
 
@@ -170,205 +141,6 @@ public class AssetProperties extends SupplementaryProperties
     }
 
 
-    /**
-     * Returns the name of the owner for this asset.
-     *
-     * @return owner String
-     */
-    public String getOwner()
-    {
-        return owner;
-    }
-
-
-    /**
-     * Set up the name of the owner for this asset.
-     *
-     * @param owner String name
-     */
-    public void setOwner(String owner)
-    {
-        this.owner = owner;
-    }
-
-
-    /**
-     * Returns the name of the type used to identify of the owner for this asset.
-     *
-     * @return owner String
-     */
-    public String getOwnerTypeName()
-    {
-        return ownerTypeName;
-    }
-
-
-    /**
-     * Set up the name of the type used to identify the owner for this asset.
-     *
-     * @param ownerTypeName String name
-     */
-    public void setOwnerTypeName(String ownerTypeName)
-    {
-        this.ownerTypeName = ownerTypeName;
-    }
-
-
-    /**
-     * Returns the property name used to identify the owner for this asset.
-     *
-     * @return owner String
-     */
-    public String getOwnerPropertyName()
-    {
-        return ownerPropertyName;
-    }
-
-
-    /**
-     * Set up the property name used to identify the owner for this asset.
-     *
-     * @param ownerPropertyName String name
-     */
-    public void setOwnerPropertyName(String ownerPropertyName)
-    {
-        this.ownerPropertyName = ownerPropertyName;
-    }
-
-
-    /**
-     * Return the type of owner stored in the owner property.
-     *
-     * @return AssetOwnerType enum
-     */
-    @Deprecated
-    public AssetOwnerType getOwnerType()
-    {
-        return ownerType;
-    }
-
-
-    /**
-     * Set up the owner type for this asset.
-     *
-     * @param ownerType AssetOwnerType enum
-     */
-    @Deprecated()
-    public void setOwnerType(AssetOwnerType ownerType)
-    {
-        this.ownerType = ownerType;
-    }
-
-
-    /**
-     * Return the names of the zones that this asset is a member of.
-     *
-     * @return list of zone names
-     */
-    public List<String> getZoneMembership()
-    {
-        if (zoneMembership == null)
-        {
-            return null;
-        }
-        else if (zoneMembership.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(zoneMembership);
-        }
-    }
-
-
-    /**
-     * Set up the names of the zones that this asset is a member of.
-     *
-     * @param zoneMembership list of zone names
-     */
-    public void setZoneMembership(List<String> zoneMembership)
-    {
-        this.zoneMembership = zoneMembership;
-    }
-
-
-    /**
-     * Return the unique identifier for the organization that originated this asset.
-     *
-     * @return string guid
-     */
-    public String getOriginOrganizationGUID()
-    {
-        return originOrganizationGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier for the organization that originated this asset.
-     *
-     * @param originOrganizationGUID string guid
-     */
-    public void setOriginOrganizationGUID(String originOrganizationGUID)
-    {
-        this.originOrganizationGUID = originOrganizationGUID;
-    }
-
-
-    /**
-     * Return the unique identifier of the business capability that originated this asset.
-     *
-     * @return string guid
-     */
-    public String getOriginBusinessCapabilityGUID()
-    {
-        return originBusinessCapabilityGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of the business capability that originated this asset.
-     *
-     * @param originBusinessCapabilityGUID string guid
-     */
-    public void setOriginBusinessCapabilityGUID(String originBusinessCapabilityGUID)
-    {
-        this.originBusinessCapabilityGUID = originBusinessCapabilityGUID;
-    }
-
-
-    /**
-     * Return the properties that characterize where this asset is from.
-     *
-     * @return map of name value pairs, all strings
-     */
-    public Map<String, String> getOtherOriginValues()
-    {
-        if (otherOriginValues == null)
-        {
-            return null;
-        }
-        else if (otherOriginValues.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(otherOriginValues);
-        }
-    }
-
-
-    /**
-     * Set up the properties that characterize where this asset is from.
-     *
-     * @param otherOriginValues map of name value pairs, all strings
-     */
-    public void setOtherOriginValues(Map<String, String> otherOriginValues)
-    {
-        this.otherOriginValues = otherOriginValues;
-    }
-
 
     /**
      * Standard toString method.
@@ -382,14 +154,6 @@ public class AssetProperties extends SupplementaryProperties
                        "name='" + name + '\'' +
                        ", versionIdentifier='" + versionIdentifier + '\'' +
                        ", description='" + description + '\'' +
-                       ", owner='" + owner + '\'' +
-                       ", ownerType=" + ownerType +
-                       ", ownerTypeName='" + ownerTypeName + '\'' +
-                       ", ownerPropertyName='" + ownerPropertyName + '\'' +
-                       ", zoneMembership=" + zoneMembership +
-                       ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
-                       ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
-                       ", otherOriginValues=" + otherOriginValues +
                        ", typeName='" + getTypeName() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -412,65 +176,14 @@ public class AssetProperties extends SupplementaryProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof AssetProperties))
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         AssetProperties that = (AssetProperties) objectToCompare;
-
-        if (name != null ? ! name.equals(that.name) : that.name != null)
-        {
-            return false;
-        }
-        if (versionIdentifier != null ? ! versionIdentifier.equals(that.versionIdentifier) : that.versionIdentifier != null)
-        {
-            return false;
-        }
-        if (description != null ? ! description.equals(that.description) : that.description != null)
-        {
-            return false;
-        }
-        if (owner != null ? ! owner.equals(that.owner) : that.owner != null)
-        {
-            return false;
-        }
-        if (ownerType != that.ownerType)
-        {
-            return false;
-        }
-        if (ownerTypeName != null ? ! ownerTypeName.equals(that.ownerTypeName) : that.ownerTypeName != null)
-        {
-            return false;
-        }
-        if (ownerPropertyName != null ? ! ownerPropertyName.equals(that.ownerPropertyName) : that.ownerPropertyName != null)
-        {
-            return false;
-        }
-        if (zoneMembership != null ? ! zoneMembership.equals(that.zoneMembership) : that.zoneMembership != null)
-        {
-            return false;
-        }
-        if (originOrganizationGUID != null ? ! originOrganizationGUID.equals(that.originOrganizationGUID) : that.originOrganizationGUID != null)
-        {
-            return false;
-        }
-        if (originBusinessCapabilityGUID != null ? ! originBusinessCapabilityGUID.equals(
-                that.originBusinessCapabilityGUID) : that.originBusinessCapabilityGUID != null)
-        {
-            return false;
-        }
-        return otherOriginValues != null ? otherOriginValues.equals(that.otherOriginValues) : that.otherOriginValues == null;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(versionIdentifier, that.versionIdentifier) &&
+                Objects.equals(description, that.description);
     }
-
 
     /**
      * Return hash code based on properties.
@@ -480,7 +193,6 @@ public class AssetProperties extends SupplementaryProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, versionIdentifier, description, owner, ownerTypeName, ownerPropertyName, ownerType,
-                            zoneMembership, originOrganizationGUID, originBusinessCapabilityGUID, otherOriginValues);
+        return Objects.hash(super.hashCode(), name, versionIdentifier, description);
     }
 }

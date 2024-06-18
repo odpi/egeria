@@ -161,7 +161,9 @@ public class SimpleEventCatalogArchiveBuilder
 
         archiveHelper.addSchemaTypeOption(eventTypeListGUID, eventTypeGUID);
 
-        String eventAttributeGUID = archiveHelper.addSchemaAttribute(eventAttributeTypeName,
+        String eventAttributeGUID = archiveHelper.addSchemaAttribute(assetGUID,
+                                                                     topicAssetTypeName,
+                                                                     eventAttributeTypeName,
                                                                      null,
                                                                      customerIdQualifiedName,
                                                                      customerIdDisplayName,
@@ -169,11 +171,14 @@ public class SimpleEventCatalogArchiveBuilder
                                                                      customerIdDataType,
                                                                      customerIdLength,
                                                                      0,
+                                                                     null,
                                                                      null);
 
         archiveHelper.addAttributeForSchemaType(eventTypeGUID, eventAttributeGUID);
 
-        eventAttributeGUID = archiveHelper.addSchemaAttribute(eventAttributeTypeName,
+        eventAttributeGUID = archiveHelper.addSchemaAttribute(assetGUID,
+                                                              topicAssetTypeName,
+                                                              eventAttributeTypeName,
                                                               null,
                                                               customerNameQualifiedName,
                                                               customerNameDisplayName,
@@ -181,11 +186,14 @@ public class SimpleEventCatalogArchiveBuilder
                                                               customerNameDataType,
                                                               customerNameLength,
                                                               1,
+                                                              null,
                                                               null);
 
         archiveHelper.addAttributeForSchemaType(eventTypeGUID, eventAttributeGUID);
 
-        eventAttributeGUID = archiveHelper.addSchemaAttribute(eventAttributeTypeName,
+        eventAttributeGUID = archiveHelper.addSchemaAttribute(assetGUID,
+                                                              topicAssetTypeName,
+                                                              eventAttributeTypeName,
                                                               null,
                                                               customerStatusQualifiedName,
                                                               customerStatusDisplayName,
@@ -193,6 +201,7 @@ public class SimpleEventCatalogArchiveBuilder
                                                               customerStatusDataType,
                                                               customerStatusLength,
                                                               2,
+                                                              null,
                                                               null);
 
         archiveHelper.addAttributeForSchemaType(eventTypeGUID, eventAttributeGUID);

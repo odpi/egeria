@@ -111,7 +111,6 @@ public class APISchemaType extends SchemaType
                 ", extendedProperties=" + getExtendedProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
                 '}';
     }

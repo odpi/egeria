@@ -17,36 +17,35 @@ import static org.testng.Assert.assertTrue;
 /**
  * PrimitivePropertyValueTest provides test of PrimitivePropertyValue
  */
-@SuppressWarnings(value = "deprecation")
 public class PrimitivePropertyValueTest
 {
-    private InstancePropertyCategory category           = InstancePropertyCategory.PRIMITIVE;
-    private String                   typeGUID           = "TestTypeGUID";
-    private String                   typeName           = "TestTypeName";
-    private PrimitiveDefCategory     booleanCategory    = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN;
-    private Object                   booleanValue       = true;
-    private PrimitiveDefCategory     byteCategory       = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE;
-    private Object                   byteValue          = new Byte("100");
-    private PrimitiveDefCategory     charCategory       = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR;
-    private Object                   charValue          = 'A';
-    private PrimitiveDefCategory     shortCategory      = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT;
-    private Object                   shortValue         = new Short("45");
-    private PrimitiveDefCategory     integerCategory    = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT;
-    private Object                   integerValue       = (Integer)4749742;
-    private PrimitiveDefCategory     longCategory       = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG;
-    private Object                   longValue          = (long)474974442;
-    private PrimitiveDefCategory     floatCategory      = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT;
-    private Object                   floatValue         = (float)555555555;
-    private PrimitiveDefCategory     doubleCategory     = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE;
-    private Object                   doubleValue        = (double)424242424;
-    private PrimitiveDefCategory     bigIntegerCategory = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER;
-    private Object                   bigIntegerValue    = new BigInteger("446374279247");
-    private PrimitiveDefCategory     bigDecimalCategory = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL;
-    private Object                   bigDecimalValue    = new BigDecimal(-4749742);
-    private PrimitiveDefCategory     stringCategory     = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
-    private Object                   stringValue        = "TestString";
-    private PrimitiveDefCategory     dateCategory       = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE;
-    private Object                   dateValue          = new Date(4749742);
+    private final InstancePropertyCategory category = InstancePropertyCategory.PRIMITIVE;
+    private final String               typeGUID        = "TestTypeGUID";
+    private final String               typeName        = "TestTypeName";
+    private final PrimitiveDefCategory booleanCategory = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN;
+    private final Object               booleanValue = true;
+    private final PrimitiveDefCategory byteCategory = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE;
+    private final Object               byteValue    = Byte.parseByte("100");
+    private final PrimitiveDefCategory charCategory  = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR;
+    private final Object               charValue     = 'A';
+    private final PrimitiveDefCategory shortCategory   = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT;
+    private final Object               shortValue      = Short.parseShort("45");
+    private final PrimitiveDefCategory integerCategory = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT;
+    private final Object               integerValue = (Integer)4749742;
+    private final PrimitiveDefCategory longCategory  = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG;
+    private final Object               longValue     = (long)474974442;
+    private final PrimitiveDefCategory floatCategory  = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT;
+    private final Object               floatValue     = (float)555555555;
+    private final PrimitiveDefCategory doubleCategory     = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE;
+    private final Object               doubleValue        = (double)424242424;
+    private final PrimitiveDefCategory bigIntegerCategory = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER;
+    private final Object               bigIntegerValue    = new BigInteger("446374279247");
+    private final PrimitiveDefCategory bigDecimalCategory = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL;
+    private final Object               bigDecimalValue = new BigDecimal(-4749742);
+    private final PrimitiveDefCategory stringCategory = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
+    private final Object               stringValue  = "TestString";
+    private final PrimitiveDefCategory dateCategory = PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE;
+    private final Object               dateValue    = new Date(4749742);
 
 
     /**
