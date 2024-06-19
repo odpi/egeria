@@ -1605,9 +1605,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                  AtlasPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  AtlasPlaceholderProperty.CONNECTION_PASSWORD.getPlaceholder(),
                                                  provider.getConnectorType().getGUID(),
-                                                 "http://" +
-                                                         AtlasPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
-                                                         AtlasPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 AtlasPlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
+                                                               AtlasPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  null,
                                                  null,
                                                  placeholderPropertyTypes);
@@ -1721,8 +1720,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                  OMAGServerPlatformPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
-                                                 "http://" +
-                                                         OMAGServerPlatformPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                 OMAGServerPlatformPlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
                                                          OMAGServerPlatformPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  null,
                                                  null,
@@ -1751,8 +1749,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                  OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
-                                                 "http://" +
-                                                         OMAGServerPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                 OMAGServerPlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
                                                          OMAGServerPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  configurationProperties,
                                                  null,
@@ -1782,8 +1779,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                  OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
-                                                 "http://" +
-                                                         OMAGServerPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                 OMAGServerPlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
                                                          OMAGServerPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  configurationProperties,
                                                  null,
@@ -1813,8 +1809,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                  OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
-                                                 "http://" +
-                                                         OMAGServerPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                 OMAGServerPlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
                                                          OMAGServerPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  configurationProperties,
                                                  null,
@@ -1844,8 +1839,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                  OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
-                                                 "http://" +
-                                                         OMAGServerPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                 OMAGServerPlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
                                                          OMAGServerPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  configurationProperties,
                                                  null,
@@ -1871,8 +1865,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                  null,
                                                  null,
                                                  provider.getConnectorType().getGUID(),
-                                                 "http://" +
-                                                         KafkaPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                 KafkaPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                                          KafkaPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  null,
                                                  null,

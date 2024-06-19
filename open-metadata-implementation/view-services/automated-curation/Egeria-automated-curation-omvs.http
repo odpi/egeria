@@ -87,7 +87,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "PostgreSQL Server"
+  "filter" : "PostgreSQL Relational Database"
 }
 
 ###
@@ -99,6 +99,69 @@ Content-Type: application/json
 
 {
   "filter" : "FileFolder"
+}
+
+
+###
+# @name getTechnologyTypeDetail (OMAG Server Platform)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OMAG Server Platform"
+}
+
+
+###
+# @name getTechnologyTypeDetail (Metadata Access Server)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Metadata Access Server"
+}
+
+
+
+###
+# @name getTechnologyTypeDetail (Engine Host)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Engine Host"
+}
+
+
+
+
+###
+# @name getTechnologyTypeDetail (Integration Daemon)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Integration Daemon"
+}
+
+
+###
+# @name getTechnologyTypeDetail (View server)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "View Server"
 }
 
 ###
@@ -217,10 +280,31 @@ Content-Type: application/json
   "placeholderPropertyValues" : {
     "hostIdentifier" : "egeria.pdr-associates.com",
     "portNumber" : "5432",
-    "serverName" : "DemoPostgreSQL1",
+    "serverName" : "DemoPostgreSQL2",
     "databaseName" : "my_database",
     "databaseUserId" : "surveyor",
     "databasePassword" : "secret"
+  }
+}
+
+
+
+###
+# @name createElementFromTemplate (OMAG Server Platform)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "9b06c4dc-ddc8-47ae-b56b-28775d3a96f0",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "platformUserId" : "garygeeke",
+    "platformHostURL" : "https://localhost",
+    "platformPortNumber" : "9446",
+    "platformName" : "Nanny Platform"
   }
 }
 

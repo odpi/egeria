@@ -29,7 +29,8 @@ ext {
     classgraphVersion = '4.8.172'
     classmateVersion = '1.5.1'
     collections4Version = '4.4'
-    commonscodecVersion = '1.17.0'
+    // Version 1.17.0 breaks XTDB because of a change in lucene's library names
+    commonscodecVersion = '1.16.0'
     commonsconfiguration2Version = '2.10.1'
     commonsconfigurationVersion = '1.10'
     commonsioVersion = '2.16.1'
@@ -72,7 +73,7 @@ ext {
     kafkaVersion = '3.7.0'
     lang3Version = '3.14.0'
     logbackVersion = '1.5.6'
-    lettuceVersion = '6.3.1.RELEASE'
+    lettuceVersion = '6.3.2.RELEASE'
     // TODO: Version 9 now available
     luceneVersion = '8.11.2'
     openlineageVersion = '1.16.0'
