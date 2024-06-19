@@ -18,12 +18,12 @@ public enum KafkaPlaceholderProperty
     /**
      * The host IP address or domain name.
      */
-    HOST_IDENTIFIER ("hostIdentifier", "The host IP address or domain name of the Apache Kafka server.", "string", "coconet.com"),
+    HOST_IDENTIFIER ("hostIdentifier", "The host IP address or domain name.", "string", "https://coconet.com"),
 
     /**
      * The number of the port to use to connect to a service.
      */
-    PORT_NUMBER ("portNumber", "The number of the port to use to connect to the Apache Kafka server.", "string", "1234"),
+    PORT_NUMBER ("portNumber", "The number of the port to use to connect to the server.", "string", "1234"),
 
     /**
      * The name of the server being catalogued.

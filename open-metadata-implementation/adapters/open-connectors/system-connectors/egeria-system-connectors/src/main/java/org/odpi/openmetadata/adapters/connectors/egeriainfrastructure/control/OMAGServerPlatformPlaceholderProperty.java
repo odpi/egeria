@@ -18,12 +18,12 @@ public enum OMAGServerPlatformPlaceholderProperty
     /**
      * The host IP address or domain name.
      */
-    HOST_IDENTIFIER ("hostIdentifier", "The host IP address or domain name of the OMAG Server Platform.", "string", "coconet.com"),
+    HOST_URL ("platformHostURL", "The host IP address or domain name of the platform with the HTTP protocol prefix.", "string", "https://coconet.com"),
 
     /**
      * The number of the port to use to connect to a service.
      */
-    PORT_NUMBER ("portNumber", "The number of the port to use to connect to the OMAG Server Platform.", "string", "9443"),
+    PORT_NUMBER ("platformPortNumber", "The number of the port to use to connect to the platform.", "string", "9443"),
 
     /**
      * The userId to store in the userId attribute of the connection.

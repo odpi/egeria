@@ -18,12 +18,12 @@ public enum AtlasPlaceholderProperty
     /**
      * The host IP address or domain name.
      */
-    HOST_IDENTIFIER ("hostIdentifier", "The host IP address or domain name of the Apache Atlas server.", "string", "coconet.com"),
+    HOST_URL ("hostURL", "The host IP address or domain name of the server with the HTTP protocol prefix.", "string", "https://coconet.com"),
 
     /**
      * The number of the port to use to connect to a service.
      */
-    PORT_NUMBER ("portNumber", "The number of the port to use to connect to the Apache Atlas server.", "string", "1234"),
+    PORT_NUMBER ("portNumber", "The number of the port to use to connect to the server.", "string", "1234"),
 
     /**
      * The userId to store in the userId attribute of the connection.
