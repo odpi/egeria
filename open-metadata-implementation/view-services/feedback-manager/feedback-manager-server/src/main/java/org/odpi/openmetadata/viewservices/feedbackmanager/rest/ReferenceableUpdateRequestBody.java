@@ -5,6 +5,7 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.viewservices.feedbackmanager.properties.ReferenceableProperties;
 
 import java.util.Date;
 import java.util.Objects;
@@ -19,10 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
+public class ReferenceableUpdateRequestBody
 {
+    private ReferenceableProperties elementProperties = null;
+
     private Date   effectiveTime     = null;
-    private String updateDescription = null;
 
     /**
      * Default constructor
@@ -40,13 +42,33 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
      */
     public ReferenceableUpdateRequestBody(ReferenceableUpdateRequestBody template)
     {
-        super(template);
-
         if (template != null)
         {
+            elementProperties = template.getElementProperties();
             effectiveTime = template.getEffectiveTime();
-            updateDescription = template.getUpdateDescription();
         }
+    }
+
+
+    /**
+     * Return the properties for the element.
+     *
+     * @return properties object
+     */
+    public ReferenceableProperties getElementProperties()
+    {
+        return elementProperties;
+    }
+
+
+    /**
+     * Set up the properties for the element.
+     *
+     * @param elementProperties properties object
+     */
+    public void setElementProperties(ReferenceableProperties elementProperties)
+    {
+        this.elementProperties = elementProperties;
     }
 
 
@@ -72,27 +94,6 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
     }
 
 
-    /**
-     * Return the string that describes details of the update.
-     *
-     * @return description
-     */
-    public String getUpdateDescription()
-    {
-        return updateDescription;
-    }
-
-
-    /**
-     * Set up the string that describes details of the update.
-     *
-     * @param updateDescription description
-     */
-    public void setUpdateDescription(String updateDescription)
-    {
-        this.updateDescription = updateDescription;
-    }
-
 
     /**
      * JSON-style toString
@@ -104,9 +105,7 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
     {
         return "ReferenceableUpdateRequestBody{" +
                        "effectiveTime=" + effectiveTime +
-                       ", updateDescription='" + updateDescription + '\'' +
-                       ", elementProperties=" + getElementProperties() +
-                       ", parentGUID='" + getParentGUID() + '\'' +
+                       ", elementProperties=" + elementProperties +
                        '}';
     }
 
@@ -128,12 +127,8 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
         return Objects.equals(effectiveTime, that.effectiveTime) &&
-                Objects.equals(updateDescription, that.updateDescription);
+                Objects.equals(elementProperties, that.elementProperties);
     }
 
 
@@ -145,6 +140,6 @@ public class ReferenceableUpdateRequestBody extends ReferenceableRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), effectiveTime, updateDescription);
+        return Objects.hash(effectiveTime, elementProperties);
     }
 }

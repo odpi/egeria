@@ -3137,38 +3137,26 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getApplicationServerClassification()
     {
-        final String guid            = "19196efb-2706-47bf-8e51-e8ba5b36d033";
-        final String name            = "ApplicationServer";
-        final String description     = "A server that hosts applications.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "SoftwareServer";
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.APPLICATION_SERVER_CLASSIFICATION.typeGUID,
+                                                  OpenMetadataType.APPLICATION_SERVER_CLASSIFICATION.typeName,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  OpenMetadataType.APPLICATION_SERVER_CLASSIFICATION.description,
+                                                  OpenMetadataType.APPLICATION_SERVER_CLASSIFICATION.descriptionGUID,
+                                                  OpenMetadataType.APPLICATION_SERVER_CLASSIFICATION.wikiURL,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER.typeName),
                                                   false);
     }
 
 
     private ClassificationDef getWebserverClassification()
     {
-        final String guid            = "d13e1cc5-bb7e-41ec-8233-9647fbf92a19";
-        final String name            = "Webserver";
-        final String description     = "A server that supports HTTP-based application such as websites and REST services.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "SoftwareServer";
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.WEBSERVER_CLASSIFICATION.typeGUID,
+                                                  OpenMetadataType.WEBSERVER_CLASSIFICATION.typeName,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  OpenMetadataType.WEBSERVER_CLASSIFICATION.description,
+                                                  OpenMetadataType.WEBSERVER_CLASSIFICATION.descriptionGUID,
+                                                  OpenMetadataType.WEBSERVER_CLASSIFICATION.wikiURL,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER.typeName),
                                                   false);
     }
 
@@ -8933,20 +8921,13 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getDatabaseServerClassification()
     {
-        final String guid            = "6bb58cc9-ed9e-4f75-b2f2-6d308554eb52";
-        final String name            = "DatabaseServer";
-        final String description     = "Identifies a server as one that manages one or more databases.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "SoftwareServer";
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.DATABASE_SERVER_CLASSIFICATION.typeGUID,
+                                                                                 OpenMetadataType.DATABASE_SERVER_CLASSIFICATION.typeName,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
-                                                                                 this.archiveBuilder.getEntityDef(
-                                                                                         linkedToEntity),
+                                                                                 OpenMetadataType.DATABASE_SERVER_CLASSIFICATION.description,
+                                                                                 OpenMetadataType.DATABASE_SERVER_CLASSIFICATION.descriptionGUID,
+                                                                                 OpenMetadataType.DATABASE_SERVER_CLASSIFICATION.wikiURL,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER.typeName),
                                                                                  false);
 
         /*
@@ -9329,20 +9310,13 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getMetadataServerClassification()
     {
-        final String guid            = "74a256ad-4022-4518-a446-c65fe082d4d3";
-        final String name            = "MetadataServer";
-        final String description     = "A server hosting a metadata collection.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "SoftwareServer";
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeGUID,
+                                                                                 OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
-                                                                                 this.archiveBuilder.getEntityDef(
-                                                                                         linkedToEntity),
+                                                                                 OpenMetadataType.METADATA_SERVER_CLASSIFICATION.description,
+                                                                                 OpenMetadataType.METADATA_SERVER_CLASSIFICATION.descriptionGUID,
+                                                                                 OpenMetadataType.METADATA_SERVER_CLASSIFICATION.wikiURL,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER.typeName),
                                                                                  false);
 
         /*
@@ -9375,20 +9349,13 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getRepositoryProxyClassification()
     {
-        final String guid            = "ae81c35e-7078-46f0-9b2c-afc99accf3ec";
-        final String name            = "RepositoryProxy";
-        final String description     = "A server acting as an open metadata adapter for a metadata repository.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "SoftwareServer";
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.REPOSITORY_PROXY_CLASSIFICATION.typeGUID,
+                                                                                 OpenMetadataType.REPOSITORY_PROXY_CLASSIFICATION.typeName,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
-                                                                                 this.archiveBuilder.getEntityDef(
-                                                                                         linkedToEntity),
+                                                                                 OpenMetadataType.REPOSITORY_PROXY_CLASSIFICATION.description,
+                                                                                 OpenMetadataType.REPOSITORY_PROXY_CLASSIFICATION.descriptionGUID,
+                                                                                 OpenMetadataType.REPOSITORY_PROXY_CLASSIFICATION.wikiURL,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER.typeName),
                                                                                  false);
 
         /*
@@ -15891,38 +15858,26 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getStewardshipServerClassification()
     {
-        final String guid            = "eaaeaa31-6f8b-4ed5-88fe-422ed3733158";
-        final String name            = "StewardshipServer";
-        final String description     = "A server dedicated to managing stewardship activity relating to governance of data.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "SoftwareServer";
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.STEWARDSHIP_SERVER_CLASSIFICATION.typeGUID,
+                                                  OpenMetadataType.STEWARDSHIP_SERVER_CLASSIFICATION.typeName,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  OpenMetadataType.STEWARDSHIP_SERVER_CLASSIFICATION.description,
+                                                  OpenMetadataType.STEWARDSHIP_SERVER_CLASSIFICATION.descriptionGUID,
+                                                  OpenMetadataType.STEWARDSHIP_SERVER_CLASSIFICATION.wikiURL,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER.typeName),
                                                   false);
     }
 
 
     private ClassificationDef getGovernanceDaemonClassification()
     {
-        final String guid            = "7815f222-529d-4902-8f0b-e37cbc779885";
-        final String name            = "GovernanceDaemon";
-        final String description     = "A server dedicated to managing activity relating to governance of data.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "SoftwareServer";
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.GOVERNANCE_DAEMON_CLASSIFICATION.typeGUID,
+                                                  OpenMetadataType.GOVERNANCE_DAEMON_CLASSIFICATION.typeName,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  OpenMetadataType.GOVERNANCE_DAEMON_CLASSIFICATION.description,
+                                                  OpenMetadataType.GOVERNANCE_DAEMON_CLASSIFICATION.descriptionGUID,
+                                                  OpenMetadataType.GOVERNANCE_DAEMON_CLASSIFICATION.wikiURL,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER.typeName),
                                                   false);
     }
 

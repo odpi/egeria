@@ -28,7 +28,6 @@ public interface IntegrationDaemonAPI
      * Retrieve the configuration properties of the named connector.
      *
      * @param userId calling user
-     * @param serviceURLMarker integration service identifier
      * @param connectorName name of a requested connector
      *
      * @return property map
@@ -38,7 +37,6 @@ public interface IntegrationDaemonAPI
      * @throws PropertyServerException there was a problem detected by the integration daemon
      */
     Map<String, Object> getConfigurationProperties(String userId,
-                                                   String serviceURLMarker,
                                                    String connectorName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException;
@@ -47,7 +45,6 @@ public interface IntegrationDaemonAPI
      * Update the configuration properties of the connectors, or specific connector if a connector name is supplied.
      *
      * @param userId calling user
-     * @param serviceURLMarker integration service identifier
      * @param connectorName name of a specific connector or null for all connectors
      * @param isMergeUpdate should the properties be merged into the existing properties or replace them
      * @param configurationProperties new configuration properties
@@ -57,27 +54,11 @@ public interface IntegrationDaemonAPI
      * @throws PropertyServerException there was a problem detected by the integration daemon
      */
     void updateConfigurationProperties(String              userId,
-                                       String              serviceURLMarker,
                                        String              connectorName,
                                        boolean             isMergeUpdate,
                                        Map<String, Object> configurationProperties) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException;
-
-
-    /**
-     * Refresh all connectors running in the integration daemon, regardless of the integration service they belong to.
-     *
-     * @param userId calling user
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException there was a problem detected by the integration daemon
-     */
-    void refreshAllServices(String userId) throws InvalidParameterException,
-                                                  UserNotAuthorizedException,
-                                                  PropertyServerException;
-
 
 
     /**

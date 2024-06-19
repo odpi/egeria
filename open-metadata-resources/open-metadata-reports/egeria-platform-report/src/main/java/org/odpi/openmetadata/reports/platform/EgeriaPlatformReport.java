@@ -591,23 +591,6 @@ public class EgeriaPlatformReport
                     }
                 }
 
-                if (configuration.getDataEngineProxyConfig() != null)
-                {
-                    OMAGServiceDetails currentDetails = serviceDetailsMap.get(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName());
-
-                    if (currentDetails == null)
-                    {
-                        currentDetails = new OMAGServiceDetails(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName());
-                    }
-
-                    currentDetails.setPartnerService(configuration.getDataEngineProxyConfig().getAccessServiceServerName(),
-                                                     configuration.getDataEngineProxyConfig().getAccessServiceRootURL(),
-                                                     AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceFullName());
-
-                    serviceDetailsMap.put(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                          currentDetails);
-                }
-
                 if (configuration.getOpenLineageServerConfig() != null)
                 {
                     OMAGServiceDetails currentDetails = serviceDetailsMap.get(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName());

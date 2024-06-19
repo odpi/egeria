@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/reference-data")
 
-@Tag(name="API: Reference Data OMVS", description="The Reference Data OMVS provides APIs for retrieving and updating code values and reference data.",
+@Tag(name="API: Reference Data OMVS", description="The Reference Data OMVS provides APIs for retrieving configuration and status from servers and platforms.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/reference-data/overview/"))
 

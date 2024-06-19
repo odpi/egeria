@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -27,7 +29,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class InformalTagUpdateRequestBody
+public class InformalTagUpdateRequestBody extends EffectiveTimeQueryRequestBody
 {
     private String  description  = null;
 
@@ -48,6 +50,8 @@ public class InformalTagUpdateRequestBody
      */
     public InformalTagUpdateRequestBody(InformalTagUpdateRequestBody template)
     {
+        super(template);
+
         if (template != null)
         {
             description = template.getDescription();
@@ -85,10 +89,9 @@ public class InformalTagUpdateRequestBody
     public String toString()
     {
         return "InformalTagUpdateRequestBody{" +
-                       "description='" + description + '\'' +
-                       '}';
+                "description='" + description + '\'' +
+                "} " + super.toString();
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -99,18 +102,11 @@ public class InformalTagUpdateRequestBody
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof InformalTagUpdateRequestBody))
-        {
-            return false;
-        }
-
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         InformalTagUpdateRequestBody that = (InformalTagUpdateRequestBody) objectToCompare;
-
-        return description != null ? description.equals(that.description) : that.description == null;
+        return Objects.equals(description, that.description);
     }
 
 
@@ -122,6 +118,6 @@ public class InformalTagUpdateRequestBody
     @Override
     public int hashCode()
     {
-        return description != null ? description.hashCode() : 0;
+        return Objects.hash(super.hashCode(), description);
     }
 }

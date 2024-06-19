@@ -96,7 +96,7 @@ public class AssetSetUp
             externalReferenceManagerClient = new ExternalReferenceManagerClient(serverName, platformURLRoot);
             connectionManager = new ConnectionManager(serverName, platformURLRoot, 100);
             locationManager = new LocationManager(serverName, platformURLRoot, 100);
-            capabilityManagerClient = new CapabilityManagerClient(serverName, platformURLRoot);
+            capabilityManagerClient = new CapabilityManagerClient(serverName, platformURLRoot, 100);
             governanceZoneManager = new GovernanceZoneManager(serverName, platformURLRoot);
         }
         catch (Exception error)

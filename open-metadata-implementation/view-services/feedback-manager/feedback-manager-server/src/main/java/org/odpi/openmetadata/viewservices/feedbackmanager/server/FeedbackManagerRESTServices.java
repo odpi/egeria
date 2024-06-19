@@ -6,8 +6,6 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.tokencontroller.TokenController;
@@ -16,6 +14,8 @@ import org.odpi.openmetadata.viewservices.feedbackmanager.properties.*;
 import org.odpi.openmetadata.viewservices.feedbackmanager.rest.*;
 import org.odpi.openmetadata.viewservices.feedbackmanager.rest.RelationshipRequestBody;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 
 
 /**
@@ -84,7 +84,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-                handler.addRatingToElement(userId, guid, isPublic, requestBody);
+                handler.addRatingToElement(userId, guid, isPublic, requestBody, new Date());
             }
             else
             {
@@ -108,7 +108,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param guid        String - unique id for the rating object
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param requestBody null request body needed to satisfy the HTTP Post request
+     * @param requestBody optional effective time
      *
      * @return void or
      * InvalidParameterException - one of the parameters is null or invalid or
@@ -116,15 +116,13 @@ public class FeedbackManagerRESTServices extends TokenController
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeRatingFromElement(String          serverName,
-                                                String          guid,
-                                                String          viewServiceURLMarker,
-                                                String          accessServiceURLMarker,
-                                                NullRequestBody requestBody)
+    public VoidResponse removeRatingFromElement(String                        serverName,
+                                                String                        guid,
+                                                String                        viewServiceURLMarker,
+                                                String                        accessServiceURLMarker,
+                                                EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "removeRatingFromElement";
-        final String guidParameterName = "guid";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -141,7 +139,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            handler.removeRatingFromElement(userId, guid);
+            if (requestBody != null)
+            {
+                handler.removeRatingFromElement(userId, guid, requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.removeRatingFromElement(userId, guid, new Date());
+            }
         }
         catch (Exception error)
         {
@@ -161,7 +166,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param isPublic is this visible to other people
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param requestBody feedback request body .
+     * @param requestBody optional effective time
      *
      * @return void or
      * InvalidParameterException - one of the parameters is null or invalid or
@@ -169,13 +174,12 @@ public class FeedbackManagerRESTServices extends TokenController
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse addLikeToElement(String          serverName,
-                                         String          guid,
-                                         boolean         isPublic,
-                                         String          viewServiceURLMarker,
-                                         String          accessServiceURLMarker,
-                                         NullRequestBody requestBody)
+    public VoidResponse addLikeToElement(String                        serverName,
+                                         String                        guid,
+                                         boolean                       isPublic,
+                                         String                        viewServiceURLMarker,
+                                         String                        accessServiceURLMarker,
+                                         EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName        = "addLikeToElement";
 
@@ -194,7 +198,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            handler.addLikeToElement(userId, guid, isPublic);
+            if (requestBody != null)
+            {
+                handler.addLikeToElement(userId, guid, isPublic, requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.addLikeToElement(userId, guid, isPublic, new Date());
+            }
         }
         catch (Exception error)
         {
@@ -213,7 +224,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param guid  String - unique id for the like object
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param requestBody null request body needed to satisfy the HTTP Post request
+     * @param requestBody optional effective time
      *
      * @return void or
      * InvalidParameterException - one of the parameters is null or invalid or
@@ -222,11 +233,11 @@ public class FeedbackManagerRESTServices extends TokenController
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse removeLikeFromElement(String          serverName,
-                                              String          guid,
-                                              String          viewServiceURLMarker,
-                                              String          accessServiceURLMarker,
-                                              NullRequestBody requestBody)
+    public VoidResponse removeLikeFromElement(String                        serverName,
+                                              String                        guid,
+                                              String                        viewServiceURLMarker,
+                                              String                        accessServiceURLMarker,
+                                              EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName        = "removeLikeFromElement";
         final String guidParameterName = "guid";
@@ -246,7 +257,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            handler.removeLikeFromElement(userId, guid);
+            if (requestBody != null)
+            {
+                handler.removeLikeFromElement(userId, guid, requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.removeLikeFromElement(userId, guid, null);
+            }
         }
         catch (Exception error)
         {
@@ -436,14 +454,15 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getElementProperties() instanceof  CommentProperties commentProperties)
+                if (requestBody.getElementProperties() instanceof CommentProperties commentProperties)
                 {
                     CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
                     handler.updateComment(userId,
                                           commentGUID,
                                           isMergeUpdate,
-                                          commentProperties);
+                                          commentProperties,
+                                          requestBody.getEffectiveTime());
                 }
                 else
                 {
@@ -465,7 +484,6 @@ public class FeedbackManagerRESTServices extends TokenController
     }
 
 
-
     /**
      * Update an existing comment's visibility.
      *
@@ -475,21 +493,20 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param isPublic is this visible to other people
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param requestBody  containing type of comment enum and the text of the comment.
+     * @param requestBody optional effective time
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid.
      * PropertyServerException There is a problem updating the element properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse   updateCommentVisibility(String          serverName,
-                                                  String          parentGUID,
-                                                  String          commentGUID,
-                                                  boolean         isPublic,
-                                                  String          viewServiceURLMarker,
-                                                  String          accessServiceURLMarker,
-                                                  NullRequestBody requestBody)
+    public VoidResponse   updateCommentVisibility(String                        serverName,
+                                                  String                        parentGUID,
+                                                  String                        commentGUID,
+                                                  boolean                       isPublic,
+                                                  String                        viewServiceURLMarker,
+                                                  String                        accessServiceURLMarker,
+                                                  EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "updateCommentVisibility";
 
@@ -508,7 +525,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            handler.updateCommentVisibility(userId, parentGUID, commentGUID, isPublic);
+            if (requestBody != null)
+            {
+                handler.updateCommentVisibility(userId, parentGUID, commentGUID, isPublic, requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.updateCommentVisibility(userId, parentGUID, commentGUID, isPublic, new Date());
+            }
         }
         catch (Exception error)
         {
@@ -527,21 +551,23 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param serverName name of the server to route the request to
      * @param questionCommentGUID unique identifier of the comment containing the question
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
+     * @param isPublic is this visible to other people
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param requestBody optional effective time
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupAcceptedAnswer(String                  serverName,
-                                            String                  questionCommentGUID,
-                                            String                  answerCommentGUID,
-                                            String                  viewServiceURLMarker,
-                                            String                  accessServiceURLMarker,
-                                            RelationshipRequestBody requestBody)
+    public VoidResponse setupAcceptedAnswer(String                        serverName,
+                                            String                        questionCommentGUID,
+                                            String                        answerCommentGUID,
+                                            boolean                       isPublic,
+                                            String                        viewServiceURLMarker,
+                                            String                        accessServiceURLMarker,
+                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "setupAcceptedAnswer";
 
@@ -562,21 +588,19 @@ public class FeedbackManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof FeedbackProperties feedbackProperties)
-                {
-                    handler.setupAcceptedAnswer(userId,
+                handler.setupAcceptedAnswer(userId,
                                                 questionCommentGUID,
                                                 answerCommentGUID,
-                                                feedbackProperties.getIsPublic());
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(CommentProperties.class.getName(), methodName);
-                }
+                                                isPublic,
+                                                requestBody.getEffectiveTime());
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, RelationshipRequestBody.class.getName());
+                handler.setupAcceptedAnswer(userId,
+                                            questionCommentGUID,
+                                            answerCommentGUID,
+                                            isPublic,
+                                            new Date());
             }
         }
         catch (Exception error)
@@ -598,20 +622,19 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param requestBody optional effective time
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
     public VoidResponse clearAcceptedAnswer(String                        serverName,
                                             String                        questionCommentGUID,
                                             String                        answerCommentGUID,
                                             String                        viewServiceURLMarker,
                                             String                        accessServiceURLMarker,
-                                            NullRequestBody               requestBody)
+                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "clearAcceptedAnswer";
 
@@ -630,7 +653,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            handler.clearAcceptedAnswer(userId, questionCommentGUID, answerCommentGUID);
+            if (requestBody != null)
+            {
+                handler.clearAcceptedAnswer(userId, questionCommentGUID, answerCommentGUID, requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.clearAcceptedAnswer(userId, questionCommentGUID, answerCommentGUID, new Date());
+            }
         }
         catch (Exception error)
         {
@@ -647,11 +677,10 @@ public class FeedbackManagerRESTServices extends TokenController
      * Removes a comment added to the element by this user.
      *
      * @param serverName name of the server instances for this request
-     * @param elementGUID  String - unique id for the element object
      * @param commentGUID  String - unique id for the comment object
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param requestBody null request body needed to satisfy the HTTP Post request
+     * @param requestBody optional effective time
      *
      * @return void or
      * InvalidParameterException - one of the parameters is null or invalid or
@@ -659,16 +688,13 @@ public class FeedbackManagerRESTServices extends TokenController
      *                                   the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @SuppressWarnings(value = "unused")
     public VoidResponse removeCommentFromElement(String                         serverName,
-                                                 String                         elementGUID,
                                                  String                         commentGUID,
                                                  String                         viewServiceURLMarker,
                                                  String                         accessServiceURLMarker,
-                                                 ReferenceableUpdateRequestBody requestBody)
+                                                 EffectiveTimeQueryRequestBody  requestBody)
     {
-        final String guidParameterName = "commentGUID";
-        final String methodName        = "removeElementComment";
+        final String methodName = "removeElementComment";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -685,7 +711,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            handler.removeComment(userId, commentGUID);
+            if (requestBody != null)
+            {
+                handler.removeComment(userId, commentGUID, requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.removeComment(userId, commentGUID, new Date());
+            }
         }
         catch (Exception error)
         {
@@ -704,6 +737,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param commentGUID  unique identifier for the comment object.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      * @return comment properties or
      *  InvalidParameterException one of the parameters is null or invalid.
      *  PropertyServerException there is a problem updating the element properties in the property server.
@@ -712,7 +746,8 @@ public class FeedbackManagerRESTServices extends TokenController
     public CommentResponse getCommentByGUID(String                        serverName,
                                             String                        commentGUID,
                                             String                        viewServiceURLMarker,
-                                            String                        accessServiceURLMarker)
+                                            String                        accessServiceURLMarker,
+                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getComment";
 
@@ -731,7 +766,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setElement(handler.getComment(userId, commentGUID));
+            if (requestBody != null)
+            {
+                response.setElement(handler.getComment(userId, commentGUID, requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElement(handler.getComment(userId, commentGUID, new Date()));
+            }
         }
         catch (Exception error)
         {
@@ -752,6 +794,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      * @return list of comments or
      *  InvalidParameterException one of the parameters is null or invalid.
      *  PropertyServerException there is a problem updating the element properties in the property server.
@@ -762,7 +805,8 @@ public class FeedbackManagerRESTServices extends TokenController
                                                        int                           startFrom,
                                                        int                           pageSize,
                                                        String                        viewServiceURLMarker,
-                                                       String                        accessServiceURLMarker)
+                                                       String                        accessServiceURLMarker,
+                                                       EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getAttachedComments";
 
@@ -781,7 +825,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setElementList(handler.getAttachedComments(userId, elementGUID, startFrom, pageSize));
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getAttachedComments(userId, elementGUID, startFrom, pageSize, requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElementList(handler.getAttachedComments(userId, elementGUID, startFrom, pageSize, new Date()));
+            }
         }
         catch (Exception error)
         {
@@ -820,7 +871,7 @@ public class FeedbackManagerRESTServices extends TokenController
                                                 boolean                 ignoreCase,
                                                 String                  viewServiceURLMarker,
                                                 String                  accessServiceURLMarker,
-                                                SearchStringRequestBody requestBody)
+                                                FilterRequestBody       requestBody)
     {
         final String methodName = "findComments";
 
@@ -842,13 +893,18 @@ public class FeedbackManagerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElementList(handler.findComments(userId,
-                                                             instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
+                                                             instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
                                                              startFrom,
-                                                             pageSize));
+                                                             pageSize,
+                                                             requestBody.getEffectiveTime()));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, SearchStringRequestBody.class.getName());
+                response.setElementList(handler.findComments(userId,
+                                                             instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                             startFrom,
+                                                             pageSize,
+                                                             new Date()));
             }
         }
         catch (Exception error)
@@ -954,7 +1010,8 @@ public class FeedbackManagerRESTServices extends TokenController
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 handler.updateTagDescription(userId,
                                              tagGUID,
-                                             requestBody.getDescription());
+                                             requestBody.getDescription(),
+                                             requestBody.getEffectiveTime());
             }
             else
             {
@@ -978,22 +1035,20 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param tagGUID   unique id for the tag.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param requestBody  null request body.
+     * @param requestBody  optional effective time.
      *
      * @return void or
      * InvalidParameterException - one of the parameters is invalid or
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse   deleteTag(String          serverName,
-                                    String          tagGUID,
-                                    String          viewServiceURLMarker,
-                                    String          accessServiceURLMarker,
-                                    NullRequestBody requestBody)
+    public VoidResponse   deleteTag(String                        serverName,
+                                    String                        tagGUID,
+                                    String                        viewServiceURLMarker,
+                                    String                        accessServiceURLMarker,
+                                    EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName           = "deleteTag";
-        final String tagGUIDParameterName = "tagGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -1009,7 +1064,15 @@ public class FeedbackManagerRESTServices extends TokenController
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.deleteTag(userId, tagGUID);
+
+            if (requestBody != null)
+            {
+                handler.deleteTag(userId, tagGUID, requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.deleteTag(userId, tagGUID, new Date());
+            }
         }
         catch (Exception error)
         {
@@ -1028,16 +1091,18 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param guid unique identifier of the tag.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      *
      * @return Tag object or
      * InvalidParameterException - one of the parameters is invalid or
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public InformalTagResponse getTag(String serverName,
-                                      String viewServiceURLMarker,
-                                      String accessServiceURLMarker,
-                                      String guid)
+    public InformalTagResponse getTag(String                        serverName,
+                                      String                        viewServiceURLMarker,
+                                      String                        accessServiceURLMarker,
+                                      String                        guid,
+                                      EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getTag";
 
@@ -1055,7 +1120,15 @@ public class FeedbackManagerRESTServices extends TokenController
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setTag(handler.getTag(userId, guid));
+
+            if (requestBody != null)
+            {
+                response.setTag(handler.getTag(userId, guid, requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setTag(handler.getTag(userId, guid, new Date()));
+            }
         }
         catch (Exception error)
         {
@@ -1071,23 +1144,23 @@ public class FeedbackManagerRESTServices extends TokenController
      * Return the list of tags exactly matching the supplied name.
      *
      * @param serverName name of the server instances for this request
-     * @param requestBody name of tag.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody name of tag.
      *
      * @return tag list or
      * InvalidParameterException - one of the parameters is invalid or
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public InformalTagsResponse getTagsByName(String          serverName,
-                                              NameRequestBody requestBody,
-                                              int             startFrom,
-                                              int             pageSize,
-                                              String          viewServiceURLMarker,
-                                              String          accessServiceURLMarker)
+    public InformalTagsResponse getTagsByName(String            serverName,
+                                              int               startFrom,
+                                              int               pageSize,
+                                              String            viewServiceURLMarker,
+                                              String            accessServiceURLMarker,
+                                              FilterRequestBody requestBody)
     {
         final String methodName = "getTagsByName";
 
@@ -1109,9 +1182,10 @@ public class FeedbackManagerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setTags(handler.getTagsByName(userId,
-                                                       requestBody.getName(),
+                                                       requestBody.getFilter(),
                                                        startFrom,
-                                                       pageSize));
+                                                       pageSize,
+                                                       requestBody.getEffectiveTime()));
             }
             else
             {
@@ -1154,7 +1228,7 @@ public class FeedbackManagerRESTServices extends TokenController
                                          boolean                 ignoreCase,
                                          String                  viewServiceURLMarker,
                                          String                  accessServiceURLMarker,
-                                         SearchStringRequestBody requestBody)
+                                         FilterRequestBody       requestBody)
     {
         final String methodName = "findTags";
 
@@ -1176,13 +1250,18 @@ public class FeedbackManagerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setTags(handler.findTags(userId,
-                                                  instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
+                                                  instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
                                                   startFrom,
-                                                  pageSize));
+                                                  pageSize,
+                                                  requestBody.getEffectiveTime()));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, SearchStringRequestBody.class.getName());
+                response.setTags(handler.findTags(userId,
+                                                  instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                  startFrom,
+                                                  pageSize,
+                                                  new Date()));
             }
         }
         catch (Exception error)
@@ -1221,7 +1300,7 @@ public class FeedbackManagerRESTServices extends TokenController
                                            boolean                 ignoreCase,
                                            String                  viewServiceURLMarker,
                                            String                  accessServiceURLMarker,
-                                           SearchStringRequestBody requestBody)
+                                           FilterRequestBody requestBody)
     {
         final String methodName = "findMyTags";
 
@@ -1243,13 +1322,18 @@ public class FeedbackManagerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setTags(handler.findMyTags(userId,
-                                                    instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
+                                                    instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
                                                     startFrom,
-                                                    pageSize));
+                                                    pageSize,
+                                                    requestBody.getEffectiveTime()));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, SearchStringRequestBody.class.getName());
+                response.setTags(handler.findMyTags(userId,
+                                                    instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                    startFrom,
+                                                    pageSize,
+                                                    new Date()));
             }
         }
         catch (Exception error)
@@ -1268,6 +1352,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param serverName   name of the server instances for this request
      * @param elementGUID    unique id for the element.
      * @param tagGUID      unique id of the tag.
+     * @param isPublic visibility of link
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody  feedback request body.
@@ -1277,23 +1362,17 @@ public class FeedbackManagerRESTServices extends TokenController
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public VoidResponse   addTagToElement(String             serverName,
-                                          String             elementGUID,
-                                          String             tagGUID,
-                                          String             viewServiceURLMarker,
-                                          String             accessServiceURLMarker,
-                                          FeedbackProperties requestBody)
+    public VoidResponse   addTagToElement(String                        serverName,
+                                          String                        elementGUID,
+                                          String                        tagGUID,
+                                          boolean                       isPublic,
+                                          String                        viewServiceURLMarker,
+                                          String                        accessServiceURLMarker,
+                                          EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "addTagToElement";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        boolean  isPublic = false;
-
-        if (requestBody != null)
-        {
-            isPublic = requestBody.getIsPublic();
-        }
 
         VoidResponse  response = new VoidResponse();
         AuditLog      auditLog = null;
@@ -1307,7 +1386,15 @@ public class FeedbackManagerRESTServices extends TokenController
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.addTagToElement(userId, elementGUID, tagGUID, isPublic);
+
+            if (requestBody != null)
+            {
+                handler.addTagToElement(userId, elementGUID, tagGUID, isPublic, requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.addTagToElement(userId, elementGUID, tagGUID, isPublic, new Date());
+            }
         }
         catch (Exception error)
         {
@@ -1327,20 +1414,19 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param tagGUID   unique id for the tag.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param requestBody  null request body needed for correct protocol exchange.
+     * @param requestBody optional effective time
      *
      * @return void or
      * InvalidParameterException - one of the parameters is invalid or
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse   removeTagFromElement(String          serverName,
-                                               String          elementGUID,
-                                               String          tagGUID,
-                                               String          viewServiceURLMarker,
-                                               String          accessServiceURLMarker,
-                                               NullRequestBody requestBody)
+    public VoidResponse   removeTagFromElement(String                        serverName,
+                                               String                        elementGUID,
+                                               String                        tagGUID,
+                                               String                        viewServiceURLMarker,
+                                               String                        accessServiceURLMarker,
+                                               EffectiveTimeQueryRequestBody requestBody)
     {
         final String   methodName  = "removeTagFromElement";
 
@@ -1359,7 +1445,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            handler.removeTagFromElement(userId, elementGUID, tagGUID);
+            if (requestBody != null)
+            {
+                handler.removeTagFromElement(userId, elementGUID, tagGUID, requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.removeTagFromElement(userId, elementGUID, tagGUID, new Date());
+            }
         }
         catch (Exception error)
         {
@@ -1381,18 +1474,20 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      *
      * @return element stubs list or
      * InvalidParameterException the userId is null or invalid or
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public RelatedElementsResponse getElementsByTag(String serverName,
-                                                    String tagGUID,
-                                                    int    startFrom,
-                                                    int    pageSize,
-                                                    String viewServiceURLMarker,
-                                                    String accessServiceURLMarker)
+    public RelatedElementsResponse getElementsByTag(String                        serverName,
+                                                    String                        tagGUID,
+                                                    int                           startFrom,
+                                                    int                           pageSize,
+                                                    String                        viewServiceURLMarker,
+                                                    String                        accessServiceURLMarker,
+                                                    EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getElementsByTag";
 
@@ -1410,7 +1505,15 @@ public class FeedbackManagerRESTServices extends TokenController
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElementList(handler.getElementsByTag(userId, tagGUID, startFrom, pageSize));
+
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getElementsByTag(userId, tagGUID, startFrom, pageSize, requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElementList(handler.getElementsByTag(userId, tagGUID, startFrom, pageSize, new Date()));
+            }
         }
         catch (Exception error)
         {
@@ -1426,6 +1529,187 @@ public class FeedbackManagerRESTServices extends TokenController
      * A note log maintains an ordered list of notes.  It can be used to support release note, blogs and similar
      * broadcast information.  Notelogs are typically maintained by the owners/stewards of an element.
      */
+
+    /**
+     * Creates a new noteLog and returns the unique identifier for it.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param elementGUID unique identifier of the element where the note log is located
+     * @param isPublic                 is this element visible to other people.
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody  contains the name of the tag and (optional) description of the tag
+     *
+     * @return guid for new tag or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createNoteLog(String            serverName,
+                                      String            elementGUID,
+                                      boolean           isPublic,
+                                      String            viewServiceURLMarker,
+                                      String            accessServiceURLMarker,
+                                      NoteLogProperties requestBody)
+    {
+        final String   methodName = "createNoteLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse  response = new GUIDResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            if (requestBody != null)
+            {
+                CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                response.setGUID(handler.createNoteLog(userId, elementGUID, requestBody, isPublic));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NoteLogProperties.class.getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update an existing note log.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param noteLogGUID  unique identifier for the note log to change.
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody  containing type of comment enum and the text of the comment.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse   updateNoteLog(String                         serverName,
+                                        String                         noteLogGUID,
+                                        boolean                        isMergeUpdate,
+                                        String                         viewServiceURLMarker,
+                                        String                         accessServiceURLMarker,
+                                        ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName = "updateNoteLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse  response = new VoidResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getElementProperties() instanceof  NoteLogProperties noteLogProperties)
+                {
+                    CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
+
+                    handler.updateNoteLog(userId,
+                                          noteLogGUID,
+                                          isMergeUpdate,
+                                          noteLogProperties,
+                                          requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NoteLogProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, ReferenceableUpdateRequestBody.class.getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Removes a note log from the repository.  All the relationships to referenceables are lost.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param noteLogGUID   unique id for the note log.
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
+     *
+     * @return void or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse   deleteNoteLog(String                        serverName,
+                                        String                        noteLogGUID,
+                                        String                        viewServiceURLMarker,
+                                        String                        accessServiceURLMarker,
+                                        EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "deleteNoteLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse  response = new VoidResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                handler.removeNoteLog(userId, noteLogGUID, requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.removeNoteLog(userId, noteLogGUID, new Date());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
 
     /**
@@ -1455,7 +1739,7 @@ public class FeedbackManagerRESTServices extends TokenController
                                          boolean                 ignoreCase,
                                          String                  viewServiceURLMarker,
                                          String                  accessServiceURLMarker,
-                                         SearchStringRequestBody requestBody)
+                                         FilterRequestBody       requestBody)
     {
         final String methodName = "findNoteLogs";
 
@@ -1472,18 +1756,23 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
+
             if (requestBody != null)
             {
-                CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
-
                 response.setElementList(handler.findNoteLogs(userId,
-                                                             instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
+                                                             instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
                                                              startFrom,
-                                                             pageSize));
+                                                             pageSize,
+                                                             requestBody.getEffectiveTime()));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, SearchStringRequestBody.class.getName());
+                response.setElementList(handler.findNoteLogs(userId,
+                                                             instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                             startFrom,
+                                                             pageSize,
+                                                             new Date()));
             }
         }
         catch (Exception error)
@@ -1513,12 +1802,12 @@ public class FeedbackManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public NoteLogsResponse getNoteLogsByName(String          serverName,
-                                              int             startFrom,
-                                              int             pageSize,
-                                              String          viewServiceURLMarker,
-                                              String          accessServiceURLMarker,
-                                              NameRequestBody requestBody)
+    public NoteLogsResponse getNoteLogsByName(String            serverName,
+                                              int               startFrom,
+                                              int               pageSize,
+                                              String            viewServiceURLMarker,
+                                              String            accessServiceURLMarker,
+                                              FilterRequestBody requestBody)
     {
         final String methodName = "getNoteLogsByName";
 
@@ -1537,7 +1826,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-           response.setElementList(handler.getNoteLogsByName(userId, requestBody.getName(), startFrom, pageSize));
+           if (requestBody != null)
+           {
+               response.setElementList(handler.getNoteLogsByName(userId, requestBody.getFilter(), startFrom, pageSize, requestBody.getEffectiveTime()));
+           }
+           else
+           {
+               restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+           }
         }
         catch (Exception error)
         {
@@ -1560,6 +1856,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param pageSize maximum results that can be returned
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      *
      * @return list of associated metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1571,7 +1868,8 @@ public class FeedbackManagerRESTServices extends TokenController
                                                   int                           startFrom,
                                                   int                           pageSize,
                                                   String                        viewServiceURLMarker,
-                                                  String                        accessServiceURLMarker)
+                                                  String                        accessServiceURLMarker,
+                                                  EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getNotesForNoteLog";
 
@@ -1590,7 +1888,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            response.setElementList(handler.getNoteLogsForElement(userId, elementGUID, startFrom, pageSize));
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getNoteLogsForElement(userId, elementGUID, startFrom, pageSize, requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElementList(handler.getNoteLogsForElement(userId, elementGUID, startFrom, pageSize, new Date()));
+            }
         }
         catch (Exception error)
         {
@@ -1611,6 +1916,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param noteLogGUID unique identifier of the requested metadata element
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      *
      * @return requested metadata element or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1620,7 +1926,8 @@ public class FeedbackManagerRESTServices extends TokenController
     public NoteLogResponse getNoteLogByGUID(String                        serverName,
                                             String                        noteLogGUID,
                                             String                        viewServiceURLMarker,
-                                            String                        accessServiceURLMarker)
+                                            String                        accessServiceURLMarker,
+                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getNoteLogByGUID";
 
@@ -1638,7 +1945,14 @@ public class FeedbackManagerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            response.setElement(handler.getNoteLogByGUID(userId, noteLogGUID));
+            if (requestBody != null)
+            {
+                response.setElement(handler.getNoteLogByGUID(userId, noteLogGUID, requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElement(handler.getNoteLogByGUID(userId, noteLogGUID, new Date()));
+            }
         }
         catch (Exception error)
         {
@@ -1654,6 +1968,187 @@ public class FeedbackManagerRESTServices extends TokenController
     /* ===============================================================================
      * A note log typically contains many notes, linked with relationships.
      */
+
+
+    /**
+     * Creates a new note for a note log and returns the unique identifier for it.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param noteLogGUID unique identifier of the  note log
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody  contains the name of the tag and (optional) description of the tag
+     *
+     * @return guid for new tag or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createNote(String         serverName,
+                                   String         noteLogGUID,
+                                   String         viewServiceURLMarker,
+                                   String         accessServiceURLMarker,
+                                   NoteProperties requestBody)
+    {
+        final String   methodName = "createNote";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse  response = new GUIDResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            if (requestBody != null)
+            {
+                CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                response.setGUID(handler.createNote(userId, noteLogGUID, requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NoteLogProperties.class.getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update an existing note.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param noteGUID  unique identifier for the note to change.
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody  containing type of comment enum and the text of the comment.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse   updateNote(String                         serverName,
+                                     String                         noteGUID,
+                                     boolean                        isMergeUpdate,
+                                     String                         viewServiceURLMarker,
+                                     String                         accessServiceURLMarker,
+                                     ReferenceableUpdateRequestBody requestBody)
+    {
+        final String methodName = "updateNote";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse  response = new VoidResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getElementProperties() instanceof  NoteProperties noteProperties)
+                {
+                    CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
+
+                    handler.updateNote(userId,
+                                       noteGUID,
+                                       isMergeUpdate,
+                                       noteProperties,
+                                       requestBody.getEffectiveTime());
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NoteProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, ReferenceableUpdateRequestBody.class.getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Removes a note from the repository.  All the relationships to referenceables are lost.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param noteGUID   unique id for the note .
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
+     *
+     * @return void or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse   deleteNote(String                        serverName,
+                                     String                        noteGUID,
+                                     String                        viewServiceURLMarker,
+                                     String                        accessServiceURLMarker,
+                                     EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName        = "deleteNote";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse  response = new VoidResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.removeNote(userId, noteGUID, requestBody.getEffectiveTime());
+            }
+            else
+            {
+                handler.removeNote(userId, noteGUID, new Date());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
 
     /**
      * Retrieve the list of note metadata elements that contain the search string.
@@ -1682,7 +2177,7 @@ public class FeedbackManagerRESTServices extends TokenController
                                    boolean                 ignoreCase,
                                    String                  viewServiceURLMarker,
                                    String                  accessServiceURLMarker,
-                                   SearchStringRequestBody requestBody)
+                                   FilterRequestBody       requestBody)
     {
         final String methodName = "findNotes";
 
@@ -1699,18 +2194,23 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
+
             if (requestBody != null)
             {
-                CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
-
                 response.setElementList(handler.findNotes(userId,
-                                                          instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
+                                                          instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
                                                           startFrom,
-                                                          pageSize));
+                                                          pageSize,
+                                                          requestBody.getEffectiveTime()));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, SearchStringRequestBody.class.getName());
+                response.setElementList(handler.findNotes(userId,
+                                                          instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                          startFrom,
+                                                          pageSize,
+                                                          new Date()));
             }
         }
         catch (Exception error)
@@ -1733,6 +2233,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param pageSize maximum results that can be returned
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      *
      * @return list of associated metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1744,7 +2245,8 @@ public class FeedbackManagerRESTServices extends TokenController
                                             int                           startFrom,
                                             int                           pageSize,
                                             String                        viewServiceURLMarker,
-                                            String                        accessServiceURLMarker)
+                                            String                        accessServiceURLMarker,
+                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getNotesForNoteLog";
 
@@ -1763,7 +2265,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            response.setElementList(handler.getNotesForNoteLog(userId, noteLogGUID, startFrom, pageSize));
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getNotesForNoteLog(userId, noteLogGUID, startFrom, pageSize, requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElementList(handler.getNotesForNoteLog(userId, noteLogGUID, startFrom, pageSize, new Date()));
+            }
         }
         catch (Exception error)
         {
@@ -1783,6 +2292,7 @@ public class FeedbackManagerRESTServices extends TokenController
      * @param noteGUID unique identifier of the requested metadata element
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      *
      * @return matching metadata element or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1792,7 +2302,8 @@ public class FeedbackManagerRESTServices extends TokenController
     public NoteResponse getNoteByGUID(String                        serverName,
                                       String                        noteGUID,
                                       String                        viewServiceURLMarker,
-                                      String                        accessServiceURLMarker)
+                                      String                        accessServiceURLMarker,
+                                      EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getNoteByGUID";
 
@@ -1811,7 +2322,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
 
-            response.setElement(handler.getNoteByGUID(userId, noteGUID));
+            if (requestBody != null)
+            {
+                response.setElement(handler.getNoteByGUID(userId, noteGUID, requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElement(handler.getNoteByGUID(userId, noteGUID, new Date()));
+            }
         }
         catch (Exception error)
         {

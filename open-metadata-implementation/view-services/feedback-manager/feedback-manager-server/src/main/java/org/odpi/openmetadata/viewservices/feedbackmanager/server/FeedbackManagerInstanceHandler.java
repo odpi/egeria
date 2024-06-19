@@ -38,7 +38,7 @@ public class FeedbackManagerInstanceHandler extends OMVSServiceInstanceHandler
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param serviceOperationName service operation - usually the top level rest call
-     * @return SubjectAreaNodeClients subject area nodes API objects
+     * @return client
      * @throws InvalidParameterException unknown server/service
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error

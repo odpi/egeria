@@ -95,7 +95,7 @@ public class AssetDeploy
         {
             System.out.println("Creating " + platformType + " platform " + platformName + " with endpoint " + platformNetworkAddress);
 
-            PlatformManagerClient platformManagerClient = new PlatformManagerClient(serverName, platformURLRoot);
+            PlatformManagerClient platformManagerClient = new PlatformManagerClient(serverName, platformURLRoot, 100);
 
             System.out.println("Adding platform to " + serverName + " ...");
 
@@ -168,7 +168,7 @@ public class AssetDeploy
         {
             System.out.println("Creating " + softwareServerType + " server " + softwareServerName + " deployed on platform " + softwarePlatformURL);
 
-            ServerManagerClient serverManagerClient = new ServerManagerClient(serverName, platformURLRoot);
+            ServerManagerClient serverManagerClient = new ServerManagerClient(serverName, platformURLRoot, 100);
 
             System.out.println("Adding platform to " + softwareServerName + " ...");
 
@@ -181,7 +181,7 @@ public class AssetDeploy
 
             if (serverGUID != null)
             {
-                PlatformManagerClient platformManagerClient = new PlatformManagerClient(serverName, platformURLRoot);
+                PlatformManagerClient platformManagerClient = new PlatformManagerClient(serverName, platformURLRoot, 100);
 
                 List<SoftwareServerPlatformElement> platforms = platformManagerClient.findSoftwareServerPlatforms(clientUserId, softwarePlatformURL, null, 0, 0);
 

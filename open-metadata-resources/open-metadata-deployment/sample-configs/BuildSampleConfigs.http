@@ -108,56 +108,7 @@ Content-Type: application/json
 {
   "class": "ViewServiceRequestBody",
   "omagserverName": "active-metadata-store",
-  "omagserverPlatformRootURL": "{{egeriaEndpoint}}",
-  "resourceEndpoints": [
-    {
-      "class": "ResourceEndpointConfig",
-      "resourceCategory": "Platform",
-      "platformName": "Platform:9443",
-      "platformRootURL": "{{egeriaEndpoint}}",
-      "description": "This is the default OMAG Server Platform."
-    },
-    {
-      "class": "ResourceEndpointConfig",
-      "resourceCategory": "Server",
-      "platformName": "Platform:9443",
-      "serverInstanceName": "Active Metadata Access Store",
-      "serverName": "active-metadata-store",
-      "description": "Metadata server with XTDB repository and supporting Apache Kafka notifications."
-    },
-    {
-      "class": "ResourceEndpointConfig",
-      "resourceCategory": "Server",
-      "platformName": "Platform:9443",
-      "serverInstanceName": "Simple Metadata Access Store",
-      "serverName": "simple-metadata-store",
-      "description": "Metadata server with in-memory repository and no event notifications."
-    },
-    {
-      "class": "ResourceEndpointConfig",
-      "resourceCategory": "Server",
-      "platformName": "Platform:9443",
-      "serverInstanceName": "Integration Daemon",
-      "serverName": "integration-daemon",
-      "description": "Integration daemon supporting the synchronization of metadata with third party platforms and tools."
-    },
-    {
-      "class": "ResourceEndpointConfig",
-      "resourceCategory": "Server",
-      "platformName": "Platform:9443",
-      "serverInstanceName": "Engine Host",
-      "serverName": "engine-host",
-      "description": "Engine host server running the AssetSurvey and Asset Governance governance engines."
-    },
-    {
-      "class": "ResourceEndpointConfig",
-      "resourceCategory": "Server",
-      "platformName": "Platform:9443",
-      "serverInstanceName": "View Server",
-      "serverName": "view-server",
-      "description": "View server providing REST API support to user interfaces and non-Java environments."
-    }
-  ]
+  "omagserverPlatformRootURL": "{{egeriaEndpoint}}"
 }
 
 ###

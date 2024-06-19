@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.api;
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeployedCapabilityElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerPlatformElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
@@ -204,6 +205,31 @@ public interface SoftwareServerManagerInterface
                                                          int    pageSize) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException;
+
+
+    /**
+     * Retrieve the list of server metadata elements with a matching deployed impl type.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<SoftwareServerElement> getSoftwareServersByDeployedImplType(String userId,
+                                                                     String name,
+                                                                     Date   effectiveTime,
+                                                                     int    startFrom,
+                                                                     int    pageSize) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException;
 
 
     /**

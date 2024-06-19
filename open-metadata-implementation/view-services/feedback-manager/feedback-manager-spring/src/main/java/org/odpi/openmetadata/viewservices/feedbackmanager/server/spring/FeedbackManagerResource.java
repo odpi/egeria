@@ -5,11 +5,9 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.viewservices.feedbackmanager.rest.*;
 import org.odpi.openmetadata.viewservices.feedbackmanager.properties.*;
+import org.odpi.openmetadata.viewservices.feedbackmanager.rest.*;
 import org.odpi.openmetadata.viewservices.feedbackmanager.server.FeedbackManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,7 +65,8 @@ public class FeedbackManagerResource
     public GUIDResponse addCommentReply(@PathVariable String                         serverName,
                                         @PathVariable String                         elementGUID,
                                         @PathVariable String                         commentGUID,
-                                        @RequestParam boolean                        isPublic,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                            boolean                        isPublic,
                                         @RequestParam (required = false)
                                             String                         viewServiceURLMarker,
                                         @RequestParam (required = false, defaultValue = "asset-manager")
@@ -103,7 +102,8 @@ public class FeedbackManagerResource
 
     public GUIDResponse addCommentToElement(@PathVariable String                         serverName,
                                             @PathVariable String                         elementGUID,
-                                            @RequestParam boolean                        isPublic,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                boolean                        isPublic,
                                             @RequestParam (required = false)
                                                 String                         viewServiceURLMarker,
                                             @RequestParam (required = false, defaultValue = "asset-manager")
@@ -122,7 +122,7 @@ public class FeedbackManagerResource
      * @param isPublic is this visible to other people
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param requestBody feedback request body.
+     * @param requestBody optional effective time
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -139,13 +139,14 @@ public class FeedbackManagerResource
 
     public VoidResponse addLikeToElement(@PathVariable String         serverName,
                                          @PathVariable String         elementGUID,
-                                         @RequestParam boolean        isPublic,
+                                         @RequestParam (required = false, defaultValue = "false")
+                                             boolean                        isPublic,
                                          @RequestParam (required = false)
                                              String                         viewServiceURLMarker,
                                          @RequestParam (required = false, defaultValue = "asset-manager")
                                              String                         accessServiceURLMarker,
                                          @RequestBody (required = false)
-                                         NullRequestBody requestBody)
+                                             EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.addLikeToElement(serverName, elementGUID, isPublic, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
@@ -169,13 +170,14 @@ public class FeedbackManagerResource
     @PostMapping(path = "/elements/{elementGUID}/ratings")
 
     @Operation(summary="addRatingToElement",
-               description="Adds a star rating and optional review text to the element.",
+               description="Adds, or updates, a star rating and optional review text to the element.",
                externalDocs=@ExternalDocumentation(description="Element Feedback",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public VoidResponse addRatingToElement(@PathVariable String           serverName,
                                            @PathVariable String           elementGUID,
-                                           @RequestParam boolean          isPublic,
+                                           @RequestParam (required = false, defaultValue = "false")
+                                               boolean                        isPublic,
                                            @RequestParam (required = false)
                                                String                         viewServiceURLMarker,
                                            @RequestParam (required = false, defaultValue = "asset-manager")
@@ -194,7 +196,7 @@ public class FeedbackManagerResource
      * @param tagGUID          unique id of the tag.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
-     * @param requestBody      null request body needed for correct protocol exchange.
+     * @param requestBody      optional effective time
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -211,13 +213,16 @@ public class FeedbackManagerResource
     public VoidResponse addTagToElement(@PathVariable String             serverName,
                                         @PathVariable String             elementGUID,
                                         @PathVariable String             tagGUID,
+                                        @RequestParam (required = false, defaultValue = "false")
+                                            boolean                        isPublic,
                                         @RequestParam (required = false)
                                             String                         viewServiceURLMarker,
                                         @RequestParam (required = false, defaultValue = "asset-manager")
                                             String                         accessServiceURLMarker,
-                                        @RequestBody FeedbackProperties requestBody)
+                                        @RequestBody (required = false)
+                                            EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.addTagToElement(serverName, elementGUID, tagGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
+        return restAPI.addTagToElement(serverName, elementGUID, tagGUID, isPublic, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 
 
@@ -281,7 +286,8 @@ public class FeedbackManagerResource
                                         String                         viewServiceURLMarker,
                                     @RequestParam (required = false, defaultValue = "asset-manager")
                                         String                         accessServiceURLMarker,
-                                    @RequestBody(required = false)  NullRequestBody requestBody)
+                                    @RequestBody(required = false)
+                                        EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.deleteTag(serverName, tagGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
@@ -296,13 +302,14 @@ public class FeedbackManagerResource
      * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      *
      * @return element stubs list or
      * InvalidParameterException the userId is null or invalid or
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @GetMapping(path = "/elements/by-tag/{tagGUID}")
+    @PostMapping(path = "/elements/by-tag/{tagGUID}/retrieve")
 
     @Operation(summary="getElementsByTag",
                description="Return the list of unique identifiers for elements that are linked to a specific tag either directly, or via one of its schema elements.",
@@ -310,16 +317,18 @@ public class FeedbackManagerResource
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
 
     public RelatedElementsResponse getElementsByTag(@PathVariable String serverName,
-                                             @PathVariable String tagGUID,
-                                             @RequestParam int    startFrom,
-                                             @RequestParam int    pageSize,
-                                             @RequestParam (required = false)
-                                                 String                         viewServiceURLMarker,
-                                             @RequestParam (required = false, defaultValue = "asset-manager")
-                                                 String                         accessServiceURLMarker)
+                                                    @PathVariable String tagGUID,
+                                                    @RequestParam int    startFrom,
+                                                    @RequestParam int    pageSize,
+                                                    @RequestParam (required = false)
+                                                    String                         viewServiceURLMarker,
+                                                    @RequestParam (required = false, defaultValue = "asset-manager")
+                                                    String                         accessServiceURLMarker,
+                                                    @RequestBody(required = false)
+                                                        EffectiveTimeQueryRequestBody requestBody)
 
     {
-        return restAPI.getElementsByTag(serverName, tagGUID, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker);
+        return restAPI.getElementsByTag(serverName, tagGUID, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 
 
@@ -330,13 +339,14 @@ public class FeedbackManagerResource
      * @param tagGUID unique identifier of the meaning.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      *
      * @return tag object or
      * InvalidParameterException the userId is null or invalid or
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @GetMapping(path = "/tags/{tagGUID}")
+    @PostMapping(path = "/tags/{tagGUID}/retrieve")
 
     @Operation(summary="getTag",
                description="Return the informal tag for the supplied unique identifier (tagGUID).",
@@ -348,9 +358,11 @@ public class FeedbackManagerResource
                                       @RequestParam (required = false)
                                           String                         viewServiceURLMarker,
                                       @RequestParam (required = false, defaultValue = "asset-manager")
-                                          String                         accessServiceURLMarker)
+                                          String                         accessServiceURLMarker,
+                                      @RequestBody(required = false)
+                                          EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getTag(serverName, tagGUID, viewServiceURLMarker, accessServiceURLMarker);
+        return restAPI.getTag(serverName, tagGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 
 
@@ -382,9 +394,9 @@ public class FeedbackManagerResource
                                                   String                         viewServiceURLMarker,
                                               @RequestParam (required = false, defaultValue = "asset-manager")
                                                   String                         accessServiceURLMarker,
-                                              @RequestBody  NameRequestBody requestBody)
+                                              @RequestBody  FilterRequestBody requestBody)
     {
-        return restAPI.getTagsByName(serverName, requestBody, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker);
+        return restAPI.getTagsByName(serverName, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 
 
@@ -428,7 +440,8 @@ public class FeedbackManagerResource
                                                     String                         viewServiceURLMarker,
                                                 @RequestParam (required = false, defaultValue = "asset-manager")
                                                     String                         accessServiceURLMarker,
-                                                @RequestBody  SearchStringRequestBody  requestBody)
+                                                @RequestBody  (required = false)
+                                                    FilterRequestBody              requestBody)
     {
         return restAPI.findComments(serverName,
                                     startFrom,
@@ -443,7 +456,7 @@ public class FeedbackManagerResource
 
 
     /**
-     * Return the list of comments containing the supplied string in the text. The search string is a regular expression (RegEx).
+     * Return the list of tags containing the supplied string in the text. The search string is a regular expression (RegEx).
      *
      * @param serverName name of the server instances for this request.
      * @param startsWith does the value start with the supplied string?
@@ -482,7 +495,8 @@ public class FeedbackManagerResource
                                              String                         viewServiceURLMarker,
                                          @RequestParam (required = false, defaultValue = "asset-manager")
                                              String                         accessServiceURLMarker,
-                                         @RequestBody  SearchStringRequestBody  requestBody)
+                                         @RequestBody  (required = false)
+                                             FilterRequestBody              requestBody)
     {
         return restAPI.findTags(serverName,
                                 startFrom,
@@ -536,7 +550,8 @@ public class FeedbackManagerResource
                                                String                         viewServiceURLMarker,
                                            @RequestParam (required = false, defaultValue = "asset-manager")
                                                String                         accessServiceURLMarker,
-                                           @RequestBody  SearchStringRequestBody  requestBody)
+                                           @RequestBody  (required = false)
+                                               FilterRequestBody              requestBody)
     {
         return restAPI.findMyTags(serverName,
                                   startFrom,
@@ -554,7 +569,6 @@ public class FeedbackManagerResource
      * Removes a comment added to the element by this user.  This deletes the link to the comment, the comment itself and any comment replies attached to it.
      *
      * @param serverName name of the server instances for this request
-     * @param elementGUID  String - unique id for the element object
      * @param commentGUID  String - unique id for the comment object
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
@@ -565,7 +579,7 @@ public class FeedbackManagerResource
      * PropertyServerException There is a problem updating the element properties in the metadata repository.
      * UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    @PostMapping(path = "/elements/{elementGUID}/comments/{commentGUID}/remove")
+    @PostMapping(path = "/comments/{commentGUID}/remove")
 
     @Operation(summary="removeCommentFromElement",
                description="Removes a comment added to the element by this user.  This deletes the link to the comment, the comment itself and any comment replies attached to it.",
@@ -573,16 +587,15 @@ public class FeedbackManagerResource
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public VoidResponse removeCommentFromElement(@PathVariable String                         serverName,
-                                                 @PathVariable String                         elementGUID,
                                                  @PathVariable String                         commentGUID,
                                                  @RequestParam (required = false)
                                                      String                         viewServiceURLMarker,
                                                  @RequestParam (required = false, defaultValue = "asset-manager")
                                                      String                         accessServiceURLMarker,
                                                  @RequestBody(required = false)
-                                                                ReferenceableUpdateRequestBody requestBody)
+                                                                EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.removeCommentFromElement(serverName, elementGUID, commentGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
+        return restAPI.removeCommentFromElement(serverName,  commentGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 
 
@@ -593,21 +606,29 @@ public class FeedbackManagerResource
      * @param commentGUID  unique identifier for the comment object.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      * @return comment properties or
      *  InvalidParameterException one of the parameters is null or invalid.
      *  PropertyServerException there is a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    @GetMapping(path = "/comments/{commentGUID}")
+    @PostMapping(path = "/comments/{commentGUID}/retrieve")
+
+    @Operation(summary="getComment",
+            description="Return the requested comment.",
+            externalDocs=@ExternalDocumentation(description="Element Feedback",
+                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public CommentResponse getComment(@PathVariable String                        serverName,
                                       @PathVariable String                        commentGUID,
                                       @RequestParam (required = false)
                                                  String                         viewServiceURLMarker,
                                       @RequestParam (required = false, defaultValue = "asset-manager")
-                                                 String                         accessServiceURLMarker)
+                                                 String                         accessServiceURLMarker,
+                                      @RequestBody(required = false)
+                                          EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getCommentByGUID(serverName, commentGUID, viewServiceURLMarker, accessServiceURLMarker);
+        return restAPI.getCommentByGUID(serverName, commentGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 
 
@@ -620,12 +641,18 @@ public class FeedbackManagerResource
      * @param pageSize   maximum number of elements to return.
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      * @return list of comments or
      *  InvalidParameterException one of the parameters is null or invalid.
      *  PropertyServerException there is a problem updating the element properties in the property server.
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    @GetMapping(path = "/elements/{elementGUID}/comments")
+    @PostMapping(path = "/elements/{elementGUID}/comments/retrieve")
+
+    @Operation(summary="getAttachedComments",
+            description="Return the comments attached to an element.",
+            externalDocs=@ExternalDocumentation(description="Element Feedback",
+                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public CommentElementsResponse getAttachedComments(@PathVariable String                        serverName,
                                                        @PathVariable String                        elementGUID,
@@ -634,9 +661,10 @@ public class FeedbackManagerResource
                                                        @RequestParam (required = false)
                                                            String                         viewServiceURLMarker,
                                                        @RequestParam (required = false, defaultValue = "asset-manager")
-                                                           String                         accessServiceURLMarker)
+                                                           String                         accessServiceURLMarker,
+                                                       @RequestBody(required = false) EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getAttachedComments(serverName, elementGUID, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker);
+        return restAPI.getAttachedComments(serverName, elementGUID, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 
 
@@ -667,7 +695,8 @@ public class FeedbackManagerResource
                                                     String                         viewServiceURLMarker,
                                                 @RequestParam (required = false, defaultValue = "asset-manager")
                                                     String                         accessServiceURLMarker,
-                                                @RequestBody(required = false) NullRequestBody requestBody)
+                                                @RequestBody(required = false)
+                                                    EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.removeLikeFromElement(serverName, elementGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
@@ -700,7 +729,8 @@ public class FeedbackManagerResource
                                                       String                         viewServiceURLMarker,
                                                   @RequestParam (required = false, defaultValue = "asset-manager")
                                                       String                         accessServiceURLMarker,
-                                                  @RequestBody(required = false) NullRequestBody requestBody)
+                                                  @RequestBody(required = false)
+                                                      EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.removeRatingFromElement(serverName, elementGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
@@ -735,7 +765,8 @@ public class FeedbackManagerResource
                                                  String                         viewServiceURLMarker,
                                              @RequestParam (required = false, defaultValue = "asset-manager")
                                                  String                         accessServiceURLMarker,
-                                             @RequestBody(required = false) NullRequestBody requestBody)
+                                             @RequestBody(required = false)
+                                                 EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.removeTagFromElement(serverName, elementGUID, tagGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
@@ -795,21 +826,22 @@ public class FeedbackManagerResource
      */
     @PostMapping(path = "/parents/{parentGUID}/comments/{commentGUID}/update-visibility")
 
-    @Operation(summary="updateComment",
-            description="Update an existing comment.",
+    @Operation(summary="updateCommentVisibility",
+            description="Update an existing comment's visibility.",
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public VoidResponse   updateCommentVisibility(@PathVariable String               serverName,
                                                   @PathVariable String               parentGUID,
                                                   @PathVariable String               commentGUID,
-                                                  @RequestParam (required = false, defaultValue = "true")
+                                                  @RequestParam (required = false, defaultValue = "false")
                                                       boolean                        isPublic,
                                                   @RequestParam (required = false)
                                                       String                         viewServiceURLMarker,
                                                   @RequestParam (required = false, defaultValue = "asset-manager")
                                                       String                         accessServiceURLMarker,
-                                                  @RequestBody  NullRequestBody requestBody)
+                                                  @RequestBody  (required = false)
+                                                      EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.updateCommentVisibility(serverName, parentGUID, commentGUID, isPublic, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
@@ -821,6 +853,7 @@ public class FeedbackManagerResource
      * @param serverName name of the server to route the request to
      * @param questionCommentGUID unique identifier of the comment containing the question
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
+     * @param isPublic is this visible to other people
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
      * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
@@ -832,18 +865,27 @@ public class FeedbackManagerResource
      */
     @PostMapping("/comments/questions/{questionCommentGUID}/answers/{answerCommentGUID}")
 
+    @Operation(summary="setupAcceptedAnswer",
+            description="Link a comment that contains the best answer to a question posed in another comment.",
+            externalDocs=@ExternalDocumentation(description="Element Feedback",
+                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
     public VoidResponse setupAcceptedAnswer(@PathVariable String                  serverName,
                                             @PathVariable String                  questionCommentGUID,
                                             @PathVariable String                  answerCommentGUID,
+                                            @RequestParam (required = false, defaultValue = "false")
+                                                boolean                        isPublic,
                                             @RequestParam (required = false)
                                                 String                         viewServiceURLMarker,
                                             @RequestParam (required = false, defaultValue = "asset-manager")
                                                 String                         accessServiceURLMarker,
-                                            @RequestBody RelationshipRequestBody requestBody)
+                                            @RequestBody (required = false)
+                                                EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.setupAcceptedAnswer(serverName,
                                            questionCommentGUID,
                                            answerCommentGUID,
+                                           isPublic,
                                            viewServiceURLMarker,
                                            accessServiceURLMarker,
                                            requestBody);
@@ -867,6 +909,11 @@ public class FeedbackManagerResource
      */
     @PostMapping("/comments/questions/{questionCommentGUID}/answers/{answerCommentGUID}/remove")
 
+    @Operation(summary="clearAcceptedAnswer",
+            description="Unlink a comment that contains an answer to a question posed in another comment.",
+            externalDocs=@ExternalDocumentation(description="Element Feedback",
+                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
     public VoidResponse clearAcceptedAnswer(@PathVariable String                        serverName,
                                             @PathVariable String                        questionCommentGUID,
                                             @PathVariable String                        answerCommentGUID,
@@ -874,7 +921,8 @@ public class FeedbackManagerResource
                                                           String                         viewServiceURLMarker,
                                             @RequestParam (required = false, defaultValue = "asset-manager")
                                                           String                         accessServiceURLMarker,
-                                            @RequestBody  NullRequestBody                requestBody)
+                                            @RequestBody  (required = false)
+                                                          EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.clearAcceptedAnswer(serverName,
                                            questionCommentGUID,
@@ -926,8 +974,114 @@ public class FeedbackManagerResource
 
 
     /**
+     * Creates a new noteLog and returns the unique identifier for it.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param elementGUID unique identifier of the element where the note log is located
+     * @param isPublic                 is this element visible to other people.
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody  contains the name of the tag and (optional) description of the tag
+     *
+     * @return guid for new tag or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/note-logs")
+
+    @Operation(summary="createNoteLog",
+            description="Creates a new noteLog and returns the unique identifier for it.",
+            externalDocs=@ExternalDocumentation(description="Note Logs",
+                    url="https://egeria-project.org/concepts/note-log/"))
+
+    public GUIDResponse createNoteLog(@PathVariable String            serverName,
+                                      @PathVariable String            elementGUID,
+                                      @RequestParam (required = false, defaultValue = "false")
+                                          boolean                        isPublic,
+                                      @RequestParam (required = false)
+                                          String                         viewServiceURLMarker,
+                                      @RequestParam (required = false, defaultValue = "asset-manager")
+                                          String            accessServiceURLMarker,
+                                      @RequestBody NoteLogProperties requestBody)
+    {
+        return restAPI.createNoteLog(serverName, elementGUID, isPublic, viewServiceURLMarker, accessServiceURLMarker, requestBody);
+    }
+
+
+    /**
+     * Update an existing note log.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param noteLogGUID  unique identifier for the note log to change.
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody  containing type of comment enum and the text of the comment.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/note-logs/{noteLogGUID}")
+
+    @Operation(summary="updateNoteLog",
+            description="Update an existing note log.",
+            externalDocs=@ExternalDocumentation(description="Note Logs",
+                    url="https://egeria-project.org/concepts/note-log/"))
+
+
+    public VoidResponse   updateNoteLog(@PathVariable String                         serverName,
+                                        @PathVariable String                         noteLogGUID,
+                                        @RequestParam boolean                        isMergeUpdate,
+                                        @RequestParam (required = false)
+                                        String                         viewServiceURLMarker,
+                                        @RequestParam (required = false, defaultValue = "asset-manager")
+                                        String                         accessServiceURLMarker,
+                                        @RequestBody ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.updateNoteLog(serverName, noteLogGUID, isMergeUpdate, viewServiceURLMarker, accessServiceURLMarker, requestBody);
+    }
+
+
+    /**
+     * Removes a note log from the repository.  All the relationships to referenceables are lost.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param noteLogGUID   unique id for the note log.
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody  null request body.
+     *
+     * @return void or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+
+    @PostMapping(path = "/note-logs/{noteLogGUID}/remove")
+
+    @Operation(summary="removeNoteLog",
+            description="Removes a note log from the repository.",
+            externalDocs=@ExternalDocumentation(description="Note Logs",
+                    url="https://egeria-project.org/concepts/note-log/"))
+
+    public VoidResponse   removeNoteLog(@PathVariable String          serverName,
+                                        @PathVariable String          noteLogGUID,
+                                        @RequestParam (required = false)
+                                        String                         viewServiceURLMarker,
+                                        @RequestParam (required = false, defaultValue = "asset-manager")
+                                        String          accessServiceURLMarker,
+                                        @RequestBody (required = false)
+                                        EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.deleteNoteLog(serverName, noteLogGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
+    }
+
+
+    /**
      * Retrieve the list of note log metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param serverName name of the server instances for this request.
      * @param startsWith does the value start with the supplied string?
@@ -946,6 +1100,11 @@ public class FeedbackManagerResource
      */
     @PostMapping("/note-logs/by-search-string")
 
+    @Operation(summary="findNoteLogs",
+            description="Retrieve the list of note log metadata elements that contain the search string.",
+            externalDocs=@ExternalDocumentation(description="Element Feedback",
+                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
     public NoteLogsResponse findNoteLogs(@PathVariable String                  serverName,
                                          @RequestParam (required = false, defaultValue = "0")
                                                     int                     startFrom,
@@ -961,7 +1120,8 @@ public class FeedbackManagerResource
                                                     String                         viewServiceURLMarker,
                                          @RequestParam (required = false, defaultValue = "asset-manager")
                                                     String                         accessServiceURLMarker,
-                                         @RequestBody  SearchStringRequestBody  requestBody)
+                                         @RequestBody  (required = false)
+                                             FilterRequestBody              requestBody)
     {
         return restAPI.findNoteLogs(serverName,
                                     startFrom,
@@ -993,6 +1153,11 @@ public class FeedbackManagerResource
      */
     @PostMapping("/note-logs/by-name")
 
+    @Operation(summary="getNoteLogsByName",
+            description="Retrieve the list of note log metadata elements with a matching qualified or display name. There are no wildcards supported on this request.",
+            externalDocs=@ExternalDocumentation(description="Element Feedback",
+                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
     public NoteLogsResponse getNoteLogsByName(@PathVariable String          serverName,
                                               @RequestParam int             startFrom,
                                               @RequestParam int             pageSize,
@@ -1000,7 +1165,7 @@ public class FeedbackManagerResource
                                                          String                         viewServiceURLMarker,
                                               @RequestParam (required = false, defaultValue = "asset-manager")
                                                          String                         accessServiceURLMarker,
-                                              @RequestBody  NameRequestBody requestBody)
+                                              @RequestBody  FilterRequestBody requestBody)
     {
         return restAPI.getNoteLogsByName(serverName, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
@@ -1015,13 +1180,19 @@ public class FeedbackManagerResource
      * @param pageSize maximum results that can be returned
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      *
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping("/elements/{elementGUID}/note-logs")
+    @PostMapping("/elements/{elementGUID}/note-logs/retrieve")
+
+    @Operation(summary="getNoteLogsForElement",
+            description="Retrieve the list of note log metadata elements attached to the element.",
+            externalDocs=@ExternalDocumentation(description="Element Feedback",
+                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public NoteLogsResponse getNoteLogsForElement(@PathVariable String          serverName,
                                                   @PathVariable String          elementGUID,
@@ -1030,9 +1201,10 @@ public class FeedbackManagerResource
                                                   @RequestParam (required = false)
                                                              String                         viewServiceURLMarker,
                                                   @RequestParam (required = false, defaultValue = "asset-manager")
-                                                             String                         accessServiceURLMarker)
+                                                             String                         accessServiceURLMarker,
+                                                  @RequestBody(required = false) EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getNoteLogsForElement(serverName, elementGUID, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker);
+        return restAPI.getNoteLogsForElement(serverName, elementGUID, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker,requestBody);
     }
 
 
@@ -1043,22 +1215,29 @@ public class FeedbackManagerResource
      * @param noteLogGUID unique identifier of the requested metadata element
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      *
      * @return requested metadata element or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping("/note-logs/{noteLogGUID}")
+    @PostMapping("/note-logs/{noteLogGUID}/retrieve")
+
+    @Operation(summary="getNoteLogByGUID",
+            description="Retrieve the note log metadata element with the supplied unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Element Feedback",
+                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public NoteLogResponse getNoteLogByGUID(@PathVariable String                        serverName,
                                             @PathVariable String                        noteLogGUID,
                                             @RequestParam (required = false)
-                                                       String                         viewServiceURLMarker,
+                                                          String                         viewServiceURLMarker,
                                             @RequestParam (required = false, defaultValue = "asset-manager")
-                                                       String                         accessServiceURLMarker)
+                                                          String                         accessServiceURLMarker,
+                                            @RequestBody(required = false) EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getNoteLogByGUID(serverName, noteLogGUID, viewServiceURLMarker, accessServiceURLMarker);
+        return restAPI.getNoteLogByGUID(serverName, noteLogGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 
 
@@ -1068,8 +1247,109 @@ public class FeedbackManagerResource
 
 
     /**
+     * Creates a new note for a note log and returns the unique identifier for it.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param noteLogGUID unique identifier of the  note log
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody  contains the name of the tag and (optional) description of the tag
+     *
+     * @return guid for new tag or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/note-logs/{noteLogGUID}/notes")
+
+    @Operation(summary="createNote",
+            description="Creates a new note in the note log and returns the unique identifier for it.",
+            externalDocs=@ExternalDocumentation(description="Note Logs",
+                    url="https://egeria-project.org/concepts/note-log/"))
+
+    public GUIDResponse createNote(@PathVariable String         serverName,
+                                   @PathVariable String         noteLogGUID,
+                                   @RequestParam (required = false)
+                                                 String                         viewServiceURLMarker,
+                                   @RequestParam (required = false, defaultValue = "asset-manager")
+                                                 String         accessServiceURLMarker,
+                                   @RequestBody  NoteProperties requestBody)
+    {
+        return restAPI.createNote(serverName, noteLogGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
+    }
+
+
+    /**
+     * Update an existing note.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param noteGUID  unique identifier for the note to change.
+     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody  containing type of comment enum and the text of the comment.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/notes/{noteGUID}")
+
+    @Operation(summary="updateNote",
+            description="Update an existing note.",
+            externalDocs=@ExternalDocumentation(description="Note Logs",
+                    url="https://egeria-project.org/concepts/note-log/"))
+
+    public VoidResponse   updateNote(@PathVariable String                         serverName,
+                                     @PathVariable String                         noteGUID,
+                                     @RequestParam boolean                        isMergeUpdate,
+                                     @RequestParam (required = false)
+                                                   String                         viewServiceURLMarker,
+                                     @RequestParam (required = false, defaultValue = "asset-manager")
+                                                   String                         accessServiceURLMarker,
+                                     @RequestBody  ReferenceableUpdateRequestBody requestBody)
+    {
+        return restAPI.updateNote(serverName, noteGUID, isMergeUpdate, viewServiceURLMarker, accessServiceURLMarker, requestBody);
+    }
+
+
+    /**
+     * Removes a note from the repository.  All the relationships to referenceables are lost.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param noteGUID   unique id for the note .
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody  null request body.
+     *
+     * @return void or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/notes/{noteGUID}/remove")
+
+    @Operation(summary="removeNote",
+            description="Remove an existing note.",
+            externalDocs=@ExternalDocumentation(description="Note Logs",
+                    url="https://egeria-project.org/concepts/note-log/"))
+
+    public VoidResponse   removeNote(@PathVariable String          serverName,
+                                     @PathVariable String          noteGUID,
+                                     @RequestParam (required = false)
+                                     String                         viewServiceURLMarker,
+                                     @RequestParam (required = false, defaultValue = "asset-manager")
+                                     String          accessServiceURLMarker,
+                                     @RequestBody(required = false)
+                                         EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.deleteNote(serverName, noteGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
+    }
+
+
+    /**
      * Retrieve the list of note metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param serverName name of the server instances for this request.
      * @param startsWith does the value start with the supplied string?
@@ -1088,6 +1368,11 @@ public class FeedbackManagerResource
      */
     @PostMapping("/note-logs/notes/by-search-string")
 
+    @Operation(summary="findNotes",
+            description="Retrieve the list of note metadata elements that contain the search string.",
+            externalDocs=@ExternalDocumentation(description="Element Feedback",
+                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
     public NotesResponse findNotes(@PathVariable String                  serverName,
                                    @RequestParam (required = false, defaultValue = "0")
                                               int                     startFrom,
@@ -1103,7 +1388,8 @@ public class FeedbackManagerResource
                                               String                         viewServiceURLMarker,
                                    @RequestParam (required = false, defaultValue = "asset-manager")
                                               String                         accessServiceURLMarker,
-                                   @RequestBody  SearchStringRequestBody  requestBody)
+                                   @RequestBody  (required = false)
+                                       FilterRequestBody              requestBody)
     {
         return restAPI.findNotes(serverName,
                                  startFrom,
@@ -1126,6 +1412,7 @@ public class FeedbackManagerResource
      * @param pageSize maximum results that can be returned
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
      *
      * @return list of associated metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1134,6 +1421,11 @@ public class FeedbackManagerResource
      */
     @PostMapping("/note-logs/{noteLogGUID}/notes/retrieve")
 
+    @Operation(summary="getNotesForNoteLog",
+            description="Retrieve the list of notes associated with a note log.",
+            externalDocs=@ExternalDocumentation(description="Element Feedback",
+                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
+
     public NotesResponse getNotesForNoteLog(@PathVariable String                        serverName,
                                             @PathVariable String                        noteLogGUID,
                                             @RequestParam int                           startFrom,
@@ -1141,9 +1433,11 @@ public class FeedbackManagerResource
                                             @RequestParam (required = false)
                                                        String                         viewServiceURLMarker,
                                             @RequestParam (required = false, defaultValue = "asset-manager")
-                                                       String                         accessServiceURLMarker)
+                                                       String                         accessServiceURLMarker,
+                                            @RequestBody(required = false)
+                                                EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getNotesForNoteLog(serverName, noteLogGUID, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker);
+        return restAPI.getNotesForNoteLog(serverName, noteLogGUID, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 
 
@@ -1160,16 +1454,22 @@ public class FeedbackManagerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping("/note-logs/notes/{noteGUID}")
+    @PostMapping("/note-logs/notes/{noteGUID}/retrieve")
+
+    @Operation(summary="getNoteByGUID",
+            description=" Retrieve the note metadata element with the supplied unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Element Feedback",
+                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public NoteResponse getNoteByGUID(@PathVariable String                        serverName,
                                       @PathVariable String                        noteGUID,
                                       @RequestParam (required = false)
                                                  String                         viewServiceURLMarker,
                                       @RequestParam (required = false, defaultValue = "asset-manager")
-                                                 String                         accessServiceURLMarker)
+                                                 String                         accessServiceURLMarker,
+                                      @RequestBody(required = false) EffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getNoteByGUID(serverName, noteGUID, viewServiceURLMarker, accessServiceURLMarker);
+        return restAPI.getNoteByGUID(serverName, noteGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
 }
 

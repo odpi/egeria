@@ -82,8 +82,8 @@ public class EngineHostClient
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        final String   methodName = "getGovernanceEngineSummaries";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host-services/users/{1}/governance-engines/{2}/summary";
+        final String   methodName = "getGovernanceEngineSummary";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/users/{1}/governance-engines/{2}/summary";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -118,7 +118,7 @@ public class EngineHostClient
                                                                                                       PropertyServerException
     {
         final String   methodName = "getGovernanceEngineSummaries";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host-services/users/{1}/{2}/governance-engines/summary";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/users/{1}/{2}/governance-engines/summary";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -150,7 +150,7 @@ public class EngineHostClient
                                                                                             PropertyServerException
     {
         final String   methodName = "getGovernanceEngineSummaries";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host-services/users/{1}/governance-engines/summary";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/users/{1}/governance-engines/summary";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -187,7 +187,7 @@ public class EngineHostClient
     {
         final String   methodName = "refreshConfig";
         final String   governanceEngineParameterName = "governanceEngineName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host-services/users/{1}/governance-engines/{2}/refresh-config";
+        final String   urlTemplate = "/servers/{0}/open-metadata/engine-host/users/{1}/governance-engines/{2}/refresh-config";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(governanceEngineName, governanceEngineParameterName, methodName);

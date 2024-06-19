@@ -439,7 +439,7 @@ public enum DeployedImplementationType
     POSTGRESQL_SERVER("PostgreSQL Server",
                       DeployedImplementationType.SOFTWARE_SERVER,
                       OpenMetadataType.SOFTWARE_SERVER.typeName,
-                      null,
+                      OpenMetadataType.DATABASE_SERVER_CLASSIFICATION.typeName,
                       "A database server running the PostgreSQL software.",
                       "https://www.postgresql.org/"),
 
@@ -450,7 +450,7 @@ public enum DeployedImplementationType
     APACHE_ATLAS_SERVER("Apache Atlas Server",
                         DeployedImplementationType.SOFTWARE_SERVER,
                         OpenMetadataType.SOFTWARE_SERVER.typeName,
-                        null,
+                        OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
                         "A data catalog for the Hadoop ecosystem.",
                         "https://atlas.apache.org/"),
 
@@ -460,7 +460,7 @@ public enum DeployedImplementationType
     APACHE_KAFKA_SERVER("Apache Kafka Server",
                         DeployedImplementationType.SOFTWARE_SERVER,
                         OpenMetadataType.SOFTWARE_SERVER.typeName,
-                        null,
+                        OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.typeName,
                         "A software server supporting an event broker that enables high speed, reliable topic-based event exchange.",
                         "https://kafka.apache.org/"),
 
@@ -505,6 +505,26 @@ public enum DeployedImplementationType
                      "A Unix capability that manages hierarchically organized files on persistent storage.",
                      OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS),
 
+    /**
+     * Software supporting a business function.
+     */
+    APPLICATION("Business Application",
+                  DeployedImplementationType.SOFTWARE_CAPABILITY,
+                  OpenMetadataType.APPLICATION.typeName,
+                  null,
+                  "Software supporting a business function.",
+                  OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
+
+
+    /**
+     * Software supporting a business function.
+     */
+    USER_AUTHENTICATION_MANAGER("User Authentication Manager",
+                DeployedImplementationType.SOFTWARE_CAPABILITY,
+                OpenMetadataType.USER_AUTHENTICATION_MANAGER.typeName,
+                null,
+                "Function that validates the identity of a user via password or other form of identification",
+                OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
 
     /**
      * A catalog of metadata that describes assets such as deployed systems, data sources and processes.
@@ -941,6 +961,57 @@ public enum DeployedImplementationType
                       null,
                       "Provides the list of integration connectors that should run in an Integration Daemon.  The Integration Daemon is configured with the qualified names of the integration group(s) that provide its connector list.",
                       "https://egeria-project.org/concepts/integration-group/"),
+
+
+    /**
+     * An Open Metadata and Governance (OMAG) Server.
+     */
+    OMAG_SERVER("OMAG Server",
+                         DeployedImplementationType.SOFTWARE_SERVER,
+                         OpenMetadataType.SOFTWARE_SERVER.typeName,
+                         null,
+                         "A server providing Open Metadata and Governance (OMAG) services.",
+                         "https://egeria-project.org/concepts/omag-server/"),
+
+    /**
+     * A server that runs governance engines.
+     */
+    ENGINE_HOST("Engine Host",
+                DeployedImplementationType.OMAG_SERVER,
+                OpenMetadataType.SOFTWARE_SERVER.typeName,
+                OpenMetadataType.GOVERNANCE_DAEMON_CLASSIFICATION.typeName,
+                "A server that runs governance engines.",
+                "https://egeria-project.org/concepts/engine-host/"),
+
+    /**
+     * A server that runs integration connectors that synchronize metadata between different types of technologies.
+     */
+    INTEGRATION_DAEMON("Integration Daemon",
+                DeployedImplementationType.OMAG_SERVER,
+                OpenMetadataType.SOFTWARE_SERVER.typeName,
+                OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.typeName,
+                "A server that runs integration connectors that synchronize metadata between different types of technologies.",
+                "https://egeria-project.org/concepts/integration-daemon/"),
+
+    /**
+     * A server that provides access to one or more open metadata repositories.
+     */
+    METADATA_ACCESS_SERVER("Metadata Access Server",
+                       DeployedImplementationType.OMAG_SERVER,
+                       OpenMetadataType.SOFTWARE_SERVER.typeName,
+                       OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
+                       "A server that provides access to one or more open metadata repositories.",
+                       "https://egeria-project.org/concepts/metadata-access-server/"),
+
+    /**
+     * A server that provides access to end user open metadata and governance services.
+     */
+    VIEW_SERVER("View Server",
+                           DeployedImplementationType.OMAG_SERVER,
+                           OpenMetadataType.SOFTWARE_SERVER.typeName,
+                           OpenMetadataType.STEWARDSHIP_SERVER_CLASSIFICATION.typeName,
+                           "A server that provides access to end user open metadata and governance services.",
+                           "https://egeria-project.org/concepts/metadata-access-server/"),
 
     ;
 

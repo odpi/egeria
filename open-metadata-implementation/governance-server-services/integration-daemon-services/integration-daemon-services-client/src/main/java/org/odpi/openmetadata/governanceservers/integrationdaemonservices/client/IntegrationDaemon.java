@@ -7,10 +7,12 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.api.IntegrationDaemonAPI;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
@@ -131,7 +133,6 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
      * Retrieve the configuration properties of the named connector.
      *
      * @param userId calling user
-     * @param serviceURLMarker integration service identifier
      * @param connectorName name of a specific connector or null for all connectors
      *
      * @return property map
@@ -141,25 +142,21 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
      * @throws PropertyServerException there was a problem detected by the integration daemon
      */
     public Map<String, Object> getConfigurationProperties(String              userId,
-                                                          String              serviceURLMarker,
                                                           String              connectorName) throws InvalidParameterException,
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        final String   methodName = "updateConfigurationProperties";
-        final String   serviceNameParameterName = "serviceURLMarker";
+        final String   methodName = "getConfigurationProperties";
         final String   connectorNameParameterName = "connectorName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-services/{2}/connectors/{3}/configuration-properties";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-connectors/{2}/configuration-properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(serviceURLMarker, serviceNameParameterName, methodName);
         invalidParameterHandler.validateName(connectorName, connectorNameParameterName, methodName);
 
         PropertiesResponse restResult = restClient.callPropertiesGetRESTCall(methodName,
                                                                              serverPlatformRootURL + urlTemplate,
                                                                              serverName,
                                                                              userId,
-                                                                             serviceURLMarker,
                                                                              connectorName);
 
         return restResult.getProperties();
@@ -170,14 +167,12 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
      * Update the configuration properties of the connectors, or specific connector if a connector name is supplied.
      *
      * @param userId calling user
-     * @param serviceURLMarker integration service identifier
      * @param connectorName name of a specific connector or null for all connectors
      * @param isMergeUpdate should the properties be merged into the existing properties or replace them
      * @param configurationProperties new configuration properties
      * @throws InvalidParameterException the connector name is not recognized
      */
     public void updateConfigurationProperties(String              userId,
-                                              String              serviceURLMarker,
                                               String              connectorName,
                                               boolean             isMergeUpdate,
                                               Map<String, Object> configurationProperties) throws InvalidParameterException,
@@ -185,11 +180,9 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
                                                                                                   PropertyServerException
     {
         final String   methodName = "updateConfigurationProperties";
-        final String   serviceNameParameterName = "serviceURLMarker";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-services/{2}/connectors/configuration-properties";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-connectors/configuration-properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(serviceURLMarker, serviceNameParameterName, methodName);
 
         ConnectorConfigPropertiesRequestBody requestBody = new ConnectorConfigPropertiesRequestBody();
 
@@ -201,13 +194,71 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
                                         serverPlatformRootURL + urlTemplate,
                                         requestBody,
                                         serverName,
-                                        userId,
-                                        serviceURLMarker);
+                                        userId);
     }
 
 
     /**
-     * Refresh all connectors running in the integration daemon, regardless of the integration service they belong to.
+     * Update the configuration properties of the connectors, or specific connector if a connector name is supplied.
+     *
+     * @param userId calling user
+     * @param connectorName name of a specific connector or null for all connectors
+     * @param networkAddress new address
+     * @throws InvalidParameterException the connector name is not recognized
+     */
+    public void updateEndpointNetworkAddress(String              userId,
+                                             String              connectorName,
+                                             String              networkAddress) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String   methodName = "updateEndpointNetworkAddress";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-connectors/{2}/endpoint-network-address";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        StringRequestBody requestBody = new StringRequestBody();
+
+        requestBody.setString(networkAddress);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        connectorName);
+    }
+
+    /**
+     * Update the configuration properties of the connectors, or specific connector if a connector name is supplied.
+     *
+     * @param userId calling user
+     * @param connectorName name of a specific connector or null for all connectors
+     * @param connection new address
+     * @throws InvalidParameterException the connector name is not recognized
+     */
+    public void updateConnectorConnection(String     userId,
+                                          String     connectorName,
+                                          Connection connection) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String   methodName = "updateConnectorConnection";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-connectors/{2}/connection";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        connection,
+                                        serverName,
+                                        userId,
+                                        connectorName);
+    }
+
+
+    /**
+     * Issue a refresh() request on a specific connector
      *
      * @param userId calling user
      *
@@ -215,18 +266,107 @@ public class IntegrationDaemon implements IntegrationDaemonAPI
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException there was a problem detected by the integration daemon
      */
-    public void refreshAllServices(String userId) throws InvalidParameterException,
-                                                         UserNotAuthorizedException,
-                                                         PropertyServerException
+    public void refreshConnector(String userId,
+                                 String connectorName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
     {
-        final String   methodName = "refreshAllServices";
-        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/refresh";
+        final String   methodName = "refreshConnector";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-connectors/refresh";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(connectorName);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId);
+    }
+
+
+
+    /**
+     * Issue a refresh() request on a connector running in the integration daemon.
+     *
+     * @param userId calling user
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException there was a problem detected by the integration daemon
+     */
+    public void refreshConnectors(String userId) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException
+    {
+        final String   methodName = "refreshConnectors";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-connectors/refresh";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
-                                        nullRequestBody,
+                                        new NameRequestBody(),
+                                        serverName,
+                                        userId);
+    }
+
+
+
+    /**
+     * Issue a restart() request on a specific connector
+     *
+     * @param userId calling user
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException there was a problem detected by the integration daemon
+     */
+    public void restartConnector(String userId,
+                                 String connectorName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        final String   methodName = "restartConnector";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-connectors/restart";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(connectorName);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId);
+    }
+
+
+
+    /**
+     * Issue a restart() request on a connector running in the integration daemon.
+     *
+     * @param userId calling user
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException there was a problem detected by the integration daemon
+     */
+    public void restartConnectors(String userId) throws InvalidParameterException,
+                                                        UserNotAuthorizedException,
+                                                        PropertyServerException
+    {
+        final String   methodName = "restartConnectors";
+        final String   urlTemplate = "/servers/{0}/open-metadata/integration-daemon/users/{1}/integration-connectors/restart";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        new NameRequestBody(),
                                         serverName,
                                         userId);
     }

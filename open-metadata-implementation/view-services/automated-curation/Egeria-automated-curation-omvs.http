@@ -156,7 +156,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "templateGUID" : "379e6c05-9cfa-4d31-a837-0ed4eee6482a",
+  "templateGUID" : "553f51cf-3981-480e-acd8-86ed3e25329d",
   "isOwnAnchor" : true,
   "placeholderPropertyValues" : {
     "pathName" : "Add full path name here, eg a/b/c/myFolder",

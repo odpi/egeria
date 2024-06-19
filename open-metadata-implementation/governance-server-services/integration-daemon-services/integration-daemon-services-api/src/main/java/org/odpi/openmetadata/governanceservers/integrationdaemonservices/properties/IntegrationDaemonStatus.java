@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IntegrationDaemonStatus
 {
-    private List<IntegrationServiceSummary> integrationServiceSummaries = null;
+    private List<IntegrationServiceSummary>  integrationServiceSummaries = null;
     private List<IntegrationGroupSummary>    integrationGroupSummaries   = null;
     private List<IntegrationConnectorReport> integrationConnectorReports = null;
 

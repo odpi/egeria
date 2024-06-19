@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.api.SoftwareServerM
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerPlatformElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
@@ -13,6 +14,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,9 +23,9 @@ import java.util.List;
 /**
  * ServerManagerClient supports the APIs to maintain servers and their related objects.
  */
-public class ServerManagerClient extends AssetManagerClientBase implements SoftwareServerManagerInterface
+public class ServerManagerClient extends ITInfrastructureClientBase implements SoftwareServerManagerInterface
 {
-    private static final String serverEntityType = "SoftwareServer";
+    private static final String serverEntityType = OpenMetadataType.SOFTWARE_SERVER.typeName;
 
 
 
@@ -33,14 +35,16 @@ public class ServerManagerClient extends AssetManagerClientBase implements Softw
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ServerManagerClient(String   serverName,
                                String   serverPlatformURLRoot,
-                               AuditLog auditLog) throws InvalidParameterException
+                               AuditLog auditLog,
+                               int      maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog, maxPageSize);
     }
 
 
@@ -49,13 +53,15 @@ public class ServerManagerClient extends AssetManagerClientBase implements Softw
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ServerManagerClient(String serverName,
-                               String serverPlatformURLRoot) throws InvalidParameterException
+                               String serverPlatformURLRoot,
+                               int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot, maxPageSize);
     }
 
 
@@ -67,15 +73,17 @@ public class ServerManagerClient extends AssetManagerClientBase implements Softw
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ServerManagerClient(String serverName,
                                String serverPlatformURLRoot,
                                String userId,
-                               String password) throws InvalidParameterException
+                               String password,
+                               int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
     }
 
 
@@ -88,6 +96,7 @@ public class ServerManagerClient extends AssetManagerClientBase implements Softw
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
@@ -96,9 +105,10 @@ public class ServerManagerClient extends AssetManagerClientBase implements Softw
                                String   serverPlatformURLRoot,
                                String   userId,
                                String   password,
-                               AuditLog auditLog) throws InvalidParameterException
+                               AuditLog auditLog,
+                               int      maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog, maxPageSize);
     }
 
 
@@ -357,6 +367,38 @@ public class ServerManagerClient extends AssetManagerClientBase implements Softw
         final String methodName = "getSoftwareServersByName";
 
         return this.convertAssetElements(super.getAssetsByName(userId, name, serverEntityType, effectiveTime, startFrom, pageSize, methodName));
+    }
+
+
+    /**
+     * Retrieve the list of server metadata elements with a matching deployed implementation type.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<SoftwareServerElement> getSoftwareServersByDeployedImplType(String userId,
+                                                                            String name,
+                                                                            Date   effectiveTime,
+                                                                            int    startFrom,
+                                                                            int    pageSize) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+
+    {
+        final String methodName = "getSoftwareServersByDeployedImplType";
+
+        return this.convertAssetElements(super.getAssetsByDeployedImplementationType(userId, name, serverEntityType, effectiveTime, startFrom, pageSize, methodName));
     }
 
 

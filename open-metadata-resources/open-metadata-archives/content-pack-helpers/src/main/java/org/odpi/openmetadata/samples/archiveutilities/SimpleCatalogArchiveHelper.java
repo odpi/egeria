@@ -3241,6 +3241,67 @@ public class SimpleCatalogArchiveHelper
                                         String              anchorTypeName,
                                         String              anchorDomainName)
     {
+        List<Classification> classifications = null;
+
+        if (classification != null)
+        {
+            classifications = new ArrayList<>();
+            classifications.add(classification);
+        }
+
+        return this.addSoftwareCapability(typeName,
+                                          qualifiedName,
+                                          name,
+                                          description,
+                                          deployedImplementationType,
+                                          capabilityVersion,
+                                          patchLevel,
+                                          source,
+                                          additionalProperties,
+                                          extendedProperties,
+                                          classifications,
+                                          anchorGUID,
+                                          anchorTypeName,
+                                          anchorDomainName);
+    }
+
+
+    /**
+     * Create a software capability entity.  It the anchor GUID/typeName is supplied, the new capability
+     * is anchored to that entity; otherwise it is its own anchor.
+     *
+     * @param typeName name of software capability subtype to use - default is SoftwareCapability
+     * @param qualifiedName unique name for the capability
+     * @param name display name for the capability
+     * @param description description about the capability
+     * @param deployedImplementationType type
+     * @param capabilityVersion version
+     * @param patchLevel patch level
+     * @param source source
+     * @param additionalProperties any other properties
+     * @param extendedProperties properties for subtype
+     * @param suppliedClassifications classifications from the caller
+     * @param anchorGUID optional unique identifier for the anchor
+     * @param anchorTypeName optional type name for the anchor.
+     * @param anchorDomainName domain name of the anchor
+     *
+     * @return id for the capability
+     */
+    public String addSoftwareCapability(String               typeName,
+                                        String               qualifiedName,
+                                        String               name,
+                                        String               description,
+                                        String               deployedImplementationType,
+                                        String               capabilityVersion,
+                                        String               patchLevel,
+                                        String               source,
+                                        Map<String, String>  additionalProperties,
+                                        Map<String, Object>  extendedProperties,
+                                        List<Classification> suppliedClassifications,
+                                        String               anchorGUID,
+                                        String               anchorTypeName,
+                                        String               anchorDomainName)
+    {
         final String methodName = "addSoftwareCapability";
 
         String entityTypeName = OpenMetadataType.SOFTWARE_CAPABILITY.typeName;
@@ -3261,7 +3322,12 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
         String guid = idToGUIDMap.getGUID(qualifiedName);
-        List<Classification> classifications = new ArrayList<>();
+        List<Classification> classifications = suppliedClassifications;
+
+        if (classifications == null)
+        {
+            classifications = new ArrayList<>();
+        }
 
         if (anchorGUID == null)
         {
@@ -3276,11 +3342,6 @@ public class SimpleCatalogArchiveHelper
                                                         anchorTypeName,
                                                         anchorDomainName,
                                                         methodName));
-        }
-
-        if (classification != null)
-        {
-            classifications.add(classification);
         }
 
         EntityDetail entity = archiveHelper.getEntityDetail(entityTypeName,
@@ -4592,6 +4653,29 @@ public class SimpleCatalogArchiveHelper
         return endpointEntity.getGUID();
     }
 
+
+    /**
+     * Create a server endpoint relationship.
+     *
+     * @param itInfrastructureGUID the element to link
+     * @param endpointGUID the endpoint to use
+     */
+    public void addServerEndpointRelationship(String itInfrastructureGUID,
+                                              String endpointGUID)
+    {
+        EntityDetail end1Entity = archiveBuilder.getEntity(itInfrastructureGUID);
+        EntityDetail end2Entity = archiveBuilder.getEntity(endpointGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(end1Entity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(end2Entity);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SERVER_ENDPOINT_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(itInfrastructureGUID + "_to_" + endpointGUID + "_server_endpoint_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
 
     /**
      * Create a glossary entity.  If the external link is specified, the glossary entity is linked to an
@@ -6054,6 +6138,29 @@ public class SimpleCatalogArchiveHelper
     }
 
 
+
+    /**
+     * Create a ServerPurpose classification.
+     *
+     * @param classificationName name of the classification
+     * @param deployedImplementationType deployed implementation type property
+     * @return classification
+     */
+    public Classification getServerPurposeClassification(String classificationName,
+                                                         String deployedImplementationType)
+    {
+        final String methodName = "getServerPurposeClassification";
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                                  null,
+                                                                                  OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                                  deployedImplementationType,
+                                                                                  methodName);
+
+        return this.archiveHelper.getClassification(classificationName, properties, InstanceStatus.ACTIVE);
+    }
+
+
     /**
      * Add a ServerPurpose classification to an IT Infrastructure element.
      *
@@ -6070,13 +6177,8 @@ public class SimpleCatalogArchiveHelper
         EntityDetail   assetEntity    = this.archiveBuilder.getEntity(elementGUID);
         EntityProxy    entityProxy    = this.archiveHelper.getEntityProxy(assetEntity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
-                                                                                  null,
-                                                                                  OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                                  deployedImplementationType,
-                                                                                  methodName);
+        Classification classification = this.getServerPurposeClassification(classificationName, deployedImplementationType);
 
-        Classification classification = this.archiveHelper.getClassification(classificationName, properties, InstanceStatus.ACTIVE);
         this.archiveBuilder.addClassification(this.archiveHelper.getClassificationEntityExtension(entityProxy, classification));
     }
 }

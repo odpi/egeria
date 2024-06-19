@@ -3268,6 +3268,147 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
     }
 
 
+
+    /**
+     * Return a list of assets with the requested name in  the deployed implementation type property.
+     * The match must be exact.  SupportedZones set up for this service is used.
+     *
+     * @param userId calling user
+     * @param typeGUID unique identifier of the asset type to search for (null for the generic Asset type)
+     * @param typeName unique identifier of the asset type to search for (null for the generic Asset type)
+     * @param name name to search for
+     * @param nameParameterName property that provided the name
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of B beans
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<B> getAssetsByDeployedImplementationType(String   userId,
+                                                         String   typeGUID,
+                                                         String   typeName,
+                                                         String   name,
+                                                         String   nameParameterName,
+                                                         int      startFrom,
+                                                         int      pageSize,
+                                                         boolean  forLineage,
+                                                         boolean  forDuplicateProcessing,
+                                                         Date     effectiveTime,
+                                                         String   methodName) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
+    {
+        return this.getAssetsByDeployedImplementationType(userId,
+                                                          typeGUID,
+                                                          typeName,
+                                                          name,
+                                                          nameParameterName,
+                                                          supportedZones,
+                                                          startFrom,
+                                                          pageSize,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime,
+                                                          methodName);
+    }
+
+
+    /**
+     * Return a list of assets with the requested name in the deployed implementation type property.
+     * The match must be exact.
+     *
+     * @param userId calling user
+     * @param typeGUID unique identifier of the asset type to search for (null for the generic Asset type)
+     * @param typeName unique identifier of the asset type to search for (null for the generic Asset type)
+     * @param name name to search for - this must be an exact match on the display name or qualified name
+     * @param nameParameterName property that provided the name
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param forDuplicateProcessing this request os for duplicate processing so do not deduplicate
+     * @param forLineage this request is for lineage so ignore Memento classifications
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of B beans
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<B> getAssetsByDeployedImplementationType(String       userId,
+                                                         String       typeGUID,
+                                                         String       typeName,
+                                                         String       name,
+                                                         String       nameParameterName,
+                                                         List<String> serviceSupportedZones,
+                                                         int          startFrom,
+                                                         int          pageSize,
+                                                         boolean      forLineage,
+                                                         boolean      forDuplicateProcessing,
+                                                         Date         effectiveTime,
+                                                         String       methodName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
+    {
+        String resultTypeGUID = OpenMetadataType.ASSET.typeGUID;
+        String resultTypeName = OpenMetadataType.ASSET.typeName;
+
+        if (typeGUID != null)
+        {
+            resultTypeGUID = typeGUID;
+        }
+        if (typeName != null)
+        {
+            resultTypeName = typeName;
+        }
+
+        if (name == null)
+        {
+            return this.getBeansByType(userId,
+                                       resultTypeGUID,
+                                       resultTypeName,
+                                       null,
+                                       startFrom,
+                                       pageSize,
+                                       forLineage,
+                                       forDuplicateProcessing,
+                                       effectiveTime,
+                                       methodName);
+        }
+        else
+        {
+            List<String> specificMatchPropertyNames = new ArrayList<>();
+            specificMatchPropertyNames.add(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
+
+            return this.getBeansByValue(userId,
+                                        name,
+                                        nameParameterName,
+                                        resultTypeGUID,
+                                        resultTypeName,
+                                        specificMatchPropertyNames,
+                                        true,
+                                        null,
+                                        null,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        serviceSupportedZones,
+                                        null,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+        }
+    }
+
+
     /**
      * Return a list of assets with the requested metadataCollectionId.
      *

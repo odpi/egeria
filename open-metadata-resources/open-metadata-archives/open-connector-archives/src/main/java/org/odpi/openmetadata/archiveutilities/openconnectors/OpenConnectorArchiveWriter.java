@@ -14,6 +14,13 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileSt
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformProvider;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.EngineHostProvider;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.IntegrationDaemonProvider;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.MetadataAccessServerProvider;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.ViewServerProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OriginSeekerGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.QualifiedNamePeerDuplicateGovernanceActionProvider;
@@ -45,6 +52,7 @@ import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopi
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.archiveutilities.openconnectors.control.FileSystemPlaceholderProperty;
 import org.odpi.openmetadata.archiveutilities.openconnectors.control.HostPlaceholderProperty;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -535,32 +543,23 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         /*
          * Egeria also has valid values for its implementation.  These are useful when cataloguing Egeria.
-         * This first list are the different types of OMAG Servers
          */
-        Map<String, String> serverTypeGUIDs = new HashMap<>();
         Map<String, String> serviceGUIDs    = new HashMap<>();
-
-        for (ServerTypeClassification serverTypeClassification : ServerTypeClassification.values())
-        {
-            String guid = this.addDeployedImplementationType(serverTypeClassification.getServerTypeName(),
-                                                             OpenMetadataType.SOFTWARE_SERVER.typeName,
-                                                             serverTypeClassification.getServerTypeDescription(),
-                                                             serverTypeClassification.getServerTypeWiki());
-
-            serverTypeGUIDs.put(serverTypeClassification.getServerTypeName(), guid);
-        }
 
         /*
          * Next are the common services of Egeria.
          */
         for (CommonServicesDescription commonServicesDescription : CommonServicesDescription.values())
         {
-            String guid = this.addDeployedImplementationType(commonServicesDescription.getServiceName(),
-                                                             OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
-                                                             commonServicesDescription.getServiceDescription(),
-                                                             commonServicesDescription.getServiceWiki());
+            if (commonServicesDescription.getServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
+            {
+                String guid = this.addDeployedImplementationType(commonServicesDescription.getServiceName(),
+                                                                 OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
+                                                                 commonServicesDescription.getServiceDescription(),
+                                                                 commonServicesDescription.getServiceWiki());
 
-            serviceGUIDs.put(commonServicesDescription.getServiceName(), guid);
+                serviceGUIDs.put(commonServicesDescription.getServiceName(), guid);
+            }
         }
 
         /*
@@ -568,102 +567,108 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
          */
         for (GovernanceServicesDescription governanceServicesDescription : GovernanceServicesDescription.values())
         {
-            String guid = this.addDeployedImplementationType(governanceServicesDescription.getServiceName(),
-                                                             OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
-                                                             governanceServicesDescription.getServiceDescription(),
-                                                             governanceServicesDescription.getServiceWiki());
+            if (governanceServicesDescription.getServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
+            {
+                String guid = this.addDeployedImplementationType(governanceServicesDescription.getServiceName(),
+                                                                 OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
+                                                                 governanceServicesDescription.getServiceDescription(),
+                                                                 governanceServicesDescription.getServiceWiki());
 
-            serviceGUIDs.put(governanceServicesDescription.getServiceName(), guid);
+                serviceGUIDs.put(governanceServicesDescription.getServiceName(), guid);
+            }
         }
 
         /*
          * The access services are found in the Metadata Access Server and Metadata Access Point OMAG Servers.
          */
-        String serverTypeGUID  = serverTypeGUIDs.get(ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName());
-        String serverTypeGUID2 = serverTypeGUIDs.get(ServerTypeClassification.METADATA_ACCESS_STORE.getServerTypeName());
+        String serverTypeGUID  = deployedImplementationTypeGUIDs.get(DeployedImplementationType.METADATA_ACCESS_SERVER.getDeployedImplementationType());
 
         for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
         {
-            String guid = this.addDeployedImplementationType(accessServiceDescription.getAccessServiceFullName(),
-                                                             OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
-                                                             accessServiceDescription.getAccessServiceDescription(),
-                                                             accessServiceDescription.getAccessServiceWiki());
+            if (accessServiceDescription.getAccessServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
+            {
+                String guid = this.addDeployedImplementationType(accessServiceDescription.getAccessServiceFullName(),
+                                                                 OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
+                                                                 accessServiceDescription.getAccessServiceDescription(),
+                                                                 accessServiceDescription.getAccessServiceWiki());
 
-            serviceGUIDs.put(accessServiceDescription.getAccessServiceFullName(), guid);
+                serviceGUIDs.put(accessServiceDescription.getAccessServiceFullName(), guid);
 
-            archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
-                                                            guid,
-                                                            ResourceUse.HOSTED_SERVICE.getResourceUse(),
-                                                            ResourceUse.HOSTED_SERVICE.getDescription());
-
-            archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID2,
-                                                            guid,
-                                                            ResourceUse.HOSTED_SERVICE.getResourceUse(),
-                                                            ResourceUse.HOSTED_SERVICE.getDescription());
+                archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
+                                                                guid,
+                                                                ResourceUse.HOSTED_SERVICE.getResourceUse(),
+                                                                ResourceUse.HOSTED_SERVICE.getDescription());
+            }
         }
 
         /*
          * View services are found in the View Server.  They call an access service.
          */
-        serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.VIEW_SERVER.getServerTypeName());
+        serverTypeGUID = deployedImplementationTypeGUIDs.get(DeployedImplementationType.VIEW_SERVER.getDeployedImplementationType());
 
         for (ViewServiceDescription viewServiceDescription : ViewServiceDescription.values())
         {
-            String guid = this.addDeployedImplementationType(viewServiceDescription.getViewServiceFullName(),
-                                                             OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
-                                                             viewServiceDescription.getViewServiceDescription(),
-                                                             viewServiceDescription.getViewServiceWiki());
+            if (viewServiceDescription.getViewServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
+            {
+                String guid = this.addDeployedImplementationType(viewServiceDescription.getViewServiceFullName(),
+                                                                 OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
+                                                                 viewServiceDescription.getViewServiceDescription(),
+                                                                 viewServiceDescription.getViewServiceWiki());
 
-            archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
-                                                            guid,
-                                                            ResourceUse.HOSTED_SERVICE.getResourceUse(),
-                                                            ResourceUse.HOSTED_SERVICE.getDescription());
+                archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
+                                                                guid,
+                                                                ResourceUse.HOSTED_SERVICE.getResourceUse(),
+                                                                ResourceUse.HOSTED_SERVICE.getDescription());
 
-            archiveHelper.addResourceListRelationshipByGUID(guid,
-                                                            serviceGUIDs.get(viewServiceDescription.getViewServicePartnerService()),
-                                                            ResourceUse.CALLED_SERVICE.getResourceUse(),
-                                                            ResourceUse.CALLED_SERVICE.getDescription());
+                archiveHelper.addResourceListRelationshipByGUID(guid,
+                                                                serviceGUIDs.get(viewServiceDescription.getViewServicePartnerService()),
+                                                                ResourceUse.CALLED_SERVICE.getResourceUse(),
+                                                                ResourceUse.CALLED_SERVICE.getDescription());
+            }
         }
 
         /*
          * Engine services are found in the Engine Host.   They call an access service.  They also
          * support a particular type of governance engine and governance service.
          */
-        serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.ENGINE_HOST.getServerTypeName());
+        serverTypeGUID = deployedImplementationTypeGUIDs.get(DeployedImplementationType.ENGINE_HOST.getDeployedImplementationType());
 
         for (EngineServiceDescription engineServiceDescription : EngineServiceDescription.values())
         {
-            String guid = this.addDeployedImplementationType(engineServiceDescription.getEngineServiceFullName(),
-                                                             OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
-                                                             engineServiceDescription.getEngineServiceDescription(),
-                                                             engineServiceDescription.getEngineServiceWiki());
-
-            archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
-                                                            guid,
-                                                            ResourceUse.HOSTED_SERVICE.getResourceUse(),
-                                                            ResourceUse.HOSTED_SERVICE.getDescription());
-
-            archiveHelper.addResourceListRelationshipByGUID(guid,
-                                                            serviceGUIDs.get(engineServiceDescription.getEngineServicePartnerService()),
-                                                            ResourceUse.CALLED_SERVICE.getResourceUse(),
-                                                            ResourceUse.CALLED_SERVICE.getDescription());
-
-            String governanceEngineGUID  = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceEngineDeployedImplementationType());
-            String governanceServiceGUID = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceServiceDeployedImplementationType());
-
-            if (governanceEngineGUID != null)
+            if (engineServiceDescription.getEngineServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
             {
-                archiveHelper.addResourceListRelationshipByGUID(guid,
-                                                                governanceEngineGUID,
-                                                                ResourceUse.HOSTED_GOVERNANCE_ENGINE.getResourceUse(),
-                                                                ResourceUse.HOSTED_GOVERNANCE_ENGINE.getDescription());
+                String guid = this.addDeployedImplementationType(engineServiceDescription.getEngineServiceFullName(),
+                                                                 OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
+                                                                 engineServiceDescription.getEngineServiceDescription(),
+                                                                 engineServiceDescription.getEngineServiceWiki());
 
-                if (governanceServiceGUID != null)
+                archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
+                                                                guid,
+                                                                ResourceUse.HOSTED_SERVICE.getResourceUse(),
+                                                                ResourceUse.HOSTED_SERVICE.getDescription());
+
+                archiveHelper.addResourceListRelationshipByGUID(guid,
+                                                                serviceGUIDs.get(engineServiceDescription.getEngineServicePartnerService()),
+                                                                ResourceUse.CALLED_SERVICE.getResourceUse(),
+                                                                ResourceUse.CALLED_SERVICE.getDescription());
+
+                String governanceEngineGUID  = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceEngineDeployedImplementationType());
+                String governanceServiceGUID = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceServiceDeployedImplementationType());
+
+                if (governanceEngineGUID != null)
                 {
-                    archiveHelper.addResourceListRelationshipByGUID(governanceEngineGUID,
-                                                                    governanceServiceGUID,
-                                                                    ResourceUse.HOSTED_CONNECTOR.getResourceUse(),
-                                                                    ResourceUse.HOSTED_CONNECTOR.getDescription());
+                    archiveHelper.addResourceListRelationshipByGUID(guid,
+                                                                    governanceEngineGUID,
+                                                                    ResourceUse.HOSTED_GOVERNANCE_ENGINE.getResourceUse(),
+                                                                    ResourceUse.HOSTED_GOVERNANCE_ENGINE.getDescription());
+
+                    if (governanceServiceGUID != null)
+                    {
+                        archiveHelper.addResourceListRelationshipByGUID(governanceEngineGUID,
+                                                                        governanceServiceGUID,
+                                                                        ResourceUse.HOSTED_CONNECTOR.getResourceUse(),
+                                                                        ResourceUse.HOSTED_CONNECTOR.getDescription());
+                    }
                 }
             }
         }
@@ -674,29 +679,32 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
          */
         for (IntegrationServiceDescription integrationServiceDescription : IntegrationServiceDescription.values())
         {
-            String guid = this.addDeployedImplementationType(integrationServiceDescription.getIntegrationServiceFullName(),
-                                                             OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
-                                                             integrationServiceDescription.getIntegrationServiceDescription(),
-                                                             integrationServiceDescription.getIntegrationServiceWiki());
-
-            archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
-                                                            guid,
-                                                            ResourceUse.HOSTED_SERVICE.getResourceUse(),
-                                                            ResourceUse.HOSTED_SERVICE.getDescription());
-
-            archiveHelper.addResourceListRelationshipByGUID(guid,
-                                                            serviceGUIDs.get(integrationServiceDescription.getIntegrationServicePartnerOMAS().getAccessServiceFullName()),
-                                                            ResourceUse.CALLED_SERVICE.getResourceUse(),
-                                                            ResourceUse.CALLED_SERVICE.getDescription());
-
-            String connectorTypeGUID = deployedImplementationTypeGUIDs.get(integrationServiceDescription.getConnectorDeployedImplementationType());
-
-            if (connectorTypeGUID != null)
+            if (integrationServiceDescription.getIntegrationServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
             {
+                String guid = this.addDeployedImplementationType(integrationServiceDescription.getIntegrationServiceFullName(),
+                                                                 OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
+                                                                 integrationServiceDescription.getIntegrationServiceDescription(),
+                                                                 integrationServiceDescription.getIntegrationServiceWiki());
+
+                archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
+                                                                guid,
+                                                                ResourceUse.HOSTED_SERVICE.getResourceUse(),
+                                                                ResourceUse.HOSTED_SERVICE.getDescription());
+
                 archiveHelper.addResourceListRelationshipByGUID(guid,
-                                                                connectorTypeGUID,
-                                                                ResourceUse.HOSTED_CONNECTOR.getResourceUse(),
-                                                                ResourceUse.HOSTED_CONNECTOR.getDescription());
+                                                                serviceGUIDs.get(integrationServiceDescription.getIntegrationServicePartnerOMAS().getAccessServiceFullName()),
+                                                                ResourceUse.CALLED_SERVICE.getResourceUse(),
+                                                                ResourceUse.CALLED_SERVICE.getDescription());
+
+                String connectorTypeGUID = deployedImplementationTypeGUIDs.get(integrationServiceDescription.getConnectorDeployedImplementationType());
+
+                if (connectorTypeGUID != null)
+                {
+                    archiveHelper.addResourceListRelationshipByGUID(guid,
+                                                                    connectorTypeGUID,
+                                                                    ResourceUse.HOSTED_CONNECTOR.getResourceUse(),
+                                                                    ResourceUse.HOSTED_CONNECTOR.getDescription());
+                }
             }
         }
 
@@ -751,7 +759,6 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         archiveHelper.addConnectorType(kafkaConnectorCategoryGUID, new KafkaOpenMetadataTopicProvider());
         archiveHelper.addConnectorType(null, new ApacheAtlasRESTProvider());
         archiveHelper.addConnectorType(null, new ApacheAtlasIntegrationProvider());
-        archiveHelper.addConnectorType(null, new EgeriaCataloguerIntegrationProvider());
         archiveHelper.addConnectorType(null, new CSVLineageImporterProvider());
         archiveHelper.addConnectorType(null, new DataFilesMonitorIntegrationProvider());
         archiveHelper.addConnectorType(null, new DataFolderMonitorIntegrationProvider());
@@ -768,6 +775,13 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         archiveHelper.addConnectorType(null, new PostgresServerIntegrationProvider());
         archiveHelper.addConnectorType(null, new ApacheKafkaAdminProvider());
         archiveHelper.addConnectorType(null, new KafkaTopicIntegrationProvider());
+        archiveHelper.addConnectorType(null, new SurveyApacheKafkaServerProvider());
+        archiveHelper.addConnectorType(null, new OMAGServerPlatformProvider());
+        archiveHelper.addConnectorType(null, new EngineHostProvider());
+        archiveHelper.addConnectorType(null, new IntegrationDaemonProvider());
+        archiveHelper.addConnectorType(null, new MetadataAccessServerProvider());
+        archiveHelper.addConnectorType(null, new ViewServerProvider());
+        archiveHelper.addConnectorType(null, new EgeriaCataloguerIntegrationProvider());
 
         /*
          * Create the default integration group.
@@ -957,6 +971,11 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
          * Add catalog templates
          */
         this.addFileTemplates();
+        this.addOMAGServerPlatformCatalogTemplate();
+        this.addEngineHostCatalogTemplate();
+        this.addIntegrationDaemonCatalogTemplate();
+        this.addMetadataAccessServerCatalogTemplate();
+        this.addViewServerCatalogTemplate();
         this.addPostgresServerCatalogTemplate();
         this.addPostgresDatabaseCatalogTemplate();
         this.addPostgresDatabaseSchemaCatalogTemplate();
@@ -966,6 +985,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         this.addMacBookProCatalogTemplate();
         this.addFileSystemTemplate();
         this.addUNIXFileSystemTemplate();
+
+        this.addDefaultOMAGServerPlatform();
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
@@ -1451,6 +1472,11 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                deployedImplementationType.getDeployedImplementationType());
 
+        if (deployedImplementationType.getAssociatedClassification() != null)
+        {
+            classifications.add(archiveHelper.getServerPurposeClassification(deployedImplementationType.getAssociatedClassification(), null));
+        }
+
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a " + deployedImplementationType.getDeployedImplementationType() + " SoftwareServer with an associated SoftwareCapability and Connection.",
                                                                     "V1.0",
@@ -1465,28 +1491,31 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                   extendedProperties,
                                                   classifications);
 
-        archiveHelper.addSoftwareCapability(softwareCapabilityType.getAssociatedTypeName(),
-                                            qualifiedName + ":" + softwareCapabilityName,
-                                            softwareCapabilityName,
-                                            null,
-                                            softwareCapabilityType.getDeployedImplementationType(),
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            softwareCapabilityClassification,
-                                            assetGUID,
-                                            deployedImplementationType.getAssociatedTypeName(),
-                                            OpenMetadataType.ASSET.typeName);
+        if (softwareCapabilityType != null)
+        {
+            archiveHelper.addSoftwareCapability(softwareCapabilityType.getAssociatedTypeName(),
+                                                qualifiedName + ":" + softwareCapabilityName,
+                                                softwareCapabilityName,
+                                                null,
+                                                softwareCapabilityType.getDeployedImplementationType(),
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                softwareCapabilityClassification,
+                                                assetGUID,
+                                                deployedImplementationType.getAssociatedTypeName(),
+                                                OpenMetadataType.ASSET.typeName);
 
-        archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + ":" + softwareCapabilityName,
-                                                                 qualifiedName,
-                                                                 null,
-                                                                 null,
-                                                                 null,
-                                                                 null,
-                                                                 1);
+            archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + ":" + softwareCapabilityName,
+                                                                     qualifiedName,
+                                                                     null,
+                                                                     null,
+                                                                     null,
+                                                                     null,
+                                                                     1);
+        }
 
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                         deployedImplementationType.getAssociatedTypeName(),
@@ -1497,6 +1526,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                         networkAddress,
                                                         null,
                                                         null);
+
+        archiveHelper.addServerEndpointRelationship(assetGUID, endpointGUID);
 
         String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
                                                             serverName + " connection",
@@ -1542,7 +1573,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         this.createSoftwareServerCatalogTemplate(DeployedImplementationType.POSTGRESQL_SERVER,
                                                  DeployedImplementationType.POSTGRESQL_DATABASE_MANAGER,
-                                                 "DBMS",
+                                                 "Database Management System (DBMS)",
                                                  null,
                                                  PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder(),
                                                  PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
@@ -1568,7 +1599,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         this.createSoftwareServerCatalogTemplate(DeployedImplementationType.APACHE_ATLAS_SERVER,
                                                  DeployedImplementationType.ASSET_CATALOG,
-                                                 "MetadataCatalog",
+                                                 "Metadata Catalog",
                                                  null,
                                                  AtlasPlaceholderProperty.SERVER_NAME.getPlaceholder(),
                                                  AtlasPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
@@ -1581,6 +1612,246 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                  null,
                                                  placeholderPropertyTypes);
     }
+
+
+    private void addDefaultOMAGServerPlatform()
+    {
+        OMAGServerPlatformProvider provider = new OMAGServerPlatformProvider();
+
+        DeployedImplementationType deployedImplementationType = DeployedImplementationType.OMAG_SERVER_PLATFORM;
+        DeployedImplementationType softwareCapabilityType = DeployedImplementationType.USER_AUTHENTICATION_MANAGER;
+        String softwareCapabilityName = "User Token Manager";
+        String serverName = "Default Local OMAG Server Platform";
+        String userId = "garygeeke";
+        String connectorTypeGUID = provider.getConnectorType().getGUID();
+        String networkAddress = "https://localhost:9443";
+
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
+        String               versionIdentifier  = "V1.0";
+        String               description        = deployedImplementationType.getDescription();
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications    = null;
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                               deployedImplementationType.getDeployedImplementationType());
+
+        if (deployedImplementationType.getAssociatedClassification() != null)
+        {
+            classifications    = new ArrayList<>();
+            classifications.add(archiveHelper.getServerPurposeClassification(deployedImplementationType.getAssociatedClassification(), null));
+        }
+
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  serverName,
+                                                  versionIdentifier,
+                                                  description,
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+
+        archiveHelper.addSoftwareCapability(softwareCapabilityType.getAssociatedTypeName(),
+                                            qualifiedName + ":" + softwareCapabilityName,
+                                            softwareCapabilityName,
+                                            null,
+                                            softwareCapabilityType.getDeployedImplementationType(),
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            (Classification)null,
+                                            assetGUID,
+                                            deployedImplementationType.getAssociatedTypeName(),
+                                            OpenMetadataType.ASSET.typeName);
+
+        archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + ":" + softwareCapabilityName,
+                                                                 qualifiedName,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 1);
+
+        String endpointGUID = archiveHelper.addEndpoint(assetGUID,
+                                                        deployedImplementationType.getAssociatedTypeName(),
+                                                        OpenMetadataType.ASSET.typeName,
+                                                        qualifiedName + ":Endpoint",
+                                                        serverName + " endpoint",
+                                                        null,
+                                                        networkAddress,
+                                                        null,
+                                                        null);
+
+        archiveHelper.addServerEndpointRelationship(assetGUID, endpointGUID);
+
+        String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
+                                                            serverName + " connection",
+                                                            null,
+                                                            userId,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            connectorTypeGUID,
+                                                            endpointGUID,
+                                                            assetGUID,
+                                                            deployedImplementationType.getAssociatedTypeName(),
+                                                            OpenMetadataType.ASSET.typeName);
+
+        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+    }
+
+
+    /**
+     * Create a catalog template for an OMAG Server Platform
+     */
+    private void addOMAGServerPlatformCatalogTemplate()
+    {
+        OMAGServerPlatformProvider provider = new OMAGServerPlatformProvider();
+
+        List<PlaceholderPropertyType> placeholderPropertyTypes = OMAGServerPlatformPlaceholderProperty.getPlaceholderPropertyTypes();
+
+        this.createSoftwareServerCatalogTemplate(DeployedImplementationType.OMAG_SERVER_PLATFORM,
+                                                 DeployedImplementationType.USER_AUTHENTICATION_MANAGER,
+                                                 "User Token Manager",
+                                                 null,
+                                                 OMAGServerPlatformPlaceholderProperty.PLATFORM_NAME.getPlaceholder(),
+                                                 OMAGServerPlatformPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                                 null,
+                                                 provider.getConnectorType().getGUID(),
+                                                 "http://" +
+                                                         OMAGServerPlatformPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         OMAGServerPlatformPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 null,
+                                                 null,
+                                                 placeholderPropertyTypes);
+    }
+
+
+    /**
+     * Create a catalog template for an Engine Host
+     */
+    private void addEngineHostCatalogTemplate()
+    {
+        EngineHostProvider provider = new EngineHostProvider();
+
+        List<PlaceholderPropertyType> placeholderPropertyTypes = OMAGServerPlaceholderProperty.getPlaceholderPropertyTypes();
+
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put("serverName", OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder());
+
+        this.createSoftwareServerCatalogTemplate(DeployedImplementationType.ENGINE_HOST,
+                                                 DeployedImplementationType.REST_API_MANAGER,
+                                                 "Governance Engine Status APIs",
+                                                 null,
+                                                 OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                                 null,
+                                                 provider.getConnectorType().getGUID(),
+                                                 "http://" +
+                                                         OMAGServerPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         OMAGServerPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 configurationProperties,
+                                                 null,
+                                                 placeholderPropertyTypes);
+    }
+
+
+
+    /**
+     * Create a catalog template for an Integration Daemon
+     */
+    private void addIntegrationDaemonCatalogTemplate()
+    {
+        IntegrationDaemonProvider provider = new IntegrationDaemonProvider();
+
+        List<PlaceholderPropertyType> placeholderPropertyTypes = OMAGServerPlaceholderProperty.getPlaceholderPropertyTypes();
+
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put("serverName", OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder());
+
+        this.createSoftwareServerCatalogTemplate(DeployedImplementationType.INTEGRATION_DAEMON,
+                                                 DeployedImplementationType.REST_API_MANAGER,
+                                                 "Governance Engine Status APIs",
+                                                 null,
+                                                 OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                                 null,
+                                                 provider.getConnectorType().getGUID(),
+                                                 "http://" +
+                                                         OMAGServerPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         OMAGServerPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 configurationProperties,
+                                                 null,
+                                                 placeholderPropertyTypes);
+    }
+
+
+
+    /**
+     * Create a catalog template for a Metadata Access Server
+     */
+    private void addMetadataAccessServerCatalogTemplate()
+    {
+        MetadataAccessServerProvider provider = new MetadataAccessServerProvider();
+
+        List<PlaceholderPropertyType> placeholderPropertyTypes = OMAGServerPlaceholderProperty.getPlaceholderPropertyTypes();
+
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put("serverName", OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder());
+
+        this.createSoftwareServerCatalogTemplate(DeployedImplementationType.METADATA_ACCESS_SERVER,
+                                                 DeployedImplementationType.REST_API_MANAGER,
+                                                 "Open Metadata Repository Access APIs",
+                                                 null,
+                                                 OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                                 null,
+                                                 provider.getConnectorType().getGUID(),
+                                                 "http://" +
+                                                         OMAGServerPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         OMAGServerPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 configurationProperties,
+                                                 null,
+                                                 placeholderPropertyTypes);
+    }
+
+
+
+    /**
+     * Create a catalog template for a View Server
+     */
+    private void addViewServerCatalogTemplate()
+    {
+        ViewServerProvider provider = new ViewServerProvider();
+
+        List<PlaceholderPropertyType> placeholderPropertyTypes = OMAGServerPlaceholderProperty.getPlaceholderPropertyTypes();
+
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put("serverName", OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder());
+
+        this.createSoftwareServerCatalogTemplate(DeployedImplementationType.VIEW_SERVER,
+                                                 DeployedImplementationType.REST_API_MANAGER,
+                                                 "Open Metadata and Governance End User APIs",
+                                                 null,
+                                                 OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                                 null,
+                                                 provider.getConnectorType().getGUID(),
+                                                 "http://" +
+                                                         OMAGServerPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         OMAGServerPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 configurationProperties,
+                                                 null,
+                                                 placeholderPropertyTypes);
+    }
+
 
 
     /**
@@ -1715,13 +1986,26 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                            List<ReplacementAttributeType> replacementAttributeTypes,
                                                            List<PlaceholderPropertyType>  placeholderPropertyTypes)
     {
+        final String methodName = "createSoftwareCapabilityCatalogTemplate";
+
         String               qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + softwareCapabilityName;
         String               versionIdentifier = "V1.0";
         String               description = deployedImplementationType.getDescription();
         Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                deployedImplementationType.getDeployedImplementationType());
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    "Create a " + deployedImplementationType.getDeployedImplementationType() + " SoftwareCapability.",
+                                                                    "V1.0",
+                                                                    null, methodName));
+
+        if (softwareCapabilityClassification != null)
+        {
+            classifications.add(softwareCapabilityClassification);
+        }
 
         String capabilityGUID = archiveHelper.addSoftwareCapability(deployedImplementationType.getAssociatedTypeName(),
                                                                     qualifiedName + ":" + softwareCapabilityName,
@@ -1733,7 +2017,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                     null,
                                                                     null,
                                                                     extendedProperties,
-                                                                    softwareCapabilityClassification,
+                                                                    classifications,
                                                                     null,
                                                                     deployedImplementationType.getAssociatedTypeName(),
                                                                     OpenMetadataType.SOFTWARE_CAPABILITY.typeName);

@@ -24,7 +24,7 @@ ext {
     antlrVersion = '3.5.3'
     ST4Version = '4.3.4'
     avroVersion = '1.11.3'
-    xtdbVersion = '1.24.0'
+    xtdbVersion = '1.24.3'
     clojureVersion = '1.11.1'
     classgraphVersion = '4.8.170'
     classmateVersion = '1.5.1'

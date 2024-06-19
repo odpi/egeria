@@ -1335,6 +1335,99 @@ public class ITAssetRESTService
     }
 
 
+
+    /**
+     * Retrieve the list of asset metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param assetTypeName name of type for the asset
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody name to search for
+     *
+     * @return list of matching metadata elements or
+     *
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public AssetListResponse getAssetsByDeployedImplementationType(String          serverName,
+                                                                   String          userId,
+                                                                   String          assetTypeName,
+                                                                   int             startFrom,
+                                                                   int             pageSize,
+                                                                   NameRequestBody requestBody)
+    {
+        final String methodName        = "getAssetsByDeployedImplementationType";
+        final String nameParameterName = "name";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AssetListResponse response = new AssetListResponse();
+        AuditLog          auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            TypeDef typeDef = handler.getTypeDefByName(assetTypeName, OpenMetadataType.ASSET.typeName);
+
+            if (typeDef == null)
+            {
+                restExceptionHandler.handleBadType(assetTypeName, OpenMetadataType.ASSET.typeName, instanceHandler.getServiceName(), methodName);
+            }
+            else
+            {
+                List<AssetElement> assets;
+
+                if (requestBody != null)
+                {
+                    assets = handler.getAssetsByDeployedImplementationType(userId,
+                                                                           typeDef.getGUID(),
+                                                                           typeDef.getName(),
+                                                                           requestBody.getName(),
+                                                                           nameParameterName,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           false,
+                                                                           false,
+                                                                           requestBody.getEffectiveTime(),
+                                                                           methodName);
+                }
+                else
+                {
+                    assets = handler.getAssetsByDeployedImplementationType(userId,
+                                                                           typeDef.getGUID(),
+                                                                           typeDef.getName(),
+                                                                           null,
+                                                                           nameParameterName,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           false,
+                                                                           false,
+                                                                           new Date(),
+                                                                           methodName);
+                }
+
+                setUpVendorProperties(userId, assets, handler, methodName);
+                response.setElementList(assets);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
     /**
      * Retrieve the list of assets created by this caller.
      *

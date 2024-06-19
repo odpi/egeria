@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
-import java.io.Serial;
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -98,9 +97,8 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private List<ViewServiceConfig>         viewServicesConfig              = null;
     private RepositoryServicesConfig        repositoryServicesConfig        = null;
     private ConformanceSuiteConfig          conformanceSuiteConfig          = null;
-    private EngineHostServicesConfig engineHostServicesConfig = null;
-    private LineageWarehouseConfig   lineageWarehouseConfig   = null;
-    private DataEngineProxyConfig    dataEngineProxyConfig    = null;
+    private EngineHostServicesConfig        engineHostServicesConfig        = null;
+    private LineageWarehouseConfig          lineageWarehouseConfig          = null;
     private List<String>                    auditTrail                      = null;
 
 
@@ -142,9 +140,8 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             engineHostServicesConfig        = template.getEngineHostServicesConfig();
             viewServicesConfig              = template.getViewServicesConfig();
             repositoryServicesConfig        = template.getRepositoryServicesConfig();
-            conformanceSuiteConfig = template.getConformanceSuiteConfig();
-            lineageWarehouseConfig = template.getOpenLineageServerConfig();
-            dataEngineProxyConfig  = template.getDataEngineProxyConfig();
+            conformanceSuiteConfig          = template.getConformanceSuiteConfig();
+            lineageWarehouseConfig          = template.getOpenLineageServerConfig();
             auditTrail                      = template.getAuditTrail();
         }
     }
@@ -598,27 +595,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the configuration for the data engine proxy services.
-     *
-     * @param dataEngineProxyConfig properties
-     */
-    public void setDataEngineProxyConfig(DataEngineProxyConfig dataEngineProxyConfig)
-    {
-        this.dataEngineProxyConfig = dataEngineProxyConfig;
-    }
-
-    /**
-     * Return the configuration for the data engine proxy services.
-     *
-     * @return DataEngineProxyConfig properties
-     */
-    public DataEngineProxyConfig getDataEngineProxyConfig()
-    {
-        return dataEngineProxyConfig;
-    }
-
-
-    /**
      * Return the list of audit log entries associated with this config file.
      * The audit log simply keep track of the changed to the configuration.
      *
@@ -669,7 +645,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                        ", repositoryServicesConfig=" + repositoryServicesConfig +
                        ", conformanceSuiteConfig=" + conformanceSuiteConfig +
                        ", openLineageServerConfig=" + lineageWarehouseConfig +
-                       ", dataEngineProxyConfig=" + dataEngineProxyConfig +
                        ", auditTrail=" + auditTrail +
                        '}';
     }
@@ -713,7 +688,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                        Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
                        Objects.equals(getConformanceSuiteConfig(), that.getConformanceSuiteConfig()) &&
                        Objects.equals(getOpenLineageServerConfig(), that.getOpenLineageServerConfig()) &&
-                       Objects.equals(getDataEngineProxyConfig(), that.getDataEngineProxyConfig()) &&
                        Objects.equals(getAuditTrail(), that.getAuditTrail());
     }
 
@@ -731,7 +705,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                             getLocalServerUserId(), getLocalServerPassword(), getMaxPageSize(), getServerSecurityConnection(), getEventBusConfig(),
                             getAccessServicesConfig(), getDynamicIntegrationGroupsConfig(), getIntegrationServicesConfig(), getEngineHostServicesConfig(), getViewServicesConfig(),
                             getRepositoryServicesConfig(), getConformanceSuiteConfig(),
-                            getOpenLineageServerConfig(),
-                            getDataEngineProxyConfig(), getAuditTrail());
+                            getOpenLineageServerConfig(), getAuditTrail());
     }
 }

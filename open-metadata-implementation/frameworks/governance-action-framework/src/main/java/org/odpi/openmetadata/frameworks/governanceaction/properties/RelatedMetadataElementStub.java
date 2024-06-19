@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -24,6 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedMetadataElementStub
 {
+    private static PropertyHelper propertyHelper = new PropertyHelper();
+
     private ElementHeader     relationshipHeader     = null;
     private ElementProperties relationshipProperties = null;
     private ElementStub       relatedElement         = null;
@@ -49,6 +54,31 @@ public class RelatedMetadataElementStub
             relationshipHeader = template.getRelationshipHeader();
             relationshipProperties = template.getRelationshipProperties();
             relatedElement = template.getRelatedElement();
+        }
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public RelatedMetadataElementStub(RelatedMetadataElement template)
+    {
+        final String methodName = "clone RelatedMetadataElementStub";
+
+        if (template != null)
+        {
+            relationshipHeader = new ElementHeader(template);
+            relationshipHeader.setGUID(template.getRelationshipGUID());
+
+            relationshipProperties = template.getRelationshipProperties();
+
+            relatedElement = new ElementStub(template.getElement());
+            relatedElement.setUniqueName(propertyHelper.getStringProperty(this.getClass().getName(),
+                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                          template.getElement().getElementProperties(),
+                                                                          methodName));
         }
     }
 

@@ -63,7 +63,6 @@ public class ServerTypeClassifier
         ConformanceSuiteConfig          conformanceSuiteConfig            = configurationDocument.getConformanceSuiteConfig();
         EngineHostServicesConfig engineHostServicesConfig = configurationDocument.getEngineHostServicesConfig();
         LineageWarehouseConfig   lineageWarehouseConfig   = configurationDocument.getOpenLineageServerConfig();
-        DataEngineProxyConfig    dataEngineProxyConfig    = configurationDocument.getDataEngineProxyConfig();
 
         if ((repositoryServicesConfig == null) &&
                 (accessServiceConfigList == null) &&
@@ -72,8 +71,7 @@ public class ServerTypeClassifier
                 (dynamicIntegrationGroupConfigList == null) &&
                 (viewServiceConfigList == null) &&
                 (conformanceSuiteConfig == null) &&
-                (lineageWarehouseConfig == null) &&
-                (dataEngineProxyConfig == null))
+                (lineageWarehouseConfig == null))
         {
             throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.EMPTY_CONFIGURATION.getMessageDefinition(serverName),
                                                       this.getClass().getName(),
@@ -128,11 +126,6 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                                dataEngineProxyConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
                                                 lineageWarehouseConfig);
 
@@ -178,46 +171,6 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                                dataEngineProxyConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
-                                                lineageWarehouseConfig);
-        }
-
-        if (dataEngineProxyConfig != null)
-        {
-            serverTypeClassification = ServerTypeClassification.DATA_ENGINE_PROXY;
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                ACCESS_SERVICES_NAME,
-                                                accessServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.ENGINE_HOST_SERVICES.getServiceName(),
-                                                engineHostServicesConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                INTEGRATION_SERVICES_NAME,
-                                                integrationServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                VIEW_SERVICES_NAME,
-                                                viewServiceConfigList);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
-                                                conformanceSuiteConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
                                                 lineageWarehouseConfig);
         }
@@ -248,11 +201,6 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                                dataEngineProxyConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
                                                 lineageWarehouseConfig);
         }
@@ -280,11 +228,6 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
                                                 conformanceSuiteConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                                dataEngineProxyConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -320,11 +263,6 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
                                                 conformanceSuiteConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                                dataEngineProxyConfig);
         }
 
         if (viewServiceConfigList != null)
@@ -350,12 +288,7 @@ public class ServerTypeClassifier
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
                                                 conformanceSuiteConfig);
-
-            this.validateSubsystemNotConfigured(serverName,
-                                                serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                                dataEngineProxyConfig);
-
+            
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
                                                 GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
