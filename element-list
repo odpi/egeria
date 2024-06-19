@@ -332,6 +332,12 @@ org.odpi.openmetadata.adapters.connectors.datastore.datafolder.ffdc
 org.odpi.openmetadata.adapters.connectors.dynamicarchivers
 org.odpi.openmetadata.adapters.connectors.dynamicarchivers.ffdc
 org.odpi.openmetadata.adapters.connectors.dynamicarchivers.glossary
+org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control
+org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.extractor
+org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc
+org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform
+org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.properties
+org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers
 org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc
 org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 org.odpi.openmetadata.adapters.connectors.governanceactions.remediation
@@ -864,6 +870,11 @@ org.odpi.openmetadata.viewservices.referencedata.admin
 org.odpi.openmetadata.viewservices.referencedata.ffdc
 org.odpi.openmetadata.viewservices.referencedata.server
 org.odpi.openmetadata.viewservices.referencedata.server.spring
+org.odpi.openmetadata.viewservices.runtimemanager.admin
+org.odpi.openmetadata.viewservices.runtimemanager.ffdc
+org.odpi.openmetadata.viewservices.runtimemanager.rest
+org.odpi.openmetadata.viewservices.runtimemanager.server
+org.odpi.openmetadata.viewservices.runtimemanager.server.spring
 org.odpi.openmetadata.viewservices.templatemanager.admin
 org.odpi.openmetadata.viewservices.templatemanager.ffdc
 org.odpi.openmetadata.viewservices.templatemanager.rest

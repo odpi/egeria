@@ -94,7 +94,6 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="block">OpenMetadataPlatformSecurityConnector provides the base class for a connector that validates access to the
  platform services that are not specific to an OMAG Server.  This optional connector can be set up once the
  OMAGServerPlatform is running.
-
  The default implementation does not allow any access.  It generates well-defined exceptions and console log
  messages.  It is over-ridden to define the required access for the deployment environment.  The methods
  in this base class can be called if access is to be denied as a way of reusing the message logging and exceptions.</div>
@@ -174,8 +173,7 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <div class="block">Write an audit log message to say that the connector is initializing.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSeverity,java.lang.String)" class="member-name-link">logRecord</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logMessageId,
- <a href="../../frameworks/auditlog/messagesets/AuditLogRecordSeverity.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogRecordSeverity</a>&nbsp;severity,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logRecord(org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSeverity,java.lang.String)" class="member-name-link">logRecord</a><wbr>(<a href="../../frameworks/auditlog/messagesets/AuditLogRecordSeverity.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogRecordSeverity</a>&nbsp;severity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logMessage)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Log an audit log record for an event, decision, error, or exception detected by the OMRS.</div>
@@ -276,15 +274,13 @@ implements <a href="../OpenMetadataPlatformSecurity.html" title="interface in or
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSeverity,java.lang.String)">
+<section class="detail" id="logRecord(org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSeverity,java.lang.String)">
 <h3>logRecord</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">logRecord</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logMessageId,
- <a href="../../frameworks/auditlog/messagesets/AuditLogRecordSeverity.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogRecordSeverity</a>&nbsp;severity,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">logRecord</span><wbr><span class="parameters">(<a href="../../frameworks/auditlog/messagesets/AuditLogRecordSeverity.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">AuditLogRecordSeverity</a>&nbsp;severity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logMessage)</span></div>
 <div class="block">Log an audit log record for an event, decision, error, or exception detected by the OMRS.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>logMessageId</code> - id for the audit log record</dd>
 <dd><code>severity</code> - is this an event, decision, error or exception?</dd>
 <dd><code>logMessage</code> - description of the audit log record including specific resources involved</dd>
 </dl>
