@@ -109,6 +109,7 @@ public class IntegrationGroupSummary
         return integrationGroupDescription;
     }
 
+
     /**
      * Set up the description of the integration group.
      *
@@ -143,7 +144,7 @@ public class IntegrationGroupSummary
 
 
     /**
-     * Return the status of the connectors running under this integration service.
+     * Return the status of the connectors running under this integration group.
      *
      * @return Connector status
      */
@@ -154,7 +155,7 @@ public class IntegrationGroupSummary
 
 
     /**
-     * Return the status of the connectors running under this integration service.
+     * Return the status of the connectors running under this integration group.
      *
      * @param integrationConnectorReports Connector status
      */

@@ -40,10 +40,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * AssetManagerClientBase supports the APIs to maintain assets and their related objects.  It is called from the specific clients
+ * ITInfrastructureClientBase supports the APIs to maintain assets and their related objects.  It is called from the specific clients
  * that manage the specializations of asset.
  */
-public abstract class AssetManagerClientBase implements ServerPurposeManagerInterface, DeploymentManagementInterface
+public abstract class ITInfrastructureClientBase implements ServerPurposeManagerInterface, DeploymentManagementInterface
 {
     static final String baseURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}";
     static final String referencableTypeName  = "Referenceable";
@@ -57,7 +57,7 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
     String   serverPlatformURLRoot;    /* Initialized in constructor */
 
     ITInfrastructureRESTClient  restClient;               /* Initialized in constructor */
-    private NullRequestBody     nullRequestBody         = new NullRequestBody();
+    private final NullRequestBody nullRequestBody = new NullRequestBody();
 
     InvalidParameterHandler     invalidParameterHandler = new InvalidParameterHandler();
 
@@ -68,15 +68,18 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetManagerClientBase(String   serverName,
-                           String   serverPlatformURLRoot,
-                           AuditLog auditLog) throws InvalidParameterException
+    ITInfrastructureClientBase(String   serverName,
+                               String   serverPlatformURLRoot,
+                               AuditLog auditLog,
+                               int      maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
@@ -91,14 +94,17 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetManagerClientBase(String serverName,
-                           String serverPlatformURLRoot) throws InvalidParameterException
+    ITInfrastructureClientBase(String serverName,
+                               String serverPlatformURLRoot,
+                               int    maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
@@ -116,16 +122,19 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetManagerClientBase(String serverName,
-                           String serverPlatformURLRoot,
-                           String userId,
-                           String password) throws InvalidParameterException
+    ITInfrastructureClientBase(String serverName,
+                               String serverPlatformURLRoot,
+                               String userId,
+                               String password,
+                               int    maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
@@ -144,18 +153,21 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetManagerClientBase(String   serverName,
-                           String   serverPlatformURLRoot,
-                           String   userId,
-                           String   password,
-                           AuditLog auditLog) throws InvalidParameterException
+    ITInfrastructureClientBase(String   serverName,
+                               String   serverPlatformURLRoot,
+                               String   userId,
+                               String   password,
+                               AuditLog auditLog,
+                               int      maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
@@ -175,13 +187,14 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetManagerClientBase(String                     serverName,
-                           String                     serverPlatformURLRoot,
-                           ITInfrastructureRESTClient restClient,
-                           int                        maxPageSize) throws InvalidParameterException
+    ITInfrastructureClientBase(String                     serverName,
+                               String                     serverPlatformURLRoot,
+                               ITInfrastructureRESTClient restClient,
+                               int                        maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
@@ -960,7 +973,61 @@ public abstract class AssetManagerClientBase implements ServerPurposeManagerInte
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + assetTypeName + "/by-name?startFrom={2}&pageSize={3}";
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/" + assetTypeName + "/by-name?startFrom={2}&pageSize={3}";
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setEffectiveTime(effectiveTime);
+        requestBody.setName(name);
+        requestBody.setNamePropertyName(nameParameterName);
+
+        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+    /**
+     * Retrieve the list of asset metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param assetTypeName name of type for the asset
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<AssetElement> getAssetsByDeployedImplementationType(String userId,
+                                                             String name,
+                                                             String assetTypeName,
+                                                             Date   effectiveTime,
+                                                             int    startFrom,
+                                                             int    pageSize,
+                                                             String methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/" + assetTypeName + "/by-deployed-implementation-type?startFrom={2}&pageSize={3}";
 
         NameRequestBody requestBody = new NameRequestBody();
 

@@ -2,52 +2,33 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.client;
 
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 
 /**
- * ConnectedAssetClient is used by applications and tools as a factory for Open
- * Connector Framework (OCF) connectors.  The configuration for the connectors is managed as open metadata in
- * a Connection definition.  The caller to the ConnectedAssetClient passes either the name, GUID or URL for the
- * connection to the appropriate method to retrieve a connector.  The ConnectedAssetClient retrieves the connection
- * from the metadata repository and creates an appropriate connector as described the connection and
- * returns it to the caller.
- *
- * The ConnectedAssetClient supports access to the asset properties through the connector.
+ * ConnectedAssetClient manages the retrieval of connections, and the creation of resource connectors used to access the
+ * content of data sources and services.
  */
 public class ConnectedAssetClient extends ConnectedAssetClientBase
 {
-    private static final String  serviceURLName = "it-infrastructure";
+    private final static String serviceURLMarker = AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceURLMarker();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
-     * @param serverName name of the server to connect to
+     * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      *
-     * @throws InvalidParameterException null URL or server name
-     */
-    public ConnectedAssetClient(String   serverName,
-                                String   serverPlatformURLRoot,
-                                AuditLog auditLog) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
-    }
-
-
-    /**
-     * Create a new client with no authentication embedded in the HTTP request.
-     *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @throws InvalidParameterException null URL or server name
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                   REST API calls.
      */
     public ConnectedAssetClient(String serverName,
-                                String serverPlatformURLRoot) throws InvalidParameterException
+                                String serverPlatformURLRoot,
+                                int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLName);
+        super(serverName, serverPlatformURLRoot, serviceURLMarker, maxPageSize, null);
     }
 
 
@@ -55,38 +36,19 @@ public class ConnectedAssetClient extends ConnectedAssetClientBase
      * Create a new client that passes userId and password in each HTTP request.  This is the
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
-     * @param serverName name of the server to connect to
+     * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param userId caller's userId embedded in all HTTP requests
-     * @param password caller's userId embedded in all HTTP requests
-     * @param auditLog logging destination
-     * @throws InvalidParameterException null URL or server name
-     */
-    public ConnectedAssetClient(String     serverName,
-                                String     serverPlatformURLRoot,
-                                String     userId,
-                                String     password,
-                                AuditLog   auditLog) throws InvalidParameterException
-    {
-        super(serverName, serverPlatformURLRoot, serviceURLName, userId, password, auditLog);
-    }
-
-
-    /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
+     * @param serverUserId          caller's userId embedded in all HTTP requests
+     * @param serverPassword        caller's userId embedded in all HTTP requests
      *
-     * @param serverName name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param userId caller's userId embedded in all HTTP requests
-     * @param password caller's userId embedded in all HTTP requests
-     * @throws InvalidParameterException null URL or server name
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                   REST API calls.
      */
-    public ConnectedAssetClient(String     serverName,
-                                String     serverPlatformURLRoot,
-                                String     userId,
-                                String     password) throws InvalidParameterException
+    public ConnectedAssetClient(String serverName,
+                                String serverPlatformURLRoot,
+                                String serverUserId,
+                                String serverPassword) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLName, userId, password);
+        super(serverName, serverPlatformURLRoot, serviceURLMarker, serverUserId, serverPassword);
     }
 }

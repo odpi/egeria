@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,11 +23,11 @@ import java.util.List;
 /**
  * HostManagerClient supports the APIs to maintain hosts and their related objects.
  */
-public class HostManagerClient extends AssetManagerClientBase implements HostManagerInterface
+public class HostManagerClient extends ITInfrastructureClientBase implements HostManagerInterface
 {
-    private static final String hostEntityType                = "Host";
-    private static final String hostClusterEntityType         = "HostCluster";
-    private static final String hostClusterMemberRelationship = "HostClusterMember";
+    private static final String hostEntityType                = OpenMetadataType.HOST.typeName;
+    private static final String hostClusterEntityType         = OpenMetadataType.HOST_CLUSTER.typeName;
+    private static final String hostClusterMemberRelationship = OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.typeName;
 
 
     /**
@@ -35,14 +36,16 @@ public class HostManagerClient extends AssetManagerClientBase implements HostMan
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public HostManagerClient(String   serverName,
                              String   serverPlatformURLRoot,
-                             AuditLog auditLog) throws InvalidParameterException
+                             AuditLog auditLog,
+                             int      maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog, maxPageSize);
     }
 
 
@@ -51,13 +54,15 @@ public class HostManagerClient extends AssetManagerClientBase implements HostMan
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public HostManagerClient(String serverName,
-                             String serverPlatformURLRoot) throws InvalidParameterException
+                             String serverPlatformURLRoot,
+                             int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot, maxPageSize);
     }
 
 
@@ -69,15 +74,17 @@ public class HostManagerClient extends AssetManagerClientBase implements HostMan
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public HostManagerClient(String serverName,
                              String serverPlatformURLRoot,
                              String userId,
-                             String password) throws InvalidParameterException
+                             String password,
+                             int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
     }
 
 
@@ -90,6 +97,7 @@ public class HostManagerClient extends AssetManagerClientBase implements HostMan
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
@@ -98,9 +106,10 @@ public class HostManagerClient extends AssetManagerClientBase implements HostMan
                              String   serverPlatformURLRoot,
                              String   userId,
                              String   password,
-                             AuditLog auditLog) throws InvalidParameterException
+                             AuditLog auditLog,
+                             int      maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog, maxPageSize);
     }
 
 

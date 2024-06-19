@@ -301,6 +301,19 @@ public enum ViewServiceDescription
                   "https://egeria-project.org/services/omvs/people-organizer/overview/",
                   AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceFullName()),
 
+
+    /**
+     * Retrieve configuration and status from platforms and servers.
+     */
+    RUNTIME_MANAGER (824,
+                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                      "Runtime Manager",
+                      "Runtime Manager OMVS",
+                      "runtime-manager",
+                      "Retrieve configuration and status from platforms and servers.",
+                      "https://egeria-project.org/services/omvs/runtime-manager/overview/",
+                      AccessServiceDescription.IT_INFRASTRUCTURE_OMAS.getAccessServiceFullName()),
+
     ;
 
 

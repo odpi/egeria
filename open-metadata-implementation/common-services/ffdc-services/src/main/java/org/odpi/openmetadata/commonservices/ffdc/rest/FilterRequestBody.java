@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * StringRequestBody is the request body structure used on OMAG REST API calls that passed a string.
+ * FilterRequestBody is the request body structure used on OMAG REST API calls that passed a string that is used to filter responses.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

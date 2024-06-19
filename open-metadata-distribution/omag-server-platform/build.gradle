@@ -52,6 +52,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:egeria-system-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:postgres-server-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
@@ -213,6 +214,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:egeria-system-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:postgres-server-connectors').shadowJar }
                 fileMode = 0755
             }
@@ -349,6 +351,8 @@ distributions {
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/data-discovery" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/reference-data" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/runtime-manager" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/template-manager" }
                         { include 'Egeria*.http' }

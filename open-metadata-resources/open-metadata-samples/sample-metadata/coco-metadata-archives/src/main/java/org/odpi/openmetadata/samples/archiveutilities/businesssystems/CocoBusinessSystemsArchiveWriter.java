@@ -6,6 +6,7 @@ package org.odpi.openmetadata.samples.archiveutilities.businesssystems;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.sustainability.CocoSustainabilityArchiveWriter;
@@ -131,7 +132,7 @@ public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
                                                         null,
                                                         null,
                                                         null,
-                                                        null,
+                                                        (Classification)null,
                                                         serverGUID,
                                                         OpenMetadataType.SOFTWARE_SERVER.typeName,
                                                         OpenMetadataType.ASSET.typeName);

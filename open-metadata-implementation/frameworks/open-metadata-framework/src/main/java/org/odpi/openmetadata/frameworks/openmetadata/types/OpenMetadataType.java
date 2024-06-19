@@ -344,6 +344,87 @@ public enum OpenMetadataType
                     "Software services to support a runtime environment for applications and data stores."),
 
     /**
+     * Adds more detail about the purpose of a deployed instance of IT infrastructure.
+     */
+    SERVER_PURPOSE_CLASSIFICATION("78f68757-600f-4e8e-843b-00e77cdee37c",
+                                  "ServerPurpose",
+                                  OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
+                                  "403e188a-39b9-4109-92f9-2c792dc4ffdb",
+                                  "Adds more detail about the purpose of a deployed instance of IT infrastructure."),
+
+    /**
+     * A server that hosts applications.
+     */
+    APPLICATION_SERVER_CLASSIFICATION("19196efb-2706-47bf-8e51-e8ba5b36d033",
+                                      "ApplicationServer",
+                                      OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
+                                      "d51766f2-40db-4d69-9d67-b0432c3972b0",
+                                      "A server that hosts applications."),
+
+    /**
+     * A server that supports HTTP-based application such as websites and REST services.
+     */
+    WEBSERVER_CLASSIFICATION("d13e1cc5-bb7e-41ec-8233-9647fbf92a19",
+                             "Webserver",
+                             OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
+                             "c2f8f60c-e18c-4020-aeeb-8d7d0a5635d0",
+                             "A server that supports HTTP-based application such as websites and REST services."),
+
+    /**
+     * Identifies a server as one that manages one or more databases.
+     */
+    DATABASE_SERVER_CLASSIFICATION("6bb58cc9-ed9e-4f75-b2f2-6d308554eb52",
+                                   "DatabaseServer",
+                                   OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
+                                   "5eb84a5c-2bfc-4c92-8941-084f3cf82ff5",
+                                   "Identifies a server as one that manages one or more databases."),
+
+    /**
+     * Identifies a server that exchanges data between between other servers.
+     */
+    INTEGRATION_SERVER_CLASSIFICATION("c165b760-d9ab-47ac-a2ee-7854ec74605a",
+                                      "IntegrationServer",
+                                      OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
+                                      "d93a4834-6d68-43a5-926f-8c526f969e43",
+                                      "Identifies a server that exchanges data between between other servers."),
+
+    /**
+     * A server hosting a metadata collection.
+     */
+    METADATA_SERVER_CLASSIFICATION("74a256ad-4022-4518-a446-c65fe082d4d3",
+                                   "MetadataServer",
+                                   OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
+                                   "0624e263-ca23-40e5-abe5-71cc6698421d",
+                                   "A server hosting a metadata collection."),
+
+    /**
+     * A server acting as an open metadata adapter for a metadata repository.
+     */
+    REPOSITORY_PROXY_CLASSIFICATION("ae81c35e-7078-46f0-9b2c-afc99accf3ec",
+                                    "RepositoryProxy",
+                                    OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
+                                    "122d5b15-932c-4c27-8a36-e39ed93bd69c",
+                                    "A server acting as an open metadata adapter for a metadata repository."),
+
+    /**
+     * A server dedicated to managing activity relating to governance of data.
+     */
+    GOVERNANCE_DAEMON_CLASSIFICATION("7815f222-529d-4902-8f0b-e37cbc779885",
+                                     "GovernanceDaemon",
+                                     OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
+                                     "2f106d43-ed20-4ef1-aa0b-e15520006640",
+                                     "A server dedicated to managing activity relating to governance of data."),
+
+    /**
+     * A server dedicated to managing stewardship activity relating to governance of data.
+     */
+    STEWARDSHIP_SERVER_CLASSIFICATION("eaaeaa31-6f8b-4ed5-88fe-422ed3733158",
+                                      "StewardshipServer",
+                                      OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
+                                      "2f106d43-ed20-4ef1-aa0b-e15520006640",
+                                      "A server dedicated to managing stewardship activity relating to governance of data."),
+
+    /**
      * A software implemented function such as a software service or engine.
      */
     SOFTWARE_CAPABILITY("54055c38-b9ad-4a66-a75b-14dc643d4c69",

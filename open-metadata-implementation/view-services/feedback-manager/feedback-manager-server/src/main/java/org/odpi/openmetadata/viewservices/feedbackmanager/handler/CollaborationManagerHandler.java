@@ -24,10 +24,7 @@ import org.odpi.openmetadata.viewservices.feedbackmanager.converters.*;
 import org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements.*;
 import org.odpi.openmetadata.viewservices.feedbackmanager.properties.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -43,10 +40,8 @@ public class CollaborationManagerHandler
 
     private final CommentConverter<CommentElement>         commentConverter;
     private final InformalTagConverter<InformalTagElement> tagConverter;
-    private final LikeConverter<LikeElement>               likeConverter;
     private final NoteLogConverter<NoteLogElement>         noteLogConverter;
     private final NoteConverter<NoteElement>               noteConverter;
-    private final RatingConverter<RatingElement>           ratingConverter;
 
 
     /**
@@ -74,10 +69,8 @@ public class CollaborationManagerHandler
 
         this.commentConverter = new CommentConverter<>(propertyHelper, serviceName, localServerName);
         this.tagConverter     = new InformalTagConverter<>(propertyHelper, serviceName, localServerName);
-        this.likeConverter    = new LikeConverter<>(propertyHelper, serviceName, localServerName);
         this.noteLogConverter = new NoteLogConverter<>(propertyHelper, serviceName, localServerName);
         this.noteConverter    = new NoteConverter<>(propertyHelper, serviceName, localServerName);
-        this.ratingConverter  = new RatingConverter<>(propertyHelper, serviceName, localServerName);
     }
 
 
@@ -92,6 +85,7 @@ public class CollaborationManagerHandler
      * @param relationshipTypeName type of attaching relationship
      * @param isPublic is this visible to other people
      * @param elementProperties  properties of the feedback
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
@@ -102,11 +96,12 @@ public class CollaborationManagerHandler
                                       String            elementTypeName,
                                       String            relationshipTypeName,
                                       boolean           isPublic,
-                                      ElementProperties elementProperties) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+                                      ElementProperties elementProperties,
+                                      Date              effectiveTime) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
-        RelatedMetadataElement existingFeedback = this.getFeedbackForUser(userId, elementGUID, relationshipTypeName);
+        RelatedMetadataElement existingFeedback = this.getFeedbackForUser(userId, elementGUID, relationshipTypeName, effectiveTime);
 
         ElementProperties relationshipProperties = propertyHelper.addBooleanProperty(null,
                                                                                      OpenMetadataProperty.IS_PUBLIC.name,
@@ -136,7 +131,7 @@ public class CollaborationManagerHandler
                                                 false,
                                                 false,
                                                 elementProperties,
-                                                new Date());
+                                                effectiveTime);
 
             client.updateRelatedElementsInStore(userId,
                                                 existingFeedback.getRelationshipGUID(),
@@ -144,7 +139,7 @@ public class CollaborationManagerHandler
                                                 false,
                                                 false,
                                                 relationshipProperties,
-                                                new Date());
+                                                effectiveTime);
         }
     }
 
@@ -155,14 +150,16 @@ public class CollaborationManagerHandler
      * @param userId      userId of user making request.
      * @param elementGUID   unique identifier for the element.
      * @param relationshipTypeName name of the relationship type
+     * @param effectiveTime effective time
      * @return relationship and entity
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private RelatedMetadataElement getFeedbackForUser(String userId,
-                                                      String elementGUID,
-                                                      String relationshipTypeName) throws InvalidParameterException,
+    private RelatedMetadataElement getFeedbackForUser(String  userId,
+                                                      String  elementGUID,
+                                                      String  relationshipTypeName,
+                                                      Date    effectiveTime) throws InvalidParameterException,
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
@@ -173,7 +170,7 @@ public class CollaborationManagerHandler
                                                                                            relationshipTypeName,
                                                                                            false,
                                                                                            false,
-                                                                                           new Date(),
+                                                                                           effectiveTime,
                                                                                            startFrom,
                                                                                            invalidParameterHandler.getMaxPagingSize());
 
@@ -200,7 +197,7 @@ public class CollaborationManagerHandler
                                                                   relationshipTypeName,
                                                                   false,
                                                                   false,
-                                                                  new Date(),
+                                                                  effectiveTime,
                                                                   startFrom,
                                                                   invalidParameterHandler.getMaxPagingSize());
         }
@@ -217,6 +214,7 @@ public class CollaborationManagerHandler
      * @param elementGUID   unique identifier for the element.
      * @param isPublic is this visible to other people
      * @param properties  properties of the rating
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
@@ -225,9 +223,10 @@ public class CollaborationManagerHandler
     public void addRatingToElement(String           userId,
                                    String           elementGUID,
                                    boolean          isPublic,
-                                   RatingProperties properties) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
+                                   RatingProperties properties,
+                                   Date             effectiveTime) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
     {
         final String methodName = "addRatingToElement";
         final String propertiesParameterName = "properties";
@@ -253,7 +252,8 @@ public class CollaborationManagerHandler
                                   OpenMetadataType.RATING.typeName,
                                   OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName,
                                   isPublic,
-                                  elementProperties);
+                                  elementProperties,
+                                  effectiveTime);
     }
 
 
@@ -262,19 +262,22 @@ public class CollaborationManagerHandler
      *
      * @param userId      userId of user making request.
      * @param elementGUID  unique identifier for the attached element.
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void removeRatingFromElement(String userId,
-                                        String elementGUID) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    public void removeRatingFromElement(String  userId,
+                                        String  elementGUID,
+                                        Date    effectiveTime) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
     {
         RelatedMetadataElement existingRating = this.getFeedbackForUser(userId,
                                                                         elementGUID,
-                                                                        OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName);
+                                                                        OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName,
+                                                                        effectiveTime);
 
         if (existingRating != null)
         {
@@ -282,7 +285,7 @@ public class CollaborationManagerHandler
                                                 existingRating.getElement().getElementGUID(),
                                                 false,
                                                 false,
-                                                new Date());
+                                                effectiveTime);
         }
     }
 
@@ -293,23 +296,26 @@ public class CollaborationManagerHandler
      * @param userId      userId of user making request
      * @param elementGUID   unique identifier for the element
      * @param isPublic is this visible to other people
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void addLikeToElement(String         userId,
-                                 String         elementGUID,
-                                 boolean        isPublic) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+    public void addLikeToElement(String  userId,
+                                 String  elementGUID,
+                                 boolean isPublic,
+                                 Date    effectiveTime) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
     {
         addFeedbackToElement(userId,
                              elementGUID,
                              OpenMetadataType.LIKE.typeName,
                              OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName,
                              isPublic,
-                             null);
+                             null,
+                             effectiveTime);
     }
 
 
@@ -318,26 +324,29 @@ public class CollaborationManagerHandler
      *
      * @param userId   userId of user making request.
      * @param elementGUID unique identifier for the like object.
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void removeLikeFromElement(String userId,
-                                      String elementGUID) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+    public void removeLikeFromElement(String  userId,
+                                      String  elementGUID,
+                                      Date    effectiveTime) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
         RelatedMetadataElement existingLike = this.getFeedbackForUser(userId,
                                                                       elementGUID,
-                                                                      OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName);
+                                                                      OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName,
+                                                                      effectiveTime);
         if (existingLike != null)
         {
             client.deleteMetadataElementInStore(userId,
                                                 existingLike.getElement().getElementGUID(),
                                                 false,
                                                 false,
-                                                new Date());
+                                                effectiveTime);
         }
     }
 
@@ -397,15 +406,25 @@ public class CollaborationManagerHandler
     private ElementProperties getElementPropertiesForComment(CommentProperties properties,
                                                              String            methodName) throws InvalidParameterException
     {
-        final String propertiesParameterName = "properties";
-        final String commentTextParameterName = "properties.commentText";
+        final String propertiesParameterName   = "properties";
+        final String commentQNameParameterName = "properties.qualifiedName";
+        final String commentTextParameterName  = "properties.commentText";
 
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateObject(properties.getCommentText(), commentTextParameterName, methodName);
+        invalidParameterHandler.validateName(properties.getQualifiedName(), commentQNameParameterName, methodName);
+        invalidParameterHandler.validateText(properties.getCommentText(), commentTextParameterName, methodName);
 
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                               OpenMetadataProperty.TEXT.name,
-                                                                               properties.getCommentText());
+                                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                               properties.getQualifiedName());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.TEXT.name,
+                                                             properties.getCommentText());
+
+        elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                properties.getAdditionalProperties());
 
 
         if (properties.getCommentType() != null)
@@ -474,6 +493,7 @@ public class CollaborationManagerHandler
      * @param commentGUID   unique identifier for the comment to change.
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param properties   properties of the comment
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
@@ -482,9 +502,10 @@ public class CollaborationManagerHandler
     public void   updateComment(String            userId,
                                 String            commentGUID,
                                 boolean           isMergeUpdate,
-                                CommentProperties properties) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+                                CommentProperties properties,
+                                Date              effectiveTime) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
     {
         final String methodName = "updateComment";
 
@@ -496,7 +517,7 @@ public class CollaborationManagerHandler
                                             false,
                                             false,
                                             elementProperties,
-                                            new Date());
+                                            effectiveTime);
     }
 
 
@@ -507,17 +528,19 @@ public class CollaborationManagerHandler
      * @param parentGUID   unique identifier for the element that the comment is attached to.
      * @param commentGUID   unique identifier for the comment to change.
      * @param isPublic      is this visible to other people
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   updateCommentVisibility(String            userId,
-                                          String            parentGUID,
-                                          String            commentGUID,
-                                          boolean           isPublic) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    public void   updateCommentVisibility(String  userId,
+                                          String  parentGUID,
+                                          String  commentGUID,
+                                          boolean isPublic,
+                                          Date    effectiveTime) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
     {
         ElementProperties relationshipProperties = propertyHelper.addBooleanProperty(null,
                                                                                      OpenMetadataProperty.IS_PUBLIC.name,
@@ -545,7 +568,7 @@ public class CollaborationManagerHandler
                                                         false,
                                                         false,
                                                         relationshipProperties,
-                                                        new Date());
+                                                        effectiveTime);
 
                     break;
                 }
@@ -561,17 +584,19 @@ public class CollaborationManagerHandler
      * @param questionCommentGUID unique identifier of the comment containing the question
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
      * @param isPublic      is this visible to other people
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setupAcceptedAnswer(String             userId,
-                                    String             questionCommentGUID,
-                                    String             answerCommentGUID,
-                                    boolean            isPublic) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public void setupAcceptedAnswer(String  userId,
+                                    String  questionCommentGUID,
+                                    String  answerCommentGUID,
+                                    boolean isPublic,
+                                    Date    effectiveTime) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         ElementProperties relationshipProperties = propertyHelper.addBooleanProperty(null,
                                                                                      OpenMetadataProperty.IS_PUBLIC.name,
@@ -586,7 +611,7 @@ public class CollaborationManagerHandler
                                             null,
                                             null,
                                             relationshipProperties,
-                                            new Date());
+                                            effectiveTime);
     }
 
 
@@ -596,6 +621,7 @@ public class CollaborationManagerHandler
      * @param userId calling user
      * @param questionCommentGUID unique identifier of the comment containing the question
      * @param answerCommentGUID unique identifier of the comment containing the accepted answer
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -603,9 +629,10 @@ public class CollaborationManagerHandler
      */
     public void clearAcceptedAnswer(String  userId,
                                     String  questionCommentGUID,
-                                    String  answerCommentGUID) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+                                    String  answerCommentGUID,
+                                    Date    effectiveTime) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         List<RelatedMetadataElements> relationships = client.getMetadataElementRelationships(userId,
                                                                                              questionCommentGUID,
@@ -613,7 +640,7 @@ public class CollaborationManagerHandler
                                                                                              OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
                                                                                              false,
                                                                                              false,
-                                                                                             null,
+                                                                                             effectiveTime,
                                                                                              0,
                                                                                              0);
 
@@ -627,7 +654,7 @@ public class CollaborationManagerHandler
                                                         relationship.getRelationshipGUID(),
                                                         false,
                                                         false,
-                                                        new Date());
+                                                        effectiveTime);
 
                     break;
                 }
@@ -641,17 +668,19 @@ public class CollaborationManagerHandler
      *
      * @param userId       userId of user making request.
      * @param commentGUID  unique identifier for the comment object.
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    public void removeComment(String            userId,
-                              String            commentGUID) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
+    public void removeComment(String  userId,
+                              String  commentGUID,
+                              Date    effectiveTime) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException
     {
-        client.deleteMetadataElementInStore(userId, commentGUID, false, false, new Date());
+        client.deleteMetadataElementInStore(userId, commentGUID, false, false, effectiveTime);
     }
 
 
@@ -660,15 +689,17 @@ public class CollaborationManagerHandler
      *
      * @param userId       userId of user making request.
      * @param commentGUID  unique identifier for the comment object.
+     * @param effectiveTime effective time
      * @return comment properties
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public CommentElement getComment(String  userId,
-                                     String  commentGUID) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+                                     String  commentGUID,
+                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
     {
         final String methodName = "getComment";
 
@@ -676,7 +707,7 @@ public class CollaborationManagerHandler
                                                                              commentGUID,
                                                                              false,
                                                                              false,
-                                                                             new Date());
+                                                                             effectiveTime);
 
         if (commentElement != null)
         {
@@ -696,6 +727,7 @@ public class CollaborationManagerHandler
      * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime effective time
      * @return list of comments
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem updating the element properties in the property server.
@@ -704,9 +736,10 @@ public class CollaborationManagerHandler
     public List<CommentElement>  getAttachedComments(String  userId,
                                                      String  elementGUID,
                                                      int     startFrom,
-                                                     int     pageSize) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
+                                                     int     pageSize,
+                                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
     {
         final String methodName = "getAttachedComments";
 
@@ -716,7 +749,7 @@ public class CollaborationManagerHandler
                                                                                                  OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
                                                                                                  false,
                                                                                                  false,
-                                                                                                 new Date(),
+                                                                                                 effectiveTime,
                                                                                                  startFrom,
                                                                                                  pageSize);
         return this.getCommentsFromRelatedMetadataElement(relatedMetadataElements, methodName);
@@ -763,6 +796,7 @@ public class CollaborationManagerHandler
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective time
      * @return list of matching metadata elements
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -772,9 +806,10 @@ public class CollaborationManagerHandler
     public List<CommentElement> findComments(String  userId,
                                              String  searchString,
                                              int     startFrom,
-                                             int     pageSize) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+                                             int     pageSize,
+                                             Date    effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String methodName = "findComments";
 
@@ -783,7 +818,7 @@ public class CollaborationManagerHandler
                                                                                                OpenMetadataType.COMMENT.typeName,
                                                                                                false,
                                                                                                false,
-                                                                                               new Date(),
+                                                                                               effectiveTime,
                                                                                                startFrom,
                                                                                                pageSize);
         return this.getCommentsFromOpenMetadataElement(openMetadataElements, methodName);
@@ -880,14 +915,16 @@ public class CollaborationManagerHandler
      * @param tagGUID         unique identifier for the tag.
      * @param tagDescription  description of the tag.  Setting a description, particularly in a public tag
      *                        makes the tag more valuable to other users and can act as an embryonic glossary term.
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   updateTagDescription(String userId,
-                                       String tagGUID,
-                                       String tagDescription) throws InvalidParameterException,
+    public void   updateTagDescription(String  userId,
+                                       String  tagGUID,
+                                       String  tagDescription,
+                                       Date    effectiveTime) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
@@ -899,7 +936,7 @@ public class CollaborationManagerHandler
                                             propertyHelper.addStringProperty(null,
                                                                              OpenMetadataProperty.TAG_DESCRIPTION.name,
                                                                              tagDescription),
-                                            new Date());
+                                            effectiveTime);
     }
 
 
@@ -910,17 +947,19 @@ public class CollaborationManagerHandler
      *
      * @param userId    userId of user making request.
      * @param tagGUID   unique id for the tag.
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   deleteTag(String userId,
-                            String tagGUID) throws InvalidParameterException,
+    public void   deleteTag(String  userId,
+                            String  tagGUID,
+                            Date    effectiveTime) throws InvalidParameterException,
                                                    PropertyServerException,
                                                    UserNotAuthorizedException
     {
-        client.deleteMetadataElementInStore(userId, tagGUID, false, false, new Date());
+        client.deleteMetadataElementInStore(userId, tagGUID, false, false, effectiveTime);
     }
 
 
@@ -929,16 +968,18 @@ public class CollaborationManagerHandler
      *
      * @param userId userId of the user making the request.
      * @param tagGUID unique identifier of the tag.
+     * @param effectiveTime effective time
      *
      * @return tag
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public InformalTagElement getTag(String userId,
-                                     String tagGUID) throws InvalidParameterException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException
+    public InformalTagElement getTag(String  userId,
+                                     String  tagGUID,
+                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
     {
         final String methodName = "getTag";
 
@@ -946,7 +987,7 @@ public class CollaborationManagerHandler
                                                                                   tagGUID,
                                                                                   false,
                                                                                   false,
-                                                                                  new Date());
+                                                                                  effectiveTime);
 
         if (openMetadataElement != null)
         {
@@ -966,18 +1007,20 @@ public class CollaborationManagerHandler
      * @param tag name of tag.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime effective time
      *
      * @return tag list
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<InformalTagElement> getTagsByName(String userId,
-                                                  String tag,
-                                                  int    startFrom,
-                                                  int    pageSize) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+    public List<InformalTagElement> getTagsByName(String  userId,
+                                                  String  tag,
+                                                  int     startFrom,
+                                                  int     pageSize,
+                                                  Date    effectiveTime) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
         final String methodName = "getTagsByName";
         final String nameParameterName = "tag";
@@ -986,11 +1029,10 @@ public class CollaborationManagerHandler
         invalidParameterHandler.validateName(tag, nameParameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                   OpenMetadataProperty.NAME.name);
+        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.TAG_NAME.name);
 
         List<OpenMetadataElement> openMetadataElements = client.findMetadataElements(userId,
-                                                                                     OpenMetadataType.COLLECTION.typeName,
+                                                                                     OpenMetadataType.INFORMAL_TAG.typeName,
                                                                                      null,
                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, tag),
                                                                                      null,
@@ -999,37 +1041,45 @@ public class CollaborationManagerHandler
                                                                                      SequencingOrder.PROPERTY_ASCENDING,
                                                                                      false,
                                                                                      false,
-                                                                                     new Date(),
+                                                                                     effectiveTime,
                                                                                      startFrom,
                                                                                      pageSize);
 
+        if (openMetadataElements != null)
+        {
+            return this.getTagsFromOpenMetadataElement(openMetadataElements, methodName);
+        }
 
         return null;
     }
 
 
-
-
     /**
-     * Return the list of the calling user's private tags exactly matching the supplied name.
+     * Convert the GAF beans into feedback beans.
      *
-     * @param userId the name of the calling user.
-     * @param tag name of tag.
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     *
-     * @return tag list
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @param openMetadataElements elements retrieved from the repository
+     * @param methodName calling method
+     * @return feedback beans
+     * @throws PropertyServerException error formatting bean
      */
-    public List<InformalTagElement> getMyTagsByName(String userId,
-                                                    String tag,
-                                                    int    startFrom,
-                                                    int    pageSize) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+    private List<InformalTagElement> getTagsFromOpenMetadataElement(List<OpenMetadataElement> openMetadataElements,
+                                                                    String                    methodName) throws PropertyServerException
     {
+        if (openMetadataElements != null)
+        {
+            List<InformalTagElement> results = new ArrayList<>();
+
+            for (OpenMetadataElement openMetadataElement : openMetadataElements)
+            {
+                if (openMetadataElement != null)
+                {
+                    results.add(tagConverter.getNewBean(InformalTagElement.class, openMetadataElement, methodName));
+                }
+            }
+
+            return results;
+        }
+
         return null;
     }
 
@@ -1041,20 +1091,32 @@ public class CollaborationManagerHandler
      * @param tag name of tag.  This may include wild card characters.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime effective time
      *
      * @return tag list
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<InformalTagElement> findTags(String userId,
-                                             String tag,
-                                             int    startFrom,
-                                             int    pageSize) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+    public List<InformalTagElement> findTags(String  userId,
+                                             String  tag,
+                                             int     startFrom,
+                                             int     pageSize,
+                                             Date    effectiveTime) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
     {
-        return null;
+        final String methodName = "findTags";
+
+        List<OpenMetadataElement> openMetadataElements = client.findMetadataElementsWithString(userId,
+                                                                                               tag,
+                                                                                               OpenMetadataType.INFORMAL_TAG.typeName,
+                                                                                               false,
+                                                                                               false,
+                                                                                               effectiveTime,
+                                                                                               startFrom,
+                                                                                               pageSize);
+        return this.getTagsFromOpenMetadataElement(openMetadataElements, methodName);
     }
 
 
@@ -1065,19 +1127,38 @@ public class CollaborationManagerHandler
      * @param tag name of tag.  This may include wild card characters.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime effective time
      *
      * @return tag list
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<InformalTagElement> findMyTags(String userId,
-                                               String tag,
-                                               int    startFrom,
-                                               int    pageSize) throws InvalidParameterException,
+    public List<InformalTagElement> findMyTags(String  userId,
+                                               String  tag,
+                                               int     startFrom,
+                                               int     pageSize,
+                                               Date    effectiveTime) throws InvalidParameterException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
     {
+        List<InformalTagElement> allMatchingTags = this.findTags(userId, tag, startFrom, pageSize, effectiveTime);
+
+        if (allMatchingTags != null)
+        {
+            List<InformalTagElement> myTags = new ArrayList<>();
+
+            for (InformalTagElement tagElement : allMatchingTags)
+            {
+                if ((tagElement == null) || (tagElement.getProperties().getIsPrivateTag()))
+                {
+                    myTags.add(tagElement);
+                }
+            }
+
+            return myTags;
+        }
+
         return null;
     }
 
@@ -1089,6 +1170,7 @@ public class CollaborationManagerHandler
      * @param elementGUID        unique id for the element.
      * @param tagGUID          unique id of the tag.
      * @param isPublic         flag indicating whether the attachment of the tag is public or not
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
@@ -1097,10 +1179,25 @@ public class CollaborationManagerHandler
     public void   addTagToElement(String  userId,
                                   String  elementGUID,
                                   String  tagGUID,
-                                  boolean isPublic) throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
+                                  boolean isPublic,
+                                  Date    effectiveTime) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
     {
+        ElementProperties relationshipProperties = propertyHelper.addBooleanProperty(null,
+                                                                                     OpenMetadataProperty.IS_PUBLIC.name,
+                                                                                     isPublic);
+
+        client.createRelatedElementsInStore(userId,
+                                            OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
+                                            elementGUID,
+                                            tagGUID,
+                                            false,
+                                            false,
+                                            null,
+                                            null,
+                                            relationshipProperties,
+                                            effectiveTime);
     }
 
 
@@ -1110,6 +1207,7 @@ public class CollaborationManagerHandler
      * @param userId    userId of user making request.
      * @param elementGUID unique id for the element.
      * @param tagGUID   unique id for the tag.
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem updating the element properties in the property server.
@@ -1117,10 +1215,35 @@ public class CollaborationManagerHandler
      */
     public void   removeTagFromElement(String userId,
                                        String elementGUID,
-                                       String tagGUID) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
+                                       String tagGUID,
+                                       Date   effectiveTime) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
+        List<RelatedMetadataElements> relationships = client.getMetadataElementRelationships(userId,
+                                                                                             elementGUID,
+                                                                                             tagGUID,
+                                                                                             OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
+                                                                                             false,
+                                                                                             false,
+                                                                                             effectiveTime,
+                                                                                             0,
+                                                                                             0);
+
+        if (relationships != null)
+        {
+            for (RelatedMetadataElements relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    client.deleteRelatedElementsInStore(userId,
+                                                        relationship.getRelationshipGUID(),
+                                                        false,
+                                                        false,
+                                                        effectiveTime);
+                }
+            }
+        }
     }
 
 
@@ -1133,19 +1256,48 @@ public class CollaborationManagerHandler
      * @param tagGUID unique identifier of tag.
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
+     * @param effectiveTime effective time
      *
      * @return element guid list
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<RelatedMetadataElementStub> getElementsByTag(String userId,
-                                                             String tagGUID,
-                                                             int    startFrom,
-                                                             int    pageSize) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
+    public List<RelatedMetadataElementStub> getElementsByTag(String  userId,
+                                                             String  tagGUID,
+                                                             int     startFrom,
+                                                             int     pageSize,
+                                                             Date    effectiveTime) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
     {
+        List<RelatedMetadataElement> relatedMetadataElements = client.getRelatedMetadataElements(userId,
+                                                                                                 tagGUID,
+                                                                                                 1,
+                                                                                                 OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
+                                                                                                 false,
+                                                                                                 false,
+                                                                                                 effectiveTime,
+                                                                                                 startFrom,
+                                                                                                 pageSize);
+
+        if (relatedMetadataElements != null)
+        {
+            List<RelatedMetadataElementStub> stubs = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            {
+                if (relatedMetadataElement != null)
+                {
+                    RelatedMetadataElementStub stub = new RelatedMetadataElementStub(relatedMetadataElement);
+
+                    stubs.add(stub);
+                }
+            }
+
+            return  stubs;
+        }
+
         return null;
     }
 
@@ -1177,7 +1329,66 @@ public class CollaborationManagerHandler
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        return null;
+        final String methodName = "createNoteLog";
+        final String guidParameterName = "elementGUID";
+
+        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
+
+        ElementProperties elementProperties = this.getElementPropertiesForNoteLog(noteLogProperties, methodName);
+
+        ElementProperties relationshipProperties = propertyHelper.addBooleanProperty(null,
+                                                                                     OpenMetadataProperty.IS_PUBLIC.name,
+                                                                                     isPublic);
+        return client.createMetadataElementInStore(userId,
+                                                   OpenMetadataType.NOTE_LOG.typeName,
+                                                   ElementStatus.ACTIVE,
+                                                   null,
+                                                   elementGUID,
+                                                   false,
+                                                   noteLogProperties.getEffectiveFrom(),
+                                                   noteLogProperties.getEffectiveTo(),
+                                                   elementProperties,
+                                                   elementGUID,
+                                                   OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName,
+                                                   relationshipProperties,
+                                                   true);
+    }
+
+
+    /**
+     * Validate properties and construct an element properties object.
+     *
+     * @param properties comment properties from caller
+     * @param methodName calling method
+     * @return element properties
+     * @throws InvalidParameterException properties from caller are invalid
+     */
+    private ElementProperties getElementPropertiesForNoteLog(NoteLogProperties properties,
+                                                             String            methodName) throws InvalidParameterException
+    {
+        final String propertiesParameterName   = "properties";
+        final String commentQNameParameterName = "properties.qualifiedName";
+
+        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(properties.getQualifiedName(), commentQNameParameterName, methodName);
+
+        ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                               properties.getQualifiedName());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.NAME.name,
+                                                             properties.getDisplayName());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.DESCRIPTION.name,
+                                                             properties.getDescription());
+
+        elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                properties.getAdditionalProperties());
+
+        return elementProperties;
     }
 
 
@@ -1187,8 +1398,8 @@ public class CollaborationManagerHandler
      * @param userId calling user
      * @param noteLogGUID unique identifier of the metadata element to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
-     * @param isPublic                 is this element visible to other people.
      * @param noteLogProperties new properties for the metadata element
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1197,11 +1408,22 @@ public class CollaborationManagerHandler
     public void updateNoteLog(String            userId,
                               String            noteLogGUID,
                               boolean           isMergeUpdate,
-                              boolean           isPublic,
-                              NoteLogProperties noteLogProperties) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+                              NoteLogProperties noteLogProperties,
+                              Date              effectiveTime) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
+        final String methodName = "updateNoteLog";
+
+        ElementProperties elementProperties = this.getElementPropertiesForNoteLog(noteLogProperties, methodName);
+
+        client.updateMetadataElementInStore(userId,
+                                            noteLogGUID,
+                                            ! isMergeUpdate,
+                                            false,
+                                            false,
+                                            elementProperties,
+                                            effectiveTime);
     }
 
 
@@ -1210,17 +1432,19 @@ public class CollaborationManagerHandler
      *
      * @param userId calling user
      * @param noteLogGUID unique identifier of the metadata element to remove
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeNoteLog(String  userId,
-                              String  noteLogGUID) throws InvalidParameterException,
-                                                          UserNotAuthorizedException,
-                                                          PropertyServerException
+                              String  noteLogGUID,
+                              Date    effectiveTime) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
     {
-        client.deleteMetadataElementInStore(userId, noteLogGUID, false, false, new Date());
+        client.deleteMetadataElementInStore(userId, noteLogGUID, false, false, effectiveTime);
     }
 
 
@@ -1232,6 +1456,7 @@ public class CollaborationManagerHandler
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective time
      *
      * @return list of matching metadata elements
      *
@@ -1242,10 +1467,81 @@ public class CollaborationManagerHandler
     public List<NoteLogElement>   findNoteLogs(String  userId,
                                                String  searchString,
                                                int     startFrom,
-                                               int     pageSize) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                               int     pageSize,
+                                               Date    effectiveTime) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
+        final String methodName = "findNoteLogs";
+
+        List<OpenMetadataElement> openMetadataElements = client.findMetadataElementsWithString(userId,
+                                                                                               searchString,
+                                                                                               OpenMetadataType.NOTE_LOG.typeName,
+                                                                                               false,
+                                                                                               false,
+                                                                                               effectiveTime,
+                                                                                               startFrom,
+                                                                                               pageSize);
+        return this.getNoteLogsFromOpenMetadataElement(openMetadataElements, methodName);
+    }
+
+
+    /**
+     * Convert the GAF beans into feedback beans.
+     *
+     * @param openMetadataElements elements retrieved from the repository
+     * @param methodName calling method
+     * @return feedback beans
+     * @throws PropertyServerException error formatting bean
+     */
+    private List<NoteLogElement> getNoteLogsFromOpenMetadataElement(List<OpenMetadataElement> openMetadataElements,
+                                                                    String                    methodName) throws PropertyServerException
+    {
+        if (openMetadataElements != null)
+        {
+            List<NoteLogElement> results = new ArrayList<>();
+
+            for (OpenMetadataElement openMetadataElement : openMetadataElements)
+            {
+                if (openMetadataElement != null)
+                {
+                    results.add(noteLogConverter.getNewBean(NoteLogElement.class, openMetadataElement, methodName));
+                }
+            }
+
+            return results;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the GAF beans into feedback beans.
+     *
+     * @param relatedMetadataElements elements retrieved from the repository
+     * @param methodName calling method
+     * @return feedback beans
+     * @throws PropertyServerException error formatting bean
+     */
+    private List<NoteLogElement> getNoteLogsFromRelatedMetadataElements(List<RelatedMetadataElement> relatedMetadataElements,
+                                                                        String                       methodName) throws PropertyServerException
+    {
+        if (relatedMetadataElements != null)
+        {
+            List<NoteLogElement> results = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            {
+                if (relatedMetadataElement != null)
+                {
+                    results.add(noteLogConverter.getNewBean(NoteLogElement.class, relatedMetadataElement.getElement(), methodName));
+                }
+            }
+
+            return results;
+        }
+
         return null;
     }
 
@@ -1258,6 +1554,7 @@ public class CollaborationManagerHandler
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective time
      *
      * @return list of matching metadata elements
      *
@@ -1268,10 +1565,40 @@ public class CollaborationManagerHandler
     public List<NoteLogElement>   getNoteLogsByName(String  userId,
                                                     String  name,
                                                     int     startFrom,
-                                                    int     pageSize) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                                    int     pageSize,
+                                                    Date    effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
+        final String methodName = "getNoteLogsByName";
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.NAME.name);
+
+        List<OpenMetadataElement> openMetadataElements = client.findMetadataElements(userId,
+                                                                                     OpenMetadataType.NOTE_LOG.typeName,
+                                                                                     null,
+                                                                                     propertyHelper.getSearchPropertiesByName(propertyNames, name),
+                                                                                     null,
+                                                                                     null,
+                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                     SequencingOrder.PROPERTY_ASCENDING,
+                                                                                     false,
+                                                                                     false,
+                                                                                     effectiveTime,
+                                                                                     startFrom,
+                                                                                     pageSize);
+
+        if (openMetadataElements != null)
+        {
+            return this.getNoteLogsFromOpenMetadataElement(openMetadataElements, methodName);
+        }
+
         return null;
     }
 
@@ -1283,6 +1610,7 @@ public class CollaborationManagerHandler
      * @param elementGUID element to start from
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective time
      *
      * @return list of matching metadata elements
      *
@@ -1293,11 +1621,23 @@ public class CollaborationManagerHandler
     public List<NoteLogElement>   getNoteLogsForElement(String  userId,
                                                         String  elementGUID,
                                                         int     startFrom,
-                                                        int     pageSize) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+                                                        int     pageSize,
+                                                        Date    effectiveTime) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
-        return  null;
+        final String methodName = "getNoteLogsForElement";
+
+        List<RelatedMetadataElement> relatedMetadataElements = client.getRelatedMetadataElements(userId,
+                                                                                                 elementGUID,
+                                                                                                 1,
+                                                                                                 OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName,
+                                                                                                 false,
+                                                                                                 false,
+                                                                                                 effectiveTime,
+                                                                                                 startFrom,
+                                                                                                 pageSize);
+        return this.getNoteLogsFromRelatedMetadataElements(relatedMetadataElements, methodName);
     }
 
 
@@ -1306,6 +1646,7 @@ public class CollaborationManagerHandler
      *
      * @param userId calling user
      * @param noteLogGUID unique identifier of the requested metadata element
+     * @param effectiveTime effective time
      *
      * @return requested metadata element
      *
@@ -1314,9 +1655,10 @@ public class CollaborationManagerHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public NoteLogElement getNoteLogByGUID(String  userId,
-                                           String  noteLogGUID) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+                                           String  noteLogGUID,
+                                           Date    effectiveTime) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         final String methodName = "getNoteLogByGUID";
 
@@ -1324,7 +1666,7 @@ public class CollaborationManagerHandler
                                                                                   noteLogGUID,
                                                                                   false,
                                                                                   false,
-                                                                                  new Date());
+                                                                                  effectiveTime);
 
         if (openMetadataElement != null)
         {
@@ -1360,7 +1702,64 @@ public class CollaborationManagerHandler
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        return null;
+        final String methodName = "createNote";
+        final String guidParameterName = "noteLogGUID";
+
+        invalidParameterHandler.validateGUID(noteLogGUID, guidParameterName, methodName);
+
+        ElementProperties elementProperties = this.getElementPropertiesForNote(noteProperties, methodName);
+
+        return client.createMetadataElementInStore(userId,
+                                                   OpenMetadataType.NOTE_ENTRY.typeName,
+                                                   ElementStatus.ACTIVE,
+                                                   null,
+                                                   noteLogGUID,
+                                                   false,
+                                                   noteProperties.getEffectiveFrom(),
+                                                   noteProperties.getEffectiveTo(),
+                                                   elementProperties,
+                                                   noteLogGUID,
+                                                   OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
+                                                   null,
+                                                   true);
+
+    }
+
+
+    /**
+     * Validate properties and construct an element properties object.
+     *
+     * @param properties comment properties from caller
+     * @param methodName calling method
+     * @return element properties
+     * @throws InvalidParameterException properties from caller are invalid
+     */
+    private ElementProperties getElementPropertiesForNote(NoteProperties properties,
+                                                          String         methodName) throws InvalidParameterException
+    {
+        final String propertiesParameterName   = "properties";
+        final String commentQNameParameterName = "properties.qualifiedName";
+
+        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(properties.getQualifiedName(), commentQNameParameterName, methodName);
+
+        ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                               properties.getQualifiedName());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.TEXT.name,
+                                                             properties.getText());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.TITLE.name,
+                                                             properties.getTitle());
+
+        elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                properties.getAdditionalProperties());
+
+        return elementProperties;
     }
 
 
@@ -1371,6 +1770,7 @@ public class CollaborationManagerHandler
      * @param noteGUID unique identifier of the note to update
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param noteProperties new properties for the note
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1379,10 +1779,22 @@ public class CollaborationManagerHandler
     public void updateNote(String         userId,
                            String         noteGUID,
                            boolean        isMergeUpdate,
-                           NoteProperties noteProperties) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                           NoteProperties noteProperties,
+                           Date           effectiveTime) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
     {
+        final String methodName = "updateNote";
+
+        ElementProperties elementProperties = this.getElementPropertiesForNote(noteProperties, methodName);
+
+        client.updateMetadataElementInStore(userId,
+                                            noteGUID,
+                                            ! isMergeUpdate,
+                                            false,
+                                            false,
+                                            elementProperties,
+                                            effectiveTime);
     }
 
 
@@ -1391,17 +1803,19 @@ public class CollaborationManagerHandler
      *
      * @param userId calling user
      * @param noteGUID unique identifier of the metadata element to remove
+     * @param effectiveTime effective time
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeNote(String  userId,
-                           String  noteGUID) throws InvalidParameterException,
-                                                    UserNotAuthorizedException,
-                                                    PropertyServerException
+                           String  noteGUID,
+                           Date    effectiveTime) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
     {
-        client.deleteMetadataElementInStore(userId, noteGUID, false, false, new Date());
+        client.deleteMetadataElementInStore(userId, noteGUID, false, false, effectiveTime);
     }
 
 
@@ -1413,6 +1827,7 @@ public class CollaborationManagerHandler
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective time
      *
      * @return list of matching metadata elements
      *
@@ -1423,10 +1838,81 @@ public class CollaborationManagerHandler
     public List<NoteElement>   findNotes(String  userId,
                                          String  searchString,
                                          int     startFrom,
-                                         int     pageSize) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+                                         int     pageSize,
+                                         Date    effectiveTime) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
+        final String methodName = "findNotes";
+
+        List<OpenMetadataElement> openMetadataElements = client.findMetadataElementsWithString(userId,
+                                                                                               searchString,
+                                                                                               OpenMetadataType.NOTE_ENTRY.typeName,
+                                                                                               false,
+                                                                                               false,
+                                                                                               effectiveTime,
+                                                                                               startFrom,
+                                                                                               pageSize);
+        return this.getNotesFromOpenMetadataElement(openMetadataElements, methodName);
+    }
+
+
+    /**
+     * Convert the GAF beans into feedback beans.
+     *
+     * @param openMetadataElements elements retrieved from the repository
+     * @param methodName calling method
+     * @return feedback beans
+     * @throws PropertyServerException error formatting bean
+     */
+    private List<NoteElement> getNotesFromOpenMetadataElement(List<OpenMetadataElement> openMetadataElements,
+                                                              String                    methodName) throws PropertyServerException
+    {
+        if (openMetadataElements != null)
+        {
+            List<NoteElement> results = new ArrayList<>();
+
+            for (OpenMetadataElement openMetadataElement : openMetadataElements)
+            {
+                if (openMetadataElement != null)
+                {
+                    results.add(noteConverter.getNewBean(NoteElement.class, openMetadataElement, methodName));
+                }
+            }
+
+            return results;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the GAF beans into feedback beans.
+     *
+     * @param relatedMetadataElements elements retrieved from the repository
+     * @param methodName calling method
+     * @return feedback beans
+     * @throws PropertyServerException error formatting bean
+     */
+    private List<NoteElement> getNotesFromRelatedMetadataElements(List<RelatedMetadataElement> relatedMetadataElements,
+                                                                  String                       methodName) throws PropertyServerException
+    {
+        if (relatedMetadataElements != null)
+        {
+            List<NoteElement> results = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            {
+                if (relatedMetadataElement != null)
+                {
+                    results.add(noteConverter.getNewBean(NoteElement.class, relatedMetadataElement.getElement(), methodName));
+                }
+            }
+
+            return results;
+        }
+
         return null;
     }
 
@@ -1438,7 +1924,7 @@ public class CollaborationManagerHandler
      * @param noteLogGUID unique identifier of the note log of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
-
+     * @param effectiveTime effective time
      *
      * @return list of associated metadata elements
      *
@@ -1449,11 +1935,23 @@ public class CollaborationManagerHandler
     public List<NoteElement>    getNotesForNoteLog(String  userId,
                                                    String  noteLogGUID,
                                                    int     startFrom,
-                                                   int     pageSize) throws InvalidParameterException,
+                                                   int     pageSize,
+                                                   Date    effectiveTime) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
     {
-        return null;
+        final String methodName = "getNotesForNoteLog";
+
+        List<RelatedMetadataElement> relatedMetadataElements = client.getRelatedMetadataElements(userId,
+                                                                                                 noteLogGUID,
+                                                                                                 1,
+                                                                                                 OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
+                                                                                                 false,
+                                                                                                 false,
+                                                                                                 effectiveTime,
+                                                                                                 startFrom,
+                                                                                                 pageSize);
+        return this.getNotesFromRelatedMetadataElements(relatedMetadataElements, methodName);
     }
 
 
@@ -1462,6 +1960,7 @@ public class CollaborationManagerHandler
      *
      * @param userId calling user
      * @param noteGUID unique identifier of the requested metadata element
+     * @param effectiveTime effective time
      *
      * @return matching metadata element
      *
@@ -1470,9 +1969,10 @@ public class CollaborationManagerHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public NoteElement getNoteByGUID(String  userId,
-                                     String  noteGUID) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+                                     String  noteGUID,
+                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         final String methodName = "getNoteByGUID";
 
@@ -1480,7 +1980,7 @@ public class CollaborationManagerHandler
                                                                                   noteGUID,
                                                                                   false,
                                                                                   false,
-                                                                                  new Date());
+                                                                                  effectiveTime);
 
         if (openMetadataElement != null)
         {

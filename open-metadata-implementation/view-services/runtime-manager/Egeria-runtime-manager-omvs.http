@@ -1,0 +1,120 @@
+# Egeria-runtime-manager-view-service
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Work with platforms.
+# https://egeria-project.org/types/0037-Software-Server-Platforms/
+
+@platformGUID=44bf319f-1e41-4da1-b771-2753b92b631a
+
+###
+# @name getPlatformsByName
+# Returns the list of platforms with a particular name. The name is specified in the filter.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-name?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Default Local OMAG Server Platform"
+}
+
+
+###
+# @name getPlatformsByDeployedImplementationType
+# Returns the list of platforms with a particular deployed implementation type.  The value is specified in the filter.
+# If it is null, or no request body is supplied, all platforms are returned.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-deployed-implementation-type?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OMAG Server Platform"
+}
+
+###
+# @name getPlatformByGUID
+# Returns details about the platform's catalog entry (asset).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/{{platformGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name getPlatformReport
+# Returns details about the running platform.
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/{{platformGUID}}/report
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# =====================================================================================================================
+# Work with servers.
+# https://egeria-project.org/types/00040-Software-Servers/
+
+@serverGUID=add guid here
+
+###
+# @name getServersByName
+# Returns the list of servers with a particular name.  The name is specified in the filter.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/servers/by-name?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : ""
+}
+
+###
+# @name getServersByDeployedImplementationType
+# Returns the list of servers with a particular deployed implementation type.   The value is specified in the filter.
+# If it is null, or no request body is supplied, all servers are returned.
+
+ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/servers/by-deployed-implementation-type?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : ""
+}
+
+###
+# @name getServerByGUID
+# Returns details about the server's catalog entry (asset).
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/servers/{{serverGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name getServerReport
+# Returns details about the running server.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/servers/{{serverGUID}}/report
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+

@@ -46,7 +46,6 @@ public class ComponentIdReport
     private static final String inmemTopicConnectorProviderClassName = "org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider";
     private static final String kafkaTopicConnectorProviderClassName = "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider";
     private static final String atlasIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider";
-    private static final String egeriaIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.egeria.EgeriaCataloguerIntegrationProvider";
     private static final String filesIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider";
     private static final String foldersIntegrationConnectorProviderClassName            = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider";
     private static final String csvLineageImporterIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.CSVLineageImporterProvider";
@@ -69,6 +68,14 @@ public class ComponentIdReport
     private static final String postgresDatabaseSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseSurveyActionProvider";
     private static final String postgresServerCatalogProviderClassName = "org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider";
     private static final String apacheKafkaAdminProviderClassName = "org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminProvider";
+    private static final String apacheKafkaIntegrationProviderClassName = "org.odpi.openmetadata.adapters.connectors.apachekafka.integration.KafkaTopicIntegrationProvider";
+    private static final String apacheKafkaSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.apachekafka.survey.SurveyApacheKafkaServerProvider";
+    private static final String egeriaPlatformProviderClassName = "org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformProvider";
+    private static final String egeriaEngineHostProviderClassName = "org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.EngineHostProvider";
+    private static final String egeriaIntegrationDaemonProviderClassName = "org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.IntegrationDaemonProvider";
+    private static final String egeriaMetadataAccessServerProviderClassName = "org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.MetadataAccessServerProvider";
+    private static final String egeriaViewServerProviderClassName = "org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.ViewServerProvider";
+    private static final String egeriaIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.egeria.EgeriaCataloguerIntegrationProvider";
 
 
     /**
@@ -228,7 +235,6 @@ public class ComponentIdReport
         this.addConnectorDescription(inmemTopicConnectorProviderClassName, report);
         this.addConnectorDescription(kafkaTopicConnectorProviderClassName, report);
         this.addConnectorDescription(atlasIntegrationConnectorProviderClassName, report);
-        this.addConnectorDescription(egeriaIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(filesIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(foldersIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(csvLineageImporterIntegrationConnectorProviderClassName, report);
@@ -251,6 +257,14 @@ public class ComponentIdReport
         this.addConnectorDescription(postgresServerSurveyProviderClassName, report);
         this.addConnectorDescription(postgresDatabaseSurveyProviderClassName, report);
         this.addConnectorDescription(apacheKafkaAdminProviderClassName, report);
+        this.addConnectorDescription(apacheKafkaIntegrationProviderClassName, report);
+        this.addConnectorDescription(apacheKafkaSurveyProviderClassName, report);
+        this.addConnectorDescription(egeriaPlatformProviderClassName, report);
+        this.addConnectorDescription(egeriaEngineHostProviderClassName, report);
+        this.addConnectorDescription(egeriaIntegrationDaemonProviderClassName, report);
+        this.addConnectorDescription(egeriaMetadataAccessServerProviderClassName, report);
+        this.addConnectorDescription(egeriaViewServerProviderClassName, report);
+        this.addConnectorDescription(egeriaIntegrationConnectorProviderClassName, report);
 
         File reportFile = new File(reportFileName);
 

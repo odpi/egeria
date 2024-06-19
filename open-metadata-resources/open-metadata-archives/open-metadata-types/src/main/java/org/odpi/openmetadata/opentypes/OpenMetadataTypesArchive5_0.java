@@ -3376,6 +3376,7 @@ public class OpenMetadataTypesArchive5_0
                                                                                 descriptionGUID,
                                                                                 classificationPropagationRule);
 
+        relationshipDef.setMultiLink(true);
         RelationshipEndDef relationshipEndDef;
 
         /*
@@ -3455,6 +3456,7 @@ public class OpenMetadataTypesArchive5_0
                                                                                 descriptionGUID,
                                                                                 classificationPropagationRule);
 
+        relationshipDef.setMultiLink(true);
         RelationshipEndDef relationshipEndDef;
 
         /*

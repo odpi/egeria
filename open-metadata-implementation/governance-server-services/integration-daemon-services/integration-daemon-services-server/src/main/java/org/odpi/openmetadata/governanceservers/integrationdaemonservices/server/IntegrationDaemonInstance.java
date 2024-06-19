@@ -531,7 +531,7 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
         /*
          * This shuts down the connectors and stops any dedicated threads.
          */
-        if (integrationConnectorCacheMap != null)
+        if ((integrationConnectorCacheMap != null) && (integrationConnectorCacheMap.getConnectorIds() != null))
         {
             for (String connectorId : integrationConnectorCacheMap.getConnectorIds())
             {

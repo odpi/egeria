@@ -251,7 +251,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                            source,
                                            additionalProperties,
                                            extendedProperties,
-                                           null,
+                                           (Classification)null,
                                            null,
                                            null,
                                            null);
@@ -1238,7 +1238,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                            source,
                                            additionalProperties,
                                            extendedProperties,
-                                           null,
+                                           (Classification)null,
                                            null,
                                            null,
                                            null);

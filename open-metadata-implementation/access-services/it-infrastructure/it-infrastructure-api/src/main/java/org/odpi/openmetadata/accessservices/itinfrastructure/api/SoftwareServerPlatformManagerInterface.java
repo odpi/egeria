@@ -203,6 +203,30 @@ public interface SoftwareServerPlatformManagerInterface
 
 
     /**
+     * Retrieve the list of platform metadata elements with a matching deployed impl type.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param effectiveTime effective time for the query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<SoftwareServerPlatformElement> getSoftwareServerPlatformsByDeployedImplType(String userId,
+                                                                                     String name,
+                                                                                     Date   effectiveTime,
+                                                                                     int    startFrom,
+                                                                                     int    pageSize) throws InvalidParameterException,
+                                                                                                             UserNotAuthorizedException,
+                                                                                                             PropertyServerException;
+
+    /**
      * Retrieve the list of platforms created by this caller.
      *
      * @param userId calling user

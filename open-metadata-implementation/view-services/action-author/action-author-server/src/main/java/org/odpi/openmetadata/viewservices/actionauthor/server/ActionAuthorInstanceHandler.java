@@ -36,7 +36,7 @@ public class ActionAuthorInstanceHandler extends OMVSServiceInstanceHandler
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
      * @param serviceOperationName service operation - usually the top level rest call
-     * @return SubjectAreaNodeClients subject area nodes API objects
+     * @return client
      * @throws InvalidParameterException unknown server/service
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
@@ -64,7 +64,7 @@ public class ActionAuthorInstanceHandler extends OMVSServiceInstanceHandler
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
      * @param serviceOperationName service operation - usually the top level rest call
-     * @return SubjectAreaNodeClients subject area nodes API objects
+     * @return client
      * @throws InvalidParameterException unknown server/service
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
@@ -92,7 +92,7 @@ public class ActionAuthorInstanceHandler extends OMVSServiceInstanceHandler
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
      * @param serviceOperationName service operation - usually the top level rest call
-     * @return SubjectAreaNodeClients subject area nodes API objects
+     * @return client
      * @throws InvalidParameterException unknown server/service
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
@@ -120,7 +120,7 @@ public class ActionAuthorInstanceHandler extends OMVSServiceInstanceHandler
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
      * @param serviceOperationName service operation - usually the top level rest call
-     * @return SubjectAreaNodeClients subject area nodes API objects
+     * @return client
      * @throws InvalidParameterException unknown server/service
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
@@ -148,7 +148,7 @@ public class ActionAuthorInstanceHandler extends OMVSServiceInstanceHandler
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
      * @param serviceOperationName service operation - usually the top level rest call
-     * @return SubjectAreaNodeClients subject area nodes API objects
+     * @return client
      * @throws InvalidParameterException unknown server/service
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error

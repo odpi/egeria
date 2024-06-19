@@ -770,21 +770,16 @@ public class OpenMetadataTypesArchive3_5
 
     private ClassificationDef addServerPurposeClassification()
     {
-        final String guid = "78f68757-600f-4e8e-843b-00e77cdee37c";
-
-        final String name            = "ServerPurpose";
-        final String description     = "Adds more detail about the purpose of a deployed instance of IT infrastructure.";
-        final String descriptionGUID = null;
-
         final List<TypeDefLink> linkedToEntities = new ArrayList<>();
 
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("ITInfrastructure"));
+        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName));
 
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeGUID,
+                                                                                 OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
+                                                                                 OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.description,
+                                                                                 OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.descriptionGUID,
+                                                                                 OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.wikiURL,
                                                                                  linkedToEntities,
                                                                                  false);
 
@@ -815,9 +810,9 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "ApplicationServer";
-        final String superTypeName = "ServerPurpose";
-        final String attachToEntity = "ITInfrastructure";
+        final String typeName = OpenMetadataType.APPLICATION_SERVER_CLASSIFICATION.typeName;
+        final String superTypeName = OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName;
+        final String attachToEntity = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -840,9 +835,9 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "Webserver";
-        final String superTypeName = "ServerPurpose";
-        final String attachToEntity = "ITInfrastructure";
+        final String typeName = OpenMetadataType.WEBSERVER_CLASSIFICATION.typeName;
+        final String superTypeName = OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName;
+        final String attachToEntity = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -865,9 +860,9 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "DatabaseServer";
-        final String superTypeName = "ServerPurpose";
-        final String attachToEntity = "ITInfrastructure";
+        final String typeName = OpenMetadataType.DATABASE_SERVER_CLASSIFICATION.typeName;
+        final String superTypeName = OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName;
+        final String attachToEntity = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -889,9 +884,9 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "MetadataServer";
-        final String superTypeName = "ServerPurpose";
-        final String attachToEntity = "ITInfrastructure";
+        final String typeName = OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName;
+        final String superTypeName = OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName;
+        final String attachToEntity = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -913,9 +908,9 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "RepositoryProxy";
-        final String superTypeName = "ServerPurpose";
-        final String attachToEntity = "ITInfrastructure";
+        final String typeName = OpenMetadataType.REPOSITORY_PROXY_CLASSIFICATION.typeName;
+        final String superTypeName = OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName;
+        final String attachToEntity = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -937,9 +932,9 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "GovernanceDaemon";
-        final String superTypeName = "ServerPurpose";
-        final String attachToEntity = "ITInfrastructure";
+        final String typeName = OpenMetadataType.GOVERNANCE_DAEMON_CLASSIFICATION.typeName;
+        final String superTypeName = OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName;
+        final String attachToEntity = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -962,9 +957,9 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "StewardshipServer";
-        final String superTypeName = "ServerPurpose";
-        final String attachToEntity = "ITInfrastructure";
+        final String typeName = OpenMetadataType.STEWARDSHIP_SERVER_CLASSIFICATION.typeName;
+        final String superTypeName = OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName;
+        final String attachToEntity = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -984,22 +979,16 @@ public class OpenMetadataTypesArchive3_5
 
     private ClassificationDef addIntegrationServerClassification()
     {
-        final String guid = "c165b760-d9ab-47ac-a2ee-7854ec74605a";
-
-        final String name            = "IntegrationServer";
-        final String superTypeName   = "ServerPurpose";
-        final String description     = "Identifies a server that exchanges data between between other servers.";
-        final String descriptionGUID = null;
-
         final List<TypeDefLink> linkedToEntities = new ArrayList<>();
 
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("ITInfrastructure"));
+        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName));
 
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
-                                                  archiveBuilder.getClassificationDef(superTypeName),
-                                                  description,
-                                                  descriptionGUID,
+        return archiveHelper.getClassificationDef(OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.typeGUID,
+                                                  OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.typeName,
+                                                  archiveBuilder.getClassificationDef(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName),
+                                                  OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.description,
+                                                  OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.descriptionGUID,
+                                                  OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.wikiURL,
                                                   linkedToEntities,
                                                   false);
     }

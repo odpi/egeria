@@ -487,6 +487,36 @@ public class ITAssetResource
 
 
     /**
+     * Retrieve the list of asset metadata elements with a matching deployed implementation type.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName name of the server to route the request to.
+     * @param userId calling user
+     * @param assetTypeName name of type for the asset
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody name to search for
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/assets/{assetTypeName}/by-deployed-implementation-type")
+
+    public AssetListResponse getAssetsByDeployedImplementationType(@PathVariable String          serverName,
+                                                                   @PathVariable String          userId,
+                                                                   @PathVariable String          assetTypeName,
+                                                                   @RequestParam int             startFrom,
+                                                                   @RequestParam int             pageSize,
+                                                                   @RequestBody(required = false)
+                                                                       NameRequestBody requestBody)
+    {
+        return restAPI.getAssetsByDeployedImplementationType(serverName, userId, assetTypeName, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
      * Retrieve the list of assets created by this caller.
      *
      * @param serverName name of the server to route the request to.

@@ -54,7 +54,7 @@ updates:
     - dependency-name: "co.elastic.clients:elasticsearch-java"
       versions: [ "8.10.2" ]
 - package-ecosystem: docker
-  directory: "/open-metadata-resources/open-metadata-deployment/docker/egeria"
+  directory: "/open-metadata-resources/open-metadata-deployment/docker/platform"
   schedule:
     interval: monthly
     time: "03:00"
