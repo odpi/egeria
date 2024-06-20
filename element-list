@@ -336,6 +336,8 @@ org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.extractor
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform
+org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog
+org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.survey
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.properties
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers
 org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc
@@ -389,6 +391,11 @@ org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder
+org.odpi.openmetadata.adapters.connectors.unitycatalog.controls
+org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc
+org.odpi.openmetadata.adapters.connectors.unitycatalog.resource
+org.odpi.openmetadata.adapters.connectors.unitycatalog.survey
+org.odpi.openmetadata.adapters.connectors.unitycatalog.sync
 org.odpi.openmetadata.adapters.eventbus.topic.inmemory
 org.odpi.openmetadata.adapters.eventbus.topic.kafka
 org.odpi.openmetadata.adapters.repositoryservices

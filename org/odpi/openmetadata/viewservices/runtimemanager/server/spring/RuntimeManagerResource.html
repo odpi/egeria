@@ -125,9 +125,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns details about the running platform.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerPlatformListResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerPlatformListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformsByDeployedImplType(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getPlatformsByDeployedImplType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformsByDeployedImplType(java.lang.String,int,int,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getPlatformsByDeployedImplType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
+ boolean&nbsp;getTemplates,
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of platforms with a particular deployed implementation type.</div>
@@ -154,9 +155,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns details about the running server.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerListResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServersByDeployedImplType(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getServersByDeployedImplType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServersByDeployedImplType(java.lang.String,int,int,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getServersByDeployedImplType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
+ boolean&nbsp;getTemplates,
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of servers with a particular deployed implementation type.</div>
@@ -229,7 +231,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getPlatformsByDeployedImplType(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
+<section class="detail" id="getPlatformsByDeployedImplType(java.lang.String,int,int,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>getPlatformsByDeployedImplType</h3>
 <div class="member-signature"><span class="annotations">@PostMapping("/platforms/by-deployed-implementation-type")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerPlatformListResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerPlatformListResponse</a></span>&nbsp;<span class="element-name">getPlatformsByDeployedImplType</span><wbr><span class="parameters">(@PathVariable
@@ -238,6 +240,8 @@ loadScripts(document, 'script');</script>
  int&nbsp;startFrom,
  @RequestParam
  int&nbsp;pageSize,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;getTemplates,
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Returns the list of platforms with a particular deployed implementation type.</div>
@@ -247,6 +251,7 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - name of the deployed implementation type - if null, all projects are returned</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return</dd>
+<dd><code>getTemplates</code> - boolean indicating whether templates or non-template platforms should be returned.</dd>
 <dt>Returns:</dt>
 <dd>a list of platforms
  InvalidParameterException  one of the parameters is null or invalid.
@@ -328,7 +333,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getServersByDeployedImplType(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
+<section class="detail" id="getServersByDeployedImplType(java.lang.String,int,int,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>getServersByDeployedImplType</h3>
 <div class="member-signature"><span class="annotations">@PostMapping("/servers/by-deployed-implementation-type")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerListResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerListResponse</a></span>&nbsp;<span class="element-name">getServersByDeployedImplType</span><wbr><span class="parameters">(@PathVariable
@@ -337,6 +342,8 @@ loadScripts(document, 'script');</script>
  int&nbsp;startFrom,
  @RequestParam
  int&nbsp;pageSize,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;getTemplates,
  @RequestBody
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Returns the list of servers with a particular deployed implementation type.</div>
@@ -346,6 +353,7 @@ loadScripts(document, 'script');</script>
 <dd><code>requestBody</code> - name of the deployed impl type - if null, all servers are returned</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return</dd>
+<dd><code>getTemplates</code> - boolean indicating whether templates or non-template servers should be returned.</dd>
 <dt>Returns:</dt>
 <dd>a list of servers
  InvalidParameterException  one of the parameters is null or invalid.
