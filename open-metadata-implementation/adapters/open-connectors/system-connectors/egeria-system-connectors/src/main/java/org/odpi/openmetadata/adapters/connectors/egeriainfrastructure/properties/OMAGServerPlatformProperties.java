@@ -24,6 +24,7 @@ public class OMAGServerPlatformProperties
     private String                      platformName                 = null;
     private String                      platformURLRoot              = null;
     private String                      platformOrigin               = null;
+    private Date                        platformStartTime            = null;
     private OMAGConnectorProperties     configurationStoreConnection = null;
     private OMAGConnectorProperties     platformSecurityConnection   = null;
     private List<RegisteredOMAGService> registeredOMAGServices       = null;
@@ -62,6 +63,16 @@ public class OMAGServerPlatformProperties
     public void setPlatformOrigin(String platformOrigin)
     {
         this.platformOrigin = platformOrigin;
+    }
+
+    public Date getPlatformStartTime()
+    {
+        return platformStartTime;
+    }
+
+    public void setPlatformStartTime(Date platformStartTime)
+    {
+        this.platformStartTime = platformStartTime;
     }
 
     public OMAGConnectorProperties getConfigurationStoreConnection()
@@ -117,6 +128,7 @@ public class OMAGServerPlatformProperties
                 "platformName='" + platformName + '\'' +
                 ", platformURLRoot='" + platformURLRoot + '\'' +
                 ", platformOrigin='" + platformOrigin + '\'' +
+                ", platformStartTime='" + platformStartTime + '\'' +
                 ", configurationStoreConnection=" + configurationStoreConnection +
                 ", platformSecurityConnection=" + platformSecurityConnection +
                 ", registeredOMAGServices=" + registeredOMAGServices +
@@ -137,7 +149,7 @@ public class OMAGServerPlatformProperties
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         OMAGServerPlatformProperties that = (OMAGServerPlatformProperties) objectToCompare;
-        return Objects.equals(platformName, that.platformName) && Objects.equals(platformURLRoot, that.platformURLRoot) && Objects.equals(platformOrigin, that.platformOrigin) && Objects.equals(configurationStoreConnection, that.configurationStoreConnection) && Objects.equals(platformSecurityConnection, that.platformSecurityConnection) && Objects.equals(registeredOMAGServices, that.registeredOMAGServices) && Objects.equals(omagServers, that.omagServers);
+        return Objects.equals(platformName, that.platformName) && Objects.equals(platformURLRoot, that.platformURLRoot) && Objects.equals(platformOrigin, that.platformOrigin) && Objects.equals(platformStartTime, that.platformStartTime) && Objects.equals(configurationStoreConnection, that.configurationStoreConnection) && Objects.equals(platformSecurityConnection, that.platformSecurityConnection) && Objects.equals(registeredOMAGServices, that.registeredOMAGServices) && Objects.equals(omagServers, that.omagServers);
     }
 
 
@@ -149,6 +161,6 @@ public class OMAGServerPlatformProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(platformName, platformURLRoot, platformOrigin, configurationStoreConnection, platformSecurityConnection, registeredOMAGServices, omagServers);
+        return Objects.hash(platformName, platformURLRoot, platformOrigin, platformStartTime, configurationStoreConnection, platformSecurityConnection, registeredOMAGServices, omagServers);
     }
 }

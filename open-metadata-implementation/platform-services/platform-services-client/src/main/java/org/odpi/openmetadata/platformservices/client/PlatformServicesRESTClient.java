@@ -20,6 +20,8 @@ import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.serveroperations.rest.ServerStatusResponse;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 
+import java.util.Date;
+
 
 /**
  * AssetOwnerRESTClient is responsible for issuing calls to the OMAS REST APIs.
@@ -119,6 +121,32 @@ class PlatformServicesRESTClient extends FFDCRESTClient
                                                           PropertyServerException
     {
         String restResult = this.callGetRESTCall(methodName, String.class, urlTemplate, params);
+
+        //exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a String object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    Date callDateGetRESTCall(String    methodName,
+                             String    urlTemplate,
+                             Object... params) throws InvalidParameterException,
+                                                      UserNotAuthorizedException,
+                                                      PropertyServerException
+    {
+        Date restResult = this.callGetRESTCall(methodName, Date.class, urlTemplate, params);
 
         //exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

@@ -59,7 +59,7 @@ public class ComponentIdReport
     private static final String openLineageEventReceiverIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageEventReceiverIntegrationProvider";
     private static final String envVarSecretsStoreProviderClassName = "org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider";
     private static final String apacheAtlasRESTConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider";
-    private static final String apacheAtlasDiscoveryServiceProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider";
+    private static final String apacheAtlasSurveyServiceProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider";
     private static final String sequentialSurveyPipelineProviderClassName = "org.odpi.openmetadata.frameworks.surveyaction.SequentialSurveyPipelineProvider";
     private static final String folderSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider";
     private static final String fileSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider";
@@ -75,7 +75,12 @@ public class ComponentIdReport
     private static final String egeriaIntegrationDaemonProviderClassName = "org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.IntegrationDaemonProvider";
     private static final String egeriaMetadataAccessServerProviderClassName = "org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.MetadataAccessServerProvider";
     private static final String egeriaViewServerProviderClassName = "org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.ViewServerProvider";
+    private static final String egeriaPlatformCataloguerProviderClassName = "org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog.OMAGServerPlatformCatalogProvider";
+    private static final String egeriaPlatformSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.survey.OMAGServerPlatformSurveyProvider";
     private static final String egeriaIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.egeria.EgeriaCataloguerIntegrationProvider";
+    private static final String unityCatalogResourceProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.UnityCatalogResourceProvider";
+    private static final String unityCatalogSyncProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.UnityCatalogSyncProvider";
+    private static final String unityCatalogSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.UnityCatalogSurveyProvider";
 
 
     /**
@@ -248,7 +253,7 @@ public class ComponentIdReport
         this.addConnectorDescription(openLineageEventReceiverIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(envVarSecretsStoreProviderClassName, report);
         this.addConnectorDescription(apacheAtlasRESTConnectorProviderClassName, report);
-        this.addConnectorDescription(apacheAtlasDiscoveryServiceProviderClassName, report);
+        this.addConnectorDescription(apacheAtlasSurveyServiceProviderClassName, report);
         this.addConnectorDescription(folderSurveyActionProviderClassName, report);
         this.addConnectorDescription(fileSurveyActionProviderClassName, report);
         this.addConnectorDescription(csvFileSurveyActionProviderClassName, report);
@@ -260,11 +265,16 @@ public class ComponentIdReport
         this.addConnectorDescription(apacheKafkaIntegrationProviderClassName, report);
         this.addConnectorDescription(apacheKafkaSurveyProviderClassName, report);
         this.addConnectorDescription(egeriaPlatformProviderClassName, report);
+        this.addConnectorDescription(egeriaPlatformCataloguerProviderClassName, report);
+        this.addConnectorDescription(egeriaPlatformSurveyProviderClassName, report);
         this.addConnectorDescription(egeriaEngineHostProviderClassName, report);
         this.addConnectorDescription(egeriaIntegrationDaemonProviderClassName, report);
         this.addConnectorDescription(egeriaMetadataAccessServerProviderClassName, report);
         this.addConnectorDescription(egeriaViewServerProviderClassName, report);
         this.addConnectorDescription(egeriaIntegrationConnectorProviderClassName, report);
+        this.addConnectorDescription(unityCatalogResourceProviderClassName, report);
+        this.addConnectorDescription(unityCatalogSyncProviderClassName, report);
+        this.addConnectorDescription(unityCatalogSurveyProviderClassName, report);
 
         File reportFile = new File(reportFileName);
 

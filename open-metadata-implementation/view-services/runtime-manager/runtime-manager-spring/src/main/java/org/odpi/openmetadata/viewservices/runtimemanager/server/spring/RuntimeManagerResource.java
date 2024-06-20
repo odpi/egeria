@@ -75,6 +75,7 @@ public class RuntimeManagerResource
      * @param requestBody name of the deployed implementation type - if null, all projects are returned
      * @param startFrom   index of the list to start from (0 for start)
      * @param pageSize    maximum number of elements to return
+     * @param getTemplates boolean indicating whether templates or non-template platforms should be returned.
      * @return a list of platforms
      * InvalidParameterException  one of the parameters is null or invalid.
      * PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -90,10 +91,11 @@ public class RuntimeManagerResource
     public SoftwareServerPlatformListResponse getPlatformsByDeployedImplType(@PathVariable String serverName,
                                                                              @RequestParam int startFrom,
                                                                              @RequestParam int pageSize,
+                                                                             @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
                                                                              @RequestBody (required = false)
                                                                                  FilterRequestBody requestBody)
     {
-        return restAPI.getPlatformsByDeployedImplType(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getPlatformsByDeployedImplType(serverName, startFrom, pageSize, getTemplates, requestBody);
     }
 
 
@@ -184,6 +186,7 @@ public class RuntimeManagerResource
      * @param requestBody name of the deployed impl type - if null, all servers are returned
      * @param startFrom   index of the list to start from (0 for start)
      * @param pageSize    maximum number of elements to return
+     * @param getTemplates boolean indicating whether templates or non-template servers should be returned.
      * @return a list of servers
      * InvalidParameterException  one of the parameters is null or invalid.
      * PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -199,9 +202,10 @@ public class RuntimeManagerResource
     public SoftwareServerListResponse getServersByDeployedImplType(@PathVariable String serverName,
                                                                    @RequestParam int startFrom,
                                                                    @RequestParam int pageSize,
+                                                                   @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
                                                                    @RequestBody FilterRequestBody requestBody)
     {
-        return restAPI.getServersByDeployedImplType(serverName, startFrom, pageSize, requestBody);
+        return restAPI.getServersByDeployedImplType(serverName, startFrom, pageSize, getTemplates, requestBody);
     }
 
 

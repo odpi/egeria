@@ -445,6 +445,17 @@ public enum DeployedImplementationType
 
 
     /**
+     * An operational metadata catalog that supports controlled access to data managed through a data platform.
+     */
+    UNITY_CATALOG("Unity Catalog",
+                      DeployedImplementationType.SOFTWARE_SERVER,
+                      OpenMetadataType.SOFTWARE_SERVER.typeName,
+                      OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
+                      "An operational metadata catalog that supports controlled access to data managed through a data platform.",
+                      "https://github.com/unitycatalog/unitycatalog"),
+
+
+    /**
      * A data catalog for the Hadoop ecosystem.
      */
     APACHE_ATLAS_SERVER("Apache Atlas Server",

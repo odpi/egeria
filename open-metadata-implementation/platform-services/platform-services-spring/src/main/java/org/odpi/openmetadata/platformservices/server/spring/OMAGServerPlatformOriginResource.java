@@ -43,7 +43,7 @@ public class OMAGServerPlatformOriginResource
     @Operation( summary = "getServerPlatformOrigin",
             description="Retrieve a string that details the provider and version of this platform",
             responses = {
-                    @ApiResponse(responseCode = "200",description="server platform origin description",
+                    @ApiResponse(responseCode = "200",description="OMAG Server Platform origin description showing Egeria release",
                             content = @Content(mediaType ="text/plain"))
             })
 

@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 /**
  * OMAGServerPlatformActiveResource allow an external caller to determine which servers are active on the
  * platform and the services that are active within them.
@@ -43,6 +45,30 @@ public class OMAGServerPlatformActiveResource
 
 
     /**
+     * Return the start time for this instance of the platform.
+     *
+     * @param userId calling user
+     * @return start date/time
+     */
+    @GetMapping(path = "/start-time")
+    @Operation( summary = "getPlatformStartTime",
+                description="Return the date/time that this platform started up",
+                responses = {
+                    @ApiResponse(responseCode = "200", description="ISO Date/Time",
+                            content = @Content(
+                                    mediaType ="application/json",
+                                    schema = @Schema(implementation=Date.class)
+                           )
+
+                    )
+                })
+    public Date getPlatformStartTime(@Parameter(description="calling user") @PathVariable String userId)
+    {
+        return platformAPI.getPlatformStartTime(userId);
+    }
+
+
+    /**
      * Return the list of access services that are registered (supported) in this OMAG Server Platform
      * and can be configured for a metadata server.
      *
@@ -51,22 +77,20 @@ public class OMAGServerPlatformActiveResource
      */
     @GetMapping(path = "/registered-services/access-services")
     @Operation( summary = "getRegisteredAccessServices",
-                description="Retrieve a list of access services registered on this platform",
-                responses = {
+            description="Retrieve a list of access services registered on this platform",
+            responses = {
                     @ApiResponse(responseCode = "200", description="list of service descriptions",
                             content = @Content(
                                     mediaType ="application/json",
                                     schema = @Schema(implementation=RegisteredOMAGServicesResponse.class)
-                           )
+                            )
 
                     )
-                })
+            })
     public RegisteredOMAGServicesResponse getRegisteredAccessServices(@Parameter(description="calling user") @PathVariable String userId)
     {
         return platformAPI.getRegisteredAccessServices(userId);
     }
-
-
 
     /**
      * Return the list of engine services that are implemented in this OMAG Server Platform

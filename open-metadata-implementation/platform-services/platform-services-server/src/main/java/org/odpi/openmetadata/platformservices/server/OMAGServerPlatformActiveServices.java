@@ -17,6 +17,7 @@ import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.serveroperations.rest.ServerStatusResponse;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 
 
 /**
@@ -32,7 +33,26 @@ public class OMAGServerPlatformActiveServices
 
     private final RESTExceptionHandler  exceptionHandler = new RESTExceptionHandler();
 
-    private final String serverName = "<null>";
+    private final String serverName        = "<null>";
+    private final Date   platformStartTime = new Date();
+
+
+    /**
+     * Return the start time for this instance of the platform.
+     *
+     * @param userId calling user
+     * @return start date/time
+     */
+    public Date getPlatformStartTime(String userId)
+    {
+        final String methodName = "getPlatformStartTime";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        restCallLogger.logRESTCallReturn(token, platformStartTime.toString());
+
+        return platformStartTime;
+    }
+
 
     /**
      * Return the list of access services that are registered (supported) in this OMAG Server Platform

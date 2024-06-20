@@ -82,7 +82,7 @@ class HandlerHelperTest {
     @Mock
     private OMRSRepositoryHelper repositoryHelper;
     @Mock
-    private OpenMetadataAPIGenericHandler genericHandler;
+    private OpenMetadataAPIGenericHandler<?> genericHandler;
     @Mock
     private Converter converter;
     @Mock
