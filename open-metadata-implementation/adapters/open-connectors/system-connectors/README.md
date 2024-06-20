@@ -3,8 +3,7 @@
 
 # System connectors
 
-The system connectors are resource connectors that act like clients to particular types of systems.
-They are typically embedded in integration connectors and governance services.
+The system connectors are resource connectors that interact with systems.
 
 * [Apache Atlas Connectors](apache-atlas-connectors) support various types of connectors that work with Apache Atlas.
 

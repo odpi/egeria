@@ -50,7 +50,8 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:egeria-system-connectors')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:postgres-server-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }

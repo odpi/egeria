@@ -108,6 +108,7 @@ public class EgeriaExtractor
         platformReport.setPlatformName(platformName);
         platformReport.setPlatformURLRoot(platformURLRoot);
         platformReport.setPlatformOrigin(platformServicesClient.getPlatformOrigin(clientUserId));
+        platformReport.setPlatformStartTime(platformServicesClient.getPlatformStartTime(clientUserId));
         platformReport.setPlatformSecurityConnection(this.getConnectorProperties("Platform Security Connector",
                                                                                  platformServicesClient.getPlatformSecurityConnection(clientUserId)));
         platformReport.setConfigurationStoreConnection(this.getConnectorProperties("Configuration Store Connector",

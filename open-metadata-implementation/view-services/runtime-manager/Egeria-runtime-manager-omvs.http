@@ -48,8 +48,40 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
+  "filter" : "Add name here"
+}
+
+
+
+###
+# @name getPlatformTemplatesByDeployedImplementationType
+# Returns the list of platforms with a particular deployed implementation type.  The value is specified in the filter.
+# If it is null, or no request body is supplied, all platforms are returned.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-deployed-implementation-type?startFrom=0&pageSize=10&getTemplates=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add name here"
+}
+
+
+
+
+###
+# @name getPlatformsByDeployedImplementationType (OMAG Server Platform)
+# Returns the list of platforms with a particular deployed implementation type.  The value is specified in the filter.
+# If it is null, or no request body is supplied, all platforms are returned.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-deployed-implementation-type?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
   "filter" : "OMAG Server Platform"
 }
+
 
 ###
 # @name getPlatformByGUID
@@ -99,6 +131,21 @@ Content-Type: application/json
   "filter" : ""
 }
 
+
+###
+# @name getServerTemplatesByDeployedImplementationType
+# Returns the list of servers with a particular deployed implementation type.   The value is specified in the filter.
+# If it is null, or no request body is supplied, all servers are returned.
+
+ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/servers/by-deployed-implementation-type?startFrom=0&pageSize=10&getTemplates=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : ""
+}
+
+
 ###
 # @name getServerByGUID
 # Returns details about the server's catalog entry (asset).
@@ -112,7 +159,7 @@ Content-Type: application/json
 # @name getServerReport
 # Returns details about the running server.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/servers/{{serverGUID}}/report
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/servers/{{serverGUID}}/report
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

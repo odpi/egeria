@@ -6,6 +6,8 @@ package org.odpi.openmetadata.viewservices.runtimemanager.server;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.ConnectedAssetClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.PlatformManagerClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.ServerManagerClient;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerElement;
+import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerPlatformElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerListResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerPlatformListResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerPlatformResponse;
@@ -18,13 +20,18 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.runtimemanager.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.viewservices.runtimemanager.rest.PlatformReportResponse;
 import org.odpi.openmetadata.viewservices.runtimemanager.rest.ServerReportResponse;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -109,6 +116,7 @@ public class RuntimeManagerRESTServices extends TokenController
      * @param serverName         name of called server
      * @param startFrom          index of the list to start from (0 for start)
      * @param pageSize           maximum number of elements to return
+     * @param getTemplates boolean indicating whether templates or non-template platforms should be returned.
      * @param requestBody qualified name or display name of the platform
      *
      * @return a list of projects
@@ -119,6 +127,7 @@ public class RuntimeManagerRESTServices extends TokenController
     public SoftwareServerPlatformListResponse getPlatformsByDeployedImplType(String            serverName,
                                                                              int               startFrom,
                                                                              int               pageSize,
+                                                                             boolean           getTemplates,
                                                                              FilterRequestBody requestBody)
     {
         final String methodName = "getPlatformsByDeployedImplType";
@@ -138,13 +147,40 @@ public class RuntimeManagerRESTServices extends TokenController
 
             PlatformManagerClient handler = instanceHandler.getPlatformManagerClient(userId, serverName, methodName);
 
+            List<SoftwareServerPlatformElement> platforms;
             if (requestBody != null)
             {
-                response.setElementList(handler.getSoftwareServerPlatformsByDeployedImplType(userId, requestBody.getFilter(), requestBody.getEffectiveTime(), startFrom, pageSize));
+                platforms = handler.getSoftwareServerPlatformsByDeployedImplType(userId, requestBody.getFilter(), requestBody.getEffectiveTime(), startFrom, pageSize);
             }
             else
             {
-                response.setElementList(handler.getSoftwareServerPlatformsByDeployedImplType(userId, null, new Date(), startFrom, pageSize));
+                platforms = handler.getSoftwareServerPlatformsByDeployedImplType(userId, null, new Date(), startFrom, pageSize);
+            }
+
+            if (platforms != null)
+            {
+                List<SoftwareServerPlatformElement> filteredPlatforms = new ArrayList<>();
+
+                for (SoftwareServerPlatformElement platformElement : platforms)
+                {
+                    if (platformElement != null)
+                    {
+                        if (this.isTemplate(platformElement.getElementHeader()) && (getTemplates))
+                        {
+                            filteredPlatforms.add(platformElement);
+                        }
+
+                        if (!this.isTemplate(platformElement.getElementHeader()) && (!getTemplates))
+                        {
+                            filteredPlatforms.add(platformElement);
+                        }
+                    }
+                }
+
+                if (! filteredPlatforms.isEmpty())
+                {
+                    response.setElementList(filteredPlatforms);
+                }
             }
         }
         catch (Exception error)
@@ -156,6 +192,31 @@ public class RuntimeManagerRESTServices extends TokenController
         return response;
     }
 
+
+    /**
+     * Determine whether the element is a template.
+     *
+     * @param elementHeader element header
+     * @return boolean flag
+     */
+    private boolean isTemplate(ElementHeader elementHeader)
+    {
+        if (elementHeader.getClassifications() != null)
+        {
+            for (ElementClassification classification : elementHeader.getClassifications())
+            {
+                if (classification != null)
+                {
+                    if (classification.getClassificationName().equals(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
 
     /**
      * Returns details about the platform's catalog entry (asset).
@@ -311,6 +372,7 @@ public class RuntimeManagerRESTServices extends TokenController
      * @param serverName         name of called server
      * @param startFrom          index of the list to start from (0 for start)
      * @param pageSize           maximum number of elements to return
+     * @param getTemplates boolean indicating whether templates or non-template platforms should be returned.
      * @param requestBody qualified name or display name of the platform
      *
      * @return a list of projects
@@ -321,6 +383,7 @@ public class RuntimeManagerRESTServices extends TokenController
     public SoftwareServerListResponse getServersByDeployedImplType(String            serverName,
                                                                    int               startFrom,
                                                                    int               pageSize,
+                                                                   boolean           getTemplates,
                                                                    FilterRequestBody requestBody)
     {
         final String methodName = "getServersByDeployedImplType";
@@ -340,13 +403,40 @@ public class RuntimeManagerRESTServices extends TokenController
 
             ServerManagerClient handler = instanceHandler.getServerManagerClient(userId, serverName, methodName);
 
+            List<SoftwareServerElement> servers;
             if (requestBody != null)
             {
-                response.setElementList(handler.getSoftwareServersByDeployedImplType(userId, requestBody.getFilter(), requestBody.getEffectiveTime(), startFrom, pageSize));
+                servers = handler.getSoftwareServersByDeployedImplType(userId, requestBody.getFilter(), requestBody.getEffectiveTime(), startFrom, pageSize);
             }
             else
             {
-                response.setElementList(handler.getSoftwareServersByDeployedImplType(userId, null, new Date(), startFrom, pageSize));
+                servers = handler.getSoftwareServersByDeployedImplType(userId, null, new Date(), startFrom, pageSize);
+            }
+
+            if (servers != null)
+            {
+                List<SoftwareServerElement> filteredServers = new ArrayList<>();
+
+                for (SoftwareServerElement serverElement : servers)
+                {
+                    if (serverElement != null)
+                    {
+                        if (this.isTemplate(serverElement.getElementHeader()) && (getTemplates))
+                        {
+                            filteredServers.add(serverElement);
+                        }
+
+                        if (!this.isTemplate(serverElement.getElementHeader()) && (!getTemplates))
+                        {
+                            filteredServers.add(serverElement);
+                        }
+                    }
+                }
+
+                if (! filteredServers.isEmpty())
+                {
+                    response.setElementList(filteredServers);
+                }
             }
         }
         catch (Exception error)

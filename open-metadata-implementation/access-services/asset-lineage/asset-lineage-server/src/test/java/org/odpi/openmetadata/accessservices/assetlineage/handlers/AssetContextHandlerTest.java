@@ -65,7 +65,7 @@ class AssetContextHandlerTest {
     @Mock
     private List<String> supportedZones;
     @Mock
-    private OpenMetadataAPIGenericHandler genericHandler;
+    private OpenMetadataAPIGenericHandler<?> genericHandler;
     @Mock
     ClockService clockService;
     @InjectMocks

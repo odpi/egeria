@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.samples.archiveutilities.combo;
 
 
-import org.odpi.openmetadata.archiveutilities.openconnectors.OpenConnectorArchiveWriter;
+import org.odpi.openmetadata.archiveutilities.openconnectors.CoreContentArchiveWriter;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
@@ -94,7 +94,7 @@ public abstract class CocoBaseArchiveWriter extends OMRSArchiveWriter
          * This value allows the definitions to be based on the existing open metadata types
          */
         dependentOpenMetadataArchives.add(new OpenMetadataTypesArchive().getOpenMetadataArchive());
-        dependentOpenMetadataArchives.add(new OpenConnectorArchiveWriter().getOpenMetadataArchive());
+        dependentOpenMetadataArchives.add(new CoreContentArchiveWriter().getOpenMetadataArchive());
 
         /*
          * Add in any additional dependencies.

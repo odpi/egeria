@@ -161,6 +161,7 @@ class AssetLineageRestServicesTest {
     }
 
     @Test
+    @SuppressWarnings(value = "unchecked")
     void publishEntity_process() throws OCFCheckedExceptionBase, JsonProcessingException {
         String methodName = "publishEntity";
         mockHandlerHelper(methodName);
@@ -179,6 +180,7 @@ class AssetLineageRestServicesTest {
     }
 
     @Test
+    @SuppressWarnings(value = "unchecked")
     void publishEntity_glossaryTerm() throws OCFCheckedExceptionBase, JsonProcessingException {
         String methodName = "publishEntity";
         mockHandlerHelper(methodName);

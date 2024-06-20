@@ -399,6 +399,7 @@ class AssetLineageOMRSTopicListenerTest {
         return lineageEntity;
     }
 
+    @SuppressWarnings(value = "unchecked")
     private void mockContext(EntityDetail entityDetail, boolean isEmptyContext) throws OCFCheckedExceptionBase, JsonProcessingException {
         Multimap<String, RelationshipsContext> context = mock(Multimap.class);
         when(context.isEmpty()).thenReturn(isEmptyContext);

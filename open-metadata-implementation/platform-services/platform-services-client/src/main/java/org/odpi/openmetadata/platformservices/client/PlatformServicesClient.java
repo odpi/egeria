@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCo
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -24,6 +25,7 @@ import org.odpi.openmetadata.serveroperations.rest.ServerStatusResponse;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -116,6 +118,29 @@ public class PlatformServicesClient
     {
         this.platformRootURL = platformRootURL;
         this.restClient      = new PlatformServicesRESTClient(platformName, platformRootURL, userId, password);
+    }
+
+
+    /**
+     * Return the start time for this instance of the platform.
+     *
+     * @param userId calling user
+     * @return start date/time
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public Date getPlatformStartTime(String userId) throws InvalidParameterException,
+                                                           PropertyServerException,
+                                                           UserNotAuthorizedException
+    {
+        final String methodName = "getPlatformStartTime";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/start-time";
+
+        return restClient.callDateGetRESTCall(methodName, urlTemplate, userId);
     }
 
 

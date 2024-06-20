@@ -4,7 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates;
 
 
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
-import org.odpi.openmetadata.archiveutilities.openconnectors.OpenConnectorArchiveWriter;
+import org.odpi.openmetadata.archiveutilities.openconnectors.CoreContentArchiveWriter;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -48,7 +48,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
               new Date(),
               archiveFileName,
               new OpenMetadataArchive[]{ new CocoGovernanceProgramArchiveWriter().getOpenMetadataArchive(),
-                                         new OpenConnectorArchiveWriter().getOpenMetadataArchive()});
+                                         new CoreContentArchiveWriter().getOpenMetadataArchive()});
     }
 
 

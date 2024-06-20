@@ -53,7 +53,8 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:egeria-system-connectors')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:postgres-server-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
     implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-client')
@@ -215,7 +216,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:egeria-system-connectors').jar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:postgres-server-connectors').shadowJar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors').shadowJar }
                 fileMode = 0755
             }
             into('assembly/platform/extra') {
