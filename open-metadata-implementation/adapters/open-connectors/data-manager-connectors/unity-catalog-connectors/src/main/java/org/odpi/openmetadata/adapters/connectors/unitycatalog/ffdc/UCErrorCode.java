@@ -41,6 +41,15 @@ public enum UCErrorCode implements ExceptionMessageSet
                          "The connector is unable to process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
+
+    /**
+     * UNITY-CATALOG-CONNECTOR-503-001 - A client-side exception {0} was received from API call {1} to URL {2}.  The error message was {3}
+     */
+    CLIENT_SIDE_REST_API_ERROR(503, "UNITY-CATALOG-CONNECTOR-503-001",
+                               "A client-side exception of {0} was received from API call {1} to URL {2}.  The error message was {3}",
+                               "The connector has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
+                               "Look for errors in the local server's console to understand and correct the source of the error."),
+
     ;
 
     private final int    httpErrorCode;

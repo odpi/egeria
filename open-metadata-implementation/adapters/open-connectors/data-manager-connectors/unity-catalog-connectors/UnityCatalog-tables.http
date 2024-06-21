@@ -1,0 +1,37 @@
+
+@ucURL=http://localhost:8080
+
+###
+# @name list tables
+GET {{ucURL}}/api/2.1/unity-catalog/tables?catalog_name=test&schema_name=test4schema1&max_results=10
+
+###
+# @name create table
+POST {{ucURL}}/api/2.1/unity-catalog/tables
+Content-Type: application/json
+
+{
+  "table_info" :
+  {
+    "name": "bookOfKnowledge",
+    "catalog_name" : "test",
+    "schema_name" : "test4schema1",
+    "comment": "Useful data",
+    "parameter_style" : "S",
+    "routine_body" : "EXTERNAL",
+    "external_language" : "Java",
+    "security_type" : "DEFINER"
+  }
+}
+
+###
+# @name get table
+GET {{ucURL}}/api/2.1/unity-catalog/tables/test.test4schema1.createWisdom
+Content-Type: application/json
+
+
+###
+# @name delete table
+DELETE {{ucURL}}/api/2.1/unity-catalog/tables/test.test4schema1.createWisdom
+Content-Type: application/json
+

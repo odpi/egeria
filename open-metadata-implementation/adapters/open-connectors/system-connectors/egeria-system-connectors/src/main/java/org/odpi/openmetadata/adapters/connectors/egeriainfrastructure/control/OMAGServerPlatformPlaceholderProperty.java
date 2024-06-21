@@ -38,6 +38,12 @@ public enum OMAGServerPlatformPlaceholderProperty
      * The name of the server being catalogued.
      */
     PLATFORM_NAME ("platformName", "The name of the platform being catalogued.", "string", "Default OMAG Server Platform"),
+
+    /**
+     * The description of the server being catalogued.
+     */
+    PLATFORM_DESCRIPTION ("platformDescription", "The description of the platform being catalogued.", "string", null),
+
     ;
 
     public final String           name;

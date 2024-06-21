@@ -38,7 +38,13 @@ public enum UnityCatalogPlaceholderProperty
     /**
      * The name of the server being catalogued.
      */
-    SERVER_NAME ("serverName", "The name of the server being catalogued.", "string", "myOMAGServer"),
+    SERVER_NAME ("serverName", "The name of the server being catalogued.", "string", "myServer"),
+
+    /**
+     * The description of the server being catalogued.
+     */
+    SERVER_DESCRIPTION ("serverDescription", "The description of the server being catalogued.", "string", null),
+
     ;
 
     public final String           name;

@@ -1,0 +1,42 @@
+
+@ucURL=http://localhost:8080
+
+###
+# @name list volumes
+GET {{ucURL}}/api/2.1/unity-catalog/volumes?catalog_name=unity&schema_name=default&max_results=10
+
+###
+# @name create volume
+POST {{ucURL}}/api/2.1/unity-catalog/volumes
+Content-Type: application/json
+
+{
+  "name": "test4volume1",
+  "catalog_name" : "test",
+  "schema_name": "test4schema1",
+  "comment": "Test catalog4 volume 1",
+  "volume_type": "EXTERNAL",
+  "storage_location": "file:///Users/me/Code/uc/unitycatalog/etc/data/external/unity/default/volumes/json_files/"
+}
+
+###
+# @name get volume
+GET {{ucURL}}/api/2.1/unity-catalog/volumes/test.test4schema1.volume1
+Content-Type: application/json
+
+
+###
+# @name patch volume
+PATCH {{ucURL}}/api/2.1/unity-catalog/volumes/test.test4schema1.test4volume1
+Content-Type: application/json
+
+{
+  "new_name" : "volume1",
+  "comment" : "This is an updated comment"
+}
+
+###
+# @name delete volume
+DELETE {{ucURL}}/api/2.1/unity-catalog/volumes/test.test4schema1.test4volume1
+Content-Type: application/json
+

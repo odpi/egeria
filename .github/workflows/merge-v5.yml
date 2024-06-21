@@ -95,7 +95,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: odpi/egeria-platform:${{ env.VERSION }}, odpi/egeria-platform:latest, quay.io/odpi/egeria-platform:${{ env.VERSION }}, quay.io/odpi/egeria-platform:latest
+          tags: odpi/egeria-platform:${{ env.VERSION }}, odpi/egeria-platform:latest, quay.io/odpi/egeria:${{ env.VERSION }}, quay.io/odpi/egeria:latest
           context: ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz
           platforms: linux/amd64,linux/arm64
       - name: Build and push(egeria-platform) to quay.io and docker.io (no tag latest)

@@ -20,7 +20,7 @@ public class UnityCatalogSyncProvider extends IntegrationConnectorProvider
     /*
      * Unique identifier for the connector type.
      */
-    private static final String connectorTypeGUID      = "11850bb9-31cb-472e-804a-8c9ca97bb350";
+    private static final String connectorTypeGUID      = "211ab462-e08e-41d4-9e18-052f8a37d669";
 
     /*
      * Descriptive information about the connector for the connector type and audit log.

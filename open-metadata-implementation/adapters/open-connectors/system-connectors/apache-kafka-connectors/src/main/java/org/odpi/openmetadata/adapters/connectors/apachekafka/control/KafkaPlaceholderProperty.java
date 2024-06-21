@@ -31,9 +31,24 @@ public enum KafkaPlaceholderProperty
     SERVER_NAME ("serverName", "The name of the Apache Kafka server being catalogued.", "string", "myKafkaServer"),
 
     /**
+     * The description of the server being catalogued.
+     */
+    SERVER_DESCRIPTION ("serverDescription", "The description of the server being catalogued.", "string", null),
+
+    /**
      * The full name of the topic.
      */
-    TOPIC_NAME ("topicName", "The full name of the topic.", "string", "egeria.omag.server.active-metadata-store.omas.assetconsumer.outTopic"),
+    FULL_TOPIC_NAME ("fullTopicName", "The full name of the topic.", "string", "egeria.omag.server.active-metadata-store.omas.assetconsumer.outTopic"),
+
+    /**
+     * The display name of the topic.
+     */
+    SHORT_TOPIC_NAME ("shortTopicName", "The display name of the topic.", "string", "AssetConsumer.outTopic on active-metadata-store"),
+
+    /**
+     * The description of the topic.
+     */
+    TOPIC_DESCRIPTION ("topicDescription", "The description of the topic.", "string", "Details of changes to assets in the open metadata ecosystem."),
 
     /**
      * By default, this connector supports both the receiving and sending of events on a particular topic. It is possible to turn off, either the ability to listen for events through the consumer, or send events through the producer. This is achieved by setting the eventDirection configuration property, which can be 'inOut' (default value), 'outOnly' or 'inOnly'.
@@ -134,7 +149,8 @@ public enum KafkaPlaceholderProperty
         placeholderPropertyTypes.add(HOST_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(PORT_NUMBER.getPlaceholderType());
         placeholderPropertyTypes.add(SERVER_NAME.getPlaceholderType());
-        
+        placeholderPropertyTypes.add(SERVER_DESCRIPTION.getPlaceholderType());
+
         return placeholderPropertyTypes;
     }
 
