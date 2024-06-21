@@ -55,8 +55,8 @@ Content-Type: application/json
 
 ###
 # @name getPlatformTemplatesByDeployedImplementationType
-# Returns the list of platforms with a particular deployed implementation type.  The value is specified in the filter.
-# If it is null, or no request body is supplied, all platforms are returned.
+# Returns the list of templates for platforms with a particular deployed implementation type.  The value is specified in the filter.
+# If it is null, or no request body is supplied, all platform templates are returned.
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-deployed-implementation-type?startFrom=0&pageSize=10&getTemplates=true
 Authorization: Bearer {{token}}
@@ -134,8 +134,8 @@ Content-Type: application/json
 
 ###
 # @name getServerTemplatesByDeployedImplementationType
-# Returns the list of servers with a particular deployed implementation type.   The value is specified in the filter.
-# If it is null, or no request body is supplied, all servers are returned.
+# Returns the list of templates for servers with a particular deployed implementation type.   The value is specified in the filter.
+# If it is null, or no request body is supplied, all server templates are returned.
 
  POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/servers/by-deployed-implementation-type?startFrom=0&pageSize=10&getTemplates=true
 Authorization: Bearer {{token}}

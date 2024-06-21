@@ -44,7 +44,13 @@ public enum AtlasPlaceholderProperty
     /**
      * The name of the server being catalogued.
      */
-    SERVER_NAME ("serverName", "The name of the Apache Atlas server being catalogued.", "string", "myAtlasServer"),
+    SERVER_NAME ("serverName", "The name of the server being catalogued.", "string", "myServer"),
+
+    /**
+     * The description of the server being catalogued.
+     */
+    SERVER_DESCRIPTION ("serverDescription", "The description of the server being catalogued.", "string", null),
+
     ;
 
     public final String           name;

@@ -21,7 +21,7 @@ public class UnityCatalogSurveyProvider extends SurveyActionServiceProvider
     /*
      * Unique identifier for the connector type.
      */
-    private static final String connectorTypeGUID = "65f88896-cca6-43b9-9ee8-e8e3cb77a970";
+    private static final String connectorTypeGUID = "0b110ed0-df5a-4537-abcb-dbdadae26168";
     private static final String connectorQualifiedName = "Egeria:SurveyActionService:DataManager:UnityCatalog";
     private static final String connectorDisplayName = "Survey for an instance of Unity Catalog";
     private static final String connectorTypeDescription = "Surveys the data sets, volumes and functions found in a Unity Catalog instance.";
@@ -31,7 +31,7 @@ public class UnityCatalogSurveyProvider extends SurveyActionServiceProvider
     /*
      * Class of the connector.
      */
-    private static final String connectorClassName = UnityCatalogSurveyService.class.getName();
+    private static final String connectorClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.UnityCatalogSurveyService";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific connector implementation.

@@ -19,7 +19,7 @@ public class UnityCatalogResourceProvider extends ConnectorProviderBase
     /*
      * Unique identifier for the connector type.
      */
-    private static final String connectorTypeGUID      = "080c8bce-ecd2-45a1-9265-56cbab2330b8";
+    private static final String connectorTypeGUID      = "0df7ec59-aa05-46fd-a090-3d879f869eff";
 
     /*
      * Descriptive information about the connector for the connector type and audit log.
@@ -33,7 +33,7 @@ public class UnityCatalogResourceProvider extends ConnectorProviderBase
     /*
      * Class of the connector.
      */
-    private static final String connectorClassName       = "org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformConnector";
+    private static final String connectorClassName       = "org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.UnityCatalogResourceConnector";
 
 
     /**
@@ -59,8 +59,8 @@ public class UnityCatalogResourceProvider extends ConnectorProviderBase
         connectorType.setDisplayName(connectorDisplayName);
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-        connectorType.setSupportedAssetTypeName(DeployedImplementationType.OMAG_SERVER_PLATFORM.getAssociatedTypeName());
-        connectorType.setDeployedImplementationType(DeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType());
+        connectorType.setSupportedAssetTypeName(DeployedImplementationType.UNITY_CATALOG.getAssociatedTypeName());
+        connectorType.setDeployedImplementationType(DeployedImplementationType.UNITY_CATALOG.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
 

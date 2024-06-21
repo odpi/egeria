@@ -1444,6 +1444,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
      * @param softwareCapabilityName           name for the associated capability
      * @param softwareCapabilityClassification classification for the software capability (or null)
      * @param serverName                       name for the server
+     * @param description                      description for the server
      * @param userId                           userId for the connection
      * @param password                         password for the connection
      * @param connectorTypeGUID                connector type to link to the connection
@@ -1457,6 +1458,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                      String softwareCapabilityName,
                                                      Classification softwareCapabilityClassification,
                                                      String serverName,
+                                                     String description,
                                                      String userId,
                                                      String password,
                                                      String connectorTypeGUID,
@@ -1469,7 +1471,6 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
         String               versionIdentifier  = "V1.0";
-        String               description        = deployedImplementationType.getDescription();
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -1580,6 +1581,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                  "Database Management System (DBMS)",
                                                  null,
                                                  PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 PostgresPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
                                                  PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
                                                  PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
                                                  provider.getConnectorType().getGUID(),
@@ -1606,6 +1608,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                  "Metadata Catalog",
                                                  null,
                                                  AtlasPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 AtlasPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
                                                  AtlasPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  AtlasPlaceholderProperty.CONNECTION_PASSWORD.getPlaceholder(),
                                                  provider.getConnectorType().getGUID(),
@@ -1632,6 +1635,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                  "Metadata Catalog",
                                                  null,
                                                  UnityCatalogPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 UnityCatalogPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
                                                  UnityCatalogPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
@@ -1657,7 +1661,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
         String               versionIdentifier  = "V1.0";
-        String               description        = deployedImplementationType.getDescription();
+        String               description        = "Default OMAG Server Platform running on local host and port 9443.";
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = null;
 
@@ -1747,6 +1751,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                  "User Token Manager",
                                                  null,
                                                  OMAGServerPlatformPlaceholderProperty.PLATFORM_NAME.getPlaceholder(),
+                                                 OMAGServerPlatformPlaceholderProperty.PLATFORM_DESCRIPTION.getPlaceholder(),
                                                  OMAGServerPlatformPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
@@ -1776,6 +1781,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                  "Governance Engine Status APIs",
                                                  null,
                                                  OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 OMAGServerPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
                                                  OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
@@ -1806,6 +1812,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                  "Governance Engine Status APIs",
                                                  null,
                                                  OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 OMAGServerPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
                                                  OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
@@ -1836,6 +1843,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                  "Open Metadata Repository Access APIs",
                                                  null,
                                                  OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 OMAGServerPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
                                                  OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
@@ -1866,6 +1874,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                  "Open Metadata and Governance End User APIs",
                                                  null,
                                                  OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 OMAGServerPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
                                                  OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
@@ -1892,6 +1901,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                  OpenMetadataType.EVENT_BROKER.typeName,
                                                  null,
                                                  KafkaPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 KafkaPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
                                                  null,
                                                  null,
                                                  provider.getConnectorType().getGUID(),
@@ -1904,7 +1914,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Create a template for a software server and link it to the associated deployed implementation type.
+     * Create a template for a host and link it to the associated deployed implementation type.
      * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
      * to the supplied connector type and an endpoint,
      *
@@ -1921,7 +1931,6 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         final String methodName = "createHostCatalogTemplate";
 
         String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + HostPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder();
-        String               description        = deployedImplementationType.getDescription();
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -1937,7 +1946,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                   qualifiedName,
                                                   HostPlaceholderProperty.HOST_NAME.getPlaceholder(),
                                                   HostPlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
-                                                  description,
+                                                  HostPlaceholderProperty.HOST_DESCRIPTION.getPlaceholder(),
                                                   null,
                                                   extendedProperties,
                                                   classifications);
@@ -1998,13 +2007,15 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
      * to the supplied connector type and an endpoint,
      *
      * @param deployedImplementationType deployed implementation type for the technology
-     * @param softwareCapabilityClassification optional classification for the associated capability
      * @param softwareCapabilityName name for the associated capability
+     * @param softwareCapabilityDescription description for the software capability
+     * @param softwareCapabilityClassification optional classification for the associated capability
      * @param replacementAttributeTypes attributes that should have a replacement value to successfully use the template
      * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
      */
     private   void createSoftwareCapabilityCatalogTemplate(DeployedImplementationType     deployedImplementationType,
                                                            String                         softwareCapabilityName,
+                                                           String                         softwareCapabilityDescription,
                                                            Classification                 softwareCapabilityClassification,
                                                            List<ReplacementAttributeType> replacementAttributeTypes,
                                                            List<PlaceholderPropertyType>  placeholderPropertyTypes)
@@ -2013,7 +2024,6 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         String               qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + softwareCapabilityName;
         String               versionIdentifier = "V1.0";
-        String               description = deployedImplementationType.getDescription();
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -2033,7 +2043,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         String capabilityGUID = archiveHelper.addSoftwareCapability(deployedImplementationType.getAssociatedTypeName(),
                                                                     qualifiedName + ":" + softwareCapabilityName,
                                                                     softwareCapabilityName,
-                                                                    description,
+                                                                    softwareCapabilityDescription,
                                                                     deployedImplementationType.getDeployedImplementationType(),
                                                                     versionIdentifier,
                                                                     null,
@@ -2070,6 +2080,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         createSoftwareCapabilityCatalogTemplate(DeployedImplementationType.FILE_SYSTEM,
                                                 FileSystemPlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder(),
+                                                FileSystemPlaceholderProperty.FILE_SYSTEM_DESCRIPTION.getPlaceholder(),
                                                 fileSystemClassification,
                                                 null,
                                                 FileSystemPlaceholderProperty.getPlaceholderPropertyTypes());
@@ -2086,11 +2097,11 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         createSoftwareCapabilityCatalogTemplate(DeployedImplementationType.UNIX_FILE_SYSTEM,
                                                 FileSystemPlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder(),
+                                                FileSystemPlaceholderProperty.FILE_SYSTEM_DESCRIPTION.getPlaceholder(),
                                                 fileSystemClassification,
                                                 null,
                                                 FileSystemPlaceholderProperty.getPlaceholderPropertyTypes());
     }
-
 
 
     /**
@@ -2111,6 +2122,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
      */
     private   void createServerAssetCatalogTemplate(DeployedImplementationType     deployedImplementationType,
                                                     String                         assetName,
+                                                    String                         assetDescription,
                                                     String                         serverName,
                                                     String                         userId,
                                                     String                         password,
@@ -2134,7 +2146,6 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         }
 
         String               versionIdentifier = "V1.0";
-        String               description = deployedImplementationType.getDescription();
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications = new ArrayList<>();
 
@@ -2148,7 +2159,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                   qualifiedName,
                                                   assetName,
                                                   versionIdentifier,
-                                                  description,
+                                                  assetDescription,
                                                   null,
                                                   extendedProperties,
                                                   classifications);
@@ -2208,6 +2219,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         this.createServerAssetCatalogTemplate(DeployedImplementationType.POSTGRESQL_DATABASE,
                                               PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                              PostgresPlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholder(),
                                               PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder(),
                                               PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
                                               PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
@@ -2232,6 +2244,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         this.createServerAssetCatalogTemplate(DeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
                                               PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                                              PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder(),
                                               PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder() + "." + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
                                               PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
                                               PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
@@ -2268,12 +2281,13 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         configurationProperties.put("consumer", bootstrapServersProperties);
 
         this.createServerAssetCatalogTemplate(DeployedImplementationType.APACHE_KAFKA_TOPIC,
-                                              DeployedImplementationType.APACHE_KAFKA_TOPIC.getAssociatedTypeName(),
-                                              PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder() + "." + KafkaPlaceholderProperty.TOPIC_NAME.getPlaceholder() + ":inOut",
+                                              KafkaPlaceholderProperty.SHORT_TOPIC_NAME.getPlaceholder(),
+                                              KafkaPlaceholderProperty.TOPIC_DESCRIPTION.getPlaceholder(),
+                                              PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder() + "." + KafkaPlaceholderProperty.FULL_TOPIC_NAME.getPlaceholder() + ":inOut",
                                               null,
                                               null,
                                               provider.getConnectorType().getGUID(),
-                                              KafkaPlaceholderProperty.TOPIC_NAME.getPlaceholder(),
+                                              KafkaPlaceholderProperty.FULL_TOPIC_NAME.getPlaceholder(),
                                               configurationProperties,
                                               null,
                                               placeholderPropertyTypes);

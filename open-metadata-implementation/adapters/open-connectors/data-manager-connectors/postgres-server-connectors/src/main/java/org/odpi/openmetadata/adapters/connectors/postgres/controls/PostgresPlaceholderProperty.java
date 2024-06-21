@@ -34,6 +34,14 @@ public enum PostgresPlaceholderProperty
                    "myDatabase"),
 
     /**
+     * The name of the database being catalogued.
+     */
+    DATABASE_DESCRIPTION ("databaseDescription",
+                   "The description of the database being catalogued.",
+                   "string",
+                   null),
+
+    /**
      * The userId to store in the userId attribute of the connection.
      */
     DATABASE_USER_ID ("databaseUserId",
@@ -52,12 +60,22 @@ public enum PostgresPlaceholderProperty
     /**
      * The name of the server being catalogued.
      */
-    SERVER_NAME ("serverName", "The name of the database server being catalogued.", "string", "myServer"),
+    SERVER_NAME ("serverName", "The name of the server being catalogued.", "string", "myServer"),
+
+    /**
+     * The description of the server being catalogued.
+     */
+    SERVER_DESCRIPTION ("serverDescription", "The description of the server being catalogued.", "string", null),
 
     /**
      * The name of the schema being catalogued.
      */
     SCHEMA_NAME ("schemaName", "The name of the database schema being catalogued.", "string", "MyServer.schema"),
+
+    /**
+     * The description of the schema being catalogued.
+     */
+    SCHEMA_DESCRIPTION ("schemaDescription", "The description of the database schema being catalogued.", "string", null),
 
     /**
      * The name of the database table being catalogued.
@@ -158,6 +176,7 @@ public enum PostgresPlaceholderProperty
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholderType());
 
@@ -178,6 +197,7 @@ public enum PostgresPlaceholderProperty
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholderType());
 
@@ -199,6 +219,7 @@ public enum PostgresPlaceholderProperty
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholderType());
 

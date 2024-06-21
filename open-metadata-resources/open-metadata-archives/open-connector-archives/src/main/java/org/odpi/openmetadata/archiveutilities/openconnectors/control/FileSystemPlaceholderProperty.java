@@ -26,6 +26,11 @@ public enum FileSystemPlaceholderProperty
     FILE_SYSTEM_NAME ("fileSystemName", "The display name of the file system being catalogued.", "string", "myMachine"),
 
     /**
+     * The description of the file system being catalogued.
+     */
+    FILE_SYSTEM_DESCRIPTION ("fileSystemDescription", "The description of the file system being catalogued.", "string", null),
+
+    /**
      * The version of the file system.
      */
     VERSION_IDENTIFIER ("versionIdentifier", "The version of the file system.", "string", "V1.5"),

@@ -818,6 +818,79 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
 
     /**
+     * Issue a PATCH REST call that returns a response object.
+     *
+     * @param <T> type of the return object
+     * @param methodName  name of the method being called.
+     * @param returnClass class of the response object.
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the request.
+     * @param params  a list of parameters that are slotted into the url template.
+     *
+     * @return Object
+     * @throws RESTServerException something went wrong with the REST call stack.
+     */
+    public  <T> T callPatchRESTCall(String    methodName,
+                                    Class<T>  returnClass,
+                                    String    urlTemplate,
+                                    Object    requestBody,
+                                    Object... params) throws RESTServerException
+    {
+        try
+        {
+            if (log.isDebugEnabled())
+            {
+                //avoid calling Arrays.toString if not debug level
+                log.debug("Calling {} with URL template {} and parameters {}.",
+                          methodName,
+                          urlTemplate,
+                          Arrays.toString(params));
+            }
+
+            // requestBody may be null
+            HttpEntity<?> request = new HttpEntity<>(requestBody) ;
+            if (basicAuthorizationHeader != null) {
+                request = new HttpEntity<>(requestBody, basicAuthorizationHeader);
+            }
+            ResponseEntity<T>  responseEntity = restTemplate.exchange(urlTemplate, HttpMethod.PATCH, request, returnClass, params);
+            T  responseObject = responseEntity.getBody();
+
+            if (responseObject != null)
+            {
+                log.debug("Returning from {} with response object {}", methodName, responseObject);
+            }
+            else
+            {
+                log.debug("Returning from {} with no response object.", methodName);
+            }
+
+            return responseObject;
+        }
+        catch (Exception error)
+        {
+            log.error("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
+
+            RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
+            ExceptionMessageDefinition   messageDefinition = errorCode.getMessageDefinition(error.getClass().getName(),
+                                                                                            methodName,
+                                                                                            urlTemplate,
+                                                                                            serverName,
+                                                                                            serverPlatformURLRoot,
+                                                                                            error.getMessage());
+            String errorMessage = messageFormatter.getFormattedMessage(messageDefinition);
+
+            throw new RESTServerException(messageDefinition.getHttpErrorCode(),
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          messageDefinition.getSystemAction(),
+                                          messageDefinition.getUserAction(),
+                                          error);
+        }
+    }
+
+
+    /**
      * Issue a POST REST call that returns a response object.  This is typically a create, update, or find with
      * complex parameters.
      *

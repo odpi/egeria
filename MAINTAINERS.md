@@ -12,21 +12,22 @@ new pull requests into main.
 The current Egeria maintainers are:
 
 
-| Name                  | Email                          | GitHub id
-| --------------------- | ------------------------------ | --------------
-| Mandy Chessell        | mandy.e.chessell@gmail.com     | mandy-chessell
-| Nigel Jones           | jonesn@uk.ibm.com              | planetf1
-| David Radley          | david_radley@uk.ibm.com        | davidradl
-| Maryna Strelchuk      | maryna.strelchuk@gmail.com     | mstrelchuk
-| Bogdan Sava           | bogdan.sava@gmail.com          | bogdan-sava
-| Chris Grote           | chris@thegrotes.net            | cmgrote
-| Raluca Popa           | raluca.popa2@ing.com           | popa-raluca
-| Chris Replogle        | Chris.Replogle@sas.com         | CDARip2U
-| Ljupcho Palashevski   | ljupcho.palashevski@ing.com    | lpalashevski
-| Alexandra Bucur       | alexandra-nona.bucur@ing.com   | alexandra-bucur
-| Cezar Sirbu           | sirbunicolaecezar@gmail.com    | sarbull 
-| Liviu Constantin Popa | liviu-constantin.popa@ing.com  | lcpopa
-| Cristian-Mihai Iliescu |  cristianmihaiiliescu@gmail.com  | MihaiIliescu
+| Name                   | Email                          | GitHub id
+|------------------------|--------------------------------| --------------
+| Mandy Chessell         | mandy.e.chessell@gmail.com     | mandy-chessell
+| Dan Wolfson            | dan.wolfson@pdr-associates.com | dwolfson
+| Nigel Jones            | jonesn@uk.ibm.com              | planetf1
+| David Radley           | david_radley@uk.ibm.com        | davidradl
+| Maryna Strelchuk       | maryna.strelchuk@gmail.com     | mstrelchuk
+| Bogdan Sava            | bogdan.sava@gmail.com          | bogdan-sava
+| Chris Grote            | chris@thegrotes.net            | cmgrote
+| Raluca Popa            | raluca.popa2@ing.com           | popa-raluca
+| Chris Replogle         | Chris.Replogle@sas.com         | CDARip2U
+| Ljupcho Palashevski    | ljupcho.palashevski@ing.com    | lpalashevski
+| Alexandra Bucur        | alexandra-nona.bucur@ing.com   | alexandra-bucur
+| Cezar Sirbu            | sirbunicolaecezar@gmail.com    | sarbull 
+| Liviu Constantin Popa  | liviu-constantin.popa@ing.com  | lcpopa
+| Cristian-Mihai Iliescu | cristianmihaiiliescu@gmail.com | MihaiIliescu
 
 To understand how to become an Egeria maintainer
 see the [Egeria Operations Guide](https://egeria-project.org/guides/project-operations/).

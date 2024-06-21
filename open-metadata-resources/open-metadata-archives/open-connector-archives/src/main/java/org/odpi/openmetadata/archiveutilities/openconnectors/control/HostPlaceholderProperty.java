@@ -25,6 +25,12 @@ public enum HostPlaceholderProperty
      */
     HOST_NAME ("hostName", "The display name of the host being catalogued.", "string", "myMachine"),
 
+
+    /**
+     * The description of the host being catalogued.
+     */
+    HOST_DESCRIPTION ("hostDescription", "The description of the host being catalogued.", "string", null),
+
     /**
      * The version of the host.
      */
