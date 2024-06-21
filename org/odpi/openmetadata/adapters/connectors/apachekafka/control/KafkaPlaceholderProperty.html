@@ -110,21 +110,33 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">By default, this connector supports both the receiving and sending of events on a particular topic.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#HOST_IDENTIFIER" class="member-name-link">HOST_IDENTIFIER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#FULL_TOPIC_NAME" class="member-name-link">FULL_TOPIC_NAME</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">The full name of the topic.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#HOST_IDENTIFIER" class="member-name-link">HOST_IDENTIFIER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The host IP address or domain name.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PORT_NUMBER" class="member-name-link">PORT_NUMBER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PORT_NUMBER" class="member-name-link">PORT_NUMBER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The number of the port to use to connect to a service.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SERVER_DESCRIPTION" class="member-name-link">SERVER_DESCRIPTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The description of the server being catalogued.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#SERVER_NAME" class="member-name-link">SERVER_NAME</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">The name of the server being catalogued.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TOPIC_NAME" class="member-name-link">TOPIC_NAME</a></code></div>
+<div class="col-first even-row-color"><code><a href="#SHORT_TOPIC_NAME" class="member-name-link">SHORT_TOPIC_NAME</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The full name of the topic.</div>
+<div class="block">The display name of the topic.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#TOPIC_DESCRIPTION" class="member-name-link">TOPIC_DESCRIPTION</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The description of the topic.</div>
 </div>
 </div>
 </section>
@@ -262,10 +274,31 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="TOPIC_NAME">
-<h3>TOPIC_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apachekafka.control">KafkaPlaceholderProperty</a></span>&nbsp;<span class="element-name">TOPIC_NAME</span></div>
+<section class="detail" id="SERVER_DESCRIPTION">
+<h3>SERVER_DESCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apachekafka.control">KafkaPlaceholderProperty</a></span>&nbsp;<span class="element-name">SERVER_DESCRIPTION</span></div>
+<div class="block">The description of the server being catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FULL_TOPIC_NAME">
+<h3>FULL_TOPIC_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apachekafka.control">KafkaPlaceholderProperty</a></span>&nbsp;<span class="element-name">FULL_TOPIC_NAME</span></div>
 <div class="block">The full name of the topic.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SHORT_TOPIC_NAME">
+<h3>SHORT_TOPIC_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apachekafka.control">KafkaPlaceholderProperty</a></span>&nbsp;<span class="element-name">SHORT_TOPIC_NAME</span></div>
+<div class="block">The display name of the topic.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TOPIC_DESCRIPTION">
+<h3>TOPIC_DESCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="KafkaPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.apachekafka.control">KafkaPlaceholderProperty</a></span>&nbsp;<span class="element-name">TOPIC_DESCRIPTION</span></div>
+<div class="block">The description of the topic.</div>
 </section>
 </li>
 <li>

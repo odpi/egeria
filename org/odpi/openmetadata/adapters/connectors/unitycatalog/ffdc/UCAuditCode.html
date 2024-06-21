@@ -119,16 +119,20 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last even-row-color">
 <div class="block">UNITY-CATALOG-CONNECTOR-0003 - The {0} integration connector has catalogued data set {1} ({2})</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NO_DATABASES" class="member-name-link">NO_DATABASES</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#CLIENT_SIDE_REST_API_ERROR" class="member-name-link">CLIENT_SIDE_REST_API_ERROR</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">UNITY-CATALOG-CONNECTOR-0005 - A client-side exception was received from API call {0} to server {1} at {2}.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NO_DATABASES" class="member-name-link">NO_DATABASES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">UNITY-CATALOG-CONNECTOR-0002 - The {0} survey action service is unable to retrieve details of any databases for Unity Catalog Server {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SKIPPING_DATABASE" class="member-name-link">SKIPPING_DATABASE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SKIPPING_DATABASE" class="member-name-link">SKIPPING_DATABASE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">UNITY-CATALOG-CONNECTOR-0004 - he {0} integration connector is skipping data set {1} ({2}) because it is already catalogued</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">UNITY-CATALOG-CONNECTOR-0001 - The Unity Catalog connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}</div>
 </div>
 </div>
@@ -217,6 +221,13 @@ the order they are declared.</div>
 <h3>SKIPPING_DATABASE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">SKIPPING_DATABASE</span></div>
 <div class="block">UNITY-CATALOG-CONNECTOR-0004 - he {0} integration connector is skipping data set {1} ({2}) because it is already catalogued</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CLIENT_SIDE_REST_API_ERROR">
+<h3>CLIENT_SIDE_REST_API_ERROR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">CLIENT_SIDE_REST_API_ERROR</span></div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0005 - A client-side exception was received from API call {0} to server {1} at {2}.  The error message was {3}</div>
 </section>
 </li>
 </ul>

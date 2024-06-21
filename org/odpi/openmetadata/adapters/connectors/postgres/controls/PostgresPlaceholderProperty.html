@@ -106,36 +106,48 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#DATABASE_NAME" class="member-name-link">DATABASE_NAME</a></code></div>
+<div class="col-first even-row-color"><code><a href="#DATABASE_DESCRIPTION" class="member-name-link">DATABASE_DESCRIPTION</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">The name of the database being catalogued.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DATABASE_PASSWORD" class="member-name-link">DATABASE_PASSWORD</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#DATABASE_NAME" class="member-name-link">DATABASE_NAME</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">The name of the database being catalogued.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DATABASE_PASSWORD" class="member-name-link">DATABASE_PASSWORD</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The password to store in the clearPassword attribute of the connection.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#DATABASE_USER_ID" class="member-name-link">DATABASE_USER_ID</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#DATABASE_USER_ID" class="member-name-link">DATABASE_USER_ID</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The userId to store in the userId attribute of the connection.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#HOST_IDENTIFIER" class="member-name-link">HOST_IDENTIFIER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#HOST_IDENTIFIER" class="member-name-link">HOST_IDENTIFIER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The host IP address or domain name.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PORT_NUMBER" class="member-name-link">PORT_NUMBER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PORT_NUMBER" class="member-name-link">PORT_NUMBER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The number of the port to use to connect to a service.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SCHEMA_DESCRIPTION" class="member-name-link">SCHEMA_DESCRIPTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The description of the schema being catalogued.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#SCHEMA_NAME" class="member-name-link">SCHEMA_NAME</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">The name of the schema being catalogued.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVER_NAME" class="member-name-link">SERVER_NAME</a></code></div>
+<div class="col-first even-row-color"><code><a href="#SERVER_DESCRIPTION" class="member-name-link">SERVER_DESCRIPTION</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">The description of the server being catalogued.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SERVER_NAME" class="member-name-link">SERVER_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The name of the server being catalogued.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#TABLE_NAME" class="member-name-link">TABLE_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#TABLE_NAME" class="member-name-link">TABLE_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The name of the database table being catalogued.</div>
 </div>
 </div>
@@ -279,6 +291,13 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="DATABASE_DESCRIPTION">
+<h3>DATABASE_DESCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresPlaceholderProperty</a></span>&nbsp;<span class="element-name">DATABASE_DESCRIPTION</span></div>
+<div class="block">The name of the database being catalogued.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="DATABASE_USER_ID">
 <h3>DATABASE_USER_ID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresPlaceholderProperty</a></span>&nbsp;<span class="element-name">DATABASE_USER_ID</span></div>
@@ -300,10 +319,24 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="SERVER_DESCRIPTION">
+<h3>SERVER_DESCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresPlaceholderProperty</a></span>&nbsp;<span class="element-name">SERVER_DESCRIPTION</span></div>
+<div class="block">The description of the server being catalogued.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="SCHEMA_NAME">
 <h3>SCHEMA_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresPlaceholderProperty</a></span>&nbsp;<span class="element-name">SCHEMA_NAME</span></div>
 <div class="block">The name of the schema being catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SCHEMA_DESCRIPTION">
+<h3>SCHEMA_DESCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresPlaceholderProperty</a></span>&nbsp;<span class="element-name">SCHEMA_DESCRIPTION</span></div>
+<div class="block">The description of the schema being catalogued.</div>
 </section>
 </li>
 <li>
