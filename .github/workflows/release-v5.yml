@@ -70,8 +70,10 @@ jobs:
       - name: Copy the distribution content to be used in docker copy command
         run: |
           cp -f container.application.properties ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform/application.properties
-          mkdir -p ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.0-distribution.tar.gz/assembly/platform/data/servers
+          mkdir -p ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform/data/servers
           cp -r ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/opt/sample-configs/*-* ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform/data/servers
+          cp -r ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/opt/sample-data ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform
+          cp -r ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/opt/coco-pharmaceuticals ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform
       - name: Build and push(egeria-platform) to quay.io and docker.io
         uses: docker/build-push-action@v5
         with:

@@ -801,24 +801,48 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         Map<String, Object> configurationProperties = new HashMap<>();
         configurationProperties.put("waitForDirectory", "true");
 
-        String filesIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(DataFilesMonitorIntegrationProvider.class.getName(),
+        /*
+         * The sample data cataloguer will catalog all of the files in the sample-data data directory.
+         */
+        String sampleDataIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(DataFilesMonitorIntegrationProvider.class.getName(),
                                                                                      configurationProperties,
-                                                                                     OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":DataFilesMonitorIntegrationConnector",
-                                                                                     "DataFilesMonitorIntegrationConnector",
-                                                                                     "Catalogs files found under the starting directory (folder).",
+                                                                                     OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":SampleDataFilesMonitorIntegrationConnector",
+                                                                                     "SampleDataFilesMonitorIntegrationConnector",
+                                                                                     "Catalogs files found under the sample-data directory (folder).",
                                                                                      "sample-data",
                                                                                      null);
 
         archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
-                                                        "FilesCataloguer",
-                                                        "filecatnpa",
+                                                        "SampleDataCataloguer",
+                                                        "sampledatacatnpa",
                                                         null,
-                                                        60,
-                                                        filesIntegrationConnectorGUID);
+                                                        1440,
+                                                        sampleDataIntegrationConnectorGUID);
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.FILE_FOLDER.getQualifiedName());
         archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
-                                                        filesIntegrationConnectorGUID,
+                                                        sampleDataIntegrationConnectorGUID,
+                                                        ResourceUse.CATALOG_RESOURCE.getResourceUse(),
+                                                        ResourceUse.CATALOG_RESOURCE.getDescription());
+
+        configurationProperties.put("catalogAllFiles", "true");
+        String landingAreaIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(DataFilesMonitorIntegrationProvider.class.getName(),
+                                                                                           configurationProperties,
+                                                                                          OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":LandingAreaFilesMonitorIntegrationConnector",
+                                                                                          "LandingAreaFilesMonitorIntegrationConnector",
+                                                                                          "Catalogs files found under the landing-area directory (folder).",
+                                                                                          "landing-area",
+                                                                                          null);
+
+        archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
+                                                        "LandingAreaCataloguer",
+                                                        "landingareacatnpa",
+                                                        null,
+                                                        1,
+                                                        landingAreaIntegrationConnectorGUID);
+
+        archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
+                                                        landingAreaIntegrationConnectorGUID,
                                                         ResourceUse.CATALOG_RESOURCE.getResourceUse(),
                                                         ResourceUse.CATALOG_RESOURCE.getDescription());
 
