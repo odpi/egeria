@@ -28,7 +28,7 @@ GET {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/{{
 POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/{{server}}/instance/open-metadata-archives/file
 Content-Type: text/plain
 
-../opt/content-packs/CocoComboArchive.omarchive
+content-packs/CocoComboArchive.omarchive
 
 ###
 # @name Load open metadata archive connection

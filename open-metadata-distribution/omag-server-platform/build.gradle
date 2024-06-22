@@ -130,7 +130,8 @@ distributions {
                 }
                 fileMode = 0755
             }
-            into('assembly') {
+            into('assembly/platform') {
+                // Ensure license and notice are included in the docker container
                 from(rootProject.projectDir) {
                     include 'NOTICE'
                     include 'LICENSE'
@@ -217,12 +218,23 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:egeria-system-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors').shadowJar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors').jar }
                 fileMode = 0755
             }
             into('assembly/platform/extra') {
                 // Identify how to add new libs
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/extra" }
                 fileMode = 0755
+            }
+            into('assembly/platform/landing-area') {
+                // Identify how to add new libs
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/landing-area" }
+                fileMode = 0666
+            }
+            into('assembly/opt/coco-pharmaceuticals') {
+                // Identify how to add new libs
+                from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/coco-pharmaceuticals" }
+                fileMode = 0666
             }
             into('assembly/etc') {
                 // Describe the deployment layout
@@ -272,16 +284,13 @@ distributions {
             }
             into('assembly/opt') {
                 from(rootProject.projectDir) {
-                    include 'content-packs/*'
                     include 'sample-data/*/*'
                 }
                 fileMode = 0755
             }
             into('assembly/platform') {
                 from(rootProject.projectDir) {
-                    include 'content-packs/CoreContentPack.omarchive'
-                    include 'content-packs/SimpleCatalog.omarchive'
-                    include 'content-packs/CocoComboArchive.omarchive'
+                    include 'content-packs/*'
                 }
                 fileMode = 0755
             }
