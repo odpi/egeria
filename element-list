@@ -823,6 +823,7 @@ org.odpi.openmetadata.viewservices.assetcatalog.rest
 org.odpi.openmetadata.viewservices.assetcatalog.server
 org.odpi.openmetadata.viewservices.assetcatalog.server.spring
 org.odpi.openmetadata.viewservices.automatedcuration.admin
+org.odpi.openmetadata.viewservices.automatedcuration.converters
 org.odpi.openmetadata.viewservices.automatedcuration.ffdc
 org.odpi.openmetadata.viewservices.automatedcuration.properties
 org.odpi.openmetadata.viewservices.automatedcuration.rest

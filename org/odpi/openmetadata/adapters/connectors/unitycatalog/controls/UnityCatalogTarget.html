@@ -107,7 +107,11 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#UNITY_CATALOG_TARGET" class="member-name-link">UNITY_CATALOG_TARGET</a></code></div>
+<div class="col-first even-row-color"><code><a href="#UNITY_CATALOG_CATALOG_TARGET" class="member-name-link">UNITY_CATALOG_CATALOG_TARGET</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#UNITY_CATALOG_CONNECTOR_TARGET" class="member-name-link">UNITY_CATALOG_CONNECTOR_TARGET</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#UNITY_CATALOG_SERVER_TARGET" class="member-name-link">UNITY_CATALOG_SERVER_TARGET</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -146,44 +150,54 @@ loadScripts(document, 'script');</script>
 <div class="block">Return an action target type for use in the governance service's provider.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getActionTargetTypes()" class="member-name-link">getActionTargetTypes</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getCatalogActionTargetTypes()" class="member-name-link">getCatalogActionTargetTypes</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Return the action targets defined in this enum for a PostgreSQL database.</div>
+<div class="block">Return the action targets defined in this enum for a UC Catalog.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworks/integration/controls/CatalogTargetType.html" title="class in org.odpi.openmetadata.frameworks.integration.controls">CatalogTargetType</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalogTargetType()" class="member-name-link">getCatalogTargetType</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the target type for a specific target enum.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/integration/controls/CatalogTargetType.html" title="class in org.odpi.openmetadata.frameworks.integration.controls">CatalogTargetType</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getCatalogTargetTypes()" class="member-name-link">getCatalogTargetTypes</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Return all the catalog types defined by this enum.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedImplementationType()" class="member-name-link">getDeployedImplementationType</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedImplementationType()" class="member-name-link">getDeployedImplementationType</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a more specific definition of a permitted target.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the description of the target.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the target name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOtherPropertyValues()" class="member-name-link">getOtherPropertyValues</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOtherPropertyValues()" class="member-name-link">getOtherPropertyValues</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a map of property name to property value that the target should have to be valid for this integration connector.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getServerActionTargetTypes()" class="member-name-link">getServerActionTargetTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return the action targets defined in this enum for a UC Server.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/integration/controls/CatalogTargetType.html" title="class in org.odpi.openmetadata.frameworks.integration.controls">CatalogTargetType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getServerCatalogTargetTypes()" class="member-name-link">getServerCatalogTargetTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return all the catalog types defined for the server.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the type name (or super type name) of a permitted target.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/integration/controls/CatalogTargetType.html" title="class in org.odpi.openmetadata.frameworks.integration.controls">CatalogTargetType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getUCCatalogTargetTypes()" class="member-name-link">getUCCatalogTargetTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return all the catalog types defined for the server.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -222,9 +236,21 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="UNITY_CATALOG_TARGET">
-<h3>UNITY_CATALOG_TARGET</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogTarget</a></span>&nbsp;<span class="element-name">UNITY_CATALOG_TARGET</span></div>
+<section class="detail" id="UNITY_CATALOG_SERVER_TARGET">
+<h3>UNITY_CATALOG_SERVER_TARGET</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogTarget</a></span>&nbsp;<span class="element-name">UNITY_CATALOG_SERVER_TARGET</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNITY_CATALOG_CATALOG_TARGET">
+<h3>UNITY_CATALOG_CATALOG_TARGET</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogTarget</a></span>&nbsp;<span class="element-name">UNITY_CATALOG_CATALOG_TARGET</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNITY_CATALOG_CONNECTOR_TARGET">
+<h3>UNITY_CATALOG_CONNECTOR_TARGET</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogTarget.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogTarget</a></span>&nbsp;<span class="element-name">UNITY_CATALOG_CONNECTOR_TARGET</span></div>
 </section>
 </li>
 </ul>
@@ -337,10 +363,21 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getCatalogTargetTypes()">
-<h3>getCatalogTargetTypes</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/integration/controls/CatalogTargetType.html" title="class in org.odpi.openmetadata.frameworks.integration.controls">CatalogTargetType</a>&gt;</span>&nbsp;<span class="element-name">getCatalogTargetTypes</span>()</div>
-<div class="block">Return all the catalog types defined by this enum.</div>
+<section class="detail" id="getServerCatalogTargetTypes()">
+<h3>getServerCatalogTargetTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/integration/controls/CatalogTargetType.html" title="class in org.odpi.openmetadata.frameworks.integration.controls">CatalogTargetType</a>&gt;</span>&nbsp;<span class="element-name">getServerCatalogTargetTypes</span>()</div>
+<div class="block">Return all the catalog types defined for the server.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of target type</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getUCCatalogTargetTypes()">
+<h3>getUCCatalogTargetTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/integration/controls/CatalogTargetType.html" title="class in org.odpi.openmetadata.frameworks.integration.controls">CatalogTargetType</a>&gt;</span>&nbsp;<span class="element-name">getUCCatalogTargetTypes</span>()</div>
+<div class="block">Return all the catalog types defined for the server.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of target type</dd>
@@ -359,10 +396,21 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getActionTargetTypes()">
-<h3>getActionTargetTypes</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</span>&nbsp;<span class="element-name">getActionTargetTypes</span>()</div>
-<div class="block">Return the action targets defined in this enum for a PostgreSQL database.</div>
+<section class="detail" id="getCatalogActionTargetTypes()">
+<h3>getCatalogActionTargetTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</span>&nbsp;<span class="element-name">getCatalogActionTargetTypes</span>()</div>
+<div class="block">Return the action targets defined in this enum for a UC Catalog.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getServerActionTargetTypes()">
+<h3>getServerActionTargetTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</span>&nbsp;<span class="element-name">getServerActionTargetTypes</span>()</div>
+<div class="block">Return the action targets defined in this enum for a UC Server.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list</dd>

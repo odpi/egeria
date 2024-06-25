@@ -1170,7 +1170,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create the schema type by do not link it it a parent.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addSchemaTypeOption(java.lang.String,java.lang.String)" class="member-name-link">addSchemaTypeOption</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeChoiceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeOptionGUID)</code></div>
@@ -3511,6 +3513,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>assetGUID</code> - unique identifier of asset</dd>
+<dd><code>assetTypeName</code> - typename of the anchor</dd>
 <dd><code>typeName</code> - name of asset subtype to use - default is SchemaType</dd>
 <dd><code>qualifiedName</code> - unique name for the schema type</dd>
 <dd><code>displayName</code> - display name for the schema type</dd>
@@ -3531,6 +3534,19 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties)</span></div>
+<div class="block">Create the schema type by do not link it it a parent.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>assetGUID</code> - anchor guid</dd>
+<dd><code>assetTypeName</code> - anchor type name</dd>
+<dd><code>typeName</code> - type name of schema type</dd>
+<dd><code>qualifiedName</code> - qualified name</dd>
+<dd><code>displayName</code> - display name</dd>
+<dd><code>description</code> - description</dd>
+<dd><code>additionalProperties</code> - any additional properties</dd>
+<dt>Returns:</dt>
+<dd>guid of the schema type</dd>
+</dl>
 </section>
 </li>
 <li>
