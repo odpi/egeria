@@ -52,7 +52,7 @@ public class BasicFolderProvider extends ConnectorProviderBase
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setSupportedAssetTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
-        connectorType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
         connectorType.setConnectorInterfaces(connectorInterfaces);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 

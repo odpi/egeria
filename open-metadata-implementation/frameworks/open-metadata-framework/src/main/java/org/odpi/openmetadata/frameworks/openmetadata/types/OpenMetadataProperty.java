@@ -115,6 +115,11 @@ public enum OpenMetadataProperty
     DEPLOYED_IMPLEMENTATION_TYPE("deployedImplementationType", "string", "Name of a particular type of technology.  It is more specific than the open metadata types and increases the precision in which technology is catalogued.  This helps human understanding and enables connectors and other actions to be targeted to the right technology.", "PostgreSQL Database Server", "2f71cd9f-c614-4531-a5ae-3bcb6a6a1918"),
 
     /**
+     * Name of a particular type of technology.  It is more specific than the open metadata types and increases the precision in which technology is catalogued.  This helps human understanding and enables connectors and other actions to be targeted to the right technology.
+     */
+    SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE("supportedDeployedImplementationType", "string", "Name of a particular type of technology.  It is more specific than the open metadata types and increases the precision in which technology is catalogued.  This helps human understanding and enables connectors and other actions to be targeted to the right technology.", "PostgreSQL Database Server", "32567628-f7e3-4a6d-92b9-8ed734bd3dc1"),
+
+    /**
      * Identifier of the person or process who is accountable for the proper management of the element or related resource.
      */
     OWNER("owner", "string", "Identifier of the person or process who is accountable for the proper management of the element or related resource.", null, "8b3e49d6-987c-4f2f-b624-ba91e5d28b33"),

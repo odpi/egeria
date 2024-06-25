@@ -164,6 +164,79 @@ Content-Type: application/json
   "filter" : "View Server"
 }
 
+
+
+
+###
+# @name getTechnologyTypeElements
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add technology type name here"
+}
+
+
+
+
+###
+# @name getTechnologyTypeElements (CSV Data File)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "CSV Data File"
+}
+
+
+
+
+###
+# @name getTechnologyTypeElements (OMAG Server Platform)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OMAG Server Platform"
+}
+
+
+
+
+###
+# @name getTechnologyTypeTemplates
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add technology type name here"
+}
+
+
+
+
+###
+# @name getTechnologyTypeTemplates (CSV Data File)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "CSV Data File"
+}
+
+
+
+
 ###
 # =====================================================================================================================
 # Catalog templates make it easy to create new complex object such as assets.

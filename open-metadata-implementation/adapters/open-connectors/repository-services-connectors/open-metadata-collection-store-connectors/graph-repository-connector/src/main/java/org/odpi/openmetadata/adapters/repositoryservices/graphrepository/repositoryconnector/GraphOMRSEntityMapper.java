@@ -67,7 +67,7 @@ public class GraphOMRSEntityMapper {
 
     private Object getVertexProperty(Vertex vertex, String propName)
     {
-        VertexProperty vp = vertex.property(propName);
+        VertexProperty<?> vp = vertex.property(propName);
         if (vp == null || !vp.isPresent())
             return null;
         else
@@ -100,7 +100,7 @@ public class GraphOMRSEntityMapper {
      */
     private void removeProperty(Vertex vertex, String qualifiedPropName) {
         // no value has been specified - remove the property from the vertex
-        VertexProperty vp = vertex.property(getPropertyKeyEntity(qualifiedPropName));
+        VertexProperty<?> vp = vertex.property(getPropertyKeyEntity(qualifiedPropName));
         if (vp != null) {
             vp.remove();
         }
@@ -112,7 +112,7 @@ public class GraphOMRSEntityMapper {
      */
     private void removeCoreProperty(Vertex vertex, String prefixedPropName) {
         // no value has been specified - remove the property from the vertex
-        VertexProperty vp = vertex.property(prefixedPropName);
+        VertexProperty<?> vp = vertex.property(prefixedPropName);
         if (vp != null) {
             vp.remove();
         }
@@ -308,7 +308,7 @@ public class GraphOMRSEntityMapper {
             vertex.property(PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME, entity.getMetadataCollectionName());
         }
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME);
             if (vp != null)
                 vp.remove();
         }

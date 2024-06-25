@@ -11,7 +11,10 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 
-public class UnityCatalogSurveyProvider extends SurveyActionServiceProvider
+/**
+ * Connector provider for the OSSUnityCatalogInsideCatalogSurveyConnector.
+ */
+public class OSSUnityCatalogInsideCatalogSurveyProvider extends SurveyActionServiceProvider
 {
     /*
      * Unique identifier of the connector for the audit log.
@@ -21,23 +24,23 @@ public class UnityCatalogSurveyProvider extends SurveyActionServiceProvider
     /*
      * Unique identifier for the connector type.
      */
-    private static final String connectorTypeGUID = "0b110ed0-df5a-4537-abcb-dbdadae26168";
-    private static final String connectorQualifiedName = "Egeria:SurveyActionService:DataManager:UnityCatalog";
-    private static final String connectorDisplayName = "Survey for an instance of Unity Catalog";
-    private static final String connectorTypeDescription = "Surveys the data sets, volumes and functions found in a Unity Catalog instance.";
-    private static final String connectorWikiPage = "https://egeria-project.org/connectors/unity-catalog/survey-service/";
+    private static final String connectorTypeGUID = "6cc7c135-eada-440f-97d8-704c8d0a508f";
+    private static final String connectorQualifiedName = "Egeria:SurveyActionService:DataManagerCatalog:UnityCatalog";
+    private static final String connectorDisplayName = "OSS Unity Catalog (UC) Inside a Catalog Survey Service";
+    private static final String connectorTypeDescription = "Surveys the contents of a catalog found in a Unity Catalog Server.";
+    private static final String connectorWikiPage = "https://egeria-project.org/connectors/unity-catalog/catalog-survey-service/";
 
 
     /*
      * Class of the connector.
      */
-    private static final String connectorClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.UnityCatalogSurveyService";
+    private static final String connectorClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideCatalogSurveyService";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific connector implementation.
      * Most of the work of this connector provider is handled by the base class.
      */
-    public UnityCatalogSurveyProvider()
+    public OSSUnityCatalogInsideCatalogSurveyProvider()
     {
         super();
 
@@ -61,7 +64,7 @@ public class UnityCatalogSurveyProvider extends SurveyActionServiceProvider
          * Information about the type of assets this type of connector works with and the interface it supports.
          */
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setDeployedImplementationType(supportedDeployedImplementationType);
+        connectorType.setSupportedDeployedImplementationType(supportedDeployedImplementationType);
 
         super.connectorTypeBean = connectorType;
 
@@ -78,7 +81,7 @@ public class UnityCatalogSurveyProvider extends SurveyActionServiceProvider
 
         super.setConnectorComponentDescription(componentDescription);
 
-        super.supportedActionTargetTypes = UnityCatalogTarget.getActionTargetTypes();
+        super.supportedActionTargetTypes = UnityCatalogTarget.getCatalogActionTargetTypes();
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
                 AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
         super.producedAnnotationTypes    = UnityCatalogAnnotationType.getAnnotationTypeTypes();

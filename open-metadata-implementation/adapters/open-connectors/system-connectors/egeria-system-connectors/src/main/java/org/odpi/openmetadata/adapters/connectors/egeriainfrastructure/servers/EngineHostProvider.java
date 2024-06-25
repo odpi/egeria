@@ -66,7 +66,7 @@ public class EngineHostProvider extends ConnectorProviderBase
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(DeployedImplementationType.ENGINE_HOST.getAssociatedTypeName());
-        connectorType.setDeployedImplementationType(DeployedImplementationType.ENGINE_HOST.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.ENGINE_HOST.getDeployedImplementationType());
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add("serverName");
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);

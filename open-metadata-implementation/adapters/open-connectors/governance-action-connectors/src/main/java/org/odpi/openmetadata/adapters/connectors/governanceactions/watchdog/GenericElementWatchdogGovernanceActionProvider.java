@@ -78,7 +78,7 @@ public class GenericElementWatchdogGovernanceActionProvider extends GovernanceAc
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setDeployedImplementationType(supportedDeployedImplementationType);
+        connectorType.setSupportedDeployedImplementationType(supportedDeployedImplementationType);
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(GenericElementRequestParameter.INTERESTING_TYPE_NAME.getName());

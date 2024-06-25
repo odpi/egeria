@@ -16,17 +16,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = DataStoreProperties.class, name = "DataStoreProperties"),
-})
 public class FileProperties extends DataStoreProperties
 {
-    private String   fileType = null;
-
+    private String fileType      = null;
+    private String fileName      = null;
+    private String fileExtension = null;
 
     /**
      * Default constructor
@@ -48,7 +42,9 @@ public class FileProperties extends DataStoreProperties
 
         if (template != null)
         {
-            fileType = template.getFileType();
+            fileType      = template.getFileType();
+            fileName      = template.getFileName();
+            fileExtension = template.getFileExtension();
         }
     }
 
@@ -76,32 +72,78 @@ public class FileProperties extends DataStoreProperties
 
 
     /**
+     * Return the name of the file (do not want to rely on Name).
+     *
+     * @return string
+     */
+    public String getFileName()
+    {
+        return fileName;
+    }
+
+
+    /**
+     * Set up the name of the file (do not want to rely on Name).
+     *
+     * @param fileName string
+     */
+    public void setFileName(String fileName)
+    {
+        this.fileName = fileName;
+    }
+
+
+    /**
+     * Return the file extension, if any.
+     *
+     * @return string
+     */
+    public String getFileExtension()
+    {
+        return fileExtension;
+    }
+
+
+    /**
+     * Set up the file extension, if any.
+     *
+     * @param fileExtension string
+     */
+    public void setFileExtension(String fileExtension)
+    {
+        this.fileExtension = fileExtension;
+    }
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
      */
-    @SuppressWarnings(value = "deprecation")
     @Override
     public String toString()
     {
         return "FileProperties{" +
-                       "name='" + getName() + '\'' +
-                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", pathName='" + getPathName() + '\'' +
-                       ", createTime=" + getCreateTime() +
-                       ", modifiedTime=" + getModifiedTime() +
-                       ", encodingType='" + getEncodingType() + '\'' +
-                       ", encodingLanguage='" + getEncodingLanguage() + '\'' +
-                       ", encodingDescription='" + getEncodingDescription() + '\'' +
-                       ", encodingProperties=" + getEncodingProperties() +
-                       ", fileType='" + fileType + '\'' +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "fileType='" + fileType + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", fileExtension='" + fileExtension + '\'' +
+                ", deployedImplementationType='" + getDeployedImplementationType() + '\'' +
+                ", pathName='" + getPathName() + '\'' +
+                ", createTime=" + getCreateTime() +
+                ", modifiedTime=" + getModifiedTime() +
+                ", encodingType='" + getEncodingType() + '\'' +
+                ", encodingLanguage='" + getEncodingLanguage() + '\'' +
+                ", encodingDescription='" + getEncodingDescription() + '\'' +
+                ", encodingProperties=" + getEncodingProperties() +
+                ", name='" + getName() + '\'' +
+                ", versionIdentifier='" + getVersionIdentifier() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", effectiveFrom=" + getEffectiveFrom() +
+                ", effectiveTo=" + getEffectiveTo() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
+                '}';
     }
 
 
@@ -114,22 +156,12 @@ public class FileProperties extends DataStoreProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         FileProperties that = (FileProperties) objectToCompare;
-        return Objects.equals(fileType, that.fileType);
+        return Objects.equals(fileType, that.fileType) && Objects.equals(fileName, that.fileName) && Objects.equals(fileExtension, that.fileExtension);
     }
-
 
     /**
      * Return hash code for this object
@@ -139,6 +171,6 @@ public class FileProperties extends DataStoreProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), fileType);
+        return Objects.hash(super.hashCode(), fileType, fileName, fileExtension);
     }
 }

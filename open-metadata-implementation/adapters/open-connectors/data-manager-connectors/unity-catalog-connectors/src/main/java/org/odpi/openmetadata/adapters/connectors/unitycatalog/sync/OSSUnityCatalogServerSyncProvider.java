@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTarget;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
@@ -10,12 +11,12 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
-public class UnityCatalogSyncProvider extends IntegrationConnectorProvider
+public class OSSUnityCatalogServerSyncProvider extends IntegrationConnectorProvider
 {
     /*
      * Unique identifier of the connector for the audit log.
      */
-    private static final int    connectorComponentId   = 691;
+    private static final int    connectorComponentId   = 693;
 
     /*
      * Unique identifier for the connector type.
@@ -25,23 +26,23 @@ public class UnityCatalogSyncProvider extends IntegrationConnectorProvider
     /*
      * Descriptive information about the connector for the connector type and audit log.
      */
-    private static final String connectorQualifiedName = "Egeria:IntegrationConnector:DataManager:UnityCatalog";
-    private static final String connectorDisplayName   = "OMAG Server Platform Catalog Connector";
-    private static final String connectorDescription   = "Connector that synchronizes the data sets and functions between Unity Catalog and the open metadata ecosystem.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/unity-catalog/sync-connector/";
+    private static final String connectorQualifiedName = "Egeria:IntegrationConnector:SoftwareServer:UnityCatalog";
+    private static final String connectorDisplayName   = "OSS Unity Catalog (UC) Server Synchronizing Connector";
+    private static final String connectorDescription   = "Connector that synchronizes the catalogs between the OSS Unity Catalog 'catalog of catalogs' and the open metadata ecosystem.";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/unity-catalog/sync-server-connector/";
 
 
     /*
      * Class of the connector.
      */
-    private static final String connectorClassName       = "org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.UnityCatalogSyncConnector";
+    private static final String connectorClassName       = "org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncConnector";
 
 
     /**
      * Constructor used to initialize the ConnectorProvider with the Java class name of the specific
      * store implementation.
      */
-    public UnityCatalogSyncProvider()
+    public OSSUnityCatalogServerSyncProvider()
     {
         super();
 
@@ -60,9 +61,9 @@ public class UnityCatalogSyncProvider extends IntegrationConnectorProvider
         connectorType.setDisplayName(connectorDisplayName);
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-        connectorType.setSupportedAssetTypeName(DeployedImplementationType.UNITY_CATALOG.getAssociatedTypeName());
-        connectorType.setDeployedImplementationType(DeployedImplementationType.UNITY_CATALOG.getDeployedImplementationType());
-
+        connectorType.setSupportedAssetTypeName(DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType());
+        connectorType.setRecognizedConfigurationProperties(UnityCatalogConfigurationProperty.getUnityCatalogServerRecognizedConfigurationProperties());
         super.connectorTypeBean = connectorType;
 
         /*
@@ -78,6 +79,7 @@ public class UnityCatalogSyncProvider extends IntegrationConnectorProvider
 
         super.setConnectorComponentDescription(componentDescription);
 
-        super.catalogTargets = UnityCatalogTarget.getCatalogTargetTypes();
+        super.catalogTargets = UnityCatalogTarget.getServerCatalogTargetTypes();
+        super.supportedConfigurationProperties = UnityCatalogConfigurationProperty.getUnityCatalogServerConfigurationPropertyTypes();
     }
 }

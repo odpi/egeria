@@ -586,7 +586,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         connectorType.setDisplayName(this.removeDisplayName(instanceProperties));
         connectorType.setDescription(this.removeDescription(instanceProperties));
         connectorType.setSupportedAssetTypeName(this.removeSupportedAssetTypeName(instanceProperties));
-        connectorType.setDeployedImplementationType(this.removeDeployedImplementationType(instanceProperties));
+        connectorType.setSupportedDeployedImplementationType(this.removeSupportedDeployedImplementationType(instanceProperties));
         connectorType.setExpectedDataFormat(this.removeExpectedDataFormat(instanceProperties));
         connectorType.setConnectorProviderClassName(this.removeConnectorProviderClassName(instanceProperties));
         connectorType.setConnectorFrameworkName(this.removeConnectorFrameworkName(instanceProperties));

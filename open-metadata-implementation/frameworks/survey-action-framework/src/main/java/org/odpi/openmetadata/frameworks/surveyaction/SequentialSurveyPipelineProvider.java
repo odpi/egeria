@@ -6,7 +6,6 @@ package org.odpi.openmetadata.frameworks.surveyaction;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 
 /**
  * SequentialDiscoveryPipelineProvider is the provider for the SequentialDiscoveryPipeline - an ODF discovery pipeline connector.
@@ -49,7 +48,7 @@ public class SequentialSurveyPipelineProvider extends SurveyActionServiceProvide
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setDeployedImplementationType(supportedDeployedImplementationType);
+        connectorType.setSupportedDeployedImplementationType(supportedDeployedImplementationType);
 
         super.connectorTypeBean = connectorType;
 

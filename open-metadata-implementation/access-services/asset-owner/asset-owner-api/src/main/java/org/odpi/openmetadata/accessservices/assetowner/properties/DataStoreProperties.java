@@ -29,6 +29,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
               })
 public class DataStoreProperties extends AssetProperties
 {
+    private String              deployedImplementationType = null;
     private String              pathName            = null;
     private Date                createTime          = null;
     private Date                modifiedTime        = null;
@@ -65,6 +66,7 @@ public class DataStoreProperties extends AssetProperties
             encodingLanguage    = template.getEncodingLanguage();
             encodingDescription = template.getEncodingDescription();
             encodingProperties  = template.getEncodingProperties();
+            deployedImplementationType = template.getDeployedImplementationType();
         }
     }
 
@@ -245,6 +247,28 @@ public class DataStoreProperties extends AssetProperties
 
 
     /**
+     * Retrieve the name of the technology used for this data asset.
+     *
+     * @return string name
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the name of the technology used for this data asset.
+     *
+     * @param deployedImplementationType string name
+     */
+    public void setDeployedImplementationType(String deployedImplementationType)
+    {
+        this.deployedImplementationType = deployedImplementationType;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -265,6 +289,7 @@ public class DataStoreProperties extends AssetProperties
                        ", encodingLanguage='" + encodingLanguage + '\'' +
                        ", encodingDescription='" + encodingDescription + '\'' +
                        ", encodingProperties=" + encodingProperties +
+                       ", deployedImplementationType='" + deployedImplementationType + '\'' +
                        ", typeName='" + getTypeName() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -298,6 +323,7 @@ public class DataStoreProperties extends AssetProperties
         return Objects.equals(pathName, that.pathName) &&
                        Objects.equals(createTime, that.createTime) &&
                        Objects.equals(modifiedTime, that.modifiedTime) &&
+                       Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
                        Objects.equals(encodingType, that.encodingType) &&
                        Objects.equals(encodingLanguage, that.encodingLanguage) &&
                        Objects.equals(encodingDescription, that.encodingDescription) &&
@@ -313,7 +339,7 @@ public class DataStoreProperties extends AssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), pathName, createTime, modifiedTime, encodingType,
+        return Objects.hash(super.hashCode(), pathName, createTime, modifiedTime, deployedImplementationType, encodingType,
                             encodingLanguage, encodingDescription, encodingProperties);
     }
 }

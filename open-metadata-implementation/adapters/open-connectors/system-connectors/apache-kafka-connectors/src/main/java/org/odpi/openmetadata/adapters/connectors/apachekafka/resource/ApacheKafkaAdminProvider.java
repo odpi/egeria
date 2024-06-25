@@ -65,7 +65,7 @@ public class ApacheKafkaAdminProvider extends ConnectorProviderBase
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(DeployedImplementationType.APACHE_KAFKA_SERVER.getAssociatedTypeName());
-        connectorType.setDeployedImplementationType(DeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
 

@@ -151,7 +151,7 @@ public class AssetCatalogResource
     @PostMapping(path = "/assets/by-metadata-collection-id/{metadataCollectionId}")
 
     @Operation(summary="getAssetsByMetadataCollectionId",
-            description="Return a list of assets that come from the requested metadata collection.",
+            description="Return a list of assets that come from the requested metadata collection. The filter in the request body is optional. If specified it is a type name to limit the results passed back.",
             externalDocs=@ExternalDocumentation(description="Assets",
                     url="https://egeria-project.org/concepts/asset/"))
 

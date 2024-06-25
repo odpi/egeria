@@ -135,7 +135,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                               connectorType.getQualifiedName(),
                                                               connectorType.getDisplayName(),
                                                               connectorType.getDescription(),
-                                                              connectorType.getDeployedImplementationType(),
+                                                              connectorType.getSupportedDeployedImplementationType(),
                                                               connectorType.getSupportedAssetTypeName(),
                                                               connectorType.getExpectedDataFormat(),
                                                               connectorType.getConnectorProviderClassName(),
@@ -215,6 +215,49 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         }
 
         return null;
+    }
+
+
+
+    /**
+     * Create a catalog target relationship.
+     *
+     * @param integrationConnectorGUID the integration connector
+     * @param targetElementGUID the target they should work with
+     * @param catalogTargetName name for the target
+     * @param connectionName name for the connection
+     * @param configurationProperties any configuration properties
+     * @param templates specific templates to use
+     * @param metadataSourceQualifiedName metadata source qualified name for the cataloguing
+     */
+    public void addCatalogTargetRelationship(String              integrationConnectorGUID,
+                                             String              targetElementGUID,
+                                             String              catalogTargetName,
+                                             String              connectionName,
+                                             Map<String, Object> configurationProperties,
+                                             Map<String, String> templates,
+                                             String              metadataSourceQualifiedName)
+    {
+        final String methodName = "addCatalogTargetRelationship";
+
+        EntityDetail end1Entity = archiveBuilder.getEntity(integrationConnectorGUID);
+        EntityDetail end2Entity = archiveBuilder.getEntity(targetElementGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(end1Entity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(end2Entity);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME, catalogTargetName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CONNECTION_NAME_PROPERTY_NAME, connectionName, methodName);
+        properties = archiveHelper.addMapPropertyToInstance(archiveRootName, properties, OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME, configurationProperties, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataType.TEMPLATES_PROPERTY_NAME, templates, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME, metadataSourceQualifiedName, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(integrationConnectorGUID + "_to_" + targetElementGUID + "_catalog_target_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
     }
 
 
@@ -330,7 +373,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                               connectorType.getQualifiedName(),
                                                               connectorType.getDisplayName(),
                                                               connectorType.getDescription(),
-                                                              connectorType.getDeployedImplementationType(),
+                                                              connectorType.getSupportedDeployedImplementationType(),
                                                               connectorType.getSupportedAssetTypeName(),
                                                               connectorType.getExpectedDataFormat(),
                                                               connectorType.getConnectorProviderClassName(),

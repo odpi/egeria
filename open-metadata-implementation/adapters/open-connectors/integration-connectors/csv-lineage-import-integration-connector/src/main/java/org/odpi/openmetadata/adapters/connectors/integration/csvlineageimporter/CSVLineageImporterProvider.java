@@ -48,7 +48,7 @@ public class CSVLineageImporterProvider extends IntegrationConnectorProvider
 
 
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setDeployedImplementationType(DeployedImplementationType.LINEAGE_INTEGRATION_CONNECTOR.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.LINEAGE_INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
 

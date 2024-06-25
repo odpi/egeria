@@ -60,7 +60,7 @@ class GraphOMRSRelationshipMapper {
 
     private Object getEdgeProperty(Edge edge, String propName)
     {
-        Property ep = edge.property(propName);
+        Property<?> ep = edge.property(propName);
         if (ep == null || !ep.isPresent())
             return null;
         else
@@ -85,7 +85,7 @@ class GraphOMRSRelationshipMapper {
 
     private void removeProperty(Edge edge, String qualifiedPropName) {
         // no value has been specified - remove the property from the edge
-        Property ep = edge.property(getPropertyKeyRelationship(qualifiedPropName));
+        Property<?> ep = edge.property(getPropertyKeyRelationship(qualifiedPropName));
         if (ep != null) {
             ep.remove();
         }
@@ -149,7 +149,7 @@ class GraphOMRSRelationshipMapper {
             edge.property(PROPERTY_KEY_RELATIONSHIP_REIDENTIFIED_FROM_GUID, relationship.getReIdentifiedFromGUID());
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_REIDENTIFIED_FROM_GUID);
+            Property<?> ep = edge.property(PROPERTY_KEY_RELATIONSHIP_REIDENTIFIED_FROM_GUID);
             if (ep != null)
                 ep.remove();
         }
@@ -158,7 +158,7 @@ class GraphOMRSRelationshipMapper {
             edge.property(PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME, relationship.getMetadataCollectionName());
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME);
+            Property<?> ep = edge.property(PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME);
             if (ep != null)
                 ep.remove();
         }
@@ -167,7 +167,7 @@ class GraphOMRSRelationshipMapper {
             edge.property(PROPERTY_KEY_RELATIONSHIP_CREATED_BY, relationship.getCreatedBy());
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_CREATED_BY);
+            Property<?> ep = edge.property(PROPERTY_KEY_RELATIONSHIP_CREATED_BY);
             if (ep != null)
                 ep.remove();
         }
@@ -176,7 +176,7 @@ class GraphOMRSRelationshipMapper {
             edge.property(PROPERTY_KEY_RELATIONSHIP_CREATE_TIME, relationship.getCreateTime());
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_CREATE_TIME);
+            Property<?> ep = edge.property(PROPERTY_KEY_RELATIONSHIP_CREATE_TIME);
             if (ep != null)
                 ep.remove();
         }
@@ -185,7 +185,7 @@ class GraphOMRSRelationshipMapper {
             edge.property(PROPERTY_KEY_RELATIONSHIP_UPDATED_BY, relationship.getUpdatedBy());
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_UPDATED_BY);
+            Property<?> ep = edge.property(PROPERTY_KEY_RELATIONSHIP_UPDATED_BY);
             if (ep != null)
                 ep.remove();
         }
@@ -194,7 +194,7 @@ class GraphOMRSRelationshipMapper {
             edge.property(PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME, relationship.getUpdateTime());
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME);
+            Property<?> ep = edge.property(PROPERTY_KEY_RELATIONSHIP_UPDATE_TIME);
             if (ep != null)
                 ep.remove();
         }
@@ -207,7 +207,7 @@ class GraphOMRSRelationshipMapper {
             edge.property(PROPERTY_KEY_RELATIONSHIP_INSTANCE_PROVENANCE_TYPE, relationship.getInstanceProvenanceType().getOrdinal());   // ** ordinal mapping
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_INSTANCE_PROVENANCE_TYPE);
+            Property<?> ep = edge.property(PROPERTY_KEY_RELATIONSHIP_INSTANCE_PROVENANCE_TYPE);
             if (ep != null)
                 ep.remove();
         }
@@ -217,7 +217,7 @@ class GraphOMRSRelationshipMapper {
             edge.property(PROPERTY_KEY_RELATIONSHIP_CURRENT_STATUS, relationship.getStatus().getOrdinal());                           // ** ordinal mapping
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_CURRENT_STATUS);
+            Property<?> ep = edge.property(PROPERTY_KEY_RELATIONSHIP_CURRENT_STATUS);
             if (ep != null)
                 ep.remove();
         }
@@ -226,7 +226,7 @@ class GraphOMRSRelationshipMapper {
             edge.property(PROPERTY_KEY_RELATIONSHIP_STATUS_ON_DELETE, relationship.getStatusOnDelete().getOrdinal());         // ** ordinal mapping
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_STATUS_ON_DELETE);
+            Property<?> ep = edge.property(PROPERTY_KEY_RELATIONSHIP_STATUS_ON_DELETE);
             if (ep != null)
                 ep.remove();
         }
@@ -236,7 +236,7 @@ class GraphOMRSRelationshipMapper {
             edge.property(PROPERTY_KEY_RELATIONSHIP_INSTANCE_URL, relationship.getInstanceURL());
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_INSTANCE_URL);
+            Property<?> ep = edge.property(PROPERTY_KEY_RELATIONSHIP_INSTANCE_URL);
             if (ep != null)
                 ep.remove();
         }
@@ -245,7 +245,7 @@ class GraphOMRSRelationshipMapper {
             edge.property(PROPERTY_KEY_RELATIONSHIP_INSTANCE_LICENSE, relationship.getInstanceLicense());
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_INSTANCE_LICENSE);
+            Property<?> ep = edge.property(PROPERTY_KEY_RELATIONSHIP_INSTANCE_LICENSE);
             if (ep != null)
                 ep.remove();
         }
@@ -270,7 +270,7 @@ class GraphOMRSRelationshipMapper {
 
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_MAINTAINED_BY);
+            Property<?> ep = edge.property(PROPERTY_KEY_RELATIONSHIP_MAINTAINED_BY);
             if (ep != null)
                 ep.remove();
         }
@@ -279,7 +279,7 @@ class GraphOMRSRelationshipMapper {
             edge.property(PROPERTY_KEY_RELATIONSHIP_REPLICATED_BY, relationship.getReplicatedBy());
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_REPLICATED_BY);
+            Property<?> ep = edge.property(PROPERTY_KEY_RELATIONSHIP_REPLICATED_BY);
             if (ep != null)
                 ep.remove();
         }
@@ -305,7 +305,7 @@ class GraphOMRSRelationshipMapper {
 
         }
         else {
-            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_MAPPING_PROPERTIES);
+            Property<?> ep = edge.property(PROPERTY_KEY_RELATIONSHIP_MAPPING_PROPERTIES);
             if (ep != null)
                 ep.remove();
         }

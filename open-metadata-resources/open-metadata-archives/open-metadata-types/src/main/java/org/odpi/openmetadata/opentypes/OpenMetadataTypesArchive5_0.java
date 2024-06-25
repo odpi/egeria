@@ -909,9 +909,9 @@ public class OpenMetadataTypesArchive5_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
-        final String attribute1Description     = "The type of technology that this connector works with.  It is used to match connectors to assets.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,

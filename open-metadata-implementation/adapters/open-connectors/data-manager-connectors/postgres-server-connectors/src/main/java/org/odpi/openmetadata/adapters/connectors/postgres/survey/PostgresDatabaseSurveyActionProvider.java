@@ -64,7 +64,7 @@ public class PostgresDatabaseSurveyActionProvider extends SurveyActionServicePro
          * Information about the type of assets this type of connector works with and the interface it supports.
          */
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setDeployedImplementationType(supportedDeployedImplementationType);
+        connectorType.setSupportedDeployedImplementationType(supportedDeployedImplementationType);
 
         super.connectorTypeBean = connectorType;
 

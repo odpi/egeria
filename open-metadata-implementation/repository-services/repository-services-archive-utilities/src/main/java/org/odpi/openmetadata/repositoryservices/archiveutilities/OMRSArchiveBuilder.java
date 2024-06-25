@@ -1403,7 +1403,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
             Relationship   duplicateElement = relationshipMap.put(relationship.getGUID(), relationship);
 
-            if (duplicateElement != null)
+            if ((duplicateElement != null) && (! relationship.equals(duplicateElement)))
             {
                 throw new OMRSLogicErrorException(OMRSErrorCode.DUPLICATE_INSTANCE_IN_ARCHIVE.getMessageDefinition(duplicateElement.getClass().getSimpleName(),
                                                                                                                    relationship.getGUID(),
@@ -1415,7 +1415,7 @@ public class OMRSArchiveBuilder implements OpenMetadataArchiveBuilder, OpenMetad
 
             Object  duplicateGUID = guidMap.put(relationship.getGUID(), relationship);
 
-            if (duplicateGUID != null)
+            if ((duplicateGUID != null) && (! relationship.equals(duplicateGUID)))
             {
                throw new OMRSLogicErrorException(OMRSErrorCode.DUPLICATE_GUID_IN_ARCHIVE.getMessageDefinition(relationship.getGUID(),
                                                                                                                duplicateGUID.toString(),

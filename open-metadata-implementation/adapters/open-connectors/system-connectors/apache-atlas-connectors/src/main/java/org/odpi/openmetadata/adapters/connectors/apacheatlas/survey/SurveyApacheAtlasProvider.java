@@ -71,7 +71,7 @@ public class SurveyApacheAtlasProvider extends SurveyActionServiceProvider
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(SurveyActionServiceProvider.supportedAssetTypeName);
-        connectorType.setDeployedImplementationType(supportedDeployedImplementationType);
+        connectorType.setSupportedDeployedImplementationType(supportedDeployedImplementationType);
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(AtlasRequestParameter.FINAL_ANALYSIS_STEP.getName());

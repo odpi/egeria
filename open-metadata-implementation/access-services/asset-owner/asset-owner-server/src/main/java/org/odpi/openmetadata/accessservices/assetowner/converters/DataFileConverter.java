@@ -76,12 +76,15 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
                     fileProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     fileProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     fileProperties.setName(this.removeName(instanceProperties));
-                    fileProperties.setDisplayName(fileProperties.getName());
                     fileProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     fileProperties.setDescription(this.removeDescription(instanceProperties));
                     fileProperties.setPathName(this.removePathName(instanceProperties));
                     fileProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
                     fileProperties.setModifiedTime(this.removeStoreUpdateTime(instanceProperties));
+                    fileProperties.setDeployedImplementationType(this.removeDeployedImplementationType(instanceProperties));
+                    fileProperties.setFileName(this.removeFileName(instanceProperties));
+                    fileProperties.setFileType(this.removeFileType(instanceProperties));
+                    fileProperties.setFileExtension(this.removeFileExtension(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

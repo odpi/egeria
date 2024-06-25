@@ -61,7 +61,7 @@ public class OpenLineageCataloguerIntegrationProvider extends IntegrationConnect
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setDeployedImplementationType(DeployedImplementationType.LINEAGE_INTEGRATION_CONNECTOR.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.LINEAGE_INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
 

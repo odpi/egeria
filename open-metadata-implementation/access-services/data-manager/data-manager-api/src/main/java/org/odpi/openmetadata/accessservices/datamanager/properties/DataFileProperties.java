@@ -20,7 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataFileProperties extends DataStoreProperties
 {
-    private String   fileType = null;
+    private String fileType      = null;
+    private String fileName      = null;
+    private String fileExtension = null;
 
     /**
      * Default constructor
@@ -42,7 +44,9 @@ public class DataFileProperties extends DataStoreProperties
 
         if (template != null)
         {
-            fileType = template.getFileType();
+            fileType      = template.getFileType();
+            fileName      = template.getFileName();
+            fileExtension = template.getFileExtension();
         }
     }
 
@@ -70,6 +74,49 @@ public class DataFileProperties extends DataStoreProperties
 
 
     /**
+     * Return the name of the file (do not want to rely on Name).
+     *
+     * @return string
+     */
+    public String getFileName()
+    {
+        return fileName;
+    }
+
+
+    /**
+     * Set up the name of the file (do not want to rely on Name).
+     *
+     * @param fileName string
+     */
+    public void setFileName(String fileName)
+    {
+        this.fileName = fileName;
+    }
+
+
+    /**
+     * Return the file extension, if any.
+     *
+     * @return string
+     */
+    public String getFileExtension()
+    {
+        return fileExtension;
+    }
+
+
+    /**
+     * Set up the file extension, if any.
+     *
+     * @param fileExtension string
+     */
+    public void setFileExtension(String fileExtension)
+    {
+        this.fileExtension = fileExtension;
+    }
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -78,7 +125,9 @@ public class DataFileProperties extends DataStoreProperties
     public String toString()
     {
         return "DataFileProperties{" +
-                       "fileType='" + fileType + '\'' +
+                "fileType='" + fileType + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", fileExtension='" + fileExtension + '\'' +
                        ", deployedImplementationType='" + getDeployedImplementationType() + '\'' +
                        ", pathName='" + getPathName() + '\'' +
                        ", createTime=" + getCreateTime() +
@@ -110,24 +159,12 @@ public class DataFileProperties extends DataStoreProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof DataFileProperties))
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         DataFileProperties that = (DataFileProperties) objectToCompare;
-
-        return fileType != null ? fileType.equals(that.fileType) : that.fileType == null;
+        return Objects.equals(fileType, that.fileType) && Objects.equals(fileName, that.fileName) && Objects.equals(fileExtension, that.fileExtension);
     }
-
 
     /**
      * Return hash code for this object
@@ -137,6 +174,6 @@ public class DataFileProperties extends DataStoreProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), fileType);
+        return Objects.hash(super.hashCode(), fileType, fileName, fileExtension);
     }
 }

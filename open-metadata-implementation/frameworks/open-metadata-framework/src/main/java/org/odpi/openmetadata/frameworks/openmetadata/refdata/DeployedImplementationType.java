@@ -306,6 +306,16 @@ public enum DeployedImplementationType
 
 
     /**
+     * A collection of related data files within the Unity Catalog (UC) 'catalog of catalogs'.
+     */
+    OSS_UC_VOLUME("OSS Unity Catalog (UC) Volume",
+              DeployedImplementationType.DATA_FOLDER,
+              OpenMetadataType.DATA_FOLDER.typeName,
+              null,
+              "A collection of related data files within the Unity Catalog (UC) 'catalog of catalogs'.",
+              "https://github.com/unitycatalog/unitycatalog"),
+
+    /**
      * A database hosted on a relational database server capable of being called through a JDBC Driver.
      */
     JDBC_RELATIONAL_DATABASE("JDBC Relational Database",
@@ -336,6 +346,15 @@ public enum DeployedImplementationType
                                     "A database table hosted on a relational database server capable of being called through a JDBC Driver.",
                                     "https://en.wikipedia.org/wiki/Java_Database_Connectivity"),
 
+    /**
+     * A relational table within the Unity Catalog (UC) 'catalog of catalogs'.
+     */
+    OSS_UC_TABLE("OSS Unity Catalog (UC) Table",
+                  DeployedImplementationType.DATA_ASSET,
+                  OpenMetadataType.TABLE_DATA_SET.typeName,
+                  null,
+                  "A relational table within the Unity Catalog (UC) 'catalog of catalogs'.",
+                  "https://github.com/unitycatalog/unitycatalog"),
 
     /**
      * A database hosted on a PostgreSQL server.
@@ -347,15 +366,28 @@ public enum DeployedImplementationType
                         "A database hosted on a PostgreSQL server.",
                         "https://www.postgresql.org/"),
 
+
     /**
      * A database schema hosted on a relational PostgreSQL database server capable of being called through a JDBC Driver.
      */
     POSTGRESQL_DATABASE_SCHEMA("PostgreSQL Relational Database Schema",
-                                    DeployedImplementationType.DATA_ASSET,
+                                    DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA,
                                     OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                     null,
                                     "A database schema hosted on a PostgreSQL relational database server capable of being called through a JDBC Driver.",
                                     "https://www.postgresql.org/"),
+
+
+    /**
+     * A schema that organizes data assets for an operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.
+     */
+    OSS_UC_SCHEMA("OSS Unity Catalog (UC) Schema",
+               DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA,
+               OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+               null,
+               "A schema that organizes data assets for an operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.",
+               "https://github.com/unitycatalog/unitycatalog"),
+
 
     /**
      * A database table hosted on a PostgreSQL relational database server capable of being called through a JDBC Driver.
@@ -447,13 +479,12 @@ public enum DeployedImplementationType
     /**
      * An operational metadata catalog that supports controlled access to data managed through a data platform.
      */
-    UNITY_CATALOG("Unity Catalog",
-                      DeployedImplementationType.SOFTWARE_SERVER,
-                      OpenMetadataType.SOFTWARE_SERVER.typeName,
-                      OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
-                      "An operational metadata catalog that supports controlled access to data managed through a data platform.",
-                      "https://github.com/unitycatalog/unitycatalog"),
-
+    OSS_UNITY_CATALOG_SERVER("OSS Unity Catalog (UC) Server",
+                         DeployedImplementationType.SOFTWARE_SERVER,
+                         OpenMetadataType.SOFTWARE_SERVER.typeName,
+                         OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
+                         "The OSS Unity Catalog (UC) Server is an operational data platform 'catalog of catalogs' that supports controlled access to data managed through a related data platforms.",
+                         "https://github.com/unitycatalog/unitycatalog"),
 
     /**
      * A data catalog for the Hadoop ecosystem.
@@ -546,6 +577,17 @@ public enum DeployedImplementationType
                   OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
                   "A catalog of metadata that describes assets such as deployed systems, data sources and processes.",
                   OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
+
+
+    /**
+     * An operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.
+     */
+    OSS_UC_CATALOG("OSS Unity Catalog (UC) Catalog",
+               DeployedImplementationType.ASSET_CATALOG,
+               OpenMetadataType.CATALOG.typeName,
+               OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
+               "An operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.",
+               "https://github.com/unitycatalog/unitycatalog"),
 
 
     /**

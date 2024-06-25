@@ -34,6 +34,15 @@ public enum UCErrorCode implements ExceptionMessageSet
                      "Update the connection's endpoint to include the connection string needed to connect to the desired database."),
 
     /**
+     * UNITY-CATALOG-CONNECTOR-400-002 - The {0} Apache Atlas Discovery Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}
+     */
+    WRONG_REST_CONNECTOR(400, "UNITY-CATALOG-CONNECTOR-400-002",
+                         "The {0} Unity Catalog Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
+                         "The connector is unable to continue to profile Unity Catalog because it can not call its REST API.",
+                         "Use the details from the error message to determine the correct class of the connector to use.  It should be specified in the connector type of an embedded connection as part of the failing connector's Connection.  When the connection information has been corrected, restart the failing connector."),
+
+
+    /**
      * UNITY-CATALOG-CONNECTOR-500-001 - The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION(500, "UNITY-CATALOG-CONNECTOR-500-001",

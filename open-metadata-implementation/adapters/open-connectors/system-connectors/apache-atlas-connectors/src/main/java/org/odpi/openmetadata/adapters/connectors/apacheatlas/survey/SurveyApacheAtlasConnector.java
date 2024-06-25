@@ -62,7 +62,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
     final static PropertyHelper propertyHelper = new PropertyHelper();
 
     /**
-     * This map allows the discovery service to look up the data field that corresponds to
+     * This map allows the survey service to look up the data field that corresponds to
      * a specific Apache Atlas Type.
      */
     private final Map<String, String> typeNameToDataFieldGUIDMap = new HashMap<>();
@@ -76,7 +76,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
 
     /**
-     * Indicates that the discovery service is completely configured and can begin processing.
+     * Indicates that the survey service is completely configured and can begin processing.
      * This is where the function of the discovery service is implemented.
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() in your version.

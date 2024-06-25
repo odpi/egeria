@@ -310,7 +310,7 @@ public class FileClassifier
             {
                 if (consistentValue != null)
                 {
-                    if (fileTypeCategory.equals(consistentValue.getCategory()))
+                    if (consistentValue.getCategory().contains(OpenMetadataProperty.FILE_TYPE.name))
                     {
                         fileReferenceDataCache.fileType = consistentValue.getPreferredValue();
 
@@ -341,13 +341,17 @@ public class FileClassifier
                             {
                                 if (consistentFileTypeValue != null)
                                 {
-                                    if (deployedImplementationTypeCategory.equals(consistentFileTypeValue.getCategory()))
+                                    if (consistentFileTypeValue.getCategory().contains(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name))
                                     {
                                         fileReferenceDataCache.deployedImplementationType = consistentFileTypeValue.getPreferredValue();
                                     }
                                 }
                             }
                         }
+                    }
+                    else if (consistentValue.getCategory().contains(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name))
+                    {
+                        fileReferenceDataCache.deployedImplementationType = consistentValue.getPreferredValue();
                     }
                 }
             }

@@ -464,7 +464,7 @@ public class GraphOMRSGraphFactory {
 
         final String methodName = "createMixedIndexForVertexProperty";
 
-        Class clazz;
+        Class<?> clazz;
         try {
             clazz = Class.forName(className);
         }
@@ -550,7 +550,7 @@ public class GraphOMRSGraphFactory {
 
         String className = corePropertyTypes.get(propertyName);
 
-        Class clazz;
+        Class<?> clazz;
         try {
             clazz = Class.forName(className);
         } catch (ClassNotFoundException e) {
@@ -635,7 +635,7 @@ public class GraphOMRSGraphFactory {
 
         final String methodName = "createMixedIndexForEdgeProperty";
 
-        Class clazz;
+        Class<?> clazz;
         try {
             clazz = Class.forName(className);
         }
@@ -733,7 +733,7 @@ public class GraphOMRSGraphFactory {
 
         String className = corePropertyTypes.get(propertyName);
 
-        Class clazz;
+        Class<?> clazz;
         try {
             clazz = Class.forName(className);
         }
@@ -884,17 +884,17 @@ public class GraphOMRSGraphFactory {
         String metadataCollectionIdString = null;
         String lastOpenDateString = null;
 
-        VertexProperty creationDateProperty = controlVertex.property("creationDate");
+        VertexProperty<?> creationDateProperty = controlVertex.property("creationDate");
         if (creationDateProperty != null && creationDateProperty.isPresent()) {
             creationDateString = creationDateProperty.value().toString();
         }
 
-        VertexProperty metadataCollectionIdProperty = controlVertex.property("metadataCollectionId");
+        VertexProperty<?> metadataCollectionIdProperty = controlVertex.property("metadataCollectionId");
         if (metadataCollectionIdProperty != null && metadataCollectionIdProperty.isPresent()) {
             metadataCollectionIdString = (String) metadataCollectionIdProperty.value();
         }
 
-        VertexProperty lastOpenDateProperty = controlVertex.property("lastOpenDate");
+        VertexProperty<?> lastOpenDateProperty = controlVertex.property("lastOpenDate");
         if (lastOpenDateProperty != null && lastOpenDateProperty.isPresent()) {
             lastOpenDateString = lastOpenDateProperty.value().toString();
         }

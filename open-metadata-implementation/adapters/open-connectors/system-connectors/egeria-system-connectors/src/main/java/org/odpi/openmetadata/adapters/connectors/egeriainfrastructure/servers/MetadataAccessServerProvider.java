@@ -66,7 +66,7 @@ public class MetadataAccessServerProvider extends ConnectorProviderBase
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(DeployedImplementationType.METADATA_ACCESS_SERVER.getAssociatedTypeName());
-        connectorType.setDeployedImplementationType(DeployedImplementationType.METADATA_ACCESS_SERVER.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.METADATA_ACCESS_SERVER.getDeployedImplementationType());
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add("serverName");
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);

@@ -1,0 +1,141 @@
+# Egeria-automated-curation-view-service
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+# @name getTechnologyTypeDetail
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog (UC) Server"
+}
+
+
+###
+# @name getTechnologyTypeDetail
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog (UC) Catalog"
+}
+
+
+###
+# =====================================================================================================================
+# Create a server asset for the OSS Unity Catalog
+#
+
+
+###
+# @name createElementFromTemplate
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "1077a346-7a50-4cb0-a795-b219bafaabf6",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "hostURL" : "http://localhost",
+    "portNumber" : "8080",
+    "serverName" : "Default Unity Catalog",
+    "serverDescription" : "Instance of the OSS Unity Catalog (UC) Server running on the local machine.",
+    "serverUserId" : "uc"
+  }
+}
+
+###
+
+@ucCatalogTemplateGUID=b54f7847-7123-4758-97ba-6789b34dc6fb
+
+###
+
+@serverGUID=825ba74f-d65f-484d-862a-806a10945f3b
+
+###
+# @name getTechnologyTypeElements
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog (UC) Server"
+}
+
+
+
+
+###
+# =====================================================================================================================
+# Create a catalog target relationship between the new UC server asset and the integration connector.
+#
+
+@integrationConnectorGUID=06d068d9-9e08-4e67-8c59-073bbf1013af
+@friendshipGUID=74dde22f-2249-4ea3-af2b-b39e73f79b81
+
+###
+# @name addCatalogTarget
+# Add a catalog target to an integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets/{{serverGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "catalogTargetName" : "defaultUCServer",
+  "configurationProperties" : {
+    "OSSUnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81"
+  }
+}
+
+
+
+###
+# group: Integration Connectors
+# @name Refresh Integration Connector
+# Refreshes all Integration Connectors running in an integration daemon
+POST {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/users/garygeeke/integration-connectors/refresh
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "OSSUnityCatalogServerSynchronizer"
+}
+
+
+###
+# @name getTechnologyTypeElements
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog (UC) Catalog"
+}
+
