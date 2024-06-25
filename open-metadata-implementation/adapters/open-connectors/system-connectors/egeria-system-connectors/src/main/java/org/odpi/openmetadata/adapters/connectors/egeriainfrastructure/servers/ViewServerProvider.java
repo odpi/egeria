@@ -65,7 +65,7 @@ public class ViewServerProvider extends ConnectorProviderBase
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(DeployedImplementationType.VIEW_SERVER.getAssociatedTypeName());
-        connectorType.setDeployedImplementationType(DeployedImplementationType.VIEW_SERVER.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.VIEW_SERVER.getDeployedImplementationType());
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add("serverName");
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);

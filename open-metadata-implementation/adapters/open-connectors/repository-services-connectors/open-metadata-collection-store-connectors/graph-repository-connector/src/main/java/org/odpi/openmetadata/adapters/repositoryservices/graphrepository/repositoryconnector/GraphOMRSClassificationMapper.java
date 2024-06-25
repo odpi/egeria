@@ -78,7 +78,7 @@ public class GraphOMRSClassificationMapper {
 
     private Object getVertexProperty(Vertex vertex, String propName)
     {
-        VertexProperty vp = vertex.property(propName);
+        VertexProperty<?> vp = vertex.property(propName);
         if (vp == null || !vp.isPresent())
             return null;
         else
@@ -97,7 +97,7 @@ public class GraphOMRSClassificationMapper {
                 removeProperty(vertex, qualifiedPropName);
             }
         } else {
-            log.debug("{} non-primitive instance property {}", propertyName);
+            log.debug("non-primitive instance property {}", propertyName);
         }
     }
 
@@ -105,7 +105,7 @@ public class GraphOMRSClassificationMapper {
     private void removeProperty(Vertex vertex, String qualifiedPropName)
     {
         // no value has been specified - remove the property from the vertex
-        VertexProperty vp = vertex.property(getPropertyKeyClassification(qualifiedPropName));
+        VertexProperty<?> vp = vertex.property(getPropertyKeyClassification(qualifiedPropName));
         if (vp != null) {
             vp.remove();
         }
@@ -228,7 +228,7 @@ public class GraphOMRSClassificationMapper {
             vertex.property(PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_NAME, classification.getMetadataCollectionName());
         }
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_NAME);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_NAME);
             if (vp != null)
                 vp.remove();
         }
@@ -236,7 +236,7 @@ public class GraphOMRSClassificationMapper {
         if (classification.getCreatedBy() != null) {
             vertex.property(PROPERTY_KEY_CLASSIFICATION_CREATED_BY, classification.getCreatedBy());
         } else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_CREATED_BY);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_CREATED_BY);
             if (vp != null)
                 vp.remove();
         }
@@ -244,7 +244,7 @@ public class GraphOMRSClassificationMapper {
         if (classification.getCreateTime() != null) {
             vertex.property(PROPERTY_KEY_CLASSIFICATION_CREATE_TIME, classification.getCreateTime());
         } else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_CREATE_TIME);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_CREATE_TIME);
             if (vp != null)
                 vp.remove();
         }
@@ -252,7 +252,7 @@ public class GraphOMRSClassificationMapper {
         if (classification.getUpdatedBy() != null) {
             vertex.property(PROPERTY_KEY_CLASSIFICATION_UPDATED_BY, classification.getUpdatedBy());
         } else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_UPDATED_BY);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_UPDATED_BY);
             if (vp != null)
                 vp.remove();
         }
@@ -260,7 +260,7 @@ public class GraphOMRSClassificationMapper {
         if (classification.getUpdateTime() != null) {
             vertex.property(PROPERTY_KEY_CLASSIFICATION_UPDATE_TIME, classification.getUpdateTime());
         } else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_UPDATE_TIME);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_UPDATE_TIME);
             if (vp != null)
                 vp.remove();
         }
@@ -268,7 +268,7 @@ public class GraphOMRSClassificationMapper {
         if (classification.getInstanceProvenanceType() != null) {
             vertex.property(PROPERTY_KEY_CLASSIFICATION_INSTANCE_PROVENANCE_TYPE, classification.getInstanceProvenanceType().getOrdinal());     // ** ordinal mapping
         } else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_INSTANCE_PROVENANCE_TYPE);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_INSTANCE_PROVENANCE_TYPE);
             if (vp != null)
                 vp.remove();
         }
@@ -276,7 +276,7 @@ public class GraphOMRSClassificationMapper {
         if (classification.getStatus() != null) {
             vertex.property(PROPERTY_KEY_CLASSIFICATION_CURRENT_STATUS, classification.getStatus().getOrdinal());                              // ** ordinal mapping
         } else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_CURRENT_STATUS);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_CURRENT_STATUS);
             if (vp != null)
                 vp.remove();
         }
@@ -285,7 +285,7 @@ public class GraphOMRSClassificationMapper {
         if (classification.getStatusOnDelete() != null) {
             vertex.property(PROPERTY_KEY_CLASSIFICATION_STATUS_ON_DELETE, classification.getStatusOnDelete().getOrdinal());                              // ** ordinal mapping
         } else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_STATUS_ON_DELETE);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_STATUS_ON_DELETE);
             if (vp != null)
                 vp.remove();
         }
@@ -294,7 +294,7 @@ public class GraphOMRSClassificationMapper {
         if (classification.getInstanceLicense() != null) {
             vertex.property(PROPERTY_KEY_CLASSIFICATION_INSTANCE_LICENSE, classification.getInstanceLicense());
         } else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_INSTANCE_LICENSE);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_INSTANCE_LICENSE);
             if (vp != null)
                 vp.remove();
         }
@@ -302,7 +302,7 @@ public class GraphOMRSClassificationMapper {
         if (classification.getClassificationOrigin() != null)                                                                    // ** ordinal mapping
             vertex.property(PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_ORIGIN, classification.getClassificationOrigin().getOrdinal());
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_ORIGIN);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_ORIGIN);
             if (vp != null)
                 vp.remove();
         }
@@ -310,7 +310,7 @@ public class GraphOMRSClassificationMapper {
         if (classification.getClassificationOriginGUID() != null)
             vertex.property(PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_ORIGIN_GUID, classification.getClassificationOriginGUID());
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_ORIGIN_GUID);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_ORIGIN_GUID);
             if (vp != null)
                 vp.remove();
         }
@@ -334,7 +334,7 @@ public class GraphOMRSClassificationMapper {
             }
 
         } else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_MAINTAINED_BY);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_MAINTAINED_BY);
             if (vp != null)
                 vp.remove();
         }
@@ -343,7 +343,7 @@ public class GraphOMRSClassificationMapper {
             vertex.property(PROPERTY_KEY_CLASSIFICATION_REPLICATED_BY, classification.getReplicatedBy());
         }
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_REPLICATED_BY);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_REPLICATED_BY);
             if (vp != null)
                 vp.remove();
         }
@@ -365,7 +365,7 @@ public class GraphOMRSClassificationMapper {
             }
 
         } else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_MAPPING_PROPERTIES);
+            VertexProperty<?> vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_MAPPING_PROPERTIES);
             if (vp != null)
                 vp.remove();
         }

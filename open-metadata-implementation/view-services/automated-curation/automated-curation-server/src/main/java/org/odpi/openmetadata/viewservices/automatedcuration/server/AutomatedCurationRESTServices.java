@@ -5,14 +5,21 @@ package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.*;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ExternalReferenceElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ReferenceableElement;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -20,18 +27,17 @@ import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetResponse;
 import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetsResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
+import org.odpi.openmetadata.viewservices.automatedcuration.converters.ReferenceableConverter;
 import org.odpi.openmetadata.viewservices.automatedcuration.properties.CatalogTemplate;
 import org.odpi.openmetadata.viewservices.automatedcuration.properties.ResourceDescription;
 import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeReport;
 import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeSummary;
+import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeElementListResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeReportResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeSummaryListResponse;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -46,6 +52,10 @@ public class AutomatedCurationRESTServices extends TokenController
 
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AutomatedCurationRESTServices.class),
                                                                             instanceHandler.getServiceName());
+
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+
+    private final PropertyHelper propertyHelper = new PropertyHelper();
 
     /**
      * Default constructor
@@ -471,6 +481,175 @@ public class AutomatedCurationRESTServices extends TokenController
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
+    }
+
+
+
+    /**
+     * Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+     *
+     * @param serverName name of the service to route the request to
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param getTemplates boolean indicating whether templates or non-template platforms should be returned.
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public TechnologyTypeElementListResponse getTechnologyTypeElements(String            serverName,
+                                                                       int               startFrom,
+                                                                       int               pageSize,
+                                                                       boolean           getTemplates,
+                                                                       FilterRequestBody requestBody)
+    {
+        final String methodName = "getTechnologyTypeElements";
+        final String parameterName = "requestBody.filter";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        TechnologyTypeElementListResponse response = new TechnologyTypeElementListResponse();
+        AuditLog                          auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getFilter() != null)
+                {
+                    OpenMetadataStoreClient  openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+                    invalidParameterHandler.validateUserId(userId, methodName);
+                    invalidParameterHandler.validateName(requestBody.getFilter(), parameterName, methodName);
+                    invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+                    List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
+
+                    List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
+                                                                                                      OpenMetadataType.REFERENCEABLE.typeName,
+                                                                                                      null,
+                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, requestBody.getFilter()),
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                      SequencingOrder.PROPERTY_ASCENDING,
+                                                                                                      false,
+                                                                                                      false,
+                                                                                                      requestBody.getEffectiveTime(),
+                                                                                                      startFrom,
+                                                                                                      pageSize);
+
+                    response.setElements(convertReferenceable(openMetadataElements,
+                                                              getTemplates,
+                                                              serverName,
+                                                              methodName));
+                }
+                else
+                {
+                    restExceptionHandler.handleMissingValue(parameterName, methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Determine whether the element is a template.
+     *
+     * @param openMetadataElement element header
+     * @return boolean flag
+     */
+    private boolean isTemplate(OpenMetadataElement openMetadataElement)
+    {
+        if (openMetadataElement.getClassifications() != null)
+        {
+            for (AttachedClassification classification : openMetadataElement.getClassifications())
+            {
+                if (classification != null)
+                {
+                    if (classification.getClassificationName().equals(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Convert open metadata objects from the OpenMetadataClient to local beans.
+     *
+     * @param openMetadataElements retrieved elements
+     * @param getTemplates boolean indicating whether templates or non-template platforms should be returned.
+     * @param serverName name of the server
+     * @param methodName calling method
+     *
+     * @return list of validValue elements
+     *
+     * @throws PropertyServerException the repository is not available or not working properly.
+     * */
+    private List<ReferenceableElement> convertReferenceable(List<OpenMetadataElement>  openMetadataElements,
+                                                            boolean                    getTemplates,
+                                                            String                     serverName,
+                                                            String                     methodName) throws PropertyServerException
+    {
+        ReferenceableConverter<ReferenceableElement> converter = new ReferenceableConverter<>(propertyHelper, instanceHandler.getServiceName(), serverName);
+        if (openMetadataElements != null)
+        {
+            List<ReferenceableElement> referenceableElements = new ArrayList<>();
+
+            for (OpenMetadataElement openMetadataElement : openMetadataElements)
+            {
+                if (openMetadataElement != null)
+                {
+                    if (this.isTemplate(openMetadataElement) && (getTemplates))
+                    {
+                        ReferenceableElement referenceableElement = converter.getNewBean(ReferenceableElement.class, openMetadataElement, methodName);
+
+                        if (referenceableElement != null)
+                        {
+                            referenceableElements.add(referenceableElement);
+                        }
+                    }
+
+                    if (!this.isTemplate(openMetadataElement) && (!getTemplates))
+                    {
+                        ReferenceableElement referenceableElement = converter.getNewBean(ReferenceableElement.class, openMetadataElement, methodName);
+
+                        if (referenceableElement != null)
+                        {
+                            referenceableElements.add(referenceableElement);
+                        }
+                    }
+                }
+            }
+
+            return referenceableElements;
+        }
+
+        return null;
     }
 
 

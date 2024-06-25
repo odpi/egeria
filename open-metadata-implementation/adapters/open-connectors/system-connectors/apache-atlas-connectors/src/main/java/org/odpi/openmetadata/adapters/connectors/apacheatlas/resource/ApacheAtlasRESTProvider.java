@@ -72,7 +72,7 @@ public class ApacheAtlasRESTProvider extends ConnectorProviderBase
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(DeployedImplementationType.APACHE_ATLAS_SERVER.getAssociatedTypeName());
-        connectorType.setDeployedImplementationType(DeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType());
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(ATLAS_SERVER_NAME_CONFIGURATION_PROPERTY);

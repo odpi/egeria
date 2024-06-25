@@ -75,7 +75,7 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(DeployedImplementationType.CSV_FILE.getAssociatedTypeName());
-        connectorType.setDeployedImplementationType(DeployedImplementationType.CSV_FILE.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.CSV_FILE.getDeployedImplementationType());
         connectorType.setExpectedDataFormat(expectedDataFormat);
         connectorType.setConnectorInterfaces(connectorInterfaces);
 

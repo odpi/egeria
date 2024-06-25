@@ -11,7 +11,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -217,6 +216,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                 connectorType.getDisplayName(),
                                                 connectorType.getDescription(),
                                                 connectorType.getSupportedAssetTypeName(),
+                                                connectorType.getSupportedDeployedImplementationType(),
                                                 connectorType.getExpectedDataFormat(),
                                                 connectorType.getConnectorProviderClassName(),
                                                 connectorType.getConnectorFrameworkName(),
@@ -250,6 +250,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                          connectorType.getDisplayName(),
                                          connectorType.getDescription(),
                                          connectorType.getSupportedAssetTypeName(),
+                                         connectorType.getSupportedDeployedImplementationType(),
                                          connectorType.getExpectedDataFormat(),
                                          connectorType.getConnectorProviderClassName(),
                                          connectorType.getConnectorFrameworkName(),
@@ -293,6 +294,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @param description  (optional) description of the connectorType.  Setting a description, particularly in a public connectorType
      *                        makes the connectorType more valuable to other users and can act as an embryonic glossary term
      * @param supportedAssetTypeName the type of asset that the connector implementation supports
+     * @param supportedDeployedImplementationType the deployed implementation type that the connector implementation supports
      * @param expectedDataFormat the format of the data that the connector supports - null for "any"
      * @param connectorProviderClassName class name of the connector provider
      * @param connectorFrameworkName name of the connector framework that the connector implements - default Open Connector Framework (OCF)
@@ -327,6 +329,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                       String              displayName,
                                       String              description,
                                       String              supportedAssetTypeName,
+                                      String              supportedDeployedImplementationType,
                                       String              expectedDataFormat,
                                       String              connectorProviderClassName,
                                       String              connectorFrameworkName,
@@ -371,6 +374,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                 displayName,
                                                                 description,
                                                                 supportedAssetTypeName,
+                                                                supportedDeployedImplementationType,
                                                                 expectedDataFormat,
                                                                 connectorProviderClassName,
                                                                 connectorFrameworkName,
@@ -589,6 +593,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @param description  (optional) description of the connectorType.  Setting a description, particularly in a public connectorType
      *                        makes the connectorType more valuable to other users and can act as an embryonic glossary term
      * @param supportedAssetTypeName the type of asset that the connector implementation supports
+     * @param supportedDeployedImplementationType type of technology
      * @param expectedDataFormat the format of the data that the connector supports - null for "any"
      * @param connectorProviderClassName class name of the connector provider
      * @param connectorFrameworkName name of the connector framework that the connector implements - default Open Connector Framework (OCF)
@@ -621,6 +626,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                 String              displayName,
                                                 String              description,
                                                 String              supportedAssetTypeName,
+                                                String              supportedDeployedImplementationType,
                                                 String              expectedDataFormat,
                                                 String              connectorProviderClassName,
                                                 String              connectorFrameworkName,
@@ -681,6 +687,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                          displayName,
                                                          description,
                                                          supportedAssetTypeName,
+                                                         supportedDeployedImplementationType,
                                                          expectedDataFormat,
                                                          connectorProviderClassName,
                                                          connectorFrameworkName,
@@ -719,6 +726,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @param description  (optional) description of the connectorType.  Setting a description, particularly in a public connectorType
      *                        makes the connectorType more valuable to other users and can act as an embryonic glossary term
      * @param supportedAssetTypeName the type of asset that the connector implementation supports
+     * @param supportedDeployedImplementationType the deployed implementation type that the connector implementation supports
      * @param expectedDataFormat the format of the data that the connector supports - null for "any"
      * @param connectorProviderClassName class name of the connector provider
      * @param connectorFrameworkName name of the connector framework that the connector implements - default Open Connector Framework (OCF)
@@ -755,6 +763,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                       String              displayName,
                                       String              description,
                                       String              supportedAssetTypeName,
+                                      String              supportedDeployedImplementationType,
                                       String              expectedDataFormat,
                                       String              connectorProviderClassName,
                                       String              connectorFrameworkName,
@@ -804,6 +813,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                 displayName,
                                                                 description,
                                                                 supportedAssetTypeName,
+                                                                supportedDeployedImplementationType,
                                                                 expectedDataFormat,
                                                                 connectorProviderClassName,
                                                                 connectorFrameworkName,

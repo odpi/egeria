@@ -2786,10 +2786,10 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         if (instanceProperties != null)
         {
-            return repositoryHelper.getStringProperty(serviceName,
-                                                      OpenMetadataProperty.PATH_NAME.name,
-                                                      instanceProperties,
-                                                      methodName);
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.PATH_NAME.name,
+                                                         instanceProperties,
+                                                         methodName);
         }
 
         return null;
@@ -3006,6 +3006,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the fileName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string name or null
+     */
+    protected String removeFileName(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeFileName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.FILE_NAME.name,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Extract and delete the fileType property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
@@ -3025,6 +3048,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         return null;
     }
+
+
+    /**
+     * Extract and delete the fileExtension property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string name or null
+     */
+    protected String removeFileExtension(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeFileExtension";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.FILE_EXTENSION.name,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
 
 
     /**
@@ -3085,6 +3131,30 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+
+    /**
+     * Extract and delete the type property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeSupportedDeployedImplementationType(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeDeployedImplementationType";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                          instanceProperties,
                                                          methodName);
         }

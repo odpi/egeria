@@ -233,7 +233,7 @@ public class ApacheAtlasIntegrationProvider extends IntegrationConnectorProvider
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setDeployedImplementationType(DeployedImplementationType.CATALOG_INTEGRATION_CONNECTOR.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.CATALOG_INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(OPEN_METADATA_TYPES_POLICY_CONFIGURATION_PROPERTY);

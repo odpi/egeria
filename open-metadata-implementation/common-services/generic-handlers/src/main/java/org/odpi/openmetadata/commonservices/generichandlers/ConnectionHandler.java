@@ -898,6 +898,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                                    null,
                                                                                    assetTypeName,
                                                                                    null,
+                                                                                   null,
                                                                                    connectorProviderClassName,
                                                                                    OpenMetadataType.CONNECTOR_FRAMEWORK_NAME_DEFAULT,
                                                                                    OpenMetadataType.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT,

@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileExtension;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
@@ -48,8 +50,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     private final static String fileSystemDivider    = "://";
     private final static String fileExtensionDivider = "\\.";
 
-    private final static String defaultAvroFileType = "avro";
-    private final static String defaultCSVFileType  = "csv";
 
 
     /**
@@ -1624,17 +1624,12 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     }
 
 
-
     /**
      * Set up the extended properties found in the basic data file.
      *
      * @param pathName the fully qualified physical location of the data store
      * @param createTime the time that the file was created
      * @param modifiedTime the time of the latest change to the file
-     * @param encodingType the type of encoding used on the file
-     * @param encodingLanguage the language used within the file
-     * @param encodingDescription the description of the file
-     * @param encodingProperties the properties used to drive the encoding
      * @param fileType the type of file override (default is to use the file extension)
      * @param fileExtension file extension
      * @param deployedImplementationType optional deployed implementation type
@@ -1644,10 +1639,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
     private Map<String, Object> getExtendedProperties(String              pathName,
                                                       Date                createTime,
                                                       Date                modifiedTime,
-                                                      String              encodingType,
-                                                      String              encodingLanguage,
-                                                      String              encodingDescription,
-                                                      Map<String, String> encodingProperties,
+                                                      String              fileName,
                                                       String              fileType,
                                                       String              fileExtension,
                                                       String              deployedImplementationType,
@@ -1675,24 +1667,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             assetExtendedProperties.put(OpenMetadataProperty.STORE_UPDATE_TIME.name, modifiedTime);
         }
 
-        if (encodingType != null)
+        if (fileName != null)
         {
-            assetExtendedProperties.put(OpenMetadataProperty.ENCODING.name, encodingType);
-        }
-
-        if (encodingLanguage != null)
-        {
-            assetExtendedProperties.put(OpenMetadataProperty.ENCODING_LANGUAGE.name, encodingLanguage);
-        }
-
-        if (encodingDescription != null)
-        {
-            assetExtendedProperties.put(OpenMetadataProperty.ENCODING_DESCRIPTION.name, encodingDescription);
-        }
-
-        if (encodingProperties != null)
-        {
-            assetExtendedProperties.put(OpenMetadataProperty.ENCODING_PROPERTIES.name, encodingProperties);
+            assetExtendedProperties.put(OpenMetadataProperty.FILE_NAME.name, fileName);
         }
 
         if (fileType != null)
@@ -1795,10 +1772,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         Map<String, Object> assetExtendedProperties = this.getExtendedProperties(pathName,
                                                                                  createTime,
                                                                                  modifiedTime,
-                                                                                 encodingType,
-                                                                                 encodingLanguage,
-                                                                                 encodingDescription,
-                                                                                 encodingProperties,
+                                                                                 null,
                                                                                  null,
                                                                                  null,
                                                                                  DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType(),
@@ -1836,6 +1810,30 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                        fileHandler.getSupportedZones(),
                                                                        effectiveTime,
                                                                        methodName);
+
+        if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null) || (encodingProperties != null))
+        {
+            InstanceProperties classificationProperties = this.getEncodingProperties(encodingType,
+                                                                                     encodingLanguage,
+                                                                                     encodingDescription,
+                                                                                     encodingProperties,
+                                                                                     methodName);
+
+            fileHandler.setClassificationInRepository(userId,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      folderAssetGUID,
+                                                      folderAssetParameterName,
+                                                      OpenMetadataType.DATA_FOLDER.typeName,
+                                                      OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
+                                                      OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
+                                                      classificationProperties,
+                                                      true,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      effectiveTime,
+                                                      methodName);
+        }
 
         return this.addFileAssetPath(userId,
                                      externalSourceGUID,
@@ -1951,7 +1949,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param encodingLanguage the language used within the file
      * @param encodingDescription the description of the file
      * @param encodingProperties the properties used to drive the encoding
+     * @param suppliedFileName the type of file override (default is to extract from the pathName)
      * @param suppliedFileType the type of file override (default is to use the file extension)
+     * @param suppliedFileExtension the extension of file override (default is to extract from the file name)
      * @param additionalProperties additional properties from the user
      * @param connectorProviderClassName name of the class for the connector's provider - null means used standard connector provider for asset type
      * @param typeName name of the type (default is File)
@@ -1983,7 +1983,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                           String              encodingLanguage,
                                           String              encodingDescription,
                                           Map<String, String> encodingProperties,
+                                          String              suppliedFileName,
                                           String              suppliedFileType,
+                                          String              suppliedFileExtension,
                                           String              deployedImplementationType,
                                           Map<String, String> additionalProperties,
                                           String              connectorProviderClassName,
@@ -2020,26 +2022,37 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             fileType = this.getFileType(fullPath);
         }
 
+        String fileName = suppliedFileName;
+
+        if (fileName == null)
+        {
+            fileName = this.getFileName(fullPath);
+        }
+
+        String fileExtension = suppliedFileExtension;
+
+        if (fileExtension == null)
+        {
+            fileExtension = this.getFileExtension(fullPath);
+        }
+
         Map<String, Object> assetExtendedProperties = this.getExtendedProperties(fullPath,
                                                                                  createTime,
                                                                                  modifiedTime,
-                                                                                 encodingType,
-                                                                                 encodingLanguage,
-                                                                                 encodingDescription,
-                                                                                 encodingProperties,
+                                                                                 fileName,
                                                                                  fileType,
-                                                                                 this.getFileExtension(fullPath),
+                                                                                 fileExtension,
                                                                                  deployedImplementationType,
                                                                                  extendedProperties);
 
         String fileAssetTypeName = typeName;
         if (fileAssetTypeName == null)
         {
-            if (defaultCSVFileType.equals(fileType))
+            if (FileExtension.CSV_FILE.getFileExtension().equals(fileExtension))
             {
                 fileAssetTypeName = OpenMetadataType.CSV_FILE.typeName;
             }
-            else if (defaultAvroFileType.equals(fileType))
+            else if (FileExtension.AVRO_FILE.getFileExtension().equals(fileExtension))
             {
                 fileAssetTypeName = OpenMetadataType.AVRO_FILE.typeName;
             }
@@ -2077,6 +2090,30 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
         if (fileAssetGUID != null)
         {
+            if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null) || (encodingProperties != null))
+            {
+                InstanceProperties classificationProperties = this.getEncodingProperties(encodingType,
+                                                                                         encodingLanguage,
+                                                                                         encodingDescription,
+                                                                                         encodingProperties,
+                                                                                         methodName);
+
+                fileHandler.setClassificationInRepository(userId,
+                                                          externalSourceGUID,
+                                                          externalSourceName,
+                                                          fileAssetGUID,
+                                                          fileAssetParameterName,
+                                                          OpenMetadataType.DATA_FILE.typeName,
+                                                          OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
+                                                          OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
+                                                          classificationProperties,
+                                                          true,
+                                                          forLineage,
+                                                          forDuplicateProcessing,
+                                                          effectiveTime,
+                                                          methodName);
+            }
+
             return this.addFileAssetPath(userId,
                                          externalSourceGUID,
                                          externalSourceName,
@@ -2310,14 +2347,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(fullPath, pathParameterName, methodName);
 
-        String fileType = this.getFileType(fullPath);
+        String fileType = FileType.AVRO_FILE.getFileTypeName();
         String fileName = this.getFileName(fullPath);
         String fileExtension = this.getFileExtension(fullPath);
-
-        if (fileType == null)
-        {
-            fileType = defaultAvroFileType;
-        }
 
         String fileAssetGUID = this.createFileAsset(userId,
                                                     externalSourceGUID,
@@ -2407,14 +2439,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(fullPath, pathParameterName, methodName);
 
-        String fileType = this.getFileType(fullPath);
+        String fileType = FileType.CSV_FILE.getFileTypeName();
         String fileName = this.getFileName(fullPath);
         String fileExtension = this.getFileExtension(fullPath);
-
-        if (fileType == null)
-        {
-            fileType = defaultCSVFileType;
-        }
 
         if (delimiterCharacter == null)
         {
@@ -2618,7 +2645,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                     String              encodingLanguage,
                                     String              encodingDescription,
                                     Map<String, String> encodingProperties,
+                                    String              suppliedFileName,
                                     String              suppliedFileType,
+                                    String              suppliedFileExtension,
                                     String              deployedImplementationType,
                                     Map<String, String> additionalProperties,
                                     Map<String, Object> extendedProperties,
@@ -2637,14 +2666,32 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         invalidParameterHandler.validateGUID(dataFileGUID, dataFileGUIDParameterName, methodName);
 
         String qualifiedName = null;
+        String fileName = suppliedFileName;
         String fileType = suppliedFileType;
-        String fileExtension = null;
+        String fileExtension = suppliedFileExtension;
 
-        if ((fullPath != null) && (fileType == null))
+        if (fullPath != null)
         {
-            fileType = this.getFileType(fullPath);
-            fileExtension = this.getFileExtension(fullPath);
+            if (fileType == null)
+            {
+                fileType = this.getFileType(fullPath);
+            }
+
+            fileName = suppliedFileName;
+
+            if (fileName == null)
+            {
+                fileName = this.getFileName(fullPath);
+            }
+
+            fileExtension = suppliedFileExtension;
+
+            if (fileExtension == null)
+            {
+                fileExtension = this.getFileExtension(fullPath);
+            }
         }
+
         if (! isMergeUpdate)
         {
             qualifiedName = this.createQualifiedName(OpenMetadataType.DATA_FILE.typeName, null, fullPath, versionIdentifier);
@@ -2653,24 +2700,11 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         Map<String, Object> assetExtendedProperties = this.getExtendedProperties(fullPath,
                                                                                  createTime,
                                                                                  modifiedTime,
-                                                                                 encodingType,
-                                                                                 encodingLanguage,
-                                                                                 encodingDescription,
-                                                                                 encodingProperties,
+                                                                                 fileName,
                                                                                  fileType,
                                                                                  fileExtension,
                                                                                  deployedImplementationType,
                                                                                  extendedProperties);
-
-        if (fullPath != null)
-        {
-            if (assetExtendedProperties == null)
-            {
-                assetExtendedProperties = new HashMap<>();
-            }
-
-            assetExtendedProperties.put(OpenMetadataProperty.FILE_NAME.name, this.getFileName(fullPath));
-        }
 
         fileHandler.updateAsset(userId,
                                 externalSourceGUID,
@@ -2692,6 +2726,75 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 forDuplicateProcessing,
                                 effectiveTime,
                                 methodName);
+
+        if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null) || (encodingProperties != null))
+        {
+            InstanceProperties classificationProperties = this.getEncodingProperties(encodingType,
+                                                                                     encodingLanguage,
+                                                                                     encodingDescription,
+                                                                                     encodingProperties,
+                                                                                     methodName);
+
+            fileHandler.setClassificationInRepository(userId,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      dataFileGUID,
+                                                      dataFileGUIDParameterName,
+                                                      OpenMetadataType.DATA_FILE.typeName,
+                                                      OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
+                                                      OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
+                                                      classificationProperties,
+                                                      true,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      effectiveTime,
+                                                      methodName);
+        }
+    }
+
+
+
+
+    /**
+     * Add the encoding parameters to an instance properties object.
+     *
+     * @param encodingType the name of the encoding style used in the database
+     * @param encodingLanguage the name of the natural language used for text strings within the database
+     * @param encodingDescription the description of the encoding used in the database
+     * @param encodingProperties properties used to control encoding
+     * @param methodName calling method
+     * @return packaged properties
+     */
+    private InstanceProperties getEncodingProperties(String               encodingType,
+                                                     String               encodingLanguage,
+                                                     String               encodingDescription,
+                                                     Map<String, String>  encodingProperties,
+                                                     String               methodName)
+    {
+        InstanceProperties classificationProperties;
+
+        classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                null,
+                                                                                OpenMetadataProperty.ENCODING.name,
+                                                                                encodingType,
+                                                                                methodName);
+        classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                classificationProperties,
+                                                                                OpenMetadataProperty.ENCODING_LANGUAGE.name,
+                                                                                encodingLanguage,
+                                                                                methodName);
+        classificationProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                classificationProperties,
+                                                                                OpenMetadataProperty.ENCODING_DESCRIPTION.name,
+                                                                                encodingDescription,
+                                                                                methodName);
+        classificationProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                                   classificationProperties,
+                                                                                   OpenMetadataProperty.ENCODING_DESCRIPTION.name,
+                                                                                   encodingProperties,
+                                                                                   methodName);
+
+        return classificationProperties;
     }
 
 
@@ -2768,10 +2871,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         Map<String, Object> assetExtendedProperties = this.getExtendedProperties(fullPath,
                                                                                  createTime,
                                                                                  modifiedTime,
-                                                                                 encodingType,
-                                                                                 encodingLanguage,
-                                                                                 encodingDescription,
-                                                                                 encodingProperties,
+                                                                                 null,
                                                                                  null,
                                                                                  null,
                                                                                  DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType(),
@@ -2798,6 +2898,30 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 forDuplicateProcessing,
                                 effectiveTime,
                                 methodName);
+
+        if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null) || (encodingProperties != null))
+        {
+            InstanceProperties classificationProperties = this.getEncodingProperties(encodingType,
+                                                                                     encodingLanguage,
+                                                                                     encodingDescription,
+                                                                                     encodingProperties,
+                                                                                     methodName);
+
+            fileHandler.setClassificationInRepository(userId,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      dataFileGUID,
+                                                      dataFileGUIDParameterName,
+                                                      OpenMetadataType.DATA_FOLDER.typeName,
+                                                      OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
+                                                      OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
+                                                      classificationProperties,
+                                                      true,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      effectiveTime,
+                                                      methodName);
+        }
     }
 
 

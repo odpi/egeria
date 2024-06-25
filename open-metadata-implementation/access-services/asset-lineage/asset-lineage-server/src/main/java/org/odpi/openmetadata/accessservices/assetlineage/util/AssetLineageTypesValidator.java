@@ -35,7 +35,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FILE_FOLDER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.FOLDER_HIERARCHY;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.DATA_FLOW;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_FILE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.NESTED_SCHEMA_ATTRIBUTE;
@@ -64,6 +63,7 @@ public class AssetLineageTypesValidator {
      * @param repositoryHelper     helper used by the converters
      * @param accessServiceOptions access service options
      */
+    @SuppressWarnings(value = "unchecked")
     public AssetLineageTypesValidator(OMRSRepositoryHelper repositoryHelper, Map<String, Object> accessServiceOptions) {
         this.repositoryHelper = repositoryHelper;
 

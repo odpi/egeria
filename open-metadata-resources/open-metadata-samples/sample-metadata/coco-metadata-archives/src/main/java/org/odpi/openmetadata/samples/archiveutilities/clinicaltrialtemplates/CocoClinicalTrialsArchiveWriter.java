@@ -15,6 +15,7 @@ import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWrite
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceZoneDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.LicenseTypeDefinition;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.ProjectDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
 
 import java.util.*;
@@ -58,7 +59,8 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
     public void getArchiveContent()
     {
         writeGlossary();
-        writeWeeklyMeasurementsTemplate();
+        writeLandingAreaWeeklyMeasurementsTemplate();
+        writeDataLakeWeeklyMeasurementsTemplate();
     }
 
 
@@ -146,9 +148,9 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
     }
 
 
-    private void writeWeeklyMeasurementsTemplate()
+    private void writeLandingAreaWeeklyMeasurementsTemplate()
     {
-        final String methodName = "writeWeeklyMeasurementsTemplate";
+        final String methodName = "writeLandingAreaWeeklyMeasurementsTemplate";
         Map<String, Object>  extendedProperties = new HashMap<>();
 
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.PATH_NAME.getPlaceholder());
@@ -178,37 +180,40 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                                                        otherOriginValues));
 
 
-        classifications.add(archiveHelper.getTemplateClassification("Weekly teddy bear measurements for drop foot clinical trial",
+        classifications.add(archiveHelper.getTemplateClassification("Landing Area weekly teddy bear measurements for drop foot clinical trial",
                                                                     "This template supports the cataloguing of weekly measurement files. " +
                                                                             "Use it to catalog the files as they come into the landing area.",
                                                                     "2.4",
                                                                     null,
                                                                     methodName));
 
+        String qualifiedName = "CSVFile:LandingArea:ClinicalTrial:" + PlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + ":WeeklyMeasurement:" + PlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + ":"+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() +":"+ PlaceholderProperty.PATH_NAME.getPlaceholder();
+
+
+
         String assetGUID = archiveHelper.addAsset(FileType.CSV_FILE.getAssetSubTypeName(),
-                                                  "CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}",
-                                                  "{{hospitalName}} teddy bear measurements received on {{dateReceived}} for {{clinicalTrialName}}",
+                                                  qualifiedName,
+                                                  PlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " teddy bear measurements received on "+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() +" for "+ PlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
                                                   "V1.0",
-                                                  "Dated measurements of patient's progression presented in a tabular format" +
-                                                          " with columns of PatientId, Date, AngleLeft and AngleRight.",
-                                                  null,
+                                                  "Dated measurements of patient's progression presented in a tabular format with columns of PatientId, Date, AngleLeft and AngleRight.",
+                                                  this.getAssetAdditionalProperties(),
                                                   extendedProperties,
                                                   classifications);
 
         String endpointGUID = archiveHelper.addEndpoint(assetGUID,
                                                         FileType.CSV_FILE.getAssetSubTypeName(),
                                                         OpenMetadataType.ASSET.typeName,
-                                                        "CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_endpoint",
+                                                        qualifiedName + "_endpoint",
                                                         null,
                                                         null,
-                                                        "{{pathName}}",
+                                                        PlaceholderProperty.PATH_NAME.getPlaceholder(),
                                                         null,
                                                         null);
 
         ConnectorProvider connectorProvider = new CSVFileStoreProvider();
         String            connectorTypeGUID = connectorProvider.getConnectorType().getGUID();
 
-        String connectionGUID = archiveHelper.addConnection("CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_connection",
+        String connectionGUID = archiveHelper.addConnection(qualifiedName + "_connection",
                                                             null,
                                                             null,
                                                             null,
@@ -230,6 +235,10 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                                OpenMetadataType.ASSET.typeName,
                                                PlaceholderProperty.getPlaceholderPropertyTypes());
 
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(FileType.CSV_FILE.getDeployedImplementationType().getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
         String licenseTypeGUID = archiveHelper.getGUID(LicenseTypeDefinition.CLINICAL_TRIAL_LICENSE.getQualifiedName());
 
         Map<String, String> entitlements = new HashMap<>();
@@ -240,11 +249,11 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
         Map<String, String> obligations = new HashMap<>();
         obligations.put("retention", "20 years");
         archiveHelper.addLicense(assetGUID,
-                                 "ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}",
+                                 "ClinicalTrial:" + PlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + ":WeeklyMeasurement:" + PlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
                                  null,
                                  null,
                                  null,
-                                 "{{hospitalName}}",
+                                 PlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
                                  "Organization",
                                  "name",
                                  "tanyatidie",
@@ -262,7 +271,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
         String topLevelSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(assetGUID,
                                                                             FileType.CSV_FILE.getAssetSubTypeName(),
                                                                             OpenMetadataType.TABULAR_SCHEMA_TYPE_TYPE_NAME,
-                                                                            "CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_schemaType",
+                                                                            qualifiedName + "_schemaType",
                                                                             null,
                                                                             null,
                                                                             null);
@@ -271,7 +280,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                                                       FileType.CSV_FILE.getAssetSubTypeName(),
                                                                       OpenMetadataType.TABULAR_COLUMN_TYPE_NAME,
                                                                       OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME,
-                                                                      "CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_patientId_column",
+                                                                      qualifiedName + "_patientId_column",
                                                                       "PatientId",
                                                                       null,
                                                                       "string",
@@ -289,7 +298,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                                                FileType.CSV_FILE.getAssetSubTypeName(),
                                                                OpenMetadataType.TABULAR_COLUMN_TYPE_NAME,
                                                                OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME,
-                                                               "CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_date_column",
+                                                               qualifiedName + "_date_column",
                                                                "Date",
                                                                null,
                                                                "date",
@@ -307,7 +316,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                                                FileType.CSV_FILE.getAssetSubTypeName(),
                                                                OpenMetadataType.TABULAR_COLUMN_TYPE_NAME,
                                                                OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME,
-                                                               "CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_angleLeft_column",
+                                                               qualifiedName + "_angleLeft_column",
                                                                "AngleLeft",
                                                                null,
                                                                "integer",
@@ -325,7 +334,211 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                                                FileType.CSV_FILE.getAssetSubTypeName(),
                                                                OpenMetadataType.TABULAR_COLUMN_TYPE_NAME,
                                                                OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME,
-                                                               "CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_angleRight_column",
+                                                               qualifiedName + "_angleRight_column",
+                                                               "AngleRight",
+                                                               null,
+                                                               "integer",
+                                                               0,
+                                                               3,
+                                                               null,
+                                                               null);
+
+        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, schemaAttributeGUID);
+
+        glossaryTermGUID = archiveHelper.getGUID(GlossaryTermDefinition.ANGLE_RIGHT.getTemplateSubstituteQualifiedName());
+        archiveHelper.addSemanticAssignment(schemaAttributeGUID, glossaryTermGUID);
+    }
+
+
+    /**
+     * Use the additional properties to save the placeholder properties used in the template.
+     */
+    private Map<String, String> getAssetAdditionalProperties()
+    {
+
+        Map<String, String> additionalProperties = new HashMap<>();
+
+        for (PlaceholderProperty placeholderProperty : PlaceholderProperty.values())
+        {
+            additionalProperties.put(placeholderProperty.getName(), placeholderProperty.getPlaceholder());
+        }
+
+        return additionalProperties;
+    }
+
+    private void writeDataLakeWeeklyMeasurementsTemplate()
+    {
+        final String methodName = "writeDataLakeWeeklyMeasurementsTemplate";
+        Map<String, Object>  extendedProperties = new HashMap<>();
+
+        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.PATH_NAME.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, PlaceholderProperty.FILE_NAME.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FileType.CSV_FILE.getDeployedImplementationType().getDeployedImplementationType());
+        extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, FileType.CSV_FILE.getFileTypeName());
+        extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, "csv");
+        extendedProperties.put(OpenMetadataType.DELIMITER_CHARACTER_PROPERTY_NAME, ",");
+        extendedProperties.put(OpenMetadataType.QUOTE_CHARACTER_PROPERTY_NAME, "\"");
+
+        List<Classification> classifications = new ArrayList<>();
+
+        List<String> zones = new ArrayList<>();
+        zones.add(CocoGovernanceZoneDefinition.QUARANTINE.getZoneName());
+        zones.add(ProjectDefinition.DROP_FOOT_CLINICAL_TRIAL.getIdentifier());
+        classifications.add(archiveHelper.getAssetZoneMembershipClassification(zones));
+
+        classifications.add(archiveHelper.getTemplateClassification("Data Lake weekly teddy bear measurements for drop foot clinical trial",
+                                                                    "This template supports the cataloguing of weekly measurement files. " +
+                                                                            "Use it to catalog the files as they come into the data lake.",
+                                                                    "2.4",
+                                                                    null,
+                                                                    methodName));
+
+        String qualifiedName = "CSVFile:DataLake:ClinicalTrial:" + PlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + ":WeeklyMeasurement:" + PlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + ":"+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() +":"+ PlaceholderProperty.PATH_NAME.getPlaceholder();
+
+        String assetGUID = archiveHelper.addAsset(FileType.CSV_FILE.getAssetSubTypeName(),
+                                                  qualifiedName,
+                                                  PlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " teddy bear measurements received on "+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() +" for "+ PlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
+                                                  "V1.0",
+                                                  "Dated measurements of patient's progression presented in a tabular format with columns of PatientId, Date, AngleLeft and AngleRight.",
+                                                  this.getAssetAdditionalProperties(),
+                                                  extendedProperties,
+                                                  classifications);
+
+        String endpointGUID = archiveHelper.addEndpoint(assetGUID,
+                                                        FileType.CSV_FILE.getAssetSubTypeName(),
+                                                        OpenMetadataType.ASSET.typeName,
+                                                        qualifiedName + "_endpoint",
+                                                        null,
+                                                        null,
+                                                        PlaceholderProperty.PATH_NAME.getPlaceholder(),
+                                                        null,
+                                                        null);
+
+        ConnectorProvider connectorProvider = new CSVFileStoreProvider();
+        String            connectorTypeGUID = connectorProvider.getConnectorType().getGUID();
+
+        String connectionGUID = archiveHelper.addConnection(qualifiedName + "_connection",
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            connectorTypeGUID,
+                                                            endpointGUID,
+                                                            assetGUID,
+                                                            FileType.CSV_FILE.getAssetSubTypeName(),
+                                                            OpenMetadataType.ASSET.typeName);
+
+        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               FileType.CSV_FILE.getAssetSubTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               PlaceholderProperty.getPlaceholderPropertyTypes());
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(FileType.CSV_FILE.getDeployedImplementationType().getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        String licenseTypeGUID = archiveHelper.getGUID(LicenseTypeDefinition.CLINICAL_TRIAL_LICENSE.getQualifiedName());
+
+        Map<String, String> entitlements = new HashMap<>();
+        entitlements.put("research", "true");
+        entitlements.put("marketing", "false");
+        Map<String, String> restrictions = new HashMap<>();
+        restrictions.put("copying", "in-house-only");
+        Map<String, String> obligations = new HashMap<>();
+        obligations.put("retention", "20 years");
+        archiveHelper.addLicense(assetGUID,
+                                 "ClinicalTrial:" + PlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + ":WeeklyMeasurement:" + PlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
+                                 null,
+                                 null,
+                                 null,
+                                 PlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
+                                 "Organization",
+                                 "name",
+                                 "tanyatidie",
+                                 "UserIdentity",
+                                 "userId",
+                                 "tessatube",
+                                 "UserIdentity",
+                                 "userId",
+                                 entitlements,
+                                 restrictions,
+                                 obligations,
+                                 null,
+                                 licenseTypeGUID);
+
+        String topLevelSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(assetGUID,
+                                                                            FileType.CSV_FILE.getAssetSubTypeName(),
+                                                                            OpenMetadataType.TABULAR_SCHEMA_TYPE_TYPE_NAME,
+                                                                            qualifiedName + "_schemaType",
+                                                                            null,
+                                                                            null,
+                                                                            null);
+
+        String schemaAttributeGUID = archiveHelper.addSchemaAttribute(assetGUID,
+                                                                      FileType.CSV_FILE.getAssetSubTypeName(),
+                                                                      OpenMetadataType.TABULAR_COLUMN_TYPE_NAME,
+                                                                      OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME,
+                                                                      qualifiedName + "_patientId_column",
+                                                                      "PatientId",
+                                                                      null,
+                                                                      "string",
+                                                                      0,
+                                                                      0,
+                                                                      null,
+                                                                      null);
+
+        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, schemaAttributeGUID);
+
+        String glossaryTermGUID = archiveHelper.getGUID(GlossaryTermDefinition.PATIENT_IDENTIFIER.getTemplateSubstituteQualifiedName());
+        archiveHelper.addSemanticAssignment(schemaAttributeGUID, glossaryTermGUID);
+
+        schemaAttributeGUID = archiveHelper.addSchemaAttribute(assetGUID,
+                                                               FileType.CSV_FILE.getAssetSubTypeName(),
+                                                               OpenMetadataType.TABULAR_COLUMN_TYPE_NAME,
+                                                               OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME,
+                                                               qualifiedName + "_date_column",
+                                                               "Date",
+                                                               null,
+                                                               "date",
+                                                               0,
+                                                               1,
+                                                               "YYYY-MM-DD",
+                                                               null);
+
+        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, schemaAttributeGUID);
+
+        glossaryTermGUID = archiveHelper.getGUID(GlossaryTermDefinition.MEASUREMENT_DATE.getTemplateSubstituteQualifiedName());
+        archiveHelper.addSemanticAssignment(schemaAttributeGUID, glossaryTermGUID);
+
+        schemaAttributeGUID = archiveHelper.addSchemaAttribute(assetGUID,
+                                                               FileType.CSV_FILE.getAssetSubTypeName(),
+                                                               OpenMetadataType.TABULAR_COLUMN_TYPE_NAME,
+                                                               OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME,
+                                                               qualifiedName + "_angleLeft_column",
+                                                               "AngleLeft",
+                                                               null,
+                                                               "integer",
+                                                               0,
+                                                               2,
+                                                               null,
+                                                               null);
+
+        archiveHelper.addAttributeForSchemaType(topLevelSchemaTypeGUID, schemaAttributeGUID);
+
+        glossaryTermGUID = archiveHelper.getGUID(GlossaryTermDefinition.ANGLE_LEFT.getTemplateSubstituteQualifiedName());
+        archiveHelper.addSemanticAssignment(schemaAttributeGUID, glossaryTermGUID);
+
+        schemaAttributeGUID = archiveHelper.addSchemaAttribute(assetGUID,
+                                                               FileType.CSV_FILE.getAssetSubTypeName(),
+                                                               OpenMetadataType.TABULAR_COLUMN_TYPE_NAME,
+                                                               OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME,
+                                                               qualifiedName + "_angleRight_column",
                                                                "AngleRight",
                                                                null,
                                                                "integer",

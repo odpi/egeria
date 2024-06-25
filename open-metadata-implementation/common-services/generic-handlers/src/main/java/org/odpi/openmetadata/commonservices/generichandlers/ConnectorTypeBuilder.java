@@ -19,19 +19,20 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
     private final String       displayName;
     private final String       description;
 
-    private String       supportedAssetTypeName            = null;
-    private String       expectedDataFormat                = null;
-    private String       connectorProviderClassName        = null;
-    private String       connectorFrameworkName            = null;
-    private String       connectorInterfaceLanguage        = null;
-    private List<String> connectorInterfaces               = null;
-    private String       targetTechnologySource            = null;
-    private String       targetTechnologyName              = null;
-    private List<String> targetTechnologyInterfaces        = null;
-    private List<String> targetTechnologyVersions          = null;
-    private List<String> recognizedAdditionalProperties    = null;
-    private List<String> recognizedConfigurationProperties = null;
-    private List<String> recognizedSecuredProperties       = null;
+    private String       supportedAssetTypeName              = null;
+    private String       supportedDeployedImplementationType = null;
+    private String       expectedDataFormat                  = null;
+    private String       connectorProviderClassName          = null;
+    private String       connectorFrameworkName              = null;
+    private String       connectorInterfaceLanguage          = null;
+    private List<String> connectorInterfaces                 = null;
+    private String       targetTechnologySource              = null;
+    private String       targetTechnologyName                = null;
+    private List<String> targetTechnologyInterfaces          = null;
+    private List<String> targetTechnologyVersions            = null;
+    private List<String> recognizedAdditionalProperties      = null;
+    private List<String> recognizedConfigurationProperties   = null;
+    private List<String> recognizedSecuredProperties         = null;
 
 
     /**
@@ -41,6 +42,7 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
      * @param displayName new value for the display name
      * @param description new description for the connector type
      * @param supportedAssetTypeName the type of asset that the connector implementation supports
+     * @param supportedDeployedImplementationType the type of asset that the connector implementation supports
      * @param expectedDataFormat the format of the data that the connector supports - null for "any"
      * @param connectorProviderClassName class name of the connector provider
      * @param connectorFrameworkName name of the connector framework that the connector implements - default Open Connector Framework (OCF)
@@ -65,6 +67,7 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
                                 String               displayName,
                                 String               description,
                                 String               supportedAssetTypeName,
+                                String               supportedDeployedImplementationType,
                                 String               expectedDataFormat,
                                 String               connectorProviderClassName,
                                 String               connectorFrameworkName,
@@ -97,6 +100,7 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
         this.displayName = displayName;
         this.description = description;
         this.supportedAssetTypeName = supportedAssetTypeName;
+        this.supportedDeployedImplementationType = supportedDeployedImplementationType;
         this.expectedDataFormat = expectedDataFormat;
         this.connectorProviderClassName = connectorProviderClassName;
         this.connectorFrameworkName = connectorFrameworkName;
@@ -171,6 +175,12 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
                                                                   properties,
                                                                   OpenMetadataType.SUPPORTED_ASSET_TYPE_NAME,
                                                                   supportedAssetTypeName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                  supportedDeployedImplementationType,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,

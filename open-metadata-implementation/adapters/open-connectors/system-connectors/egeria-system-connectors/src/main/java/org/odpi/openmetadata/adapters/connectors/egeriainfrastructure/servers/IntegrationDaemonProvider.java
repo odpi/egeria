@@ -65,7 +65,7 @@ public class IntegrationDaemonProvider extends ConnectorProviderBase
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(DeployedImplementationType.INTEGRATION_DAEMON.getAssociatedTypeName());
-        connectorType.setDeployedImplementationType(DeployedImplementationType.INTEGRATION_DAEMON.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.INTEGRATION_DAEMON.getDeployedImplementationType());
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add("serverName");
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);

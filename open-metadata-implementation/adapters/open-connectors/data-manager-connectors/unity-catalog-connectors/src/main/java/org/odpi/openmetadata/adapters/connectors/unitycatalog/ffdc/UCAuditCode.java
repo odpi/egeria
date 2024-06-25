@@ -69,6 +69,28 @@ public enum UCAuditCode implements AuditLogMessageSet
                                 "The server has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
                                 "Look for errors in the local server's console to understand and correct the source of the error."),
 
+    /**
+     * UNITY-CATALOG-CONNECTOR-0006 - The {0} Apache Atlas Survey Action Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}
+     */
+    WRONG_REST_CONNECTOR("UNITY-CATALOG-CONNECTOR-0006",
+                         AuditLogRecordSeverityLevel.ERROR,
+                         "The {0} OSS Unity Catalog Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
+                         "The connector is unable to continue to profile Unity Catalog because it can not call its REST API.",
+                         "Use the details from the error message to determine the class of the connector.  " +
+                                 "Update the connector type associated with Unity Catalog's Connection in the metadata store."),
+
+    FRIENDSHIP_GUID("UNITY-CATALOG-CONNECTOR-0007",
+                    AuditLogRecordSeverityLevel.INFO,
+                    "The {0} OSS Unity Catalog Connector has been supplied with a friendship connector with GUID {1}",
+                    "The friendship connector is an integration connector that is able to synchronize the contents inside a Unity Catalog (UC) connector.  Therefore, they will cooperate to synchronize the contents of the Unity Catalog with the open metadata ecosystem.",
+                    "No action is required, this message is just to acknowledge that that the two integration connectors are going to collaborate to catalog the entire contents of Unity Catalog"),
+
+    IGNORING_ENDPOINT("UNITY-CATALOG-CONNECTOR-0008",
+                    AuditLogRecordSeverityLevel.INFO,
+                    "The {0} OSS Unity Inside Catalog Synchronizer Connector only works with catalog targets",
+                    "The connector is ignoring the Unity Catalog (UC) server instance that are configured directly through its connection.",
+                    "Update the integration connector's configuration to use catalog targets."),
+
     ;
 
     private final String                     logMessageId;

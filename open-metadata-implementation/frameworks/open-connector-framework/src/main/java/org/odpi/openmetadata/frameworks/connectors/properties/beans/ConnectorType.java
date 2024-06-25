@@ -97,22 +97,22 @@ public class ConnectorType extends Referenceable
     /*
      * Attributes of a connector type
      */
-    private String       displayName                       = null;
-    private String       description                       = null;
-    private String       supportedAssetTypeName            = null;
-    private String       deployedImplementationType        = null;
-    private String       expectedDataFormat                = null;
-    private String       connectorProviderClassName        = null;
-    private String       connectorFrameworkName            = null;
-    private String       connectorInterfaceLanguage        = null;
-    private List<String> connectorInterfaces               = null;
-    private String       targetTechnologySource            = null;
-    private String       targetTechnologyName              = null;
-    private List<String> targetTechnologyInterfaces        = null;
-    private List<String> targetTechnologyVersions          = null;
-    private List<String> recognizedAdditionalProperties    = null;
-    private List<String> recognizedConfigurationProperties = null;
-    private List<String> recognizedSecuredProperties       = null;
+    private String       displayName                         = null;
+    private String       description                         = null;
+    private String       supportedAssetTypeName              = null;
+    private String       supportedDeployedImplementationType = null;
+    private String       expectedDataFormat                  = null;
+    private String       connectorProviderClassName          = null;
+    private String       connectorFrameworkName              = null;
+    private String       connectorInterfaceLanguage          = null;
+    private List<String> connectorInterfaces                 = null;
+    private String       targetTechnologySource              = null;
+    private String       targetTechnologyName                = null;
+    private List<String> targetTechnologyInterfaces          = null;
+    private List<String> targetTechnologyVersions            = null;
+    private List<String> recognizedAdditionalProperties      = null;
+    private List<String> recognizedConfigurationProperties   = null;
+    private List<String> recognizedSecuredProperties         = null;
 
 
     /**
@@ -160,9 +160,9 @@ public class ConnectorType extends Referenceable
         {
             displayName = template.getDisplayName();
             description = template.getDescription();
-            supportedAssetTypeName = template.getSupportedAssetTypeName();
-            deployedImplementationType = template.getDeployedImplementationType();
-            expectedDataFormat = template.getExpectedDataFormat();
+            supportedAssetTypeName              = template.getSupportedAssetTypeName();
+            supportedDeployedImplementationType = template.getSupportedDeployedImplementationType();
+            expectedDataFormat                  = template.getExpectedDataFormat();
             connectorProviderClassName = template.getConnectorProviderClassName();
             connectorFrameworkName = template.getConnectorFrameworkName();
             connectorInterfaceLanguage = template.getConnectorInterfaceLanguage();
@@ -253,9 +253,9 @@ public class ConnectorType extends Referenceable
      *
      * @return string name
      */
-    public String getDeployedImplementationType()
+    public String getSupportedDeployedImplementationType()
     {
-        return deployedImplementationType;
+        return supportedDeployedImplementationType;
     }
 
 
@@ -263,11 +263,11 @@ public class ConnectorType extends Referenceable
      * Set up the name of the type of technology this connector works with.  This allows the connector to be targeted to the right resource more
      * accurately.
      *
-     * @param deployedImplementationType string name
+     * @param supportedDeployedImplementationType string name
      */
-    public void setDeployedImplementationType(String deployedImplementationType)
+    public void setSupportedDeployedImplementationType(String supportedDeployedImplementationType)
     {
-        this.deployedImplementationType = deployedImplementationType;
+        this.supportedDeployedImplementationType = supportedDeployedImplementationType;
     }
 
 
@@ -588,7 +588,7 @@ public class ConnectorType extends Referenceable
                        "displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", supportedAssetTypeName='" + supportedAssetTypeName + '\'' +
-                       ", deployedImplementationType='" + deployedImplementationType + '\'' +
+                       ", deployedImplementationType='" + supportedDeployedImplementationType + '\'' +
                        ", expectedDataFormat='" + expectedDataFormat + '\'' +
                        ", connectorProviderClassName='" + connectorProviderClassName + '\'' +
                        ", connectorFrameworkName='" + connectorFrameworkName + '\'' +
@@ -636,7 +636,7 @@ public class ConnectorType extends Referenceable
         return Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(supportedAssetTypeName, that.supportedAssetTypeName) &&
-                       Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
+                       Objects.equals(supportedDeployedImplementationType, that.supportedDeployedImplementationType) &&
                        Objects.equals(expectedDataFormat, that.expectedDataFormat) &&
                        Objects.equals(connectorProviderClassName, that.connectorProviderClassName) &&
                        Objects.equals(connectorFrameworkName, that.connectorFrameworkName) &&
@@ -660,7 +660,7 @@ public class ConnectorType extends Referenceable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, supportedAssetTypeName, deployedImplementationType, expectedDataFormat,
+        return Objects.hash(super.hashCode(), displayName, description, supportedAssetTypeName, supportedDeployedImplementationType, expectedDataFormat,
                             connectorProviderClassName, connectorFrameworkName, connectorInterfaceLanguage, connectorInterfaces,
                             targetTechnologySource, targetTechnologyName, targetTechnologyInterfaces, targetTechnologyVersions,
                             recognizedAdditionalProperties, recognizedConfigurationProperties, recognizedSecuredProperties);

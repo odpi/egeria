@@ -45,6 +45,17 @@ public enum UnityCatalogPlaceholderProperty
      */
     SERVER_DESCRIPTION ("serverDescription", "The description of the server being catalogued.", "string", null),
 
+    /**
+     * The name of the catalog being described.
+     */
+    CATALOG_NAME ("catalogName", "The name of the catalog being described.", "string", "myCatalog"),
+
+    /**
+     * The description of the catalog being described.
+     */
+    CATALOG_DESCRIPTION ("catalogDescription", "The description of the catalog being described.", "string", "My personal catalog on OSS UC."),
+
+
     ;
 
     public final String           name;
@@ -133,17 +144,37 @@ public enum UnityCatalogPlaceholderProperty
      *
      * @return list of placeholder property types
      */
-    public static List<PlaceholderPropertyType> getPlaceholderPropertyTypes()
+    public static List<PlaceholderPropertyType> getServerPlaceholderPropertyTypes()
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
-        for (UnityCatalogPlaceholderProperty placeholderProperty : UnityCatalogPlaceholderProperty.values())
-        {
-            placeholderPropertyTypes.add(placeholderProperty.getPlaceholderType());
-        }
+        placeholderPropertyTypes.add(HOST_URL.getPlaceholderType());
+        placeholderPropertyTypes.add(PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(CONNECTION_USER_ID.getPlaceholderType());
+        placeholderPropertyTypes.add(SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(SERVER_DESCRIPTION.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
+
+
+    /**
+     * Retrieve all the defined placeholder properties
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getCatalogPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(CATALOG_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(CATALOG_DESCRIPTION.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+
 
 
     /**

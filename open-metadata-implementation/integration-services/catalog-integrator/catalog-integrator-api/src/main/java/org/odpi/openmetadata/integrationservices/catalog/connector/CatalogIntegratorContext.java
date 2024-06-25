@@ -107,9 +107,8 @@ public class CatalogIntegratorContext extends IntegrationContext
     private final LineageExchangeService           lineageExchangeService;
     private final StewardshipExchangeService       stewardshipExchangeService;
     private final ValidValuesExchangeService       validValuesExchangeService;
-    private final String                           assetManagerGUID;
-    private final String                           assetManagerName;
-    private final String                           integrationServiceName;
+
+    private final String integrationServiceName;
 
     private boolean connectorFactoryActive          = true;
     private boolean glossaryExchangeActive          = true;
@@ -272,16 +271,16 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                                           assetManagerName,
                                                                           connectorName,
                                                                           auditLog);
-        this.validValuesExchangeService  = new ValidValuesExchangeService(validValuesExchangeClient,
+        this.validValuesExchangeService = new ValidValuesExchangeService(validValuesExchangeClient,
                                                                           synchronizationDirection,
                                                                           userId,
                                                                           assetManagerGUID,
                                                                           assetManagerName,
                                                                           connectorName,
                                                                           auditLog);
-        this.assetManagerGUID         = assetManagerGUID;
-        this.assetManagerName         = assetManagerName;
-        this.integrationServiceName   = integrationServiceName;
+        this.externalSourceGUID     = assetManagerGUID;
+        this.externalSourceName     = assetManagerName;
+        this.integrationServiceName = integrationServiceName;
 
         auditLog.logMessage(methodName,
                             CatalogIntegratorAuditCode.PERMITTED_SYNCHRONIZATION.getMessageDefinition(connectorName,
@@ -385,7 +384,7 @@ public class CatalogIntegratorContext extends IntegrationContext
      */
     public String getAssetManagerGUID()
     {
-        return assetManagerGUID;
+        return externalSourceGUID;
     }
 
 
@@ -396,7 +395,7 @@ public class CatalogIntegratorContext extends IntegrationContext
      */
     public String getAssetManagerName()
     {
-        return assetManagerName;
+        return externalSourceName;
     }
 
 
@@ -467,7 +466,7 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                 methodName,
                                                 parameterName);
         }
-        else if ((retrievedElement.getCorrelationHeaders() == null) || (assetManagerName == null))
+        else if ((retrievedElement.getCorrelationHeaders() == null) || (externalSourceName == null))
         {
             return null;
         }
@@ -475,7 +474,7 @@ public class CatalogIntegratorContext extends IntegrationContext
         {
             for (MetadataCorrelationHeader metadataCorrelationHeader : retrievedElement.getCorrelationHeaders())
             {
-                if (assetManagerName.equals(metadataCorrelationHeader.getAssetManagerName()))
+                if (externalSourceName.equals(metadataCorrelationHeader.getAssetManagerName()))
                 {
                     return metadataCorrelationHeader;
                 }
@@ -507,8 +506,8 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                                                                         PropertyServerException
     {
         assetManagerClient.addExternalIdentifier(userId,
-                                                 assetManagerGUID,
-                                                 assetManagerName,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
                                                  openMetadataElementGUID,
                                                  openMetadataElementTypeName,
                                                  externalIdentifierProperties);
@@ -533,8 +532,8 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                                                                            PropertyServerException
     {
         assetManagerClient.updateExternalIdentifier(userId,
-                                                    assetManagerGUID,
-                                                    assetManagerName,
+                                                    externalSourceGUID,
+                                                    externalSourceName,
                                                     openMetadataElementGUID,
                                                     openMetadataElementTypeName,
                                                     externalIdentifierProperties);
@@ -560,8 +559,8 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                                            PropertyServerException
     {
         assetManagerClient.removeExternalIdentifier(userId,
-                                                    assetManagerGUID,
-                                                    assetManagerName,
+                                                    externalSourceGUID,
+                                                    externalSourceName,
                                                     openMetadataElementGUID,
                                                     openMetadataElementTypeName,
                                                     externalIdentifier);
@@ -587,8 +586,8 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                                          PropertyServerException
     {
         assetManagerClient.confirmSynchronization(userId,
-                                                  assetManagerGUID,
-                                                  assetManagerName,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
                                                   openMetadataGUID,
                                                   openMetadataElementTypeName,
                                                   externalIdentifier);
@@ -615,7 +614,7 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        return assetManagerClient.getElementsForExternalIdentifier(userId, assetManagerGUID, assetManagerName, externalIdentifier, startFrom, pageSize);
+        return assetManagerClient.getElementsForExternalIdentifier(userId, externalSourceGUID, externalSourceName, externalIdentifier, startFrom, pageSize);
     }
 
 

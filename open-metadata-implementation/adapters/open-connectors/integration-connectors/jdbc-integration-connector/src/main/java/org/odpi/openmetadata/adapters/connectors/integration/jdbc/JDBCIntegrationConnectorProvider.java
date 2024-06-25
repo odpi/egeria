@@ -77,7 +77,7 @@ public class JDBCIntegrationConnectorProvider extends IntegrationConnectorProvid
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setRecognizedConfigurationProperties(JDBCConfigurationProperty.getRecognizedConfigurationProperties());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setDeployedImplementationType(DeployedImplementationType.DATABASE_INTEGRATION_CONNECTOR.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.DATABASE_INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
 

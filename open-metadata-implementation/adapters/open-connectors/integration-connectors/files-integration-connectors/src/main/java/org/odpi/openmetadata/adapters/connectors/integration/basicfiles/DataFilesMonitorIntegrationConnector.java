@@ -21,7 +21,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -303,8 +305,22 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                             properties.setDeployedImplementationType(fileClassification.getDeployedImplementationType());
                             properties.setPathName(fileClassification.getPathName());
                             properties.setName(fileClassification.getFileName());
+                            properties.setFileName(fileClassification.getFileName());
                             properties.setFileType(fileClassification.getFileType());
-                            properties.setModifiedTime(new Date(file.lastModified()));
+                            properties.setFileExtension(fileClassification.getFileExtension());
+                            properties.setModifiedTime(fileClassification.getLastModifiedTime());
+                            properties.setCreateTime(fileClassification.getCreationTime());
+                            properties.setEncodingType(fileClassification.getEncoding());
+
+                            Map<String, String> additionalProperties = new HashMap<>();
+
+                            additionalProperties.put("canRead", Boolean.toString(fileClassification.isCanRead()));
+                            additionalProperties.put("canWrite", Boolean.toString(fileClassification.isCanWrite()));
+                            additionalProperties.put("canExecute", Boolean.toString(fileClassification.isCanExecute()));
+                            additionalProperties.put("isSymLink", Boolean.toString(fileClassification.isSymLink()));
+                            additionalProperties.put("isHidden", Boolean.toString(fileClassification.isHidden()));
+
+                            properties.setAdditionalProperties(additionalProperties);
 
                             List<String> guids = this.getContext().addDataFileToCatalog(properties, null);
 
@@ -508,16 +524,21 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                     {
                         DataFileProperties properties = new DataFileProperties();
 
-                        properties.setModifiedTime(new Date(file.lastModified()));
+                        Date fileLastModifiedDate = new Date(file.lastModified());
 
-                        this.getContext().updateDataFileInCatalog(dataFileInCatalog.getElementHeader().getGUID(), true, properties);
-
-                        if (auditLog != null)
+                        if ((properties.getModifiedTime() == null) || (fileLastModifiedDate.after(properties.getModifiedTime())))
                         {
-                            auditLog.logMessage(methodName,
-                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_UPDATED.getMessageDefinition(connectorName,
-                                                                                                                                dataFileInCatalog.getDataFileProperties().getPathName(),
-                                                                                                                                dataFileInCatalog.getElementHeader().getGUID()));
+                            properties.setModifiedTime(fileLastModifiedDate);
+
+                            this.getContext().updateDataFileInCatalog(dataFileInCatalog.getElementHeader().getGUID(), true, properties);
+
+                            if (auditLog != null)
+                            {
+                                auditLog.logMessage(methodName,
+                                                    BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_UPDATED.getMessageDefinition(connectorName,
+                                                                                                                                    dataFileInCatalog.getDataFileProperties().getPathName(),
+                                                                                                                                    dataFileInCatalog.getElementHeader().getGUID()));
+                            }
                         }
                     }
                     else

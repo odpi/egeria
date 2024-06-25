@@ -3484,6 +3484,7 @@ public class SimpleCatalogArchiveHelper
      * Create the top level schema type for an asset.
      *
      * @param assetGUID unique identifier of asset
+     * @param assetTypeName typename of the anchor
      * @param typeName name of asset subtype to use - default is SchemaType
      * @param qualifiedName unique name for the schema type
      * @param displayName display name for the schema type
@@ -3549,7 +3550,18 @@ public class SimpleCatalogArchiveHelper
     }
 
 
-
+    /**
+     * Create the schema type by do not link it it a parent.
+     *
+     * @param assetGUID anchor guid
+     * @param assetTypeName anchor type name
+     * @param typeName type name of schema type
+     * @param qualifiedName qualified name
+     * @param displayName display name
+     * @param description description
+     * @param additionalProperties any additional properties
+     * @return guid of the schema type
+     */
     public String addSchemaType(String              assetGUID,
                                 String              assetTypeName,
                                 String              typeName,
@@ -4112,7 +4124,7 @@ public class SimpleCatalogArchiveHelper
                                          connectorType.getQualifiedName(),
                                          connectorType.getDisplayName(),
                                          connectorType.getDescription(),
-                                         connectorType.getDeployedImplementationType(),
+                                         connectorType.getSupportedDeployedImplementationType(),
                                          connectorType.getSupportedAssetTypeName(),
                                          connectorType.getExpectedDataFormat(),
                                          connectorType.getConnectorProviderClassName(),
@@ -4267,7 +4279,7 @@ public class SimpleCatalogArchiveHelper
             InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.SUPPORTED_ASSET_TYPE_PROPERTY_NAME, supportedAssetTypeName, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.EXPECTED_DATA_FORMAT_PROPERTY_NAME, expectedDataFormat, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CONNECTOR_PROVIDER_PROPERTY_NAME, connectorProviderClassName, methodName);

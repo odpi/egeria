@@ -5,7 +5,6 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.resource;
 
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.factory.RESTClientFactory;
-import org.odpi.openmetadata.adapters.connectors.restclients.spring.SpringRESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCErrorCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.*;
@@ -17,12 +16,11 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
-import org.springframework.core.ParameterizedTypeReference;
 
 import java.util.List;
 import java.util.Map;
 
-public class UnityCatalogResourceConnector extends ConnectorBase implements AuditLoggingComponent
+public class OSSUnityCatalogResourceConnector extends ConnectorBase implements AuditLoggingComponent
 {
     private AuditLog auditLog      = null;
     private String   connectorName = "Unity Catalog Connector";

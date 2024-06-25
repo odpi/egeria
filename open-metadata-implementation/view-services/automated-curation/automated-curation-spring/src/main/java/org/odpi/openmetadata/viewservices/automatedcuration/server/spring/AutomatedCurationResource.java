@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProp
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetResponse;
 import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetsResponse;
+import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeElementListResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeReportResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.server.AutomatedCurationRESTServices;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeSummaryListResponse;
@@ -106,8 +107,10 @@ public class AutomatedCurationResource
 
     public TechnologyTypeSummaryListResponse getTechnologyTypesForOpenMetadataType(@PathVariable String serverName,
                                                                                    @PathVariable String typeName,
-                                                                                   @RequestParam int    startFrom,
-                                                                                   @RequestParam int    pageSize,
+                                                                                   @RequestParam(required = false, defaultValue = "0")
+                                                                                       int    startFrom,
+                                                                                   @RequestParam(required = false, defaultValue = "0")
+                                                                                       int    pageSize,
                                                                                    @RequestBody(required = false)
                                                                                        EffectiveTimeRequestBody requestBody)
     {
@@ -137,6 +140,39 @@ public class AutomatedCurationResource
     {
         return restAPI.getTechnologyTypeDetail(serverName, requestBody);
     }
+
+
+    /**
+     * Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+     *
+     * @param serverName name of the service to route the request to
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param getTemplates boolean indicating whether templates or non-template platforms should be returned.
+     * @param requestBody the deployedImplementationType to search for
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/technology-types/elements")
+    @Operation(summary="getTechnologyTypeElements",
+            description="Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/deployed-implementation-type"))
+
+    public TechnologyTypeElementListResponse getTechnologyTypeElements(@PathVariable String            serverName,
+                                                                       @RequestParam(required = false, defaultValue = "0")
+                                                                       int    startFrom,
+                                                                       @RequestParam(required = false, defaultValue = "0")
+                                                                       int    pageSize,
+                                                                       @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
+                                                                       @RequestBody  FilterRequestBody requestBody)
+    {
+        return restAPI.getTechnologyTypeElements(serverName, startFrom, pageSize, getTemplates, requestBody);
+    }
+
 
 
     /* =====================================================================================================================

@@ -266,6 +266,38 @@ public class IntegrationContext
 
 
     /**
+     * Change the metadata collection that is in use when working with open metadata.  It should be the qualified name
+     * of a software capability,  The qualified name is supplied through open metadata values and may be incorrect
+     * which is why any exceptions from retrieving the software capability are passed through to the caller.
+     *
+     * @param metadataSourceGUID unique identifier of the metadata source (if known)
+     * @param metadataSourceQualifiedName supplied qualified name for the metadata collection
+     *
+     * @throws InvalidParameterException the unique name is null or not known.
+     * @throws UserNotAuthorizedException the caller's userId is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public void setMetadataSourceQualifiedName(String metadataSourceGUID,
+                                               String metadataSourceQualifiedName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        if (metadataSourceQualifiedName == null)
+        {
+            this.externalSourceName = null;
+            this.externalSourceGUID = null;
+        }
+        else
+        {
+            this.externalSourceName = metadataSourceQualifiedName;
+            this.externalSourceGUID = metadataSourceGUID;
+
+            externalSourceCache.put(metadataSourceQualifiedName, metadataSourceGUID);
+        }
+    }
+
+
+    /**
      * Return the flag indicating whether the external source name is to be used as the new element's
      * metadata collection, or they belong to the local cohort.
      *

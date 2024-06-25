@@ -50,7 +50,7 @@ public class BasicFileStoreProvider extends ConnectorProviderBase
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setSupportedAssetTypeName(DeployedImplementationType.FILE.getAssociatedTypeName());
-        connectorType.setDeployedImplementationType(DeployedImplementationType.FILE.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.FILE.getDeployedImplementationType());
         connectorType.setConnectorInterfaces(connectorInterfaces);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 

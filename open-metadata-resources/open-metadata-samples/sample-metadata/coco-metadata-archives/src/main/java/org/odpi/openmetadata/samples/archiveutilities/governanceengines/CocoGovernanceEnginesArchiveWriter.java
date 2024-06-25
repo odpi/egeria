@@ -5,6 +5,7 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OriginSeekerGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.WriteAuditLogRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -259,7 +260,6 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
     }
 
 
-
     /**
      * Set up the request type that links the governance engine to the governance service.
      *
@@ -323,6 +323,149 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
 
 
     /**
+     * Create the onboarding process for clinical trials.
+     */
+    private void addOnboardingGovernanceActionProcess()
+    {
+        String governanceEngineGUID = archiveHelper.getGUID("AssetOnboarding");
+
+        String qualifiedName = "Coco:GovernanceActionProcess:ClinicalTrials:DropFoot:WeeklyMeasurements:Onboarding";
+
+        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                      qualifiedName,
+                                                                      "Onboard Weekly Drop Foot Measurement Files",
+                                                                      "V1.0",
+                                                                      """
+                                                                              Ensures that new weekly drop foot measurement files from the hospitals are correctly catalogued in the data lake.
+
+                                                                              This process performs the follow function:
+                                                                                   1) The physical file is moved to the data lake and renamed,
+                                                                                   2) A new asset is created for the new file,
+                                                                                   3) Lineage is created between the original file asset and the new file asset,
+                                                                                   4) The owner and origin are assigned,
+                                                                                   5) The governance zones are assigned to make the new asset visible to the research team.""",
+                                                                      null,
+                                                                      0,
+                                                                      null,
+                                                                      null,
+                                                                      null);
+
+        String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        qualifiedName + ":MoveWeeklyMeasurementsFile",
+                                                                        "Move Weekly Measurements File",
+                                                                        "The physical file is moved to the data lake and renamed, an asset is created for the new file (in the quarantine zone) and a lineage relationship is created between the original file asset and the new file asset.",
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step1GUID != null)
+        {
+            archiveHelper.addGovernanceActionExecutor(step1GUID,
+                                                      "move-file",
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      governanceEngineGUID);
+
+            archiveHelper.addGovernanceActionProcessFlow(processGUID,
+                                                         null,
+                                                         step1GUID);
+        }
+
+        String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        "Egeria:DailyGovernanceActionProcess:MondayTask",
+                                                                        "Output Monday's task",
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step2GUID != null)
+        {
+            Map<String, String> requestParameters = new HashMap<>();
+
+            requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Monday is: Wash");
+            archiveHelper.addGovernanceActionExecutor(step2GUID,
+                                                      "write-to-audit-log",
+                                                      requestParameters,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      governanceEngineGUID);
+
+            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, "monday", false, step2GUID);
+        }
+
+        String step3GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        "Egeria:DailyGovernanceActionProcess:TuesdayTask",
+                                                                        "Output Tuesday's task",
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step3GUID != null)
+        {
+            Map<String, String> requestParameters = new HashMap<>();
+
+            requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Tuesday is: Iron");
+            archiveHelper.addGovernanceActionExecutor(step3GUID,
+                                                      "write-to-audit-log",
+                                                      requestParameters,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      governanceEngineGUID);
+
+            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, "tuesday", false, step3GUID);
+        }
+    }
+
+
+    /**
      * Add the content to the archive builder.
      */
     public void getArchiveContent()
@@ -341,8 +484,11 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
         this.addWatchNestedInFolderRequestType(assetGovernanceEngineGUID, watchDogServiceGUID);
         this.addSeekOriginRequestType(assetGovernanceEngineGUID, originSeekerGUID);
         this.addSetZoneMembershipRequestType(assetGovernanceEngineGUID, zonePublisherGUID);
+        this.addCopyFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
         this.addMoveFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
         this.addDeleteFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
+
+        this.addOnboardingGovernanceActionProcess();
 
         String assetDiscoveryEngineGUID = this.getAssetDiscoveryEngine();
 

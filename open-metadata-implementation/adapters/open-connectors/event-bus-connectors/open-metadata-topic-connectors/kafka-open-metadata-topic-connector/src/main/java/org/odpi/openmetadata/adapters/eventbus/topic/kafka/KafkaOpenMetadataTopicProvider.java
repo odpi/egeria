@@ -74,7 +74,7 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
         connectorType.setSupportedAssetTypeName(DeployedImplementationType.APACHE_KAFKA_TOPIC.getAssociatedTypeName());
-        connectorType.setDeployedImplementationType(DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType());
         connectorType.setExpectedDataFormat(expectedDataFormat);
 
         connectorInterfaces.add(OpenMetadataTopic.class.getName());

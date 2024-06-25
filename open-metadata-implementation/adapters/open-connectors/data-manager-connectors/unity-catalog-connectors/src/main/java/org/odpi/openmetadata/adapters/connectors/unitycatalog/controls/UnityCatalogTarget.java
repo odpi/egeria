@@ -17,11 +17,25 @@ import java.util.Map;
  */
 public enum UnityCatalogTarget
 {
-    UNITY_CATALOG_TARGET("unityCatalogInstance",
-                   DeployedImplementationType.UNITY_CATALOG.getDescription(),
-                   DeployedImplementationType.UNITY_CATALOG.getAssociatedTypeName(),
-                   DeployedImplementationType.UNITY_CATALOG.getDeployedImplementationType(),
-                   null);
+    UNITY_CATALOG_SERVER_TARGET("unityCatalogServer",
+                                DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDescription(),
+                                DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
+                                DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getDeployedImplementationType(),
+                                null),
+
+    UNITY_CATALOG_CATALOG_TARGET("unityCatalogCatalog",
+                                 DeployedImplementationType.OSS_UC_CATALOG.getDescription(),
+                                 DeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName(),
+                                 DeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
+                                 null),
+
+    UNITY_CATALOG_CONNECTOR_TARGET("unityCatalogConnector",
+                                   DeployedImplementationType.CATALOG_INTEGRATION_CONNECTOR.getDescription(),
+                                   DeployedImplementationType.CATALOG_INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                   DeployedImplementationType.CATALOG_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                                   null),
+
+    ;
 
 
     /**
@@ -134,18 +148,31 @@ public enum UnityCatalogTarget
 
 
     /**
-     * Return all the catalog types defined by this enum.
+     * Return all the catalog types defined for the server.
      *
      * @return list of target type
      */
-    public static List<CatalogTargetType> getCatalogTargetTypes()
+    public static List<CatalogTargetType> getServerCatalogTargetTypes()
     {
         List<CatalogTargetType> catalogTargetTypes = new ArrayList<>();
 
-        for (UnityCatalogTarget catalogTarget : UnityCatalogTarget.values())
-        {
-            catalogTargetTypes.add(catalogTarget.getCatalogTargetType());
-        }
+        catalogTargetTypes.add(UNITY_CATALOG_SERVER_TARGET.getCatalogTargetType());
+        catalogTargetTypes.add(UNITY_CATALOG_CONNECTOR_TARGET.getCatalogTargetType());
+
+        return catalogTargetTypes;
+    }
+
+
+    /**
+     * Return all the catalog types defined for the server.
+     *
+     * @return list of target type
+     */
+    public static List<CatalogTargetType> getUCCatalogTargetTypes()
+    {
+        List<CatalogTargetType> catalogTargetTypes = new ArrayList<>();
+
+        catalogTargetTypes.add(UNITY_CATALOG_CATALOG_TARGET.getCatalogTargetType());
 
         return catalogTargetTypes;
     }
@@ -169,23 +196,34 @@ public enum UnityCatalogTarget
     }
 
 
-
     /**
-     * Return the action targets defined in this enum for a PostgreSQL database.
+     * Return the action targets defined in this enum for a UC Catalog.
      *
      * @return list
      */
-    public static List<ActionTargetType> getActionTargetTypes()
+    public static List<ActionTargetType> getCatalogActionTargetTypes()
     {
         List<ActionTargetType> actionTargetTypes = new ArrayList<>();
 
-        for (UnityCatalogTarget catalogTarget : UnityCatalogTarget.values())
-        {
-            actionTargetTypes.add(catalogTarget.getActionTargetType());
-        }
+        actionTargetTypes.add(UNITY_CATALOG_CATALOG_TARGET.getActionTargetType());
+
         return actionTargetTypes;
     }
 
+
+    /**
+     * Return the action targets defined in this enum for a UC Server.
+     *
+     * @return list
+     */
+    public static List<ActionTargetType> getServerActionTargetTypes()
+    {
+        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
+
+        actionTargetTypes.add(UNITY_CATALOG_SERVER_TARGET.getActionTargetType());
+
+        return actionTargetTypes;
+    }
 
     /**
      * Return an action target type for use in the governance service's provider.

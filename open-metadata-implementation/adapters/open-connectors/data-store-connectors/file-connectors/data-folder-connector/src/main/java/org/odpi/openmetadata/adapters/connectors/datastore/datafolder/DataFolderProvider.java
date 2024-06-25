@@ -53,7 +53,7 @@ public class DataFolderProvider extends ConnectorProviderBase
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setSupportedAssetTypeName(DeployedImplementationType.DATA_FOLDER.getAssociatedTypeName());
-        connectorType.setDeployedImplementationType(DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType());
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setConnectorInterfaces(connectorInterfaces);
 

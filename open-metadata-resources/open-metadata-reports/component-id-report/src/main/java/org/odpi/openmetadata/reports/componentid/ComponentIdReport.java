@@ -78,9 +78,11 @@ public class ComponentIdReport
     private static final String egeriaPlatformCataloguerProviderClassName = "org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog.OMAGServerPlatformCatalogProvider";
     private static final String egeriaPlatformSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.survey.OMAGServerPlatformSurveyProvider";
     private static final String egeriaIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.egeria.EgeriaCataloguerIntegrationProvider";
-    private static final String unityCatalogResourceProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.UnityCatalogResourceProvider";
-    private static final String unityCatalogSyncProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.UnityCatalogSyncProvider";
-    private static final String unityCatalogSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.UnityCatalogSurveyProvider";
+    private static final String unityCatalogResourceProviderClassName   = "org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceProvider";
+    private static final String unityCatalogServerSyncProviderClassName   = "org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncProvider";
+    private static final String unityCatalogCatalogSyncProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogInsideCatalogSyncProvider";
+    private static final String unityCatalogServerSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogServerSurveyProvider";
+    private static final String unityCatalogCatalogSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideCatalogSurveyProvider";
 
 
     /**
@@ -273,8 +275,10 @@ public class ComponentIdReport
         this.addConnectorDescription(egeriaViewServerProviderClassName, report);
         this.addConnectorDescription(egeriaIntegrationConnectorProviderClassName, report);
         this.addConnectorDescription(unityCatalogResourceProviderClassName, report);
-        this.addConnectorDescription(unityCatalogSyncProviderClassName, report);
-        this.addConnectorDescription(unityCatalogSurveyProviderClassName, report);
+        this.addConnectorDescription(unityCatalogServerSyncProviderClassName, report);
+        this.addConnectorDescription(unityCatalogCatalogSyncProviderClassName, report);
+        this.addConnectorDescription(unityCatalogServerSurveyProviderClassName, report);
+        this.addConnectorDescription(unityCatalogCatalogSurveyProviderClassName, report);
 
         File reportFile = new File(reportFileName);
 

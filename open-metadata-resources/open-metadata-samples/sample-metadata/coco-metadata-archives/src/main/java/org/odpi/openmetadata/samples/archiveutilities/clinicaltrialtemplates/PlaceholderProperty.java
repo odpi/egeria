@@ -20,9 +20,9 @@ public enum PlaceholderProperty
     HOSPITAL_NAME("hospitalName", "Add the name of the hospital that sent the measurements.", "string", "xxx"),
     CONTACT_NAME("contactName", "Add the name of the person at the hospital who is responsible for supplying the measurements.", "string", "xxx"),
     CONTACT_DEPT("contactDept", "Add the hospital department where the contact name works.", "string", "xxx"),
-    RECEIVED_DATE("receivedDate", "Add the date that the measurements were received.", "string", "xxx"),
-    PATH_NAME("pathName", "Add the full name (absolute file name) of the file and its enclosing directory structure.", "string", "xxx"),
-    FILE_NAME("fileName", "Add the name of the file without directory information.", "string", "xxx"),
+    RECEIVED_DATE("dateReceived", "Add the date that the measurements were received.", "string", "xxx"),
+    PATH_NAME("pathName", "Add the full name (absolute file name) of the file and its enclosing directory structure.", "string", "a/b/c/week1.csv"),
+    FILE_NAME("fileName", "Add the name of the file without directory information.", "string", "week1.csv"),
     ;
 
     public final String           name;

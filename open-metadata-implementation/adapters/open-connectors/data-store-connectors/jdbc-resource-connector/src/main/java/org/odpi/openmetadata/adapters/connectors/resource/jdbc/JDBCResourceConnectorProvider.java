@@ -90,7 +90,7 @@ public class JDBCResourceConnectorProvider extends ConnectorProviderBase
          * Information about the type of assets this type of connector works with and the interface it supports.
          */
         connectorType.setSupportedAssetTypeName(DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getAssociatedTypeName());
-        connectorType.setDeployedImplementationType(DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getDeployedImplementationType());
         connectorInterfaces.add(DataSource.class.getName());
         connectorType.setConnectorInterfaces(connectorInterfaces);
 

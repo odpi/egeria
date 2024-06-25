@@ -48,8 +48,13 @@ import org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurve
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.UnityCatalogResourceProvider;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceProvider;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideCatalogSurveyProvider;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogServerSurveyProvider;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogInsideCatalogSyncProvider;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.archiveutilities.openconnectors.control.FileSystemPlaceholderProperty;
@@ -784,7 +789,33 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         archiveHelper.addConnectorType(null, new MetadataAccessServerProvider());
         archiveHelper.addConnectorType(null, new ViewServerProvider());
         archiveHelper.addConnectorType(null, new EgeriaCataloguerIntegrationProvider());
-        archiveHelper.addConnectorType(null, new UnityCatalogResourceProvider());
+        archiveHelper.addConnectorType(null, new OSSUnityCatalogResourceProvider());
+        archiveHelper.addConnectorType(null, new OSSUnityCatalogServerSyncProvider());
+        archiveHelper.addConnectorType(null, new OSSUnityCatalogInsideCatalogSyncProvider());
+
+        /*
+         * Add catalog templates
+         */
+        this.addFileTemplates();
+        this.addOMAGServerPlatformCatalogTemplate();
+        this.addEngineHostCatalogTemplate();
+        this.addIntegrationDaemonCatalogTemplate();
+        this.addMetadataAccessServerCatalogTemplate();
+        this.addViewServerCatalogTemplate();
+        this.addPostgresServerCatalogTemplate();
+        this.addPostgresDatabaseCatalogTemplate();
+        this.addPostgresDatabaseSchemaCatalogTemplate();
+        this.addUCServerCatalogTemplate();
+        this.addUCCatalogCatalogTemplate();
+        this.addAtlasServerCatalogTemplate();
+        this.addKafkaServerCatalogTemplate();
+        this.addKafkaTopicCatalogTemplate();
+        this.addMacBookProCatalogTemplate();
+        this.addFileSystemTemplate();
+        this.addUNIXFileSystemTemplate();
+
+        this.addDefaultOMAGServerPlatform();
+
 
         /*
          * Create the default integration group.
@@ -838,7 +869,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                         "LandingAreaCataloguer",
                                                         "landingareacatnpa",
                                                         null,
-                                                        1,
+                                                        60,
                                                         landingAreaIntegrationConnectorGUID);
 
         archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
@@ -925,6 +956,58 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                         null,
                                                         60,
                                                         apiIntegrationConnectorGUID);
+        deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.SOFTWARE_SERVER.getQualifiedName());
+        archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
+                                                        apiIntegrationConnectorGUID,
+                                                        ResourceUse.CATALOG_RESOURCE.getResourceUse(),
+                                                        ResourceUse.CATALOG_RESOURCE.getDescription());
+
+        String ucCatalogIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(OSSUnityCatalogInsideCatalogSyncProvider.class.getName(),
+                                                                                        null,
+                                                                                        OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":OSSUnityCatalogInsideCatalogIntegrationConnector",
+                                                                                        "OSSUnityCatalogInsideCatalogIntegrationConnector",
+                                                                                        "Synchronizes metadata information about the contents of catalogs found in the OSS Unity Catalog 'catalog of catalogs' with the open metadata ecosystem.",
+                                                                                        null,
+                                                                                        null);
+
+        archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
+                                                        "OSSUnityCatalogInsideCatalogSynchronizer",
+                                                        "ossuccatcatnpa",
+                                                        null,
+                                                        60,
+                                                        ucCatalogIntegrationConnectorGUID);
+
+        deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.OSS_UC_CATALOG.getQualifiedName());
+        archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
+                                                        ucCatalogIntegrationConnectorGUID,
+                                                        ResourceUse.CATALOG_RESOURCE.getResourceUse(),
+                                                        ResourceUse.CATALOG_RESOURCE.getDescription());
+
+        Map<String, Object> ucConfigurationProperties = new HashMap<>();
+
+        ucConfigurationProperties.put(UnityCatalogConfigurationProperty.FRIENDSHIP_GUID.getName(), ucCatalogIntegrationConnectorGUID);
+
+        String ucServerIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(OSSUnityCatalogServerSyncProvider.class.getName(),
+                                                                                        ucConfigurationProperties,
+                                                                                        OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":OSSUnityCatalogServerIntegrationConnector",
+                                                                                        "OSSUnityCatalogServerIntegrationConnector",
+                                                                                        "Synchronizes metadata about the catalogs found in the OSS Unity Catalog 'catalog of catalogs' with the open metadata ecosystem.",
+                                                                                        null,
+                                                                                        null);
+
+        archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
+                                                        "OSSUnityCatalogServerSynchronizer",
+                                                        "ossuccatnpa",
+                                                        null,
+                                                        60,
+                                                        ucServerIntegrationConnectorGUID);
+
+        deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName());
+        archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
+                                                        ucServerIntegrationConnectorGUID,
+                                                        ResourceUse.CATALOG_RESOURCE.getResourceUse(),
+                                                        ResourceUse.CATALOG_RESOURCE.getDescription());
+
 
         /*
          * Register the governance services that are going to be in the default governance engines.
@@ -942,6 +1025,8 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         GovernanceActionDescription fileSurveyDescription             = this.getDataFileSurveyService();
         GovernanceActionDescription folderSurveyDescription           = this.getFolderSurveyService();
         GovernanceActionDescription atlasSurveyDescription            = this.getAtlasSurveyService();
+        GovernanceActionDescription ucServerSurveyDescription         = this.getUCServerSurveyService();
+        GovernanceActionDescription ucCatalogSurveyDescription        = this.getUCCatalogSurveyService();
         GovernanceActionDescription postgresServerSurveyDescription   = this.getPostgresServerSurveyService();
         GovernanceActionDescription postgresDatabaseSurveyDescription = this.getPostgresDatabaseSurveyService();
         GovernanceActionDescription kafkaServerSurveyDescription      = this.getKafkaServerSurveyService();
@@ -990,31 +1075,12 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         this.addDataFileRequestType(assetSurveyEngineGUID, assetSurveyEngineName, fileSurveyDescription);
         this.addFolderRequestType(assetSurveyEngineGUID, assetSurveyEngineName, folderSurveyDescription);
         this.addAtlasRequestType(assetSurveyEngineGUID, assetSurveyEngineName, atlasSurveyDescription);
+        this.addUCServerRequestType(assetSurveyEngineGUID, assetSurveyEngineName, ucServerSurveyDescription);
+        this.addUCCatalogRequestType(assetSurveyEngineGUID, assetSurveyEngineName, ucCatalogSurveyDescription);
         this.addPostgresServerRequestType(assetSurveyEngineGUID, assetSurveyEngineName, postgresServerSurveyDescription);
         this.addPostgresDatabaseRequestType(assetSurveyEngineGUID, assetSurveyEngineName, postgresDatabaseSurveyDescription);
         this.addKafkaServerRequestType(assetSurveyEngineGUID, assetSurveyEngineName, kafkaServerSurveyDescription);
 
-        /*
-         * Add catalog templates
-         */
-        this.addFileTemplates();
-        this.addOMAGServerPlatformCatalogTemplate();
-        this.addEngineHostCatalogTemplate();
-        this.addIntegrationDaemonCatalogTemplate();
-        this.addMetadataAccessServerCatalogTemplate();
-        this.addViewServerCatalogTemplate();
-        this.addPostgresServerCatalogTemplate();
-        this.addPostgresDatabaseCatalogTemplate();
-        this.addPostgresDatabaseSchemaCatalogTemplate();
-        this.addUnityCatalogCatalogTemplate();
-        this.addAtlasServerCatalogTemplate();
-        this.addKafkaServerCatalogTemplate();
-        this.addKafkaTopicCatalogTemplate();
-        this.addMacBookProCatalogTemplate();
-        this.addFileSystemTemplate();
-        this.addUNIXFileSystemTemplate();
-
-        this.addDefaultOMAGServerPlatform();
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
@@ -1123,6 +1189,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         createFolderCatalogTemplate(DeployedImplementationType.FILE_FOLDER, new BasicFolderProvider().getConnectorType().getGUID());
         createFolderCatalogTemplate(DeployedImplementationType.DATA_FOLDER, new DataFolderProvider().getConnectorType().getGUID());
+        createFolderCatalogTemplate(DeployedImplementationType.OSS_UC_VOLUME, new DataFolderProvider().getConnectorType().getGUID());
 
         createDataFileCatalogTemplate(DeployedImplementationType.FILE, basicFileConnectorTypeGUID, null);
         createDataFileCatalogTemplate(DeployedImplementationType.DATA_FILE, basicFileConnectorTypeGUID, null);
@@ -1648,15 +1715,15 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     /**
      * Create a catalog template for Unity Catalog
      */
-    private void addUnityCatalogCatalogTemplate()
+    private void addUCServerCatalogTemplate()
     {
-        UnityCatalogResourceProvider provider = new UnityCatalogResourceProvider();
+        OSSUnityCatalogResourceProvider provider = new OSSUnityCatalogResourceProvider();
 
-        List<PlaceholderPropertyType> placeholderPropertyTypes = UnityCatalogPlaceholderProperty.getPlaceholderPropertyTypes();
+        List<PlaceholderPropertyType> placeholderPropertyTypes = UnityCatalogPlaceholderProperty.getServerPlaceholderPropertyTypes();
 
-        this.createSoftwareServerCatalogTemplate(DeployedImplementationType.UNITY_CATALOG,
-                                                 DeployedImplementationType.ASSET_CATALOG,
-                                                 "Metadata Catalog",
+        this.createSoftwareServerCatalogTemplate(DeployedImplementationType.OSS_UNITY_CATALOG_SERVER,
+                                                 DeployedImplementationType.REST_API_MANAGER,
+                                                 "Unity Catalog REST API",
                                                  null,
                                                  UnityCatalogPlaceholderProperty.SERVER_NAME.getPlaceholder(),
                                                  UnityCatalogPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
@@ -2022,6 +2089,18 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                   DeployedImplementationType.UNIX_FILE_SYSTEM,
                                   "Local File System",
                                   classification);
+    }
+
+
+
+    private void addUCCatalogCatalogTemplate()
+    {
+        createSoftwareCapabilityCatalogTemplate(DeployedImplementationType.OSS_UC_CATALOG,
+                                                UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder(),
+                                                UnityCatalogPlaceholderProperty.CATALOG_DESCRIPTION.getPlaceholder(),
+                                                null,
+                                                null,
+                                                UnityCatalogPlaceholderProperty.getCatalogPlaceholderPropertyTypes());
     }
 
 
@@ -3704,6 +3783,68 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
 
     /**
+     * Create an entity for the UC Server Survey governance service.
+     *
+     * @return unique identifier for the governance service
+     */
+    private GovernanceActionDescription getUCServerSurveyService()
+    {
+        final String surveyServiceName = "oss-unity-catalog-server-survey-service";
+        final String surveyServiceDisplayName = "OSS Unity Catalog Server Survey Service";
+        final String surveyServiceProviderClassName = OSSUnityCatalogServerSurveyProvider.class.getName();
+
+        OSSUnityCatalogServerSurveyProvider provider = new OSSUnityCatalogServerSurveyProvider();
+
+        final String surveyServiceDescription = provider.getConnectorType().getDescription();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.SURVEY_RESOURCE,
+                                                                                                 provider,
+                                                                                                 surveyServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                                                                                               surveyServiceProviderClassName,
+                                                                                               null,
+                                                                                               surveyServiceName,
+                                                                                               surveyServiceDisplayName,
+                                                                                               surveyServiceDescription,
+                                                                                               null);
+
+        return governanceActionDescription;
+    }
+
+
+    /**
+     * Create an entity for the UC Server Survey governance service.
+     *
+     * @return unique identifier for the governance service
+     */
+    private GovernanceActionDescription getUCCatalogSurveyService()
+    {
+        final String surveyServiceName = "oss-unity-catalog-inside-catalog-survey-service";
+        final String surveyServiceDisplayName = "OSS Unity Catalog Inside Catalog Survey Service";
+        final String surveyServiceProviderClassName = OSSUnityCatalogInsideCatalogSurveyProvider.class.getName();
+
+        OSSUnityCatalogInsideCatalogSurveyProvider provider = new OSSUnityCatalogInsideCatalogSurveyProvider();
+
+        final String surveyServiceDescription = provider.getConnectorType().getDescription();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.SURVEY_RESOURCE,
+                                                                                                 provider,
+                                                                                                 surveyServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                                                                                               surveyServiceProviderClassName,
+                                                                                               null,
+                                                                                               surveyServiceName,
+                                                                                               surveyServiceDisplayName,
+                                                                                               surveyServiceDescription,
+                                                                                               null);
+
+        return governanceActionDescription;
+    }
+
+
+    /**
      * Create an entity for the Postgres Server Survey governance service.
      *
      * @return unique identifier for the governance service
@@ -3921,6 +4062,51 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                             governanceActionDescription);
     }
 
+
+    /**
+     * Create the relationship between a governance engine and a governance service that defines the request type.
+     *
+     * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addUCServerRequestType(String                      governanceEngineGUID,
+                                        String                      governanceEngineName,
+                                        GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "survey-oss-unity-catalog-server";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription);
+    }
+
+
+    /**
+     * Create the relationship between a governance engine and a governance service that defines the request type.
+     *
+     * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addUCCatalogRequestType(String                      governanceEngineGUID,
+                                         String                      governanceEngineName,
+                                         GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "survey-inside-an-oss-uc-catalog";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription);
+    }
 
     /**
      * Create the relationship between a governance engine and a governance service that defines the request type.

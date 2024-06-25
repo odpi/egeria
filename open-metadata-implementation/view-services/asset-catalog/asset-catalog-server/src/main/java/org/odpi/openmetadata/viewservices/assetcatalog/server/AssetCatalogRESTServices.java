@@ -5,10 +5,6 @@ package org.odpi.openmetadata.viewservices.assetcatalog.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetGraph;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetSearchMatches;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataRelationship;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.AssetGraphResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.AssetSearchMatchesListResponse;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
