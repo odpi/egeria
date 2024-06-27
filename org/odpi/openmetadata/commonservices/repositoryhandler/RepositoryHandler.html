@@ -1164,7 +1164,6 @@ loadScripts(document, 'script');</script>
 <a href="../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Validate an entity retrieved from the repository is suitable for the requester.
-
  There are three considerations: (1) Are the effectivity dates in the entity's properties indicating that this entity
  is effective at this time? (2) If the entity is a memento (ie it has the Memento classification attached) then it should only be
  returned if the request is for lineage. (3) If the entity is a known duplicate (ie it has the KnownDuplicate classification attached)
