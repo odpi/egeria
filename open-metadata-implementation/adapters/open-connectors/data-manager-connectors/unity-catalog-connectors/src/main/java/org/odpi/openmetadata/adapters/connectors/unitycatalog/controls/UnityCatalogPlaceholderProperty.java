@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderPropertyType;
 
 import java.util.ArrayList;
@@ -16,45 +17,29 @@ import java.util.List;
 public enum UnityCatalogPlaceholderProperty
 {
     /**
-     * The host IP address or domain name.
-     */
-    HOST_URL ("hostURL", "The host IP address or domain name of the server with the HTTP protocol prefix.", "string", "https://coconet.com"),
-
-    /**
-     * The number of the port to use to connect to a service.
-     */
-    PORT_NUMBER ("portNumber", "The number of the port to use to connect to the server.", "string", "9443"),
-
-
-    /**
-     * The userId to store in the userId attribute of the connection.
-     */
-    CONNECTION_USER_ID ("serverUserId",
-                      "The userId to store in the userId attribute of the connection. This is a server user that is defined to the server security connector and is used when making REST API calls to the server.",
-                      "string",
-                      "garygeeke"),
-
-
-    /**
-     * The name of the server being catalogued.
-     */
-    SERVER_NAME ("serverName", "The name of the server being catalogued.", "string", "myServer"),
-
-    /**
-     * The description of the server being catalogued.
-     */
-    SERVER_DESCRIPTION ("serverDescription", "The description of the server being catalogued.", "string", null),
-
-    /**
      * The name of the catalog being described.
      */
-    CATALOG_NAME ("catalogName", "The name of the catalog being described.", "string", "myCatalog"),
+    CATALOG_NAME ("ucCatalogName", "The name of the catalog within Unity Catalog (UC).", "string", "my_catalog"),
 
     /**
-     * The description of the catalog being described.
+     * The name of a schema within a catalog in Unity Catalog (UC).
      */
-    CATALOG_DESCRIPTION ("catalogDescription", "The description of the catalog being described.", "string", "My personal catalog on OSS UC."),
+    SCHEMA_NAME ("ucSchemaName", "The name of a schema within a catalog in Unity Catalog (UC).  This value is combined with the name of the catalog to get the full name.", "string", "my_schema"),
 
+    /**
+     * The name of a table within a schema and catalog in Unity Catalog (UC).
+     */
+    TABLE_NAME ("ucTableName", "The name of a table within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", "string", "my_table"),
+
+    /**
+     * The name of a volume within a schema and catalog in Unity Catalog (UC).
+     */
+    VOLUME_NAME ("ucTableName", "The name of a volume within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", "string", "my_volume"),
+
+    /**
+     * The name of a function within a schema and catalog in Unity Catalog (UC).
+     */
+    FUNCTION_NAME ("ucFunctionName", "The name of a function within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", "string", "my_function"),
 
     ;
 
@@ -139,24 +124,6 @@ public enum UnityCatalogPlaceholderProperty
     }
 
 
-    /**
-     * Retrieve all the defined placeholder properties
-     *
-     * @return list of placeholder property types
-     */
-    public static List<PlaceholderPropertyType> getServerPlaceholderPropertyTypes()
-    {
-        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
-
-        placeholderPropertyTypes.add(HOST_URL.getPlaceholderType());
-        placeholderPropertyTypes.add(PORT_NUMBER.getPlaceholderType());
-        placeholderPropertyTypes.add(CONNECTION_USER_ID.getPlaceholderType());
-        placeholderPropertyTypes.add(SERVER_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(SERVER_DESCRIPTION.getPlaceholderType());
-
-        return placeholderPropertyTypes;
-    }
-
 
     /**
      * Retrieve all the defined placeholder properties
@@ -168,10 +135,92 @@ public enum UnityCatalogPlaceholderProperty
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
         placeholderPropertyTypes.add(CATALOG_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(CATALOG_DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
+
+
+    /**
+     * Retrieve all the defined placeholder properties
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getSchemaPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(CATALOG_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(SCHEMA_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+
+    /**
+     * Retrieve all the defined placeholder properties
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getTablePlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(CATALOG_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(SCHEMA_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(TABLE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+
+
+    /**
+     * Retrieve all the defined placeholder properties
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getVolumePlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(CATALOG_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(SCHEMA_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(VOLUME_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+    /**
+     * Retrieve all the defined placeholder properties
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getFunctionPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(CATALOG_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(SCHEMA_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(FUNCTION_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
 
 
 
