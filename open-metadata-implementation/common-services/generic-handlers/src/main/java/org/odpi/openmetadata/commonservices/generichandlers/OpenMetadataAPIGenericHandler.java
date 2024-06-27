@@ -6160,7 +6160,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
              */
             validateUniqueProperties(originalEntity.getGUID(),
                                      entityTypeName,
-                                     newProperties,
+                                     updateProperties,
                                      effectiveTime,
                                      methodName);
 

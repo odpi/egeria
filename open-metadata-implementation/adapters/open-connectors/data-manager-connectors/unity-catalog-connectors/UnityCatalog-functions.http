@@ -3,7 +3,7 @@
 
 ###
 # @name list functions
-GET {{ucURL}}/api/2.1/unity-catalog/functions?catalog_name=test&schema_name=test4schema1&max_results=10
+GET {{ucURL}}/api/2.1/unity-catalog/functions?catalog_name=unity&schema_name=default&max_results=10
 
 ###
 # @name create function

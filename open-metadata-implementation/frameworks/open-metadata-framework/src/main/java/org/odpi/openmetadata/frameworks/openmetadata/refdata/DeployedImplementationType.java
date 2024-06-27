@@ -315,6 +315,18 @@ public enum DeployedImplementationType
               "A collection of related data files within the Unity Catalog (UC) 'catalog of catalogs'.",
               "https://github.com/unitycatalog/unitycatalog"),
 
+
+    /**
+     * A function that is working with data..
+     */
+    OSS_UC_FUNCTION("OSS Unity Catalog (UC) Function",
+                  null,
+                  OpenMetadataType.DEPLOYED_API_TYPE_NAME,
+                  null,
+                  "A function that is working with data.",
+                  "https://github.com/unitycatalog/unitycatalog"),
+
+
     /**
      * A database hosted on a relational database server capable of being called through a JDBC Driver.
      */

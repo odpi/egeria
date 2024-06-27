@@ -359,25 +359,42 @@ public interface IntegrationGroupConfiguration
      * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
      * @param properties properties for the relationship.
      *
+     * @return catalog target GUID
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the catalog target definition.
      */
-    void addCatalogTarget(String                  userId,
-                          String                  integrationConnectorGUID,
-                          String                  metadataElementGUID,
-                          CatalogTargetProperties properties) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException;
+    String addCatalogTarget(String                  userId,
+                            String                  integrationConnectorGUID,
+                            String                  metadataElementGUID,
+                            CatalogTargetProperties properties) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
 
+
+    /**
+     * Update a catalog target for an integration connector.
+     *
+     * @param userId identifier of calling user.
+     * @param catalogTargetGUID unique identifier of the relationship.
+     * @param properties properties for the relationship.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem storing the catalog target definition.
+     */
+    void updateCatalogTarget(String                  userId,
+                             String                  catalogTargetGUID,
+                             CatalogTargetProperties properties) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
 
 
     /**
      * Retrieve a specific catalog target associated with an integration connector.
      *
      * @param userId identifier of calling user.
-     * @param integrationConnectorGUID unique identifier of the integration service.
-     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
+     * @param relationshipGUID unique identifier of the catalog target.
      *
      * @return details of the integration connector and the elements it is to catalog
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -385,10 +402,9 @@ public interface IntegrationGroupConfiguration
      * @throws PropertyServerException problem retrieving the integration connector definition.
      */
     CatalogTarget getCatalogTarget(String userId,
-                                   String integrationConnectorGUID,
-                                   String metadataElementGUID) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException;
+                                   String relationshipGUID) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException;
 
 
 
@@ -417,16 +433,14 @@ public interface IntegrationGroupConfiguration
      * Unregister a catalog target from the integration connector.
      *
      * @param userId identifier of calling user.
-     * @param integrationConnectorGUID unique identifier of the integration connector.
-     * @param metadataElementGUID unique identifier of the metadata element.
+     * @param relationshipGUID unique identifier of the catalog target relationship.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem accessing/updating the integration connector definition.
      */
     void removeCatalogTarget(String userId,
-                             String integrationConnectorGUID,
-                             String metadataElementGUID) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException;
+                             String relationshipGUID) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException;
 }

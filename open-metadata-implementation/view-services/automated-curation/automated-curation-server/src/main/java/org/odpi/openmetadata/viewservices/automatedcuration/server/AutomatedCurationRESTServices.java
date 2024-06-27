@@ -738,12 +738,68 @@ public class AutomatedCurationRESTServices extends TokenController
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the catalog target definition.
      */
-    public VoidResponse addCatalogTarget(String                  serverName,
+    public GUIDResponse addCatalogTarget(String                  serverName,
                                          String                  integrationConnectorGUID,
                                          String                  metadataElementGUID,
                                          CatalogTargetProperties requestBody)
     {
         final String methodName = "addCatalogTarget";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog                    auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
+
+                response.setGUID(handler.addCatalogTarget(userId,
+                                                          integrationConnectorGUID,
+                                                          metadataElementGUID,
+                                                          requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Update a catalog target for an integration connector.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param relationshipGUID unique identifier of the rleationship.
+     * @param requestBody properties for the relationship.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the catalog target definition.
+     */
+    public VoidResponse updateCatalogTarget(String                  serverName,
+                                            String                  relationshipGUID,
+                                            CatalogTargetProperties requestBody)
+    {
+        final String methodName = "updateCatalogTarget";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -762,10 +818,7 @@ public class AutomatedCurationRESTServices extends TokenController
             {
                 OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
 
-                handler.addCatalogTarget(userId,
-                                         integrationConnectorGUID,
-                                         metadataElementGUID,
-                                         requestBody);
+                handler.updateCatalogTarget(userId, relationshipGUID, requestBody);
             }
             else
             {
@@ -786,8 +839,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve a specific catalog target associated with an integration connector.
      *
      * @param serverName name of the service to route the request to.
-     * @param integrationConnectorGUID unique identifier of the integration service.
-     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
+     * @param relationshipGUID unique identifier of the relationship.
      *
      * @return details of the governance service and the asset types it is registered for or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -795,8 +847,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * PropertyServerException problem storing the integration connector definition.
      */
     public CatalogTargetResponse getCatalogTarget(String serverName,
-                                                  String integrationConnectorGUID,
-                                                  String metadataElementGUID)
+                                                  String relationshipGUID)
     {
         final String methodName = "getCatalogTarget";
 
@@ -815,7 +866,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
 
-            response.setElement(handler.getCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID));
+            response.setElement(handler.getCatalogTarget(userId, relationshipGUID));
         }
         catch (Exception error)
         {
@@ -878,8 +929,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Unregister a catalog target from the integration connector.
      *
      * @param serverName name of the service to route the request to.
-     * @param integrationConnectorGUID unique identifier of the integration connector.
-     * @param metadataElementGUID unique identifier of the governance service.
+     * @param relationshipGUID unique identifier of the integration connector.
      * @param requestBody null request body.
      *
      * @return void or
@@ -889,8 +939,7 @@ public class AutomatedCurationRESTServices extends TokenController
      */
     @SuppressWarnings(value = "unused")
     public VoidResponse removeCatalogTarget(String          serverName,
-                                            String          integrationConnectorGUID,
-                                            String          metadataElementGUID,
+                                            String          relationshipGUID,
                                             NullRequestBody requestBody)
     {
         final String methodName = "removeCatalogTarget";
@@ -910,7 +959,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
 
-            handler.removeCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID);
+            handler.removeCatalogTarget(userId, relationshipGUID);
         }
         catch (Exception error)
         {

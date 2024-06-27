@@ -264,14 +264,11 @@ public class RelationshipAccumulator
     /**
      * Return the relationships that should be returned to the caller.   Null means no relationships retrieved.  Empty list means all relationships
      * filtered out.
-     *
      * This method needs to perform multiple passes on the relationships.  The first pass removes older versions of the same relationship instance.
      * If the relationship is multiLink or there are no entities supplied in duplicate cluster, the deduplicated list is returned.
-     *
      * UniLink entities do not allow two relationships between the same two elements.  If there is a duplicate cluster then these entities need to
      * be treated as if they are one.  Relationships of the same type that link any of these entities (from the same end) to the same remote element
      * need to be filtered out.
-     *
      * The final phase it to filter out relationships that violate the cardinality of the relationship
      *
      * @param relationshipTypeName type of relationship
@@ -308,10 +305,8 @@ public class RelationshipAccumulator
                  */
                 TypeDef typeDef = repositoryHelper.getTypeDefByName(methodName, relationshipTypeName);
 
-                if (typeDef instanceof RelationshipDef)
+                if (typeDef instanceof RelationshipDef relationshipDef)
                 {
-                    RelationshipDef relationshipDef = (RelationshipDef) typeDef;
-
                     if (relationshipDef.getMultiLink())
                     {
                         /*
@@ -353,7 +348,7 @@ public class RelationshipAccumulator
                      * Considering situations where there are multiple results for relationship where only one element is allowed.
                      */
                     Map<String, Relationship> usedEntityGUIDs = new HashMap<>();
-                    List<Relationship> validEnd1Relationships = new ArrayList<>();
+                    List<Relationship> validEnd1Relationships;
 
                     /*
                      * Search for multiple results at end 1
@@ -387,7 +382,7 @@ public class RelationshipAccumulator
                                 }
                             }
 
-                            validEnd1Relationships.addAll(usedEntityGUIDs.values());
+                            validEnd1Relationships = new ArrayList<>(usedEntityGUIDs.values());
 
                             /*
                              * Is end1 independent of end2?

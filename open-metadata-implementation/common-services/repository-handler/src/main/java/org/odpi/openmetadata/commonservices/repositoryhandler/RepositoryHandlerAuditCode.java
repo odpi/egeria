@@ -151,6 +151,12 @@ public enum RepositoryHandlerAuditCode implements AuditLogMessageSet
                         "The relationship has been put into DELETED status. If is no longer available for normal queries.",
                         "No specific action is required.  This message is to highlight that the relationship can no longer be retrieved until it is restored."),
 
+    CLASSIFICATION_RETRY ("OMAG-REPOSITORY-HANDLER-0013",
+                          AuditLogRecordSeverityLevel.INFO,
+                          "The Open Metadata Service is retrying the {0} classification of entity {1} due to a race condition.  The original {2} exception returned from the classification request had an error message of {3}",
+                          "A classification request is being retried because of a race condition between two threads, both trying to add the first instance of a classification to an entity.  The classification will be reapplied.",
+                          "Check that the resulting classification of the entity is what is required."),
+
     ;
 
     private final String                     logMessageId;

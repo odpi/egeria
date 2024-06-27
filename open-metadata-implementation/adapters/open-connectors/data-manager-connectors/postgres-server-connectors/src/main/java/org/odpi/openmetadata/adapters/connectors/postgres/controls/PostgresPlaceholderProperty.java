@@ -37,9 +37,9 @@ public enum PostgresPlaceholderProperty
      * The name of the database being catalogued.
      */
     DATABASE_DESCRIPTION ("databaseDescription",
-                   "The description of the database being catalogued.",
-                   "string",
-                   null),
+                          "The description of the database being catalogued.",
+                          "string",
+                          null),
 
     /**
      * The userId to store in the userId attribute of the connection.

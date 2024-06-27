@@ -180,7 +180,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
      * The error message was {3}
      */
     UNEXPECTED_EXC_DATA_FILE_UPDATE("BASIC-FILES-INTEGRATION-CONNECTORS-0014",
-                                    AuditLogRecordSeverityLevel.EXCEPTION,
+                                    AuditLogRecordSeverityLevel.ERROR,
                                  "An unexpected {0} exception was returned to the {1} integration connector when it tried to update the " +
                                          "DataFile in the metadata repositories for file {2}.  The error message was {3}",
                                  "The exception is logged and the integration connector continues to synchronize metadata.  " +

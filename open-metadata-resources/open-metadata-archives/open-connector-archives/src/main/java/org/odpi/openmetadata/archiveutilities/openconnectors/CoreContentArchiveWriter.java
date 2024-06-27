@@ -807,6 +807,10 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         this.addPostgresDatabaseSchemaCatalogTemplate();
         this.addUCServerCatalogTemplate();
         this.addUCCatalogCatalogTemplate();
+        this.addUCSchemaCatalogTemplate();
+        this.addUCVolumeCatalogTemplate();
+        this.addUCTableCatalogTemplate();
+        this.addUCFunctionCatalogTemplate();
         this.addAtlasServerCatalogTemplate();
         this.addKafkaServerCatalogTemplate();
         this.addKafkaTopicCatalogTemplate();
@@ -1189,7 +1193,6 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         createFolderCatalogTemplate(DeployedImplementationType.FILE_FOLDER, new BasicFolderProvider().getConnectorType().getGUID());
         createFolderCatalogTemplate(DeployedImplementationType.DATA_FOLDER, new DataFolderProvider().getConnectorType().getGUID());
-        createFolderCatalogTemplate(DeployedImplementationType.OSS_UC_VOLUME, new DataFolderProvider().getConnectorType().getGUID());
 
         createDataFileCatalogTemplate(DeployedImplementationType.FILE, basicFileConnectorTypeGUID, null);
         createDataFileCatalogTemplate(DeployedImplementationType.DATA_FILE, basicFileConnectorTypeGUID, null);
@@ -1238,7 +1241,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FilesPlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, FilesPlaceholderProperty.PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, FilesPlaceholderProperty.FILE_TYPE.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, FilesPlaceholderProperty.FILE_EXTENSION.getPlaceholder());
@@ -1316,7 +1319,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FilesPlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, FilesPlaceholderProperty.PATH_NAME.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
@@ -1375,7 +1378,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Create a template for a file directory and link it to the associated open metadata type.
+     * Create a template for a dataset and link it to the associated open metadata type.
      * The template consists of a DataFile asset plus an optional connection, linked
      * to the supplied connector type and an endpoint,
      *
@@ -1387,14 +1390,11 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     {
         final String methodName = "createDataSetCatalogTemplate";
 
-        String               qualifiedName      = FilesPlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + deployedImplementationType.getDeployedImplementationType() + ":" + FilesPlaceholderProperty.DATA_SET_NAME.getPlaceholder();
-        String               versionIdentifier  = "V1.0";
+        String               qualifiedName      = deployedImplementationType.getAssociatedTypeName() + ":" + deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.DISPLAY_NAME.getPlaceholder();
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FilesPlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder());
-        extendedProperties.put(OpenMetadataProperty.FORMULA.name, FilesPlaceholderProperty.FORMULA.getPlaceholder());
-        extendedProperties.put(OpenMetadataProperty.FORMULA_TYPE.name, FilesPlaceholderProperty.FORMULA_TYPE.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create an asset of type " + deployedImplementationType.getAssociatedTypeName() + " with an associated Connection.",
@@ -1403,9 +1403,9 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
-                                                  FilesPlaceholderProperty.DATA_SET_NAME.getPlaceholder(),
-                                                  versionIdentifier,
-                                                  null,
+                                                  PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
+                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                   null,
                                                   extendedProperties,
                                                   classifications);
@@ -1413,7 +1413,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         if (connectorTypeGUID != null)
         {
             String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
-                                                                FilesPlaceholderProperty.DATA_SET_NAME.getPlaceholder() + " connection",
+                                                                PlaceholderProperty.DISPLAY_NAME.getPlaceholder() + " connection",
                                                                 null,
                                                                 null,
                                                                 null,
@@ -1437,7 +1437,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
-                                               FilesPlaceholderProperty.getDataSetPlaceholderPropertyTypes());
+                                               PlaceholderProperty.getDataSetPlaceholderPropertyTypes());
     }
 
 
@@ -1459,7 +1459,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FilesPlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, FilesPlaceholderProperty.PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, FilesPlaceholderProperty.FILE_TYPE.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, FilesPlaceholderProperty.FILE_EXTENSION.getPlaceholder());
@@ -2101,6 +2101,28 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                 null,
                                                 null,
                                                 UnityCatalogPlaceholderProperty.getCatalogPlaceholderPropertyTypes());
+    }
+
+
+    private void addUCSchemaCatalogTemplate()
+    {
+        createDataSetCatalogTemplate(DeployedImplementationType.OSS_UC_SCHEMA,null);
+    }
+
+    private void addUCVolumeCatalogTemplate()
+    {
+        createFolderCatalogTemplate(DeployedImplementationType.OSS_UC_VOLUME, new DataFolderProvider().getConnectorType().getGUID());
+    }
+
+    private void addUCTableCatalogTemplate()
+    {
+        createDataSetCatalogTemplate(DeployedImplementationType.OSS_UC_TABLE,null);
+    }
+
+
+    private void addUCFunctionCatalogTemplate()
+    {
+        final String methodName = "addUCFunctionCatalogTemplate";
     }
 
 

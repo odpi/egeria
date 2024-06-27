@@ -388,7 +388,8 @@ Content-Type: application/json
 #
 
 @integrationConnectorGUID=fa1f711c-0b34-4b57-8e6e-16162b132b0c
-@metadataElementGUID=c38bbb0a-ba01-41d3-acfa-075c56a5b405
+@metadataElementGUID=add guid here
+@relationshipGUID=add guid here
 
 ###
 # @name addCatalogTarget
@@ -402,24 +403,43 @@ Content-Type: application/json
     "catalogTargetName" : "Freddy"
 }
 
+
 ###
 # Full body
 #{
 #    "catalogTargetName" : "",
 #    "metadataSourceQualifiedName" : "",
+#    "templates" : {
+#        "templateName1" : "template1GUID",
+#        "templateName2" : "template2GUID"
+#    },
 #    "configurationProperties" : {
 #        "propertyName1" : "propertyValue1",
 #        "propertyName2" : "propertyValue2"
 #    }
 #}
 
+
+###
+# @name updateCatalogTarget
+# Update a catalog target for an integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{relationshipGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "catalogTargetName" : "Freddy"
+}
+
 ###
 # @name getCatalogTarget
 # Retrieve a specific catalog target associated with an integration connector.
 # Further Information: https://egeria-project.org/concepts/integration-connector/
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets/{{metadataElementGUID}}
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{relationshipGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
 
 ###
 # @name getCatalogTargets
@@ -434,9 +454,16 @@ Content-Type: application/json
 # @name removeCatalogTarget
 # Unregister a catalog target from the integration connector.
 # Further Information: https://egeria-project.org/concepts/integration-connector/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets/{{metadataElementGUID}}/remove
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{relationshipGUID}}/remove
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+
+###
+# =====================================================================================================================
+# A governance action type runs a single engine action.
+#
+
 
 ###
 # @name findGovernanceActionTypes

@@ -75,21 +75,12 @@ public enum FilesPlaceholderProperty
                        "JSON"),
 
     /**
-     * The deployed implementation type for the file.
-     */
-    DEPLOYED_IMPLEMENTATION_TYPE ("deployedImplementationType",
-                   "The deployed implementation type for the file.",
-                   "string",
-                   "Build File"),
-
-
-    /**
      * The description of the resource to help a consumer understand its content and purpose.
      */
     DESCRIPTION ("description",
                  "The description of the resource to help a consumer understand its content and purpose.",
                  "string",
-                 "This file contains a moth-worth of patient data for the Teddy Bear Drop Foot clinical trial."),
+                 "This file contains a week's worth of patient data for the Teddy Bear Drop Foot clinical trial."),
 
 
     /**
@@ -250,25 +241,6 @@ public enum FilesPlaceholderProperty
 
 
     /**
-     * Retrieve all the defined placeholder properties for directories (file folder)
-     *
-     * @return list of placeholder property types
-     */
-    public static List<PlaceholderPropertyType> getDataSetPlaceholderPropertyTypes()
-    {
-        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
-
-        placeholderPropertyTypes.add(FILE_SYSTEM_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholderType());
-        placeholderPropertyTypes.add(DATA_SET_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(FORMULA.getPlaceholderType());
-        placeholderPropertyTypes.add(FORMULA_TYPE.getPlaceholderType());
-
-        return placeholderPropertyTypes;
-    }
-
-
-    /**
      * Retrieve all the defined placeholder properties for files associated with software
      *
      * @return list of placeholder property types
@@ -278,7 +250,6 @@ public enum FilesPlaceholderProperty
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
         placeholderPropertyTypes.add(FILE_SYSTEM_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholderType());
         placeholderPropertyTypes.add(PATH_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_TYPE.getPlaceholderType());
