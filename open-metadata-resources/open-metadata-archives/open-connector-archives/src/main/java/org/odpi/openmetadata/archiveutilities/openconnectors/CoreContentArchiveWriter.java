@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.openconnectors;
 
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.control.AtlasPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider;
@@ -14,7 +13,6 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileSt
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformProvider;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.EngineHostProvider;
@@ -30,7 +28,6 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls.FilesPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.CSVLineageImporterProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.egeria.EgeriaCataloguerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegrationConnectorProvider;
@@ -57,8 +54,6 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatal
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
-import org.odpi.openmetadata.archiveutilities.openconnectors.control.FileSystemPlaceholderProperty;
-import org.odpi.openmetadata.archiveutilities.openconnectors.control.HostPlaceholderProperty;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
@@ -1231,32 +1226,32 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
      * @param configurationProperties    configuration properties
      */
     private void createDataFileCatalogTemplate(DeployedImplementationType deployedImplementationType,
-                                               String connectorTypeGUID,
-                                               Map<String, Object> configurationProperties)
+                                               String                     connectorTypeGUID,
+                                               Map<String, Object>        configurationProperties)
     {
         final String methodName = "createDataFileCatalogTemplate";
 
-        String               qualifiedName      = FilesPlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + deployedImplementationType.getDeployedImplementationType() + ":" + FilesPlaceholderProperty.PATH_NAME.getPlaceholder();
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder();
         String               versionIdentifier  = "V1.0";
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
-        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, FilesPlaceholderProperty.PATH_NAME.getPlaceholder());
-        extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, FilesPlaceholderProperty.FILE_TYPE.getPlaceholder());
-        extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, FilesPlaceholderProperty.FILE_EXTENSION.getPlaceholder());
-        extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, FilesPlaceholderProperty.FILE_NAME.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, PlaceholderProperty.FILE_TYPE.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, PlaceholderProperty.FILE_EXTENSION.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, PlaceholderProperty.FILE_NAME.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create an asset of type " + deployedImplementationType.getAssociatedTypeName() + " with an associated Connection.",
                                                                     "V1.0",
                                                                     null, methodName));
 
-        classifications.add(archiveHelper.getDataStoreEncodingClassification(FilesPlaceholderProperty.FILE_ENCODING.getPlaceholder(), null, null, null));
+        classifications.add(archiveHelper.getDataStoreEncodingClassification(PlaceholderProperty.FILE_ENCODING.getPlaceholder(), null, null, null));
 
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
-                                                  FilesPlaceholderProperty.FILE_NAME.getPlaceholder(),
+                                                  PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
                                                   versionIdentifier,
                                                   null,
                                                   null,
@@ -1267,14 +1262,14 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                         deployedImplementationType.getAssociatedTypeName(),
                                                         OpenMetadataType.ASSET.typeName,
                                                         qualifiedName + ":Endpoint",
-                                                        FilesPlaceholderProperty.PATH_NAME.getPlaceholder() + " endpoint",
+                                                        PlaceholderProperty.FILE_PATH_NAME.getPlaceholder() + " endpoint",
                                                         null,
-                                                        FilesPlaceholderProperty.PATH_NAME.getPlaceholder(),
+                                                        PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
                                                         null,
                                                         null);
 
         String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
-                                                            FilesPlaceholderProperty.PATH_NAME.getPlaceholder() + " connection",
+                                                            PlaceholderProperty.FILE_PATH_NAME.getPlaceholder() + " connection",
                                                             null,
                                                             null,
                                                             null,
@@ -1297,7 +1292,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
-                                               FilesPlaceholderProperty.getDataFilesPlaceholderPropertyTypes());
+                                               PlaceholderProperty.getDataFilesPlaceholderPropertyTypes());
     }
 
 
@@ -1310,17 +1305,16 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
      * @param connectorTypeGUID          connector type to link to the connection
      */
     private void createFolderCatalogTemplate(DeployedImplementationType deployedImplementationType,
-                                             String connectorTypeGUID)
+                                             String                     connectorTypeGUID)
     {
         final String methodName = "createFolderCatalogTemplate";
 
-        String               qualifiedName      = FilesPlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + deployedImplementationType.getDeployedImplementationType() + ":" + FilesPlaceholderProperty.PATH_NAME.getPlaceholder();
-        String               versionIdentifier  = "V1.0";
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder();
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
-        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, FilesPlaceholderProperty.PATH_NAME.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create an asset of type " + deployedImplementationType.getAssociatedTypeName() + " with an associated Connection.",
@@ -1329,9 +1323,9 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
-                                                  FilesPlaceholderProperty.FOLDER_NAME.getPlaceholder(),
-                                                  versionIdentifier,
-                                                  null,
+                                                  PlaceholderProperty.DIRECTORY_NAME.getPlaceholder(),
+                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(), 
+                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                   null,
                                                   extendedProperties,
                                                   classifications);
@@ -1342,14 +1336,14 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                             deployedImplementationType.getAssociatedTypeName(),
                                                             OpenMetadataType.ASSET.typeName,
                                                             qualifiedName + ":Endpoint",
-                                                            FilesPlaceholderProperty.PATH_NAME + " endpoint",
+                                                            PlaceholderProperty.DIRECTORY_PATH_NAME + " endpoint",
                                                             null,
-                                                            FilesPlaceholderProperty.PATH_NAME.getPlaceholder(),
+                                                            PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder(),
                                                             null,
                                                             null);
 
             String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
-                                                                FilesPlaceholderProperty.PATH_NAME.getPlaceholder() + " connection",
+                                                                PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder() + " connection",
                                                                 null,
                                                                 null,
                                                                 null,
@@ -1373,7 +1367,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
-                                               FilesPlaceholderProperty.getFolderPlaceholderPropertyTypes());
+                                               PlaceholderProperty.getFolderPlaceholderPropertyTypes());
     }
 
 
@@ -1386,11 +1380,11 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
      * @param connectorTypeGUID          connector type to link to the connection
      */
     private void createDataSetCatalogTemplate(DeployedImplementationType deployedImplementationType,
-                                              String connectorTypeGUID)
+                                              String                     qualifiedName,
+                                              String                     connectorTypeGUID)
     {
         final String methodName = "createDataSetCatalogTemplate";
 
-        String               qualifiedName      = deployedImplementationType.getAssociatedTypeName() + ":" + deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.DISPLAY_NAME.getPlaceholder();
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -1454,32 +1448,31 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     {
         final String methodName = "createSoftwareFileCatalogTemplate";
 
-        String               qualifiedName      = FilesPlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + deployedImplementationType.getDeployedImplementationType() + ":" + FilesPlaceholderProperty.PATH_NAME.getPlaceholder();
-        String               versionIdentifier  = "V1.0";
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder();
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
-        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, FilesPlaceholderProperty.PATH_NAME.getPlaceholder());
-        extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, FilesPlaceholderProperty.FILE_TYPE.getPlaceholder());
-        extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, FilesPlaceholderProperty.FILE_EXTENSION.getPlaceholder());
-        extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, FilesPlaceholderProperty.FILE_NAME.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, PlaceholderProperty.FILE_TYPE.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, PlaceholderProperty.FILE_EXTENSION.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, PlaceholderProperty.FILE_NAME.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create an asset of type " + deployedImplementationType.getAssociatedTypeName() + " with an associated Connection.",
                                                                     "V1.0",
                                                                     null, methodName));
 
-        classifications.add(archiveHelper.getDataStoreEncodingClassification(FilesPlaceholderProperty.FILE_ENCODING.getPlaceholder(),
-                                                                             FilesPlaceholderProperty.PROGRAMMING_LANGUAGE.getPlaceholder(),
+        classifications.add(archiveHelper.getDataStoreEncodingClassification(PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
+                                                                             PlaceholderProperty.PROGRAMMING_LANGUAGE.getPlaceholder(),
                                                                              null,
                                                                              null));
 
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
-                                                  FilesPlaceholderProperty.FILE_NAME.getPlaceholder(),
-                                                  versionIdentifier,
-                                                  FilesPlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                  PlaceholderProperty.FILE_NAME.getPlaceholder(),
+                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(), 
+                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                   null,
                                                   extendedProperties,
                                                   classifications);
@@ -1490,14 +1483,14 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                             deployedImplementationType.getAssociatedTypeName(),
                                                             OpenMetadataType.ASSET.typeName,
                                                             qualifiedName + ":Endpoint",
-                                                            FilesPlaceholderProperty.PATH_NAME.getPlaceholder() + " endpoint",
+                                                            PlaceholderProperty.FILE_PATH_NAME.getPlaceholder() + " endpoint",
                                                             null,
-                                                            FilesPlaceholderProperty.PATH_NAME.getPlaceholder(),
+                                                            PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
                                                             null,
                                                             null);
 
             String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
-                                                                FilesPlaceholderProperty.PATH_NAME.getPlaceholder() + " connection",
+                                                                PlaceholderProperty.FILE_PATH_NAME.getPlaceholder() + " connection",
                                                                 null,
                                                                 null,
                                                                 null,
@@ -1521,7 +1514,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
-                                               FilesPlaceholderProperty.getSoftwareFilesPlaceholderPropertyTypes());
+                                               PlaceholderProperty.getSoftwareFilesPlaceholderPropertyTypes());
     }
 
 
@@ -1561,7 +1554,6 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         final String methodName = "createSoftwareServerCatalogTemplate";
 
         String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
-        String               versionIdentifier  = "V1.0";
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -1581,7 +1573,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
                                                   serverName,
-                                                  versionIdentifier,
+                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(), 
                                                   description,
                                                   null,
                                                   extendedProperties,
@@ -1691,23 +1683,21 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     private void addAtlasServerCatalogTemplate()
     {
         ApacheAtlasRESTProvider provider = new ApacheAtlasRESTProvider();
-
-        List<PlaceholderPropertyType> placeholderPropertyTypes = AtlasPlaceholderProperty.getPlaceholderPropertyTypes();
-
+        
         this.createSoftwareServerCatalogTemplate(DeployedImplementationType.APACHE_ATLAS_SERVER,
                                                  DeployedImplementationType.ASSET_CATALOG,
                                                  "Metadata Catalog",
                                                  null,
-                                                 AtlasPlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                                                 AtlasPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
-                                                 AtlasPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
-                                                 AtlasPlaceholderProperty.CONNECTION_PASSWORD.getPlaceholder(),
+                                                 PlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                 PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                                 PlaceholderProperty.CONNECTION_PASSWORD.getPlaceholder(),
                                                  provider.getConnectorType().getGUID(),
-                                                 AtlasPlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
-                                                               AtlasPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
+                                                               PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  null,
                                                  null,
-                                                 placeholderPropertyTypes);
+                                                 PlaceholderProperty.getServerWithUserIdAndPasswordPlaceholderPropertyTypes());
     }
 
 
@@ -1719,22 +1709,20 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     {
         OSSUnityCatalogResourceProvider provider = new OSSUnityCatalogResourceProvider();
 
-        List<PlaceholderPropertyType> placeholderPropertyTypes = UnityCatalogPlaceholderProperty.getServerPlaceholderPropertyTypes();
-
         this.createSoftwareServerCatalogTemplate(DeployedImplementationType.OSS_UNITY_CATALOG_SERVER,
                                                  DeployedImplementationType.REST_API_MANAGER,
                                                  "Unity Catalog REST API",
                                                  null,
-                                                 UnityCatalogPlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                                                 UnityCatalogPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
-                                                 UnityCatalogPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                                 PlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                 PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
-                                                 UnityCatalogPlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
-                                                         UnityCatalogPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
+                                                         PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  null,
                                                  null,
-                                                 placeholderPropertyTypes);
+                                                 PlaceholderProperty.getServerWithUserIdAndPasswordPlaceholderPropertyTypes());
     }
 
 
@@ -1860,27 +1848,25 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     private void addEngineHostCatalogTemplate()
     {
         EngineHostProvider provider = new EngineHostProvider();
-
-        List<PlaceholderPropertyType> placeholderPropertyTypes = OMAGServerPlaceholderProperty.getPlaceholderPropertyTypes();
-
+        
         Map<String, Object> configurationProperties = new HashMap<>();
 
-        configurationProperties.put("serverName", OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder());
+        configurationProperties.put("serverName", PlaceholderProperty.SERVER_NAME.getPlaceholder());
 
         this.createSoftwareServerCatalogTemplate(DeployedImplementationType.ENGINE_HOST,
                                                  DeployedImplementationType.REST_API_MANAGER,
                                                  "Governance Engine Status APIs",
                                                  null,
-                                                 OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                                                 OMAGServerPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
-                                                 OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                                 PlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                 PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
-                                                 OMAGServerPlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
-                                                         OMAGServerPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
+                                                         PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  configurationProperties,
                                                  null,
-                                                 placeholderPropertyTypes);
+                                                 PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes());
     }
 
 
@@ -1891,27 +1877,25 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     private void addIntegrationDaemonCatalogTemplate()
     {
         IntegrationDaemonProvider provider = new IntegrationDaemonProvider();
-
-        List<PlaceholderPropertyType> placeholderPropertyTypes = OMAGServerPlaceholderProperty.getPlaceholderPropertyTypes();
-
+        
         Map<String, Object> configurationProperties = new HashMap<>();
 
-        configurationProperties.put("serverName", OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder());
+        configurationProperties.put("serverName", PlaceholderProperty.SERVER_NAME.getPlaceholder());
 
         this.createSoftwareServerCatalogTemplate(DeployedImplementationType.INTEGRATION_DAEMON,
                                                  DeployedImplementationType.REST_API_MANAGER,
                                                  "Governance Engine Status APIs",
                                                  null,
-                                                 OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                                                 OMAGServerPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
-                                                 OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                                 PlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                 PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
-                                                 OMAGServerPlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
-                                                         OMAGServerPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
+                                                         PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  configurationProperties,
                                                  null,
-                                                 placeholderPropertyTypes);
+                                                 PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes());
     }
 
 
@@ -1923,26 +1907,24 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     {
         MetadataAccessServerProvider provider = new MetadataAccessServerProvider();
 
-        List<PlaceholderPropertyType> placeholderPropertyTypes = OMAGServerPlaceholderProperty.getPlaceholderPropertyTypes();
-
         Map<String, Object> configurationProperties = new HashMap<>();
 
-        configurationProperties.put("serverName", OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder());
+        configurationProperties.put("serverName", PlaceholderProperty.SERVER_NAME.getPlaceholder());
 
         this.createSoftwareServerCatalogTemplate(DeployedImplementationType.METADATA_ACCESS_SERVER,
                                                  DeployedImplementationType.REST_API_MANAGER,
                                                  "Open Metadata Repository Access APIs",
                                                  null,
-                                                 OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                                                 OMAGServerPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
-                                                 OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                                 PlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                 PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
-                                                 OMAGServerPlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
-                                                         OMAGServerPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
+                                                         PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  configurationProperties,
                                                  null,
-                                                 placeholderPropertyTypes);
+                                                 PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes());
     }
 
 
@@ -1953,27 +1935,25 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     private void addViewServerCatalogTemplate()
     {
         ViewServerProvider provider = new ViewServerProvider();
-
-        List<PlaceholderPropertyType> placeholderPropertyTypes = OMAGServerPlaceholderProperty.getPlaceholderPropertyTypes();
-
+        
         Map<String, Object> configurationProperties = new HashMap<>();
 
-        configurationProperties.put("serverName", OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder());
+        configurationProperties.put("serverName", PlaceholderProperty.SERVER_NAME.getPlaceholder());
 
         this.createSoftwareServerCatalogTemplate(DeployedImplementationType.VIEW_SERVER,
                                                  DeployedImplementationType.REST_API_MANAGER,
                                                  "Open Metadata and Governance End User APIs",
                                                  null,
-                                                 OMAGServerPlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                                                 OMAGServerPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
-                                                 OMAGServerPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                                 PlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                 PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
                                                  null,
                                                  provider.getConnectorType().getGUID(),
-                                                 OMAGServerPlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
-                                                         OMAGServerPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
+                                                         PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  configurationProperties,
                                                  null,
-                                                 placeholderPropertyTypes);
+                                                 PlaceholderProperty.getServerWithUserIdOnlyPlaceholderPropertyTypes());
     }
 
 
@@ -1991,13 +1971,13 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                  DeployedImplementationType.APACHE_KAFKA_EVENT_BROKER,
                                                  OpenMetadataType.EVENT_BROKER.typeName,
                                                  null,
-                                                 KafkaPlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                                                 KafkaPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
+                                                 PlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                  null,
                                                  null,
                                                  provider.getConnectorType().getGUID(),
-                                                 KafkaPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
-                                                         KafkaPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  null,
                                                  null,
                                                  placeholderPropertyTypes);
@@ -2021,7 +2001,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     {
         final String methodName = "createHostCatalogTemplate";
 
-        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + HostPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder();
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.HOST_URL.getPlaceholder();
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -2035,9 +2015,9 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
-                                                  HostPlaceholderProperty.HOST_NAME.getPlaceholder(),
-                                                  HostPlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
-                                                  HostPlaceholderProperty.HOST_DESCRIPTION.getPlaceholder(),
+                                                  PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
+                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                   null,
                                                   extendedProperties,
                                                   classifications);
@@ -2075,7 +2055,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.ASSET.typeName,
-                                               HostPlaceholderProperty.getPlaceholderPropertyTypes());
+                                               PlaceholderProperty.getHostPlaceholderPropertyTypes());
     }
 
 
@@ -2097,7 +2077,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     {
         createSoftwareCapabilityCatalogTemplate(DeployedImplementationType.OSS_UC_CATALOG,
                                                 UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder(),
-                                                UnityCatalogPlaceholderProperty.CATALOG_DESCRIPTION.getPlaceholder(),
+                                                PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                 null,
                                                 null,
                                                 UnityCatalogPlaceholderProperty.getCatalogPlaceholderPropertyTypes());
@@ -2106,23 +2086,173 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
     private void addUCSchemaCatalogTemplate()
     {
-        createDataSetCatalogTemplate(DeployedImplementationType.OSS_UC_SCHEMA,null);
+        final String methodName = "addUCSchemaCatalogTemplate";
+
+        DeployedImplementationType deployedImplementationType = DeployedImplementationType.OSS_UC_SCHEMA;
+        String                     fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
+                                                              + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
+                                                              + UnityCatalogPlaceholderProperty.TABLE_NAME.getPlaceholder();
+        String                     qualifiedName              = deployedImplementationType.getAssociatedTypeName() + ":"
+                                                              + deployedImplementationType.getDeployedImplementationType() + ":"
+                                                              + fullName;
+
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications    = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    "Create a Schema from the Unity Catalog (UC).",
+                                                                    "V1.0",
+                                                                    null,
+                                                                    methodName));
+
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  fullName,
+                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               UnityCatalogPlaceholderProperty.getSchemaPlaceholderPropertyTypes());
     }
 
     private void addUCVolumeCatalogTemplate()
     {
-        createFolderCatalogTemplate(DeployedImplementationType.OSS_UC_VOLUME, new DataFolderProvider().getConnectorType().getGUID());
+        final String methodName = "addUCVolumeCatalogTemplate";
+
+        DeployedImplementationType deployedImplementationType = DeployedImplementationType.OSS_UC_VOLUME;
+        String                     fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
+                                                              + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
+                                                              + UnityCatalogPlaceholderProperty.VOLUME_NAME.getPlaceholder();
+        String                     qualifiedName              = deployedImplementationType.getAssociatedTypeName() + ":"
+                                                              + deployedImplementationType.getDeployedImplementationType() + ":"
+                                                              + fullName;
+
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications    = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
+        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    "Create a Volume from the Unity Catalog (UC).",
+                                                                    "V1.0",
+                                                                    null,
+                                                                    methodName));
+
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  fullName,
+                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               UnityCatalogPlaceholderProperty.getVolumePlaceholderPropertyTypes());
     }
+
 
     private void addUCTableCatalogTemplate()
     {
-        createDataSetCatalogTemplate(DeployedImplementationType.OSS_UC_TABLE,null);
+        final String methodName = "addUCTableCatalogTemplate";
+
+        DeployedImplementationType deployedImplementationType = DeployedImplementationType.OSS_UC_TABLE;
+        String                     fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
+                                                              + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
+                                                              + UnityCatalogPlaceholderProperty.TABLE_NAME.getPlaceholder();
+        String                     qualifiedName              = deployedImplementationType.getAssociatedTypeName() + ":"
+                                                              + deployedImplementationType.getDeployedImplementationType() + ":"
+                                                              + fullName;
+
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications    = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    "Create a Table from the Unity Catalog (UC).",
+                                                                    "V1.0",
+                                                                    null,
+                                                                    methodName));
+
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  fullName,
+                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               UnityCatalogPlaceholderProperty.getTablePlaceholderPropertyTypes());
     }
 
 
     private void addUCFunctionCatalogTemplate()
     {
         final String methodName = "addUCFunctionCatalogTemplate";
+
+        DeployedImplementationType deployedImplementationType = DeployedImplementationType.OSS_UC_FUNCTION;
+        String                     fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
+                                                              + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
+                                                              + UnityCatalogPlaceholderProperty.FUNCTION_NAME.getPlaceholder();
+        String                     qualifiedName              = deployedImplementationType.getAssociatedTypeName() + ":"
+                                                              + deployedImplementationType.getDeployedImplementationType() + ":"
+                                                              + fullName;
+
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications    = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    "Create a Function from the Unity Catalog (UC).",
+                                                                    "V1.0",
+                                                                    null,
+                                                                    methodName));
+
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  fullName,
+                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               UnityCatalogPlaceholderProperty.getFunctionPlaceholderPropertyTypes());
     }
 
 
@@ -2148,7 +2278,6 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         final String methodName = "createSoftwareCapabilityCatalogTemplate";
 
         String               qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + softwareCapabilityName;
-        String               versionIdentifier = "V1.0";
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -2170,7 +2299,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                                     softwareCapabilityName,
                                                                     softwareCapabilityDescription,
                                                                     deployedImplementationType.getDeployedImplementationType(),
-                                                                    versionIdentifier,
+                                                                    PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(), 
                                                                     null,
                                                                     null,
                                                                     null,
@@ -2199,16 +2328,16 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     {
         final String methodName = "addFileSystemTemplate";
 
-        Classification fileSystemClassification = archiveHelper.getFileSystemClassification(FileSystemPlaceholderProperty.FORMAT.getPlaceholder(),
-                                                                                            FileSystemPlaceholderProperty.ENCRYPTION.getPlaceholder(),
+        Classification fileSystemClassification = archiveHelper.getFileSystemClassification(PlaceholderProperty.FORMAT.getPlaceholder(),
+                                                                                            PlaceholderProperty.ENCRYPTION.getPlaceholder(),
                                                                                             methodName);
 
         createSoftwareCapabilityCatalogTemplate(DeployedImplementationType.FILE_SYSTEM,
-                                                FileSystemPlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder(),
-                                                FileSystemPlaceholderProperty.FILE_SYSTEM_DESCRIPTION.getPlaceholder(),
+                                                PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder(),
+                                                PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                 fileSystemClassification,
                                                 null,
-                                                FileSystemPlaceholderProperty.getPlaceholderPropertyTypes());
+                                                PlaceholderProperty.getFileSystemPlaceholderPropertyTypes());
     }
 
 
@@ -2216,16 +2345,16 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     {
         final String methodName = "addUNIXFileSystemTemplate";
 
-        Classification fileSystemClassification = archiveHelper.getFileSystemClassification(FileSystemPlaceholderProperty.FORMAT.getPlaceholder(),
-                                                                                            FileSystemPlaceholderProperty.ENCRYPTION.getPlaceholder(),
+        Classification fileSystemClassification = archiveHelper.getFileSystemClassification(PlaceholderProperty.FORMAT.getPlaceholder(),
+                                                                                            PlaceholderProperty.ENCRYPTION.getPlaceholder(),
                                                                                             methodName);
 
         createSoftwareCapabilityCatalogTemplate(DeployedImplementationType.UNIX_FILE_SYSTEM,
-                                                FileSystemPlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder(),
-                                                FileSystemPlaceholderProperty.FILE_SYSTEM_DESCRIPTION.getPlaceholder(),
+                                                PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder(),
+                                                PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                 fileSystemClassification,
                                                 null,
-                                                FileSystemPlaceholderProperty.getPlaceholderPropertyTypes());
+                                                PlaceholderProperty.getFileSystemPlaceholderPropertyTypes());
     }
 
 
@@ -2398,8 +2527,8 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         Map<String, String> bootstrapServersProperties = new HashMap<>();
 
         bootstrapServersProperties.put("bootstrap.servers",
-                                       KafkaPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
-                                               KafkaPlaceholderProperty.PORT_NUMBER.getPlaceholder());
+                                       PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                               PlaceholderProperty.PORT_NUMBER.getPlaceholder());
 
         configurationProperties.put(KafkaPlaceholderProperty.EVENT_DIRECTION.getName(), "inOut");
         configurationProperties.put("producer", bootstrapServersProperties);

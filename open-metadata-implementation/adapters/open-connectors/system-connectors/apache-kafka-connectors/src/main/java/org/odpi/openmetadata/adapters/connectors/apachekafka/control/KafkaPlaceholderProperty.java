@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.apachekafka.control;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderPropertyType;
 
 import java.util.ArrayList;
@@ -15,26 +16,6 @@ import java.util.List;
  */
 public enum KafkaPlaceholderProperty
 {
-    /**
-     * The host IP address or domain name.
-     */
-    HOST_IDENTIFIER ("hostIdentifier", "The host IP address or domain name.", "string", "https://coconet.com"),
-
-    /**
-     * The number of the port to use to connect to a service.
-     */
-    PORT_NUMBER ("portNumber", "The number of the port to use to connect to the server.", "string", "1234"),
-
-    /**
-     * The name of the server being catalogued.
-     */
-    SERVER_NAME ("serverName", "The name of the Apache Kafka server being catalogued.", "string", "myKafkaServer"),
-
-    /**
-     * The description of the server being catalogued.
-     */
-    SERVER_DESCRIPTION ("serverDescription", "The description of the server being catalogued.", "string", null),
-
     /**
      * The full name of the topic.
      */
@@ -146,10 +127,10 @@ public enum KafkaPlaceholderProperty
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
-        placeholderPropertyTypes.add(HOST_IDENTIFIER.getPlaceholderType());
-        placeholderPropertyTypes.add(PORT_NUMBER.getPlaceholderType());
-        placeholderPropertyTypes.add(SERVER_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(SERVER_DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
@@ -163,6 +144,11 @@ public enum KafkaPlaceholderProperty
     public static List<PlaceholderPropertyType> getKafkaTopicPlaceholderPropertyTypes()
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
 
         for (KafkaPlaceholderProperty placeholderProperty : KafkaPlaceholderProperty.values())
         {
