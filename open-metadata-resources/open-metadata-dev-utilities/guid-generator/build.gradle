@@ -12,7 +12,7 @@ dependencies {
 
 }
 
-description = ''
+description = 'GUID Generator'
 
 java {
     withJavadocJar()
