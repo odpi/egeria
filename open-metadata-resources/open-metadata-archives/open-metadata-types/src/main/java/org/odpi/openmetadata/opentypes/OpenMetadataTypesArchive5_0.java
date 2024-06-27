@@ -909,9 +909,9 @@ public class OpenMetadataTypesArchive5_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.name;
-        final String attribute1Description     = OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
+        final String attribute1Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,

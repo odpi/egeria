@@ -214,7 +214,7 @@ public class AutomatedCurationResource
      * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
      * @param requestBody properties for the relationship.
      *
-     * @return void or
+     * @return guid or
      * InvalidParameterException one of the parameters is null or invalid or
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the catalog target definition.
@@ -226,7 +226,7 @@ public class AutomatedCurationResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/integration-connector/"))
 
-    public VoidResponse addCatalogTarget(@PathVariable String                  serverName,
+    public GUIDResponse addCatalogTarget(@PathVariable String                  serverName,
                                          @PathVariable String                  integrationConnectorGUID,
                                          @PathVariable String                  metadataElementGUID,
                                          @RequestBody  CatalogTargetProperties requestBody)
@@ -235,19 +235,45 @@ public class AutomatedCurationResource
     }
 
 
+
+    /**
+     * Update a catalog target for an integration connector.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param relationshipGUID unique identifier of the integration service.* @param requestBody properties for the relationship.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the catalog target definition.
+     */
+    @PostMapping(path = "/catalog-targets/{relationshipGUID}/update")
+
+    @Operation(summary="updateCatalogTarget",
+            description="Update a catalog target for an integration connector.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public VoidResponse updateCatalogTarget(@PathVariable String                  serverName,
+                                            @PathVariable String                  relationshipGUID,
+                                            @RequestBody  CatalogTargetProperties requestBody)
+    {
+        return restAPI.updateCatalogTarget(serverName, relationshipGUID, requestBody);
+    }
+
+
     /**
      * Retrieve a specific catalog target associated with an integration connector.
      *
      * @param serverName name of the service to route the request to.
-     * @param integrationConnectorGUID unique identifier of the integration service.
-     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
+     * @param relationshipGUID unique identifier of the relationship.
      *
      * @return details of the governance service and the asset types it is registered for or
      * InvalidParameterException one of the parameters is null or invalid or
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the integration connector definition.
      */
-    @GetMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets/{metadataElementGUID}")
+    @GetMapping(path = "/catalog-targets/{relationshipGUID}")
 
     @Operation(summary="getCatalogTarget",
             description="Retrieve a specific catalog target associated with an integration connector.",
@@ -255,10 +281,9 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/integration-connector/"))
 
     public CatalogTargetResponse getCatalogTarget(@PathVariable String serverName,
-                                                  @PathVariable String integrationConnectorGUID,
-                                                  @PathVariable String metadataElementGUID)
+                                                  @PathVariable String relationshipGUID)
     {
-        return restAPI.getCatalogTarget(serverName, integrationConnectorGUID, metadataElementGUID);
+        return restAPI.getCatalogTarget(serverName, relationshipGUID);
     }
 
 
@@ -295,8 +320,7 @@ public class AutomatedCurationResource
      * Unregister a catalog target from the integration connector.
      *
      * @param serverName name of the service to route the request to.
-     * @param integrationConnectorGUID unique identifier of the integration connector.
-     * @param metadataElementGUID unique identifier of the governance service.
+     * @param relationshipGUID unique identifier of the relationship.
      * @param requestBody null request body.
      *
      * @return void or
@@ -304,7 +328,7 @@ public class AutomatedCurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the integration connector definition.
      */
-    @PostMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets/{metadataElementGUID}/remove")
+    @PostMapping(path = "/catalog-targets/{relationshipGUID}/remove")
 
     @Operation(summary="removeCatalogTarget",
             description="Unregister a catalog target from the integration connector.",
@@ -312,12 +336,11 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/integration-connector/"))
 
     public VoidResponse removeCatalogTarget(@PathVariable String           serverName,
-                                            @PathVariable String           integrationConnectorGUID,
-                                            @PathVariable String           metadataElementGUID,
+                                            @PathVariable String           relationshipGUID,
                                             @RequestBody(required = false)
                                                           NullRequestBody requestBody)
     {
-        return restAPI.removeCatalogTarget(serverName, integrationConnectorGUID, metadataElementGUID, requestBody);
+        return restAPI.removeCatalogTarget(serverName, relationshipGUID, requestBody);
     }
 
 

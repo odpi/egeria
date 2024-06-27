@@ -49,6 +49,30 @@ public enum PlaceholderProperty
      */
     SCHEMA_NAME ("schemaName", "The name of the schema being catalogued.", "string", "MyServer.schema"),
 
+    /**
+     * The display name is used to identify the element.
+     */
+    DISPLAY_NAME("displayName",
+                 "The display name is used to identify the element.  It does not need to be unique, but it should help someone know what the element is about.",
+                 "string",
+                 "myDataSet"),
+
+    /**
+     * The description of the element to help a consumer understand its content and purpose.
+     */
+    DESCRIPTION ("description",
+                 "The description of the element to help a consumer understand its content and purpose.",
+                 "string",
+                 "This file contains a week's worth of patient data for the Teddy Bear Drop Foot clinical trial."),
+
+    /**
+     * The description of the element to help a consumer understand its content and purpose.
+     */
+    VERSION_IDENTIFIER ("versionIdentifier",
+                 "The string identifier for the element.  This is typically of the form Vx.y.z where x is the major version number, y is the minor version number, and z is an option patch identifier.",
+                 "string",
+                 "V1.0"),
+
     ;
 
     public final String           name;
@@ -166,6 +190,26 @@ public enum PlaceholderProperty
 
         return placeholderPropertyType;
     }
+
+
+
+    /**
+     * Retrieve all the defined placeholder properties for directories (file folder)
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getDataSetPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(DISPLAY_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(VERSION_IDENTIFIER.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
 
     /**
      * Output of this enum class and main value.

@@ -164,7 +164,6 @@ public class RepositoryHandler
 
     /**
      * Validate an entity retrieved from the repository is suitable for the requester.
-     *
      * There are three considerations: (1) Are the effectivity dates in the entity's properties indicating that this entity
      * is effective at this time? (2) If the entity is a memento (ie it has the Memento classification attached) then it should only be
      * returned if the request is for lineage. (3) If the entity is a known duplicate (ie it has the KnownDuplicate classification attached)
@@ -1576,8 +1575,14 @@ public class RepositoryHandler
              */
             try
             {
-                entityDetail = this.getEntityByGUID(userId, entityGUID, entityGUIDParameterName, entityTypeName, forLineage, forDuplicateProcessing,
-                                                    effectiveTime, methodName);
+                entityDetail = this.getEntityByGUID(userId,
+                                                    entityGUID,
+                                                    entityGUIDParameterName,
+                                                    entityTypeName,
+                                                    forLineage,
+                                                    forDuplicateProcessing,
+                                                    effectiveTime,
+                                                    methodName);
 
                 if (entityDetail.getClassifications() != null)
                 {
@@ -1612,10 +1617,40 @@ public class RepositoryHandler
                             }
 
                             /*
-                             * The change to the classification is incompatible with the conflicting
-                             * change, so the appropriate exception is returned to the caller.
+                             * Retry the classification - there may have been a timing error, with two threads
+                             * trying to classify it at the same time
                              */
-                            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+                            try
+                            {
+                                auditLog.logMessage(methodName, RepositoryHandlerAuditCode.CLASSIFICATION_RETRY.getMessageDefinition(classificationTypeName,
+                                                                                                                                     entityDetail.getGUID(),
+                                                                                                                                     error.getClass().getName(),
+                                                                                                                                     error.getMessage()));
+
+                                EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(userId, entityDetail);
+
+                                Classification newClassification = metadataCollection.updateEntityClassification(userId,
+                                                                                                                 entityProxy,
+                                                                                                                 classificationTypeName,
+                                                                                                                 properties);
+
+                                // update the entity's classifications list with the one we just added
+                                List<Classification> classifications = entityDetail.getClassifications() == null
+                                        ? new ArrayList<>()
+                                        : entityDetail.getClassifications();
+                                classifications.add(newClassification);
+                                entityDetail.setClassifications(classifications);
+
+                                return entityDetail;
+                            }
+                            catch (Exception reclassificationError)
+                            {
+                                /*
+                                 * The change to the classification is incompatible with the conflicting
+                                 * change, so the appropriate exception is returned to the caller.
+                                 */
+                                errorHandler.handleRepositoryError(reclassificationError, methodName, localMethodName);
+                            }
                         }
                     }
 

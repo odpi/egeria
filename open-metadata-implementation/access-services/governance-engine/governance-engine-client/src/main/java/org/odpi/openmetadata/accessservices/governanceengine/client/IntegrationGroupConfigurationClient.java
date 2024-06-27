@@ -796,17 +796,18 @@ public class IntegrationGroupConfigurationClient implements IntegrationGroupConf
      * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
      * @param properties properties for the relationship.
      *
+     * @return catalog target GUID
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the catalog target definition.
      */
     @Override
-    public void addCatalogTarget(String                  userId,
-                                 String                  integrationConnectorGUID,
-                                 String                  metadataElementGUID,
-                                 CatalogTargetProperties properties) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public String addCatalogTarget(String                  userId,
+                                   String                  integrationConnectorGUID,
+                                   String                  metadataElementGUID,
+                                   CatalogTargetProperties properties) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName = "addCatalogTarget";
         final String propertiesParameterName = "properties";
@@ -819,23 +820,59 @@ public class IntegrationGroupConfigurationClient implements IntegrationGroupConf
         invalidParameterHandler.validateGUID(metadataElementGUID, metadataElementGUIDParameter, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
+        GUIDResponse response = restClient.callGUIDPostRESTCall(methodName,
+                                                                urlTemplate,
+                                                                properties,
+                                                                serverName,
+                                                                userId,
+                                                                integrationConnectorGUID,
+                                                                metadataElementGUID);
+
+        return response.getGUID();
+    }
+
+
+    /**
+     * Update a catalog target for an integration connector.
+     *
+     * @param userId identifier of calling user.
+     * @param relationshipGUID unique identifier of the relationship.
+     * @param properties properties for the relationship.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem storing the catalog target definition.
+     */
+    @Override
+    public void updateCatalogTarget(String                  userId,
+                                    String                  relationshipGUID,
+                                    CatalogTargetProperties properties) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String methodName = "updateCatalogTarget";
+        final String propertiesParameterName = "properties";
+        final String integrationConnectorGUIDParameter = "relationshipGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/catalog-targets/{2}/update";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, integrationConnectorGUIDParameter, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         properties,
                                         serverName,
                                         userId,
-                                        integrationConnectorGUID,
-                                        metadataElementGUID);
+                                        relationshipGUID);
     }
-
 
 
     /**
      * Retrieve a specific catalog target associated with an integration connector.
      *
      * @param userId identifier of calling user.
-     * @param integrationConnectorGUID unique identifier of the integration service.
-     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
+     * @param relationshipGUID unique identifier of the integration service.
      *
      * @return details of the integration connector and the elements it is to catalog
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -844,24 +881,22 @@ public class IntegrationGroupConfigurationClient implements IntegrationGroupConf
      */
     @Override
     public CatalogTarget getCatalogTarget(String userId,
-                                          String integrationConnectorGUID,
-                                          String metadataElementGUID) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                          String relationshipGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         final String methodName = "getCatalogTarget";
-        final String integrationConnectorGUIDParameter = "integrationConnectorGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/integration-connectors/{2}/catalog-targets/{3}";
+        final String integrationConnectorGUIDParameter = "relationshipGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/catalog-targets/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integrationConnectorGUID, integrationConnectorGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, integrationConnectorGUIDParameter, methodName);
 
         CatalogTargetResponse restResult = restClient.callCatalogTargetGetRESTCall(methodName,
                                                                                      urlTemplate,
                                                                                      serverName,
                                                                                      userId,
-                                                                                     integrationConnectorGUID,
-                                                                                     metadataElementGUID);
+                                                                                     relationshipGUID);
 
         return restResult.getElement();
     }
@@ -913,8 +948,7 @@ public class IntegrationGroupConfigurationClient implements IntegrationGroupConf
      * Unregister a catalog target from the integration connector.
      *
      * @param userId identifier of calling user.
-     * @param integrationConnectorGUID unique identifier of the integration connector.
-     * @param metadataElementGUID unique identifier of the metadata element.
+     * @param relationshipGUID unique identifier of the integration connector.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
@@ -922,26 +956,22 @@ public class IntegrationGroupConfigurationClient implements IntegrationGroupConf
      */
     @Override
     public void removeCatalogTarget(String userId,
-                                    String integrationConnectorGUID,
-                                    String metadataElementGUID) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+                                    String relationshipGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         final String methodName = "removeCatalogTarget";
-        final String integrationConnectorGUIDParameter = "integrationConnectorGUID";
-        final String metadataElementGUIDParameter = "metadataElementGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/integration-connectors/{2}/catalog-targets/{3}/delete";
+        final String integrationConnectorGUIDParameter = "relationshipGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-engine/users/{1}/catalog-targets/{2}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integrationConnectorGUID, integrationConnectorGUIDParameter, methodName);
-        invalidParameterHandler.validateGUID(metadataElementGUID, metadataElementGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, integrationConnectorGUIDParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
-                                        integrationConnectorGUID,
-                                        metadataElementGUID);
+                                        relationshipGUID);
     }
 }

@@ -91,6 +91,12 @@ public enum UCAuditCode implements AuditLogMessageSet
                     "The connector is ignoring the Unity Catalog (UC) server instance that are configured directly through its connection.",
                     "Update the integration connector's configuration to use catalog targets."),
 
+    NEW_CATALOG_TARGET("UNITY-CATALOG-CONNECTOR-0009",
+                      AuditLogRecordSeverityLevel.INFO,
+                      "The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to Unity Catalog Server Asset {3} for Unity Catalog (UC) {4}",
+                      "The connector has requested that its friendship connector starts to catalog a new Unity Catalog (UC) catalog.",
+                      "Verify that the cataloguing starts the next time that the friendship connector refreshes."),
+
     ;
 
     private final String                     logMessageId;

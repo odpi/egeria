@@ -2160,12 +2160,12 @@ public class GovernanceConfigurationHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the catalog target definition.
      */
-    public void addCatalogTarget(String                  userId,
-                                 String                  integrationConnectorGUID,
-                                 String                  metadataElementGUID,
-                                 CatalogTargetProperties properties) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public String addCatalogTarget(String                  userId,
+                                   String                  integrationConnectorGUID,
+                                   String                  metadataElementGUID,
+                                   CatalogTargetProperties properties) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String methodName = "addCatalogTarget";
         final String propertiesParameterName = "properties";
@@ -2195,35 +2195,89 @@ public class GovernanceConfigurationHandler
                                                                        properties.getConfigurationProperties(),
                                                                        methodName);
 
-        integrationGroupHandler.linkElementToElement(userId,
-                                                     null,
-                                                     null,
-                                                     integrationConnectorGUID,
-                                                     integrationConnectorGUIDParameter,
-                                                     OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                                     metadataElementGUID,
-                                                     metadataElementGUIDParameter,
-                                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                     false,
-                                                     false,
-                                                     integrationGroupHandler.getSupportedZones(),
-                                                     OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
-                                                     OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
-                                                     instanceProperties,
-                                                     null,
-                                                     null,
-                                                     new Date(),
-                                                     methodName);
+        return integrationGroupHandler.multiLinkElementToElement(userId,
+                                                                 null,
+                                                                 null,
+                                                                 integrationConnectorGUID,
+                                                                 integrationConnectorGUIDParameter,
+                                                                 OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
+                                                                 metadataElementGUID,
+                                                                 metadataElementGUIDParameter,
+                                                                 OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                 false,
+                                                                 false,
+                                                                 integrationGroupHandler.getSupportedZones(),
+                                                                 OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
+                                                                 OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                                 instanceProperties,
+                                                                 new Date(),
+                                                                 methodName);
     }
 
+
+    /**
+     * Update a catalog target for an integration connector.
+     *
+     * @param userId identifier of calling user.
+     * @param relationshipGUID unique identifier of the relationship.
+     * @param properties properties for the relationship.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem storing the catalog target definition.
+     */
+    public void updateCatalogTarget(String                  userId,
+                                    String                  relationshipGUID,
+                                    CatalogTargetProperties properties) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String methodName = "addCatalogTarget";
+        final String propertiesParameterName = "properties";
+        final String guidParameter = "relationshipGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, guidParameter, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+
+        InstanceProperties instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                             null,
+                                                                                             OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
+                                                                                             properties.getCatalogTargetName(),
+                                                                                             methodName);
+
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                          instanceProperties,
+                                                                          OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
+                                                                          properties.getMetadataSourceQualifiedName(),
+                                                                          methodName);
+
+        instanceProperties = repositoryHelper.addMapPropertyToInstance(serviceName,
+                                                                       instanceProperties,
+                                                                       OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
+                                                                       properties.getConfigurationProperties(),
+                                                                       methodName);
+
+        integrationGroupHandler.updateRelationshipProperties(userId,
+                                                             null,
+                                                             null,
+                                                             relationshipGUID,
+                                                             guidParameter,
+                                                             OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                             true,
+                                                             instanceProperties,
+                                                             false,
+                                                             false,
+                                                             new Date(),
+                                                             methodName);
+    }
 
 
     /**
      * Retrieve a specific catalog target associated with an integration connector.
      *
      * @param userId identifier of calling user.
-     * @param integrationConnectorGUID unique identifier of the integration service.
-     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
+     * @param relationshipGUID unique identifier of the integration service.
      *
      * @return details of the integration connector and the elements it is to catalog
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -2231,36 +2285,27 @@ public class GovernanceConfigurationHandler
      * @throws PropertyServerException problem retrieving the integration connector definition.
      */
     public CatalogTarget getCatalogTarget(String userId,
-                                          String integrationConnectorGUID,
-                                          String metadataElementGUID) throws InvalidParameterException,
+                                          String relationshipGUID) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
         final String methodName = "getCatalogTarget";
-        final String integrationConnectorGUIDParameter = "integrationConnectorGUID";
+        final String parameterGUID = "relationshipGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integrationConnectorGUID, integrationConnectorGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, parameterGUID, methodName);
 
-        List<Relationship> relationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
-                                                                                             integrationConnectorGUID,
-                                                                                             OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                                                                             metadataElementGUID,
-                                                                                             OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
-                                                                                             OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
-                                                                                             2,
-                                                                                             false,
-                                                                                             false,
-                                                                                             null,
-                                                                                             methodName);
+        Relationship relationship = repositoryHandler.getRelationshipByGUID(userId,
+                                                                            relationshipGUID,
+                                                                            parameterGUID,
+                                                                            OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                                            new Date(),
+                                                                            methodName);
 
 
-        if (relationships != null)
+        if (relationship != null)
         {
-            if (!relationships.isEmpty())
-            {
-                return catalogTargetConverter.getNewBean(CatalogTarget.class, relationships.get(0), methodName);
-            }
+            return catalogTargetConverter.getNewBean(CatalogTarget.class, relationship, methodName);
         }
 
         return null;
@@ -2331,43 +2376,32 @@ public class GovernanceConfigurationHandler
      * Unregister a catalog target from the integration connector.
      *
      * @param userId identifier of calling user.
-     * @param integrationConnectorGUID unique identifier of the integration connector.
-     * @param metadataElementGUID unique identifier of the metadata element.
+     * @param relationshipGUID unique identifier of the integration connector.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem accessing/updating the integration connector definition.
      */
     public void removeCatalogTarget(String userId,
-                                    String integrationConnectorGUID,
-                                    String metadataElementGUID) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+                                    String relationshipGUID) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
     {
         final String methodName = "removeCatalogTarget";
-        final String integrationConnectorGUIDParameter = "integrationConnectorGUID";
-        final String metadataElementGUIDParameter = "metadataElementGUID";
+        final String guidParameter = "relationshipGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integrationConnectorGUID, integrationConnectorGUIDParameter, methodName);
-        invalidParameterHandler.validateGUID(metadataElementGUID, metadataElementGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(relationshipGUID, guidParameter, methodName);
 
-        integrationGroupHandler.unlinkElementFromElement(userId,
-                                                         false,
-                                                         null,
-                                                         null,
-                                                         integrationConnectorGUID,
-                                                         integrationConnectorGUIDParameter,
-                                                         OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                                         metadataElementGUID,
-                                                         metadataElementGUIDParameter,
-                                                         OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
-                                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                         false,
-                                                         false,
-                                                         OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
-                                                         OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
-                                                         new Date(),
-                                                         methodName);
+        integrationGroupHandler.deleteRelationship(userId,
+                                                   null,
+                                                   null,
+                                                   relationshipGUID,
+                                                   guidParameter,
+                                                   OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                   false,
+                                                   false,
+                                                   new Date(),
+                                                   methodName);
     }
 }

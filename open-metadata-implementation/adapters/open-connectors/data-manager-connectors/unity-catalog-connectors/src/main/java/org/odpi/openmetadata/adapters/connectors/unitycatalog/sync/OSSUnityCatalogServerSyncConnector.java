@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
 import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
+import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -334,38 +335,33 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
     {
+        final String methodName = "addCatalogTarget";
+
         if (ucServerGUID != null)
         {
             String friendshipConnectorGUID = getFriendshipGUID(configurationProperties);
 
             if (friendshipConnectorGUID != null)
             {
-                IntegrationGovernanceContext integrationGovernanceContext = this.getContext().getIntegrationGovernanceContext();
-                OpenMetadataAccess           openMetadataAccess           = integrationGovernanceContext.getOpenMetadataAccess();
+                CatalogTargetProperties catalogTargetProperties= new CatalogTargetProperties();
 
-
-                ElementProperties catalogTargetProperties = propertyHelper.addStringProperty(null,
-                                                                                             OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
-                                                                                             ucCatalogName);
-                catalogTargetProperties = propertyHelper.addStringProperty(catalogTargetProperties,
-                                                                           OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
-                                                                           ucCatalogQualifiedName);
+                catalogTargetProperties.setCatalogTargetName(ucCatalogName);
+                catalogTargetProperties.setMetadataSourceQualifiedName( ucCatalogQualifiedName);
 
                 Map<String, Object> targetConfigurationProperties = new HashMap<>();
 
-                targetConfigurationProperties.put(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
-                                                  ucCatalogName);
+                targetConfigurationProperties.put(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(), ucCatalogName);
 
-                catalogTargetProperties = propertyHelper.addMapProperty(catalogTargetProperties,
-                                                                        OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
-                                                                        targetConfigurationProperties);
+                catalogTargetProperties.setConfigurationProperties(targetConfigurationProperties);
 
-                openMetadataAccess.createRelatedElementsInStore(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
-                                                                defaultFriendshipGUID,
-                                                                ucServerGUID,
-                                                                null,
-                                                                null,
-                                                                catalogTargetProperties);
+                String relationshipGUID = getContext().addCatalogTarget(defaultFriendshipGUID, ucServerGUID, catalogTargetProperties);
+
+                auditLog.logMessage(methodName,
+                                    UCAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                        relationshipGUID,
+                                                                                        friendshipConnectorGUID,
+                                                                                        ucServerGUID,
+                                                                                        ucCatalogName));
             }
         }
     }

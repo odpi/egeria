@@ -153,14 +153,93 @@ public class OpenMetadataTypesArchive
          * Pull the types from previous releases.
          */
         previousTypes.getOriginalTypes();
-    }
 
+        update0201Connections();
+        update0464IntegrationGroups();
+    }
 
 
     /*
      * -------------------------------------------------------------------------------------------------------
      */
 
+    private void update0201Connections()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateConnectorType());
+    }
+
+
+    private TypeDefPatch updateConnectorType()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME;
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.name;
+        final String attribute2Description     = OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        properties.add(property);
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0464IntegrationGroups()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateCatalogTarget());
+    }
+
+
+    /**
+     * Add multi-link
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateCatalogTarget()
+    {
+        final String typeName = OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME;
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        typeDefPatch.setUpdateMultiLink(true);
+        typeDefPatch.setMultiLink(true);
+
+        return typeDefPatch;
+    }
 
 }
 

@@ -3,7 +3,7 @@
 
 ###
 # @name list catalogs
-GET {{ucURL}}/api/2.1/unity-catalog/catalogs?max_results=1
+GET {{ucURL}}/api/2.1/unity-catalog/catalogs?max_results=10
 
 ###
 # @name create catalog
@@ -11,8 +11,8 @@ POST {{ucURL}}/api/2.1/unity-catalog/catalogs
 Content-Type: application/json
 
 {
-  "name": "test3",
-  "comment": "Test catalog3",
+  "name": "test7",
+  "comment": "Test catalog7",
   "properties": {
     "egeriaGUID" : "c14d6b99-7202-4f04-a05d-49f0fdd7373d"
   }

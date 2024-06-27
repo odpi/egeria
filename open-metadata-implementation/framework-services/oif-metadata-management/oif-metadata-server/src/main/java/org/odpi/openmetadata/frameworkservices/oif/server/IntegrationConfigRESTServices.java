@@ -999,12 +999,12 @@ public class IntegrationConfigRESTServices
      * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
      * @param requestBody properties for the relationship.
      *
-     * @return void or
+     * @return guid or
      * InvalidParameterException one of the parameters is null or invalid or
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the catalog target definition.
      */
-    public VoidResponse addCatalogTarget(String                  serverName,
+    public GUIDResponse addCatalogTarget(String                  serverName,
                                          String                  serviceURLMarker,
                                          String                  userId,
                                          String                  integrationConnectorGUID,
@@ -1012,6 +1012,66 @@ public class IntegrationConfigRESTServices
                                          CatalogTargetProperties requestBody)
     {
         final String methodName = "addCatalogTarget";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            IntegrationGroupConfigurationHandler handler = instanceHandler.getIntegrationGroupConfigurationHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setGUID(handler.addCatalogTarget(userId,
+                                                          integrationConnectorGUID,
+                                                          metadataElementGUID,
+                                                          requestBody,
+                                                          instanceHandler.getSupportedZones(userId,
+                                                                                            serverName,
+                                                                                            serviceURLMarker,
+                                                                                            methodName)));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update a catalog target for an integration connector.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param relationshipGUID unique identifier of the integration service.
+     * @param requestBody properties for the relationship.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the catalog target definition.
+     */
+    public VoidResponse updateCatalogTarget(String                  serverName,
+                                            String                  serviceURLMarker,
+                                            String                  userId,
+                                            String                  relationshipGUID,
+                                            CatalogTargetProperties requestBody)
+    {
+        final String methodName = "updateCatalogTarget";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1026,14 +1086,13 @@ public class IntegrationConfigRESTServices
 
             if (requestBody != null)
             {
-                handler.addCatalogTarget(userId,
-                                         integrationConnectorGUID,
-                                         metadataElementGUID,
-                                         requestBody,
-                                         instanceHandler.getSupportedZones(userId,
-                                                                           serverName,
-                                                                           serviceURLMarker,
-                                                                           methodName));
+                handler.updateCatalogTarget(userId,
+                                            relationshipGUID,
+                                            requestBody,
+                                            instanceHandler.getSupportedZones(userId,
+                                                                              serverName,
+                                                                              serviceURLMarker,
+                                                                              methodName));
             }
             else
             {
@@ -1057,8 +1116,7 @@ public class IntegrationConfigRESTServices
      * @param serverName name of the service to route the request to.
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
-     * @param integrationConnectorGUID unique identifier of the integration service.
-     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
+     * @param relationshipGUID unique identifier of the relationship.
      *
      * @return details of the integration connector and the elements it is to catalog or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -1068,8 +1126,7 @@ public class IntegrationConfigRESTServices
     public CatalogTargetResponse getCatalogTarget(String serverName,
                                                   String serviceURLMarker,
                                                   String userId,
-                                                  String integrationConnectorGUID,
-                                                  String metadataElementGUID)
+                                                  String relationshipGUID)
     {
         final String        methodName = "getCatalogTarget";
 
@@ -1084,8 +1141,7 @@ public class IntegrationConfigRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setElement(handler.getCatalogTarget(userId,
-                                                         integrationConnectorGUID,
-                                                         metadataElementGUID,
+                                                         relationshipGUID,
                                                          instanceHandler.getSupportedZones(userId,
                                                                                            serverName,
                                                                                            serviceURLMarker,
@@ -1162,8 +1218,7 @@ public class IntegrationConfigRESTServices
      * @param serverName name of the service to route the request to.
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
-     * @param integrationConnectorGUID unique identifier of the integration connector.
-     * @param metadataElementGUID unique identifier of the governance service.
+     * @param relationshipGUID unique identifier of the governance service.
      * @param requestBody null request body.
      *
      * @return void or
@@ -1175,8 +1230,7 @@ public class IntegrationConfigRESTServices
     public VoidResponse removeCatalogTarget(String          serverName,
                                             String          serviceURLMarker,
                                             String          userId,
-                                            String          integrationConnectorGUID,
-                                            String          metadataElementGUID,
+                                            String          relationshipGUID,
                                             NullRequestBody requestBody)
     {
         final String methodName = "removeCatalogTarget";
@@ -1192,8 +1246,7 @@ public class IntegrationConfigRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeCatalogTarget(userId,
-                                        integrationConnectorGUID,
-                                        metadataElementGUID,
+                                        relationshipGUID,
                                         instanceHandler.getSupportedZones(userId,
                                                                           serverName,
                                                                           serviceURLMarker,
