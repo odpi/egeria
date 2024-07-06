@@ -120,6 +120,11 @@ public enum ElementStatus
     DEPRECATED              (30, "Deprecated",              "The instance is out of date and should not be used."),
 
     /**
+     * The instance has been deleted and is no longer available.
+     */
+    DELETED                (99, "Deleted",              "The instance has been deleted and is no longer available."),
+
+    /**
      * The instance is in a locally defined state.
      */
     OTHER                   (50, "Other",                   "The instance is in a locally defined state.");

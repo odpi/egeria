@@ -99,7 +99,7 @@ public class ExternalReferenceConverter<B> extends CommunityProfileOMASConverter
                     externalReferenceProperties.setResourceURL(this.removeURL(instanceProperties));
                     externalReferenceProperties.setResourceVersion(this.removeReferenceVersion(instanceProperties));
                     externalReferenceProperties.setResourceDescription(this.removeDescription(instanceProperties));
-                    externalReferenceProperties.setOwningOrganization(this.removeOrganization(instanceProperties));
+                    externalReferenceProperties.setOwningOrganization(this.removeOwningOrganization(instanceProperties));
 
 
                     /*

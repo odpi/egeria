@@ -162,13 +162,12 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @SuppressWarnings(value="deprecation")
     public GUIDResponse  addAssetToCatalog(String           serverName,
                                            String           userId,
                                            String           typeName,
                                            AssetProperties  requestBody)
     {
-        final String methodName                 = "addAssetToCatalog";
+        final String methodName  = "addAssetToCatalog";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -189,12 +188,6 @@ public class AssetOwnerRESTServices
                     assetTypeName = typeName;
                 }
 
-                String assetTypeGUID = invalidParameterHandler.validateTypeName(assetTypeName,
-                                                                                OpenMetadataType.ASSET.typeName,
-                                                                                instanceHandler.getServiceName(),
-                                                                                methodName,
-                                                                                instanceHandler.getRepositoryHelper(userId, serverName, methodName));
-
                 Date effectiveTime = new Date();
                 String assetGUID = handler.createAssetInRepository(userId,
                                                                    null,
@@ -204,18 +197,12 @@ public class AssetOwnerRESTServices
                                                                    requestBody.getVersionIdentifier(),
                                                                    requestBody.getDescription(),
                                                                    null,
-                                                                   null,
-                                                                   0,
-                                                                   null,
-                                                                   null,
-                                                                   null,
                                                                    requestBody.getAdditionalProperties(),
-                                                                   assetTypeGUID,
                                                                    assetTypeName,
                                                                    requestBody.getExtendedProperties(),
-                                                                   null,
-                                                                   null,
                                                                    InstanceStatus.ACTIVE,
+                                                                   null,
+                                                                   null,
                                                                    effectiveTime,
                                                                    methodName);
                 if (assetGUID != null)
@@ -298,6 +285,7 @@ public class AssetOwnerRESTServices
                                                               requestBody.getDisplayName(),
                                                               requestBody.getVersionIdentifier(),
                                                               requestBody.getDescription(),
+                                                              null,
                                                               requestBody.getPathName(),
                                                               requestBody.getNetworkAddress(),
                                                               false,
@@ -366,6 +354,7 @@ public class AssetOwnerRESTServices
                                     requestBody.getName(),
                                     requestBody.getVersionIdentifier(),
                                     requestBody.getDescription(),
+                                    null,
                                     requestBody.getAdditionalProperties(),
                                     requestBody.getTypeName(),
                                     requestBody.getExtendedProperties(),
@@ -4265,7 +4254,6 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @SuppressWarnings(value="deprecation")
     public VoidResponse  updateAssetOwner(String           serverName,
                                           String           userId,
                                           String           assetGUID,

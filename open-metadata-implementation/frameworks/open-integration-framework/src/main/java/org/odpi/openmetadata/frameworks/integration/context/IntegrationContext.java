@@ -14,15 +14,20 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface;
 import org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface;
 import org.odpi.openmetadata.frameworks.integration.filelistener.FilesListenerManager;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.reports.IntegrationReportWriter;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -36,6 +41,8 @@ import java.util.*;
  */
 public class IntegrationContext
 {
+    protected final PropertyHelper           propertyHelper = new PropertyHelper();
+
     protected final OpenIntegrationClient    openIntegrationClient;
     protected final OpenMetadataClient       openMetadataStoreClient;
     protected final String                   userId;
@@ -364,6 +371,19 @@ public class IntegrationContext
 
 
     /**
+     * Return the guid  of the software capability that represents an external source of metadata.
+     * Used to control external provenance and as a parent for some asset cataloguing.
+     * If null the provenance is LOCAL_COHORT.
+     *
+     * @return  string name
+     */
+    public String getMetadataSourceGUID()
+    {
+        return externalSourceGUID;
+    }
+
+
+    /**
      * Change the metadata collection that is in use when working with open metadata.  It should be the qualified name
      * of a software capability,  The qualified name is supplied through open metadata values and may be incorrect
      * which is why any exceptions from retrieving the software capability are passed through to the caller.
@@ -684,13 +704,13 @@ public class IntegrationContext
         {
             for (ElementClassification classification : elementHeader.getClassifications())
             {
-                if (classification.getClassificationName().equals("Anchors"))
+                if (classification.getClassificationName().equals(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName))
                 {
                     Map<String, Object> properties = classification.getClassificationProperties();
 
                     if (properties != null)
                     {
-                        Object anchorGUID = properties.get("anchorGUID");
+                        Object anchorGUID = properties.get(OpenMetadataProperty.ANCHOR_GUID.name);
 
                         if (anchorGUID != null)
                         {
@@ -703,6 +723,36 @@ public class IntegrationContext
 
         return null;
     }
+
+
+
+    /**
+     * Retrieve the anchorGUID from the Anchors classification.
+     *
+     * @param openMetadataElement element header where the classifications reside
+     * @return anchorGUID or null
+     */
+    public String getAnchorGUID(OpenMetadataElement openMetadataElement)
+    {
+        final String methodName = "getAnchorGUID";
+
+        if (openMetadataElement.getClassifications() != null)
+        {
+            for (AttachedClassification classification : openMetadataElement.getClassifications())
+            {
+                if (classification.getClassificationName().equals(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName))
+                {
+                    return propertyHelper.getStringProperty(connectorName,
+                                                            OpenMetadataProperty.ANCHOR_GUID.name,
+                                                            classification.getClassificationProperties(),
+                                                            methodName);
+                }
+            }
+        }
+
+        return null;
+    }
+
 
 
 

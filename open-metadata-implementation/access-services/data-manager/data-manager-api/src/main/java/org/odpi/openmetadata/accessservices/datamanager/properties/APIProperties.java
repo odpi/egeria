@@ -44,17 +44,6 @@ public class APIProperties extends AssetProperties
     @Override
     public String toString()
     {
-        return "APIProperties{" +
-                       "name='" + getName() + '\'' +
-                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+        return "APIProperties{} " + super.toString();
     }
 }

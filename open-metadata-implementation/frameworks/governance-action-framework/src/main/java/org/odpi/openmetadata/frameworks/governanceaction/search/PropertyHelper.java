@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementContr
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFRuntimeException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.math.BigDecimal;
@@ -2530,6 +2531,33 @@ public class PropertyHelper
         return false;
     }
 
+
+    /**
+     * Build up property parameters for a search that returns the metadata collection name.
+     *
+     * @return search properties
+     */
+    public SearchProperties getSearchPropertiesForMetadataCollectionName(String metadataCollectionQualifiedName)
+    {
+        SearchProperties           searchProperties       = new SearchProperties();
+        List<PropertyCondition>    conditions             = new ArrayList<>();
+        PropertyCondition          condition              = new PropertyCondition();
+        PrimitiveTypePropertyValue primitivePropertyValue = new PrimitiveTypePropertyValue();
+
+        primitivePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+        primitivePropertyValue.setPrimitiveValue(metadataCollectionQualifiedName);
+        primitivePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+
+        condition.setProperty(OpenMetadataProperty.METADATA_COLLECTION_NAME.name);
+        condition.setOperator(PropertyComparisonOperator.EQ);
+        condition.setValue(primitivePropertyValue);
+
+        conditions.add(condition);
+
+        searchProperties.setConditions(conditions);
+        searchProperties.setMatchCriteria(MatchCriteria.ALL);
+        return searchProperties;
+    }
 
 
     /**

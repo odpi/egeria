@@ -370,8 +370,8 @@ public class StewardshipExchangeRESTServices
                     if (requestBody.getMetadataCorrelationProperties() != null)
                     {
                         handler.addGovernanceActionClassification(userId,
-                                                                  requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                                  requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                                  requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                                  requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                                   elementGUID,
                                                                   elementGUIDParameter,
                                                                   OpenMetadataType.REFERENCEABLE.typeName,
@@ -480,8 +480,8 @@ public class StewardshipExchangeRESTServices
                 if (requestBody.getMetadataCorrelationProperties() != null)
                 {
                     handler.removeGovernanceActionClassification(userId,
-                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                                  elementGUID,
                                                                  elementGUIDParameter,
                                                                  OpenMetadataType.REFERENCEABLE.typeName,
@@ -671,8 +671,8 @@ public class StewardshipExchangeRESTServices
                     if (requestBody.getMetadataCorrelationProperties() != null)
                     {
                         handler.addGovernanceActionClassification(userId,
-                                                                  requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                                  requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                                  requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                                  requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                                   elementGUID,
                                                                   elementGUIDParameter,
                                                                   OpenMetadataType.REFERENCEABLE.typeName,
@@ -781,8 +781,8 @@ public class StewardshipExchangeRESTServices
                 if (requestBody.getMetadataCorrelationProperties() != null)
                 {
                     handler.removeGovernanceActionClassification(userId,
-                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                                  elementGUID,
                                                                  elementGUIDParameter,
                                                                  OpenMetadataType.REFERENCEABLE.typeName,
@@ -974,8 +974,8 @@ public class StewardshipExchangeRESTServices
                     if (requestBody.getMetadataCorrelationProperties() != null)
                     {
                         handler.addGovernanceActionClassification(userId,
-                                                                  requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                                  requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                                  requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                                  requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                                   elementGUID,
                                                                   elementGUIDParameter,
                                                                   OpenMetadataType.REFERENCEABLE.typeName,
@@ -1084,8 +1084,8 @@ public class StewardshipExchangeRESTServices
                 if (requestBody.getMetadataCorrelationProperties() != null)
                 {
                     handler.removeGovernanceActionClassification(userId,
-                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                                  elementGUID,
                                                                  elementGUIDParameter,
                                                                  OpenMetadataType.REFERENCEABLE.typeName,
@@ -1277,8 +1277,8 @@ public class StewardshipExchangeRESTServices
                     if (requestBody.getMetadataCorrelationProperties() != null)
                     {
                         handler.addRetentionClassification(userId,
-                                                           requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                           requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                           requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                           requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                            elementGUID,
                                                            elementGUIDParameter,
                                                            OpenMetadataType.REFERENCEABLE.typeName,
@@ -1388,8 +1388,8 @@ public class StewardshipExchangeRESTServices
                 if (requestBody.getMetadataCorrelationProperties() != null)
                 {
                     handler.removeRetentionClassification(userId,
-                                                          requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                          requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                          requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                          requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                           elementGUID,
                                                           elementGUIDParameter,
                                                           OpenMetadataType.REFERENCEABLE.typeName,
@@ -2241,8 +2241,8 @@ public class StewardshipExchangeRESTServices
                     if (requestBody.getMetadataCorrelationProperties() != null)
                     {
                         handler.addSubjectAreaClassification(userId,
-                                                             requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                             requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                             requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                             requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                              elementGUID,
                                                              elementGUIDParameter,
                                                              OpenMetadataType.REFERENCEABLE.typeName,
@@ -2355,8 +2355,8 @@ public class StewardshipExchangeRESTServices
             else
             {
                 handler.removeSubjectAreaClassification(userId,
-                                                        requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                        requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                        requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                        requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                         elementGUID,
                                                         elementGUIDParameter,
                                                         OpenMetadataType.REFERENCEABLE.typeName,

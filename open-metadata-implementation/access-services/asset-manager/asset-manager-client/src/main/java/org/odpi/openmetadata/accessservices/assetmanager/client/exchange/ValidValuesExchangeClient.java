@@ -13,7 +13,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Refere
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ReferenceValueAssignmentItemElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueMember;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceValueAssignmentProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueMembershipProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties;
@@ -424,12 +424,12 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
             invalidParameterHandler.validateName(validValueProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
         }
 
-        this.validateExternalIdentifier(userId,
-                                        assetManagerGUID,
-                                        assetManagerName,
-                                        validValueGUID,
-                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                        validValueExternalIdentifier);
+        openMetadataStoreClient.validateExternalIdentifier(userId,
+                                                           assetManagerGUID,
+                                                           assetManagerName,
+                                                           validValueGUID,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                           validValueExternalIdentifier);
 
         openMetadataStoreClient.updateMetadataElementInStore(userId,
                                                              assetManagerGUID,
@@ -477,12 +477,12 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameterName, methodName);
 
-        this.validateExternalIdentifier(userId,
-                                        assetManagerGUID,
-                                        assetManagerName,
-                                        validValueGUID,
-                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                        validValueExternalIdentifier);
+        openMetadataStoreClient.validateExternalIdentifier(userId,
+                                                           assetManagerGUID,
+                                                           assetManagerName,
+                                                           validValueGUID,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                           validValueExternalIdentifier);
         
         openMetadataStoreClient.deleteMetadataElementInStore(userId,
                                                              assetManagerGUID,

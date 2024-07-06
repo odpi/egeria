@@ -5,6 +5,8 @@ package org.odpi.openmetadata.frameworks.integration.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,11 +23,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CatalogTargetProperties
 {
-    private String              catalogTargetName           = null;
-    private String              metadataSourceQualifiedName = null;
-    private String              connectionName              = null;
-    private Map<String, Object> configurationProperties     = null;
-    private Map<String, String> templateProperties          = null;
+    private String                   catalogTargetName           = null;
+    private String                   metadataSourceQualifiedName = null;
+    private String                   connectionName              = null;
+    private Map<String, Object>      configurationProperties     = null;
+    private Map<String, String>      templateProperties          = null;
+    private PermittedSynchronization permittedSynchronization    = null;
+    private DeleteMethod             deleteMethod                = null;
 
 
     /**
@@ -51,6 +55,8 @@ public class CatalogTargetProperties
             connectionName = template.getConnectionName();
             configurationProperties = template.getConfigurationProperties();
             templateProperties = template.getTemplateProperties();
+            permittedSynchronization = template.getPermittedSynchronization();
+            deleteMethod = template.getDeleteMethod();
         }
     }
 
@@ -194,6 +200,50 @@ public class CatalogTargetProperties
 
 
     /**
+     * Return the synchronization direction policy.
+     *
+     * @return value
+     */
+    public PermittedSynchronization getPermittedSynchronization()
+    {
+        return permittedSynchronization;
+    }
+
+
+    /**
+     * Set up the synchronization direction policy.
+     *
+     * @param permittedSynchronization value
+     */
+    public void setPermittedSynchronization(PermittedSynchronization permittedSynchronization)
+    {
+        this.permittedSynchronization = permittedSynchronization;
+    }
+
+
+    /**
+     * Return the delete method policy.
+     *
+     * @return value
+     */
+    public DeleteMethod getDeleteMethod()
+    {
+        return deleteMethod;
+    }
+
+
+    /**
+     * Set up the delete method policy.
+     *
+     * @param deleteMethod value
+     */
+    public void setDeleteMethod(DeleteMethod deleteMethod)
+    {
+        this.deleteMethod = deleteMethod;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -207,8 +257,11 @@ public class CatalogTargetProperties
                 ", connectionName='" + connectionName + '\'' +
                 ", configurationProperties=" + configurationProperties +
                 ", templateProperties=" + templateProperties +
+                ", permittedSynchronization=" + permittedSynchronization +
+                ", deleteMethod=" + deleteMethod +
                 '}';
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -219,22 +272,17 @@ public class CatalogTargetProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         CatalogTargetProperties that = (CatalogTargetProperties) objectToCompare;
         return Objects.equals(catalogTargetName, that.catalogTargetName) &&
-                Objects.equals(connectionName, that.connectionName) &&
-                Objects.equals(templateProperties, that.templateProperties) &&
                 Objects.equals(metadataSourceQualifiedName, that.metadataSourceQualifiedName) &&
-                Objects.equals(configurationProperties, that.configurationProperties);
+                Objects.equals(connectionName, that.connectionName) && Objects.equals(configurationProperties, that.configurationProperties)
+                && Objects.equals(templateProperties, that.templateProperties)
+                && permittedSynchronization == that.permittedSynchronization
+                && deleteMethod == that.deleteMethod;
     }
-
 
     /**
      * Return hash code based on properties.
@@ -244,6 +292,6 @@ public class CatalogTargetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(catalogTargetName, metadataSourceQualifiedName, connectionName, configurationProperties, templateProperties);
+        return Objects.hash(catalogTargetName, metadataSourceQualifiedName, connectionName, configurationProperties, templateProperties, permittedSynchronization, deleteMethod);
     }
 }

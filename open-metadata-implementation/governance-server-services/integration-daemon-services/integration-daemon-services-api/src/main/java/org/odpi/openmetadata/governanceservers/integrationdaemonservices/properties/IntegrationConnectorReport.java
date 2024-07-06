@@ -26,6 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class IntegrationConnectorReport
 {
     private String                     connectorId              = null;
+    private String                     connectorGUID            = null;
     private String                     connectorName            = null;
     private Connection                 connection               = null;
     private String                     connectorInstanceId      = null;
@@ -55,6 +56,7 @@ public class IntegrationConnectorReport
         if (template != null)
         {
             connectorId              = template.getConnectorId();
+            connectorGUID            = template.getConnectorGUID();
             connectorName            = template.getConnectorName();
             connection               = template.getConnection();
             connectorInstanceId      = template.getConnectorInstanceId();
@@ -87,6 +89,27 @@ public class IntegrationConnectorReport
     public void setConnectorId(String connectorId)
     {
         this.connectorId = connectorId;
+    }
+
+    /**
+     * Return the unique identifier of the connector entity - set up in the metadata store.
+     *
+     * @return string guid
+     */
+    public String getConnectorGUID()
+    {
+        return connectorGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the connector entity - set up in the metadata store.
+     *
+     * @param connectorGUID string guid
+     */
+    public void setConnectorGUID(String connectorGUID)
+    {
+        this.connectorGUID = connectorGUID;
     }
 
 
@@ -305,6 +328,7 @@ public class IntegrationConnectorReport
     {
         return "IntegrationConnectorReport{" +
                        "connectorId='" + connectorId + '\'' +
+                       ", connectorGUID='" + connectorGUID + '\'' +
                        ", connectorName='" + connectorName + '\'' +
                        ", connection=" + connection +
                        ", connectorInstanceId='" + connectorInstanceId + '\'' +
@@ -338,6 +362,7 @@ public class IntegrationConnectorReport
         IntegrationConnectorReport that = (IntegrationConnectorReport) objectToCompare;
         return minMinutesBetweenRefresh == that.minMinutesBetweenRefresh &&
                        Objects.equals(connectorId, that.connectorId) &&
+                       Objects.equals(connectorGUID, that.connectorGUID) &&
                        Objects.equals(connectorName, that.connectorName) &&
                        Objects.equals(connection, that.connection) &&
                        Objects.equals(connectorInstanceId, that.connectorInstanceId) &&
@@ -357,7 +382,7 @@ public class IntegrationConnectorReport
     @Override
     public int hashCode()
     {
-        return Objects.hash(connectorId, connectorName, connection, connectorInstanceId, connectorStatus, lastStatusChange,
+        return Objects.hash(connectorId, connectorGUID, connectorName, connection, connectorInstanceId, connectorStatus, lastStatusChange,
                             lastRefreshTime, minMinutesBetweenRefresh, failingExceptionMessage, statistics);
     }
 }

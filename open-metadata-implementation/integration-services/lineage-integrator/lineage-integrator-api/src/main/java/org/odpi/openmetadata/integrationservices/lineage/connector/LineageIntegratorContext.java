@@ -24,7 +24,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
 
 import java.util.Date;

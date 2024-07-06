@@ -56,9 +56,8 @@ public class IntegrationGroupConverter<B> extends GovernanceEngineOMASConverter<
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof IntegrationGroupElement)
+            if (returnBean instanceof IntegrationGroupElement bean)
             {
-                IntegrationGroupElement    bean = (IntegrationGroupElement) returnBean;
                 IntegrationGroupProperties properties = new IntegrationGroupProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));

@@ -57,9 +57,8 @@ public class DataFileConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof DataFileElement)
+            if (returnBean instanceof DataFileElement bean)
             {
-                DataFileElement bean = (DataFileElement) returnBean;
                 DataFileProperties dataFileProperties = new DataFileProperties();
 
                 if (entity != null)
@@ -91,7 +90,7 @@ public class DataFileConverter<B> extends DataManagerOMASConverter<B>
                     dataFileProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     dataFileProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName, entity);
 
                     dataFileProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
                     dataFileProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));

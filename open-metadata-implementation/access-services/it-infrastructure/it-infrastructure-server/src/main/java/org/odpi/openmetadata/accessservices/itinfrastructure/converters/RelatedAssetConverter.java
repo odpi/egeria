@@ -60,10 +60,8 @@ public class RelatedAssetConverter<B> extends ITInfrastructureOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof RelatedAssetElement)
+            if (returnBean instanceof RelatedAssetElement bean)
             {
-                RelatedAssetElement bean = (RelatedAssetElement) returnBean;
-
                 if (relationship != null)
                 {
                     bean.setElementHeader(super.getMetadataElementHeader(beanClass, relationship, null, methodName));
@@ -91,7 +89,7 @@ public class RelatedAssetConverter<B> extends ITInfrastructureOMASConverter<B>
                     assetProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     assetProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     assetProperties.setName(this.removeName(instanceProperties));
-                    assetProperties.setDisplayName(assetProperties.getName());
+                    assetProperties.setDeployedImplementationType(assetProperties.getDeployedImplementationType());
                     assetProperties.setDescription(this.removeDescription(instanceProperties));
 
                     /*

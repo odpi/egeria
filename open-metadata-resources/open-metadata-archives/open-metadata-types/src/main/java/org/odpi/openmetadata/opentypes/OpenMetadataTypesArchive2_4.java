@@ -1068,18 +1068,12 @@ public class OpenMetadataTypesArchive2_4
 
     private EntityDef addDeployedConnectorEntity()
     {
-        final String guid            = "c9a183ab-67f4-46a4-8836-16fa041769b7";
-        final String name            = "DeployedConnector";
-        final String description     = "A connector that is configured and deployed to run in a specific software server capability.";
-        final String descriptionGUID = null;
-
-        final String superTypeName   = "DeployedSoftwareComponent";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DEPLOYED_CONNECTOR.typeGUID,
+                                                 OpenMetadataType.DEPLOYED_CONNECTOR.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName),
+                                                 OpenMetadataType.DEPLOYED_CONNECTOR.description,
+                                                 OpenMetadataType.DEPLOYED_CONNECTOR.descriptionGUID,
+                                                 OpenMetadataType.DEPLOYED_CONNECTOR.wikiURL);
     }
 
 
@@ -2975,7 +2969,7 @@ public class OpenMetadataTypesArchive2_4
         final String attribute3Name            = "version";
         final String attribute3Description     = "Deprecated attribute. Use the databaseVersion attribute to define the version number of database.";
         final String attribute3DescriptionGUID = null;
-        final String attribute3ReplacedBy      = "databaseVersion";
+        final String attribute3ReplacedBy      = OpenMetadataProperty.DATABASE_VERSION.name;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
@@ -2984,13 +2978,9 @@ public class OpenMetadataTypesArchive2_4
         property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
 
-        final String attribute4Name            = "databaseVersion";
-        final String attribute4Description     = "Version of the database.";
-        final String attribute4DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DATABASE_VERSION.name,
+                                                           OpenMetadataProperty.DATABASE_VERSION.description,
+                                                           OpenMetadataProperty.DATABASE_VERSION.descriptionGUID);
 
         properties.add(property);
 
@@ -3390,9 +3380,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Create the Patch
          */
-        final String typeName = "PropertyFacet";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROPERTY_FACET.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -3406,22 +3394,17 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1Name            = "version";
         final String attribute1Description     = "Deprecated attribute. Use the schemaVersion attribute to define the version number of the property facet schema.";
         final String attribute1DescriptionGUID = null;
-        final String attribute1ReplacedBy      = "schemaVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute1ReplacedBy);
+        property.setReplacedByAttribute(OpenMetadataProperty.SCHEMA_VERSION.name);
         properties.add(property);
 
-        final String attribute2Name            = "schemaVersion";
-        final String attribute2Description     = "Version of the property facet schema.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SCHEMA_VERSION.name,
+                                                           OpenMetadataProperty.SCHEMA_VERSION.description,
+                                                           OpenMetadataProperty.SCHEMA_VERSION.descriptionGUID);
 
         properties.add(property);
 

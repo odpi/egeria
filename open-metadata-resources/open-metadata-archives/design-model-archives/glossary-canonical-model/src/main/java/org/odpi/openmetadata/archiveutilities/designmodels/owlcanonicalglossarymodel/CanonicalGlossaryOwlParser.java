@@ -34,9 +34,9 @@ class CanonicalGlossaryOwlParser {
 
     Map<String, Set<String>> memberMap = new HashMap<>();
 
-    private List<String> errorReport = new ArrayList<>();
+    private final List<String> errorReport = new ArrayList<>();
 
-    private GlossaryModel glossaryModel = new GlossaryModel();
+    private final GlossaryModel glossaryModel = new GlossaryModel();
 
     /**
      * Create a parser passing the location of the model.  This may be a single JSON-LD file or the GitHub file structure beginning
@@ -155,7 +155,7 @@ class CanonicalGlossaryOwlParser {
                 case "member":
                     Set<String> containerURIs = glossaryModel.getConceptTermMemberMap().get(subjectURI);
                     if (containerURIs == null) {
-                        containerURIs = new HashSet();
+                        containerURIs = new HashSet<>();
                     }
                     containerURIs.add(o.asResource().getURI());
                     memberMap.put(subjectURI, containerURIs);
@@ -164,7 +164,7 @@ class CanonicalGlossaryOwlParser {
                     Map<String, Set<String>> examplesMap = glossaryModel.getExampleMap();
                     Set<String> examples = examplesMap.get(subjectURI);
                     if (examples == null) {
-                        examples = new HashSet();
+                        examples = new HashSet<>();
                     }
                     examples.add((String) o.asLiteral().getValue());
                     examplesMap.put(subjectURI, examples);
@@ -182,7 +182,7 @@ class CanonicalGlossaryOwlParser {
                     Set<String> domains = domainsMap.get(subjectURI);
                     boolean createDomainsMap = false;
                     if (domains == null) {
-                        domains = new HashSet();
+                        domains = new HashSet<>();
                         createDomainsMap = true;
                     }
                     if (o.isResource()) {
@@ -198,7 +198,7 @@ class CanonicalGlossaryOwlParser {
                     Set<String> ranges = rangesMap.get(subjectURI);
                     boolean createRangesMap = false;
                     if (ranges == null) {
-                        ranges = new HashSet();
+                        ranges = new HashSet<>();
                         createRangesMap = true;
                     }
                     if (o.isResource()) {

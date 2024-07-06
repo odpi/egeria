@@ -321,7 +321,7 @@ public enum DeployedImplementationType
      */
     OSS_UC_FUNCTION("OSS Unity Catalog (UC) Function",
                   null,
-                  OpenMetadataType.DEPLOYED_API_TYPE_NAME,
+                  OpenMetadataType.DEPLOYED_API.typeName,
                   null,
                   "A function that is working with data.",
                   "https://github.com/unitycatalog/unitycatalog"),
@@ -332,7 +332,7 @@ public enum DeployedImplementationType
      */
     JDBC_RELATIONAL_DATABASE("JDBC Relational Database",
                              DeployedImplementationType.DATA_ASSET,
-                             OpenMetadataType.RELATIONAL_DATABASE_TYPE_NAME,
+                             OpenMetadataType.RELATIONAL_DATABASE.typeName,
                              null,
                              "A database hosted on a relational database server capable of being called through a JDBC Driver.",
                              "https://en.wikipedia.org/wiki/Java_Database_Connectivity"),
@@ -343,7 +343,7 @@ public enum DeployedImplementationType
      */
     JDBC_RELATIONAL_DATABASE_SCHEMA("JDBC Relational Database Schema",
                              DeployedImplementationType.DATA_ASSET,
-                             OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                             OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                              null,
                              "A database schema hosted on a relational database server capable of being called through a JDBC Driver.",
                              "https://en.wikipedia.org/wiki/Java_Database_Connectivity"),
@@ -373,7 +373,7 @@ public enum DeployedImplementationType
      */
     POSTGRESQL_DATABASE("PostgreSQL Relational Database",
                         DeployedImplementationType.JDBC_RELATIONAL_DATABASE,
-                        OpenMetadataType.RELATIONAL_DATABASE_TYPE_NAME,
+                        OpenMetadataType.RELATIONAL_DATABASE.typeName,
                         null,
                         "A database hosted on a PostgreSQL server.",
                         "https://www.postgresql.org/"),
@@ -384,7 +384,7 @@ public enum DeployedImplementationType
      */
     POSTGRESQL_DATABASE_SCHEMA("PostgreSQL Relational Database Schema",
                                     DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA,
-                                    OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                    OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                     null,
                                     "A database schema hosted on a PostgreSQL relational database server capable of being called through a JDBC Driver.",
                                     "https://www.postgresql.org/"),
@@ -395,7 +395,7 @@ public enum DeployedImplementationType
      */
     OSS_UC_SCHEMA("OSS Unity Catalog (UC) Schema",
                DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA,
-               OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+               OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                null,
                "A schema that organizes data assets for an operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.",
                "https://github.com/unitycatalog/unitycatalog"),
@@ -680,10 +680,10 @@ public enum DeployedImplementationType
      * A deployable software component.
      */
     SOFTWARE_COMPONENT("Software Component",
-                  null,
-                  OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME,
                        null,
-                  "A deployable software component.",
+                       OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName,
+                       null,
+                       "A deployable software component.",
                        OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS),
 
     /**
@@ -691,7 +691,7 @@ public enum DeployedImplementationType
      */
     OCF_CONNECTOR("Open Connector Framework (OCF) Connector",
                   null,
-                  OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME,
+                  OpenMetadataType.DEPLOYED_CONNECTOR.typeName,
                   null,
                   "A pluggable software component that conforms to the Open Connector Framework (OCF).",
                   "https://egeria-project.org/concepts/connector/"),
@@ -701,7 +701,7 @@ public enum DeployedImplementationType
      */
     REPOSITORY_CONNECTOR("OMRS Repository Connector",
                          null,
-                         OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME,
+                         OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName,
                          null,
                          "Maps open metadata repository calls defined by the Open Metadata Repository Services (OMRS) to a metadata repository API and event notifications.",
                          "https://egeria-project.org/concepts/repository-connector/"),
@@ -971,7 +971,7 @@ public enum DeployedImplementationType
      */
     PLATFORM_SECURITY_CONNECTOR("Platform Metadata Security Connector",
                                 DeployedImplementationType.OCF_CONNECTOR,
-                                OpenMetadataType.DEPLOYED_CONNECTOR_TYPE_NAME,
+                                OpenMetadataType.DEPLOYED_CONNECTOR.typeName,
                                 null,
                                 "Connector that manages authorization requests to the OMAG Server Platform.",
                                 "https://egeria-project.org/concepts/platform-metadata-security-connector/"),
@@ -981,7 +981,7 @@ public enum DeployedImplementationType
      */
     SERVER_SECURITY_CONNECTOR("Server Metadata Security Connector",
                               DeployedImplementationType.OCF_CONNECTOR,
-                              OpenMetadataType.DEPLOYED_CONNECTOR_TYPE_NAME,
+                              OpenMetadataType.DEPLOYED_CONNECTOR.typeName,
                               null,
                               "Connector that manages authorization requests to the OMAG Server.",
                               "https://egeria-project.org/concepts/server-metadata-security-connector/"),
@@ -991,7 +991,7 @@ public enum DeployedImplementationType
      */
     ARCHIVE_STORE_CONNECTOR("Open Metadata Archive Store Connector",
                             DeployedImplementationType.OCF_CONNECTOR,
-                            OpenMetadataType.DEPLOYED_CONNECTOR_TYPE_NAME,
+                            OpenMetadataType.DEPLOYED_CONNECTOR.typeName,
                             null,
                             "Reads and writes open metadata types and instances to an open metadata archive.",
                             "https://egeria-project.org/concepts/open-metadata-archive-store-connector/"),
@@ -1001,7 +1001,7 @@ public enum DeployedImplementationType
      */
     COHORT_REGISTRY_STORE("Cohort Registry Store",
                           DeployedImplementationType.OCF_CONNECTOR,
-                          OpenMetadataType.DEPLOYED_CONNECTOR_TYPE_NAME,
+                          OpenMetadataType.DEPLOYED_CONNECTOR.typeName,
                           null,
                           "Stores information about the repositories registered in the open metadata repository cohort.",
                           "https://egeria-project.org/concepts/cohort-registry-store-connector/"),
@@ -1011,7 +1011,7 @@ public enum DeployedImplementationType
      */
     AUDIT_LOG_DESTINATION("Audit Log Destination",
                           DeployedImplementationType.OCF_CONNECTOR,
-                          OpenMetadataType.DEPLOYED_CONNECTOR_TYPE_NAME,
+                          OpenMetadataType.DEPLOYED_CONNECTOR.typeName,
                           null,
                           "Reads and writes records to the Open Metadata Repository Services (OMRS) audit log.",
                           "https://egeria-project.org/concepts/audit-log/"),

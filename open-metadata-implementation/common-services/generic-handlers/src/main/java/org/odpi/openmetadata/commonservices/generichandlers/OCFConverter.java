@@ -435,7 +435,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
                     {
                         String actualTypeName = entity.getType().getTypeDefName();
 
-                        if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENDPOINT_TYPE_NAME))
+                        if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENDPOINT.typeName))
                         {
                             Endpoint endpoint = getEndpoint(entity, methodName);
 
@@ -536,7 +536,7 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
     {
         Endpoint endpoint = new Endpoint();
 
-        this.setUpElementHeader(endpoint, entity, OpenMetadataType.ENDPOINT_TYPE_NAME, methodName);
+        this.setUpElementHeader(endpoint, entity, OpenMetadataType.ENDPOINT.typeName, methodName);
 
         /*
          * The initial set of values come from the entity.

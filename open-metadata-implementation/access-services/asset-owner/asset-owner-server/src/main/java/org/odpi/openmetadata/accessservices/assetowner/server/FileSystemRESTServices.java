@@ -16,6 +16,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -404,6 +405,7 @@ public class FileSystemRESTServices
                                                                     requestBody.getName(),
                                                                     null,
                                                                     requestBody.getDescription(),
+                                                                    DeployedImplementationType.DATA_FILE.getDeployedImplementationType(),
                                                                     requestBody.getFullPath(),
                                                                     null,
                                                                     null,
@@ -471,6 +473,7 @@ public class FileSystemRESTServices
                                                                       requestBody.getName(),
                                                                       null,
                                                                       requestBody.getDescription(),
+                                                                      DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType(),
                                                                       null,
                                                                       null,
                                                                       false,
@@ -1164,6 +1167,7 @@ public class FileSystemRESTServices
                                                                requestBody.getName(),
                                                                requestBody.getVersionIdentifier(),
                                                                requestBody.getDescription(),
+                                                               DeployedImplementationType.AVRO_FILE.getDeployedImplementationType(),
                                                                requestBody.getFullPath(),
                                                                null,
                                                                null,
@@ -1229,6 +1233,7 @@ public class FileSystemRESTServices
                                                               requestBody.getName(),
                                                               requestBody.getVersionIdentifier(),
                                                               requestBody.getDescription(),
+                                                              DeployedImplementationType.CSV_FILE.getDeployedImplementationType(),
                                                               requestBody.getFullPath(),
                                                               requestBody.getColumnHeaders(),
                                                               requestBody.getDelimiterCharacter(),

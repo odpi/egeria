@@ -13,6 +13,7 @@ import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exc
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
@@ -197,7 +198,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                 }
             }
 
-            DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.ENDPOINT_TYPE_NAME + ":" + OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME,
+            DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.ENDPOINT.typeName + ":" + OpenMetadataProperty.NETWORK_ADDRESS.name,
                                                                             endpoint.getAddress(),
                                                                             null);
 

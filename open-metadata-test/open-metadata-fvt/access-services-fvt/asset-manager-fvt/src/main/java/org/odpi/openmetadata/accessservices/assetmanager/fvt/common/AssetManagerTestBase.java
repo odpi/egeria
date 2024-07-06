@@ -9,9 +9,9 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.management.Gloss
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

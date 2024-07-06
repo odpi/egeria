@@ -2,12 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration;
 
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 
-import java.io.Serial;
-import java.io.Serializable;
+;
 import java.util.Objects;
 
 /**

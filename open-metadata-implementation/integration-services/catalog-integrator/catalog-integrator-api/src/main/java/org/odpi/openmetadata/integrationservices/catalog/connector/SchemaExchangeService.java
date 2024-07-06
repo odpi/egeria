@@ -12,8 +12,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
 import java.util.Date;
@@ -31,7 +32,7 @@ public class SchemaExchangeService
     String                   assetManagerGUID;
     String                   assetManagerName;
     String                   connectorName;
-    SynchronizationDirection synchronizationDirection;
+    PermittedSynchronization permittedSynchronization;
     AuditLog                 auditLog;
 
     boolean forLineage = false;
@@ -42,7 +43,7 @@ public class SchemaExchangeService
      * Create a new client to exchange lineage content with open metadata.
      *
      * @param schemaExchangeClient client for exchange requests
-     * @param synchronizationDirection direction(s) that metadata can flow
+     * @param permittedSynchronization direction(s) that metadata can flow
      * @param userId integration daemon's userId
      * @param assetManagerGUID unique identifier of the software server capability for the asset manager
      * @param assetManagerName unique name of the software server capability for the asset manager
@@ -50,7 +51,7 @@ public class SchemaExchangeService
      * @param auditLog logging destination
      */
     SchemaExchangeService(SchemaExchangeInterface  schemaExchangeClient,
-                          SynchronizationDirection synchronizationDirection,
+                          PermittedSynchronization permittedSynchronization,
                           String                   userId,
                           String                   assetManagerGUID,
                           String                   assetManagerName,
@@ -58,7 +59,7 @@ public class SchemaExchangeService
                           AuditLog                 auditLog)
     {
         this.schemaExchangeClient     = schemaExchangeClient;
-        this.synchronizationDirection = synchronizationDirection;
+        this.permittedSynchronization = permittedSynchronization;
         this.userId                   = userId;
         this.assetManagerGUID         = assetManagerGUID;
         this.assetManagerName         = assetManagerName;
@@ -145,7 +146,7 @@ public class SchemaExchangeService
     {
         final String methodName = "createSchemaType";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return schemaExchangeClient.createSchemaType(userId,
                                                          assetManagerGUID,
@@ -159,7 +160,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -225,7 +226,7 @@ public class SchemaExchangeService
     {
         final String methodName = "createSchemaTypeFromTemplate";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return schemaExchangeClient.createSchemaTypeFromTemplate(userId,
                                                                      assetManagerGUID,
@@ -238,7 +239,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -271,7 +272,7 @@ public class SchemaExchangeService
     {
         final String methodName = "updateSchemaType";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.updateSchemaType(userId,
                                                   assetManagerGUID,
@@ -287,7 +288,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -322,7 +323,7 @@ public class SchemaExchangeService
     {
         final String methodName = "setupSchemaTypeParent";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.setupSchemaTypeParent(userId,
                                                        assetManagerGUID,
@@ -339,7 +340,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -370,7 +371,7 @@ public class SchemaExchangeService
     {
         final String methodName = "clearSchemaTypeParent";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.clearSchemaTypeParent(userId,
                                                        assetManagerGUID,
@@ -385,7 +386,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -421,7 +422,7 @@ public class SchemaExchangeService
     {
         final String methodName = "setupSchemaElementRelationship";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.setupSchemaElementRelationship(userId,
                                                                 assetManagerGUID,
@@ -438,7 +439,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -469,7 +470,7 @@ public class SchemaExchangeService
     {
         final String methodName = "clearSchemaElementRelationship";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.clearSchemaElementRelationship(userId,
                                                                 assetManagerGUID,
@@ -484,7 +485,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -513,7 +514,7 @@ public class SchemaExchangeService
     {
         final String methodName = "removeSchemaType";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.removeSchemaType(userId,
                                                   assetManagerGUID,
@@ -527,7 +528,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -694,7 +695,7 @@ public class SchemaExchangeService
     {
         final String methodName = "createSchemaAttribute";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return schemaExchangeClient.createSchemaAttribute(userId,
                                                               assetManagerGUID,
@@ -709,7 +710,7 @@ public class SchemaExchangeService
         }
         else
         {
-            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(synchronizationDirection.getName(),
+            throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(permittedSynchronization.getName(),
                                                                                                                                connectorName,
                                                                                                                                methodName),
                                                  this.getClass().getName(),
@@ -746,7 +747,7 @@ public class SchemaExchangeService
     {
         final String methodName = "createSchemaAttributeFromTemplate";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return schemaExchangeClient.createSchemaAttributeFromTemplate(userId,
                                                                           assetManagerGUID,
@@ -763,7 +764,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -796,7 +797,7 @@ public class SchemaExchangeService
     {
         final String methodName = "updateSchemaAttribute";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.updateSchemaAttribute(userId,
                                                        assetManagerGUID,
@@ -812,7 +813,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -845,7 +846,7 @@ public class SchemaExchangeService
     {
         final String methodName = "setGlossaryAsCanonical";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.setSchemaElementAsCalculatedValue(userId,
                                                                    assetManagerGUID,
@@ -861,7 +862,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -890,7 +891,7 @@ public class SchemaExchangeService
     {
         final String methodName = "clearSchemaElementAsCalculatedValue";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.clearSchemaElementAsCalculatedValue(userId,
                                                                      assetManagerGUID,
@@ -904,7 +905,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -939,7 +940,7 @@ public class SchemaExchangeService
     {
         final String methodName = "setupColumnAsPrimaryKey";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.setupColumnAsPrimaryKey(userId,
                                                          assetManagerGUID,
@@ -956,7 +957,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -985,7 +986,7 @@ public class SchemaExchangeService
     {
         final String methodName = "clearColumnAsPrimaryKey";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.clearColumnAsPrimaryKey(userId,
                                                          assetManagerGUID,
@@ -999,7 +1000,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1032,7 +1033,7 @@ public class SchemaExchangeService
     {
         final String methodName = "setupForeignKeyRelationship";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.setupForeignKeyRelationship(userId,
                                                              assetManagerGUID,
@@ -1048,7 +1049,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1079,7 +1080,7 @@ public class SchemaExchangeService
     {
         final String methodName = "updateForeignKeyRelationship";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.updateForeignKeyRelationship(userId,
                                                               assetManagerGUID,
@@ -1094,7 +1095,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1123,7 +1124,7 @@ public class SchemaExchangeService
     {
         final String methodName = "clearForeignKeyRelationship";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.clearForeignKeyRelationship(userId,
                                                              assetManagerGUID,
@@ -1137,7 +1138,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1166,7 +1167,7 @@ public class SchemaExchangeService
     {
         final String methodName = "removeSchemaAttribute";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             schemaExchangeClient.removeSchemaAttribute(userId,
                                                        assetManagerGUID,
@@ -1180,7 +1181,7 @@ public class SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),

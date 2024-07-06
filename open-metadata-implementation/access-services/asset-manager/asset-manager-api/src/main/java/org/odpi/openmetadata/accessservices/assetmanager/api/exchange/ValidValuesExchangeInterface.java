@@ -6,13 +6,13 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Refere
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ReferenceValueAssignmentItemElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueMember;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceValueAssignmentProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueMembershipProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 
 import java.util.Date;
 import java.util.List;

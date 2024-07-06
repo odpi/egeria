@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,9 +21,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SoftwareServerProperties extends ITInfrastructureProperties
 {
-    private static final String versionProperty                    = "serverVersion";
-    private static final String sourceProperty                     = "source";
-    private static final String userIdProperty                     = "userId";
+    private static final String versionProperty = OpenMetadataProperty.SERVER_VERSION.name;
+    private static final String sourceProperty  = OpenMetadataProperty.SOURCE.name;
+    private static final String userIdProperty  = OpenMetadataProperty.USER_ID.name;
 
     private String  softwareServerVersion = null;
     private String  softwareServerSource  = null;
@@ -249,23 +250,10 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
     public String toString()
     {
         return "SoftwareServerProperties{" +
-                       "name='" + getName() + '\'' +
-                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", deployedImplementationType='" + getDeployedImplementationType() + '\'' +
-                       ", softwareServerVersion='" + softwareServerVersion + '\'' +
-                       ", softwareServerSource='" + softwareServerSource + '\'' +
-                       ", softwareServerUserId='" + softwareServerUserId + '\'' +
-                       ", cloneToAsset=" + cloneToAsset() +
-                       '}';
+                "softwareServerVersion='" + softwareServerVersion + '\'' +
+                ", softwareServerSource='" + softwareServerSource + '\'' +
+                ", softwareServerUserId='" + softwareServerUserId + '\'' +
+                "} " + super.toString();
     }
 
 

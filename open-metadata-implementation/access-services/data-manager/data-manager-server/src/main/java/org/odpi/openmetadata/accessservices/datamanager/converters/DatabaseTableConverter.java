@@ -63,9 +63,8 @@ public class DatabaseTableConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof DatabaseTableElement)
+            if (returnBean instanceof DatabaseTableElement bean)
             {
-                DatabaseTableElement bean = (DatabaseTableElement) returnBean;
                 DatabaseTableProperties databaseTableProperties = new DatabaseTableProperties();
 
                 if (schemaAttributeEntity != null)

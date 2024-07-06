@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.converters.CommentConve
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CommentElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.CommentHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;

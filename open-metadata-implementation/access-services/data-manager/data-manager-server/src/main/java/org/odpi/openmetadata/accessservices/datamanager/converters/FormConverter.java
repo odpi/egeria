@@ -56,9 +56,8 @@ public class FormConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof FormElement)
+            if (returnBean instanceof FormElement bean)
             {
-                FormElement    bean            = (FormElement) returnBean;
                 FormProperties formProperties = new FormProperties();
 
                 if (entity != null)
@@ -75,6 +74,7 @@ public class FormConverter<B> extends DataManagerOMASConverter<B>
                     formProperties.setName(this.removeName(instanceProperties));
                     formProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     formProperties.setDescription(this.removeDescription(instanceProperties));
+                    formProperties.setDeployedImplementationType(this.removeDeployedImplementationType(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

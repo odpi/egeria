@@ -12,7 +12,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
 import java.util.Date;
@@ -30,7 +31,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * Create a new client to exchange data asset content with open metadata.
      *
      * @param dataAssetExchangeClient client for exchange requests
-     * @param synchronizationDirection direction(s) that metadata can flow
+     * @param permittedSynchronization direction(s) that metadata can flow
      * @param userId integration daemon's userId
      * @param assetManagerGUID unique identifier of the software server capability for the asset manager
      * @param assetManagerName unique name of the software server capability for the asset manager
@@ -38,14 +39,14 @@ public class DataAssetExchangeService extends SchemaExchangeService
      * @param auditLog logging destination
      */
     DataAssetExchangeService(DataAssetExchangeClient  dataAssetExchangeClient,
-                             SynchronizationDirection synchronizationDirection,
+                             PermittedSynchronization permittedSynchronization,
                              String                   userId,
                              String                   assetManagerGUID,
                              String                   assetManagerName,
                              String                   connectorName,
                              AuditLog                 auditLog)
     {
-        super (dataAssetExchangeClient, synchronizationDirection,userId, assetManagerGUID, assetManagerName, connectorName, auditLog);
+        super (dataAssetExchangeClient, permittedSynchronization, userId, assetManagerGUID, assetManagerName, connectorName, auditLog);
 
         this.dataAssetExchangeClient = dataAssetExchangeClient;
     }
@@ -76,7 +77,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
     {
         final String methodName = "createDataAsset";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return dataAssetExchangeClient.createDataAsset(userId,
                                                            assetManagerGUID,
@@ -88,7 +89,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -122,7 +123,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
     {
         final String methodName = "createDataAssetFromTemplate";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return dataAssetExchangeClient.createDataAssetFromTemplate(userId,
                                                                        assetManagerGUID,
@@ -135,7 +136,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -168,7 +169,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
     {
         final String methodName = "updateDataAsset";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             dataAssetExchangeClient.updateDataAsset(userId,
                                                     assetManagerGUID,
@@ -184,7 +185,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -213,7 +214,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
     {
         final String methodName = "publishDataAsset";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             dataAssetExchangeClient.publishDataAsset(userId,
                                                      assetManagerGUID,
@@ -226,7 +227,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -255,7 +256,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
     {
         final String methodName = "withdrawDataAsset";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             dataAssetExchangeClient.withdrawDataAsset(userId,
                                                       assetManagerGUID,
@@ -268,7 +269,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -298,7 +299,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
     {
         final String methodName = "removeDataAsset";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             dataAssetExchangeClient.removeDataAsset(userId,
                                                     assetManagerGUID,
@@ -312,7 +313,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -341,7 +342,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
     {
         final String methodName = "setDataAssetAsReferenceData";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             dataAssetExchangeClient.setDataAssetAsReferenceData(userId,
                                                                 assetManagerGUID,
@@ -355,7 +356,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -384,7 +385,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
     {
         final String methodName = "clearDataAssetAsReferenceData";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             dataAssetExchangeClient.clearDataAssetAsReferenceData(userId,
                                                                   assetManagerGUID,
@@ -398,7 +399,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -436,7 +437,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
     {
         final String methodName = "setupRelatedDataAsset";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return dataAssetExchangeClient.setupRelatedDataAsset(userId,
                                                                  assetManagerGUID,
@@ -453,7 +454,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -519,7 +520,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
     {
         final String methodName = "updateAssetRelationship";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             dataAssetExchangeClient.updateAssetRelationship(userId,
                                                             assetManagerGUID,
@@ -535,7 +536,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -564,7 +565,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
     {
         final String methodName = "clearAssetRelationship";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             dataAssetExchangeClient.clearAssetRelationship(userId,
                                                            assetManagerGUID,
@@ -578,7 +579,7 @@ public class DataAssetExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),

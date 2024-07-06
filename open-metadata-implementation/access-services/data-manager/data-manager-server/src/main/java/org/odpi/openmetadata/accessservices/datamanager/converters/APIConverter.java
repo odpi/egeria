@@ -56,9 +56,8 @@ public class APIConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof APIElement)
+            if (returnBean instanceof APIElement bean)
             {
-                APIElement    bean            = (APIElement) returnBean;
                 APIProperties apiProperties = new APIProperties();
 
                 if (entity != null)
@@ -75,6 +74,7 @@ public class APIConverter<B> extends DataManagerOMASConverter<B>
                     apiProperties.setName(this.removeName(instanceProperties));
                     apiProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     apiProperties.setDescription(this.removeDescription(instanceProperties));
+                    apiProperties.setDeployedImplementationType(this.removeDeployedImplementationType(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

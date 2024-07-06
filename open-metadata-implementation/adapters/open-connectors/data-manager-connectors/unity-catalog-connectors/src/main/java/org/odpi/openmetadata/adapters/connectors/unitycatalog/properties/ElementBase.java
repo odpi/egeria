@@ -3,11 +3,62 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.properties;
 
+import java.util.Map;
+
 /**
  * Common properties of an element returned from UC.
  */
 public interface ElementBase
 {
+
+    /**
+     * Return the unique name of the element within its name space.
+     *
+     * @return string
+     */
+    String getName();
+
+
+    /**
+     * Set up the unique name of the element within its name space.
+     *
+     * @param name string name
+     */
+    void setName(String name);
+
+
+    /**
+     * Return a comment describing the element within its name space.
+     *
+     * @return text
+     */
+    String getComment();
+
+
+    /**
+     * Set up a comment describing the element within its name space.
+     *
+     * @param comment text
+     */
+    void setComment(String comment);
+
+
+    /**
+     * Return arbitrary name-value property pairs.
+     *
+     * @return property string map
+     */
+    Map<String, String> getProperties();
+
+
+    /**
+     * Set up arbitrary name-value property pairs.
+     *
+     * @param properties property string map
+     */
+    void setProperties(Map<String, String> properties);
+
+
     /**
      * Return the time that the element was created.
      *

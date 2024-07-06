@@ -12,8 +12,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.analytics.connector.AnalyticsIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.analytics.connector.AnalyticsIntegratorContext;
 import org.odpi.openmetadata.integrationservices.analytics.ffdc.AnalyticsIntegratorAuditCode;

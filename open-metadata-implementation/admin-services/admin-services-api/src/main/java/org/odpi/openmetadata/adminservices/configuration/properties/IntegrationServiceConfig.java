@@ -7,9 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 
-import java.io.Serial;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;

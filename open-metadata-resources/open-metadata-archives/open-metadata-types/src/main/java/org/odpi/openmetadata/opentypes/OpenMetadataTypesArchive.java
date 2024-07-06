@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -155,6 +157,8 @@ public class OpenMetadataTypesArchive
         previousTypes.getOriginalTypes();
 
         update0201Connections();
+        update0210DataStores();
+        update0235InformationView();
         update0464IntegrationGroups();
     }
 
@@ -187,22 +191,15 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
-        final String attribute1Description     = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.name;
-        final String attribute2Description     = OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                           OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description,
+                                                           OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         properties.add(property);
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                           OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.description,
+                                                           OpenMetadataProperty.SUPPORTED_DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -210,6 +207,91 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0210DataStores()
+    {
+        this.archiveBuilder.addClassificationDef(getDataAssetEncodingClassification());
+        this.archiveBuilder.addTypeDefPatch(deprecateDataStoreEncodingClassification());
+    }
+
+    private ClassificationDef getDataAssetEncodingClassification()
+    {
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeGUID,
+                                                                                 OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
+                                                                                 null,
+                                                                                 OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.description,
+                                                                                 OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.descriptionGUID,
+                                                                                 OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.wikiURL,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_ASSET.typeName),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ENCODING.name,
+                                                           OpenMetadataProperty.ENCODING.description,
+                                                           OpenMetadataProperty.ENCODING.descriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ENCODING_LANGUAGE.name,
+                                                           OpenMetadataProperty.ENCODING_LANGUAGE.description,
+                                                           OpenMetadataProperty.ENCODING_LANGUAGE.descriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ENCODING_DESCRIPTION.name,
+                                                           OpenMetadataProperty.ENCODING_DESCRIPTION.description,
+                                                           OpenMetadataProperty.ENCODING_DESCRIPTION.descriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.ENCODING_PROPERTIES.name,
+                                                                    OpenMetadataProperty.ENCODING_PROPERTIES.description,
+                                                                    OpenMetadataProperty.ENCODING_PROPERTIES.descriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
+
+    private TypeDefPatch deprecateDataStoreEncodingClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DataStoreEncoding";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0235InformationView()
+    {
+        this.archiveBuilder.addEntityDef(getVirtualRelationalTableEntity());
+    }
+
+
+    private EntityDef getVirtualRelationalTableEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.typeGUID,
+                                                 OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.INFORMATION_VIEW.typeName),
+                                                 OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.description,
+                                                 OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.descriptionGUID,
+                                                 OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.wikiURL);
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -217,20 +299,50 @@ public class OpenMetadataTypesArchive
 
     private void update0464IntegrationGroups()
     {
+        this.archiveBuilder.addEnumDef(getDeleteMethodEnum());
         this.archiveBuilder.addTypeDefPatch(updateCatalogTarget());
+    }
+
+    private EnumDef getDeleteMethodEnum()
+    {
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(DeleteMethod.getOpenTypeGUID(),
+                                                        DeleteMethod.getOpenTypeName(),
+                                                        DeleteMethod.getOpenTypeDescription(),
+                                                        DeleteMethod.getOpenTypeDescriptionGUID(),
+                                                        DeleteMethod.getOpenTypeDescriptionWiki());
+
+        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef            elementDef;
+
+        for (DeleteMethod deleteMethod : DeleteMethod.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(deleteMethod.getOrdinal(),
+                                                         deleteMethod.getName(),
+                                                         deleteMethod.getDescription(),
+                                                         deleteMethod.getDescriptionGUID());
+
+            elementDefs.add(elementDef);
+
+            if (deleteMethod.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
+
+        enumDef.setElementDefs(elementDefs);
+
+        return enumDef;
     }
 
 
     /**
-     * Add multi-link
+     * Add multi-link and new properties
      *
      * @return patch
      */
     private TypeDefPatch updateCatalogTarget()
     {
-        final String typeName = OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -238,8 +350,30 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setUpdateMultiLink(true);
         typeDefPatch.setMultiLink(true);
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        property = archiveHelper.getEnumTypeDefAttribute(PermittedSynchronization.getOpenTypeName(),
+                                                         OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
+                                                         OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.description,
+                                                         OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.descriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getEnumTypeDefAttribute(DeleteMethod.getOpenTypeName(),
+                                                         OpenMetadataProperty.DELETE_METHOD.name,
+                                                         OpenMetadataProperty.DELETE_METHOD.description,
+                                                         OpenMetadataProperty.DELETE_METHOD.descriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+
         return typeDefPatch;
     }
+
+
 
 }
 

@@ -7,13 +7,13 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.Externa
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GlossaryExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.fvt.common.AssetManagerTestBase;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -217,12 +217,12 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(null last sync date)");
             }
 
-            if (! assetManagerGUID.equals(correlationHeader.getAssetManagerGUID()))
+            if (! assetManagerGUID.equals(correlationHeader.getExternalScopeGUID()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad assetManagerGUID)");
             }
 
-            if (! assetManagerOneName.equals(correlationHeader.getAssetManagerName()))
+            if (! assetManagerOneName.equals(correlationHeader.getExternalScopeName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(bad assetManagerName)");
             }
@@ -310,7 +310,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             externalIdentifierProperties.setExternalIdentifierUsage(externalGlossaryIdentifierTwoUsage);
             externalIdentifierProperties.setExternalIdentifierSource(externalGlossaryIdentifierTwoSource);
             externalIdentifierProperties.setKeyPattern(externalGlossaryIdentifierTwoKeyPattern);
-            externalIdentifierProperties.setSynchronizationDirection(SynchronizationDirection.BOTH_DIRECTIONS);
+            externalIdentifierProperties.setSynchronizationDirection(PermittedSynchronization.BOTH_DIRECTIONS);
 
             assetManagerClient.addExternalIdentifier(userId,
                                                      assetManagerTwoGUID,
@@ -553,7 +553,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
             externalIdentifierProperties.setExternalIdentifierUsage(externalGlossaryIdentifierOneUsage);
             externalIdentifierProperties.setExternalIdentifierSource(externalGlossaryIdentifierOneSource);
             externalIdentifierProperties.setKeyPattern(externalGlossaryIdentifierOneKeyPattern);
-            externalIdentifierProperties.setSynchronizationDirection(SynchronizationDirection.BOTH_DIRECTIONS);
+            externalIdentifierProperties.setSynchronizationDirection(PermittedSynchronization.BOTH_DIRECTIONS);
 
             assetManagerClient.addExternalIdentifier(userId,
                                                      assetManagerTwoGUID,
@@ -790,7 +790,7 @@ public class ManageExternalIdsTest extends AssetManagerTestBase
 
             externalIdentifierProperties.setExternalIdentifier(externalGlossaryIdentifierTwo);
             externalIdentifierProperties.setExternalIdentifierName(externalGlossaryIdentifierTwoName);
-            externalIdentifierProperties.setSynchronizationDirection(SynchronizationDirection.BOTH_DIRECTIONS);
+            externalIdentifierProperties.setSynchronizationDirection(PermittedSynchronization.BOTH_DIRECTIONS);
             externalIdentifierProperties.setExternalIdentifierUsage(externalGlossaryIdentifierTwoUsage);
             externalIdentifierProperties.setExternalIdentifierSource(externalGlossaryIdentifierTwoSource);
             externalIdentifierProperties.setKeyPattern(externalGlossaryIdentifierTwoKeyPattern);

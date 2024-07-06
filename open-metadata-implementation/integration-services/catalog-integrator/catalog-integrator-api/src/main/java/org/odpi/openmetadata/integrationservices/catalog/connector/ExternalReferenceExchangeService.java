@@ -6,10 +6,10 @@ package org.odpi.openmetadata.integrationservices.catalog.connector;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalReferenceExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceLinkElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -29,9 +29,9 @@ public class ExternalReferenceExchangeService
     private final String                          userId;
     private final String                          assetManagerGUID;
     private final String                          assetManagerName;
-    private final String                          connectorName;
-    private final SynchronizationDirection        synchronizationDirection;
-    private final AuditLog                        auditLog;
+    private final String                   connectorName;
+    private final PermittedSynchronization permittedSynchronization;
+    private final AuditLog                 auditLog;
 
     private boolean assetManagerIsHome = true;
 
@@ -42,7 +42,7 @@ public class ExternalReferenceExchangeService
      * Create a new client to exchange data asset content with open metadata.
      *
      * @param externalReferenceClient client for exchange requests
-     * @param synchronizationDirection direction(s) that metadata can flow
+     * @param permittedSynchronization direction(s) that metadata can flow
      * @param userId integration daemon's userId
      * @param assetManagerGUID unique identifier of the software server capability for the asset manager
      * @param assetManagerName unique name of the software server capability for the asset manager
@@ -50,7 +50,7 @@ public class ExternalReferenceExchangeService
      * @param auditLog logging destination
      */
     ExternalReferenceExchangeService(ExternalReferenceExchangeClient externalReferenceClient,
-                                     SynchronizationDirection        synchronizationDirection,
+                                     PermittedSynchronization permittedSynchronization,
                                      String                          userId,
                                      String                          assetManagerGUID,
                                      String                          assetManagerName,
@@ -59,7 +59,7 @@ public class ExternalReferenceExchangeService
     {
 
         this.externalReferenceClient  = externalReferenceClient;
-        this.synchronizationDirection = synchronizationDirection;
+        this.permittedSynchronization = permittedSynchronization;
         this.userId                   = userId;
         this.assetManagerGUID         = assetManagerGUID;
         this.assetManagerName         = assetManagerName;
@@ -164,7 +164,7 @@ public class ExternalReferenceExchangeService
     {
         final String methodName = "createExternalReference";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return externalReferenceClient.createExternalReference(userId,
                                                                    assetManagerGUID,
@@ -177,7 +177,7 @@ public class ExternalReferenceExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -210,14 +210,14 @@ public class ExternalReferenceExchangeService
     {
         final String methodName = "updateExternalReference";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             externalReferenceClient.updateExternalReference(userId, assetManagerGUID, assetManagerName, externalReferenceGUID, referenceExternalIdentifier, isMergeUpdate, properties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -246,14 +246,14 @@ public class ExternalReferenceExchangeService
     {
         final String methodName = "deleteExternalReference";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             externalReferenceClient.deleteExternalReference(userId, assetManagerGUID, assetManagerName, externalReferenceGUID, referenceExternalIdentifier, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -286,14 +286,14 @@ public class ExternalReferenceExchangeService
     {
         final String methodName = "linkExternalReferenceToElement";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return externalReferenceClient.linkExternalReferenceToElement(userId, assetManagerGUID, assetManagerName, assetManagerIsHome, attachedToGUID, externalReferenceGUID, linkProperties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -323,14 +323,14 @@ public class ExternalReferenceExchangeService
     {
         final String methodName = "linkExternalReferenceToElement";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             externalReferenceClient.updateExternalReferenceToElementLink(userId, assetManagerGUID, assetManagerName, externalReferenceLinkGUID, linkProperties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -357,14 +357,14 @@ public class ExternalReferenceExchangeService
     {
         final String methodName = "unlinkExternalReferenceFromElement";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             externalReferenceClient.unlinkExternalReferenceFromElement(userId, assetManagerGUID, assetManagerName, externalReferenceLinkGUID, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),

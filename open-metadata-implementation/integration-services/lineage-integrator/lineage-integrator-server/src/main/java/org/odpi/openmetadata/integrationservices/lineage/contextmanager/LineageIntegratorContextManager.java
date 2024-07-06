@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.accessservices.assetmanager.client.*;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAssetExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GovernanceExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.LineageExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
@@ -19,8 +18,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext;
 import org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageEventListener;
@@ -40,7 +39,6 @@ import java.util.Map;
  */
 public class LineageIntegratorContextManager extends IntegrationContextManager implements OpenLineageListenerManager
 {
-    private ExternalAssetManagerClient assetManagerClient;
     private DataAssetExchangeClient    dataAssetExchangeClient;
     private LineageExchangeClient      lineageExchangeClient;
     private GovernanceExchangeClient   governanceExchangeClient;
@@ -115,12 +113,6 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
                                                     localServerPassword,
                                                     auditLog);
         }
-
-        assetManagerClient = new ExternalAssetManagerClient(partnerOMASServerName,
-                                                            partnerOMASPlatformRootURL,
-                                                            restClient,
-                                                            maxPageSize,
-                                                            auditLog);
 
         dataAssetExchangeClient = new DataAssetExchangeClient(partnerOMASServerName,
                                                               partnerOMASPlatformRootURL,

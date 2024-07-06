@@ -56,10 +56,8 @@ public class MetadataElementConverter<B> extends GovernanceEngineOMASConverter<B
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof OpenMetadataElement)
+            if (returnBean instanceof OpenMetadataElement bean)
             {
-                OpenMetadataElement bean = (OpenMetadataElement) returnBean;
-
                 super.fillOpenMetadataElement(bean, entity);
             }
 

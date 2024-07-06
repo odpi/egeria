@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.*;
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreErrorCode;
@@ -32,7 +33,7 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
     private final AssetHandler<GovernanceActionProcessElement>                           governanceActionProcessHandler;
     private final GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> governanceActionProcessStepHandler;
     private final GovernanceActionTypeHandler<GovernanceActionTypeElement>               governanceActionTypeHandler;
-
+    private final ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader>    externalIdentifierHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -178,6 +179,23 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
                                                                                  defaultZones,
                                                                                  publishZones,
                                                                                  auditLog);
+
+            this.externalIdentifierHandler = new ExternalIdentifierHandler<>(new ExternalIdentifierConverter<>(repositoryHelper, serviceName, serverName),
+                                                                             MetadataCorrelationHeader.class,
+                                                                             new ElementHeaderConverter<>(repositoryHelper, serviceName, serverName),
+                                                                             ElementHeader.class,
+                                                                             serviceName,
+                                                                             serverName,
+                                                                             invalidParameterHandler,
+                                                                             repositoryHandler,
+                                                                             repositoryHelper,
+                                                                             localServerUserId,
+                                                                             securityVerifier,
+                                                                             supportedZones,
+                                                                             defaultZones,
+                                                                             publishZones,
+                                                                             auditLog);
+
         }
         else
         {
@@ -219,13 +237,24 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
     }
 
     /**
-     * Return the handler for open metadata store requests.
+     * Return the handler for reference data requests.
      *
      * @return handler object
      */
     public ValidValuesHandler<ValidMetadataValueDetail> getValidMetadataValuesDetailHandler()
     {
         return validMetadataValuesDetailHandler;
+    }
+
+
+    /**
+     * Return the handler for external identifiers requests.
+     *
+     * @return handler object
+     */
+    public ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> getExternalIdentifierHandler()
+    {
+        return externalIdentifierHandler;
     }
 
 

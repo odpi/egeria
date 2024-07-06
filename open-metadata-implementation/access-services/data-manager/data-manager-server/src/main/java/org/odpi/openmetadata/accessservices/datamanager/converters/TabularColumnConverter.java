@@ -63,9 +63,8 @@ public class TabularColumnConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof TabularColumnElement)
+            if (returnBean instanceof TabularColumnElement bean)
             {
-                TabularColumnElement    bean = (TabularColumnElement) returnBean;
                 TabularColumnProperties properties = new TabularColumnProperties();
 
                 if (schemaAttributeEntity != null)

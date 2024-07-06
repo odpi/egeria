@@ -57,9 +57,8 @@ public class DataFlowConverter<B> extends ITInfrastructureOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof DataFlowElement)
+            if (returnBean instanceof DataFlowElement bean)
             {
-                DataFlowElement    bean               = (DataFlowElement) returnBean;
                 DataFlowProperties dataFlowProperties = new DataFlowProperties();
 
                 if (relationship != null)

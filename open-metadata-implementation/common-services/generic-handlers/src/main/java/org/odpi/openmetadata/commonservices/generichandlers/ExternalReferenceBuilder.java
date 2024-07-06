@@ -188,19 +188,19 @@ public class ExternalReferenceBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.URL_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.URL.name,
                                                                   url,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.REFERENCE_VERSION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.REFERENCE_VERSION.name,
                                                                   referenceVersion,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.ORGANIZATION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SOURCE_ORGANIZATION.name,
                                                                   organization,
                                                                   methodName);
 
@@ -225,7 +225,7 @@ public class ExternalReferenceBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataType.REFERENCE_ID_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.REFERENCE_ID.name,
                                                                       referenceId,
                                                                       methodName);
 

@@ -407,6 +407,7 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
                     IntegrationConnectorReport connectorReport = new IntegrationConnectorReport();
 
                     connectorReport.setConnectorId(connectorHandler.getIntegrationConnectorId());
+                    connectorReport.setConnectorGUID(connectorHandler.getIntegrationConnectorGUID());
                     connectorReport.setConnectorName(connectorHandler.getIntegrationConnectorName());
                     connectorReport.setConnectorStatus(connectorHandler.getIntegrationConnectorStatus());
                     connectorReport.setConnection(connectorHandler.getConnection());

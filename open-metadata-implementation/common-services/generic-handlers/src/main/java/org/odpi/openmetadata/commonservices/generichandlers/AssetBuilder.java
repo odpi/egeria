@@ -20,6 +20,7 @@ public class AssetBuilder extends ReferenceableBuilder
     private String technicalName        = null;
     private String versionIdentifier    = null;
     private String technicalDescription = null;
+    private String deployedImplementationType = null;
 
 
     /**
@@ -71,6 +72,7 @@ public class AssetBuilder extends ReferenceableBuilder
      * @param technicalName new value for the name
      * @param versionIdentifier new value for the versionIdentifier
      * @param technicalDescription new description for the asset
+     * @param deployedImplementationType technology type
      * @param additionalProperties additional properties
      * @param typeGUID unique identifier for the type of this asset
      * @param typeName unique name for the type of this asset
@@ -83,6 +85,7 @@ public class AssetBuilder extends ReferenceableBuilder
                            String               technicalName,
                            String               versionIdentifier,
                            String               technicalDescription,
+                           String               deployedImplementationType,
                            Map<String, String>  additionalProperties,
                            String               typeGUID,
                            String               typeName,
@@ -103,6 +106,7 @@ public class AssetBuilder extends ReferenceableBuilder
         this.technicalName = technicalName;
         this.versionIdentifier = versionIdentifier;
         this.technicalDescription = technicalDescription;
+        this.deployedImplementationType = deployedImplementationType;
     }
 
 
@@ -113,6 +117,7 @@ public class AssetBuilder extends ReferenceableBuilder
      * @param technicalName new value for the name
      * @param versionIdentifier new value for the versionIdentifier
      * @param technicalDescription new description for the asset
+     * @param deployedImplementationType technology type
      * @param additionalProperties additional properties
      * @param typeGUID unique identifier for the type of this asset
      * @param typeName unique name for the type of this asset
@@ -126,6 +131,7 @@ public class AssetBuilder extends ReferenceableBuilder
                            String               technicalName,
                            String               versionIdentifier,
                            String               technicalDescription,
+                           String               deployedImplementationType,
                            Map<String, String>  additionalProperties,
                            String               typeGUID,
                            String               typeName,
@@ -148,6 +154,7 @@ public class AssetBuilder extends ReferenceableBuilder
         this.technicalName = technicalName;
         this.versionIdentifier = versionIdentifier;
         this.technicalDescription = technicalDescription;
+        this.deployedImplementationType = deployedImplementationType;
     }
 
 
@@ -445,6 +452,11 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                   properties,
                                                                   OpenMetadataProperty.DESCRIPTION.name,
                                                                   technicalDescription,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                  deployedImplementationType,
                                                                   methodName);
 
         return properties;

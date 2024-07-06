@@ -16,10 +16,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -435,9 +436,11 @@ public class GovernanceConfigurationHandler
      *
      * @param userId identifier of calling user
      * @param typeName type of governance service
-     * @param qualifiedName  unique name for the governance service.
-     * @param displayName   display name for the governance service.
+     * @param qualifiedName  unique name for the governance service
+     * @param displayName   display name for the governance service
+     * @param versionIdentifier version name
      * @param description  description of the analysis provided by the governance service.
+     * @param deployedImplementationType type of technology
      * @param connection   connection to instantiate the governance service implementation.
      *
      * @return unique identifier of the governance service.
@@ -450,7 +453,9 @@ public class GovernanceConfigurationHandler
                                           String     typeName,
                                           String     qualifiedName,
                                           String     displayName,
+                                          String     versionIdentifier,
                                           String     description,
+                                          String     deployedImplementationType,
                                           Connection connection) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -470,8 +475,9 @@ public class GovernanceConfigurationHandler
                                                                             null,
                                                                             qualifiedName,
                                                                             displayName,
-                                                                            null,
+                                                                            versionIdentifier,
                                                                             description,
+                                                                            deployedImplementationType,
                                                                             null,
                                                                             typeName,
                                                                             null,
@@ -688,7 +694,9 @@ public class GovernanceConfigurationHandler
      * @param guid unique identifier of the governance service - used to locate the definition.
      * @param qualifiedName new value for unique name of governance service.
      * @param displayName new value for the display name.
+     * @param versionIdentifier version
      * @param description new value for the description.
+     * @param deployedImplementationType type of technology
      * @param connection connection used to create an instance of this governance service.
      * @param additionalProperties additional properties for the governance engine.
      * @param extendedProperties properties to populate the subtype of the governance service.
@@ -701,7 +709,9 @@ public class GovernanceConfigurationHandler
                                         String              guid,
                                         String              qualifiedName,
                                         String              displayName,
+                                        String              versionIdentifier,
                                         String              description,
+                                        String              deployedImplementationType,
                                         Connection          connection,
                                         Map<String, String> additionalProperties,
                                         Map<String, Object> extendedProperties) throws InvalidParameterException,
@@ -718,8 +728,9 @@ public class GovernanceConfigurationHandler
                                                            guidParameter,
                                                            qualifiedName,
                                                            displayName,
-                                                           null,
+                                                           versionIdentifier,
                                                            description,
+                                                           deployedImplementationType,
                                                            additionalProperties,
                                                            OpenMetadataType.GOVERNANCE_SERVICE.typeGUID,
                                                            OpenMetadataType.GOVERNANCE_SERVICE.typeName,
@@ -1518,9 +1529,10 @@ public class GovernanceConfigurationHandler
      *
      * @param userId identifier of calling user
      * @param qualifiedName  unique name for the integration connector.
-     * @param displayName   display name for the integration connector.
+     * @param name   display name for the integration connector.
      * @param versionIdentifier identifier if the version
      * @param description  description of the analysis provided by the integration connector.
+     * @param deployedImplementationType type of technology
      * @param usesBlockingCalls the connector issues blocking calls and needs a dedicated thread.
      * @param additionalProperties additional properties
      * @param connection   connection to instantiate the integration connector implementation.
@@ -1533,9 +1545,10 @@ public class GovernanceConfigurationHandler
      */
     public String createIntegrationConnector(String              userId,
                                              String              qualifiedName,
+                                             String              name,
                                              String              versionIdentifier,
-                                             String              displayName,
                                              String              description,
+                                             String              deployedImplementationType,
                                              boolean             usesBlockingCalls,
                                              Map<String, String> additionalProperties,
                                              Connection          connection) throws InvalidParameterException,
@@ -1558,9 +1571,10 @@ public class GovernanceConfigurationHandler
                                                                                null,
                                                                                null,
                                                                                qualifiedName,
-                                                                               displayName,
+                                                                               name,
                                                                                versionIdentifier,
                                                                                description,
+                                                                               deployedImplementationType,
                                                                                additionalProperties,
                                                                                OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                                extendedProperties,
@@ -1781,7 +1795,8 @@ public class GovernanceConfigurationHandler
      *                      matching names, or should the entire properties of the instance be replaced?
      * @param qualifiedName new value for unique name of integration connector.
      * @param versionIdentifier version identifier of the connector.
-     * @param displayName new value for the display name.
+     * @param name new value for the display name.
+     * @param deployedImplementationType type of technology
      * @param description new value for the description.
      * @param connection connection used to create an instance of this integration connector.
      * @param additionalProperties additional properties for the integration group.
@@ -1795,9 +1810,10 @@ public class GovernanceConfigurationHandler
                                            String              guid,
                                            boolean             isMergeUpdate,
                                            String              qualifiedName,
+                                           String              name,
                                            String              versionIdentifier,
-                                           String              displayName,
                                            String              description,
+                                           String              deployedImplementationType,
                                            Connection          connection,
                                            Map<String, String> additionalProperties,
                                            Map<String, Object> extendedProperties) throws InvalidParameterException,
@@ -1813,9 +1829,10 @@ public class GovernanceConfigurationHandler
                                                               guid,
                                                               guidParameter,
                                                               qualifiedName,
-                                                              displayName,
+                                                              name,
                                                               versionIdentifier,
                                                               description,
+                                                              deployedImplementationType,
                                                               additionalProperties,
                                                               OpenMetadataType.INTEGRATION_CONNECTOR.typeGUID,
                                                               OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
@@ -1962,7 +1979,7 @@ public class GovernanceConfigurationHandler
                                                                                 OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
                                                                                 OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_GUID,
                                                                                 OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_NAME,
-                                                                                permittedSynchronization.getOpenTypeOrdinal(),
+                                                                                permittedSynchronization.getOrdinal(),
                                                                                 methodName);
             }
             catch (TypeErrorException error)
@@ -2185,15 +2202,64 @@ public class GovernanceConfigurationHandler
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                           instanceProperties,
-                                                                          OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
-                                                                          properties.getMetadataSourceQualifiedName(),
+                                                                          OpenMetadataType.CONNECTION_NAME_PROPERTY_NAME,
+                                                                          properties.getConnectionName(),
                                                                           methodName);
+
+        instanceProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                             instanceProperties,
+                                                                             OpenMetadataType.TEMPLATES_PROPERTY_NAME,
+                                                                             properties.getTemplateProperties(),
+                                                                             methodName);
 
         instanceProperties = repositoryHelper.addMapPropertyToInstance(serviceName,
                                                                        instanceProperties,
                                                                        OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
                                                                        properties.getConfigurationProperties(),
                                                                        methodName);
+
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                          instanceProperties,
+                                                                          OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
+                                                                          properties.getMetadataSourceQualifiedName(),
+                                                                          methodName);
+
+        if (properties.getPermittedSynchronization() != null)
+        {
+            try
+            {
+                instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                                instanceProperties,
+                                                                                OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
+                                                                                PermittedSynchronization.getOpenTypeGUID(),
+                                                                                PermittedSynchronization.getOpenTypeName(),
+                                                                                properties.getPermittedSynchronization().getOrdinal(),
+                                                                                methodName);
+            }
+            catch (TypeErrorException error)
+            {
+                throw new InvalidParameterException(error, OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name);
+            }
+        }
+
+
+        if (properties.getDeleteMethod() != null)
+        {
+            try
+            {
+                instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                                instanceProperties,
+                                                                                OpenMetadataProperty.DELETE_METHOD.name,
+                                                                                DeleteMethod.getOpenTypeGUID(),
+                                                                                DeleteMethod.getOpenTypeName(),
+                                                                                properties.getDeleteMethod().getOrdinal(),
+                                                                                methodName);
+            }
+            catch (TypeErrorException error)
+            {
+                throw new InvalidParameterException(error, OpenMetadataProperty.DELETE_METHOD.name);
+            }
+        }
 
         return integrationGroupHandler.multiLinkElementToElement(userId,
                                                                  null,
@@ -2248,15 +2314,64 @@ public class GovernanceConfigurationHandler
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                           instanceProperties,
-                                                                          OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
-                                                                          properties.getMetadataSourceQualifiedName(),
+                                                                          OpenMetadataType.CONNECTION_NAME_PROPERTY_NAME,
+                                                                          properties.getConnectionName(),
                                                                           methodName);
+
+        instanceProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                             instanceProperties,
+                                                                             OpenMetadataType.TEMPLATES_PROPERTY_NAME,
+                                                                             properties.getTemplateProperties(),
+                                                                             methodName);
 
         instanceProperties = repositoryHelper.addMapPropertyToInstance(serviceName,
                                                                        instanceProperties,
                                                                        OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
                                                                        properties.getConfigurationProperties(),
                                                                        methodName);
+
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                          instanceProperties,
+                                                                          OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
+                                                                          properties.getMetadataSourceQualifiedName(),
+                                                                          methodName);
+
+        if (properties.getPermittedSynchronization() != null)
+        {
+            try
+            {
+                instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                                instanceProperties,
+                                                                                OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
+                                                                                PermittedSynchronization.getOpenTypeGUID(),
+                                                                                PermittedSynchronization.getOpenTypeName(),
+                                                                                properties.getPermittedSynchronization().getOrdinal(),
+                                                                                methodName);
+            }
+            catch (TypeErrorException error)
+            {
+                throw new InvalidParameterException(error, OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name);
+            }
+        }
+
+
+        if (properties.getDeleteMethod() != null)
+        {
+            try
+            {
+                instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                                instanceProperties,
+                                                                                OpenMetadataProperty.DELETE_METHOD.name,
+                                                                                DeleteMethod.getOpenTypeGUID(),
+                                                                                DeleteMethod.getOpenTypeName(),
+                                                                                properties.getDeleteMethod().getOrdinal(),
+                                                                                methodName);
+            }
+            catch (TypeErrorException error)
+            {
+                throw new InvalidParameterException(error, OpenMetadataProperty.DELETE_METHOD.name);
+            }
+        }
 
         integrationGroupHandler.updateRelationshipProperties(userId,
                                                              null,

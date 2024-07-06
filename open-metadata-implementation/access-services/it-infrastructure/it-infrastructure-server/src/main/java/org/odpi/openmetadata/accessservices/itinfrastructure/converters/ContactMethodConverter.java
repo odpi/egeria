@@ -57,9 +57,8 @@ public class ContactMethodConverter<B> extends ITInfrastructureOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ContactMethodElement)
+            if (returnBean instanceof ContactMethodElement bean)
             {
-                ContactMethodElement    bean                    = (ContactMethodElement) returnBean;
                 ContactMethodProperties contactMethodProperties = new ContactMethodProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));

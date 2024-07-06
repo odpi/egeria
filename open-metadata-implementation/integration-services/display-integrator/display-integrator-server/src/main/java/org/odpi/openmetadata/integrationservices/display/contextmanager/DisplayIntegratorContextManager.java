@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.datamanager.client.*;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.ApplicationProperties;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -15,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.display.connector.DisplayIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.display.connector.DisplayIntegratorContext;
 import org.odpi.openmetadata.integrationservices.display.ffdc.DisplayIntegratorAuditCode;

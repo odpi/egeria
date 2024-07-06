@@ -423,6 +423,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param name short display name
      * @param versionIdentifier version identifier for the folder
      * @param description description of the file system
+     * @param deployedImplementationType technology type
      * @param typeName type of file system
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
@@ -444,6 +445,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 String  name,
                                 String  versionIdentifier,
                                 String  description,
+                                String  deployedImplementationType,
                                 String  typeName,
                                 Date    effectiveFrom,
                                 Date    effectiveTo,
@@ -474,6 +476,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                        name,
                                                        versionIdentifier,
                                                        description,
+                                                       deployedImplementationType,
                                                        null,
                                                        folderAssetTypeName,
                                                        extendedProperties,
@@ -503,10 +506,11 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param fileType file extension name
      * @param fileName name of the file
      * @param fileExtension extension if provided
-     * @param pathName qualified name for the file system
+     * @param pathName qualified name for the file
      * @param displayName short display name
-     * @param versionIdentifier version identifier for the file system
-     * @param description description of the file system
+     * @param versionIdentifier version identifier for the file
+     * @param description description of the file
+     * @param deployedImplementationType technology type
      * @param typeName type of file system
      * @param initialExtendedProperties extended properties for a specific file type
      * @param configurationProperties  for the connection
@@ -533,6 +537,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                    String              displayName,
                                    String              versionIdentifier,
                                    String              description,
+                                   String              deployedImplementationType,
                                    String              typeName,
                                    Map<String, Object> initialExtendedProperties,
                                    Map<String, Object> configurationProperties,
@@ -572,6 +577,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      displayName,
                                                      versionIdentifier,
                                                      description,
+                                                     deployedImplementationType,
                                                      null,
                                                      fileAssetTypeName,
                                                      extendedProperties,
@@ -634,6 +640,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param pathName pathname of the folder (or folders)
      * @param folderName name of the leaf folder
      * @param versionIdentifier version identifier for the asset
+     * @param deployedImplementationType technology type
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -654,6 +661,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          String   pathName,
                                          String   folderName,
                                          String   versionIdentifier,
+                                         String   deployedImplementationType,
                                          Date     effectiveFrom,
                                          Date     effectiveTo,
                                          boolean  forLineage,
@@ -673,6 +681,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          folderName,
                                          versionIdentifier,
                                          null,
+                                         deployedImplementationType,
                                          OpenMetadataType.FILE_FOLDER.typeName,
                                          effectiveFrom,
                                          effectiveTo,
@@ -828,6 +837,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                               pathName,
                                                               folderName,
                                                               null,
+                                                              DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType(),
                                                               effectiveFrom,
                                                               effectiveTo,
                                                               forLineage,
@@ -1243,7 +1253,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                               fileGUIDParameterName,
                                                               OpenMetadataType.DATA_FILE.typeGUID,
                                                               relationshipPath,
-                                                              OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                              OpenMetadataType.ENDPOINT.typeName,
                                                               0,
                                                               invalidParameterHandler.getMaxPagingSize(),
                                                               effectiveTime,
@@ -1264,9 +1274,9 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                          externalSourceName,
                                                                          endpointGUID,
                                                                          endpointGUIDParameterName,
-                                                                         OpenMetadataType.ENDPOINT_TYPE_GUID,
-                                                                         OpenMetadataType.ENDPOINT_TYPE_NAME,
-                                                                         OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                                         OpenMetadataType.ENDPOINT.typeGUID,
+                                                                         OpenMetadataType.ENDPOINT.typeName,
+                                                                         OpenMetadataProperty.NETWORK_ADDRESS.name,
                                                                          fullPathName,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
@@ -1570,6 +1580,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                   String   name,
                                                   String   versionIdentifier,
                                                   String   description,
+                                                  String   deployedImplementationType,
                                                   String   pathName,
                                                   Date     effectiveFrom,
                                                   Date     effectiveTo,
@@ -1599,6 +1610,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     name,
                                                     versionIdentifier,
                                                     description,
+                                                    deployedImplementationType,
                                                     OpenMetadataType.DATA_FILE.typeName,
                                                     null,
                                                     null,
@@ -1632,7 +1644,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param modifiedTime the time of the latest change to the file
      * @param fileType the type of file override (default is to use the file extension)
      * @param fileExtension file extension
-     * @param deployedImplementationType optional deployed implementation type
      * @param extendedProperties extended properties supplied by the caller
      * @return filled out map or null
      */
@@ -1642,7 +1653,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                       String              fileName,
                                                       String              fileType,
                                                       String              fileExtension,
-                                                      String              deployedImplementationType,
                                                       Map<String, Object> extendedProperties)
     {
         Map<String, Object> assetExtendedProperties = extendedProperties;
@@ -1682,11 +1692,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             assetExtendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, fileExtension);
         }
 
-        if (deployedImplementationType != null)
-        {
-            assetExtendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType);
-        }
-
         if (assetExtendedProperties.isEmpty())
         {
             return null;
@@ -1713,6 +1718,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param name  name for the folder in the catalog
      * @param versionIdentifier  version identifier for the folder in the catalog
      * @param description description of the folder in the catalog
+     * @param deployedImplementationType technology type
      * @param createTime time that the folder was created
      * @param modifiedTime the time of the latest change to the file
      * @param encodingType the type of encoding used on the file
@@ -1744,6 +1750,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     String              name,
                                                     String              versionIdentifier,
                                                     String              description,
+                                                    String              deployedImplementationType,
                                                     Date                createTime,
                                                     Date                modifiedTime,
                                                     String              encodingType,
@@ -1775,7 +1782,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  null,
                                                                                  null,
                                                                                  null,
-                                                                                 DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType(),
                                                                                  extendedProperties);
 
         String folderAssetTypeName = OpenMetadataType.DATA_FOLDER.typeName;
@@ -1793,6 +1799,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                        name,
                                                                        versionIdentifier,
                                                                        description,
+                                                                       deployedImplementationType,
                                                                        additionalProperties,
                                                                        folderAssetTypeName,
                                                                        assetExtendedProperties,
@@ -1825,8 +1832,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                       folderAssetGUID,
                                                       folderAssetParameterName,
                                                       OpenMetadataType.DATA_FOLDER.typeName,
-                                                      OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
-                                                      OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
+                                                      OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeGUID,
+                                                      OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
                                                       classificationProperties,
                                                       true,
                                                       forLineage,
@@ -1865,6 +1872,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param name  name for the folder in the catalog
      * @param versionIdentifier  versionIdentifier for the folder in the catalog
      * @param description description of the folder in the catalog
+     * @param deployedImplementationType technology type
      * @param pathName pathname of the file
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
@@ -1886,6 +1894,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     String              name,
                                                     String              versionIdentifier,
                                                     String              description,
+                                                    String              deployedImplementationType,
                                                     Date                effectiveFrom,
                                                     Date                effectiveTo,
                                                     boolean             forLineage,
@@ -1908,6 +1917,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    name,
                                                    versionIdentifier,
                                                    description,
+                                                   deployedImplementationType,
                                                    OpenMetadataType.DATA_FOLDER.typeName,
                                                    effectiveFrom,
                                                    effectiveTo,
@@ -2042,7 +2052,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  fileName,
                                                                                  fileType,
                                                                                  fileExtension,
-                                                                                 deployedImplementationType,
                                                                                  extendedProperties);
 
         String fileAssetTypeName = typeName;
@@ -2070,6 +2079,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                      name,
                                                                      versionIdentifier,
                                                                      description,
+                                                                     deployedImplementationType,
                                                                      additionalProperties,
                                                                      fileAssetTypeName,
                                                                      assetExtendedProperties,
@@ -2104,8 +2114,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                           fileAssetGUID,
                                                           fileAssetParameterName,
                                                           OpenMetadataType.DATA_FILE.typeName,
-                                                          OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
-                                                          OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
+                                                          OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeGUID,
+                                                          OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
                                                           classificationProperties,
                                                           true,
                                                           forLineage,
@@ -2190,6 +2200,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                 name,
                                                                 versionIdentifier,
                                                                 description,
+                                                                null,
                                                                 fullPath,
                                                                 fullPath,
                                                                 forLineage,
@@ -2275,6 +2286,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                   name,
                                                                   versionIdentifier,
                                                                   description,
+                                                                  null,
                                                                   pathName,
                                                                   pathName,
                                                                   forLineage,
@@ -2311,6 +2323,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param name display name for the file in the catalog
      * @param versionIdentifier version identifier for the file
      * @param description description of the file in the catalog
+     * @param deployedImplementationType technology type
      * @param fullPath full path of the file - used to access the file through the connector
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship (null for all time)
@@ -2331,6 +2344,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                               String       name,
                                               String       versionIdentifier,
                                               String       description,
+                                              String       deployedImplementationType,
                                               String       fullPath,
                                               Date         effectiveFrom,
                                               Date         effectiveTo,
@@ -2361,6 +2375,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     name,
                                                     versionIdentifier,
                                                     description,
+                                                    deployedImplementationType,
                                                     OpenMetadataType.AVRO_FILE.typeName,
                                                     null,
                                                     null,
@@ -2418,6 +2433,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                              String       name,
                                              String       versionIdentifier,
                                              String       description,
+                                             String       deployedImplementationType,
                                              String       fullPath,
                                              List<String> columnHeaders,
                                              Character    delimiterCharacter,
@@ -2478,6 +2494,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     name,
                                                     versionIdentifier,
                                                     description,
+                                                    deployedImplementationType,
                                                     OpenMetadataType.CSV_FILE.typeName,
                                                     extendedProperties,
                                                     configurationProperties,
@@ -2703,7 +2720,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  fileName,
                                                                                  fileType,
                                                                                  fileExtension,
-                                                                                 deployedImplementationType,
                                                                                  extendedProperties);
 
         fileHandler.updateAsset(userId,
@@ -2715,6 +2731,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 displayName,
                                 versionIdentifier,
                                 description,
+                                deployedImplementationType,
                                 additionalProperties,
                                 OpenMetadataType.DATA_FILE.typeGUID,
                                 OpenMetadataType.DATA_FILE.typeName,
@@ -2741,8 +2758,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                       dataFileGUID,
                                                       dataFileGUIDParameterName,
                                                       OpenMetadataType.DATA_FILE.typeName,
-                                                      OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
-                                                      OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
+                                                      OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeGUID,
+                                                      OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
                                                       classificationProperties,
                                                       true,
                                                       forLineage,
@@ -2874,7 +2891,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                                  null,
                                                                                  null,
                                                                                  null,
-                                                                                 DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType(),
                                                                                  extendedProperties);
 
 
@@ -2887,6 +2903,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 displayName,
                                 versionIdentifier,
                                 description,
+                                DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType(),
                                 additionalProperties,
                                 OpenMetadataType.DATA_FOLDER.typeGUID,
                                 OpenMetadataType.DATA_FOLDER.typeName,
@@ -2913,8 +2930,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                       dataFileGUID,
                                                       dataFileGUIDParameterName,
                                                       OpenMetadataType.DATA_FOLDER.typeName,
-                                                      OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
-                                                      OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
+                                                      OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeGUID,
+                                                      OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
                                                       classificationProperties,
                                                       true,
                                                       forLineage,
@@ -3480,105 +3497,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         }
 
         return null;
-    }
-
-
-    /**
-     * Retrieve a folder by its fully qualified path name.  In theory there should be none or one asset returned.
-     * However, in complex environments, duplicates are possible.
-     *
-     * @param userId calling user
-     * @param pathName path name
-     * @param startingFrom starting point in the list
-     * @param pageSize maximum number of results
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of matching folder properties
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public List<FOLDER> findFoldersByPathName(String  userId,
-                                              String  pathName,
-                                              int     startingFrom,
-                                              int     pageSize,
-                                              boolean forLineage,
-                                              boolean forDuplicateProcessing,
-                                              Date    effectiveTime,
-                                              String  methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
-    {
-        final String  pathNameParameterName = "pathName";
-
-        List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
-
-        return folderHandler.getBeansByValue(userId,
-                                             pathName,
-                                             pathNameParameterName,
-                                             OpenMetadataType.FILE_FOLDER.typeGUID,
-                                             OpenMetadataType.FILE_FOLDER.typeName,
-                                             specificMatchPropertyNames,
-                                             false,
-                                             null,
-                                             null,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             OpenMetadataProperty.QUALIFIED_NAME.name,
-                                             startingFrom,
-                                             pageSize,
-                                             effectiveTime,
-                                             methodName);
-    }
-
-
-    /**
-     * Retrieve folder by the supplied wildcard name.  The wildcard is specified using regular expressions (RegEx).
-     *
-     * @param userId calling user
-     * @param name wildcard  name
-     * @param startingFrom starting point in the list
-     * @param pageSize maximum number of results
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of matching folder properties
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public List<FOLDER> findFoldersByName(String  userId,
-                                          String  name,
-                                          int     startingFrom,
-                                          int     pageSize,
-                                          boolean forLineage,
-                                          boolean forDuplicateProcessing,
-                                          Date    effectiveTime,
-                                          String  methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
-    {
-        final String  nameName = "name";
-
-        return folderHandler.findAssetsByName(userId,
-                                              OpenMetadataType.FILE_FOLDER.typeGUID,
-                                              OpenMetadataType.FILE_FOLDER.typeName,
-                                              name,
-                                              nameName,
-                                              startingFrom,
-                                              pageSize,
-                                              forLineage,
-                                              forDuplicateProcessing,
-                                              effectiveTime,
-                                              methodName);
     }
 
 

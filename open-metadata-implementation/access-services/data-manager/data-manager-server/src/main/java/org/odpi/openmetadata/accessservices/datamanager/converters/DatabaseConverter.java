@@ -55,9 +55,8 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof DatabaseElement)
+            if (returnBean instanceof DatabaseElement bean)
             {
-                DatabaseElement bean = (DatabaseElement) returnBean;
                 DatabaseProperties databaseProperties = new DatabaseProperties();
 
                 if (entity != null)
@@ -78,7 +77,7 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
                     databaseProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
                     databaseProperties.setModifiedTime(this.removeStoreUpdateTime(instanceProperties));
 
-                    databaseProperties.setDatabaseType(this.removeDeployedImplementationType(instanceProperties));
+                    databaseProperties.setDeployedImplementationType(this.removeDeployedImplementationType(instanceProperties));
                     databaseProperties.setDatabaseVersion(this.removeDatabaseVersion(instanceProperties));
                     databaseProperties.setDatabaseInstance(this.removeDatabaseInstance(instanceProperties));
                     databaseProperties.setDatabaseImportedFrom(this.removeDatabaseImportedFrom(instanceProperties));
@@ -90,7 +89,7 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
                     databaseProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     databaseProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName, entity);
 
                     databaseProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
                     databaseProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));

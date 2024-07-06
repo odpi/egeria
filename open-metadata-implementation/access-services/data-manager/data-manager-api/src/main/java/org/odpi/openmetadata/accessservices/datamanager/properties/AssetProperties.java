@@ -27,9 +27,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class AssetProperties extends ReferenceableProperties
 {
-    private String name              = null;
-    private String versionIdentifier = null;
-    private String description       = null;
+    private String name                       = null;
+    private String versionIdentifier          = null;
+    private String description                = null;
+    private String deployedImplementationType = null;
 
 
 
@@ -55,6 +56,7 @@ public class AssetProperties extends ReferenceableProperties
             name                         = template.getName();
             versionIdentifier            = template.getVersionIdentifier();
             description                  = template.getDescription();
+            deployedImplementationType   = template.getDeployedImplementationType();
         }
     }
 
@@ -104,31 +106,6 @@ public class AssetProperties extends ReferenceableProperties
 
 
     /**
-     * Returns the stored display name property for the asset.
-     * If no display name is available then name is returned.
-     *
-     * @return String name
-     */
-    @Deprecated
-    public String getDisplayName()
-    {
-        return name;
-    }
-
-
-    /**
-     * Set up the stored display name property for the asset.
-     *
-     * @param displayName String name
-     */
-    @Deprecated
-    public void setDisplayName(String displayName)
-    {
-        this.name = displayName;
-    }
-
-
-    /**
      * Returns the stored description property for the asset.
      * If no description is provided then null is returned.
      *
@@ -152,6 +129,28 @@ public class AssetProperties extends ReferenceableProperties
 
 
     /**
+     * Retrieve the name of the technology used for this data asset.
+     *
+     * @return string name
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the name of the technology used for this data asset.
+     *
+     * @param deployedImplementationType string name
+     */
+    public void setDeployedImplementationType(String deployedImplementationType)
+    {
+        this.deployedImplementationType = deployedImplementationType;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -164,6 +163,7 @@ public class AssetProperties extends ReferenceableProperties
                        ", versionIdentifier='" + versionIdentifier + '\'' +
                        ", name='" + name + '\'' +
                        ", description='" + description + '\'' +
+                       ", deployedImplementationType='" + deployedImplementationType + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +
@@ -184,32 +184,15 @@ public class AssetProperties extends ReferenceableProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof AssetProperties))
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         AssetProperties that = (AssetProperties) objectToCompare;
-
-        if (name != null ? ! name.equals(that.name) : that.name != null)
-        {
-            return false;
-        }
-        if (versionIdentifier != null ? ! versionIdentifier.equals(that.versionIdentifier) : that.versionIdentifier != null)
-        {
-            return false;
-        }
-        return description != null ? description.equals(that.description) : that.description == null;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(versionIdentifier, that.versionIdentifier) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(deployedImplementationType, that.deployedImplementationType);
     }
-
 
     /**
      * Return hash code based on properties.
@@ -219,6 +202,6 @@ public class AssetProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, versionIdentifier, description);
+        return Objects.hash(super.hashCode(), name, versionIdentifier, description, deployedImplementationType);
     }
 }

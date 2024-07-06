@@ -276,39 +276,23 @@ public class OpenMetadataTypesArchive2_6
 
     private EntityDef addEmbeddedProcessEntity()
     {
-        /*
-         * Build the Entity
-         */
-        final String guid            = "8145967e-bb83-44b2-bc8c-68112c6a5a06";
-        final String name            = "EmbeddedProcess";
-        final String description     = "A child process.";
-        final String descriptionGUID = null;
-        final String superTypeName   = OpenMetadataType.PROCESS.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EMBEDDED_PROCESS.typeGUID,
+                                                 OpenMetadataType.EMBEDDED_PROCESS.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.PROCESS.typeName),
+                                                 OpenMetadataType.EMBEDDED_PROCESS.description,
+                                                 OpenMetadataType.EMBEDDED_PROCESS.descriptionGUID,
+                                                 OpenMetadataType.EMBEDDED_PROCESS.wikiURL);
     }
 
 
     private EntityDef addTransientEmbeddedProcessEntity()
     {
-        /*
-         * Build the Entity
-         */
-        final String guid            = "9bd9d37a-b2ae-48ec-9776-080f667e91c5";
-        final String name            = "TransientEmbeddedProcess";
-        final String description     = "A child process that runs for a short period of time.";
-        final String descriptionGUID = null;
-        final String superTypeName   = "EmbeddedProcess";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeGUID,
+                                                 OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.EMBEDDED_PROCESS.typeName),
+                                                 OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.description,
+                                                 OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.descriptionGUID,
+                                                 OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.wikiURL);
     }
 
 
@@ -781,139 +765,83 @@ public class OpenMetadataTypesArchive2_6
 
     private EntityDef addGovernanceEngineEntity()
     {
-        /*
-         * Build the Entity
-         */
-        final String guid            = OpenMetadataType.GOVERNANCE_ENGINE.typeGUID;
-        final String name            = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
-        final String description     = OpenMetadataType.GOVERNANCE_ENGINE.description;
-        final String descriptionGUID = OpenMetadataType.GOVERNANCE_ENGINE.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.GOVERNANCE_ENGINE.wikiURL;
-
-        final String superTypeName   = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ENGINE.typeGUID,
+                                                 OpenMetadataType.GOVERNANCE_ENGINE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
+                                                 OpenMetadataType.GOVERNANCE_ENGINE.description,
+                                                 OpenMetadataType.GOVERNANCE_ENGINE.descriptionGUID,
+                                                 OpenMetadataType.GOVERNANCE_ENGINE.wikiURL);
     }
 
     private EntityDef addGovernanceServiceEntity()
     {
-        /*
-         * Build the Entity
-         */
-        final String guid            = OpenMetadataType.GOVERNANCE_SERVICE.typeGUID;
-        final String name            = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
-        final String description     = OpenMetadataType.GOVERNANCE_SERVICE.description;
-        final String descriptionGUID = OpenMetadataType.GOVERNANCE_SERVICE.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.GOVERNANCE_SERVICE.wikiURL;
-
-        final String superTypeName   = OpenMetadataType.DEPLOYED_CONNECTOR_TYPE_NAME;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_SERVICE.typeGUID,
+                                                 OpenMetadataType.GOVERNANCE_SERVICE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DEPLOYED_CONNECTOR.typeName),
+                                                 OpenMetadataType.GOVERNANCE_SERVICE.description,
+                                                 OpenMetadataType.GOVERNANCE_SERVICE.descriptionGUID,
+                                                 OpenMetadataType.GOVERNANCE_SERVICE.wikiURL);
     }
 
     private EntityDef addGovernanceActionEngineEntity()
     {
-        /*
-         * Build the Entity
-         */
-        final String guid            = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeGUID;
-        final String name            = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName;
-        final String description     = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.description;
-        final String descriptionGUID = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.wikiURL;
-
-        final String superTypeName   = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeGUID,
+                                                 OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ENGINE.typeName),
+                                                 OpenMetadataType.GOVERNANCE_ACTION_ENGINE.description,
+                                                 OpenMetadataType.GOVERNANCE_ACTION_ENGINE.descriptionGUID,
+                                                 OpenMetadataType.GOVERNANCE_ACTION_ENGINE.wikiURL);
     }
 
     private EntityDef addGovernanceActionServiceEntity()
     {
-        /*
-         * Build the Entity
-         */
-        final String guid            = OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeGUID;
-        final String name            = OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName;
-        final String description     = OpenMetadataType.GOVERNANCE_ACTION_SERVICE.description;
-        final String descriptionGUID = OpenMetadataType.GOVERNANCE_ACTION_SERVICE.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.GOVERNANCE_ACTION_SERVICE.wikiURL;
-
-        final String superTypeName   = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeGUID,
+                                                 OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_SERVICE.typeName),
+                                                 OpenMetadataType.GOVERNANCE_ACTION_SERVICE.description,
+                                                 OpenMetadataType.GOVERNANCE_ACTION_SERVICE.descriptionGUID,
+                                                 OpenMetadataType.GOVERNANCE_ACTION_SERVICE.wikiURL);
     }
 
     private RelationshipDef addSupportedGovernanceServiceRelationship()
     {
-        final String guid            = OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID;
-        final String name            = OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName;
-        final String description     = OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.description;
-        final String descriptionGUID = OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.wikiURL;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                descriptionWiki,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.description,
+                                                                                OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.descriptionGUID,
+                                                                                OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
         final String                     end1AttributeName            = "calledFromGovernanceEngines";
         final String                     end1AttributeDescription     = "Governance Engine making use of the governance service.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ENGINE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef1(relationshipEndDef);
 
 
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
         final String                     end2AttributeName            = "supportedGovernanceServices";
         final String                     end2AttributeDescription     = "Governance service that is part of the governance engine.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_SERVICE.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
 
         /*
@@ -922,20 +850,13 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.REQUEST_TYPE.name;
-        final String attribute1Description     = OpenMetadataProperty.REQUEST_TYPE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.REQUEST_TYPE.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.REQUEST_PARAMETERS.name;
-        final String attribute2Description     = OpenMetadataProperty.REQUEST_PARAMETERS.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.REQUEST_PARAMETERS.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.REQUEST_TYPE.name,
+                                                           OpenMetadataProperty.REQUEST_TYPE.description,
+                                                           OpenMetadataProperty.REQUEST_TYPE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
-                                                                    attribute2Description,
-                                                                    attribute2DescriptionGUID);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.REQUEST_PARAMETERS.name,
+                                                                    OpenMetadataProperty.REQUEST_PARAMETERS.description,
+                                                                    OpenMetadataProperty.REQUEST_PARAMETERS.descriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -971,11 +892,10 @@ public class OpenMetadataTypesArchive2_6
         final String name            = "GovernanceActionProcess";
         final String description     = "A process implemented by chained engine actions that call governance services.";
         final String descriptionGUID = null;
-        final String superTypeName   = OpenMetadataType.PROCESS.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.PROCESS.typeName),
                                                  description,
                                                  descriptionGUID);
     }
@@ -990,11 +910,10 @@ public class OpenMetadataTypesArchive2_6
         final String name            = OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME;
         final String description     = "A description of a call to a governance engine that acts as a template when creating the appropriate engine action instance.";
         final String descriptionGUID = null;
-        final String superTypeName   = OpenMetadataType.REFERENCEABLE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                 description,
                                                                 descriptionGUID);
 

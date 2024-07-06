@@ -59,7 +59,7 @@ public class EndpointConverter<B> extends OCFConverter<B>
 
             if (returnBean instanceof Endpoint bean)
             {
-                this.setUpElementHeader(bean, entity, OpenMetadataType.ENDPOINT_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.ENDPOINT.typeName, methodName);
 
                 /*
                  * The initial set of values come from the entity.

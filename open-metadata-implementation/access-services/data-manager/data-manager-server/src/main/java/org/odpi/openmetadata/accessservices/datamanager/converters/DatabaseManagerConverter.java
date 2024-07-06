@@ -56,9 +56,8 @@ public class DatabaseManagerConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof SoftwareCapabilityElement)
+            if (returnBean instanceof SoftwareCapabilityElement bean)
             {
-                SoftwareCapabilityElement bean                      = (SoftwareCapabilityElement) returnBean;
                 DatabaseManagerProperties databaseManagerProperties = new DatabaseManagerProperties();
 
                 if (entity != null)

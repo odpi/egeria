@@ -126,6 +126,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param permittedSynchronization direction of synchronization
      * @param synchronizationDescription optional description of the synchronization in progress (augments the description in the
      *                                   permitted synchronization enum)
+     * @param serviceSupportedZones supported zones for calling service
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param forLineage return elements marked with the Memento classification?
@@ -160,6 +161,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                         String              scopeDomainName,
                                         int                 permittedSynchronization,
                                         String              synchronizationDescription,
+                                        List<String>        serviceSupportedZones,
                                         Date                effectiveFrom,
                                         Date                effectiveTo,
                                         boolean             forLineage,
@@ -178,6 +180,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                  scopeGUIDParameterName,
                                                                  scopeQualifiedName,
                                                                  scopeTypeName,
+                                                                 serviceSupportedZones,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  effectiveTime,
@@ -205,6 +208,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                       scopeDomainName,
                                                       permittedSynchronization,
                                                       synchronizationDescription,
+                                                      serviceSupportedZones,
                                                       effectiveFrom,
                                                       effectiveTo,
                                                       forLineage,
@@ -236,6 +240,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                      externalInstanceLastUpdatedBy,
                                      externalInstanceLastUpdateTime,
                                      externalInstanceVersion,
+                                     serviceSupportedZones,
                                      forLineage,
                                      forDuplicateProcessing,
                                      effectiveTime,
@@ -250,6 +255,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                      elementGUIDParameterName,
                                                                      elementTypeName,
                                                                      externalIdGUID,
+                                                                     serviceSupportedZones,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -270,6 +276,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                  identifierUsage,
                                  identifierSource,
                                  identifierMappingProperties,
+                                 serviceSupportedZones,
                                  effectiveFrom,
                                  effectiveTo,
                                  forLineage,
@@ -413,6 +420,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param permittedSynchronization direction of synchronization
      * @param synchronizationDescription optional description of the synchronization in progress (augments the description in the
      *                                   permitted synchronization enum)
+     * @param serviceSupportedZones supported zones for calling service
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
@@ -432,6 +440,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                          String              identifierUsage,
                                          String              identifierSource,
                                          Map<String, String> identifierMappingProperties,
+                                         List<String>        serviceSupportedZones,
                                          String              scopeGUID,
                                          String              scopeGUIDParameterName,
                                          String              scopeQualifiedName,
@@ -463,6 +472,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param scopeGUIDParameterName parameter name supplying scopeGUID
      * @param scopeQualifiedName unique name of the scope
      * @param scopeTypeName specific type name of the software capability that represents the third party metadata source
+     * @param serviceSupportedZones supported zones for calling service
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -474,22 +484,23 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public EntityDetail confirmSynchronization(String  userId,
-                                               String  elementGUID,
-                                               String  elementGUIDParameterName,
-                                               String  elementTypeName,
-                                               String  identifier,
-                                               String  identifierParameterName,
-                                               String  scopeGUID,
-                                               String  scopeGUIDParameterName,
-                                               String  scopeQualifiedName,
-                                               String  scopeTypeName,
-                                               boolean forLineage,
-                                               boolean forDuplicateProcessing,
-                                               Date    effectiveTime,
-                                               String  methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public EntityDetail confirmSynchronization(String       userId,
+                                               String       elementGUID,
+                                               String       elementGUIDParameterName,
+                                               String       elementTypeName,
+                                               String       identifier,
+                                               String       identifierParameterName,
+                                               String       scopeGUID,
+                                               String       scopeGUIDParameterName,
+                                               String       scopeQualifiedName,
+                                               String       scopeTypeName,
+                                               List<String> serviceSupportedZones,
+                                               boolean      forLineage,
+                                               boolean      forDuplicateProcessing,
+                                               Date         effectiveTime,
+                                               String       methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(scopeGUID, scopeGUIDParameterName, methodName);
@@ -502,6 +513,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                  scopeGUIDParameterName,
                                                                  scopeQualifiedName,
                                                                  scopeTypeName,
+                                                                 serviceSupportedZones,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  effectiveTime,
@@ -529,6 +541,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                      elementGUIDParameterName,
                                                                      elementTypeName,
                                                                      externalIdEntity.getGUID(),
+                                                                     serviceSupportedZones,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      effectiveTime,
@@ -589,6 +602,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param scopeGUIDParameterName parameter supplying scopeGUID
      * @param scopeQualifiedName unique name of the software capability that represents the third metadata source
      * @param scopeTypeName specific type name of the software capability that represents the third party metadata source
+     * @param serviceSupportedZones supported zones for calling service
      * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -600,19 +614,20 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private EntityDetail getExternalIdEntity(String  userId,
-                                             String  identifier,
-                                             String  identifierParameterName,
-                                             String  scopeGUID,
-                                             String  scopeGUIDParameterName,
-                                             String  scopeQualifiedName,
-                                             String  scopeTypeName,
-                                             boolean forLineage,
-                                             boolean forDuplicateProcessing,
-                                             Date    effectiveTime,
-                                             String  methodName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    private EntityDetail getExternalIdEntity(String       userId,
+                                             String       identifier,
+                                             String       identifierParameterName,
+                                             String       scopeGUID,
+                                             String       scopeGUIDParameterName,
+                                             String       scopeQualifiedName,
+                                             String       scopeTypeName,
+                                             List<String> serviceSupportedZones,
+                                             boolean      forLineage,
+                                             boolean      forDuplicateProcessing,
+                                             Date         effectiveTime,
+                                             String       methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         invalidParameterHandler.validateGUID(scopeGUID, scopeGUIDParameterName, methodName);
         invalidParameterHandler.validateName(identifier, identifierParameterName, methodName);
@@ -658,6 +673,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                      scopeGUID,
                                                      scopeQualifiedName,
                                                      scopeTypeName,
+                                                     serviceSupportedZones,
                                                      forLineage,
                                                      forDuplicateProcessing,
                                                      effectiveTime,
@@ -679,6 +695,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param elementGUIDParameterName parameter supplying elementGUID
      * @param elementTypeName type of the element
      * @param externalIdGUID unique identifier of the ExternalId entity
+     * @param serviceSupportedZones supported zones for calling service
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -695,6 +712,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                      String  elementGUIDParameterName,
                                                      String  elementTypeName,
                                                      String  externalIdGUID,
+                                                     List<String> serviceSupportedZones,
                                                      boolean forLineage,
                                                      boolean forDuplicateProcessing,
                                                      Date    effectiveTime,
@@ -718,7 +736,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                    0,
                                                                    forLineage,
                                                                    forDuplicateProcessing,
-                                                                   supportedZones,
+                                                                   serviceSupportedZones,
                                                                    0,
                                                                    invalidParameterHandler.getMaxPagingSize(),
                                                                    effectiveTime,
@@ -754,6 +772,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param scopeGUID unique identifier of the software capability that represents the third metadata source
      * @param scopeQualifiedName unique name of the software capability that represents the third metadata source
      * @param scopeTypeName specific type name of the software capability that represents the third party metadata source
+     * @param serviceSupportedZones supported zones for calling service
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -769,6 +788,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                     String       scopeGUID,
                                                     String       scopeQualifiedName,
                                                     String       scopeTypeName,
+                                                    List<String> serviceSupportedZones,
                                                     boolean      forLineage,
                                                     boolean      forDuplicateProcessing,
                                                     Date         effectiveTime,
@@ -797,7 +817,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                           0,
                                                                           forLineage,
                                                                           forDuplicateProcessing,
-                                                                          supportedZones,
+                                                                          serviceSupportedZones,
                                                                           0,
                                                                           invalidParameterHandler.getMaxPagingSize(),
                                                                           effectiveTime,
@@ -838,6 +858,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param permittedSynchronization direction of synchronization
      * @param synchronizationDescription optional description of the synchronization in progress (augments the description in the
      *                                   permitted synchronization enum)
+     * @param serviceSupportedZones supported zones for calling service
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param forLineage return elements marked with the Memento classification?
@@ -851,28 +872,29 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private String createExternalIdentifier(String  userId,
-                                            String  identifier,
-                                            int     identifierKeyPattern,
-                                            String  externalInstanceCreatedBy,
-                                            Date    externalInstanceCreationTime,
-                                            String  externalInstanceLastUpdatedBy,
-                                            Date    externalInstanceLastUpdateTime,
-                                            long    externalInstanceVersion,
-                                            String  scopeGUID,
-                                            String  scopeGUIDParameterName,
-                                            String  scopeTypeName,
-                                            String  scopeDomainName,
-                                            int     permittedSynchronization,
-                                            String  synchronizationDescription,
-                                            Date    effectiveFrom,
-                                            Date    effectiveTo,
-                                            boolean forLineage,
-                                            boolean forDuplicateProcessing,
-                                            Date    effectiveTime,
-                                            String  methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    private String createExternalIdentifier(String       userId,
+                                            String       identifier,
+                                            int          identifierKeyPattern,
+                                            String       externalInstanceCreatedBy,
+                                            Date         externalInstanceCreationTime,
+                                            String       externalInstanceLastUpdatedBy,
+                                            Date         externalInstanceLastUpdateTime,
+                                            long         externalInstanceVersion,
+                                            String       scopeGUID,
+                                            String       scopeGUIDParameterName,
+                                            String       scopeTypeName,
+                                            String       scopeDomainName,
+                                            int          permittedSynchronization,
+                                            String       synchronizationDescription,
+                                            List<String> serviceSupportedZones,
+                                            Date         effectiveFrom,
+                                            Date         effectiveTo,
+                                            boolean      forLineage,
+                                            boolean      forDuplicateProcessing,
+                                            Date         effectiveTime,
+                                            String       methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String externalIdGUIDParameterName = "externalIdentifierGUID";
 
@@ -921,7 +943,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                OpenMetadataType.EXTERNAL_ID.typeName,
                                                forLineage,
                                                forDuplicateProcessing,
-                                               supportedZones,
+                                               serviceSupportedZones,
                                                OpenMetadataType.EXTERNAL_ID_SCOPE_RELATIONSHIP.typeGUID,
                                                OpenMetadataType.EXTERNAL_ID_SCOPE_RELATIONSHIP.typeName,
                                                scopeProperties,
@@ -946,6 +968,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param externalInstanceLastUpdatedBy the username of the person or process that last updated the instance in the external system
      * @param externalInstanceLastUpdateTime the date/time that the instance in the external system was last updated
      * @param externalInstanceVersion the latest version of the element in the external system
+     * @param serviceSupportedZones supported zones for calling service
      * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -955,22 +978,23 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private void updateExternalIdentifier(String  userId,
-                                          String  externalIdGUID,
-                                          String  externalIdGUIDParameterName,
-                                          String  identifier,
-                                          int     identifierKeyPattern,
-                                          String  externalInstanceCreatedBy,
-                                          Date    externalInstanceCreationTime,
-                                          String  externalInstanceLastUpdatedBy,
-                                          Date    externalInstanceLastUpdateTime,
-                                          long    externalInstanceVersion,
-                                          boolean forLineage,
-                                          boolean forDuplicateProcessing,
-                                          Date    effectiveTime,
-                                          String  methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    private void updateExternalIdentifier(String       userId,
+                                          String       externalIdGUID,
+                                          String       externalIdGUIDParameterName,
+                                          String       identifier,
+                                          int          identifierKeyPattern,
+                                          String       externalInstanceCreatedBy,
+                                          Date         externalInstanceCreationTime,
+                                          String       externalInstanceLastUpdatedBy,
+                                          Date         externalInstanceLastUpdateTime,
+                                          long         externalInstanceVersion,
+                                          List<String> serviceSupportedZones,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
+                                          Date         effectiveTime,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
         ExternalIdentifierBuilder builder = new ExternalIdentifierBuilder(identifier,
                                                                           identifierKeyPattern,
@@ -992,7 +1016,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                     OpenMetadataType.EXTERNAL_ID.typeName,
                                     forLineage,
                                     forDuplicateProcessing,
-                                    supportedZones,
+                                    serviceSupportedZones,
                                     builder.getInstanceProperties(methodName),
                                     true,
                                     effectiveTime,
@@ -1013,6 +1037,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param externalIdGUID unique identifier of the external id entity
      * @param externalIdGUIDParameterName parameter supplying externalIdGUID
      * @param identifierMappingProperties additional properties used to manage the mapping to the elements in the third party technology
+     * @param serviceSupportedZones supported zones for calling service
      * @param effectiveFrom the date when this element is active - null for active now
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param forLineage return elements marked with the Memento classification?
@@ -1034,6 +1059,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                       String              identifierUsage,
                                       String              identifierSource,
                                       Map<String, String> identifierMappingProperties,
+                                      List<String>        serviceSupportedZones,
                                       Date                effectiveFrom,
                                       Date                effectiveTo,
                                       boolean             forLineage,
@@ -1064,7 +1090,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                   OpenMetadataType.EXTERNAL_ID.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
-                                  supportedZones,
+                                  serviceSupportedZones,
                                   OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeGUID,
                                   OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName,
                                   resourceLinkProperties,
@@ -1483,11 +1509,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                          int     startingFrom,
                                                          int     pageSize,
                                                          Date    effectiveTime,
-                                                         boolean forLineage,
-                                                         boolean forDuplicateProcessing,
-                                                         String  methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+                                                         boolean      forLineage,
+                                                         boolean      forDuplicateProcessing,
+                                                         String       methodName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         final String requestedTypeNameParameterName = "requestedTypeName";
 
@@ -1577,6 +1603,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param scopeTypeName specific type name of the software capability that represents the third party metadata source
      * @param scopeQualifiedName unique name of the software capability that represents the third party metadata source
      * @param externalIdentifier unique identifier of this element in the external asset manager
+     * @param serviceSupportedZones zones from the calling service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
      * @param effectiveTime when should the elements be effected for - null is anytime; new Date() is now
@@ -1590,20 +1617,21 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public List<OPEN_METADATA_ELEMENT_HEADER> getElementsForExternalIdentifier(String  userId,
-                                                                               String  scopeGUID,
-                                                                               String  scopeParameterName,
-                                                                               String  scopeTypeName,
-                                                                               String  scopeQualifiedName,
-                                                                               String  externalIdentifier,
-                                                                               int     startingFrom,
-                                                                               int     pageSize,
-                                                                               boolean forLineage,
-                                                                               boolean forDuplicateProcessing,
-                                                                               Date    effectiveTime,
-                                                                               String  methodName) throws InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException
+    public List<OPEN_METADATA_ELEMENT_HEADER> getElementsForExternalIdentifier(String       userId,
+                                                                               String       scopeGUID,
+                                                                               String       scopeParameterName,
+                                                                               String       scopeTypeName,
+                                                                               String       scopeQualifiedName,
+                                                                               String       externalIdentifier,
+                                                                               List<String> serviceSupportedZones,
+                                                                               int          startingFrom,
+                                                                               int          pageSize,
+                                                                               boolean      forLineage,
+                                                                               boolean      forDuplicateProcessing,
+                                                                               Date         effectiveTime,
+                                                                               String       methodName) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException
     {
         final String externalIdentifierParameterName = "externalIdentifier";
 
@@ -1626,7 +1654,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                          null,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
-                                                                         supportedZones,
+                                                                         serviceSupportedZones,
                                                                          null,
                                                                          0,
                                                                          invalidParameterHandler.getMaxPagingSize(),
@@ -1656,7 +1684,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                          1,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
-                                                                                         supportedZones,
+                                                                                         serviceSupportedZones,
                                                                                          0,
                                                                                          invalidParameterHandler.getMaxPagingSize(),
                                                                                          effectiveTime,
@@ -1670,6 +1698,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                         return this.getElementHeaders(userId,
                                                       matchingExternalId,
                                                       matchingEntityGUIDParameterName,
+                                                      serviceSupportedZones,
                                                       startingFrom,
                                                       pageSize,
                                                       forLineage,
@@ -1692,6 +1721,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param userId calling user
      * @param externalId unique identifier of software capability representing the caller
      * @param externalIdGUIDParameterName unique name of software capability representing the caller
+     * @param serviceSupportedZones supported zones for calling service
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
      * @param forLineage return elements marked with the Memento classification?
@@ -1708,6 +1738,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
     private List<OPEN_METADATA_ELEMENT_HEADER> getElementHeaders(String       userId,
                                                                  EntityDetail externalId,
                                                                  String       externalIdGUIDParameterName,
+                                                                 List<String> serviceSupportedZones,
                                                                  int          startingFrom,
                                                                  int          pageSize,
                                                                  boolean      forLineage,
@@ -1729,7 +1760,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                       1,
                                                                       forLineage,
                                                                       forDuplicateProcessing,
-                                                                      supportedZones,
+                                                                      serviceSupportedZones,
                                                                       startingFrom,
                                                                       pageSize,
                                                                       effectiveTime,

@@ -113,7 +113,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                     if (this.getEntityFromRepository(userId,
                                                      endpoint.getGUID(),
                                                      guidParameterName,
-                                                     OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                     OpenMetadataType.ENDPOINT.typeName,
                                                      null,
                                                      null,
                                                      forLineage,
@@ -313,7 +313,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
 
-        String typeName = OpenMetadataType.ENDPOINT_TYPE_NAME;
+        String typeName = OpenMetadataType.ENDPOINT.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -321,7 +321,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                                   OpenMetadataType.ENDPOINT.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -416,8 +416,8 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
-                                           OpenMetadataType.ENDPOINT_TYPE_GUID,
-                                           OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                           OpenMetadataType.ENDPOINT.typeGUID,
+                                           OpenMetadataType.ENDPOINT.typeName,
                                            qualifiedName,
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
@@ -478,13 +478,13 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
 
         List<String>  propertyNames = new ArrayList<>();
 
-        propertyNames.add(OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME);
+        propertyNames.add(OpenMetadataProperty.NETWORK_ADDRESS.name);
 
         List<EntityDetail> currentEndpoints = this.getEntitiesByValue(userId,
                                                                       networkAddress,
                                                                       networkAddressParameterName,
-                                                                      OpenMetadataType.ENDPOINT_TYPE_GUID,
-                                                                      OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                                      OpenMetadataType.ENDPOINT.typeGUID,
+                                                                      OpenMetadataType.ENDPOINT.typeName,
                                                                       propertyNames,
                                                                       true,
                                                                       false,
@@ -591,7 +591,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
             invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
         }
 
-        String typeName = OpenMetadataType.ENDPOINT_TYPE_NAME;
+        String typeName = OpenMetadataType.ENDPOINT.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -599,7 +599,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                                   OpenMetadataType.ENDPOINT.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -671,8 +671,8 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     guid,
                                     guidParameterName,
-                                    OpenMetadataType.ENDPOINT_TYPE_GUID,
-                                    OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                    OpenMetadataType.ENDPOINT.typeGUID,
+                                    OpenMetadataType.ENDPOINT.typeName,
                                     null,
                                     null,
                                     forLineage,
@@ -716,13 +716,13 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
     {
         List<String>  propertyNames = new ArrayList<>();
 
-        propertyNames.add(OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME);
+        propertyNames.add(OpenMetadataProperty.NETWORK_ADDRESS.name);
 
         return this.getBeansByValue(userId,
                                     networkAddress,
                                     networkAddressParameterName,
-                                    OpenMetadataType.ENDPOINT_TYPE_GUID,
-                                    OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                    OpenMetadataType.ENDPOINT.typeGUID,
+                                    OpenMetadataType.ENDPOINT.typeName,
                                     propertyNames,
                                     true,
                                     null,
@@ -816,8 +816,8 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataType.ENDPOINT_TYPE_GUID,
-                              OpenMetadataType.ENDPOINT_TYPE_NAME,
+                              OpenMetadataType.ENDPOINT.typeGUID,
+                              OpenMetadataType.ENDPOINT.typeName,
                               null,
                               startFrom,
                               pageSize,
@@ -863,13 +863,13 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.NETWORK_ADDRESS.name);
 
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataType.ENDPOINT_TYPE_GUID,
-                                    OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                    OpenMetadataType.ENDPOINT.typeGUID,
+                                    OpenMetadataType.ENDPOINT.typeName,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -915,7 +915,7 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                          OpenMetadataType.ENDPOINT.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,

@@ -57,9 +57,8 @@ public class FileSystemConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof FileSystemElement)
+            if (returnBean instanceof FileSystemElement bean)
             {
-                FileSystemElement bean = (FileSystemElement) returnBean;
                 FileSystemProperties fileSystemProperties = new FileSystemProperties();
 
                 if (entity != null)

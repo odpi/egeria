@@ -66,9 +66,8 @@ public class DatabaseViewConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof DatabaseViewElement)
+            if (returnBean instanceof DatabaseViewElement bean)
             {
-                DatabaseViewElement bean = (DatabaseViewElement) returnBean;
                 DatabaseViewProperties databaseViewProperties = new DatabaseViewProperties();
 
                 if (schemaAttributeEntity != null)

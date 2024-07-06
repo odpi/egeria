@@ -91,7 +91,7 @@ public class FileFolderConverter<B> extends AssetConverter<B>
                     folderProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     folderProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName, entity);
 
                     folderProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
                     folderProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));

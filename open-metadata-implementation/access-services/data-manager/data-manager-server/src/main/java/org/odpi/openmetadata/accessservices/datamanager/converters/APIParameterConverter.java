@@ -63,9 +63,8 @@ public class APIParameterConverter<B> extends DataManagerOMASConverter<B>
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
-            if (returnBean instanceof APIParameterElement)
+            if (returnBean instanceof APIParameterElement bean)
             {
-                APIParameterElement    bean       = (APIParameterElement) returnBean;
                 APIParameterProperties properties = new APIParameterProperties();
 
                 if (schemaAttributeEntity != null)

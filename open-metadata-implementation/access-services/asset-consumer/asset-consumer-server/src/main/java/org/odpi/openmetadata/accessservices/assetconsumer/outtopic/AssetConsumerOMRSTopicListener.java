@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetconsumer.outtopic;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEventType;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBean;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -166,7 +165,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
         {
             log.debug("Publishing declassified Entity event from: " + sourceName);
 
-            eventPublisher.publishEntityEvent(AssetConsumerEventType.ELEMENT_DECLASSIFIED,
+            eventPublisher.publishEntityEvent(AssetConsumerEventType.ELEMENT_CLASSIFIED,
                                               eventEntity,
                                               null,
                                               null,

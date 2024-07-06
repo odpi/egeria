@@ -86,7 +86,7 @@ public class IntegrationConnectorConverter<B> extends OCFConverter<B>
 
                     properties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    properties.setDisplayName(this.removeName(instanceProperties));
+                    properties.setName(this.removeName(instanceProperties));
                     properties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     properties.setDescription(this.removeDescription(instanceProperties));
                     properties.setUsesBlockingCalls(this.removeUsesBlockingCalls(instanceProperties));

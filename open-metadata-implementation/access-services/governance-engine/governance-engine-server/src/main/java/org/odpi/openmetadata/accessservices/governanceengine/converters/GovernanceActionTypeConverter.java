@@ -79,9 +79,8 @@ public class GovernanceActionTypeConverter<B> extends GovernanceEngineOMASConver
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof GovernanceActionTypeElement)
+            if (returnBean instanceof GovernanceActionTypeElement bean)
             {
-                GovernanceActionTypeElement    bean                 = (GovernanceActionTypeElement) returnBean;
                 GovernanceActionTypeProperties actionTypeProperties = new GovernanceActionTypeProperties();
 
                 if (entity != null)

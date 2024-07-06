@@ -12,4 +12,15 @@ public class PropertyFacetValidValues
      * This value is added to the description property of a PropertyFacet.
      */
     public static final String VENDOR_PROPERTIES_DESCRIPTION_VALUE = "vendorProperties";
+
+    /**
+     * This value is used in the source property of the ReferenceableFacet.
+     */
+    public static final String UNITY_CATALOG_SOURCE_VALUE = "Unity Catalog (UC)";
+
+    /**
+     * This value is used in the source property of the ReferenceableFacet.
+     */
+    public static final String UNITY_CATALOG_SCHEMA_VERSION_VALUE = "1.0";
+
 }

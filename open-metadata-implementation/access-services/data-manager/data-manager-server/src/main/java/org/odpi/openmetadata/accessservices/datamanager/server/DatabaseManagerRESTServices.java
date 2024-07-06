@@ -84,10 +84,8 @@ public class DatabaseManagerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DatabaseProperties)
+                if (requestBody.getProperties() instanceof DatabaseProperties databaseProperties)
                 {
-                    DatabaseProperties databaseProperties = (DatabaseProperties)requestBody.getProperties();
-
                     String databaseGUID = handler.createDatabase(userId,
                                                                  requestBody.getExternalSourceGUID(),
                                                                  requestBody.getExternalSourceName(),
@@ -102,7 +100,7 @@ public class DatabaseManagerRESTServices
                                                                  databaseProperties.getEncodingLanguage(),
                                                                  databaseProperties.getEncodingDescription(),
                                                                  databaseProperties.getEncodingProperties(),
-                                                                 databaseProperties.getDatabaseType(),
+                                                                 databaseProperties.getDeployedImplementationType(),
                                                                  databaseProperties.getDatabaseVersion(),
                                                                  databaseProperties.getDatabaseInstance(),
                                                                  databaseProperties.getDatabaseImportedFrom(),
@@ -249,10 +247,8 @@ public class DatabaseManagerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DatabaseProperties)
+                if (requestBody.getProperties() instanceof DatabaseProperties databaseProperties)
                 {
-                    DatabaseProperties databaseProperties = (DatabaseProperties) requestBody.getProperties();
-
                     handler.updateDatabase(userId,
                                            requestBody.getExternalSourceGUID(),
                                            requestBody.getExternalSourceName(),
@@ -268,7 +264,7 @@ public class DatabaseManagerRESTServices
                                            databaseProperties.getEncodingLanguage(),
                                            databaseProperties.getEncodingDescription(),
                                            databaseProperties.getEncodingProperties(),
-                                           databaseProperties.getDatabaseType(),
+                                           databaseProperties.getDeployedImplementationType(),
                                            databaseProperties.getDatabaseVersion(),
                                            databaseProperties.getDatabaseInstance(),
                                            databaseProperties.getDatabaseImportedFrom(),
@@ -784,10 +780,8 @@ public class DatabaseManagerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DatabaseSchemaProperties)
+                if (requestBody.getProperties() instanceof DatabaseSchemaProperties databaseSchemaProperties)
                 {
-                    DatabaseSchemaProperties databaseSchemaProperties = (DatabaseSchemaProperties) requestBody.getProperties();
-
                     String databaseSchemaGUID = handler.createDatabaseSchema(userId,
                                                                              requestBody.getExternalSourceGUID(),
                                                                              requestBody.getExternalSourceName(),
@@ -796,6 +790,7 @@ public class DatabaseManagerRESTServices
                                                                              databaseSchemaProperties.getName(),
                                                                              databaseSchemaProperties.getVersionIdentifier(),
                                                                              databaseSchemaProperties.getDescription(),
+                                                                             databaseSchemaProperties.getDeployedImplementationType(),
                                                                              databaseSchemaProperties.getAdditionalProperties(),
                                                                              databaseSchemaProperties.getTypeName(),
                                                                              databaseSchemaProperties.getExtendedProperties(),
@@ -940,10 +935,8 @@ public class DatabaseManagerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DatabaseSchemaProperties)
+                if (requestBody.getProperties() instanceof DatabaseSchemaProperties databaseSchemaProperties)
                 {
-                    DatabaseSchemaProperties databaseSchemaProperties = (DatabaseSchemaProperties) requestBody.getProperties();
-
                     handler.updateDatabaseSchema(userId,
                                                  requestBody.getExternalSourceGUID(),
                                                  requestBody.getExternalSourceName(),
@@ -952,12 +945,7 @@ public class DatabaseManagerRESTServices
                                                  databaseSchemaProperties.getName(),
                                                  databaseSchemaProperties.getVersionIdentifier(),
                                                  databaseSchemaProperties.getDescription(),
-                                                 null,
-                                                 0,
-                                                 null,
-                                                 null,
-                                                 null,
-                                                 null,
+                                                 databaseSchemaProperties.getDeployedImplementationType(),
                                                  databaseSchemaProperties.getAdditionalProperties(),
                                                  databaseSchemaProperties.getTypeName(),
                                                  databaseSchemaProperties.getExtendedProperties(),
@@ -1468,10 +1456,8 @@ public class DatabaseManagerRESTServices
                                                                                                                methodName);
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DatabaseSchemaTypeProperties)
+                if (requestBody.getProperties() instanceof DatabaseSchemaTypeProperties databaseSchemaTypeProperties)
                 {
-                    DatabaseSchemaTypeProperties databaseSchemaTypeProperties = (DatabaseSchemaTypeProperties) requestBody.getProperties();
-
                     String databaseTableGUID = handler.createDatabaseSchemaType(userId,
                                                                                 requestBody.getExternalSourceGUID(),
                                                                                 requestBody.getExternalSourceName(),
@@ -1618,10 +1604,8 @@ public class DatabaseManagerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof  DatabaseTableProperties)
+                if (requestBody.getProperties() instanceof DatabaseTableProperties databaseTableProperties)
                 {
-                    DatabaseTableProperties databaseTableProperties = (DatabaseTableProperties) requestBody.getProperties();
-
                     String databaseTableGUID = handler.createDatabaseTable(userId,
                                                                            requestBody.getExternalSourceGUID(),
                                                                            requestBody.getExternalSourceName(),
@@ -1770,10 +1754,8 @@ public class DatabaseManagerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof  DatabaseTableProperties)
+                if (requestBody.getProperties() instanceof DatabaseTableProperties databaseTableProperties)
                 {
-                    DatabaseTableProperties databaseTableProperties = (DatabaseTableProperties) requestBody.getProperties();
-
                     String databaseTableGUID = handler.createDatabaseTableForSchemaType(userId,
                                                                                         requestBody.getExternalSourceGUID(),
                                                                                         requestBody.getExternalSourceName(),
@@ -1858,10 +1840,8 @@ public class DatabaseManagerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof  DatabaseTableProperties)
+                if (requestBody.getProperties() instanceof DatabaseTableProperties databaseTableProperties)
                 {
-                    DatabaseTableProperties databaseTableProperties = (DatabaseTableProperties) requestBody.getProperties();
-
                     handler.updateDatabaseTable(userId,
                                                 requestBody.getExternalSourceGUID(),
                                                 requestBody.getExternalSourceName(),
@@ -2267,10 +2247,8 @@ public class DatabaseManagerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DatabaseViewProperties)
+                if (requestBody.getProperties() instanceof DatabaseViewProperties databaseViewProperties)
                 {
-                    DatabaseViewProperties databaseViewProperties = (DatabaseViewProperties) requestBody.getProperties();
-
                     String databaseViewGUID = handler.createDatabaseView(userId,
                                                                          requestBody.getExternalSourceGUID(),
                                                                          requestBody.getExternalSourceName(),
@@ -2420,11 +2398,8 @@ public class DatabaseManagerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DatabaseViewProperties)
+                if (requestBody.getProperties() instanceof DatabaseViewProperties databaseViewProperties)
                 {
-                    DatabaseViewProperties databaseViewProperties = (DatabaseViewProperties) requestBody.getProperties();
-
-
                     String databaseViewGUID = handler.createDatabaseViewForSchemaType(userId,
                                                                                       requestBody.getExternalSourceGUID(),
                                                                                       requestBody.getExternalSourceName(),
@@ -2509,10 +2484,8 @@ public class DatabaseManagerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DatabaseViewProperties)
+                if (requestBody.getProperties() instanceof DatabaseViewProperties databaseViewProperties)
                 {
-                    DatabaseViewProperties databaseViewProperties = (DatabaseViewProperties) requestBody.getProperties();
-
                     handler.updateDatabaseView(userId,
                                                requestBody.getExternalSourceGUID(),
                                                requestBody.getExternalSourceName(),
@@ -3739,10 +3712,8 @@ public class DatabaseManagerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DatabaseForeignKeyProperties)
+                if (requestBody.getProperties() instanceof DatabaseForeignKeyProperties databaseForeignKeyProperties)
                 {
-                    DatabaseForeignKeyProperties databaseForeignKeyProperties = (DatabaseForeignKeyProperties) requestBody.getProperties();
-
                     handler.addForeignKeyRelationship(userId,
                                                       requestBody.getExternalSourceGUID(),
                                                       requestBody.getExternalSourceName(),

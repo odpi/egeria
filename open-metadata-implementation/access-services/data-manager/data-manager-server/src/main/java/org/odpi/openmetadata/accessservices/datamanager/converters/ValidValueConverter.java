@@ -58,9 +58,8 @@ public class ValidValueConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ValidValueElement)
+            if (returnBean instanceof ValidValueElement bean)
             {
-                ValidValueElement    bean                 = (ValidValueElement) returnBean;
                 ValidValueProperties validValueProperties = new ValidValueProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));

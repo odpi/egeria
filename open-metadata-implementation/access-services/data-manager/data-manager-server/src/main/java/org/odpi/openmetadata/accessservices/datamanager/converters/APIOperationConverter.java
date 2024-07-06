@@ -60,7 +60,7 @@ public class APIOperationConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof APIOperationElement)
+            if (returnBean instanceof APIOperationElement bean)
             {
                 if ((entity != null) && (entity.getProperties() != null))
                 {
@@ -68,8 +68,6 @@ public class APIOperationConverter<B> extends DataManagerOMASConverter<B>
                      * The schema type has many different subtypes.
                      * This next piece of logic sorts out which type of schema bean to create.
                      */
-                    APIOperationElement bean = (APIOperationElement) returnBean;
-
                     bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, entity.getClassifications(), methodName));
 
                     APIOperationProperties apiOperationProperties = new APIOperationProperties();

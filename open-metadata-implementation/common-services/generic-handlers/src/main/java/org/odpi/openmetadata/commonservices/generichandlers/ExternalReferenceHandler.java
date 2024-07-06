@@ -511,7 +511,7 @@ public class ExternalReferenceHandler<B> extends ReferenceableHandler<B>
                                                                           PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataType.URL_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.URL.name);
 
         return this.getBeansByValue(userId,
                                     url,

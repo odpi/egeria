@@ -27,8 +27,8 @@ public class AssetProperties extends ConfigurationItemProperties
 {
     private String name = null;
     private String versionIdentifier = null;
-    private String displayName = null;
     private String description = null;
+    private String deployedImplementationType = null;
 
 
     /**
@@ -52,8 +52,8 @@ public class AssetProperties extends ConfigurationItemProperties
         {
             name                         = template.getName();
             versionIdentifier            = template.getVersionIdentifier();
-            displayName                  = template.getDisplayName();
             description                  = template.getDescription();
+            deployedImplementationType   = template.getDeployedImplementationType();
         }
     }
 
@@ -85,11 +85,6 @@ public class AssetProperties extends ConfigurationItemProperties
      */
     public String getName()
     {
-        if (name == null)
-        {
-            return displayName;
-        }
-
         return name;
     }
 
@@ -128,35 +123,6 @@ public class AssetProperties extends ConfigurationItemProperties
 
 
     /**
-     * Returns the stored display name property for the asset.
-     * If no display name is available then name is returned.
-     *
-     * @return String name
-     */
-    public String getDisplayName()
-    {
-        if (displayName == null)
-        {
-            return name;
-        }
-
-        return displayName;
-    }
-
-
-
-    /**
-     * Set up the stored display name property for the asset.
-     *
-     * @param displayName String name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
      * Returns the stored description property for the asset.
      * If no description is provided then null is returned.
      *
@@ -180,6 +146,28 @@ public class AssetProperties extends ConfigurationItemProperties
 
 
     /**
+     * Retrieve the name of the technology used for this data asset.
+     *
+     * @return string name
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the name of the technology used for this data asset.
+     *
+     * @param deployedImplementationType string name
+     */
+    public void setDeployedImplementationType(String deployedImplementationType)
+    {
+        this.deployedImplementationType = deployedImplementationType;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -188,18 +176,11 @@ public class AssetProperties extends ConfigurationItemProperties
     public String toString()
     {
         return "AssetProperties{" +
-                       "name='" + name + '\'' +
-                       ", versionIdentifier='" + versionIdentifier + '\'' +
-                       ", displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "name='" + name + '\'' +
+                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", description='" + description + '\'' +
+                ", deployedImplementationType='" + deployedImplementationType + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -235,7 +216,7 @@ public class AssetProperties extends ConfigurationItemProperties
         {
             return false;
         }
-        if (displayName != null ? ! displayName.equals(that.displayName) : that.displayName != null)
+        if (deployedImplementationType != null ? ! deployedImplementationType.equals(that.deployedImplementationType) : that.deployedImplementationType != null)
         {
             return false;
         }
@@ -254,7 +235,7 @@ public class AssetProperties extends ConfigurationItemProperties
         int result = super.hashCode();
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (versionIdentifier != null ? versionIdentifier.hashCode() : 0);
-        result = 31 * result + (displayName != null ? displayName.hashCode() : 0);
+        result = 31 * result + (deployedImplementationType != null ? deployedImplementationType.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }

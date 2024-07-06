@@ -441,7 +441,7 @@ public class GovernanceEngineConfigurationClientBase extends GovernanceEngineCon
 
         NewGovernanceServiceRequestBody requestBody = new NewGovernanceServiceRequestBody();
         requestBody.setQualifiedName(qualifiedName);
-        requestBody.setDisplayName(displayName);
+        requestBody.setName(displayName);
         requestBody.setDescription(description);
         requestBody.setConnection(connection);
 
@@ -650,7 +650,7 @@ public class GovernanceEngineConfigurationClientBase extends GovernanceEngineCon
 
         UpdateGovernanceServiceRequestBody requestBody = new UpdateGovernanceServiceRequestBody();
         requestBody.setQualifiedName(qualifiedName);
-        requestBody.setDisplayName(displayName);
+        requestBody.setName(displayName);
         requestBody.setDescription(description);
         requestBody.setConnection(connection);
         requestBody.setAdditionalProperties(additionalProperties);

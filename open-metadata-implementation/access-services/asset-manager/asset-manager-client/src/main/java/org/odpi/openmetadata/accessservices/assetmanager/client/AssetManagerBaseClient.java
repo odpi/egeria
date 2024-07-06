@@ -5,13 +5,13 @@ package org.odpi.openmetadata.accessservices.assetmanager.client;
 import org.odpi.openmetadata.accessservices.assetmanager.api.ExternalIdentifierManagerInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ClassificationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FindProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
@@ -266,8 +266,8 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         if (assetManagerGUID != null)
         {
-            correlationProperties.setAssetManagerGUID(assetManagerGUID);
-            correlationProperties.setAssetManagerName(assetManagerName);
+            correlationProperties.setExternalScopeGUID(assetManagerGUID);
+            correlationProperties.setExternalScopeName(assetManagerName);
             correlationProperties.setExternalIdentifier(externalIdentifier);
 
             return correlationProperties;
@@ -336,8 +336,8 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         if (assetManagerGUID != null)
         {
-            correlationProperties.setAssetManagerGUID(assetManagerGUID);
-            correlationProperties.setAssetManagerName(assetManagerName);
+            correlationProperties.setExternalScopeGUID(assetManagerGUID);
+            correlationProperties.setExternalScopeName(assetManagerName);
 
             if (externalIdentifier != null)
             {
@@ -378,8 +378,8 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         if (assetManagerGUID != null)
         {
-            correlationProperties.setAssetManagerGUID(assetManagerGUID);
-            correlationProperties.setAssetManagerName(assetManagerName);
+            correlationProperties.setExternalScopeGUID(assetManagerGUID);
+            correlationProperties.setExternalScopeName(assetManagerName);
         }
         else if ((externalIdentifierProperties != null) && (externalIdentifierProperties.getExternalIdentifier() != null))
         {
@@ -657,8 +657,8 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties(externalIdentifierProperties);
 
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setExternalScopeGUID(assetManagerGUID);
+        requestBody.setExternalScopeName(assetManagerName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -712,8 +712,8 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties(externalIdentifierProperties);
 
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setExternalScopeGUID(assetManagerGUID);
+        requestBody.setExternalScopeName(assetManagerName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -766,8 +766,8 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties();
 
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setExternalScopeGUID(assetManagerGUID);
+        requestBody.setExternalScopeName(assetManagerName);
         requestBody.setExternalIdentifier(externalIdentifier);
 
         restClient.callVoidPostRESTCall(methodName,
@@ -819,8 +819,8 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties();
 
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setExternalScopeGUID(assetManagerGUID);
+        requestBody.setExternalScopeName(assetManagerName);
         requestBody.setExternalIdentifier(externalIdentifier);
 
         restClient.callVoidPostRESTCall(methodName,
@@ -873,8 +873,8 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties();
 
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setExternalScopeGUID(assetManagerGUID);
+        requestBody.setExternalScopeName(assetManagerName);
         requestBody.setExternalIdentifier(externalIdentifier);
 
         ElementHeadersResponse restResult = restClient.callElementHeadersPostRESTCall(methodName,
@@ -888,40 +888,6 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
         return restResult.getElementList();
     }
 
-
-    /**
-     * Check that the supplied external identifier matches the element GUID.
-     *
-     * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param openMetadataElementGUID element guid used for the lookup
-     * @param openMetadataElementTypeName type name for the open metadata element
-     * @param elementExternalIdentifier external identifier value
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    protected void validateExternalIdentifier(String  userId,
-                                              String  assetManagerGUID,
-                                              String  assetManagerName,
-                                              String  openMetadataElementGUID,
-                                              String  openMetadataElementTypeName,
-                                              String  elementExternalIdentifier) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
-    {
-        if ((elementExternalIdentifier != null) && (assetManagerGUID != null) && (assetManagerName != null))
-        {
-            this.confirmSynchronization(userId,
-                                        openMetadataElementGUID,
-                                        openMetadataElementTypeName,
-                                        elementExternalIdentifier,
-                                        assetManagerGUID,
-                                        assetManagerName);
-        }
-    }
 
 
     /**

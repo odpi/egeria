@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -110,10 +110,8 @@ public class ExternalIdentifierConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof MetadataCorrelationHeader)
+            if (returnBean instanceof MetadataCorrelationHeader bean)
             {
-                MetadataCorrelationHeader bean = (MetadataCorrelationHeader) returnBean;
-
                 if (primaryEntity != null)
                 {
                     /*
@@ -147,11 +145,11 @@ public class ExternalIdentifierConverter<B> extends AssetManagerOMASConverter<B>
                                     bean.setSynchronizationDirection(this.removePermittedSynchronization(instanceProperties));
                                     bean.setSynchronizationDescription(this.removeDescription(instanceProperties));
 
-                                    bean.setAssetManagerGUID(relationship.getEntityOneProxy().getGUID());
+                                    bean.setExternalScopeGUID(relationship.getEntityOneProxy().getGUID());
 
                                     instanceProperties = new InstanceProperties(relationship.getEntityOneProxy().getUniqueProperties());
 
-                                    bean.setAssetManagerName(this.removeQualifiedName(instanceProperties));
+                                    bean.setExternalScopeName(this.removeQualifiedName(instanceProperties));
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName,
                                                                    relationship.getType().getTypeDefName(),

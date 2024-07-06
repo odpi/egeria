@@ -5,9 +5,9 @@ package org.odpi.openmetadata.integrationservices.database.contextmanager;
 
 import org.odpi.openmetadata.accessservices.datamanager.client.*;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

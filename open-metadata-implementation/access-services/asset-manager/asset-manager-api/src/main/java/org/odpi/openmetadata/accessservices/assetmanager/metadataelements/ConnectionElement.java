@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 
 import java.util.ArrayList;
 import java.util.List;

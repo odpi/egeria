@@ -27,12 +27,12 @@ Content-Type: application/json
 
 ###
 # @name patch schema
-PATCH {{ucURL}}/api/2.1/unity-catalog/schemas/test.test4schema2
+PATCH {{ucURL}}/api/2.1/unity-catalog/schemas/test.test4schema1
 Content-Type: application/json
 
 {
-  "new_name" : "test4schema1",
-  "comment" : "This is a comment",
+  "new_name" : "test4schema2",
+  "comment" : "Change name to test4schema2",
   "properties": {
     "egeriaGUID" : "c14d6b99-7202-4f04-a05d-49f0fdd7373d"
   }

@@ -8,11 +8,11 @@ import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutT
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationAuditCode;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationErrorCode;
@@ -30,7 +30,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 import org.odpi.openmetadata.integrationservices.catalog.connector.GlossaryExchangeService;
 
@@ -1167,7 +1166,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                                                                atlasGlossary.getEntity().getUpdatedBy(),
                                                                                                atlasGlossary.getEntity().getUpdateTime(),
                                                                                                atlasGlossary.getEntity().getVersion(),
-                                                                                               SynchronizationDirection.TO_THIRD_PARTY);
+                                                                                               PermittedSynchronization.TO_THIRD_PARTY);
 
         myContext.addExternalIdentifier(egeriaGlossary.getElementHeader().getGUID(),
                                         egeriaGlossary.getElementHeader().getType().getTypeName(),
@@ -1347,7 +1346,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                                                                atlasGlossaryTerm.getEntity().getUpdatedBy(),
                                                                                                atlasGlossaryTerm.getEntity().getUpdateTime(),
                                                                                                atlasGlossaryTerm.getEntity().getVersion(),
-                                                                                               SynchronizationDirection.TO_THIRD_PARTY);
+                                                                                               PermittedSynchronization.TO_THIRD_PARTY);
 
         myContext.addExternalIdentifier(egeriaGlossaryTerm.getElementHeader().getGUID(),
                                         egeriaGlossaryTerm.getElementHeader().getType().getTypeName(),
@@ -1639,7 +1638,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                                                                atlasGlossaryCategory.getEntity().getUpdatedBy(),
                                                                                                atlasGlossaryCategory.getEntity().getUpdateTime(),
                                                                                                atlasGlossaryCategory.getEntity().getVersion(),
-                                                                                               SynchronizationDirection.TO_THIRD_PARTY);
+                                                                                               PermittedSynchronization.TO_THIRD_PARTY);
 
         myContext.addExternalIdentifier(egeriaGlossaryCategory.getElementHeader().getGUID(),
                                         egeriaGlossaryCategory.getElementHeader().getType().getTypeName(),
@@ -1908,7 +1907,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                                                                        atlasEntity.getUpdatedBy(),
                                                                                                        atlasEntity.getUpdateTime(),
                                                                                                        atlasEntity.getVersion(),
-                                                                                                       SynchronizationDirection.FROM_THIRD_PARTY);
+                                                                                                       PermittedSynchronization.FROM_THIRD_PARTY);
 
                 GlossaryProperties glossaryProperties = this.getEgeriaGlossaryProperties(atlasGlossaryEntity);
 
@@ -2020,7 +2019,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                                                                        atlasEntity.getUpdatedBy(),
                                                                                                        atlasEntity.getUpdateTime(),
                                                                                                        atlasEntity.getVersion(),
-                                                                                                       SynchronizationDirection.FROM_THIRD_PARTY);
+                                                                                                       PermittedSynchronization.FROM_THIRD_PARTY);
 
                 GlossaryTermProperties glossaryTermProperties = this.getEgeriaGlossaryTermProperties(atlasGlossaryTerm);
 
@@ -2350,7 +2349,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                                                                        atlasEntity.getUpdatedBy(),
                                                                                                        atlasEntity.getUpdateTime(),
                                                                                                        atlasEntity.getVersion(),
-                                                                                                       SynchronizationDirection.FROM_THIRD_PARTY);
+                                                                                                       PermittedSynchronization.FROM_THIRD_PARTY);
 
                 GlossaryCategoryProperties   glossaryCategoryProperties   = this.getEgeriaGlossaryCategoryProperties(atlasGlossaryCategory);
 

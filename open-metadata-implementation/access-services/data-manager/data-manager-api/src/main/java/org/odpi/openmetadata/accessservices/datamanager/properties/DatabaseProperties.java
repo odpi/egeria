@@ -18,7 +18,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DatabaseProperties extends DataStoreProperties
 {
-    private String databaseType         = null;
     private String databaseVersion      = null;
     private String databaseInstance     = null;
     private String databaseImportedFrom = null;
@@ -43,33 +42,10 @@ public class DatabaseProperties extends DataStoreProperties
 
         if (template != null)
         {
-            databaseType = template.getDatabaseType();
             databaseVersion = template.getDatabaseVersion();
             databaseInstance = template.getDatabaseInstance();
             databaseImportedFrom = template.getDatabaseImportedFrom();
         }
-    }
-
-
-    /**
-     * Return a description of the database type.
-     *
-     * @return string type name
-     */
-    public String getDatabaseType()
-    {
-        return databaseType;
-    }
-
-
-    /**
-     * Set up a description of the database type.
-     *
-     * @param databaseType string type name
-     */
-    public void setDatabaseType(String databaseType)
-    {
-        this.databaseType = databaseType;
     }
 
 
@@ -148,29 +124,10 @@ public class DatabaseProperties extends DataStoreProperties
     public String toString()
     {
         return "DatabaseProperties{" +
-                       "databaseType='" + databaseType + '\'' +
-                       ", databaseVersion='" + databaseVersion + '\'' +
-                       ", databaseInstance='" + databaseInstance + '\'' +
-                       ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
-                       ", deployedImplementationType='" + getDeployedImplementationType() + '\'' +
-                       ", pathName='" + getPathName() + '\'' +
-                       ", createTime=" + getCreateTime() +
-                       ", modifiedTime=" + getModifiedTime() +
-                       ", encodingType='" + getEncodingType() + '\'' +
-                       ", encodingLanguage='" + getEncodingLanguage() + '\'' +
-                       ", encodingDescription='" + getEncodingDescription() + '\'' +
-                       ", encodingProperties=" + getEncodingProperties() +
-                       ", name='" + getName() + '\'' +
-                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "databaseVersion='" + databaseVersion + '\'' +
+                ", databaseInstance='" + databaseInstance + '\'' +
+                ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -187,7 +144,7 @@ public class DatabaseProperties extends DataStoreProperties
         {
             return true;
         }
-        if (! (objectToCompare instanceof DatabaseProperties))
+        if (! (objectToCompare instanceof DatabaseProperties that))
         {
             return false;
         }
@@ -196,12 +153,6 @@ public class DatabaseProperties extends DataStoreProperties
             return false;
         }
 
-        DatabaseProperties that = (DatabaseProperties) objectToCompare;
-
-        if (databaseType != null ? ! databaseType.equals(that.databaseType) : that.databaseType != null)
-        {
-            return false;
-        }
         if (databaseVersion != null ? ! databaseVersion.equals(that.databaseVersion) : that.databaseVersion != null)
         {
             return false;
@@ -222,6 +173,6 @@ public class DatabaseProperties extends DataStoreProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), databaseType, databaseVersion, databaseInstance, databaseImportedFrom);
+        return Objects.hash(super.hashCode(), databaseVersion, databaseInstance, databaseImportedFrom);
     }
 }

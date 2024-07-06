@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.GovernanceEngineConfigurationHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
@@ -50,6 +51,35 @@ public class GAFMetadataManagementInstanceHandler extends OMASServiceInstanceHan
         if (instance != null)
         {
             return instance.getMetadataElementHandler();
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> getExternalIdentifierHandler(String userId,
+                                                                                                     String serverName,
+                                                                                                     String serviceOperationName) throws InvalidParameterException,
+                                                                                                                                         UserNotAuthorizedException,
+                                                                                                                                         PropertyServerException
+    {
+        GAFMetadataManagementInstance instance = (GAFMetadataManagementInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getExternalIdentifierHandler();
         }
 
         return null;

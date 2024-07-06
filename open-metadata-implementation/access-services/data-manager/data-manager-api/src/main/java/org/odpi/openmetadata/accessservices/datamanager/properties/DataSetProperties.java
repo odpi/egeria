@@ -52,20 +52,10 @@ public class DataSetProperties extends AssetProperties
      *
      * @return print out of variables in a JSON-style
      */
+
     @Override
     public String toString()
     {
-        return "DataSetProperties{" +
-                       "name='" + getName() + '\'' +
-                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+        return "DataSetProperties{} " + super.toString();
     }
 }

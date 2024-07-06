@@ -18,7 +18,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.RetentionCla
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SecurityTagsProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SemanticAssignmentProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SubjectAreaMemberProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -39,9 +39,9 @@ public class StewardshipExchangeService
     private final String                    userId;
     private final String                    assetManagerGUID;
     private final String                    assetManagerName;
-    private final String                    connectorName;
-    private final SynchronizationDirection  synchronizationDirection;
-    private final AuditLog                  auditLog;
+    private final String                   connectorName;
+    private final PermittedSynchronization permittedSynchronization;
+    private final AuditLog                 auditLog;
 
     private boolean forLineage             = false;
     private boolean forDuplicateProcessing = false;
@@ -50,7 +50,7 @@ public class StewardshipExchangeService
      * Create a new client to exchange data asset content with open metadata.
      *
      * @param stewardshipExchangeClient client for exchange requests
-     * @param synchronizationDirection direction(s) that metadata can flow
+     * @param permittedSynchronization direction(s) that metadata can flow
      * @param userId integration daemon's userId
      * @param assetManagerGUID unique identifier of the software server capability for the asset manager
      * @param assetManagerName unique name of the software server capability for the asset manager
@@ -58,7 +58,7 @@ public class StewardshipExchangeService
      * @param auditLog logging destination
      */
     StewardshipExchangeService(StewardshipExchangeClient stewardshipExchangeClient,
-                               SynchronizationDirection  synchronizationDirection,
+                               PermittedSynchronization permittedSynchronization,
                                String                    userId,
                                String                    assetManagerGUID,
                                String                    assetManagerName,
@@ -66,7 +66,7 @@ public class StewardshipExchangeService
                                AuditLog                  auditLog)
     {
         this.stewardshipExchangeClient = stewardshipExchangeClient;
-        this.synchronizationDirection  = synchronizationDirection;
+        this.permittedSynchronization  = permittedSynchronization;
         this.userId                    = userId;
         this.assetManagerGUID          = assetManagerGUID;
         this.assetManagerName          = assetManagerName;
@@ -153,14 +153,14 @@ public class StewardshipExchangeService
     {
         final String methodName = "setElementAsDataField";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.setElementAsDataField(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, properties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -189,14 +189,14 @@ public class StewardshipExchangeService
     {
         final String   methodName = "clearElementAsDataField";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.clearElementAsDataField(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -254,14 +254,14 @@ public class StewardshipExchangeService
     {
         final String methodName = "setConfidenceClassification";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.setConfidenceClassification(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, properties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -291,14 +291,14 @@ public class StewardshipExchangeService
     {
         final String   methodName = "clearConfidenceClassification";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.clearConfidenceClassification(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -357,14 +357,14 @@ public class StewardshipExchangeService
     {
         final String methodName = "setCriticalityClassification";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.setCriticalityClassification(userId, assetManagerGUID, assetManagerName, elementGUID, properties, externalIdentifier, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -394,14 +394,14 @@ public class StewardshipExchangeService
     {
         final String   methodName = "clearCriticalityClassification";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.clearCriticalityClassification(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -462,14 +462,14 @@ public class StewardshipExchangeService
     {
         final String methodName = "setConfidentialityClassification";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.setConfidentialityClassification(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, properties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -499,14 +499,14 @@ public class StewardshipExchangeService
     {
         final String   methodName = "clearConfidentialityClassification";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.clearConfidentialityClassification(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -567,14 +567,14 @@ public class StewardshipExchangeService
     {
         final String methodName = "setRetentionClassification";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.setRetentionClassification(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, properties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -604,14 +604,14 @@ public class StewardshipExchangeService
     {
         final String   methodName = "clearRetentionClassification";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.clearRetentionClassification(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -670,14 +670,14 @@ public class StewardshipExchangeService
     {
         final String   methodName = "addSecurityTags";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.addSecurityTags(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, properties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -706,14 +706,14 @@ public class StewardshipExchangeService
     {
         final String   methodName = "clearSecurityTags";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.clearSecurityTags(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -767,14 +767,14 @@ public class StewardshipExchangeService
     {
         final String   methodName = "addOwnership";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.addOwnership(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, properties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -803,14 +803,14 @@ public class StewardshipExchangeService
     {
         final String   methodName = "clearOwnership";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.clearOwnership(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -866,14 +866,14 @@ public class StewardshipExchangeService
     {
         final String   methodName = "addAssetOrigin";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.addAssetOrigin(userId, assetManagerGUID, assetManagerName, assetGUID, externalIdentifier, properties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -902,14 +902,14 @@ public class StewardshipExchangeService
     {
         final String   methodName = "clearAssetOrigin";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.clearAssetOrigin(userId, assetManagerGUID, assetManagerName, assetGUID, externalIdentifier, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -965,14 +965,14 @@ public class StewardshipExchangeService
     {
         final String   methodName = "addElementToSubjectArea";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.addElementToSubjectArea(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, properties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1001,14 +1001,14 @@ public class StewardshipExchangeService
     {
         final String   methodName = "removeElementFromSubjectArea";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.removeElementFromSubjectArea(userId, assetManagerGUID, assetManagerName, elementGUID, externalIdentifier, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1065,14 +1065,14 @@ public class StewardshipExchangeService
     {
         final String methodName = "setupSemanticAssignment";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.setupSemanticAssignment(userId, assetManagerGUID, assetManagerName, elementGUID, glossaryTermGUID, properties, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1101,14 +1101,14 @@ public class StewardshipExchangeService
     {
         final String methodName = "clearSemanticAssignment";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.clearSemanticAssignment(userId, assetManagerGUID, assetManagerName, elementGUID, glossaryTermGUID, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1186,14 +1186,14 @@ public class StewardshipExchangeService
     {
         final String methodName = "addGovernanceDefinitionToElement";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.addGovernanceDefinitionToElement(userId, assetManagerGUID, assetManagerName, definitionGUID, elementGUID, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1222,14 +1222,14 @@ public class StewardshipExchangeService
     {
         final String methodName = "removeGovernanceDefinitionFromElement";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             stewardshipExchangeClient.removeGovernanceDefinitionFromElement(userId, assetManagerGUID, assetManagerName, definitionGUID, elementGUID, effectiveTime, forLineage, forDuplicateProcessing);
         }
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),

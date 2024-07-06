@@ -95,7 +95,7 @@ public class APIManagerRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataType.DEPLOYED_API_TYPE_NAME;
+                String typeName = OpenMetadataType.DEPLOYED_API.typeName;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -111,6 +111,7 @@ public class APIManagerRESTServices
                                                           requestBody.getName(),
                                                           requestBody.getVersionIdentifier(),
                                                           requestBody.getDescription(),
+                                                          requestBody.getDeployedImplementationType(),
                                                           requestBody.getAdditionalProperties(),
                                                           typeName,
                                                           requestBody.getExtendedProperties(),
@@ -151,14 +152,14 @@ public class APIManagerRESTServices
                                                      handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceName()),
                                                      apiGUID,
                                                      apiGUIDParameterName,
-                                                     OpenMetadataType.DEPLOYED_API_TYPE_NAME,
+                                                     OpenMetadataType.DEPLOYED_API.typeName,
                                                      endpointGUID,
                                                      endpointGUIDParameterName,
-                                                     OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                     OpenMetadataType.ENDPOINT.typeName,
                                                      false,
                                                      false,
-                                                     OpenMetadataType.API_ENDPOINT_TYPE_GUID,
-                                                     OpenMetadataType.API_ENDPOINT_TYPE_NAME,
+                                                     OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeGUID,
+                                                     OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeName,
                                                      (InstanceProperties) null,
                                                      null,
                                                      null,
@@ -232,13 +233,14 @@ public class APIManagerRESTServices
                                                               handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceName()),
                                                               templateGUID,
                                                               templateGUIDParameterName,
-                                                              OpenMetadataType.DEPLOYED_API_TYPE_GUID,
-                                                              OpenMetadataType.DEPLOYED_API_TYPE_NAME,
+                                                              OpenMetadataType.DEPLOYED_API.typeGUID,
+                                                              OpenMetadataType.DEPLOYED_API.typeName,
                                                               requestBody.getQualifiedName(),
                                                               qualifiedNameParameterName,
                                                               requestBody.getDisplayName(),
                                                               requestBody.getVersionIdentifier(),
                                                               requestBody.getDescription(),
+                                                              null,
                                                               null,
                                                               requestBody.getNetworkAddress(),
                                                               false,
@@ -267,14 +269,14 @@ public class APIManagerRESTServices
                                                  handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceName()),
                                                  apiGUID,
                                                  apiGUIDParameterName,
-                                                 OpenMetadataType.DEPLOYED_API_TYPE_NAME,
+                                                 OpenMetadataType.DEPLOYED_API.typeName,
                                                  endpointGUID,
                                                  endpointGUIDParameterName,
-                                                 OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                 OpenMetadataType.ENDPOINT.typeName,
                                                  false,
                                                  false,
-                                                 OpenMetadataType.API_ENDPOINT_TYPE_GUID,
-                                                 OpenMetadataType.API_ENDPOINT_TYPE_NAME,
+                                                 OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeGUID,
+                                                 OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeName,
                                                  (InstanceProperties)null,
                                                  null,
                                                  null,
@@ -336,7 +338,7 @@ public class APIManagerRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataType.DEPLOYED_API_TYPE_NAME;
+                String typeName = OpenMetadataType.DEPLOYED_API.typeName;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -352,6 +354,7 @@ public class APIManagerRESTServices
                                     requestBody.getName(),
                                     requestBody.getVersionIdentifier(),
                                     requestBody.getDescription(),
+                                    requestBody.getDeployedImplementationType(),
                                     requestBody.getAdditionalProperties(),
                                     typeName,
                                     requestBody.getExtendedProperties(),
@@ -539,8 +542,8 @@ public class APIManagerRESTServices
                                                requestBody.getExternalSourceName(),
                                                apiGUID,
                                                apiGUIDParameterName,
-                                               OpenMetadataType.DEPLOYED_API_TYPE_GUID,
-                                               OpenMetadataType.DEPLOYED_API_TYPE_NAME,
+                                               OpenMetadataType.DEPLOYED_API.typeGUID,
+                                               OpenMetadataType.DEPLOYED_API.typeName,
                                                OpenMetadataProperty.QUALIFIED_NAME.name,
                                                qualifiedName,
                                                false,
@@ -602,8 +605,8 @@ public class APIManagerRESTServices
                 AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
 
                 List<APIElement> apiElements = handler.findAssets(userId,
-                                                                  OpenMetadataType.DEPLOYED_API_TYPE_GUID,
-                                                                  OpenMetadataType.DEPLOYED_API_TYPE_NAME,
+                                                                  OpenMetadataType.DEPLOYED_API.typeGUID,
+                                                                  OpenMetadataType.DEPLOYED_API.typeName,
                                                                   requestBody.getSearchString(),
                                                                   searchStringParameterName,
                                                                   startFrom,
@@ -674,8 +677,8 @@ public class APIManagerRESTServices
                 AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
 
                 List<APIElement> apiElements = handler.getAssetsByName(userId,
-                                                                       OpenMetadataType.DEPLOYED_API_TYPE_GUID,
-                                                                       OpenMetadataType.DEPLOYED_API_TYPE_NAME,
+                                                                       OpenMetadataType.DEPLOYED_API.typeGUID,
+                                                                       OpenMetadataType.DEPLOYED_API.typeName,
                                                                        requestBody.getName(),
                                                                        nameParameterName,
                                                                        startFrom,
@@ -749,7 +752,7 @@ public class APIManagerRESTServices
                                                                        OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                        OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
                                                                        OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.DEPLOYED_API_TYPE_NAME,
+                                                                       OpenMetadataType.DEPLOYED_API.typeName,
                                                                        null,
                                                                        null,
                                                                        0,
@@ -813,10 +816,10 @@ public class APIManagerRESTServices
             List<APIElement> apiElements = handler.getAttachedElements(userId,
                                                                        endpointGUID,
                                                                        guidParameterName,
-                                                                       OpenMetadataType.ENDPOINT_TYPE_NAME,
-                                                                       OpenMetadataType.API_ENDPOINT_TYPE_GUID,
-                                                                       OpenMetadataType.API_ENDPOINT_TYPE_NAME,
-                                                                       OpenMetadataType.DEPLOYED_API_TYPE_NAME,
+                                                                       OpenMetadataType.ENDPOINT.typeName,
+                                                                       OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeGUID,
+                                                                       OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.DEPLOYED_API.typeName,
                                                                        null,
                                                                        null,
                                                                        0,
@@ -876,7 +879,7 @@ public class APIManagerRESTServices
             APIElement apiElement = handler.getBeanFromRepository(userId,
                                                                   guid,
                                                                   guidParameterName,
-                                                                  OpenMetadataType.DEPLOYED_API_TYPE_NAME,
+                                                                  OpenMetadataType.DEPLOYED_API.typeName,
                                                                   false,
                                                                   false,
                                                                   new Date(),

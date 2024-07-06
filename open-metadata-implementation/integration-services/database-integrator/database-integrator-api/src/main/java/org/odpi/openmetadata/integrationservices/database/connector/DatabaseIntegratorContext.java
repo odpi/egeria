@@ -15,7 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 
 import java.util.List;
 import java.util.Map;

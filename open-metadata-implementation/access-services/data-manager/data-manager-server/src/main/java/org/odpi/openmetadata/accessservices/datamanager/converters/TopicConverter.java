@@ -56,9 +56,8 @@ public class TopicConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof TopicElement)
+            if (returnBean instanceof TopicElement bean)
             {
-                TopicElement    bean            = (TopicElement) returnBean;
                 TopicProperties topicProperties = new TopicProperties();
 
                 if (entity != null)
@@ -75,6 +74,7 @@ public class TopicConverter<B> extends DataManagerOMASConverter<B>
                     topicProperties.setName(this.removeName(instanceProperties));
                     topicProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     topicProperties.setDescription(this.removeDescription(instanceProperties));
+                    topicProperties.setDeployedImplementationType(this.removeDeployedImplementationType(instanceProperties));
                     topicProperties.setTopicType(this.removeTopicType(instanceProperties));
                     topicProperties.setTopicName(this.removeTopicName(instanceProperties));
 

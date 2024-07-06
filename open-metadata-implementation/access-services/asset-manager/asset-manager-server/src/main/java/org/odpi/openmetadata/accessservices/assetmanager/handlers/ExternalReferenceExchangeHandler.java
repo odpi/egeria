@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Extern
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ExternalReferenceHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ExternalReferenceLinkHandler;

@@ -103,7 +103,7 @@ public enum ServerAssetUseType// implements OpenMetadataEnum
      *
      * @return string guid
      */
-    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
+    public static String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
 
 
     /**
@@ -111,7 +111,7 @@ public enum ServerAssetUseType// implements OpenMetadataEnum
      *
      * @return string name
      */
-    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
+    public static String getOpenTypeName() { return ENUM_TYPE_NAME; }
 
 
     /**

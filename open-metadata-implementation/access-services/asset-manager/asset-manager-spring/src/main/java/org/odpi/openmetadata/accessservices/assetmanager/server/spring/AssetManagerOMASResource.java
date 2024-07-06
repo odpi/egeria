@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementHeadersResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.MetadataCorrelationHeadersResponse;
@@ -14,6 +13,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.server.AssetManagerREST
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.springframework.web.bind.annotation.*;
 
 /**

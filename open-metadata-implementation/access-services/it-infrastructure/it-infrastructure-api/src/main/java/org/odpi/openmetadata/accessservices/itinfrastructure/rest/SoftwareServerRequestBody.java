@@ -116,22 +116,9 @@ public class SoftwareServerRequestBody extends SoftwareServerProperties
     public String toString()
     {
         return "SoftwareServerRequestBody{" +
-                       "externalSourceGUID='" + externalSourceGUID + '\'' +
-                       ", externalSourceName='" + externalSourceName + '\'' +
-                       ", deployedImplementationType='" + getDeployedImplementationType() + '\'' +
-                       ", softwareServerVersion='" + getSoftwareServerVersion() + '\'' +
-                       ", softwareServerSource='" + getSoftwareServerSource() + '\'' +
-                       ", softwareServerUserId='" + getSoftwareServerUserId() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "externalSourceGUID='" + externalSourceGUID + '\'' +
+                ", externalSourceName='" + externalSourceName + '\'' +
+                "} " + super.toString();
     }
 
 

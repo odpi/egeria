@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 
 import java.util.List;

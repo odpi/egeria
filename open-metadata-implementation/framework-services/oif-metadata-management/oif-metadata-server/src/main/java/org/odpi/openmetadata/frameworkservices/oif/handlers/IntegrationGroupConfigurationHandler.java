@@ -10,10 +10,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.integration.properties.*;
 import org.odpi.openmetadata.frameworkservices.oif.converters.CatalogTargetConverter;
 import org.odpi.openmetadata.frameworkservices.oif.converters.IntegrationConnectorConverter;
@@ -407,9 +408,10 @@ public class IntegrationGroupConfigurationHandler
      *
      * @param userId identifier of calling user
      * @param qualifiedName  unique name for the integration connector.
-     * @param displayName   display name for the integration connector.
+     * @param name   display name for the integration connector.
      * @param versionIdentifier identifier if the version
-     * @param description  description of the analysis provided by the integration connector.
+     * @param description  description of the analysis provided by the integration connector
+     * @param deployedImplementationType technology type
      * @param usesBlockingCalls the connector issues blocking calls and needs a dedicated thread.
      * @param additionalProperties additional properties
      * @param connection   connection to instantiate the integration connector implementation.
@@ -424,8 +426,9 @@ public class IntegrationGroupConfigurationHandler
     public String createIntegrationConnector(String              userId,
                                              String              qualifiedName,
                                              String              versionIdentifier,
-                                             String              displayName,
+                                             String              name,
                                              String              description,
+                                             String              deployedImplementationType,
                                              boolean             usesBlockingCalls,
                                              Map<String, String> additionalProperties,
                                              Connection          connection,
@@ -449,9 +452,10 @@ public class IntegrationGroupConfigurationHandler
                                                                                null,
                                                                                null,
                                                                                qualifiedName,
-                                                                               displayName,
+                                                                               name,
                                                                                versionIdentifier,
                                                                                description,
+                                                                               deployedImplementationType,
                                                                                additionalProperties,
                                                                                OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                                extendedProperties,
@@ -681,8 +685,9 @@ public class IntegrationGroupConfigurationHandler
      *                      matching names, or should the entire properties of the instance be replaced?
      * @param qualifiedName new value for unique name of integration connector.
      * @param versionIdentifier version identifier of the connector.
-     * @param displayName new value for the display name.
-     * @param description new value for the description.
+     * @param name new value for the display name.
+     * @param description new value for the description
+     * @param deployedImplementationType technology type
      * @param connection connection used to create an instance of this integration connector.
      * @param additionalProperties additional properties for the integration group.
      * @param extendedProperties properties to populate the subtype of the integration connector.
@@ -697,8 +702,9 @@ public class IntegrationGroupConfigurationHandler
                                            boolean             isMergeUpdate,
                                            String              qualifiedName,
                                            String              versionIdentifier,
-                                           String              displayName,
+                                           String              name,
                                            String              description,
+                                           String              deployedImplementationType,
                                            Connection          connection,
                                            Map<String, String> additionalProperties,
                                            Map<String, Object> extendedProperties,
@@ -715,9 +721,10 @@ public class IntegrationGroupConfigurationHandler
                                                               guid,
                                                               guidParameter,
                                                               qualifiedName,
-                                                              displayName,
+                                                              name,
                                                               versionIdentifier,
                                                               description,
+                                                              deployedImplementationType,
                                                               additionalProperties,
                                                               OpenMetadataType.INTEGRATION_CONNECTOR.typeGUID,
                                                               OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
@@ -869,7 +876,7 @@ public class IntegrationGroupConfigurationHandler
                                                                                 OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
                                                                                 OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_GUID,
                                                                                 OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_NAME,
-                                                                                permittedSynchronization.getOpenTypeOrdinal(),
+                                                                                permittedSynchronization.getOrdinal(),
                                                                                 methodName);
             }
             catch (TypeErrorException error)
@@ -1102,16 +1109,71 @@ public class IntegrationGroupConfigurationHandler
         InstanceProperties instanceProperties = new InstanceProperties();
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                     instanceProperties,
-                                                     OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
-                                                     properties.getCatalogTargetName(),
-                                                     methodName);
+                                                                          instanceProperties,
+                                                                          OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
+                                                                          properties.getCatalogTargetName(),
+                                                                          methodName);
+
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                          instanceProperties,
+                                                                          OpenMetadataType.CONNECTION_NAME_PROPERTY_NAME,
+                                                                          properties.getConnectionName(),
+                                                                          methodName);
+
+        instanceProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                             instanceProperties,
+                                                                             OpenMetadataType.TEMPLATES_PROPERTY_NAME,
+                                                                             properties.getTemplateProperties(),
+                                                                             methodName);
 
         instanceProperties = repositoryHelper.addMapPropertyToInstance(serviceName,
                                                                        instanceProperties,
                                                                        OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
                                                                        properties.getConfigurationProperties(),
                                                                        methodName);
+
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                          instanceProperties,
+                                                                          OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
+                                                                          properties.getMetadataSourceQualifiedName(),
+                                                                          methodName);
+
+        if (properties.getPermittedSynchronization() != null)
+        {
+            try
+            {
+                instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                                instanceProperties,
+                                                                                OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
+                                                                                PermittedSynchronization.getOpenTypeGUID(),
+                                                                                PermittedSynchronization.getOpenTypeName(),
+                                                                                properties.getPermittedSynchronization().getOrdinal(),
+                                                                                methodName);
+            }
+            catch (TypeErrorException error)
+            {
+                throw new InvalidParameterException(error, OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name);
+            }
+        }
+
+
+        if (properties.getDeleteMethod() != null)
+        {
+            try
+            {
+                instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                                instanceProperties,
+                                                                                OpenMetadataProperty.DELETE_METHOD.name,
+                                                                                DeleteMethod.getOpenTypeGUID(),
+                                                                                DeleteMethod.getOpenTypeName(),
+                                                                                properties.getDeleteMethod().getOrdinal(),
+                                                                                methodName);
+            }
+            catch (TypeErrorException error)
+            {
+                throw new InvalidParameterException(error, OpenMetadataProperty.DELETE_METHOD.name);
+            }
+        }
 
         return integrationGroupHandler.multiLinkElementToElement(userId,
                                                                  null,
@@ -1170,11 +1232,66 @@ public class IntegrationGroupConfigurationHandler
                                                                           properties.getCatalogTargetName(),
                                                                           methodName);
 
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                          instanceProperties,
+                                                                          OpenMetadataType.CONNECTION_NAME_PROPERTY_NAME,
+                                                                          properties.getConnectionName(),
+                                                                          methodName);
+
+        instanceProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                             instanceProperties,
+                                                                             OpenMetadataType.TEMPLATES_PROPERTY_NAME,
+                                                                             properties.getTemplateProperties(),
+                                                                             methodName);
+
         instanceProperties = repositoryHelper.addMapPropertyToInstance(serviceName,
                                                                        instanceProperties,
                                                                        OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
                                                                        properties.getConfigurationProperties(),
                                                                        methodName);
+
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                          instanceProperties,
+                                                                          OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
+                                                                          properties.getMetadataSourceQualifiedName(),
+                                                                          methodName);
+
+        if (properties.getPermittedSynchronization() != null)
+        {
+            try
+            {
+                instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                                instanceProperties,
+                                                                                OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
+                                                                                PermittedSynchronization.getOpenTypeGUID(),
+                                                                                PermittedSynchronization.getOpenTypeName(),
+                                                                                properties.getPermittedSynchronization().getOrdinal(),
+                                                                                methodName);
+            }
+            catch (TypeErrorException error)
+            {
+                throw new InvalidParameterException(error, OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name);
+            }
+        }
+
+
+        if (properties.getDeleteMethod() != null)
+        {
+            try
+            {
+                instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                                instanceProperties,
+                                                                                OpenMetadataProperty.DELETE_METHOD.name,
+                                                                                DeleteMethod.getOpenTypeGUID(),
+                                                                                DeleteMethod.getOpenTypeName(),
+                                                                                properties.getDeleteMethod().getOrdinal(),
+                                                                                methodName);
+            }
+            catch (TypeErrorException error)
+            {
+                throw new InvalidParameterException(error, OpenMetadataProperty.DELETE_METHOD.name);
+            }
+        }
 
         integrationGroupHandler.updateRelationshipProperties(userId,
                                                              null,

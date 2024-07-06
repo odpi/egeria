@@ -164,7 +164,7 @@ public class StewardshipActionOMRSTopicListener extends OMRSTopicListenerBase
 
         if (eventEntity != null)
         {
-            log.debug("Publishing declassified Entity event from: " + sourceName);
+            log.debug("Publishing classified Entity event from: " + sourceName);
 
             eventPublisher.publishEntityEvent(StewardshipActionEventType.ELEMENT_DECLASSIFIED,
                                               eventEntity,

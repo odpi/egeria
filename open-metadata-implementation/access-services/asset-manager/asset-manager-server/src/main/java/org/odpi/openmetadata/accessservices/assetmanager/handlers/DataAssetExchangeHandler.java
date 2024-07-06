@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandler;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -256,6 +257,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                 assetProperties.getTechnicalName(),
                                                                 assetProperties.getVersionIdentifier(),
                                                                 assetProperties.getTechnicalDescription(),
+                                                                assetProperties.getDeployedImplementationType(),
                                                                 assetProperties.getAdditionalProperties(),
                                                                 typeName,
                                                                 assetExtendedProperties,
@@ -317,8 +319,8 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                assetGUID,
                                                                assetGUIDParameterName,
                                                                OpenMetadataType.DATA_STORE.typeName,
-                                                               OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
-                                                               OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
+                                                               OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeGUID,
+                                                               OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
                                                                classificationProperties,
                                                                true,
                                                                forLineage,
@@ -413,6 +415,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                              templateProperties.getDisplayName(),
                                                              templateProperties.getVersionIdentifier(),
                                                              templateProperties.getDescription(),
+                                                             null,
                                                              templateProperties.getPathName(),
                                                              templateProperties.getNetworkAddress(),
                                                              false,
@@ -496,6 +499,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                  assetProperties.getTechnicalName(),
                                  assetProperties.getVersionIdentifier(),
                                  assetProperties.getTechnicalDescription(),
+                                 assetProperties.getDeployedImplementationType(),
                                  assetProperties.getAdditionalProperties(),
                                  OpenMetadataType.ASSET.typeGUID,
                                  OpenMetadataType.ASSET.typeName,

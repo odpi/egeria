@@ -29,7 +29,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class DataStoreProperties extends AssetProperties
 {
-    private String              deployedImplementationType = null;
     private String              pathName                   = null;
     private Date                createTime                 = null;
     private Date                modifiedTime               = null;
@@ -59,7 +58,6 @@ public class DataStoreProperties extends AssetProperties
 
         if (template != null)
         {
-            deployedImplementationType = template.getDeployedImplementationType();
             pathName                   = template.getPathName();
             createTime                 = template.getCreateTime();
             modifiedTime               = template.getModifiedTime();
@@ -79,28 +77,6 @@ public class DataStoreProperties extends AssetProperties
     public DataStoreProperties(AssetProperties template)
     {
         super(template);
-    }
-
-
-    /**
-     * Retrieve the name of the technology used for this data asset.
-     *
-     * @return string name
-     */
-    public String getDeployedImplementationType()
-    {
-        return deployedImplementationType;
-    }
-
-
-    /**
-     * Set up the name of the technology used for this data asset.
-     *
-     * @param deployedImplementationType string name
-     */
-    public void setDeployedImplementationType(String deployedImplementationType)
-    {
-        this.deployedImplementationType = deployedImplementationType;
     }
 
 
@@ -280,7 +256,7 @@ public class DataStoreProperties extends AssetProperties
                        "name='" + getName() + '\'' +
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", deployedImplementationType='" + deployedImplementationType + '\'' +
+                       ", deployedImplementationType='" + getDeployedImplementationType() + '\'' +
                        ", pathName='" + pathName + '\'' +
                        ", createTime=" + createTime +
                        ", modifiedTime=" + modifiedTime +
@@ -320,8 +296,7 @@ public class DataStoreProperties extends AssetProperties
         {
             return false;
         }
-        return Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
-                       Objects.equals(pathName, that.pathName) &&
+        return Objects.equals(pathName, that.pathName) &&
                        Objects.equals(createTime, that.createTime) &&
                        Objects.equals(modifiedTime, that.modifiedTime) &&
                        Objects.equals(encodingType, that.encodingType) &&
@@ -339,7 +314,7 @@ public class DataStoreProperties extends AssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), deployedImplementationType, pathName, createTime, modifiedTime, encodingType,
+        return Objects.hash(super.hashCode(), pathName, createTime, modifiedTime, encodingType,
                             encodingLanguage, encodingDescription, encodingProperties);
     }
 }

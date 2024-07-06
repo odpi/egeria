@@ -194,223 +194,6 @@ public class RelationalDataHandler<DATABASE,
      * Create a new metadata element to represent a database that is owned by an external element.
      *
      * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
-     * @param databaseManagerName unique name of software server capability representing the DBMS
-     * @param qualifiedName unique name for this database
-     * @param technicalName the stored name property for the database
-     * @param versionIdentifier version identifier for the database
-     * @param description the stored description property associated with the database
-     * @param owner identifier of the owner
-     * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
-     * @param zoneMembership governance zones for the database - null means use the default zones set for this service
-     * @param originOrganizationGUID the properties that characterize where this database is from
-     * @param originBusinessCapabilityGUID the properties that characterize where this database is from
-     * @param otherOriginValues the properties that characterize where this database is from
-     * @param pathName the fully qualified physical location of the data store
-     * @param createTime the time that the database was created
-     * @param modifiedTime the last known time the data store was modified
-     * @param encodingType the name of the encoding style used in the database
-     * @param encodingLanguage the name of the natural language used for text strings within the database
-     * @param encodingDescription the description of the encoding used in the database
-     * @param encodingProperties properties used to control encoding
-     * @param databaseType a description of the database type
-     * @param databaseVersion the version of the database - often this is related to the version of its schemas.
-     * @param databaseInstance the name of this database instance - useful if the same schemas are deployed to multiple database instances
-     * @param databaseImportedFrom the source (typically connection name) of the database information
-     * @param additionalProperties any arbitrary properties not part of the type system
-     * @param typeName name of the type that is a subtype of Database - or null to create standard type
-     * @param extendedProperties properties from any subtype
-     * @param vendorProperties additional properties relating to the source of the database technology
-     * @param effectiveFrom      starting time for this relationship (null for all time)
-     * @param effectiveTo        ending time for this relationship (null for all time)
-     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return unique identifier of the new metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public String createDatabase(String               userId,
-                                 String               databaseManagerGUID,
-                                 String               databaseManagerName,
-                                 String               qualifiedName,
-                                 String               technicalName,
-                                 String               versionIdentifier,
-                                 String               description,
-                                 String               owner,
-                                 int                  ownerTypeOrdinal,
-                                 List<String>         zoneMembership,
-                                 String               originOrganizationGUID,
-                                 String               originBusinessCapabilityGUID,
-                                 Map<String, String>  otherOriginValues,
-                                 String               pathName,
-                                 Date                 createTime,
-                                 Date                 modifiedTime,
-                                 String               encodingType,
-                                 String               encodingLanguage,
-                                 String               encodingDescription,
-                                 Map<String, String>  encodingProperties,
-                                 String               databaseType,
-                                 String               databaseVersion,
-                                 String               databaseInstance,
-                                 String               databaseImportedFrom,
-                                 Map<String, String>  additionalProperties,
-                                 String               typeName,
-                                 Map<String, Object>  extendedProperties,
-                                 Map<String, String>  vendorProperties,
-                                 Date                 effectiveFrom,
-                                 Date                 effectiveTo,
-                                 boolean              forLineage,
-                                 boolean              forDuplicateProcessing,
-                                 Date                 effectiveTime,
-                                 String               methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
-    {
-        final String databaseManagerGUIDParameterName  = "databaseManagerGUID";
-        final String databaseGUIDParameterName         = "databaseGUID";
-        final String qualifiedNameParameterName        = "qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        databaseHandler.verifyExternalSourceIdentity(userId,
-                                                     databaseManagerGUID,
-                                                     databaseManagerName,
-                                                     forLineage,
-                                                     forDuplicateProcessing,
-                                                     effectiveTime,
-                                                     methodName);
-
-        String assetTypeName = OpenMetadataType.DATABASE_TYPE_NAME;
-
-        if (typeName != null)
-        {
-            assetTypeName = typeName;
-        }
-
-        String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
-                                                                      OpenMetadataType.DATABASE_TYPE_NAME,
-                                                                      serviceName,
-                                                                      methodName,
-                                                                      repositoryHelper);
-
-        Map<String, Object> assetExtendedProperties = new HashMap<>();
-        if (extendedProperties != null)
-        {
-            assetExtendedProperties.putAll(extendedProperties);
-        }
-
-        assetExtendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
-        assetExtendedProperties.put(OpenMetadataProperty.STORE_CREATE_TIME.name, createTime);
-        assetExtendedProperties.put(OpenMetadataProperty.STORE_UPDATE_TIME.name, modifiedTime);
-        assetExtendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, databaseType);
-        assetExtendedProperties.put(OpenMetadataType.DATABASE_VERSION_PROPERTY_NAME, databaseVersion);
-        assetExtendedProperties.put(OpenMetadataType.DATABASE_INSTANCE_PROPERTY_NAME, databaseInstance);
-        assetExtendedProperties.put(OpenMetadataType.DATABASE_IMPORTED_FROM_PROPERTY_NAME, databaseImportedFrom);
-
-        /*
-         * This call will set up the default zones and give ownership of the asset to the calling user.
-         */
-        String databaseGUID = databaseHandler.createAssetInRepository(userId,
-                                                                      databaseManagerGUID,
-                                                                      databaseManagerName,
-                                                                      qualifiedName,
-                                                                      technicalName,
-                                                                      versionIdentifier,
-                                                                      description,
-                                                                      zoneMembership,
-                                                                      owner,
-                                                                      ownerTypeOrdinal,
-                                                                      originOrganizationGUID,
-                                                                      originBusinessCapabilityGUID,
-                                                                      otherOriginValues,
-                                                                      additionalProperties,
-                                                                      assetTypeId,
-                                                                      assetTypeName,
-                                                                      assetExtendedProperties,
-                                                                      effectiveFrom,
-                                                                      effectiveTo,
-                                                                      InstanceStatus.ACTIVE,
-                                                                      effectiveFrom,
-                                                                      methodName);
-
-        if (databaseGUID != null)
-        {
-            if ((encodingType != null) || (encodingLanguage != null) || (encodingDescription != null) || (encodingProperties != null))
-            {
-                InstanceProperties classificationProperties = this.getEncodingProperties(encodingType,
-                                                                                         encodingLanguage,
-                                                                                         encodingDescription,
-                                                                                         encodingProperties,
-                                                                                         methodName);
-
-
-                databaseHandler.setClassificationInRepository(userId,
-                                                              databaseManagerGUID,
-                                                              databaseManagerName,
-                                                              databaseGUID,
-                                                              databaseGUIDParameterName,
-                                                              OpenMetadataType.DATABASE_TYPE_NAME,
-                                                              OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
-                                                              OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
-                                                              classificationProperties,
-                                                              true,
-                                                              forLineage,
-                                                              forDuplicateProcessing,
-                                                              effectiveTime,
-                                                              methodName);
-            }
-
-            databaseHandler.setVendorProperties(userId, databaseGUID, vendorProperties, forLineage, forDuplicateProcessing, effectiveTime, methodName);
-
-            try
-            {
-                InstanceProperties relationshipProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                                                                       null,
-                                                                                                       OpenMetadataProperty.USE_TYPE.name,
-                                                                                                       OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_GUID,
-                                                                                                       OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
-                                                                                                       OpenMetadataType.SERVER_ASSET_USE_TYPE_OWNS_ORDINAL,
-                                                                                                       methodName);
-
-                databaseHandler.linkElementToElement(userId,
-                                                     databaseManagerGUID,
-                                                     databaseManagerName,
-                                                     databaseManagerGUID,
-                                                     databaseManagerGUIDParameterName,
-                                                     OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
-                                                     databaseGUID,
-                                                     databaseGUIDParameterName,
-                                                     OpenMetadataType.DATABASE_TYPE_NAME,
-                                                     forLineage,
-                                                     forDuplicateProcessing,
-                                                     OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
-                                                     OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                     relationshipProperties,
-                                                     effectiveFrom,
-                                                     effectiveTo,
-                                                     effectiveTime,
-                                                     methodName);
-            }
-            catch (TypeErrorException error)
-            {
-                throw new InvalidParameterException(error, OpenMetadataProperty.USE_TYPE.name);
-            }
-        }
-
-        return databaseGUID;
-    }
-
-
-    /**
-     * Create a new metadata element to represent a database that is owned by an external element.
-     *
-     * @param userId calling user
      * @param databaseManagerGUID unique identifier of software capability representing the DBMS
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param qualifiedName unique name for this database
@@ -424,7 +207,7 @@ public class RelationalDataHandler<DATABASE,
      * @param encodingLanguage the name of the natural language used for text strings within the database
      * @param encodingDescription the description of the encoding used in the database
      * @param encodingProperties properties used to control encoding
-     * @param databaseType a description of the database type
+     * @param deployedImplementationType a description of the database type
      * @param databaseVersion the version of the database - often this is related to the version of its schemas.
      * @param databaseInstance the name of this database instance - useful if the same schemas are deployed to multiple database instances
      * @param databaseImportedFrom the source (typically connection name) of the database information
@@ -459,7 +242,7 @@ public class RelationalDataHandler<DATABASE,
                                  String               encodingLanguage,
                                  String               encodingDescription,
                                  Map<String, String>  encodingProperties,
-                                 String               databaseType,
+                                 String               deployedImplementationType,
                                  String               databaseVersion,
                                  String               databaseInstance,
                                  String               databaseImportedFrom,
@@ -491,7 +274,7 @@ public class RelationalDataHandler<DATABASE,
                                                      effectiveTime,
                                                      methodName);
 
-        String assetTypeName = OpenMetadataType.DATABASE_TYPE_NAME;
+        String assetTypeName = OpenMetadataType.DATABASE.typeName;
 
         if (typeName != null)
         {
@@ -508,10 +291,9 @@ public class RelationalDataHandler<DATABASE,
         assetExtendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
         assetExtendedProperties.put(OpenMetadataProperty.STORE_CREATE_TIME.name, createTime);
         assetExtendedProperties.put(OpenMetadataProperty.STORE_UPDATE_TIME.name, modifiedTime);
-        assetExtendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, databaseType);
-        assetExtendedProperties.put(OpenMetadataType.DATABASE_VERSION_PROPERTY_NAME, databaseVersion);
-        assetExtendedProperties.put(OpenMetadataType.DATABASE_INSTANCE_PROPERTY_NAME, databaseInstance);
-        assetExtendedProperties.put(OpenMetadataType.DATABASE_IMPORTED_FROM_PROPERTY_NAME, databaseImportedFrom);
+        assetExtendedProperties.put(OpenMetadataProperty.DATABASE_VERSION.name, databaseVersion);
+        assetExtendedProperties.put(OpenMetadataProperty.INSTANCE.name, databaseInstance);
+        assetExtendedProperties.put(OpenMetadataProperty.IMPORTED_FROM.name, databaseImportedFrom);
 
         /*
          * This call will set up the default zones and give ownership of the asset to the calling user.
@@ -523,6 +305,7 @@ public class RelationalDataHandler<DATABASE,
                                                                       name,
                                                                       versionIdentifier,
                                                                       description,
+                                                                      deployedImplementationType,
                                                                       additionalProperties,
                                                                       assetTypeName,
                                                                       assetExtendedProperties,
@@ -548,9 +331,9 @@ public class RelationalDataHandler<DATABASE,
                                                               databaseManagerName,
                                                               databaseGUID,
                                                               databaseGUIDParameterName,
-                                                              OpenMetadataType.DATABASE_TYPE_NAME,
-                                                              OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
-                                                              OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
+                                                              OpenMetadataType.DATABASE.typeName,
+                                                              OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeGUID,
+                                                              OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
                                                               classificationProperties,
                                                               true,
                                                               forLineage,
@@ -579,7 +362,7 @@ public class RelationalDataHandler<DATABASE,
                                                      OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                      databaseGUID,
                                                      databaseGUIDParameterName,
-                                                     OpenMetadataType.DATABASE_TYPE_NAME,
+                                                     OpenMetadataType.DATABASE.typeName,
                                                      forLineage,
                                                      forDuplicateProcessing,
                                                      OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
@@ -653,13 +436,14 @@ public class RelationalDataHandler<DATABASE,
                                                     databaseManagerName,
                                                     templateGUID,
                                                     templateGUIDParameterName,
-                                                    OpenMetadataType.DATABASE_TYPE_GUID,
-                                                    OpenMetadataType.DATABASE_TYPE_NAME,
+                                                    OpenMetadataType.DATABASE.typeGUID,
+                                                    OpenMetadataType.DATABASE.typeName,
                                                     qualifiedName,
                                                     qualifiedNameParameterName,
                                                     technicalName,
                                                     versionIdentifier,
                                                     description,
+                                                    null,
                                                     pathName,
                                                     networkAddress,
                                                     forLineage,
@@ -667,219 +451,6 @@ public class RelationalDataHandler<DATABASE,
                                                     effectiveTime,
                                                     methodName);
     }
-
-
-    /**
-     * Update the metadata element representing a database.
-     *
-     * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
-     * @param databaseManagerName unique name of software capability representing the DBMS
-     * @param databaseGUID unique identifier of the metadata element to update
-     * @param qualifiedName unique name for this database
-     * @param technicalName the stored name property for the database
-     * @param description the stored description property associated with the database
-     * @param owner identifier of the owner
-     * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
-     * @param zoneMembership governance zones for the database - null means use the default zones set for this service
-     * @param originOrganizationGUID the properties that characterize where this database is from
-     * @param originBusinessCapabilityGUID the properties that characterize where this database is from
-     * @param otherOriginValues the properties that characterize where this database is from
-     * @param createTime the time that the database was created
-     * @param modifiedTime the last known time the data store was modified
-     * @param encodingType the name of the encoding style used in the database
-     * @param encodingLanguage the name of the natural language used for text strings within the database
-     * @param encodingDescription the description of the encoding used in the database
-     * @param encodingProperties properties used to control encoding
-     * @param databaseType a description of the database type
-     * @param databaseVersion the version of the database - often this is related to the version of its schemas.
-     * @param databaseInstance the name of this database instance - useful if the same schemas are deployed to multiple database instances
-     * @param databaseImportedFrom the source (typically connection name) of the database information
-     * @param additionalProperties any arbitrary properties not part of the type system
-     * @param typeName name of the type that is a subtype of Database - or null to create standard type
-     * @param extendedProperties properties from any subtype
-     * @param vendorProperties additional properties relating to the source of the database technology
-     * @param effectiveFrom      starting time for this relationship (null for all time)
-     * @param effectiveTo        ending time for this relationship (null for all time)
-     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
-     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void updateDatabase(String               userId,
-                               String               databaseManagerGUID,
-                               String               databaseManagerName,
-                               String               databaseGUID,
-                               String               qualifiedName,
-                               String               technicalName,
-                               String               description,
-                               String               owner,
-                               int                  ownerTypeOrdinal,
-                               List<String>         zoneMembership,
-                               String               originOrganizationGUID,
-                               String               originBusinessCapabilityGUID,
-                               Map<String, String>  otherOriginValues,
-                               Date                 createTime,
-                               Date                 modifiedTime,
-                               String               encodingType,
-                               String               encodingLanguage,
-                               String               encodingDescription,
-                               Map<String, String>  encodingProperties,
-                               String               databaseType,
-                               String               databaseVersion,
-                               String               databaseInstance,
-                               String               databaseImportedFrom,
-                               Map<String, String>  additionalProperties,
-                               String               typeName,
-                               Map<String, Object>  extendedProperties,
-                               Map<String, String>  vendorProperties,
-                               Date                 effectiveFrom,
-                               Date                 effectiveTo,
-                               boolean              isMergeUpdate,
-                               boolean              forLineage,
-                               boolean              forDuplicateProcessing,
-                               Date                 effectiveTime,
-                               String               methodName) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
-    {
-        final String elementGUIDParameterName    = "databaseGUID";
-
-        this.updateDatabase(userId,
-                            databaseManagerGUID,
-                            databaseManagerName,
-                            databaseGUID,
-                            qualifiedName,
-                            technicalName,
-                            null,
-                            description,
-                            null,
-                            createTime,
-                            modifiedTime,
-                            encodingType,
-                            encodingLanguage,
-                            encodingDescription,
-                            encodingProperties,
-                            databaseType,
-                            databaseVersion,
-                            databaseInstance,
-                            databaseImportedFrom,
-                            additionalProperties,
-                            typeName,
-                            extendedProperties,
-                            vendorProperties,
-                            effectiveFrom,
-                            effectiveTo,
-                            isMergeUpdate,
-                            forLineage,
-                            forDuplicateProcessing,
-                            effectiveTime,
-                            methodName);
-
-        this.updateGovernanceClassifications(userId,
-                                             databaseGUID,
-                                             elementGUIDParameterName,
-                                             owner,
-                                             ownerTypeOrdinal,
-                                             zoneMembership,
-                                             originOrganizationGUID,
-                                             originBusinessCapabilityGUID,
-                                             otherOriginValues,
-                                             effectiveFrom,
-                                             effectiveTo,
-                                             isMergeUpdate,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             effectiveTime,
-                                             methodName);
-    }
-
-
-    /**
-     * Update the metadata element representing a database.
-     *
-     * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to update
-     * @param elementGUIDParameterName parameter name of elementGUID
-     * @param owner identifier of the owner
-     * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
-     * @param zoneMembership governance zones for the database - null means use the default zones set for this service
-     * @param originOrganizationGUID the properties that characterize where this database is from
-     * @param originBusinessCapabilityGUID the properties that characterize where this database is from
-     * @param otherOriginValues the properties that characterize where this database is from
-     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
-     * @param effectiveFrom starting time for this relationship (null for all time)
-     * @param effectiveTo ending time for this relationship (null for all time)
-     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @SuppressWarnings(value = "deprecation")
-    public void updateGovernanceClassifications(String               userId,
-                                                String               elementGUID,
-                                                String               elementGUIDParameterName,
-                                                String               owner,
-                                                int                  ownerTypeOrdinal,
-                                                List<String>         zoneMembership,
-                                                String               originOrganizationGUID,
-                                                String               originBusinessCapabilityGUID,
-                                                Map<String, String>  otherOriginValues,
-                                                Date                 effectiveFrom,
-                                                Date                 effectiveTo,
-                                                boolean              isMergeUpdate,
-                                                boolean              forLineage,
-                                                boolean              forDuplicateProcessing,
-                                                Date                 effectiveTime,
-                                                String               methodName) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
-    {
-        if (owner != null)
-        {
-            databaseHandler.updateAssetOwner(userId, elementGUID, elementGUIDParameterName, owner, ownerTypeOrdinal, forLineage, forDuplicateProcessing, effectiveTime, methodName);
-        }
-
-        databaseHandler.updateAssetZones(userId, elementGUID, elementGUIDParameterName, zoneMembership, isMergeUpdate, forLineage, forDuplicateProcessing, effectiveTime, methodName);
-
-
-        if ((originOrganizationGUID != null) || (originBusinessCapabilityGUID != null) || (otherOriginValues != null))
-        {
-            final String organizationGUIDParameterName = "originOrganizationGUID";
-            final String businessCapabilityGUIDParameterName = "originBusinessCapabilityGUID";
-
-            databaseHandler.addAssetOrigin(userId,
-                                           elementGUID,
-                                           elementGUIDParameterName,
-                                           originOrganizationGUID,
-                                           organizationGUIDParameterName,
-                                           originBusinessCapabilityGUID,
-                                           businessCapabilityGUIDParameterName,
-                                           otherOriginValues,
-                                           effectiveFrom,
-                                           effectiveTo,
-                                           isMergeUpdate,
-                                           forLineage,
-                                           forDuplicateProcessing,
-                                           effectiveTime,
-                                           methodName);
-        }
-        else
-        {
-            databaseHandler.removeAssetOrigin(userId, elementGUID, elementGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
-        }
-    }
-
-
 
 
     /**
@@ -900,7 +471,7 @@ public class RelationalDataHandler<DATABASE,
      * @param encodingLanguage the name of the natural language used for text strings within the database
      * @param encodingDescription the description of the encoding used in the database
      * @param encodingProperties properties used to control encoding
-     * @param databaseType a description of the database type
+     * @param deployedImplementationType a description of the database type
      * @param databaseVersion the version of the database - often this is related to the version of its schemas.
      * @param databaseInstance the name of this database instance - useful if the same schemas are deployed to multiple database instances
      * @param databaseImportedFrom the source (typically connection name) of the database information
@@ -935,7 +506,7 @@ public class RelationalDataHandler<DATABASE,
                                String               encodingLanguage,
                                String               encodingDescription,
                                Map<String, String>  encodingProperties,
-                               String               databaseType,
+                               String               deployedImplementationType,
                                String               databaseVersion,
                                String               databaseInstance,
                                String               databaseImportedFrom,
@@ -963,7 +534,7 @@ public class RelationalDataHandler<DATABASE,
             invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         }
 
-        String assetTypeName = OpenMetadataType.DATABASE_TYPE_NAME;
+        String assetTypeName = OpenMetadataType.DATABASE.typeName;
 
         if (typeName != null)
         {
@@ -971,7 +542,7 @@ public class RelationalDataHandler<DATABASE,
         }
 
         String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
-                                                                      OpenMetadataType.DATABASE_TYPE_NAME,
+                                                                      OpenMetadataType.DATABASE.typeName,
                                                                       serviceName,
                                                                       methodName,
                                                                       repositoryHelper);
@@ -986,10 +557,9 @@ public class RelationalDataHandler<DATABASE,
         assetExtendedProperties.put(OpenMetadataProperty.STORE_CREATE_TIME.name, createTime);
         assetExtendedProperties.put(OpenMetadataProperty.STORE_UPDATE_TIME.name, modifiedTime);
 
-        assetExtendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, databaseType);
-        assetExtendedProperties.put(OpenMetadataType.DATABASE_VERSION_PROPERTY_NAME, databaseVersion);
-        assetExtendedProperties.put(OpenMetadataType.DATABASE_INSTANCE_PROPERTY_NAME, databaseInstance);
-        assetExtendedProperties.put(OpenMetadataType.DATABASE_IMPORTED_FROM_PROPERTY_NAME, databaseImportedFrom);
+        assetExtendedProperties.put(OpenMetadataProperty.DATABASE_VERSION.name, databaseVersion);
+        assetExtendedProperties.put(OpenMetadataProperty.INSTANCE.name, databaseInstance);
+        assetExtendedProperties.put(OpenMetadataProperty.IMPORTED_FROM.name, databaseImportedFrom);
 
         databaseHandler.updateAsset(userId,
                                     databaseManagerGUID,
@@ -1000,6 +570,7 @@ public class RelationalDataHandler<DATABASE,
                                     technicalName,
                                     versionIdentifier,
                                     description,
+                                    deployedImplementationType,
                                     additionalProperties,
                                     assetTypeId,
                                     assetTypeName,
@@ -1026,9 +597,9 @@ public class RelationalDataHandler<DATABASE,
                                                           databaseManagerName,
                                                           databaseGUID,
                                                           elementGUIDParameterName,
-                                                          OpenMetadataType.DATABASE_TYPE_NAME,
-                                                          OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeGUID,
-                                                          OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
+                                                          OpenMetadataType.DATABASE.typeName,
+                                                          OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeGUID,
+                                                          OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
                                                           classificationProperties,
                                                           isMergeUpdate,
                                                           forLineage,
@@ -1205,7 +776,7 @@ public class RelationalDataHandler<DATABASE,
                                              databaseManagerGUID,
                                              databaseManagerName,
                                              databaseGUID,
-                                             OpenMetadataType.DATABASE_TYPE_NAME,
+                                             OpenMetadataType.DATABASE.typeName,
                                              forLineage,
                                              forDuplicateProcessing,
                                              effectiveTime,
@@ -1218,8 +789,8 @@ public class RelationalDataHandler<DATABASE,
                                                    databaseManagerName,
                                                    databaseGUID,
                                                    elementGUIDParameterName,
-                                                   OpenMetadataType.DATABASE_TYPE_GUID,
-                                                   OpenMetadataType.DATABASE_TYPE_NAME,
+                                                   OpenMetadataType.DATABASE.typeGUID,
+                                                   OpenMetadataType.DATABASE.typeName,
                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
                                                    qualifiedName,
                                                    forLineage,
@@ -1234,8 +805,8 @@ public class RelationalDataHandler<DATABASE,
                                                    databaseManagerName,
                                                    databaseGUID,
                                                    elementGUIDParameterName,
-                                                   OpenMetadataType.DATABASE_TYPE_GUID,
-                                                   OpenMetadataType.DATABASE_TYPE_NAME,
+                                                   OpenMetadataType.DATABASE.typeGUID,
+                                                   OpenMetadataType.DATABASE.typeName,
                                                    null,
                                                    null,
                                                    forLineage,
@@ -1279,8 +850,8 @@ public class RelationalDataHandler<DATABASE,
         final String searchStringParameterName = "searchString";
 
         return databaseHandler.findAssets(userId,
-                                          OpenMetadataType.DATABASE_TYPE_GUID,
-                                          OpenMetadataType.DATABASE_TYPE_NAME,
+                                          OpenMetadataType.DATABASE.typeGUID,
+                                          OpenMetadataType.DATABASE.typeName,
                                           searchString,
                                           searchStringParameterName,
                                           startFrom,
@@ -1319,8 +890,8 @@ public class RelationalDataHandler<DATABASE,
                                                                   PropertyServerException
     {
         return databaseHandler.getBeansByType(userId,
-                                              OpenMetadataType.DATABASE_TYPE_GUID,
-                                              OpenMetadataType.DATABASE_TYPE_NAME,
+                                              OpenMetadataType.DATABASE.typeGUID,
+                                              OpenMetadataType.DATABASE.typeName,
                                               null,
                                               startFrom,
                                               pageSize,
@@ -1364,8 +935,8 @@ public class RelationalDataHandler<DATABASE,
         final String nameParameterName = "name";
 
         return databaseHandler.getAssetsByName(userId,
-                                               OpenMetadataType.DATABASE_TYPE_GUID,
-                                               OpenMetadataType.DATABASE_TYPE_NAME,
+                                               OpenMetadataType.DATABASE.typeGUID,
+                                               OpenMetadataType.DATABASE.typeName,
                                                name,
                                                nameParameterName,
                                                startFrom,
@@ -1417,7 +988,7 @@ public class RelationalDataHandler<DATABASE,
                                                    OpenMetadataType.DATABASE_MANAGER.typeName,
                                                    OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
                                                    OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                   OpenMetadataType.DATABASE_TYPE_NAME,
+                                                   OpenMetadataType.DATABASE.typeName,
                                                    null,
                                                    null,
                                                    0,
@@ -1466,7 +1037,7 @@ public class RelationalDataHandler<DATABASE,
         return databaseHandler.getBeanFromRepository(userId,
                                                      guid,
                                                      guidParameterName,
-                                                     OpenMetadataType.DATABASE_TYPE_NAME,
+                                                     OpenMetadataType.DATABASE.typeName,
                                                      forLineage,
                                                      forDuplicateProcessing,
                                                      effectiveTime,
@@ -1489,6 +1060,7 @@ public class RelationalDataHandler<DATABASE,
      * @param technicalName the stored name property for the database schema
      * @param versionIdentifier versionIdentifier property
      * @param technicalDescription the stored description property associated with the database schema
+     * @param deployedImplementationType technology type
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
      * @param extendedProperties properties from any subtype
@@ -1514,6 +1086,7 @@ public class RelationalDataHandler<DATABASE,
                                        String               technicalName,
                                        String               versionIdentifier,
                                        String               technicalDescription,
+                                       String               deployedImplementationType,
                                        Map<String, String>  additionalProperties,
                                        String               typeName,
                                        Map<String, Object>  extendedProperties,
@@ -1542,7 +1115,7 @@ public class RelationalDataHandler<DATABASE,
                                                            effectiveTime,
                                                            methodName);
 
-        String assetTypeName = OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
+        String assetTypeName = OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName;
 
         if (typeName != null)
         {
@@ -1550,7 +1123,7 @@ public class RelationalDataHandler<DATABASE,
         }
 
         invalidParameterHandler.validateTypeName(assetTypeName,
-                                                 OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                 OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                  serviceName,
                                                  methodName,
                                                  repositoryHelper);
@@ -1565,6 +1138,7 @@ public class RelationalDataHandler<DATABASE,
                                                                                   technicalName,
                                                                                   versionIdentifier,
                                                                                   technicalDescription,
+                                                                                  deployedImplementationType,
                                                                                   additionalProperties,
                                                                                   assetTypeName,
                                                                                   extendedProperties,
@@ -1584,10 +1158,10 @@ public class RelationalDataHandler<DATABASE,
                                                        databaseManagerName,
                                                        databaseGUID,
                                                        parentElementGUIDParameterName,
-                                                       OpenMetadataType.DATABASE_TYPE_NAME,
+                                                       OpenMetadataType.DATABASE.typeName,
                                                        databaseSchemaGUID,
                                                        createdElementGUIDParameterName,
-                                                       OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                       OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                        forLineage,
                                                        forDuplicateProcessing,
                                                        OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeGUID,
@@ -1610,161 +1184,6 @@ public class RelationalDataHandler<DATABASE,
             }
 
         }
-        return databaseSchemaGUID;
-    }
-
-
-    /**
-     * Create a new metadata element to represent a database schema.
-     *
-     * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
-     * @param databaseManagerName unique name of software capability representing the DBMS
-     * @param databaseGUID unique identifier of the database where the schema is located
-     * @param qualifiedName unique name for this database schema
-     * @param technicalName the stored  name property for the database schema
-     * @param versionIdentifier the stored versionIdentifier property for the database schema
-     * @param technicalDescription the stored description property associated with the database schema
-     * @param owner identifier of the owner
-     * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
-     * @param zoneMembership governance zones for the database schema - null means use the default zones set for this service
-     * @param originOrganizationGUID the properties that characterize where this database schema is from
-     * @param originBusinessCapabilityGUID the properties that characterize where this database schema is from
-     * @param otherOriginValues the properties that characterize where this database schema is from
-     * @param additionalProperties any arbitrary properties not part of the type system
-     * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
-     * @param extendedProperties properties from any subtype
-     * @param vendorProperties additional properties relating to the source of the database technology
-     * @param effectiveFrom      starting time for this relationship (null for all time)
-     * @param effectiveTo        ending time for this relationship (null for all time)
-     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return unique identifier of the new database schema
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public String createDatabaseSchema(String               userId,
-                                       String               databaseManagerGUID,
-                                       String               databaseManagerName,
-                                       String               databaseGUID,
-                                       String               qualifiedName,
-                                       String               technicalName,
-                                       String               versionIdentifier,
-                                       String               technicalDescription,
-                                       String               owner,
-                                       int                  ownerTypeOrdinal,
-                                       List<String>         zoneMembership,
-                                       String               originOrganizationGUID,
-                                       String               originBusinessCapabilityGUID,
-                                       Map<String, String>  otherOriginValues,
-                                       Map<String, String>  additionalProperties,
-                                       String               typeName,
-                                       Map<String, Object>  extendedProperties,
-                                       Map<String, String>  vendorProperties,
-                                       Date                 effectiveFrom,
-                                       Date                 effectiveTo,
-                                       boolean              forLineage,
-                                       boolean              forDuplicateProcessing,
-                                       Date                 effectiveTime,
-                                       String               methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        final String parentElementGUIDParameterName = "databaseGUID";
-        final String createdElementGUIDParameterName = "databaseSchemaGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        databaseSchemaHandler.verifyExternalSourceIdentity(userId,
-                                                           databaseManagerGUID,
-                                                           databaseManagerName,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           effectiveTime,
-                                                           methodName);
-
-        String assetTypeName = OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
-
-        if (typeName != null)
-        {
-            assetTypeName = typeName;
-        }
-
-        String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
-                                                                      OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                                      serviceName,
-                                                                      methodName,
-                                                                      repositoryHelper);
-
-        /*
-         * This call will set up the default zones and give ownership of the asset to the calling user.
-         */
-        String databaseSchemaGUID = databaseSchemaHandler.createAssetInRepository(userId,
-                                                                                  databaseManagerGUID,
-                                                                                  databaseManagerName,
-                                                                                  qualifiedName,
-                                                                                  technicalName,
-                                                                                  versionIdentifier,
-                                                                                  technicalDescription,
-                                                                                  zoneMembership,
-                                                                                  owner,
-                                                                                  ownerTypeOrdinal,
-                                                                                  originOrganizationGUID,
-                                                                                  originBusinessCapabilityGUID,
-                                                                                  otherOriginValues,
-                                                                                  additionalProperties,
-                                                                                  assetTypeId,
-                                                                                  assetTypeName,
-                                                                                  extendedProperties,
-                                                                                  effectiveFrom,
-                                                                                  effectiveTo,
-                                                                                  InstanceStatus.ACTIVE,
-                                                                                  effectiveTime,
-                                                                                  methodName);
-
-        if (databaseGUID != null)
-        {
-            /*
-             * This relationship links the database to the database schema.
-             */
-            databaseSchemaHandler.linkElementToElement(userId,
-                                                       databaseManagerGUID,
-                                                       databaseManagerName,
-                                                       databaseGUID,
-                                                       parentElementGUIDParameterName,
-                                                       OpenMetadataType.DATABASE_TYPE_NAME,
-                                                       databaseSchemaGUID,
-                                                       createdElementGUIDParameterName,
-                                                       OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
-                                                       forLineage,
-                                                       forDuplicateProcessing,
-                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeGUID,
-                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
-                                                       null,
-                                                       effectiveFrom,
-                                                       effectiveTo,
-                                                       effectiveTime,
-                                                       methodName);
-
-            if (vendorProperties != null)
-            {
-                databaseHandler.setVendorProperties(userId,
-                                                    databaseSchemaGUID,
-                                                    vendorProperties,
-                                                    forLineage,
-                                                    forDuplicateProcessing,
-                                                    effectiveTime,
-                                                    methodName);
-            }
-        }
-
         return databaseSchemaGUID;
     }
 
@@ -1826,13 +1245,14 @@ public class RelationalDataHandler<DATABASE,
                                                                                databaseManagerName,
                                                                                templateGUID,
                                                                                templateGUIDParameterName,
-                                                                               OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
-                                                                               OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                               OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeGUID,
+                                                                               OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                                                qualifiedName,
                                                                                qualifiedNameParameterName,
                                                                                technicalName,
                                                                                versionIdentifier,
                                                                                technicalDescription,
+                                                                               null,
                                                                                null,
                                                                                null,
                                                                                forLineage,
@@ -1850,10 +1270,10 @@ public class RelationalDataHandler<DATABASE,
                                                        databaseManagerName,
                                                        databaseGUID,
                                                        parentElementGUIDParameterName,
-                                                       OpenMetadataType.DATABASE_TYPE_NAME,
+                                                       OpenMetadataType.DATABASE.typeName,
                                                        databaseSchemaGUID,
                                                        createdElementGUIDParameterName,
-                                                       OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                       OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                        forLineage,
                                                        forDuplicateProcessing,
                                                        OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeGUID,
@@ -1880,12 +1300,7 @@ public class RelationalDataHandler<DATABASE,
      * @param technicalName the stored name property for the database schema
      * @param versionIdentifier the stored versionIdentifier property for the database schema
      * @param description the stored description property associated with the database schema
-     * @param owner identifier of the owner
-     * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
-     * @param zoneMembership governance zones for the database schema - null means use the default zones set for this service
-     * @param originOrganizationGUID the properties that characterize where this database schema is from
-     * @param originBusinessCapabilityGUID the properties that characterize where this database schema is from
-     * @param otherOriginValues the properties that characterize where this database schema is from
+     * @param deployedImplementationType technology type
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
      * @param extendedProperties properties from any subtype
@@ -1910,12 +1325,7 @@ public class RelationalDataHandler<DATABASE,
                                      String              technicalName,
                                      String              versionIdentifier,
                                      String              description,
-                                     String              owner,
-                                     int                 ownerTypeOrdinal,
-                                     List<String>        zoneMembership,
-                                     String              originOrganizationGUID,
-                                     String              originBusinessCapabilityGUID,
-                                     Map<String, String> otherOriginValues,
+                                     String              deployedImplementationType,
                                      Map<String, String> additionalProperties,
                                      String              typeName,
                                      Map<String, Object> extendedProperties,
@@ -1940,7 +1350,7 @@ public class RelationalDataHandler<DATABASE,
             invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         }
 
-        String assetTypeName = OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
+        String assetTypeName = OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName;
 
         if (typeName != null)
         {
@@ -1948,7 +1358,7 @@ public class RelationalDataHandler<DATABASE,
         }
 
         String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
-                                                                      OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                      OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                                       serviceName,
                                                                       methodName,
                                                                       repositoryHelper);
@@ -1962,6 +1372,7 @@ public class RelationalDataHandler<DATABASE,
                                           technicalName,
                                           versionIdentifier,
                                           description,
+                                          deployedImplementationType,
                                           additionalProperties,
                                           assetTypeId,
                                           assetTypeName,
@@ -1973,23 +1384,6 @@ public class RelationalDataHandler<DATABASE,
                                           forDuplicateProcessing,
                                           effectiveTime,
                                           methodName);
-
-        this.updateGovernanceClassifications(userId,
-                                             databaseSchemaGUID,
-                                             elementGUIDParameterName,
-                                             owner,
-                                             ownerTypeOrdinal,
-                                             zoneMembership,
-                                             originOrganizationGUID,
-                                             originBusinessCapabilityGUID,
-                                             otherOriginValues,
-                                             effectiveFrom,
-                                             effectiveTo,
-                                             isMergeUpdate,
-                                             forLineage,
-                                             forDuplicateProcessing,
-                                             effectiveTime,
-                                             methodName);
 
         if (vendorProperties != null)
         {
@@ -2124,8 +1518,8 @@ public class RelationalDataHandler<DATABASE,
                                                          databaseManagerName,
                                                          databaseSchemaGUID,
                                                          elementGUIDParameterName,
-                                                         OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
-                                                         OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                         OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeGUID,
+                                                         OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
                                                          qualifiedName,
                                                          forLineage,
@@ -2140,8 +1534,8 @@ public class RelationalDataHandler<DATABASE,
                                                          databaseManagerName,
                                                          databaseSchemaGUID,
                                                          elementGUIDParameterName,
-                                                         OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
-                                                         OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                         OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeGUID,
+                                                         OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                          null,
                                                          null,
                                                          forLineage,
@@ -2185,8 +1579,8 @@ public class RelationalDataHandler<DATABASE,
         final String searchStringParameterName = "searchString";
 
         return databaseSchemaHandler.findAssets(userId,
-                                                OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
-                                                OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeGUID,
+                                                OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                 searchString,
                                                 searchStringParameterName,
                                                 startFrom,
@@ -2235,10 +1629,10 @@ public class RelationalDataHandler<DATABASE,
         return databaseSchemaHandler.getAttachedElements(userId,
                                                          databaseGUID,
                                                          parentElementGUIDParameterName,
-                                                         OpenMetadataType.DATABASE_TYPE_NAME,
+                                                         OpenMetadataType.DATABASE.typeName,
                                                          OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeGUID,
                                                          OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
-                                                         OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                         OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                          null,
                                                          null,
                                                          0,
@@ -2284,8 +1678,8 @@ public class RelationalDataHandler<DATABASE,
         final String nameParameterName = "name";
 
         return databaseSchemaHandler.getAssetsByName(userId,
-                                                     OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
-                                                     OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                     OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeGUID,
+                                                     OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                      name,
                                                      nameParameterName,
                                                      startFrom,
@@ -2333,7 +1727,7 @@ public class RelationalDataHandler<DATABASE,
         return databaseSchemaHandler.getBeanFromRepository(userId,
                                                            guid,
                                                            guidParameterName,
-                                                           OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                           OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                                            forLineage,
                                                            forDuplicateProcessing,
                                                            effectiveTime,
@@ -4715,130 +4109,6 @@ public class RelationalDataHandler<DATABASE,
         }
 
         return databaseColumnGUID;
-    }
-
-
-    /**
-     * Update the metadata element representing a database column.
-     *
-     * @param userId calling user
-     * @param databaseManagerGUID unique identifier of software capability representing the DBMS
-     * @param databaseManagerName unique name of software capability representing the DBMS
-     * @param databaseColumnGUID unique identifier of the metadata element to update
-     * @param qualifiedName unique name for the database schema
-     * @param displayName the stored display name property for the database table
-     * @param description the stored description property associated with the database table
-     * @param dataType data type name - for stored values
-     * @param defaultValue string containing default value - for stored values
-     * @param fixedValue string containing fixed value - for literals
-     * @param formula String formula - for derived values
-     * @param isDeprecated is this table deprecated?
-     * @param elementPosition the position of this column in its parent table.
-     * @param minCardinality minimum number of repeating instances allowed for this column - typically 1
-     * @param maxCardinality the maximum number of repeating instances allowed for this column - typically 1
-     * @param allowsDuplicateValues  whether the same value can be used by more than one instance of this attribute
-     * @param orderedValues whether the attribute instances are arranged in an order
-     * @param sortOrder the order that the attribute instances are arranged in - if any
-     * @param minimumLength the minimum length of the data
-     * @param length the length of the data field
-     * @param significantDigits number of significant digits to the right of decimal point
-     * @param isNullable whether the field is nullable or not
-     * @param nativeJavaClass equivalent Java class implementation
-     * @param defaultValueOverride default value for this column
-     * @param aliases a list of alternative names for the attribute
-     * @param additionalProperties any arbitrary properties not part of the type system
-     * @param typeName name of the type that is a subtype of RelationalColumn - or null to create standard type
-     * @param extendedProperties properties from any subtype
-     * @param vendorProperties additional properties relating to the source of the database technology
-     * @param effectiveFrom      starting time for this relationship (null for all time)
-     * @param effectiveTo        ending time for this relationship (null for all time)
-     * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
-     * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void updateDatabaseColumn(String               userId,
-                                     String               databaseManagerGUID,
-                                     String               databaseManagerName,
-                                     String               databaseColumnGUID,
-                                     String               qualifiedName,
-                                     String               displayName,
-                                     String               description,
-                                     String               dataType,
-                                     String               defaultValue,
-                                     String               fixedValue,
-                                     String               formula,
-                                     boolean              isDeprecated,
-                                     int                  elementPosition,
-                                     int                  minCardinality,
-                                     int                  maxCardinality,
-                                     boolean              allowsDuplicateValues,
-                                     boolean              orderedValues,
-                                     String               defaultValueOverride,
-                                     int                  sortOrder,
-                                     int                  minimumLength,
-                                     int                  length,
-                                     int                  significantDigits,
-                                     boolean              isNullable,
-                                     String               nativeJavaClass,
-                                     List<String>         aliases,
-                                     Map<String, String>  additionalProperties,
-                                     String               typeName,
-                                     Map<String, Object>  extendedProperties,
-                                     Map<String, String>  vendorProperties,
-                                     Date                 effectiveFrom,
-                                     Date                 effectiveTo,
-                                     boolean              isMergeUpdate,
-                                     boolean              forLineage,
-                                     boolean              forDuplicateProcessing,
-                                     Date                 effectiveTime,
-                                     String               methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        this.updateDatabaseColumn(userId,
-                                  databaseManagerGUID,
-                                  databaseManagerName,
-                                  databaseColumnGUID,
-                                  qualifiedName,
-                                  displayName,
-                                  description,
-                                  null,
-                                  dataType,
-                                  defaultValue,
-                                  fixedValue,
-                                  null,
-                                  formula,
-                                  isDeprecated,
-                                  elementPosition,
-                                  minCardinality,
-                                  maxCardinality,
-                                  allowsDuplicateValues,
-                                  orderedValues,
-                                  defaultValueOverride,
-                                  sortOrder,
-                                  minimumLength,
-                                  length,
-                                  significantDigits,
-                                  isNullable,
-                                  nativeJavaClass,
-                                  aliases,
-                                  additionalProperties,
-                                  typeName,
-                                  extendedProperties,
-                                  vendorProperties,
-                                  effectiveFrom,
-                                  effectiveTo,
-                                  isMergeUpdate,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  effectiveTime,
-                                  methodName);
     }
 
 

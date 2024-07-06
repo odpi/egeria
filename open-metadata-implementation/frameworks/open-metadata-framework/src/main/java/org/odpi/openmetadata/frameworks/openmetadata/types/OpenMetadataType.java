@@ -215,6 +215,45 @@ public enum OpenMetadataType
                                    "e1e481ce-0536-4637-8658-5224353c7d69",
                                    "Places where an external identifier is recognized."),
 
+
+    /**
+     * Additional properties that support a particular vendor or service.
+     */
+    PROPERTY_FACET("6403a704-aad6-41c2-8e08-b9525c006f85",
+                   "PropertyFacet",
+                   OpenMetadataWikiPages.MODEL_0020_PROPERTY_FACETS,
+                   "ff8c80af-5eb2-43a4-ae1c-1920d4a1a619",
+                   "Additional properties that support a particular vendor or service."),
+
+
+    /**
+     * Link between a property facet and the element it relates to.
+     */
+    REFERENCEABLE_FACET("58c87647-ada9-4c90-a3c3-a40ace46b1f7",
+                        "ReferenceableFacet",
+                        OpenMetadataWikiPages.MODEL_0020_PROPERTY_FACETS,
+                        "2393b97a-436a-44f6-a5ef-45ad8b16b5d4",
+                        "Link between a property facet and the element it relates to."),
+
+    /**
+     * Defines an endpoint associated with a server.
+     */
+    SERVER_ENDPOINT_RELATIONSHIP("2b8bfab4-8023-4611-9833-82a0dc95f187",
+                                 "ServerEndpoint",
+                                 OpenMetadataWikiPages.MODEL_0026_ENDPOINTS,
+                                 "18dc6138-5745-4a66-b162-11e75d6b514e",
+                                 "Defines an endpoint associated with a server."),
+
+    /**
+     * Description of the network address and related information needed to call a software service.
+     */
+    ENDPOINT("dbc20663-d705-4ff0-8424-80c262c6b8e7",
+             "Endpoint",
+             OpenMetadataWikiPages.MODEL_0026_ENDPOINTS,
+             "86da5332-80cf-4bef-8881-646eb410c53c",
+             "Description of the network address and related information needed to call a software service."),
+
+
     /**
      * Hardware and base software that supports an IT system.
      */
@@ -546,10 +585,10 @@ public enum OpenMetadataType
      * A capability that manages collections of descriptions about people, places, digital assets, things, ...
      */
     CATALOG("f4fffcc0-d9eb-4bb9-8aff-0718932f689e",
-                     "Catalog",
-                     OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
-                     "df539ee4-fb5a-4555-8697-c391e244557d",
-                     "A capability that manages collections of descriptions about people, places, digital assets, things, ..."),
+            "Catalog",
+            OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+            "df539ee4-fb5a-4555-8697-c391e244557d",
+            "A capability that manages collections of descriptions about people, places, digital assets, things, ..."),
 
     /**
      * A programmable engine for running automated processes.
@@ -916,13 +955,68 @@ public enum OpenMetadataType
                                            "The assets that provides data for a data set."),
 
     /**
-     * Description for how data is organized and represented in a data store.
+     * Description for how data is organized and represented in a data asset.
      */
-    DATA_STORE_ENCODING_CLASSIFICATION("f08e48b5-6b66-40f5-8ff6-c2bfe527330b",
-                                       "DataStoreEncoding",
+    DATA_ASSET_ENCODING_CLASSIFICATION("3f6a1513-d3ea-4666-b5fd-c76477b0245e",
+                                       "DataAssetEncoding",
                                        OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
-                                       "cdb6971e-3783-42c0-85c6-4d339610113b",
-                                       "Description for how data is organized and represented in a data store."),
+                                       "6899c5aa-e815-4404-948c-52fc0188cf1e",
+                                       "Description for how data is organized and represented in a data asset."),
+
+    /**
+     * A callable interface running at an endpoint.
+     */
+     DEPLOYED_API("7dbb3e63-138f-49f1-97b4-66313871fc14",
+                  "DeployedAPI",
+                  OpenMetadataWikiPages.MODEL_0212_DEPLOYED_APIS,
+                  "ce967655-024b-446d-a5b8-3fdf2a1b6f56",
+                  "A callable interface running at an endpoint."),
+
+    /**
+     * The endpoint for a deployed API.
+     */
+    API_ENDPOINT_RELATIONSHIP("de5b9501-3ad4-4803-a8b2-e311c72a4336",
+                              "APIEndpoint",
+                              OpenMetadataWikiPages.MODEL_0212_DEPLOYED_APIS,
+                              "481182e8-90cf-47b2-ae1e-6247bf89698b",
+                              "The endpoint for a deployed API."),
+
+
+    /**
+     * A packaged and deployed software component supporting a well-defined function.
+     */
+    DEPLOYED_SOFTWARE_COMPONENT("486af62c-dcfd-4859-ab24-eab2e380ecfd",
+                                "DeployedSoftwareComponent",
+                                OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS,
+                                "37c211f4-80e3-40a7-b12b-8fdb7ad7af86",
+                                "A packaged and deployed software component supporting a well-defined function."),
+
+    /**
+     * A connector that is configured and deployed to run in a specific software server capability.
+     */
+    DEPLOYED_CONNECTOR("c9a183ab-67f4-46a4-8836-16fa041769b7",
+                       "DeployedConnector",
+                       OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS,
+                       "98bb02cd-a05c-4b06-b723-e295213ec9b0",
+                       "A connector that is configured and deployed to run in a specific software server capability."),
+
+    /**
+     * A child process.
+     */
+    EMBEDDED_PROCESS("8145967e-bb83-44b2-bc8c-68112c6a5a06",
+                     "EmbeddedProcess",
+                       OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS,
+                     "0a1e7e7b-ce2e-4371-b9fa-8a37d9c0ce3e",
+                     "A child process."),
+
+    /**
+     * A child process that runs for a short period of time.
+     */
+    TRANSIENT_EMBEDDED_PROCESS("9bd9d37a-b2ae-48ec-9776-080f667e91c5",
+                     "TransientEmbeddedProcess",
+                     OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS,
+                     "ab03dfea-cfa7-4ab2-96db-ac6cb894f242",
+                     "A child process that runs for a short period of time compared to its parent process."),
 
     /**
      * A description of a folder (directory) in a file system.
@@ -977,6 +1071,28 @@ public enum OpenMetadataType
               OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
               "8fc52dce-17fe-426a-b504-c15d5df35524",
               "A description of a file that follows the JavaScript Object Notation specification."),
+
+
+
+    /**
+     * An asset supported by data virtualization technology.
+     */
+    INFORMATION_VIEW("68d7b905-6438-43be-88cf-5de027b4aaaf",
+                     "InformationView",
+                     OpenMetadataWikiPages.MODEL_0235_INFORMATION_VIEW,
+                     "c0709c9e-8ff8-4af3-8b5d-85d89355bf64",
+                     "An asset supported by data virtualization technology."),
+
+
+    /**
+     * A virtual asset that can be called as a table through a SQL-like API.
+     */
+    VIRTUAL_RELATIONAL_TABLE("fd166582-8ff5-46ad-978e-7770e7339949",
+                     "VirtualRelationalTable",
+                     OpenMetadataWikiPages.MODEL_0235_INFORMATION_VIEW,
+                     "b6a9209c-de82-4357-8e03-447f904814e0",
+                     "A virtual asset that can be called as a table through a SQL-like API."),
+
 
     /**
      * A text file containing a program written in a language that needs to be complied into an executable form before it can run.
@@ -1166,6 +1282,35 @@ public enum OpenMetadataType
                                 OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
                                 "b6a17f72-2add-4db8-bf4d-9c6460386318",
                                 "Defines destination information for the log of activity associated with an element."),
+
+
+
+    /**
+     * 0921c83f-b2db-4086-a52c-0d10e52ca078
+     */
+    DATABASE("0921c83f-b2db-4086-a52c-0d10e52ca078",
+             "Database",
+             OpenMetadataWikiPages.MODEL_0224_DATABASES,
+             "735bb7f4-342c-4830-a8e9-6c56ec5f9e50",
+             ""),
+
+    /**
+     * 6a28e242-4eca-4664-81cb-e2096d769568
+     */
+    RELATIONAL_DATABASE("6a28e242-4eca-4664-81cb-e2096d769568",
+                        "RelationalDatabase",
+                        OpenMetadataWikiPages.MODEL_0224_DATABASES,
+                        "36e696b2-6795-4f53-9867-baaa4d50800e",
+                        ""),
+
+    /**
+     * A collection of database tables and views running in a database server.
+     */
+    DEPLOYED_DATABASE_SCHEMA("eab811ec-556a-45f1-9091-bc7ac8face0f",
+                             "DeployedDatabaseSchema",
+                             OpenMetadataWikiPages.MODEL_0224_DATABASES,
+                             "85fcc8e5-01ec-4898-aac7-e7ca97326b94",
+                             "A collection of database tables and views running in a database server."),
 
     /**
      * A tabular data source (typically a database table) that is an asset in its own right.
@@ -1974,29 +2119,41 @@ public enum OpenMetadataType
                                        "Link to the external data resource containing the surveyed resource's profile data."),
 
 
+    /**
+     * Link to more information.
+     */
     EXTERNAL_REFERENCE_LINK_RELATIONSHIP("7d818a67-ab45-481c-bc28-f6b1caf12f06",
                                          "ExternalReferenceLink",
                                          OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
                                          "906ea4d6-1825-40c8-b5cb-07ecca6b848e",
-                                         null),
+                                         "Link to more information."),
 
+    /**
+     * A link to an external reference source such as a web page, article or book.
+     */
     EXTERNAL_REFERENCE("af536f20-062b-48ef-9c31-1ddd05b04c56",
                        "ExternalReference",
                        OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
                        "cd59edf8-ef6d-4436-bfc5-e93403238df4",
-                       null),
+                       "A link to an external reference source such as a web page, article or book."),
 
+    /**
+     * Images, video or sound media.
+     */
     RELATED_MEDIA("747f8b86-fe7c-4c9b-ba75-979e093cc307",
                   "RelatedMedia",
                   OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
                   "4b4f379f-0d69-46ae-b5cd-0b6c08dffb21",
-                  null),
+                  "Images, video or sound media."),
 
+    /**
+     * Link to related media such as images, videos and audio.
+     */
     MEDIA_REFERENCE_RELATIONSHIP("1353400f-b0ab-4ab9-ab09-3045dd8a7140",
                                "MediaReference",
                                OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
                                "3e7b1513-f7df-4de2-ba32-0b1cc82e2946",
-                               null),
+                                 "Link to related media such as images, videos and audio."),
 
 
     /**
@@ -2116,91 +2273,6 @@ public enum OpenMetadataType
         this.description     = description;
     }
 
-
-    public static final String REFERENCE_TITLE_PROPERTY_NAME           = "referenceTitle";      /* from ExternalReference entity */
-    public static final String REFERENCE_ABSTRACT_PROPERTY_NAME        = "referenceAbstract";   /* from ExternalReference entity */
-    public static final String REFERENCE_VERSION_PROPERTY_NAME         = "referenceVersion";    /* from ExternalReference entity */
-    public static final String AUTHORS_PROPERTY_NAME                   = "authors";             /* from ExternalReference entity */
-    public static final String NUMBER_OF_PAGES_PROPERTY_NAME           = "numberOfPages";       /* from ExternalReference entity */
-    public static final String PAGE_RANGE_PROPERTY_NAME                = "pageRange";           /* from ExternalReference entity */
-    public static final String PUBLICATION_SERIES_PROPERTY_NAME        = "publicationSeries";   /* from ExternalReference entity */
-    public static final String PUBLICATION_SERIES_VOLUME_PROPERTY_NAME = "publicationSeriesVolume";   /* from ExternalReference entity */
-    public static final String EDITION_PROPERTY_NAME                   = "edition";             /* from ExternalReference entity */
-    public static final String URL_PROPERTY_NAME                       = "url";                 /* from ExternalReference entity */
-    public static final String PUBLISHER_PROPERTY_NAME                 = "publisher";           /* from ExternalReference entity */
-    public static final String FIRST_PUB_DATE_PROPERTY_NAME            = "firstPublicationDate";     /* from ExternalReference entity */
-    public static final String PUBLICATION_DATE_PROPERTY_NAME          = "publicationDate";     /* from ExternalReference entity */
-    public static final String PUBLICATION_CITY_PROPERTY_NAME          = "publicationCity";     /* from ExternalReference entity */
-    public static final String PUBLICATION_YEAR_PROPERTY_NAME          = "publicationYear";     /* from ExternalReference entity */
-    public static final String PUBLICATION_NUMBERS_PROPERTY_NAME       = "publicationNumbers";  /* from ExternalReference entity */
-    public static final String LICENSE_PROPERTY_NAME                   = "license";             /* from ExternalReference entity */
-    public static final String COPYRIGHT_PROPERTY_NAME                 = "copyright";           /* from ExternalReference entity */
-    public static final String ATTRIBUTION_PROPERTY_NAME               = "attribution";         /* from ExternalReference entity */
-
-    public static final String REFERENCE_ID_PROPERTY_NAME = "referenceId";         /* from ExternalReferenceLink relationship */
-    public static final String PAGES_PROPERTY_NAME        = "pages";               /* from ExternalReferenceLink relationship */
-    /* plus description property */
-
-    public static final String MEDIA_USAGE_PROPERTY_NAME          = "mediaUsage";           /* from RelatedMedia entity */
-    public static final String MEDIA_USAGE_OTHER_ID_PROPERTY_NAME = "mediaUsageOtherId";    /* from RelatedMedia entity */
-
-    public static final String MEDIA_USAGE_ENUM_TYPE_NAME = "MediaUsage";
-    public static final int    MEDIA_USAGE_ICON           = 0;
-    public static final int    MEDIA_USAGE_THUMBNAIL      = 1;
-    public static final int    MEDIA_USAGE_ILLUSTRATION   = 2;
-    public static final int    MEDIA_USAGE_USAGE_GUIDANCE = 3;
-    public static final int    MEDIA_USAGE_OTHER          = 99;
-
-
-    public static final String MEDIA_TYPE_PROPERTY_NAME          = "mediaType";            /* from RelatedMedia entity */
-    /* MediaType enum */
-    public static final String MEDIA_TYPE_OTHER_ID_PROPERTY_NAME = "mediaTypeOtherId";     /* from RelatedMedia entity */
-
-    public static final String MEDIA_TYPE_ENUM_TYPE_NAME = "MediaType";
-    public static final int    MEDIA_TYPE_IMAGE          = 0;
-    public static final int    MEDIA_TYPE_AUDIO          = 1;
-    public static final int    MEDIA_TYPE_DOCUMENT       = 2;
-    public static final int    MEDIA_TYPE_VIDEO          = 3;
-    public static final int    MEDIA_TYPE_OTHER          = 99;
-
-
-    public static final String DEFAULT_MEDIA_USAGE_PROPERTY_NAME          = "defaultMediaUsage";            /* from RelatedMedia entity */
-    /* MediaType enum */
-    public static final String DEFAULT_MEDIA_USAGE_OTHER_ID_PROPERTY_NAME = "defaultMediaUsageOtherId";     /* from RelatedMedia entity */
-
-    public static final String MEDIA_ID_PROPERTY_NAME          = "mediaId";              /* from MediaReference relationship */
-
-
-
-    /**
-     * 6403a704-aad6-41c2-8e08-b9525c006f85
-     */
-    public static final String PROPERTY_FACET_TYPE_GUID = "6403a704-aad6-41c2-8e08-b9525c006f85";
-
-    /**
-     * PropertyFacet - Referenceable
-     */
-    public static final String PROPERTY_FACET_TYPE_NAME = "PropertyFacet";
-
-    /**
-     * schemaVersion
-     */
-    public static final String SCHEMA_VERSION_PROPERTY_NAME = "schemaVersion";      /* from PropertyFacet entity */
-
-    /**
-     * properties
-     */
-    public static final String PROPERTIES_PROPERTY_NAME = "properties";         /* from PropertyFacet entity */
-
-    /**
-     * 58c87647-ada9-4c90-a3c3-a40ace46b1f7
-     */
-    public static final String REFERENCEABLE_TO_PROPERTY_FACET_TYPE_GUID = "58c87647-ada9-4c90-a3c3-a40ace46b1f7";
-
-    /**
-     * ReferenceableFacet - End1 = Referenceable; End 2 = PropertyFacet
-     */
-    public static final String REFERENCEABLE_TO_PROPERTY_FACET_TYPE_NAME = "ReferenceableFacet";
 
     /**
      * 3e09cb2b-5f15-4fd2-b004-fe0146ad8628
@@ -2351,46 +2423,6 @@ public enum OpenMetadataType
      * HostOperatingPlatform - End1 = Host; End2 = OperatingPlatform
      */
     public static final String HOST_OPERATING_PLATFORM_TYPE_NAME = "HostOperatingPlatform";
-
-    /**
-     * 2b8bfab4-8023-4611-9833-82a0dc95f187
-     */
-    public static final String SERVER_ENDPOINT_TYPE_GUID = "2b8bfab4-8023-4611-9833-82a0dc95f187";
-
-    /**
-     * ServerEndpoint - End 1 = ITInfrastructure; End 2 = Endpoint
-     */
-    public static final String SERVER_ENDPOINT_TYPE_NAME = "ServerEndpoint";
-
-    /**
-     * dbc20663-d705-4ff0-8424-80c262c6b8e7
-     */
-    public static final String ENDPOINT_TYPE_GUID = "dbc20663-d705-4ff0-8424-80c262c6b8e7";
-
-    /**
-     * Endpoint - inherits from Referenceable
-     */
-    public static final String ENDPOINT_TYPE_NAME = "Endpoint";
-
-    /**
-     * name
-     */
-    public static final String ENDPOINT_DISPLAY_NAME_PROPERTY_NAME = "name";                                 /* from Endpoint entity */
-
-    /**
-     * networkAddress
-     */
-    public static final String NETWORK_ADDRESS_PROPERTY_NAME = "networkAddress";                       /* from Endpoint entity */
-
-    /**
-     * protocol
-     */
-    public static final String PROTOCOL_PROPERTY_NAME = "protocol";                             /* from Endpoint entity */
-
-    /**
-     * encryptionMethod
-     */
-    public static final String ENCRYPTION_METHOD_PROPERTY_NAME = "encryptionMethod";                     /* from Endpoint entity */
 
 
     /**
@@ -2742,11 +2774,6 @@ public enum OpenMetadataType
      * dueTime
      */
     public static final String DUE_TIME_PROPERTY_NAME = "dueTime";                           /* from Area 1 */
-
-    /**
-     * lastReviewTime
-     */
-    public static final String LAST_REVIEW_TIME_PROPERTY_NAME = "lastReviewTime";           /* from Area 1 */
 
     /**
      * completionTime
@@ -3242,47 +3269,6 @@ public enum OpenMetadataType
 
 
     /**
-     * 0921c83f-b2db-4086-a52c-0d10e52ca078
-     */
-    public static final String DATABASE_TYPE_GUID = "0921c83f-b2db-4086-a52c-0d10e52ca078";  /* from Area 2 */
-
-    /**
-     * Database - inherits from DataStore
-     */
-    public static final String DATABASE_TYPE_NAME = "Database";
-
-    /**
-     * 6a28e242-4eca-4664-81cb-e2096d769568
-     */
-    public static final String RELATIONAL_DATABASE_TYPE_GUID = "6a28e242-4eca-4664-81cb-e2096d769568";  /* from Area 2 */
-
-    /**
-     * RelationalDatabase - inherits from Database
-     */
-    public static final String RELATIONAL_DATABASE_TYPE_NAME = "RelationalDatabase";
-
-    /**
-     * databaseVersion
-     */
-    public static final String DATABASE_VERSION_PROPERTY_NAME = "databaseVersion";       /* from Database entity */
-
-    /**
-     * version
-     */
-    public static final String DATABASE_VERSION_PROPERTY_NAME_DEP = "version";       /* from Database entity */
-
-    /**
-     * instance
-     */
-    public static final String DATABASE_INSTANCE_PROPERTY_NAME = "instance";      /* from Database entity */
-
-    /**
-     * importedFrom
-     */
-    public static final String DATABASE_IMPORTED_FROM_PROPERTY_NAME = "importedFrom";  /* from Database entity */
-
-
-    /**
      * 48ac9028-45dd-495d-b3e1-622685b54a01
      */
     public static final String FOLDER_HIERARCHY_TYPE_GUID = "48ac9028-45dd-495d-b3e1-622685b54a01";  /* from Area 2 */
@@ -3336,17 +3322,6 @@ public enum OpenMetadataType
      * quoteCharacter
      */
     public static final String QUOTE_CHARACTER_PROPERTY_NAME = "quoteCharacter";                       /* from CSVFile entity */
-
-
-    /**
-     * eab811ec-556a-45f1-9091-bc7ac8face0f
-     */
-    public static final String DEPLOYED_DATABASE_SCHEMA_TYPE_GUID = "eab811ec-556a-45f1-9091-bc7ac8face0f";  /* from Area 2 */
-
-    /**
-     * DeployedDatabaseSchema
-     */
-    public static final String DEPLOYED_DATABASE_SCHEMA_TYPE_NAME = "DeployedDatabaseSchema";
 
 
     /**
@@ -3425,26 +3400,6 @@ public enum OpenMetadataType
      */
     public static final String PROTOCOL_VERSION_PROPERTY_NAME = "protocolVersion";            /* from CohortMember */
 
-    /**
-     * 7dbb3e63-138f-49f1-97b4-66313871fc14
-     */
-    public static final String DEPLOYED_API_TYPE_GUID = "7dbb3e63-138f-49f1-97b4-66313871fc14";  /* from Area 2 */
-
-    /**
-     * DeployedAPI - inherits from Asset
-     */
-    public static final String DEPLOYED_API_TYPE_NAME = "DeployedAPI";
-
-    /**
-     * de5b9501-3ad4-4803-a8b2-e311c72a4336
-     */
-    public static final String API_ENDPOINT_TYPE_GUID = "de5b9501-3ad4-4803-a8b2-e311c72a4336";  /* from Area 2 */
-
-    /**
-     * APIEndpoint - End1 = DeployedAPI; End 2 = Endpoint
-     */
-    public static final String API_ENDPOINT_TYPE_NAME = "APIEndpoint";
-
 
     /**
      * bc91a28c-afb9-41a7-8eb2-fc8b5271fe9e
@@ -3507,30 +3462,6 @@ public enum OpenMetadataType
      */
     public static final String LAST_MODIFIER_PROPERTY_NAME = "lastModifier";                          /* from DeployedReport entity */
 
-    /**
-     * 486af62c-dcfd-4859-ab24-eab2e380ecfd
-     */
-    public static final String DEPLOYED_SOFTWARE_COMPONENT_TYPE_GUID = "486af62c-dcfd-4859-ab24-eab2e380ecfd";  /* from Area 2 */
-
-    /**
-     * DeployedSoftwareComponent - inherits from Process
-     */
-    public static final String DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME = "DeployedSoftwareComponent";
-
-    /**
-     * c9a183ab-67f4-46a4-8836-16fa041769b7
-     */
-    public static final String DEPLOYED_CONNECTOR_TYPE_GUID = "c9a183ab-67f4-46a4-8836-16fa041769b7";  /* from Area 2 */
-
-    /**
-     * DeployedConnector - inherits from Process??
-     */
-    public static final String DEPLOYED_CONNECTOR_TYPE_NAME = "DeployedConnector";
-
-    /**
-     * implementationLanguage
-     */
-    public static final String IMPLEMENTATION_LANGUAGE_PROPERTY_NAME = "implementationLanguage";   /* from Topic entity */
 
     /**
      * 70dbbda3-903f-49f7-9782-32b503c43e0e

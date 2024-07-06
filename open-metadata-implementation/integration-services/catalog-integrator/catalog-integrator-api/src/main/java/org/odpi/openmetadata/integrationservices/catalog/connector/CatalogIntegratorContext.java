@@ -16,17 +16,15 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.Infrast
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.LineageExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ValidValuesExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorAuditCode;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
@@ -202,7 +200,7 @@ public class CatalogIntegratorContext extends IntegrationContext
 
         final String methodName = "CatalogIntegratorContext";
 
-        SynchronizationDirection synchronizationDirection =   getSynchronizationDirection(permittedSynchronization);
+        PermittedSynchronization synchronizationDirection =   getSynchronizationDirection(permittedSynchronization);
 
         this.assetManagerClient       = assetManagerClient;
         this.eventClient              = eventClient;
@@ -340,33 +338,26 @@ public class CatalogIntegratorContext extends IntegrationContext
 
 
     /**
-     * Convert permitted synchronization from the configuration into the SynchronizationDirection enum.
+     * Convert permitted synchronization from the configuration into the PermittedSynchronization enum.
      * The default is BOTH_DIRECTIONS which effectively enforces no restriction.
      *
      * @param permittedSynchronization value from the configuration
      * @return synchronization direction enum
      */
-    private SynchronizationDirection getSynchronizationDirection(PermittedSynchronization permittedSynchronization)
+    private PermittedSynchronization getSynchronizationDirection(PermittedSynchronization permittedSynchronization)
     {
         if (permittedSynchronization != null)
         {
-            switch (permittedSynchronization)
+            return switch (permittedSynchronization)
             {
-                case TO_THIRD_PARTY:
-                    return SynchronizationDirection.TO_THIRD_PARTY;
-
-                case FROM_THIRD_PARTY:
-                    return SynchronizationDirection.FROM_THIRD_PARTY;
-
-                case BOTH_DIRECTIONS:
-                    return SynchronizationDirection.BOTH_DIRECTIONS;
-
-                case OTHER:
-                    return SynchronizationDirection.OTHER;
-            }
+                case TO_THIRD_PARTY -> PermittedSynchronization.TO_THIRD_PARTY;
+                case FROM_THIRD_PARTY -> PermittedSynchronization.FROM_THIRD_PARTY;
+                case BOTH_DIRECTIONS -> PermittedSynchronization.BOTH_DIRECTIONS;
+                case OTHER -> PermittedSynchronization.OTHER;
+            };
         }
 
-        return SynchronizationDirection.BOTH_DIRECTIONS;
+        return PermittedSynchronization.BOTH_DIRECTIONS;
     }
 
 
@@ -474,7 +465,7 @@ public class CatalogIntegratorContext extends IntegrationContext
         {
             for (MetadataCorrelationHeader metadataCorrelationHeader : retrievedElement.getCorrelationHeaders())
             {
-                if (externalSourceName.equals(metadataCorrelationHeader.getAssetManagerName()))
+                if (externalSourceName.equals(metadataCorrelationHeader.getExternalScopeName()))
                 {
                     return metadataCorrelationHeader;
                 }
@@ -505,12 +496,12 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
-        assetManagerClient.addExternalIdentifier(userId,
-                                                 externalSourceGUID,
-                                                 externalSourceName,
-                                                 openMetadataElementGUID,
-                                                 openMetadataElementTypeName,
-                                                 externalIdentifierProperties);
+        openMetadataStoreClient.addExternalIdentifier(userId,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      openMetadataElementGUID,
+                                                      openMetadataElementTypeName,
+                                                      externalIdentifierProperties);
     }
 
 
@@ -531,12 +522,12 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
     {
-        assetManagerClient.updateExternalIdentifier(userId,
-                                                    externalSourceGUID,
-                                                    externalSourceName,
-                                                    openMetadataElementGUID,
-                                                    openMetadataElementTypeName,
-                                                    externalIdentifierProperties);
+        openMetadataStoreClient.updateExternalIdentifier(userId,
+                                                         externalSourceGUID,
+                                                         externalSourceName,
+                                                         openMetadataElementGUID,
+                                                         openMetadataElementTypeName,
+                                                         externalIdentifierProperties);
     }
 
 
@@ -558,12 +549,12 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        assetManagerClient.removeExternalIdentifier(userId,
-                                                    externalSourceGUID,
-                                                    externalSourceName,
-                                                    openMetadataElementGUID,
-                                                    openMetadataElementTypeName,
-                                                    externalIdentifier);
+        openMetadataStoreClient.removeExternalIdentifier(userId,
+                                                         externalSourceGUID,
+                                                         externalSourceName,
+                                                         openMetadataElementGUID,
+                                                         openMetadataElementTypeName,
+                                                         externalIdentifier);
     }
 
 
@@ -585,36 +576,12 @@ public class CatalogIntegratorContext extends IntegrationContext
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        assetManagerClient.confirmSynchronization(userId,
-                                                  externalSourceGUID,
-                                                  externalSourceName,
-                                                  openMetadataGUID,
-                                                  openMetadataElementTypeName,
-                                                  externalIdentifier);
-    }
-
-
-    /**
-     * Return the list of headers for open metadata elements that are associated with a particular
-     * external identifier.
-     *
-     * @param externalIdentifier unique identifier of this element in the external asset manager
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of element headers
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    List<ElementHeader> getElementsForExternalIdentifier(String externalIdentifier,
-                                                         int    startFrom,
-                                                         int    pageSize) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
-    {
-        return assetManagerClient.getElementsForExternalIdentifier(userId, externalSourceGUID, externalSourceName, externalIdentifier, startFrom, pageSize);
+        openMetadataStoreClient.confirmSynchronization(userId,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
+                                                       openMetadataGUID,
+                                                       openMetadataElementTypeName,
+                                                       externalIdentifier);
     }
 
 

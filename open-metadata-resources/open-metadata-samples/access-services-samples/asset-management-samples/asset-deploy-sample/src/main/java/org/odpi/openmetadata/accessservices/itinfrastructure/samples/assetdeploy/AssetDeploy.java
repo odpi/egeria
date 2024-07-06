@@ -102,7 +102,7 @@ public class AssetDeploy
             SoftwareServerPlatformProperties platformProperties = new SoftwareServerPlatformProperties();
 
             platformProperties.setQualifiedName(platformType + ":" + platformName + ":" + platformNetworkAddress);
-            platformProperties.setDisplayName(platformType + " " + platformName + " at " + platformNetworkAddress);
+            platformProperties.setName(platformType + " " + platformName + " at " + platformNetworkAddress);
 
             String platformGUID = platformManagerClient.createSoftwareServerPlatform(clientUserId, null, null, false, platformProperties);
 
@@ -175,7 +175,7 @@ public class AssetDeploy
             SoftwareServerProperties serverProperties = new SoftwareServerProperties();
 
             serverProperties.setQualifiedName(softwareServerType + ":" + softwareServerName);
-            serverProperties.setDisplayName(softwareServerType + " " + softwareServerName);
+            serverProperties.setName(softwareServerType + " " + softwareServerName);
 
             String serverGUID = serverManagerClient.createSoftwareServer(clientUserId, null, null, false, serverProperties);
 
@@ -189,7 +189,7 @@ public class AssetDeploy
                 {
                     for (SoftwareServerPlatformElement platform : platforms)
                     {
-                        System.out.println("     Attaching to platform " + platform.getProperties().getDisplayName());
+                        System.out.println("     Attaching to platform " + platform.getProperties().getName());
 
                         platformManagerClient.deployITAsset(clientUserId, null, null, false, serverGUID, platform.getElementHeader().getGUID(), null);
                     }

@@ -438,9 +438,7 @@ public class OpenMetadataTypesArchive4_3
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.DATA_STORE.typeName;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_STORE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -451,13 +449,9 @@ public class OpenMetadataTypesArchive4_3
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
-        final String attribute1Description     = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                           OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description,
+                                                           OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -481,9 +475,7 @@ public class OpenMetadataTypesArchive4_3
         /*
          * Create the Patch
          */
-        final String typeName = "DeployedAPI";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DEPLOYED_API.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -494,13 +486,9 @@ public class OpenMetadataTypesArchive4_3
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
-        final String attribute1Description     = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                           OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description,
+                                                           OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -524,9 +512,7 @@ public class OpenMetadataTypesArchive4_3
         /*
          * Create the Patch
          */
-        final String typeName = "DeployedSoftwareComponent";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -537,13 +523,9 @@ public class OpenMetadataTypesArchive4_3
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
-        final String attribute1Description     = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                           OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description,
+                                                           OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -581,13 +563,9 @@ public class OpenMetadataTypesArchive4_3
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
-        final String attribute1Description     = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                           OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description,
+                                                           OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -607,22 +585,14 @@ public class OpenMetadataTypesArchive4_3
     }
 
 
-
     private EntityDef addRelationalDatabaseEntity()
     {
-        final String guid = "6a28e242-4eca-4664-81cb-e2096d769568";
-
-        final String name            = "RelationalDatabase";
-        final String description     = "A database that follows the relational schema (tables and columns) and can be accessed through Java Database Connectivity (JDBC).";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "Database";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.RELATIONAL_DATABASE.typeGUID,
+                                                 OpenMetadataType.RELATIONAL_DATABASE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATABASE.typeName),
+                                                 OpenMetadataType.RELATIONAL_DATABASE.description,
+                                                 OpenMetadataType.RELATIONAL_DATABASE.descriptionGUID,
+                                                 OpenMetadataType.RELATIONAL_DATABASE.wikiURL);
     }
 
 

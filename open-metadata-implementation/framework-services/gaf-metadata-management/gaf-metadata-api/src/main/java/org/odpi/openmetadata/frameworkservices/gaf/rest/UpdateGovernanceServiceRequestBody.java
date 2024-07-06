@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateGovernanceServiceRequestBody extends NewGovernanceServiceRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private Map<String, String> additionalProperties = null;
     private Map<String, Object> extendedProperties   = null;
 
@@ -132,13 +130,8 @@ public class UpdateGovernanceServiceRequestBody extends NewGovernanceServiceRequ
         return "UpdateGovernanceServiceRequestBody{" +
                 "additionalProperties=" + additionalProperties +
                 ", extendedProperties=" + extendedProperties +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", connection=" + getConnection() +
-                '}';
+                "} " + super.toString();
     }
-
 
     /**
      * Equals method that returns true if containing properties are the same.

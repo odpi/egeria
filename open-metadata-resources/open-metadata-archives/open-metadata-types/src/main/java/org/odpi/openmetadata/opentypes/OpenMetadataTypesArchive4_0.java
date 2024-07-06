@@ -712,38 +712,22 @@ public class OpenMetadataTypesArchive4_0
 
     private EntityDef addIntegrationGroupEntity()
     {
-        final String guid            = OpenMetadataType.INTEGRATION_GROUP.typeGUID;
-        final String name            = OpenMetadataType.INTEGRATION_GROUP.typeName;
-        final String description     = OpenMetadataType.INTEGRATION_GROUP.description;
-        final String descriptionGUID = OpenMetadataType.INTEGRATION_GROUP.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.INTEGRATION_GROUP.wikiURL;
-
-        final String superTypeName = "SoftwareServerCapability";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.INTEGRATION_GROUP.typeGUID,
+                                                 OpenMetadataType.INTEGRATION_GROUP.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName),
+                                                 OpenMetadataType.INTEGRATION_GROUP.description,
+                                                 OpenMetadataType.INTEGRATION_GROUP.descriptionGUID,
+                                                 OpenMetadataType.INTEGRATION_GROUP.wikiURL);
     }
 
     private EntityDef addIntegrationConnectorEntity()
     {
-        final String guid            = OpenMetadataType.INTEGRATION_CONNECTOR.typeGUID;
-        final String name            = OpenMetadataType.INTEGRATION_CONNECTOR.typeName;
-        final String description     = OpenMetadataType.INTEGRATION_CONNECTOR.description;
-        final String descriptionGUID = OpenMetadataType.INTEGRATION_CONNECTOR.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.INTEGRATION_CONNECTOR.wikiURL;
-
-        final String superTypeName = "DeployedConnector";
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID,
-                                                                descriptionWiki);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.INTEGRATION_CONNECTOR.typeGUID,
+                                                                OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.DEPLOYED_CONNECTOR.typeName),
+                                                                OpenMetadataType.INTEGRATION_CONNECTOR.description,
+                                                                OpenMetadataType.INTEGRATION_CONNECTOR.descriptionGUID,
+                                                                OpenMetadataType.INTEGRATION_CONNECTOR.wikiURL);
 
         /*
          * Build the attributes
@@ -772,11 +756,9 @@ public class OpenMetadataTypesArchive4_0
         final String description     = "Details of the metadata changes made by the execution of the refresh() method by an integration connector.";
         final String descriptionGUID = null;
 
-        final String superTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
-
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName),
                                                                 description,
                                                                 descriptionGUID);
 

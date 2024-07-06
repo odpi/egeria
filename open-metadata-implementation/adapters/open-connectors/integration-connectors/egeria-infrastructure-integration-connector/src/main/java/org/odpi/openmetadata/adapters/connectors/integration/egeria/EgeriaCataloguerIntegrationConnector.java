@@ -225,7 +225,7 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
                     if (element.getProperties().getDeployedImplementationType().equals(DeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType()))
                     {
                         platformDetails.platformQualifiedName = element.getProperties().getQualifiedName();
-                        platformDetails.platformDisplayName = element.getProperties().getDisplayName();
+                        platformDetails.platformDisplayName = element.getProperties().getName();
 
                         List<EndpointElement> endpoints = super.getContext().getEndpointsForInfrastructure(platformDetails.platformGUID, 0, 0);
 
@@ -298,9 +298,9 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
                                 {
                                     for (DeploymentElement deploymentElement : linkedServers)
                                     {
-                                        if (! serverList.contains(deploymentElement.getAssetElement().getProperties().getDisplayName()))
+                                        if (! serverList.contains(deploymentElement.getAssetElement().getProperties().getName()))
                                         {
-                                            String serverGUID = serverMap.get(deploymentElement.getAssetElement().getProperties().getDisplayName());
+                                            String serverGUID = serverMap.get(deploymentElement.getAssetElement().getProperties().getName());
 
                                             if (serverGUID != null)
                                             {
@@ -410,7 +410,7 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
                     {
                         String qualifiedName = this.getServerQualifiedName(serverConfig.getLocalServerId(), serverConfig.getLocalServerName());
 
-                        if ((serverConfig.getLocalServerName().equals(softwareServerElement.getProperties().getDisplayName())) &&
+                        if ((serverConfig.getLocalServerName().equals(softwareServerElement.getProperties().getName())) &&
                             (qualifiedName.equals(softwareServerElement.getProperties().getQualifiedName())))
                         {
                             /*
@@ -748,7 +748,7 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
         ProcessProperties processProperties = new ProcessProperties();
 
         processProperties.setQualifiedName(serverName + ":" + serviceName + ":" + connectorName);
-        processProperties.setDisplayName(connectorName);
+        processProperties.setName(connectorName);
         processProperties.setDescription(connectorDescription);
         processProperties.setImplementationLanguage("Java");
 
@@ -773,7 +773,7 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
 
             assetProperties.setTypeName(resourceAssetType);
             assetProperties.setQualifiedName(resourceAssetType + ":" + connectorConnection.getEndpoint().getAddress());
-            assetProperties.setDisplayName(connectorConnection.getEndpoint().getAddress());
+            assetProperties.setName(connectorConnection.getEndpoint().getAddress());
 
             String dataAssetGUID = super.getContext().createDataAsset(assetProperties);
 
@@ -831,7 +831,7 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
         SoftwareServerProperties softwareServerProperties = new SoftwareServerProperties();
 
         softwareServerProperties.setQualifiedName(this.getServerQualifiedName(serverConfig.getLocalServerId(), serverConfig.getLocalServerName()));
-        softwareServerProperties.setDisplayName(serverConfig.getLocalServerName());
+        softwareServerProperties.setName(serverConfig.getLocalServerName());
         softwareServerProperties.setDescription(serverConfig.getLocalServerDescription());
         softwareServerProperties.setSoftwareServerSource("Egeria");
         softwareServerProperties.setSoftwareServerVersion(serverConfig.getVersionId());

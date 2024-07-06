@@ -375,7 +375,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                 }
                 else
                 {
-                    String databaseGUID = openMetadataAccess.createMetadataElementFromTemplate(OpenMetadataType.RELATIONAL_DATABASE_TYPE_NAME,
+                    String databaseGUID = openMetadataAccess.createMetadataElementFromTemplate(OpenMetadataType.RELATIONAL_DATABASE.typeName,
                                                                                                databaseServerGUID,
                                                                                                false,
                                                                                                null,
@@ -472,10 +472,10 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                          databaseName + " endpoint");
 
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                                         OpenMetadataProperty.NETWORK_ADDRESS.name,
                                                                          "jdbc:postgresql://" + hostIdentifier + ":" + portNumber + "/" + databaseName);
 
-                    openMetadataAccess.createMetadataElementInStore(OpenMetadataType.ENDPOINT_TYPE_NAME,
+                    openMetadataAccess.createMetadataElementInStore(OpenMetadataType.ENDPOINT.typeName,
                                                                     ElementStatus.ACTIVE,
                                                                     null,
                                                                     databaseGUID,

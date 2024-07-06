@@ -252,6 +252,9 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                 case DEPRECATED:
                     return ElementStatus.DEPRECATED;
 
+                case DELETED:
+                    return ElementStatus.DELETED;
+
                 case OTHER:
                     return ElementStatus.OTHER;
             }

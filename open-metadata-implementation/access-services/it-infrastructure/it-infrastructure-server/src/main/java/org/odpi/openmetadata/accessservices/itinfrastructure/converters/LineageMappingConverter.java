@@ -55,10 +55,8 @@ public class LineageMappingConverter<B> extends ITInfrastructureOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof LineageMappingElement)
+            if (returnBean instanceof LineageMappingElement bean)
             {
-                LineageMappingElement bean = (LineageMappingElement) returnBean;
-
                 if (relationship != null)
                 {
                     bean.setLineageMappingHeader(super.getMetadataElementHeader(beanClass, relationship, null, methodName));

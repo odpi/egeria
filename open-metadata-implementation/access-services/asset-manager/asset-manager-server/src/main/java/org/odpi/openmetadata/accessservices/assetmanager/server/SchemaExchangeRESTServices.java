@@ -1171,8 +1171,8 @@ public class SchemaExchangeRESTServices
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
                 handler.setSchemaElementAsCalculatedValue(userId,
-                                                          requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                          requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                          requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                          requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                           assetManagerIsHome,
                                                           schemaElementGUID,
                                                           requestBody.getFormula(),
@@ -1235,8 +1235,8 @@ public class SchemaExchangeRESTServices
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
                 handler.clearSchemaElementAsCalculatedValue(userId,
-                                                            requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                            requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                            requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                            requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                             schemaElementGUID,
                                                             forLineage,
                                                             forDuplicateProcessing,
@@ -1341,9 +1341,9 @@ public class SchemaExchangeRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearColumnAsPrimaryKey(String                        serverName,
-                                                String                    userId,
-                                                String                        schemaAttributeGUID,
+    public VoidResponse clearColumnAsPrimaryKey(String            serverName,
+                                                String            userId,
+                                                String            schemaAttributeGUID,
                                                 boolean           forLineage,
                                                 boolean           forDuplicateProcessing,
                                                 UpdateRequestBody requestBody)
@@ -1364,8 +1364,8 @@ public class SchemaExchangeRESTServices
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
                 handler.clearColumnAsPrimaryKey(userId,
-                                                requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
-                                                requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                 schemaAttributeGUID,
                                                 forLineage,
                                                 forDuplicateProcessing,

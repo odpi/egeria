@@ -142,7 +142,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
 
         primitivePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
-        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+        primitivePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
 
         condition.setProperty(OpenMetadataProperty.QUALIFIED_NAME.name);
         condition.setOperator(PropertyComparisonOperator.EQ);

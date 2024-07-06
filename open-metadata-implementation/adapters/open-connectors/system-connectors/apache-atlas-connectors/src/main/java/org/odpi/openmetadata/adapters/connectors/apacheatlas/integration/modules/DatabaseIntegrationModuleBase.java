@@ -8,10 +8,10 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAs
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaAttributeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationAuditCode;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationErrorCode;
@@ -26,7 +26,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 
 import java.util.List;
@@ -389,7 +388,7 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                                                                                         atlasEntity.getUpdatedBy(),
                                                                                                         atlasEntity.getUpdateTime(),
                                                                                                         atlasEntity.getVersion(),
-                                                                                                        SynchronizationDirection.FROM_THIRD_PARTY);
+                                                                                                        PermittedSynchronization.FROM_THIRD_PARTY);
 
                 DataAssetProperties dataAssetProperties = this.getEgeriaDatabaseProperties(atlasEntity, egeriaDatabaseTypeName);
 
@@ -590,7 +589,7 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                                                                                            atlasEntity.getUpdatedBy(),
                                                                                                            atlasEntity.getUpdateTime(),
                                                                                                            atlasEntity.getVersion(),
-                                                                                                           SynchronizationDirection.FROM_THIRD_PARTY);
+                                                                                                           PermittedSynchronization.FROM_THIRD_PARTY);
                     SchemaAttributeProperties schemaAttributeProperties = getEgeriaDatabaseTableProperties(atlasEntity,
                                                                                                            egeriaDatabaseTableTypeName,
                                                                                                            egeriaDatabaseTableTypeTypeName);
@@ -859,7 +858,7 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                                                                                        atlasEntity.getUpdatedBy(),
                                                                                                        atlasEntity.getUpdateTime(),
                                                                                                        atlasEntity.getVersion(),
-                                                                                                       SynchronizationDirection.FROM_THIRD_PARTY);
+                                                                                                       PermittedSynchronization.FROM_THIRD_PARTY);
 
                 SchemaAttributeProperties schemaAttributeProperties = getEgeriaDatabaseColumnProperties(atlasEntity,
                                                                                                         egeriaDatabaseColumnTypeName,

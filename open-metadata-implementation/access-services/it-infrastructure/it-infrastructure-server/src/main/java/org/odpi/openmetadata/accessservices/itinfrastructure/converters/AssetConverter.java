@@ -57,9 +57,8 @@ public class AssetConverter<B> extends ITInfrastructureOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof AssetElement)
+            if (returnBean instanceof AssetElement bean)
             {
-                AssetElement bean = (AssetElement) returnBean;
                 AssetProperties assetProperties = new AssetProperties();
 
                 if (entity != null)
@@ -74,7 +73,7 @@ public class AssetConverter<B> extends ITInfrastructureOMASConverter<B>
                     assetProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     assetProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     assetProperties.setName(this.removeName(instanceProperties));
-                    assetProperties.setDisplayName(assetProperties.getName());
+                    assetProperties.setDeployedImplementationType(assetProperties.getDeployedImplementationType());
                     assetProperties.setDescription(this.removeDescription(instanceProperties));
 
                     /*

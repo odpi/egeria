@@ -158,6 +158,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param technicalName the stored name property for the process
      * @param versionIdentifier the stored version identifier property for the process
      * @param technicalDescription the stored description property associated with the process
+     * @param deployedImplementationType technology type
      * @param formula the formula that characterize the processing behavior of the process
      * @param formulaType the language of the formula
      * @param implementationLanguage the implementation language used to create the process
@@ -183,6 +184,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                 String              technicalName,
                                 String              versionIdentifier,
                                 String              technicalDescription,
+                                String              deployedImplementationType,
                                 String              formula,
                                 String              formulaType,
                                 String              implementationLanguage,
@@ -239,7 +241,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                 extendedProperties = new HashMap<>();
             }
 
-            extendedProperties.put(OpenMetadataType.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, implementationLanguage);
+            extendedProperties.put(OpenMetadataProperty.IMPLEMENTATION_LANGUAGE.name, implementationLanguage);
         }
 
         return processHandler.createAssetInRepository(userId,
@@ -249,6 +251,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                       technicalName,
                                                       versionIdentifier,
                                                       technicalDescription,
+                                                      deployedImplementationType,
                                                       additionalProperties,
                                                       typeName,
                                                       extendedProperties,
@@ -315,6 +318,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                    description,
                                                    null,
                                                    null,
+                                                   null,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    effectiveTime,
@@ -335,6 +339,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param technicalName the stored name property for the process
      * @param versionIdentifier version identifier for the process
      * @param technicalDescription the stored description property associated with the process
+     * @param deployedImplementationType technology type
      * @param formula the formula that characterize the processing behavior of the process
      * @param implementationLanguage the implementation language used to create the process
      * @param additionalProperties any arbitrary properties not part of the type system
@@ -361,6 +366,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                               String              technicalName,
                               String              versionIdentifier,
                               String              technicalDescription,
+                              String              deployedImplementationType,
                               String              formula,
                               String              implementationLanguage,
                               Map<String, String> additionalProperties,
@@ -407,7 +413,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                 extendedProperties = new HashMap<>();
             }
 
-            extendedProperties.put(OpenMetadataType.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, implementationLanguage);
+            extendedProperties.put(OpenMetadataProperty.IMPLEMENTATION_LANGUAGE.name, implementationLanguage);
         }
 
         processHandler.updateAsset(userId,
@@ -419,6 +425,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                    technicalName,
                                    versionIdentifier,
                                    technicalDescription,
+                                   deployedImplementationType,
                                    additionalProperties,
                                    typeGUID,
                                    typeName,

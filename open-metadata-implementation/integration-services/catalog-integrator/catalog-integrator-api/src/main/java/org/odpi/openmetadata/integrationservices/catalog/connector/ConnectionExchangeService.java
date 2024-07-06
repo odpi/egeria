@@ -13,7 +13,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
 import java.util.Date;
@@ -30,7 +31,7 @@ public class ConnectionExchangeService
     private final String                   externalSourceGUID;
     private final String                   externalSourceName;
     private final String                   connectorName;
-    private final SynchronizationDirection synchronizationDirection;
+    private final PermittedSynchronization permittedSynchronization;
     private final AuditLog                 auditLog;
 
     private boolean       forLineage             = false;
@@ -40,7 +41,7 @@ public class ConnectionExchangeService
      * Create a new client to exchange connection content with open metadata.
      *
      * @param connectionExchangeClient client for exchange requests
-     * @param synchronizationDirection direction(s) that metadata can flow
+     * @param permittedSynchronization direction(s) that metadata can flow
      * @param userId integration daemon's userId
      * @param externalSourceGUID unique identifier of the software server capability for the external source
      * @param externalSourceName unique name of the software server capability for the external source
@@ -48,7 +49,7 @@ public class ConnectionExchangeService
      * @param auditLog logging destination
      */
     ConnectionExchangeService(ConnectionExchangeClient connectionExchangeClient,
-                              SynchronizationDirection synchronizationDirection,
+                              PermittedSynchronization permittedSynchronization,
                               String                   userId,
                               String                   externalSourceGUID,
                               String                   externalSourceName,
@@ -56,7 +57,7 @@ public class ConnectionExchangeService
                               AuditLog                 auditLog)
     {
         this.connectionExchangeClient = connectionExchangeClient;
-        this.synchronizationDirection = synchronizationDirection;
+        this.permittedSynchronization = permittedSynchronization;
         this.userId                   = userId;
         this.externalSourceGUID       = externalSourceGUID;
         this.externalSourceName       = externalSourceName;
@@ -112,7 +113,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "createConnection";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return connectionExchangeClient.createConnection(userId,
                                                              externalSourceGUID,
@@ -124,7 +125,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -158,7 +159,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "createConnectionFromTemplate";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return connectionExchangeClient.createConnectionFromTemplate(userId,
                                                                          externalSourceGUID,
@@ -171,7 +172,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -204,7 +205,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "updateConnection";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             connectionExchangeClient.updateConnection(userId,
                                                       externalSourceGUID,
@@ -220,7 +221,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -255,7 +256,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "setupConnectorType";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             connectionExchangeClient.setupConnectorType(userId,
                                                         externalSourceGUID,
@@ -272,7 +273,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -301,7 +302,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "clearConnectorType";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             connectionExchangeClient.clearConnectorType(userId,
                                                         externalSourceGUID,
@@ -315,7 +316,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -350,7 +351,7 @@ public class ConnectionExchangeService
     {
         final String methodName  = "setupEndpoint";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             connectionExchangeClient.setupEndpoint(userId,
                                                    externalSourceGUID,
@@ -367,7 +368,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -396,7 +397,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "clearEndpoint";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             connectionExchangeClient.clearEndpoint(userId,
                                                    externalSourceGUID,
@@ -410,7 +411,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -445,7 +446,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "setupEmbeddedConnection";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             connectionExchangeClient.setupEmbeddedConnection(userId,
                                                              externalSourceGUID,
@@ -461,7 +462,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -490,7 +491,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "clearEmbeddedConnection";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             connectionExchangeClient.clearEmbeddedConnection(userId,
                                                              externalSourceGUID,
@@ -504,7 +505,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -537,7 +538,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "setupAssetConnection";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             connectionExchangeClient.setupAssetConnection(userId,
                                                           externalSourceGUID,
@@ -553,7 +554,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -582,7 +583,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "clearAssetConnection";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             connectionExchangeClient.clearAssetConnection(userId,
                                                           externalSourceGUID,
@@ -596,7 +597,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -626,7 +627,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "removeConnection";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             connectionExchangeClient.removeConnection(userId,
                                                       externalSourceGUID,
@@ -640,7 +641,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -796,7 +797,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "createEndpoint";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return connectionExchangeClient.createEndpoint(userId,
                                                            externalSourceGUID,
@@ -808,7 +809,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -842,7 +843,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "createEndpointFromTemplate";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return connectionExchangeClient.createEndpointFromTemplate(userId,
                                                                        externalSourceGUID,
@@ -855,7 +856,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -888,7 +889,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "updateEndpoint";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             connectionExchangeClient.updateEndpoint(userId,
                                                     externalSourceGUID,
@@ -904,7 +905,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -934,7 +935,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "removeEndpoint";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             connectionExchangeClient.removeEndpoint(userId,
                                                     externalSourceGUID,
@@ -948,7 +949,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1104,7 +1105,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "createConnectorType";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return connectionExchangeClient.createConnectorType(userId,
                                                                 externalSourceGUID,
@@ -1116,7 +1117,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1150,7 +1151,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "createConnectorTypeFromTemplate";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return connectionExchangeClient.createConnectorTypeFromTemplate(userId,
                                                                             externalSourceGUID,
@@ -1163,7 +1164,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1196,7 +1197,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "updateConnectorType";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             connectionExchangeClient.updateConnectorType(userId,
                                                          externalSourceGUID,
@@ -1212,7 +1213,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1242,7 +1243,7 @@ public class ConnectionExchangeService
     {
         final String methodName = "removeConnectorType";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             connectionExchangeClient.removeConnectorType(userId,
                                                          externalSourceGUID,
@@ -1256,7 +1257,7 @@ public class ConnectionExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
