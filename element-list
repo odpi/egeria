@@ -304,7 +304,6 @@ org.odpi.openmetadata.accessservices.stewardshipaction.server
 org.odpi.openmetadata.accessservices.stewardshipaction.server.spring
 org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile
 org.odpi.openmetadata.adapters.adminservices.configurationstore.file
-org.odpi.openmetadata.adapters.connectors.apacheatlas.control
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules
@@ -347,7 +346,6 @@ org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship
 org.odpi.openmetadata.adapters.connectors.governanceactions.verification
 org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles
-org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception
 org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter
@@ -446,7 +444,6 @@ org.odpi.openmetadata.archiveutilities.designmodels.base.properties
 org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossarymodel
 org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossarymodel.properties
 org.odpi.openmetadata.archiveutilities.openconnectors
-org.odpi.openmetadata.archiveutilities.openconnectors.control
 org.odpi.openmetadata.archiveutilities.simplecatalogs
 org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent
 org.odpi.openmetadata.commonservices.ffdc
@@ -549,6 +546,7 @@ org.odpi.openmetadata.frameworks.integration.contextmanager
 org.odpi.openmetadata.frameworks.integration.controls
 org.odpi.openmetadata.frameworks.integration.ffdc
 org.odpi.openmetadata.frameworks.integration.filelistener
+org.odpi.openmetadata.frameworks.integration.iterator
 org.odpi.openmetadata.frameworks.integration.properties
 org.odpi.openmetadata.frameworks.integration.reports
 org.odpi.openmetadata.frameworks.openmetadata.enums

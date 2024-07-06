@@ -128,12 +128,15 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>protected final <a href="../../governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#openMetadataStoreClient" class="member-name-link">openMetadataStoreClient</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="../contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></code></div>
 <div class="col-second even-row-color"><code><a href="#permittedSynchronization" class="member-name-link">permittedSynchronization</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#userId" class="member-name-link">userId</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="../../governanceaction/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyHelper</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#userId" class="member-name-link">userId</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -145,14 +148,14 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)" class="member-name-link">IntegrationContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)" class="member-name-link">IntegrationContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a>&nbsp;openIntegrationClient,
  <a href="../../governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataStoreClient,
  boolean&nbsp;generateIntegrationReport,
- <a href="../contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+ <a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;permittedSynchronization,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
@@ -198,56 +201,66 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the anchorGUID from the Anchors classification.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">CatalogTarget</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalogTarget(java.lang.String)" class="member-name-link">getCatalogTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnchorGUID(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement)" class="member-name-link">getAnchorGUID</a><wbr>(<a href="../../governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&nbsp;openMetadataElement)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the anchorGUID from the Anchors classification.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">CatalogTarget</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalogTarget(java.lang.String)" class="member-name-link">getCatalogTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve a specific catalog target associated with an integration connector.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">CatalogTarget</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalogTargets(int,int)" class="member-name-link">getCatalogTargets</a><wbr>(int&nbsp;startingFrom,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">CatalogTarget</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalogTargets(int,int)" class="member-name-link">getCatalogTargets</a><wbr>(int&nbsp;startingFrom,
  int&nbsp;maximumResults)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the identifiers of the metadata elements identified as catalog targets with an integration connector.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">CatalogTarget</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalogTargets(java.lang.String,int,int)" class="member-name-link">getCatalogTargets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">CatalogTarget</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalogTargets(java.lang.String,int,int)" class="member-name-link">getCatalogTargets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
  int&nbsp;startingFrom,
  int&nbsp;maximumResults)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the identifiers of the metadata elements identified as catalog targets with another integration connector.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ConnectedAssetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ConnectedAssetContext</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectedAssetContext()" class="member-name-link">getConnectedAssetContext</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ConnectedAssetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">ConnectedAssetContext</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectedAssetContext()" class="member-name-link">getConnectedAssetContext</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the connected asset context that support an integration connector working with assets and their connectors.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalSourceIsHome()" class="member-name-link">getExternalSourceIsHome</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalSourceIsHome()" class="member-name-link">getExternalSourceIsHome</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the flag indicating whether the external source name is to be used as the new element's
  metadata collection, or they belong to the local cohort.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../governanceaction/fileclassifier/FileClassifier.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.fileclassifier">FileClassifier</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileClassifier()" class="member-name-link">getFileClassifier</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../governanceaction/fileclassifier/FileClassifier.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.fileclassifier">FileClassifier</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileClassifier()" class="member-name-link">getFileClassifier</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the file classifier that uses reference data to describe a file.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="IntegrationGovernanceContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationGovernanceContext</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationGovernanceContext()" class="member-name-link">getIntegrationGovernanceContext</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="IntegrationGovernanceContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationGovernanceContext</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntegrationGovernanceContext()" class="member-name-link">getIntegrationGovernanceContext</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the integration governance context that provides access to various Governance Action Framework (GAF) function.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMaxPageSize()" class="member-name-link">getMaxPageSize</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMaxPageSize()" class="member-name-link">getMaxPageSize</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the server configuration for the maximum number of elements that can be returned on a request.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataSourceGUID()" class="member-name-link">getMetadataSourceGUID</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the guid  of the software capability that represents an external source of metadata.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataSourceQualifiedName()" class="member-name-link">getMetadataSourceQualifiedName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the qualified name of the software capability that represents an external source of metadata.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPermittedSynchronization()" class="member-name-link">getPermittedSynchronization</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the permitted synchronization direction.</div>
@@ -403,6 +416,12 @@ loadScripts(document, 'script');</script>
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="propertyHelper">
+<h3>propertyHelper</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../governanceaction/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyHelper</a></span>&nbsp;<span class="element-name">propertyHelper</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="openIntegrationClient">
 <h3>openIntegrationClient</h3>
 <div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a></span>&nbsp;<span class="element-name">openIntegrationClient</span></div>
@@ -435,7 +454,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="permittedSynchronization">
 <h3>permittedSynchronization</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a></span>&nbsp;<span class="element-name">permittedSynchronization</span></div>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></span>&nbsp;<span class="element-name">permittedSynchronization</span></div>
 </section>
 </li>
 <li>
@@ -483,7 +502,7 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,boolean,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient,org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)">
 <h3>IntegrationContext</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">IntegrationContext</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
@@ -492,7 +511,7 @@ loadScripts(document, 'script');</script>
  <a href="../client/OpenIntegrationClient.html" title="class in org.odpi.openmetadata.frameworks.integration.client">OpenIntegrationClient</a>&nbsp;openIntegrationClient,
  <a href="../../governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataStoreClient,
  boolean&nbsp;generateIntegrationReport,
- <a href="../contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+ <a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;permittedSynchronization,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
@@ -702,6 +721,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getMetadataSourceGUID()">
+<h3>getMetadataSourceGUID</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getMetadataSourceGUID</span>()</div>
+<div class="block">Return the guid  of the software capability that represents an external source of metadata.
+ Used to control external provenance and as a parent for some asset cataloguing.
+ If null the provenance is LOCAL_COHORT.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string name</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="setMetadataSourceQualifiedName(java.lang.String)">
 <h3>setMetadataSourceQualifiedName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMetadataSourceQualifiedName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</span>
@@ -770,7 +802,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getPermittedSynchronization()">
 <h3>getPermittedSynchronization</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a></span>&nbsp;<span class="element-name">getPermittedSynchronization</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></span>&nbsp;<span class="element-name">getPermittedSynchronization</span>()</div>
 <div class="block">Return the permitted synchronization direction.  This setting may affect which method in the context are available to the integration
  connector.</div>
 <dl class="notes">
@@ -944,6 +976,19 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>elementHeader</code> - element header where the classifications reside</dd>
+<dt>Returns:</dt>
+<dd>anchorGUID or null</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAnchorGUID(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement)">
+<h3>getAnchorGUID</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAnchorGUID</span><wbr><span class="parameters">(<a href="../../governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&nbsp;openMetadataElement)</span></div>
+<div class="block">Retrieve the anchorGUID from the Anchors classification.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>openMetadataElement</code> - element header where the classifications reside</dd>
 <dt>Returns:</dt>
 <dd>anchorGUID or null</dd>
 </dl>

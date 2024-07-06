@@ -106,33 +106,41 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#CATALOG_DESCRIPTION" class="member-name-link">CATALOG_DESCRIPTION</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CATALOG_NAME" class="member-name-link">CATALOG_NAME</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The description of the catalog being described.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#CATALOG_NAME" class="member-name-link">CATALOG_NAME</a></code></div>
-<div class="col-last odd-row-color">
 <div class="block">The name of the catalog being described.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CONNECTION_USER_ID" class="member-name-link">CONNECTION_USER_ID</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">The userId to store in the userId attribute of the connection.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#HOST_URL" class="member-name-link">HOST_URL</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#DATA_SOURCE_FORMAT" class="member-name-link">DATA_SOURCE_FORMAT</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The host IP address or domain name.</div>
+<div class="block">The format of the data source: DELTA, CSV, JSON, AVRO, PARQUET, ORC, TEXT.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PORT_NUMBER" class="member-name-link">PORT_NUMBER</a></code></div>
+<div class="col-first even-row-color"><code><a href="#FUNCTION_NAME" class="member-name-link">FUNCTION_NAME</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The number of the port to use to connect to a service.</div>
+<div class="block">The name of a function within a schema and catalog in Unity Catalog (UC).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_DESCRIPTION" class="member-name-link">SERVER_DESCRIPTION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SCHEMA_NAME" class="member-name-link">SCHEMA_NAME</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The description of the server being catalogued.</div>
+<div class="block">The name of a schema within a catalog in Unity Catalog (UC).</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVER_NAME" class="member-name-link">SERVER_NAME</a></code></div>
+<div class="col-first even-row-color"><code><a href="#STORAGE_LOCATION" class="member-name-link">STORAGE_LOCATION</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The name of the server being catalogued.</div>
+<div class="block">The location where the data associated with this element in Unity Catalog is stored.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#TABLE_NAME" class="member-name-link">TABLE_NAME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The name of a table within a schema and catalog in Unity Catalog (UC).</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#TABLE_TYPE" class="member-name-link">TABLE_TYPE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The type of a table: MANAGED or EXTERNAL.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#VOLUME_NAME" class="member-name-link">VOLUME_NAME</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The name of a volume within a schema and catalog in Unity Catalog (UC).</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#VOLUME_TYPE" class="member-name-link">VOLUME_TYPE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The type of a volume: MANAGED or EXTERNAL.</div>
 </div>
 </div>
 </section>
@@ -192,23 +200,43 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return an example of the placeholder property to help users understand how to set it up.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the name of the placeholder property.</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getFunctionPlaceholderPropertyTypes()" class="member-name-link">getFunctionPlaceholderPropertyTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve all the defined placeholder properties</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholder()" class="member-name-link">getPlaceholder</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the name of the placeholder property.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholder()" class="member-name-link">getPlaceholder</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the placeholder to use when building templates.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholderType()" class="member-name-link">getPlaceholderType</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholderType()" class="member-name-link">getPlaceholderType</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a summary of this enum to use in a service provider.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSchemaPlaceholderPropertyTypes()" class="member-name-link">getSchemaPlaceholderPropertyTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve all the defined placeholder properties</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getServerPlaceholderPropertyTypes()" class="member-name-link">getServerPlaceholderPropertyTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve all the defined placeholder properties</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getTablePlaceholderPropertyTypes()" class="member-name-link">getTablePlaceholderPropertyTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve all the defined placeholder properties</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getVolumePlaceholderPropertyTypes()" class="member-name-link">getVolumePlaceholderPropertyTypes</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Retrieve all the defined placeholder properties</div>
 </div>
@@ -249,41 +277,6 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="HOST_URL">
-<h3>HOST_URL</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">HOST_URL</span></div>
-<div class="block">The host IP address or domain name.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="PORT_NUMBER">
-<h3>PORT_NUMBER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">PORT_NUMBER</span></div>
-<div class="block">The number of the port to use to connect to a service.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="CONNECTION_USER_ID">
-<h3>CONNECTION_USER_ID</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">CONNECTION_USER_ID</span></div>
-<div class="block">The userId to store in the userId attribute of the connection.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_NAME">
-<h3>SERVER_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">SERVER_NAME</span></div>
-<div class="block">The name of the server being catalogued.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="SERVER_DESCRIPTION">
-<h3>SERVER_DESCRIPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">SERVER_DESCRIPTION</span></div>
-<div class="block">The description of the server being catalogued.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="CATALOG_NAME">
 <h3>CATALOG_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">CATALOG_NAME</span></div>
@@ -291,10 +284,59 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="CATALOG_DESCRIPTION">
-<h3>CATALOG_DESCRIPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">CATALOG_DESCRIPTION</span></div>
-<div class="block">The description of the catalog being described.</div>
+<section class="detail" id="SCHEMA_NAME">
+<h3>SCHEMA_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">SCHEMA_NAME</span></div>
+<div class="block">The name of a schema within a catalog in Unity Catalog (UC).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="STORAGE_LOCATION">
+<h3>STORAGE_LOCATION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">STORAGE_LOCATION</span></div>
+<div class="block">The location where the data associated with this element in Unity Catalog is stored.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TABLE_NAME">
+<h3>TABLE_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">TABLE_NAME</span></div>
+<div class="block">The name of a table within a schema and catalog in Unity Catalog (UC).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TABLE_TYPE">
+<h3>TABLE_TYPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">TABLE_TYPE</span></div>
+<div class="block">The type of a table: MANAGED or EXTERNAL.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATA_SOURCE_FORMAT">
+<h3>DATA_SOURCE_FORMAT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">DATA_SOURCE_FORMAT</span></div>
+<div class="block">The format of the data source: DELTA, CSV, JSON, AVRO, PARQUET, ORC, TEXT.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="VOLUME_NAME">
+<h3>VOLUME_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">VOLUME_NAME</span></div>
+<div class="block">The name of a volume within a schema and catalog in Unity Catalog (UC).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="VOLUME_TYPE">
+<h3>VOLUME_TYPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">VOLUME_TYPE</span></div>
+<div class="block">The type of a volume: MANAGED or EXTERNAL.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FUNCTION_NAME">
+<h3>FUNCTION_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogPlaceholderProperty</a></span>&nbsp;<span class="element-name">FUNCTION_NAME</span></div>
+<div class="block">The name of a function within a schema and catalog in Unity Catalog (UC).</div>
 </section>
 </li>
 </ul>
@@ -438,6 +480,50 @@ not permitted.)</div>
 <section class="detail" id="getCatalogPlaceholderPropertyTypes()">
 <h3>getCatalogPlaceholderPropertyTypes</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getCatalogPlaceholderPropertyTypes</span>()</div>
+<div class="block">Retrieve all the defined placeholder properties</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of placeholder property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSchemaPlaceholderPropertyTypes()">
+<h3>getSchemaPlaceholderPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getSchemaPlaceholderPropertyTypes</span>()</div>
+<div class="block">Retrieve all the defined placeholder properties</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of placeholder property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTablePlaceholderPropertyTypes()">
+<h3>getTablePlaceholderPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getTablePlaceholderPropertyTypes</span>()</div>
+<div class="block">Retrieve all the defined placeholder properties</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of placeholder property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getVolumePlaceholderPropertyTypes()">
+<h3>getVolumePlaceholderPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getVolumePlaceholderPropertyTypes</span>()</div>
+<div class="block">Retrieve all the defined placeholder properties</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of placeholder property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getFunctionPlaceholderPropertyTypes()">
+<h3>getFunctionPlaceholderPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getFunctionPlaceholderPropertyTypes</span>()</div>
 <div class="block">Retrieve all the defined placeholder properties</div>
 <dl class="notes">
 <dt>Returns:</dt>

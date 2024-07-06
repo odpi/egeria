@@ -130,11 +130,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Add a catalog target to an integration connector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Map,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.util.List)" class="member-name-link">createIntegrationConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Map,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.util.List)" class="member-name-link">createIntegrationConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionIdentifier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType,
  boolean&nbsp;usesBlockingCalls,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties,
  <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection,
@@ -250,7 +251,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the identifiers of the registered integration connectors with an integration group.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerIntegrationConnectorWithGroup(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.util.Date,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.util.List)" class="member-name-link">registerIntegrationConnectorWithGroup</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerIntegrationConnectorWithGroup(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,java.util.List)" class="member-name-link">registerIntegrationConnectorWithGroup</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationGroupGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
@@ -259,7 +260,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;startDate,
  long&nbsp;refreshTimeInterval,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;stopDate,
- <a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+ <a href="../../../frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;permittedSynchronization,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;serviceSupportedZones)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Register an integration connector with a specific integration group.</div>
@@ -288,13 +289,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Update a catalog target for an integration connector.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateIntegrationConnector(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.util.Map,java.util.Map,java.util.List)" class="member-name-link">updateIntegrationConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateIntegrationConnector(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.util.Map,java.util.Map,java.util.List)" class="member-name-link">updateIntegrationConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
  boolean&nbsp;isMergeUpdate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionIdentifier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType,
  <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;extendedProperties,
@@ -525,13 +527,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Map,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.util.List)">
+<section class="detail" id="createIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Map,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.util.List)">
 <h3>createIntegrationConnector</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createIntegrationConnector</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionIdentifier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType,
  boolean&nbsp;usesBlockingCalls,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties,
  <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection,
@@ -545,9 +548,10 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - identifier of calling user</dd>
 <dd><code>qualifiedName</code> - unique name for the integration connector.</dd>
-<dd><code>displayName</code> - display name for the integration connector.</dd>
+<dd><code>name</code> - display name for the integration connector.</dd>
 <dd><code>versionIdentifier</code> - identifier if the version</dd>
-<dd><code>description</code> - description of the analysis provided by the integration connector.</dd>
+<dd><code>description</code> - description of the analysis provided by the integration connector</dd>
+<dd><code>deployedImplementationType</code> - technology type</dd>
 <dd><code>usesBlockingCalls</code> - the connector issues blocking calls and needs a dedicated thread.</dd>
 <dd><code>additionalProperties</code> - additional properties</dd>
 <dd><code>connection</code> - connection to instantiate the integration connector implementation.</dd>
@@ -660,15 +664,16 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateIntegrationConnector(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.util.Map,java.util.Map,java.util.List)">
+<section class="detail" id="updateIntegrationConnector(java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection,java.util.Map,java.util.Map,java.util.List)">
 <h3>updateIntegrationConnector</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateIntegrationConnector</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
  boolean&nbsp;isMergeUpdate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionIdentifier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType,
  <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;additionalProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;extendedProperties,
@@ -687,8 +692,9 @@ loadScripts(document, 'script');</script>
                       matching names, or should the entire properties of the instance be replaced?</dd>
 <dd><code>qualifiedName</code> - new value for unique name of integration connector.</dd>
 <dd><code>versionIdentifier</code> - version identifier of the connector.</dd>
-<dd><code>displayName</code> - new value for the display name.</dd>
-<dd><code>description</code> - new value for the description.</dd>
+<dd><code>name</code> - new value for the display name.</dd>
+<dd><code>description</code> - new value for the description</dd>
+<dd><code>deployedImplementationType</code> - technology type</dd>
 <dd><code>connection</code> - connection used to create an instance of this integration connector.</dd>
 <dd><code>additionalProperties</code> - additional properties for the integration group.</dd>
 <dd><code>extendedProperties</code> - properties to populate the subtype of the integration connector.</dd>
@@ -727,7 +733,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="registerIntegrationConnectorWithGroup(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.util.Date,org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization,java.util.List)">
+<section class="detail" id="registerIntegrationConnectorWithGroup(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Date,long,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization,java.util.List)">
 <h3>registerIntegrationConnectorWithGroup</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerIntegrationConnectorWithGroup</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationGroupGUID,
@@ -738,7 +744,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;startDate,
  long&nbsp;refreshTimeInterval,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;stopDate,
- <a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization,
+ <a href="../../../frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;permittedSynchronization,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;serviceSupportedZones)</span>
                                            throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,

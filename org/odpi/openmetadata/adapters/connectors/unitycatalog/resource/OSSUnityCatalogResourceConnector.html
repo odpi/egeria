@@ -197,84 +197,99 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get catalog.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworks/auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorComponentDescription()" class="member-name-link">getConnectorComponentDescription</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCatalogNameFromThreePartName(java.lang.String)" class="member-name-link">getCatalogNameFromThreePartName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;threePartName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The catalog name is in the first segment of the three part name.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworks/auditlog/ComponentDescription.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">ComponentDescription</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorComponentDescription()" class="member-name-link">getConnectorComponentDescription</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the component description that is used by this connector in the audit log.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNameFromFullName(java.lang.String)" class="member-name-link">getNameFromFullName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The full name uses dot separators.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/SchemaInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">SchemaInfo</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchema(java.lang.String)" class="member-name-link">getSchema</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get schema.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/TableInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">TableInfo</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTable(java.lang.String)" class="member-name-link">getTable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaNameFromThreePartName(java.lang.String)" class="member-name-link">getSchemaNameFromThreePartName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;threePartName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The schema name is in the middle segment of the three part name.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/TableInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">TableInfo</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTable(java.lang.String)" class="member-name-link">getTable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get table.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVolume(java.lang.String)" class="member-name-link">getVolume</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVolume(java.lang.String)" class="member-name-link">getVolume</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get volume.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/CatalogInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">CatalogInfo</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#listCatalogs()" class="member-name-link">listCatalogs</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/CatalogInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">CatalogInfo</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#listCatalogs()" class="member-name-link">listCatalogs</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get all catalog.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/SchemaInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">SchemaInfo</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#listSchemas(java.lang.String)" class="member-name-link">listSchemas</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/SchemaInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">SchemaInfo</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#listSchemas(java.lang.String)" class="member-name-link">listSchemas</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get all schema.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/TableInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">TableInfo</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#listTables(java.lang.String,java.lang.String)" class="member-name-link">listTables</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/TableInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">TableInfo</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#listTables(java.lang.String,java.lang.String)" class="member-name-link">listTables</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get all tables.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#listVolumes(java.lang.String,java.lang.String)" class="member-name-link">listVolumes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#listVolumes(java.lang.String,java.lang.String)" class="member-name-link">listVolumes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get all volumes.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Receive an audit log object that can be used to record audit log messages.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUCInstanceName(java.lang.String)" class="member-name-link">setUCInstanceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;ucInstanceName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUCInstanceName(java.lang.String)" class="member-name-link">setUCInstanceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;ucInstanceName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up a new instance name (must be called before start()).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/CatalogInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">CatalogInfo</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCatalog(java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">updateCatalog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;properties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Update catalog.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/SchemaInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">SchemaInfo</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchema(java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">updateSchema</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/CatalogInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">CatalogInfo</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCatalog(java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">updateCatalog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;properties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update catalog.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/SchemaInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">SchemaInfo</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchema(java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">updateSchema</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;properties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update schema.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateVolume(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">updateVolume</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateVolume(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">updateVolume</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update volume.</div>
 </div>
 </div>
@@ -282,7 +297,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
-<code><a href="../../../../frameworks/connectors/ConnectorBase.html#disconnect()">disconnect</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#disconnectConnectors(java.util.List)">disconnectConnectors</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getAssetTypeName(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse,java.lang.String,java.lang.String)">getAssetTypeName</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getNetworkAddresses(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse)">getNetworkAddresses</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeSecretsStoreConnector(java.lang.String,org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector)">initializeSecretsStoreConnector</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwNoAsset(java.lang.String,java.lang.String,java.lang.String)">throwNoAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfRootSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfRootSchema</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#toString()">toString</a></code></div>
+<code><a href="../../../../frameworks/connectors/ConnectorBase.html#disconnect()">disconnect</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#disconnectConnectors(java.util.List)">disconnectConnectors</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getAssetTypeName(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse,java.lang.String,java.lang.String)">getAssetTypeName</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getNetworkAddresses(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse)">getNetworkAddresses</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeSecretsStoreConnector(java.lang.String,org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector)">initializeSecretsStoreConnector</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingConfigurationProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwNoAsset(java.lang.String,java.lang.String,java.lang.String)">throwNoAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfRootSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfRootSchema</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#toString()">toString</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.Connector">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></h3>
 <code><a href="../../../../frameworks/connectors/Connector.html#clearStatisticProperty(java.lang.String,java.lang.String)">clearStatisticProperty</a>, <a href="../../../../frameworks/connectors/Connector.html#clearStatisticTimestamp(java.lang.String,java.lang.String)">clearStatisticTimestamp</a>, <a href="../../../../frameworks/connectors/Connector.html#getConnectorStatistics()">getConnectorStatistics</a>, <a href="../../../../frameworks/connectors/Connector.html#getStatisticCounter(java.lang.String,java.lang.String)">getStatisticCounter</a>, <a href="../../../../frameworks/connectors/Connector.html#getStatisticProperty(java.lang.String,java.lang.String)">getStatisticProperty</a>, <a href="../../../../frameworks/connectors/Connector.html#getStatisticTimestamp(java.lang.String,java.lang.String)">getStatisticTimestamp</a>, <a href="../../../../frameworks/connectors/Connector.html#incrementStatisticCounter(java.lang.String,java.lang.String)">incrementStatisticCounter</a>, <a href="../../../../frameworks/connectors/Connector.html#initializeStatisticCounter(java.lang.String,int,java.lang.String)">initializeStatisticCounter</a>, <a href="../../../../frameworks/connectors/Connector.html#setStatisticProperty(java.lang.String,java.lang.String,java.lang.String)">setStatisticProperty</a>, <a href="../../../../frameworks/connectors/Connector.html#setStatisticTimestamp(java.lang.String,java.util.Date,java.lang.String)">setStatisticTimestamp</a></code></div>
@@ -364,6 +379,45 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dd><code><a href="../../../../frameworks/connectors/ConnectorBase.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getNameFromFullName(java.lang.String)">
+<h3>getNameFromFullName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getNameFromFullName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</span></div>
+<div class="block">The full name uses dot separators.  Return the name after the final dot.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>fullName</code> - dotted name</dd>
+<dt>Returns:</dt>
+<dd>short name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSchemaNameFromThreePartName(java.lang.String)">
+<h3>getSchemaNameFromThreePartName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSchemaNameFromThreePartName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;threePartName)</span></div>
+<div class="block">The schema name is in the middle segment of the three part name.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>threePartName</code> - dotted name</dd>
+<dt>Returns:</dt>
+<dd>schemaName</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getCatalogNameFromThreePartName(java.lang.String)">
+<h3>getCatalogNameFromThreePartName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getCatalogNameFromThreePartName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;threePartName)</span></div>
+<div class="block">The catalog name is in the first segment of the three part name.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>threePartName</code> - dotted name</dd>
+<dt>Returns:</dt>
+<dd>catalogName</dd>
 </dl>
 </section>
 </li>
@@ -526,7 +580,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <li>
 <section class="detail" id="updateSchema(java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
 <h3>updateSchema</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/SchemaInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">SchemaInfo</a></span>&nbsp;<span class="element-name">updateSchema</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/SchemaInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">SchemaInfo</a></span>&nbsp;<span class="element-name">updateSchema</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;properties)</span>
@@ -534,7 +588,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Update schema.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>name</code> - name of the schema</dd>
+<dd><code>fullName</code> - name of the schema</dd>
 <dd><code>newName</code> - optional new name of the schema</dd>
 <dd><code>comment</code> - description of the schema</dd>
 <dd><code>properties</code> - additional properties</dd>
@@ -622,14 +676,14 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <li>
 <section class="detail" id="updateVolume(java.lang.String,java.lang.String,java.lang.String)">
 <h3>updateVolume</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a></span>&nbsp;<span class="element-name">updateVolume</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a></span>&nbsp;<span class="element-name">updateVolume</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;newName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment)</span>
                         throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Update volume.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>name</code> - name of the volume</dd>
+<dd><code>fullName</code> - name of the volume</dd>
 <dd><code>newName</code> - optional new name of the volume</dd>
 <dd><code>comment</code> - description of the volume</dd>
 <dt>Returns:</dt>

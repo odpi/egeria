@@ -82,7 +82,6 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="AdminServicesConfigHeader.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">AdminServicesConfigHeader</a></span></div>
 <div class="block">IntegrationConnectorConfig provides the configuration properties used to create and manage an
  integration connector that exchanges metadata with a third party technology.
-
  The integration connectors can:
  <ul>
      <li>Listen on a blocking call for the third party technology to send a notification.</li>
@@ -161,7 +160,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the qualified name of the metadata source for this integration connector.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPermittedSynchronization()" class="member-name-link">getPermittedSynchronization</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the permitted direction of metadata flow (see the enum definition for more details).</div>
@@ -213,7 +212,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the qualified name of the metadata source for this integration connector.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPermittedSynchronization(org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization)" class="member-name-link">setPermittedSynchronization</a><wbr>(<a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPermittedSynchronization(org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization)" class="member-name-link">setPermittedSynchronization</a><wbr>(<a href="../../../frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;permittedSynchronization)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the permitted direction of metadata flow (see the enum definition for more details).</div>
 </div>
@@ -444,7 +443,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getPermittedSynchronization()">
 <h3>getPermittedSynchronization</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a></span>&nbsp;<span class="element-name">getPermittedSynchronization</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a></span>&nbsp;<span class="element-name">getPermittedSynchronization</span>()</div>
 <div class="block">Return the permitted direction of metadata flow (see the enum definition for more details).  Any attempt
  by the connector to send/receive metadata in a direction that is not permitted results in a UserNotAuthorizedException.</div>
 <dl class="notes">
@@ -454,9 +453,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setPermittedSynchronization(org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization)">
+<section class="detail" id="setPermittedSynchronization(org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization)">
 <h3>setPermittedSynchronization</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPermittedSynchronization</span><wbr><span class="parameters">(<a href="../../../frameworks/integration/contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a>&nbsp;permittedSynchronization)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPermittedSynchronization</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;permittedSynchronization)</span></div>
 <div class="block">Set up the permitted direction of metadata flow (see the enum definition for more details).  Any attempt
  by the connector to send/receive metadata in a direction that is not permitted results in a UserNotAuthorizedException.</div>
 <dl class="notes">

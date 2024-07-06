@@ -131,27 +131,35 @@ implements <a href="../../auditlog/messagesets/AuditLogMessageSet.html" title="i
 <div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0006 - An unexpected {0} exception was returned to the {1} integration connector while retrieving the action targets.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NO_CATALOG_TARGETS" class="member-name-link">NO_CATALOG_TARGETS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#IGNORED_EGERIA_ELEMENT" class="member-name-link">IGNORED_EGERIA_ELEMENT</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">OIF-CONNECTOR-0010 - The {0} connector has detected an unsynchronized {1} element ({2}) in metadata collection {3} ({4}) but the permitted synchronization to catalog target {5} is {6}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NO_CATALOG_TARGETS" class="member-name-link">NO_CATALOG_TARGETS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0007 - No action targets are defined for the {0} integration connector</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#REFRESHED_CATALOG_TARGETS" class="member-name-link">REFRESHED_CATALOG_TARGETS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#REFRESHED_CATALOG_TARGETS" class="member-name-link">REFRESHED_CATALOG_TARGETS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0009 - The {0} integration connector has refreshed {1} action target(s)</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#REFRESHING_CATALOG_TARGET" class="member-name-link">REFRESHING_CATALOG_TARGET</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#REFRESHING_CATALOG_TARGET" class="member-name-link">REFRESHING_CATALOG_TARGET</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0008 - The {0} integration connector is refreshing action target {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXC_MONITOR_START" class="member-name-link">UNEXPECTED_EXC_MONITOR_START</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXC_MONITOR_START" class="member-name-link">UNEXPECTED_EXC_MONITOR_START</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OIF-CONNECTOR-0003 - An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons
  FileAlterationMonitor while it was starting the monitoring service.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXC_MONITOR_STOP" class="member-name-link">UNEXPECTED_EXC_MONITOR_STOP</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXC_MONITOR_STOP" class="member-name-link">UNEXPECTED_EXC_MONITOR_STOP</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OIF-CONNECTOR-0004 - An unexpected {0} exception was returned to the {1} integration connector by the Apache Commons
  FileAlterationMonitor while it stopping the monitoring service.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_ACTION" class="member-name-link">UNKNOWN_ACTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OIF-CONNECTOR-0011 - The {0} connector is unsure which action to take for an element.</div>
 </div>
 </div>
 </section>
@@ -276,6 +284,20 @@ the order they are declared.</div>
 <h3>REFRESHED_CATALOG_TARGETS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">REFRESHED_CATALOG_TARGETS</span></div>
 <div class="block">OIF-CONNECTOR-0009 - The {0} integration connector has refreshed {1} action target(s)</div>
+</section>
+</li>
+<li>
+<section class="detail" id="IGNORED_EGERIA_ELEMENT">
+<h3>IGNORED_EGERIA_ELEMENT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">IGNORED_EGERIA_ELEMENT</span></div>
+<div class="block">OIF-CONNECTOR-0010 - The {0} connector has detected an unsynchronized {1} element ({2}) in metadata collection {3} ({4}) but the permitted synchronization to catalog target {5} is {6}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNKNOWN_ACTION">
+<h3>UNKNOWN_ACTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OIFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.integration.ffdc">OIFAuditCode</a></span>&nbsp;<span class="element-name">UNKNOWN_ACTION</span></div>
+<div class="block">OIF-CONNECTOR-0011 - The {0} connector is unsure which action to take for an element. This is a logic error.  The member element information is {1}</div>
 </section>
 </li>
 </ul>
