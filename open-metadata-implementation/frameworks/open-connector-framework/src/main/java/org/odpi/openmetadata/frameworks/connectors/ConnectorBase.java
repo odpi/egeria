@@ -423,6 +423,29 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     }
 
 
+
+    /**
+     * Log that the connector can not process the named resource because a key configuration property is missing.
+     *
+     * @param connectorName name of the connector
+     * @param resourceName source of the configuration properties
+     * @param propertyName name of the missing property
+     * @param methodName calling method
+     * @throws ConnectorCheckedException resulting exception
+     */
+    protected void throwMissingConfigurationProperty(String connectorName,
+                                                     String resourceName,
+                                                     String propertyName,
+                                                     String methodName) throws ConnectorCheckedException
+    {
+        throw new ConnectorCheckedException(OCFErrorCode.MISSING_CONFIGURATION_PROPERTY.getMessageDefinition(connectorName,
+                                                                                                             resourceName,
+                                                                                                             propertyName),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
+
+
     /**
      * Log that the survey action service can not process the type of root schema it has been passed.
      *

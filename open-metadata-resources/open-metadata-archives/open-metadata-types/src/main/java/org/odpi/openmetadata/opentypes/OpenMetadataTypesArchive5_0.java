@@ -535,13 +535,9 @@ public class OpenMetadataTypesArchive5_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataType.LAST_REVIEW_TIME_PROPERTY_NAME;
-        final String attribute1Description     = "The Date/time that this action was reviewed.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.LAST_REVIEW_TIME.name,
+                                                           OpenMetadataProperty.LAST_REVIEW_TIME.description,
+                                                           OpenMetadataProperty.LAST_REVIEW_TIME.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);

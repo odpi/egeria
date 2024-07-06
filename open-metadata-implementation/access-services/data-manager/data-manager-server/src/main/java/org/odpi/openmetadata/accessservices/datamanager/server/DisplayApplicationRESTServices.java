@@ -108,6 +108,7 @@ public class DisplayApplicationRESTServices
                                                                   requestBody.getName(),
                                                                   requestBody.getVersionIdentifier(),
                                                                   requestBody.getDescription(),
+                                                                  requestBody.getDeployedImplementationType(),
                                                                   requestBody.getAdditionalProperties(),
                                                                   typeName,
                                                                   requestBody.getExtendedProperties(),
@@ -212,6 +213,7 @@ public class DisplayApplicationRESTServices
                                                                requestBody.getVersionIdentifier(),
                                                                requestBody.getDescription(),
                                                                null,
+                                                               null,
                                                                requestBody.getNetworkAddress(),
                                                                false,
                                                                false,
@@ -305,6 +307,7 @@ public class DisplayApplicationRESTServices
                                     requestBody.getName(),
                                     requestBody.getVersionIdentifier(),
                                     requestBody.getDescription(),
+                                    requestBody.getDeployedImplementationType(),
                                     requestBody.getAdditionalProperties(),
                                     typeName,
                                     requestBody.getExtendedProperties(),
@@ -815,7 +818,7 @@ public class DisplayApplicationRESTServices
 
                 if (requestBody.getUrl() != null)
                 {
-                    extendedProperties.put(OpenMetadataType.URL_PROPERTY_NAME, requestBody.getUrl());
+                    extendedProperties.put(OpenMetadataProperty.URL.name, requestBody.getUrl());
                 }
 
                 if (requestBody.getCreateTime() != null)
@@ -845,6 +848,7 @@ public class DisplayApplicationRESTServices
                                                                     requestBody.getName(),
                                                                     requestBody.getVersionIdentifier(),
                                                                     requestBody.getDescription(),
+                                                                    requestBody.getDeployedImplementationType(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     typeName,
                                                                     extendedProperties,
@@ -960,6 +964,7 @@ public class DisplayApplicationRESTServices
                                                                  requestBody.getVersionIdentifier(),
                                                                  requestBody.getDescription(),
                                                                  null,
+                                                                 null,
                                                                  requestBody.getNetworkAddress(),
                                                                  false,
                                                                  false,
@@ -1068,7 +1073,7 @@ public class DisplayApplicationRESTServices
 
                 if (requestBody.getUrl() != null)
                 {
-                    extendedProperties.put(OpenMetadataType.URL_PROPERTY_NAME, requestBody.getUrl());
+                    extendedProperties.put(OpenMetadataProperty.URL.name, requestBody.getUrl());
                 }
 
                 if (requestBody.getCreateTime() != null)
@@ -1100,6 +1105,7 @@ public class DisplayApplicationRESTServices
                                     requestBody.getName(),
                                     requestBody.getVersionIdentifier(),
                                     requestBody.getDescription(),
+                                    requestBody.getDeployedImplementationType(),
                                     requestBody.getAdditionalProperties(),
                                     typeName,
                                     extendedProperties,
@@ -1584,7 +1590,7 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataType.INFORMATION_VIEW_TYPE_NAME;
+                String typeName = OpenMetadataType.INFORMATION_VIEW.typeName;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -1598,6 +1604,7 @@ public class DisplayApplicationRESTServices
                                                                    requestBody.getName(),
                                                                    requestBody.getVersionIdentifier(),
                                                                    requestBody.getDescription(),
+                                                                   requestBody.getDeployedImplementationType(),
                                                                    requestBody.getAdditionalProperties(),
                                                                    typeName,
                                                                    requestBody.getExtendedProperties(),
@@ -1617,7 +1624,7 @@ public class DisplayApplicationRESTServices
                                                  OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                  queryGUID,
                                                  queryGUIDParameterName,
-                                                 OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
+                                                 OpenMetadataType.INFORMATION_VIEW.typeName,
                                                  false,
                                                  false,
                                                  OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
@@ -1705,14 +1712,15 @@ public class DisplayApplicationRESTServices
                                                                 handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                                 templateGUID,
                                                                 templateGUIDParameterName,
-                                                                OpenMetadataType.INFORMATION_VIEW_TYPE_GUID,
-                                                                OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
+                                                                OpenMetadataType.INFORMATION_VIEW.typeGUID,
+                                                                OpenMetadataType.INFORMATION_VIEW.typeName,
                                                                 requestBody.getQualifiedName(),
                                                                 qualifiedNameParameterName,
                                                                 requestBody.getDisplayName(),
                                                                 requestBody.getVersionIdentifier(),
                                                                 requestBody.getDescription(),
                                                                 null,
+                                                                requestBody.getPathName(),
                                                                 requestBody.getNetworkAddress(),
                                                                 false,
                                                                 false,
@@ -1795,7 +1803,7 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataType.INFORMATION_VIEW_TYPE_NAME;
+                String typeName = OpenMetadataType.INFORMATION_VIEW.typeName;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -1811,6 +1819,7 @@ public class DisplayApplicationRESTServices
                                     requestBody.getName(),
                                     requestBody.getVersionIdentifier(),
                                     requestBody.getDescription(),
+                                    requestBody.getDeployedImplementationType(),
                                     requestBody.getAdditionalProperties(),
                                     typeName,
                                     requestBody.getExtendedProperties(),
@@ -1984,8 +1993,8 @@ public class DisplayApplicationRESTServices
                                            requestBody.getExternalSourceName(),
                                            queryGUID,
                                            queryGUIDParameterName,
-                                           OpenMetadataType.INFORMATION_VIEW_TYPE_GUID,
-                                           OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
+                                           OpenMetadataType.INFORMATION_VIEW.typeGUID,
+                                           OpenMetadataType.INFORMATION_VIEW.typeName,
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            qualifiedName,
                                            false,
@@ -2042,8 +2051,8 @@ public class DisplayApplicationRESTServices
                 AssetHandler<QueryElement> handler = instanceHandler.getQueryHandler(userId, serverName, methodName);
 
                 List<QueryElement> queryAssets = handler.findAssets(userId,
-                                                                    OpenMetadataType.INFORMATION_VIEW_TYPE_GUID,
-                                                                    OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
+                                                                    OpenMetadataType.INFORMATION_VIEW.typeGUID,
+                                                                    OpenMetadataType.INFORMATION_VIEW.typeName,
                                                                     requestBody.getSearchString(),
                                                                     searchStringParameterName,
                                                                     startFrom,
@@ -2109,8 +2118,8 @@ public class DisplayApplicationRESTServices
                 AssetHandler<QueryElement> handler = instanceHandler.getQueryHandler(userId, serverName, methodName);
 
                 List<QueryElement> queryAssets = handler.getAssetsByName(userId,
-                                                                         OpenMetadataType.INFORMATION_VIEW_TYPE_GUID,
-                                                                         OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
+                                                                         OpenMetadataType.INFORMATION_VIEW.typeGUID,
+                                                                         OpenMetadataType.INFORMATION_VIEW.typeName,
                                                                          requestBody.getName(),
                                                                          nameParameterName,
                                                                          startFrom,
@@ -2181,7 +2190,7 @@ public class DisplayApplicationRESTServices
                                                                          OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                          OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
                                                                          OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                                         OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
+                                                                         OpenMetadataType.INFORMATION_VIEW.typeName,
                                                                          null,
                                                                          null,
                                                                          0,
@@ -2238,7 +2247,7 @@ public class DisplayApplicationRESTServices
             QueryElement queryAsset = handler.getBeanFromRepository(userId,
                                                                     guid,
                                                                     guidParameterName,
-                                                                    OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
+                                                                    OpenMetadataType.INFORMATION_VIEW.typeName,
                                                                     false,
                                                                     false,
                                                                     new Date(),

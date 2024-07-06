@@ -839,7 +839,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                toDoProperties.getCreationTime());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                               OpenMetadataType.LAST_REVIEW_TIME_PROPERTY_NAME,
+                                                               OpenMetadataProperty.LAST_REVIEW_TIME.name,
                                                                toDoProperties.getLastReviewTime());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,

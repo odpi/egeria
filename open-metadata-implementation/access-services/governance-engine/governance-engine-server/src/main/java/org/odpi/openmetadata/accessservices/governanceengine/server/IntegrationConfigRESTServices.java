@@ -360,9 +360,10 @@ public class IntegrationConfigRESTServices
             {
                 response.setGUID(handler.createIntegrationConnector(userId,
                                                                     requestBody.getQualifiedName(),
+                                                                    requestBody.getName(),
                                                                     requestBody.getVersionIdentifier(),
-                                                                    requestBody.getDisplayName(),
                                                                     requestBody.getDescription(),
+                                                                    requestBody.getDeployedImplementationType(),
                                                                     requestBody.getUsesBlockingCalls(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getConnection()));
@@ -591,9 +592,10 @@ public class IntegrationConfigRESTServices
                                                    guid,
                                                    isMergeUpdate,
                                                    requestBody.getQualifiedName(),
+                                                   requestBody.getName(),
                                                    requestBody.getVersionIdentifier(),
-                                                   requestBody.getDisplayName(),
                                                    requestBody.getDescription(),
+                                                   requestBody.getDeployedImplementationType(),
                                                    requestBody.getConnection(),
                                                    requestBody.getAdditionalProperties(),
                                                    null);

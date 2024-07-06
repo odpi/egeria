@@ -61,7 +61,7 @@ public class APIParameterListConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof APIParameterListElement)
+            if (returnBean instanceof APIParameterListElement bean)
             {
                 if ((primaryEntity != null) && (primaryEntity.getProperties() != null))
                 {
@@ -69,8 +69,6 @@ public class APIParameterListConverter<B> extends DataManagerOMASConverter<B>
                      * The API Parameter List has many different subtypes.
                      * This next piece of logic sorts out which type of schema bean to create.
                      */
-                    APIParameterListElement bean = (APIParameterListElement) returnBean;
-
                     bean.setElementHeader(this.getMetadataElementHeader(beanClass, primaryEntity, methodName));
 
                     APIParameterListProperties properties = new APIParameterListProperties();

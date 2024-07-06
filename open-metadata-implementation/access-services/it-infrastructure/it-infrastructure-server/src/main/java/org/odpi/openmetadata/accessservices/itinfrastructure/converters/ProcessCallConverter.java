@@ -57,9 +57,8 @@ public class ProcessCallConverter<B> extends ITInfrastructureOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ProcessCallElement)
+            if (returnBean instanceof ProcessCallElement bean)
             {
-                ProcessCallElement    bean                  = (ProcessCallElement) returnBean;
                 ProcessCallProperties processCallProperties = new ProcessCallProperties();
 
                 if (relationship != null)

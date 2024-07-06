@@ -148,6 +148,59 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         }
     }
 
+
+    /**
+     * The full name uses dot separators.  Return the name after the final dot.
+     *
+     * @param fullName  dotted name
+     * @return short name
+     */
+    public String getNameFromFullName(String fullName)
+    {
+        String[] nameParts = fullName.split("\\.");
+
+        return nameParts[nameParts.length - 1];
+    }
+
+
+    /**
+     * The schema name is in the middle segment of the three part name.
+     *
+     * @param threePartName dotted name
+     * @return schemaName
+     */
+    public String getSchemaNameFromThreePartName(String   threePartName)
+    {
+        String[] nameParts = threePartName.split("\\.");
+
+        if (nameParts.length > 1)
+        {
+            return nameParts[1];
+        }
+
+        return null;
+    }
+
+
+    /**
+     * The catalog name is in the first segment of the three part name.
+     *
+     * @param threePartName dotted name
+     * @return catalogName
+     */
+    public String getCatalogNameFromThreePartName(String   threePartName)
+    {
+        String[] nameParts = threePartName.split("\\.");
+
+        if (nameParts.length > 0)
+        {
+            return nameParts[0];
+        }
+
+        return null;
+    }
+
+
     /*
      *===========================================================================
      * Specialized methods - Catalogs
@@ -402,14 +455,14 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
     /**
      * Update schema.
      *
-     * @param name name of the schema
+     * @param fullName name of the schema
      * @param newName optional new name of the schema
      * @param comment description of the schema
      * @param properties additional properties
      * @return resulting schema info
      * @throws PropertyServerException problem with the call
      */
-    public SchemaInfo updateSchema(String              name,
+    public SchemaInfo updateSchema(String              fullName,
                                    String              newName,
                                    String              comment,
                                    Map<String, String> properties) throws PropertyServerException
@@ -417,36 +470,40 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         final String methodName  = "updateSchema";
         final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/schemas/{0}";
 
+        String oldName = this.getNameFromFullName(fullName);
+
         UpdateElementRequestBody requestBody = new UpdateElementRequestBody();
 
         requestBody.setNew_name(newName);
         requestBody.setComment(comment);
         requestBody.setProperties(properties);
 
-        if (newName == null)
+        if ((newName == null) || (newName.equals(oldName)))
         {
             /*
-             * new_name must not be null.
+             * Workaround since not allowed to use the same name twice.
              */
-            requestBody.setNew_name(name + "TemporaryWorkaroundName");
+            requestBody.setNew_name(oldName + "TemporaryWorkaroundName");
             callPatchRESTCall(methodName,
                               SchemaInfo.class,
                               urlTemplate,
-                              name);
+                              fullName);
 
-            requestBody.setNew_name(name);
+            requestBody.setNew_name(oldName);
             return callPatchRESTCall(methodName,
                                      SchemaInfo.class,
                                      urlTemplate,
-                                     name);
+                                     fullName);
         }
         else
         {
+            requestBody.setNew_name(newName);
             return callPatchRESTCall(methodName,
                                      SchemaInfo.class,
                                      urlTemplate,
-                                     name);
+                                     fullName);
         }
+
     }
 
 
@@ -562,47 +619,49 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
     /**
      * Update volume.
      *
-     * @param name name of the volume
+     * @param fullName name of the volume
      * @param newName optional new name of the volume
      * @param comment description of the volume
      * @return resulting volume info
      * @throws PropertyServerException problem with the call
      */
-    public VolumeInfo updateVolume(String              name,
+    public VolumeInfo updateVolume(String              fullName,
                                    String              newName,
                                    String              comment) throws PropertyServerException
     {
         final String methodName  = "updateVolume";
         final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/volumes/{0}";
 
+        String oldName = this.getNameFromFullName(fullName);
+
         UpdateElementRequestBody requestBody = new UpdateElementRequestBody();
 
-        requestBody.setNew_name(newName);
         requestBody.setComment(comment);
 
-        if (newName == null)
+        if ((newName == null) || (newName.equals(oldName)))
         {
             /*
              * new_name must not be null.
              */
-            requestBody.setNew_name(name + "TemporaryWorkaroundName");
+            requestBody.setNew_name(oldName + "TemporaryWorkaroundName");
             callPatchRESTCall(methodName,
                               VolumeInfo.class,
                               urlTemplate,
-                              name);
+                              fullName);
 
-            requestBody.setNew_name(name);
+            requestBody.setNew_name(oldName);
             return callPatchRESTCall(methodName,
                                      VolumeInfo.class,
                                      urlTemplate,
-                                     name);
+                                     fullName);
         }
         else
         {
+            requestBody.setNew_name(newName);
             return callPatchRESTCall(methodName,
                                      VolumeInfo.class,
                                      urlTemplate,
-                                     name);
+                                     fullName);
         }
     }
 

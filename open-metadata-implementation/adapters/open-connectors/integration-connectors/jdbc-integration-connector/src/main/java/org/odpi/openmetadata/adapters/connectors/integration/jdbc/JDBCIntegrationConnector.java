@@ -88,7 +88,7 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector implem
     {
         final String methodName = "integrateCatalogTarget";
 
-        if (propertyHelper.isTypeOf(requestedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.RELATIONAL_DATABASE_TYPE_NAME))
+        if (propertyHelper.isTypeOf(requestedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.RELATIONAL_DATABASE.typeName))
         {
             String databaseGUID = requestedCatalogTarget.getCatalogTargetElement().getGUID();
             String databaseName = requestedCatalogTarget.getCatalogTargetElement().getUniqueName();

@@ -13,11 +13,11 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManager
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectorTypeProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.EndpointProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -35,8 +35,8 @@ public class CreateConnectionTest
 
     private final static int    maxPageSize        = 100;
 
-    private final static ExternalIdentifierProperties externalIdProperties     = null;
-    private final static String                       externalId     = null;
+    private final static ExternalIdentifierProperties externalIdProperties = null;
+    private final static String                       externalId           = null;
 
 
     /*

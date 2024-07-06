@@ -10,7 +10,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
 import java.util.Date;
@@ -28,7 +29,7 @@ public class LineageExchangeService extends SchemaExchangeService
      * Create a new client to exchange lineage content with open metadata.
      *
      * @param lineageExchangeClient client for exchange requests
-     * @param synchronizationDirection direction(s) that metadata can flow
+     * @param permittedSynchronization direction(s) that metadata can flow
      * @param userId integration daemon's userId
      * @param assetManagerGUID unique identifier of the software server capability for the asset manager
      * @param assetManagerName unique name of the software server capability for the asset manager
@@ -36,14 +37,14 @@ public class LineageExchangeService extends SchemaExchangeService
      * @param auditLog logging destination
      */
     LineageExchangeService(LineageExchangeClient    lineageExchangeClient,
-                           SynchronizationDirection synchronizationDirection,
+                           PermittedSynchronization permittedSynchronization,
                            String                   userId,
                            String                   assetManagerGUID,
                            String                   assetManagerName,
                            String                   connectorName,
                            AuditLog                 auditLog)
     {
-        super(lineageExchangeClient, synchronizationDirection,userId, assetManagerGUID, assetManagerName, connectorName, auditLog);
+        super(lineageExchangeClient, permittedSynchronization, userId, assetManagerGUID, assetManagerName, connectorName, auditLog);
 
         this.lineageExchangeClient = lineageExchangeClient;
     }
@@ -76,7 +77,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "createProcess";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return lineageExchangeClient.createProcess(userId,
                                                        assetManagerGUID,
@@ -89,7 +90,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -122,7 +123,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "createProcessFromTemplate";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return lineageExchangeClient.createProcessFromTemplate(userId,
                                                                    assetManagerGUID,
@@ -135,7 +136,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -168,7 +169,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "updateProcess";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.updateProcess(userId,
                                                 assetManagerGUID,
@@ -184,7 +185,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -215,7 +216,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "updateProcessStatus";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.updateProcessStatus(userId,
                                                       assetManagerGUID,
@@ -230,7 +231,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -263,7 +264,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "setupProcessParent";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.setupProcessParent(userId,
                                                      assetManagerGUID,
@@ -279,7 +280,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -308,7 +309,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "clearProcessParent";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.clearProcessParent(userId,
                                                      assetManagerGUID,
@@ -322,7 +323,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -351,7 +352,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "publishProcess";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.publishProcess(userId,
                                                  assetManagerGUID,
@@ -364,7 +365,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -393,7 +394,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "withdrawProcess";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.withdrawProcess(userId,
                                                   assetManagerGUID,
@@ -406,7 +407,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -435,7 +436,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "removeProcess";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.removeProcess(userId,
                                                 assetManagerGUID,
@@ -449,7 +450,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -677,7 +678,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "createPort";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return lineageExchangeClient.createPort(userId,
                                                     assetManagerGUID,
@@ -693,7 +694,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -725,7 +726,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "updatePort";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.updatePort(userId,
                                              assetManagerGUID,
@@ -740,7 +741,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -771,7 +772,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "setupProcessPort";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.setupProcessPort(userId,
                                                    assetManagerGUID,
@@ -786,7 +787,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -815,7 +816,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "clearProcessPort";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.clearProcessPort(userId,
                                                    assetManagerGUID,
@@ -829,7 +830,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -861,7 +862,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "setupPortDelegation";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.setupPortDelegation(userId,
                                                       assetManagerGUID,
@@ -876,7 +877,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -905,7 +906,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "clearPortDelegation";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.clearPortDelegation(userId,
                                                       assetManagerGUID,
@@ -919,7 +920,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -950,7 +951,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "setupPortSchemaType";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.setupPortSchemaType(userId,
                                                       assetManagerGUID,
@@ -965,7 +966,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -994,7 +995,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "clearPortSchemaType";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.clearPortSchemaType(userId,
                                                       assetManagerGUID,
@@ -1008,7 +1009,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1037,7 +1038,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "removePort";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.removePort(userId,
                                              assetManagerGUID,
@@ -1051,7 +1052,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1273,7 +1274,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "setBusinessSignificant";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.setBusinessSignificant(userId,
                                                          assetManagerGUID,
@@ -1287,7 +1288,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1316,7 +1317,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "clearBusinessSignificant";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.clearBusinessSignificant(userId,
                                                            assetManagerGUID,
@@ -1330,7 +1331,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1365,7 +1366,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "setupDataFlow";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return lineageExchangeClient.setupDataFlow(userId,
                                                        assetManagerGUID,
@@ -1381,7 +1382,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1445,7 +1446,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "updateDataFlow";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.updateDataFlow(userId,
                                                  assetManagerGUID,
@@ -1459,7 +1460,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1486,7 +1487,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "clearDataFlow";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.clearDataFlow(userId,
                                                 assetManagerGUID,
@@ -1499,7 +1500,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1600,7 +1601,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "setupControlFlow";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return lineageExchangeClient.setupControlFlow(userId,
                                                           assetManagerGUID,
@@ -1616,7 +1617,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1680,7 +1681,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "updateControlFlow";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.updateControlFlow(userId,
                                                     assetManagerGUID,
@@ -1694,7 +1695,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1725,7 +1726,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "clearControlFlow";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.clearControlFlow(userId,
                                                    assetManagerGUID,
@@ -1738,7 +1739,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1839,7 +1840,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "setupProcessCall";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return lineageExchangeClient.setupProcessCall(userId,
                                                           assetManagerGUID,
@@ -1855,7 +1856,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1919,7 +1920,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "updateProcessCall";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.updateProcessCall(userId,
                                                     assetManagerGUID,
@@ -1933,7 +1934,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -1960,7 +1961,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "clearProcessCall";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.clearProcessCall(userId,
                                                    assetManagerGUID,
@@ -1973,7 +1974,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -2072,7 +2073,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "setupLineageMapping";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.setupLineageMapping(userId,
                                                       assetManagerGUID,
@@ -2087,7 +2088,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -2155,7 +2156,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "updateLineageMapping";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.updateLineageMapping(userId,
                                                        assetManagerGUID,
@@ -2169,7 +2170,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -2196,7 +2197,7 @@ public class LineageExchangeService extends SchemaExchangeService
     {
         final String methodName = "clearLineageMapping";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             lineageExchangeClient.clearLineageMapping(userId,
                                                       assetManagerGUID,
@@ -2209,7 +2210,7 @@ public class LineageExchangeService extends SchemaExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),

@@ -24,11 +24,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class IntegrationConnectorProperties extends ReferenceableProperties
 {
-    private String     displayName       = null;
-    private String     versionIdentifier = null;
-    private String     description       = null;
-    private boolean    usesBlockingCalls = false;
-    private Connection connection        = null;
+    private String     name                       = null;
+    private String     versionIdentifier          = null;
+    private String     description                = null;
+    private String     deployedImplementationType = null;
+    private boolean    usesBlockingCalls          = false;
+    private Connection connection                 = null;
 
 
     /**
@@ -51,35 +52,57 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName                  = template.getDisplayName();
-            versionIdentifier            = template.getVersionIdentifier();
-            description                  = template.getDescription();
-            usesBlockingCalls            = template.getUsesBlockingCalls();
-            connection                   = template.getConnection();
+            name                       = template.getName();
+            versionIdentifier          = template.getVersionIdentifier();
+            description                = template.getDescription();
+            deployedImplementationType = template.getDeployedImplementationType();
+            usesBlockingCalls          = template.getUsesBlockingCalls();
+            connection                 = template.getConnection();
         }
     }
 
 
     /**
-     * Returns the stored display name property for the asset.
-     * If no display name is available then null is returned.
+     * Return the name of the resource that this asset represents.
      *
-     * @return String name
+     * @return string resource name
      */
-    public String getDisplayName()
+    public String getName()
     {
-        return displayName;
+        return name;
     }
 
 
     /**
-     * Set up the stored display name property for the asset.
+     * Set up the name of the resource that this asset represents.
      *
-     * @param displayName String name
+     * @param name string resource name
      */
-    public void setDisplayName(String displayName)
+    public void setName(String name)
     {
-        this.displayName = displayName;
+        this.name = name;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
     }
 
 
@@ -107,6 +130,28 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
 
 
     /**
+     * Retrieve the name of the technology used for this data asset.
+     *
+     * @return string name
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the name of the technology used for this data asset.
+     *
+     * @param deployedImplementationType string name
+     */
+    public void setDeployedImplementationType(String deployedImplementationType)
+    {
+        this.deployedImplementationType = deployedImplementationType;
+    }
+
+
+    /**
      * Return whether the connector issues blocking calls and needs its own thread to run in.
      *
      * @return flag
@@ -125,28 +170,6 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
     public void setUsesBlockingCalls(boolean usesBlockingCalls)
     {
         this.usesBlockingCalls = usesBlockingCalls;
-    }
-
-
-    /**
-     * Set up the version identifier of the integration connector implementation.
-     *
-     * @return string version name
-     */
-    public String getVersionIdentifier()
-    {
-        return versionIdentifier;
-    }
-
-
-    /**
-     * Set up the version identifier of the implementation.
-     *
-     * @param versionIdentifier string version name
-     */
-    public void setVersionIdentifier(String versionIdentifier)
-    {
-        this.versionIdentifier = versionIdentifier;
     }
 
 
@@ -181,14 +204,13 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
     public String toString()
     {
         return "IntegrationConnectorProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", usesBlockingCalls=" + usesBlockingCalls +
+                "name='" + name + '\'' +
                 ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", description='" + description + '\'' +
+                ", deployedImplementationType='" + deployedImplementationType + '\'' +
+                ", usesBlockingCalls=" + usesBlockingCalls +
                 ", connection=" + connection +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -214,9 +236,10 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
             return false;
         }
         IntegrationConnectorProperties that = (IntegrationConnectorProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
+        return Objects.equals(name, that.name) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(versionIdentifier, that.versionIdentifier) &&
+                       Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
                        (usesBlockingCalls == that.usesBlockingCalls) &&
                        Objects.equals(connection, that.connection);
     }
@@ -230,6 +253,6 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, versionIdentifier, usesBlockingCalls, connection);
+        return Objects.hash(super.hashCode(), name, description, versionIdentifier, usesBlockingCalls, connection);
     }
 }

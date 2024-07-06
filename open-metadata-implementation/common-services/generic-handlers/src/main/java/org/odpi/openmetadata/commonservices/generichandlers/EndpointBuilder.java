@@ -92,8 +92,8 @@ class EndpointBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataType.ENDPOINT_TYPE_GUID,
-              OpenMetadataType.ENDPOINT_TYPE_NAME,
+              OpenMetadataType.ENDPOINT.typeGUID,
+              OpenMetadataType.ENDPOINT.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -119,7 +119,7 @@ class EndpointBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.ENDPOINT_DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NAME.name,
                                                                   displayName,
                                                                   methodName);
 
@@ -131,19 +131,19 @@ class EndpointBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NETWORK_ADDRESS.name,
                                                                   networkAddress,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.PROTOCOL_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.PROTOCOL.name,
                                                                   protocol,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.ENCRYPTION_METHOD_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ENCRYPTION_METHOD.name,
                                                                   encryptionMethod,
                                                                   methodName);
 

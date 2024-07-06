@@ -56,9 +56,8 @@ public class ConnectorTypeConverter<B> extends ITInfrastructureOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ConnectorTypeElement)
+            if (returnBean instanceof ConnectorTypeElement bean)
             {
-                ConnectorTypeElement    bean                    = (ConnectorTypeElement) returnBean;
                 ConnectorTypeProperties connectorTypeProperties = new ConnectorTypeProperties();
 
                 if (entity != null)

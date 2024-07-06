@@ -8,9 +8,9 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Refere
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ReferenceValueAssignmentItemElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueMember;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceValueAssignmentProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueMembershipProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -32,9 +32,9 @@ public class ValidValuesExchangeService
     private final String                    userId;
     private final String                    assetManagerGUID;
     private final String                    assetManagerName;
-    private final String                    connectorName;
-    private final SynchronizationDirection  synchronizationDirection;
-    private final AuditLog                  auditLog;
+    private final String                   connectorName;
+    private final PermittedSynchronization permittedSynchronization;
+    private final AuditLog                 auditLog;
 
     private boolean forLineage             = false;
     private boolean forDuplicateProcessing = false;
@@ -43,7 +43,7 @@ public class ValidValuesExchangeService
      * Create a new client to exchange data asset content with open metadata.
      *
      * @param validValuesExchangeClient client for exchange requests
-     * @param synchronizationDirection direction(s) that metadata can flow
+     * @param permittedSynchronization direction(s) that metadata can flow
      * @param userId integration daemon's userId
      * @param assetManagerGUID unique identifier of the software server capability for the asset manager
      * @param assetManagerName unique name of the software server capability for the asset manager
@@ -51,7 +51,7 @@ public class ValidValuesExchangeService
      * @param auditLog logging destination
      */
     ValidValuesExchangeService(ValidValuesExchangeClient validValuesExchangeClient,
-                               SynchronizationDirection  synchronizationDirection,
+                               PermittedSynchronization permittedSynchronization,
                                String                    userId,
                                String                    assetManagerGUID,
                                String                    assetManagerName,
@@ -59,7 +59,7 @@ public class ValidValuesExchangeService
                                AuditLog                  auditLog)
     {
         this.validValuesExchangeClient = validValuesExchangeClient;
-        this.synchronizationDirection  = synchronizationDirection;
+        this.permittedSynchronization  = permittedSynchronization;
         this.userId                    = userId;
         this.assetManagerGUID          = assetManagerGUID;
         this.assetManagerName          = assetManagerName;
@@ -148,7 +148,7 @@ public class ValidValuesExchangeService
     {
         final String methodName = "createValidValueSet";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return validValuesExchangeClient.createValidValueSet(userId,
                                                                  assetManagerGUID,
@@ -162,7 +162,7 @@ public class ValidValuesExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -195,7 +195,7 @@ public class ValidValuesExchangeService
     {
         final String methodName = "createValidValueDefinition";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             return validValuesExchangeClient.createValidValueDefinition(userId,
                                                                         assetManagerGUID,
@@ -210,7 +210,7 @@ public class ValidValuesExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -246,7 +246,7 @@ public class ValidValuesExchangeService
     {
         final String methodName = "updateValidValue";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             validValuesExchangeClient.updateValidValue(userId,
                                                        assetManagerGUID,
@@ -262,7 +262,7 @@ public class ValidValuesExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -292,7 +292,7 @@ public class ValidValuesExchangeService
     {
         final String methodName = "removeValidValue";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             validValuesExchangeClient.removeValidValue(userId,
                                                        assetManagerGUID,
@@ -306,7 +306,7 @@ public class ValidValuesExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -337,7 +337,7 @@ public class ValidValuesExchangeService
     {
         final String methodName = "attachValidValueToSet";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             validValuesExchangeClient.attachValidValueToSet(userId,
                                                             assetManagerGUID,
@@ -351,7 +351,7 @@ public class ValidValuesExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -383,7 +383,7 @@ public class ValidValuesExchangeService
     {
         final String methodName = "attachValidValueToSet";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             validValuesExchangeClient.attachValidValueToSet(userId,
                                                             assetManagerGUID,
@@ -398,7 +398,7 @@ public class ValidValuesExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -427,7 +427,7 @@ public class ValidValuesExchangeService
     {
         final String methodName = "detachValidValueFromSet";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             validValuesExchangeClient.detachValidValueFromSet(userId,
                                                               assetManagerGUID,
@@ -441,7 +441,7 @@ public class ValidValuesExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -483,7 +483,7 @@ public class ValidValuesExchangeService
     {
         final String methodName = "assignReferenceValueToItem";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             validValuesExchangeClient.assignReferenceValueToItem(userId,
                                                                  assetManagerGUID,
@@ -498,7 +498,7 @@ public class ValidValuesExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),
@@ -537,7 +537,7 @@ public class ValidValuesExchangeService
     {
         final String methodName = "unassignReferenceValueFromItem";
 
-        if (synchronizationDirection != SynchronizationDirection.TO_THIRD_PARTY)
+        if (permittedSynchronization != PermittedSynchronization.TO_THIRD_PARTY)
         {
             validValuesExchangeClient.unassignReferenceValueFromItem(userId,
                                                                      assetManagerGUID,
@@ -551,7 +551,7 @@ public class ValidValuesExchangeService
         else
         {
             throw new UserNotAuthorizedException(CatalogIntegratorErrorCode.NOT_PERMITTED_SYNCHRONIZATION.getMessageDefinition(
-                    synchronizationDirection.getName(),
+                    permittedSynchronization.getName(),
                     connectorName,
                     methodName),
                                                  this.getClass().getName(),

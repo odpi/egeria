@@ -4,8 +4,12 @@ package org.odpi.openmetadata.accessservices.governanceengine.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -80,6 +84,10 @@ public class CatalogTargetConverter<B> extends OCFConverter<B>
                                                                                          relationship.getProperties(),
                                                                                          methodName));
 
+                    bean.setPermittedSynchronization(getPermittedSynchronization(relationship.getProperties()));
+
+                    bean.setDeleteMethod(getDeleteMethod(relationship.getProperties()));
+
                     bean.setCatalogTargetElement(super.getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName));
 
                     return returnBean;
@@ -94,5 +102,67 @@ public class CatalogTargetConverter<B> extends OCFConverter<B>
         }
 
         return null;
+    }
+
+
+    /**
+     * Extract the permittedSynchronization property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return PermittedSynchronization enum
+     */
+    PermittedSynchronization getPermittedSynchronization(InstanceProperties instanceProperties)
+    {
+        final String methodName = "getPermittedSynchronization";
+
+        if (instanceProperties != null)
+        {
+            int ordinal = repositoryHelper.getEnumPropertyOrdinal(serviceName,
+                                                                  OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
+                                                                  instanceProperties,
+                                                                  methodName);
+
+            for (PermittedSynchronization permittedSynchronization : PermittedSynchronization.values())
+            {
+                if (permittedSynchronization.getOrdinal() == ordinal)
+                {
+                    return permittedSynchronization;
+                }
+            }
+        }
+
+        return PermittedSynchronization.BOTH_DIRECTIONS;
+    }
+
+
+
+
+    /**
+     * Extract the deleteMethod property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return PermittedSynchronization enum
+     */
+    DeleteMethod getDeleteMethod(InstanceProperties instanceProperties)
+    {
+        final String methodName = "getDeleteMethod";
+
+        if (instanceProperties != null)
+        {
+            int ordinal = repositoryHelper.getEnumPropertyOrdinal(serviceName,
+                                                                  OpenMetadataProperty.DELETE_METHOD.name,
+                                                                  instanceProperties,
+                                                                  methodName);
+
+            for (DeleteMethod deleteMethod : DeleteMethod.values())
+            {
+                if (deleteMethod.getOrdinal() == ordinal)
+                {
+                    return deleteMethod;
+                }
+            }
+        }
+
+        return DeleteMethod.ARCHIVE;
     }
 }

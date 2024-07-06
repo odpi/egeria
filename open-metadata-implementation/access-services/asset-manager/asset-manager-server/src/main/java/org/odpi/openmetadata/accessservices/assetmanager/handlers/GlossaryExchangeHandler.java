@@ -25,7 +25,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTerm
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.StagingGlossaryProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TaxonomyProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;

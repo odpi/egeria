@@ -4,9 +4,9 @@ package org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.module
 
 
 import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntityWithExtInfo;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTConnector;
@@ -125,7 +125,7 @@ public class ApacheHiveIntegrationModule extends DatabaseIntegrationModuleBase
                                                                                                    hivePathEntity.getEntity().getUpdatedBy(),
                                                                                                    hivePathEntity.getEntity().getUpdateTime(),
                                                                                                    hivePathEntity.getEntity().getVersion(),
-                                                                                                   SynchronizationDirection.FROM_THIRD_PARTY);
+                                                                                                   PermittedSynchronization.FROM_THIRD_PARTY);
 
             DataAssetProperties dataAssetProperties = getEgeriaDataFileProperties(hivePathEntity.getEntity(),
                                                                                   egeriaPathTypeName);

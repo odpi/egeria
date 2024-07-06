@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Inform
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteLogElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties;

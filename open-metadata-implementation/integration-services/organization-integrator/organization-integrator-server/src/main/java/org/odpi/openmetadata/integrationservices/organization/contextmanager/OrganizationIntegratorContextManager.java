@@ -6,7 +6,6 @@ package org.odpi.openmetadata.integrationservices.organization.contextmanager;
 import org.odpi.openmetadata.accessservices.communityprofile.client.*;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -14,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.organization.connector.OrganizationIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.organization.connector.OrganizationIntegratorContext;
 import org.odpi.openmetadata.integrationservices.organization.ffdc.OrganizationIntegratorAuditCode;

@@ -588,6 +588,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param name the stored name property for the asset - if null, the value from the template is used
      * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param description the stored description property associated with the database - if null, the value from the template is used
+     * @param deployedImplementationType type of technology
      * @param pathName the physical address of the storage where the data is held (for DataStore assets)
      * @param networkAddress if there is a connection object for this asset - update the endpoint network address
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -614,6 +615,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                        String  name,
                                        String  versionIdentifier,
                                        String  description,
+                                       String  deployedImplementationType,
                                        String  pathName,
                                        String  networkAddress,
                                        boolean forLineage,
@@ -640,6 +642,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 name,
                                                 versionIdentifier,
                                                 description,
+                                                deployedImplementationType,
                                                 null,
                                                 expectedTypeGUID,
                                                 expectedTypeName,
@@ -717,7 +720,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                     EntityDetail endpointEntity = this.getEntityFromRepository(userId,
                                                                                endpointGUID,
                                                                                endpointGUIDParameterName,
-                                                                               OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                                               OpenMetadataType.ENDPOINT.typeName,
                                                                                null,
                                                                                null,
                                                                                forLineage,
@@ -734,7 +737,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
                         endpointProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                           endpointProperties,
-                                                                                          OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                                                          OpenMetadataProperty.NETWORK_ADDRESS.name,
                                                                                           networkAddress,
                                                                                           methodName);
                         repositoryHandler.updateEntityProperties(userId,
@@ -742,8 +745,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                  externalSourceName,
                                                                  endpointGUID,
                                                                  endpointEntity,
-                                                                 OpenMetadataType.ENDPOINT_TYPE_GUID,
-                                                                 OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                                 OpenMetadataType.ENDPOINT.typeGUID,
+                                                                 OpenMetadataType.ENDPOINT.typeName,
                                                                  endpointProperties,
                                                                  methodName);
                     }
@@ -766,123 +769,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param technicalName the stored name property for the asset
      * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param technicalDescription the stored description property associated with the asset
-     * @param zoneMembership initial zones for the asset - or null to allow the security module to set it up
-     * @param owner identifier of the owner
-     * @param ownerType is the owner identifier a user id, personal profile or team profile
-     * @param originOrganizationCapabilityGUID unique identifier of originating organization
-     * @param originBusinessCapabilityGUID unique identifier of originating business capability
-     * @param otherOriginValues the properties that characterize where this asset is from
-     * @param additionalProperties any arbitrary properties not part of the type system
-     * @param typeGUID identifier of the type that is a subtype of asset - or null to create standard type
-     * @param typeName name of the type that is a subtype of asset - or null to create standard type
-     * @param extendedProperties properties from any subtype
-     * @param effectiveFrom the date when this element is active - null for active now
-     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
-     * @param instanceStatus initial status of the Asset in the metadata repository
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return unique identifier of the new asset
-     *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
-     */
-    public String  createAssetInRepository(String               userId,
-                                           String               externalSourceGUID,
-                                           String               externalSourceName,
-                                           String               qualifiedName,
-                                           String               technicalName,
-                                           String               versionIdentifier,
-                                           String               technicalDescription,
-                                           List<String>         zoneMembership,
-                                           String               owner,
-                                           int                  ownerType,
-                                           String               originOrganizationCapabilityGUID,
-                                           String               originBusinessCapabilityGUID,
-                                           Map<String, String>  otherOriginValues,
-                                           Map<String, String>  additionalProperties,
-                                           String               typeGUID,
-                                           String               typeName,
-                                           Map<String, Object>  extendedProperties,
-                                           Date                 effectiveFrom,
-                                           Date                 effectiveTo,
-                                           InstanceStatus       instanceStatus,
-                                           Date                 effectiveTime,
-                                           String               methodName) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
-    {
-        String assetTypeName = OpenMetadataType.ASSET.typeName;
-
-        if (typeName != null)
-        {
-            assetTypeName = typeName;
-        }
-
-        String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
-                                                                      OpenMetadataType.ASSET.typeName,
-                                                                      serviceName,
-                                                                      methodName,
-                                                                      repositoryHelper);
-
-        AssetBuilder builder = new AssetBuilder(qualifiedName,
-                                                technicalName,
-                                                versionIdentifier,
-                                                technicalDescription,
-                                                additionalProperties,
-                                                assetTypeId,
-                                                assetTypeName,
-                                                extendedProperties,
-                                                instanceStatus,
-                                                repositoryHelper,
-                                                serviceName,
-                                                serverName);
-
-        if (zoneMembership != null)
-        {
-            builder.setAssetZones(userId, zoneMembership, methodName);
-        }
-        else if (defaultZones != null)
-        {
-            builder.setAssetZones(userId, defaultZones, methodName);
-        }
-
-        builder.setAssetOwnership(userId, owner, ownerType, methodName);
-        builder.setAssetOrigin(userId,
-                               originOrganizationCapabilityGUID,
-                               OpenMetadataProperty.GUID.name,
-                               originBusinessCapabilityGUID,
-                               OpenMetadataProperty.GUID.name,
-                               otherOriginValues,
-                               methodName);
-
-        builder.setEffectivityDates(effectiveFrom, effectiveTo);
-
-        return this.createBeanInRepository(userId,
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           typeGUID,
-                                           typeName,
-                                           OpenMetadataType.ASSET.typeName,
-                                           builder,
-                                           true,
-                                           effectiveTime,
-                                           methodName);
-    }
-
-
-    /**
-     * Add a simple asset description to the metadata repository.  Null values for requested typename, ownership,
-     * zone membership and latest change are filled in with default values.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software capability representing the caller
-     * @param externalSourceName unique name of software capability representing the caller
-     * @param qualifiedName unique name for this asset
-     * @param technicalName the stored name property for the asset
-     * @param versionIdentifier the stored versionIdentifier property for the asset
-     * @param technicalDescription the stored description property associated with the asset
+     * @param deployedImplementationType type of technology
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of asset - or null to create standard type
      * @param extendedProperties properties from any subtype
@@ -905,6 +792,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            String               technicalName,
                                            String               versionIdentifier,
                                            String               technicalDescription,
+                                           String               deployedImplementationType,
                                            Map<String, String>  additionalProperties,
                                            String               typeName,
                                            Map<String, Object>  extendedProperties,
@@ -933,6 +821,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 technicalName,
                                                 versionIdentifier,
                                                 technicalDescription,
+                                                deployedImplementationType,
                                                 additionalProperties,
                                                 assetTypeId,
                                                 assetTypeName,
@@ -974,6 +863,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param technicalName the stored name property for the asset
      * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param technicalDescription the stored description property associated with the asset
+     * @param deployedImplementationType type of technology
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param assetTypeName name of the type that is a subtype of asset - or null to create standard type
      * @param extendedProperties properties from any subtype
@@ -1007,6 +897,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                              String              technicalName,
                                              String              versionIdentifier,
                                              String              technicalDescription,
+                                             String              deployedImplementationType,
                                              Map<String, String> additionalProperties,
                                              String              assetTypeName,
                                              Map<String, Object> extendedProperties,
@@ -1034,6 +925,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                         technicalName,
                                                         versionIdentifier,
                                                         technicalDescription,
+                                                        deployedImplementationType,
                                                         additionalProperties,
                                                         assetTypeName,
                                                         extendedProperties,
@@ -1084,6 +976,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param technicalName the stored name property for the asset
      * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param technicalDescription the stored description property associated with the asset
+     * @param deployedImplementationType type of technology
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of Database - or null to create standard type
      * @param extendedProperties properties from any subtype
@@ -1108,6 +1001,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                             String               technicalName,
                             String               versionIdentifier,
                             String               technicalDescription,
+                            String               deployedImplementationType,
                             Map<String, String>  additionalProperties,
                             String               typeName,
                             Map<String, Object>  extendedProperties,
@@ -1136,6 +1030,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          technicalName,
                          versionIdentifier,
                          technicalDescription,
+                         deployedImplementationType,
                          additionalProperties,
                          typeGUID,
                          typeName,
@@ -1163,6 +1058,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param technicalName the stored  name property for the asset
      * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param technicalDescription the stored description property associated with the asset
+     * @param deployedImplementationType type of technology
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeGUID identifier of the type that is a subtype of Database - or null to create standard type
      * @param typeName name of the type that is a subtype of Database - or null to create standard type
@@ -1188,6 +1084,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                             String               technicalName,
                             String               versionIdentifier,
                             String               technicalDescription,
+                            String               deployedImplementationType,
                             Map<String, String>  additionalProperties,
                             String               typeGUID,
                             String               typeName,
@@ -1211,6 +1108,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          technicalName,
                          versionIdentifier,
                          technicalDescription,
+                         deployedImplementationType,
                          additionalProperties,
                          typeGUID,
                          typeName,
@@ -1238,6 +1136,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param technicalName the stored name property for the asset
      * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param technicalDescription the stored description property associated with the asset
+     * @param deployedImplementationType type of technology
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeGUID identifier of the type that is a subtype of Asset - or null to create standard type
      * @param typeName name of the type that is a subtype of Asset - or null to create standard type
@@ -1264,6 +1163,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                             String               technicalName,
                             String               versionIdentifier,
                             String               technicalDescription,
+                            String               deployedImplementationType,
                             Map<String, String>  additionalProperties,
                             String               typeGUID,
                             String               typeName,
@@ -1283,6 +1183,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 technicalName,
                                                 versionIdentifier,
                                                 technicalDescription,
+                                                deployedImplementationType,
                                                 additionalProperties,
                                                 typeGUID,
                                                 typeName,
@@ -1322,6 +1223,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param name the stored name property for the asset
      * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param description the stored description property associated with the asset
+     * @param deployedImplementationType type of technology
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeGUID identifier of the type that is a subtype of Database - or null to create standard type
      * @param typeName name of the type that is a subtype of Database - or null to create standard type
@@ -1351,6 +1253,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                           String               name,
                                           String               versionIdentifier,
                                           String               description,
+                                          String               deployedImplementationType,
                                           Map<String, String>  additionalProperties,
                                           String               typeGUID,
                                           String               typeName,
@@ -1377,6 +1280,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          name,
                          versionIdentifier,
                          description,
+                         deployedImplementationType,
                          additionalProperties,
                          typeGUID,
                          typeName,
@@ -3480,229 +3384,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Return the list of assets that have the same endpoint address.
-     *
-     * @param userId calling user
-     * @param networkAddress address to query on
-     * @param networkAddressParameterName parameter name supplying networkAddress
-     * @param startFrom place to start in query
-     * @param pageSize number of results to return
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     * @return list of unique identifiers for matching assets
-     *
-     * @throws InvalidParameterException the networkAddress is invalid
-     * @throws PropertyServerException there is a problem access in the property server
-     * @throws UserNotAuthorizedException the user does not have access to the properties
-     */
-    public  List<String> getAssetGUIDsByEndpoint(String  userId,
-                                                 String  networkAddress,
-                                                 String  networkAddressParameterName,
-                                                 int     startFrom,
-                                                 int     pageSize,
-                                                 boolean forLineage,
-                                                 boolean forDuplicateProcessing,
-                                                 Date    effectiveTime,
-                                                 String  methodName) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
-    {
-        int queryPageSize      = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
-        int maxPageSize        = invalidParameterHandler.getMaxPagingSize();
-        int startNextQueryFrom = 0;
-
-        List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME);
-
-        List<String> relationshipPath = new ArrayList<>();
-        relationshipPath.add(OpenMetadataType.CONNECTION_ENDPOINT_TYPE_GUID);
-        relationshipPath.add(OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID);
-
-        List<String>  assetGUIDs     = new ArrayList<>();
-        List<String>  resultGUIDs    = new ArrayList<>();
-        boolean moreResultsAvailable = true;
-
-        while (moreResultsAvailable && ((queryPageSize == 0) || (resultGUIDs.size() < queryPageSize)))
-        {
-            List<String> endpointGUIDs = this.getEntityGUIDsByValue(userId,
-                                                                    networkAddress,
-                                                                    networkAddressParameterName,
-                                                                    OpenMetadataType.ENDPOINT_TYPE_GUID,
-                                                                    OpenMetadataType.ENDPOINT_TYPE_NAME,
-                                                                    specificMatchPropertyNames,
-                                                                    true,
-                                                                    null,
-                                                                    null,
-                                                                    forLineage,
-                                                                    forDuplicateProcessing,
-                                                                    supportedZones,
-                                                                    null,
-                                                                    startNextQueryFrom,
-                                                                    maxPageSize,
-                                                                    effectiveTime,
-                                                                    methodName);
-
-
-            if (endpointGUIDs == null)
-            {
-                moreResultsAvailable = false;
-            }
-            else /* from each endpoint, navigate to the asset. The same asset may be returned multiple times */
-            {
-                for (String endpointGUID : endpointGUIDs)
-                {
-                    if (endpointGUID != null)
-                    {
-                        boolean moreResultsFromEndpoint = true;
-                        int     endpointStartFrom = 0;
-
-                        while (moreResultsFromEndpoint && ((queryPageSize == 0) || (resultGUIDs.size() < queryPageSize)))
-                        {
-                            List<String> endpointAssetGUIDs = this.getRelatedEntityGUIDs(userId,
-                                                                                         endpointGUID,
-                                                                                         networkAddressParameterName,
-                                                                                         OpenMetadataType.ENDPOINT_TYPE_NAME,
-                                                                                         relationshipPath,
-                                                                                         OpenMetadataType.ASSET.typeName,
-                                                                                         supportedZones,
-                                                                                         endpointStartFrom,
-                                                                                         maxPageSize,
-                                                                                         effectiveTime,
-                                                                                         methodName);
-
-                            if ((endpointAssetGUIDs == null) || (endpointAssetGUIDs.isEmpty()))
-                            {
-                                moreResultsFromEndpoint = false;
-                            }
-                            else
-                            {
-                                /*
-                                 * The generic handler will have removed duplicates from the list it returns.
-                                 * This method needs to ensure that assets returned from different endpoints do not
-                                 * cause the same asset to appear twice in the list.
-                                 */
-                                for (String endpointAssetGUID : endpointAssetGUIDs)
-                                {
-                                    if (endpointAssetGUID != null)
-                                    {
-                                        if (! assetGUIDs.contains(endpointAssetGUID))
-                                        {
-                                            assetGUIDs.add(endpointAssetGUID);
-                                            if (assetGUIDs.size() > startFrom)
-                                            {
-                                                resultGUIDs.add(endpointAssetGUID);
-                                            }
-                                        }
-                                    }
-                                }
-
-                                endpointStartFrom = endpointStartFrom + endpointAssetGUIDs.size();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (resultGUIDs.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return resultGUIDs;
-        }
-    }
-
-
-    /**
-     * Return the list of assets that have the same endpoint address.
-     *
-     * @param userId calling user
-     * @param networkAddress address to query on
-     * @param networkAddressParameterName name of parameter passing the network address
-     * @param suppliedTypeName name of asset subtype to validate
-     * @param startFrom place to start in query
-     * @param pageSize number of results to return
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     * @return list of  matching assets
-     *
-     * @throws InvalidParameterException the networkAddress is invalid
-     * @throws PropertyServerException there is a problem access in the property server
-     * @throws UserNotAuthorizedException the user does not have access to the properties
-     */
-    public  List<B> getAssetsByEndpoint(String  userId,
-                                        String  networkAddress,
-                                        String  networkAddressParameterName,
-                                        String  suppliedTypeName,
-                                        int     startFrom,
-                                        int     pageSize,
-                                        boolean forLineage,
-                                        boolean forDuplicateProcessing,
-                                        Date    effectiveTime,
-                                        String  methodName) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
-    {
-        String assetTypeName = OpenMetadataType.ASSET.typeName;
-
-        if (suppliedTypeName != null)
-        {
-            assetTypeName = suppliedTypeName;
-        }
-
-        List<String> assetGUIDs = this.getAssetGUIDsByEndpoint(userId,
-                                                               networkAddress,
-                                                               networkAddressParameterName,
-                                                               startFrom,
-                                                               pageSize,
-                                                               forLineage,
-                                                               forDuplicateProcessing,
-                                                               effectiveTime,
-                                                               methodName);
-
-        if ((assetGUIDs == null) || (assetGUIDs.isEmpty()))
-        {
-            return null;
-        }
-        else
-        {
-            List<B> assets = new ArrayList<>();
-
-            for (String assetGUID : assetGUIDs)
-            {
-                if (assetGUID != null)
-                {
-                    B bean = this.getBeanFromRepository(userId,
-                                                        assetGUID,
-                                                        networkAddressParameterName,
-                                                        assetTypeName,
-                                                        forLineage,
-                                                        forDuplicateProcessing,
-                                                        supportedZones,
-                                                        effectiveTime,
-                                                        methodName);
-
-                    assets.add(bean);
-                }
-            }
-
-            if (assets.isEmpty())
-            {
-                return null;
-            }
-
-            return assets;
-        }
-    }
-
-
-    /**
      * Return a list of assets with the requested search string in their name, qualified name
      * or description.
      *
@@ -3974,162 +3655,5 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                             pageSize,
                                             effectiveTime,
                                             methodName);
-    }
-
-
-    /**
-     * Return the list of assets that are linked to a specific tag either directly, or via one
-     * of its schema elements.
-     *
-     * @param userId the name of the calling user.
-     * @param tagGUID unique identifier of tag.
-     * @param tagGUIDParameterName name of parameter supplying the GUID
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return asset guid list
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<B> getAssetsByTag(String  userId,
-                                  String  tagGUID,
-                                  String  tagGUIDParameterName,
-                                  int     startFrom,
-                                  int     pageSize,
-                                  boolean forLineage,
-                                  boolean forDuplicateProcessing,
-                                  Date    effectiveTime,
-                                  String  methodName) throws InvalidParameterException,
-                                                             PropertyServerException,
-                                                             UserNotAuthorizedException
-    {
-        return this.getAttachedElements(userId,
-                                        null,
-                                        null,
-                                        tagGUID,
-                                        tagGUIDParameterName,
-                                        OpenMetadataType.INFORMAL_TAG_TYPE_NAME,
-                                        OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_GUID,
-                                        OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_NAME,
-                                        OpenMetadataType.ASSET.typeName,
-                                        null,
-                                        null,
-                                        0,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        supportedZones,
-                                        startFrom,
-                                        pageSize,
-                                        effectiveTime,
-                                        methodName);
-    }
-
-
-    /**
-     * Return the list of assets that are linked to a specific keyword.
-     *
-     * @param userId the name of the calling user.
-     * @param keywordGUID unique identifier of keyword.
-     * @param keywordGUIDParameterName name of parameter supplying the guid
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return asset guid list
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<B> getAssetsByKeyword(String  userId,
-                                      String  keywordGUID,
-                                      String  keywordGUIDParameterName,
-                                      int     startFrom,
-                                      int     pageSize,
-                                      boolean forLineage,
-                                      boolean forDuplicateProcessing,
-                                      Date    effectiveTime,
-                                      String  methodName) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
-    {
-        return this.getAttachedElements(userId,
-                                        null,
-                                        null,
-                                        keywordGUID,
-                                        keywordGUIDParameterName,
-                                        OpenMetadataType.SEARCH_KEYWORD.typeName,
-                                        OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeGUID,
-                                        OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName,
-                                        OpenMetadataType.REFERENCEABLE.typeName,
-                                        null,
-                                        null,
-                                        0,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        supportedZones,
-                                        startFrom,
-                                        pageSize,
-                                        effectiveTime,
-                                        methodName);
-    }
-
-
-    /**
-     * Return the list of assets that are linked to a specific glossary term.
-     *
-     * @param userId the name of the calling user.
-     * @param termGUID unique identifier of term.
-     * @param termGUIDParameterName name of parameter supplying the guid
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
-     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return asset guid list
-     * @throws InvalidParameterException the userId is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<B> getAssetsByGlossaryTerm(String       userId,
-                                           String       termGUID,
-                                           String       termGUIDParameterName,
-                                           int          startFrom,
-                                           int          pageSize,
-                                           boolean      forLineage,
-                                           boolean      forDuplicateProcessing,
-                                           Date         effectiveTime,
-                                           String       methodName) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
-    {
-        return this.getAttachedElements(userId,
-                                        null,
-                                        null,
-                                        termGUID,
-                                        termGUIDParameterName,
-                                        OpenMetadataType.GLOSSARY_TYPE_NAME,
-                                        OpenMetadataType.SEMANTIC_ASSIGNMENT.typeGUID,
-                                        OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
-                                        OpenMetadataType.ASSET.typeName,
-                                        null,
-                                        null,
-                                        0,
-                                        forLineage,
-                                        forDuplicateProcessing,
-                                        supportedZones,
-                                        startFrom,
-                                        pageSize,
-                                        effectiveTime,
-                                        methodName);
     }
 }

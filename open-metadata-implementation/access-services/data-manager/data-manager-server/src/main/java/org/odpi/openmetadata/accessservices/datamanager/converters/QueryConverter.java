@@ -56,9 +56,8 @@ public class QueryConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof QueryElement)
+            if (returnBean instanceof QueryElement bean)
             {
-                QueryElement    bean            = (QueryElement) returnBean;
                 QueryProperties queryProperties = new QueryProperties();
 
                 if (entity != null)

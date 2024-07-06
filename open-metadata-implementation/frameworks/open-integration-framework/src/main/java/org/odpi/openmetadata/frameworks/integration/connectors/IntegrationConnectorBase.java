@@ -9,6 +9,8 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
@@ -100,6 +102,31 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     public void setContext(IntegrationContext integrationContext)
     {
         this.integrationContext = integrationContext;
+    }
+
+
+
+    /**
+     * Retrieve the endpoint from the asset connection.
+     *
+     * @param assetConnector asset connector
+     * @return endpoint or null
+     */
+    protected String getNetworkAddress(Connector assetConnector)
+    {
+        ConnectionProperties assetConnection = assetConnector.getConnection();
+
+        if (assetConnection != null)
+        {
+            EndpointProperties endpointProperties = assetConnection.getEndpoint();
+
+            if (endpointProperties != null)
+            {
+                return endpointProperties.getAddress();
+            }
+        }
+
+        return null;
     }
 
 

@@ -7,6 +7,8 @@ import org.odpi.openmetadata.frameworks.connectors.mapper.OpenConnectorsValidVal
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaUsage;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -312,27 +314,27 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.REFERENCE_TITLE_PROPERTY_NAME, referenceTitle, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.REFERENCE_ABSTRACT_PROPERTY_NAME, referenceAbstract, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REFERENCE_TITLE.name, referenceTitle, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REFERENCE_ABSTRACT.name, referenceAbstract, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataType.AUTHORS_PROPERTY_NAME, authors, methodName);
-        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.NUMBER_OF_PAGES_PROPERTY_NAME, numberOfPages, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.PAGE_RANGE_PROPERTY_NAME, pageRange, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.ORGANIZATION_PROPERTY_NAME, authorOrganization, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.REFERENCE_VERSION_PROPERTY_NAME, versionNumber, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.PUBLICATION_SERIES_PROPERTY_NAME, publicationSeries, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.PUBLICATION_SERIES_VOLUME_PROPERTY_NAME, publicationSeriesVolume, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.EDITION_PROPERTY_NAME, edition, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.URL_PROPERTY_NAME, referenceURL, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.PUBLISHER_PROPERTY_NAME, publisher, methodName);
-        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataType.FIRST_PUB_DATE_PROPERTY_NAME, firstPublicationDate, methodName);
-        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataType.PUBLICATION_DATE_PROPERTY_NAME, publicationDate, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.PUBLICATION_CITY_PROPERTY_NAME, publicationCity, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.PUBLICATION_YEAR_PROPERTY_NAME, publicationYear, methodName);
-        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataType.PUBLICATION_NUMBERS_PROPERTY_NAME, publicationNumbers, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.LICENSE_PROPERTY_NAME, license, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.COPYRIGHT_PROPERTY_NAME, copyright, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.ATTRIBUTION_PROPERTY_NAME, attribution, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.AUTHORS.name, authors, methodName);
+        properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NUMBER_OF_PAGES.name, numberOfPages, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PAGE_RANGE.name, pageRange, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SOURCE_ORGANIZATION.name, authorOrganization, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REFERENCE_VERSION.name, versionNumber, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PUBLICATION_SERIES.name, publicationSeries, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PUBLICATION_SERIES_VOLUME.name, publicationSeriesVolume, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.EDITION.name, edition, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.URL.name, referenceURL, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PUBLISHER.name, publisher, methodName);
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.FIRST_PUB_DATE.name, firstPublicationDate, methodName);
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PUBLICATION_DATE.name, publicationDate, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PUBLICATION_CITY.name, publicationCity, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PUBLICATION_YEAR.name, publicationYear, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PUBLICATION_NUMBERS.name, publicationNumbers, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.LICENSE.name, license, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.COPYRIGHT.name, copyright, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ATTRIBUTION.name, attribution, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
@@ -422,9 +424,9 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(referenceableEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(externalReferenceEntity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.REFERENCE_ID_PROPERTY_NAME, referenceId, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.REFERENCE_ID.name, referenceId, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.PAGES_PROPERTY_NAME, pages, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PAGES.name, pages, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(referenceableGUID + "_to_" + externalReferenceGUID + "_external_reference_link_relationship" + referenceId),
@@ -486,23 +488,23 @@ public class SimpleCatalogArchiveHelper
             elementTypeName = typeName;
         }
 
-        EnumElementDef typeEnumElement = archiveHelper.getEnumElement(OpenMetadataType.MEDIA_TYPE_ENUM_TYPE_NAME, mediaType);
-        EnumElementDef usageEnumElement = archiveHelper.getEnumElement(OpenMetadataType.MEDIA_USAGE_ENUM_TYPE_NAME, defaultMediaUsage);
+        EnumElementDef typeEnumElement = archiveHelper.getEnumElement(MediaType.getOpenTypeName(), mediaType);
+        EnumElementDef usageEnumElement = archiveHelper.getEnumElement(MediaUsage.getOpenTypeName(), defaultMediaUsage);
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataType.AUTHORS_PROPERTY_NAME, authors, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.ORGANIZATION_PROPERTY_NAME, authorOrganization, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.REFERENCE_VERSION_PROPERTY_NAME, versionNumber, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.URL_PROPERTY_NAME, referenceURL, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.LICENSE_PROPERTY_NAME, license, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.COPYRIGHT_PROPERTY_NAME, copyright, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.ATTRIBUTION_PROPERTY_NAME, attribution, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataType.MEDIA_TYPE_PROPERTY_NAME, typeEnumElement.getOrdinal(), typeEnumElement.getValue(), typeEnumElement.getDescription(), methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.MEDIA_TYPE_OTHER_ID_PROPERTY_NAME, mediaTypeOtherId, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataType.DEFAULT_MEDIA_USAGE_PROPERTY_NAME, usageEnumElement.getOrdinal(), usageEnumElement.getValue(), usageEnumElement.getDescription(), methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.DEFAULT_MEDIA_USAGE_OTHER_ID_PROPERTY_NAME, defaultMediaUsageOtherId, methodName);
+        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.AUTHORS.name, authors, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SOURCE_ORGANIZATION.name, authorOrganization, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REFERENCE_VERSION.name, versionNumber, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.URL.name, referenceURL, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.LICENSE.name, license, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.COPYRIGHT.name, copyright, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ATTRIBUTION.name, attribution, methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, MediaType.getOpenTypeName(), typeEnumElement.getOrdinal(), typeEnumElement.getValue(), typeEnumElement.getDescription(), methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MEDIA_TYPE_OTHER_ID.name, mediaTypeOtherId, methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEFAULT_MEDIA_USAGE.name, usageEnumElement.getOrdinal(), usageEnumElement.getValue(), usageEnumElement.getDescription(), methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEFAULT_MEDIA_USAGE_OTHER_ID.name, defaultMediaUsageOtherId, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
@@ -579,7 +581,7 @@ public class SimpleCatalogArchiveHelper
     {
         final String methodName = "addMediaReferenceLink";
 
-        EnumElementDef enumElement = archiveHelper.getEnumElement(OpenMetadataType.MEDIA_USAGE_ENUM_TYPE_NAME, mediaUsage);
+        EnumElementDef enumElement = archiveHelper.getEnumElement(MediaUsage.getOpenTypeName(), mediaUsage);
 
         EntityDetail referenceableEntity = archiveBuilder.getEntity(referenceableGUID);
         EntityDetail externalReferenceEntity = archiveBuilder.getEntity(mediaReferenceGUID);
@@ -587,10 +589,10 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(referenceableEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(externalReferenceEntity);
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.MEDIA_ID_PROPERTY_NAME, mediaId, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.MEDIA_ID.name, mediaId, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataType.MEDIA_USAGE_PROPERTY_NAME, enumElement.getOrdinal(), enumElement.getValue(), enumElement.getDescription(), methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.MEDIA_USAGE_OTHER_ID_PROPERTY_NAME, mediaUsageOtherId, methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MEDIA_USAGE.name, enumElement.getOrdinal(), enumElement.getValue(), enumElement.getDescription(), methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MEDIA_USAGE_OTHER_ID.name, mediaUsageOtherId, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(referenceableGUID + "_to_" + mediaReferenceGUID + "_media_reference_relationship" + mediaId),
@@ -884,7 +886,7 @@ public class SimpleCatalogArchiveHelper
     {
         final String methodName = "addCyberLocation";
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME, networkAddress, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.NETWORK_ADDRESS.name, networkAddress, methodName);
 
         return addClassifiedLocation(qualifiedName, identifier, displayName, description, additionalProperties, OpenMetadataType.CYBER_LOCATION_CLASSIFICATION_TYPE_NAME, properties, methodName);
     }
@@ -2931,6 +2933,67 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
+     * Adds a property facet entity and links it to the referenceable via the ReferenceableFacet relationship.
+     * The PropertyFacet is anchored to the referenceable.
+     *
+     * @param referenceableGUID referenceable being described
+     * @param referenceableTypeName type name of referenceable
+     * @param referenceableDomainName domain name of referenceable's type
+     * @param referenceableQualifiedName qualified name of the referenceable
+     * @param source source of the extra information
+     * @param schemaVersion version of the schema for the properties
+     * @param description description of the properties (typically vendorProperties)
+     * @param facetProperties properties for the facet
+     */
+    public void addPropertyFacet(String              referenceableGUID,
+                                 String              referenceableTypeName,
+                                 String              referenceableDomainName,
+                                 String              referenceableQualifiedName,
+                                 String              source,
+                                 String              schemaVersion,
+                                 String              description,
+                                 Map<String, String> facetProperties)
+    {
+        final String methodName = "addPropertyFacet";
+
+        String qualifiedName = referenceableQualifiedName + "_propertyFacetFrom_" + source + "@" + schemaVersion;
+
+        List<Classification> entityClassifications = new ArrayList<>();
+
+        String facetGUID = idToGUIDMap.getGUID(qualifiedName);
+
+        entityClassifications.add(this.getAnchorClassification(referenceableGUID, referenceableTypeName, referenceableDomainName, methodName));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCHEMA_VERSION.name, schemaVersion, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PROPERTIES.name, facetProperties, methodName);
+
+        EntityDetail facetEntity = archiveHelper.getEntityDetail(OpenMetadataType.PROPERTY_FACET.typeName,
+                                                                 facetGUID,
+                                                                 properties,
+                                                                 InstanceStatus.ACTIVE,
+                                                                 entityClassifications);
+        archiveBuilder.addEntity(facetEntity);
+
+        EntityDetail referenceableEntity = archiveBuilder.getEntity(referenceableGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(referenceableEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(facetEntity);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.SOURCE.name, source, methodName);
+
+        Relationship relationship = archiveHelper.getRelationship(OpenMetadataType.REFERENCEABLE_FACET.typeName,
+                                                                  this.idToGUIDMap.getGUID(referenceableGUID + "_to_" + facetGUID + "_referenceable_facet_relationship"),
+                                                                  properties,
+                                                                  InstanceStatus.ACTIVE,
+                                                                  end1,
+                                                                  end2);
+        archiveBuilder.addRelationship(relationship);
+    }
+
+
+    /**
      * Create an asset entity.
      *
      * @param typeName name of asset subtype to use - default is Asset
@@ -3443,12 +3506,12 @@ public class SimpleCatalogArchiveHelper
      * @param properties additional properties
      * @return classification
      */
-    public Classification getDataStoreEncodingClassification(String              encoding,
+    public Classification getDataAssetEncodingClassification(String              encoding,
                                                              String              language,
                                                              String              description,
                                                              Map<String, String> properties)
     {
-        final String methodName = "getDataStoreEncodingClassification";
+        final String methodName = "getDataAssetEncodingClassification";
 
         InstanceProperties instanceProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
                                                                                           null,
@@ -3474,7 +3537,7 @@ public class SimpleCatalogArchiveHelper
                                                                           properties,
                                                                           methodName);
 
-        return archiveHelper.getClassification(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
+        return archiveHelper.getClassification(OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName,
                                                instanceProperties,
                                                InstanceStatus.ACTIVE);
     }
@@ -4638,8 +4701,8 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAME.name, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME, networkAddress, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.PROTOCOL_PROPERTY_NAME, protocol, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NETWORK_ADDRESS.name, networkAddress, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PROTOCOL.name, protocol, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
         List<Classification> classifications = null;
@@ -4654,7 +4717,7 @@ public class SimpleCatalogArchiveHelper
                                                              methodName));
         }
 
-        EntityDetail endpointEntity = archiveHelper.getEntityDetail(OpenMetadataType.ENDPOINT_TYPE_NAME,
+        EntityDetail endpointEntity = archiveHelper.getEntityDetail(OpenMetadataType.ENDPOINT.typeName,
                                                                     idToGUIDMap.getGUID(qualifiedName),
                                                                     properties,
                                                                     InstanceStatus.ACTIVE,
@@ -4681,7 +4744,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(end1Entity);
         EntityProxy end2 = archiveHelper.getEntityProxy(end2Entity);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SERVER_ENDPOINT_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(itInfrastructureGUID + "_to_" + endpointGUID + "_server_endpoint_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
@@ -4784,9 +4847,9 @@ public class SimpleCatalogArchiveHelper
         {
             String externalLinkQualifiedName = qualifiedName + "_external_link";
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, externalLinkQualifiedName, methodName);
-            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.URL_PROPERTY_NAME, externalLink, methodName);
-            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.ORGANIZATION_PROPERTY_NAME, originatorName, methodName);
-            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.REFERENCE_VERSION_PROPERTY_NAME, versionName, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.URL.name, externalLink, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SOURCE_ORGANIZATION.name, originatorName, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REFERENCE_VERSION.name, versionName, methodName);
 
             classifications = new ArrayList<>();
             classifications.add(anchorClassification);

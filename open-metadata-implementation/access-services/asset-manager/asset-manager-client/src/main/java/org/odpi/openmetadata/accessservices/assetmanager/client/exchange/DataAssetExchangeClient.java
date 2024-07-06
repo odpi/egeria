@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManage
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelationshipElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;

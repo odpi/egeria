@@ -566,9 +566,7 @@ public class OpenMetadataTypesArchive3_1
         /*
          * Create the Patch
          */
-        final String typeName = "ServerEndpoint";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -576,18 +574,16 @@ public class OpenMetadataTypesArchive3_1
         /*
          * Update end 1.
          */
-        final String                     end1EntityType               = "ITInfrastructure";
         final String                     end1AttributeName            = "servers";
         final String                     end1AttributeDescription     = "Server supporting this endpoint.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
 
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName),
                                                                                     end1AttributeName,
                                                                                     end1AttributeDescription,
                                                                                     end1AttributeDescriptionGUID,
-                                                                                    end1Cardinality);
+                                                                                    RelationshipEndCardinality.ANY_NUMBER);
         typeDefPatch.setEndDef2(relationshipEndDef);
 
         return typeDefPatch;

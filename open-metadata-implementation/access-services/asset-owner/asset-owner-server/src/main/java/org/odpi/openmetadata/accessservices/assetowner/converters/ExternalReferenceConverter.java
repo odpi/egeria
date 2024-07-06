@@ -99,7 +99,7 @@ public class ExternalReferenceConverter<B> extends AssetOwnerOMASConverter<B>
                     externalReferenceProperties.setURI(this.removeURL(instanceProperties));
                     externalReferenceProperties.setVersion(this.removeReferenceVersion(instanceProperties));
                     externalReferenceProperties.setResourceDescription(this.removeDescription(instanceProperties));
-                    externalReferenceProperties.setOrganization(this.removeOrganization(instanceProperties));
+                    externalReferenceProperties.setOrganization(this.removeOwningOrganization(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

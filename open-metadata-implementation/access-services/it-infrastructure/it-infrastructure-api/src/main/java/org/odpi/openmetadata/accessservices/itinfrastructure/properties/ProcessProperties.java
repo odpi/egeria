@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,9 +24,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProcessProperties extends AssetProperties
 {
-    private static final String formulaProperty                = "formula";
-    private static final String formulaTypeProperty            = "formulaType";
-    private static final String implementationLanguageProperty = "implementationLanguage";
+    private static final String formulaProperty                = OpenMetadataProperty.FORMULA.name;
+    private static final String formulaTypeProperty            = OpenMetadataProperty.FORMULA_TYPE.name;
+    private static final String implementationLanguageProperty = OpenMetadataProperty.IMPLEMENTATION_LANGUAGE.name;
 
     private String        formula                = null;
     private String        formulaType            = null;
@@ -210,22 +211,10 @@ public class ProcessProperties extends AssetProperties
     public String toString()
     {
         return "ProcessProperties{" +
-                       "name='" + getName() + '\'' +
-                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", formula='" + formula + '\'' +
-                       ", formulaType='" + formulaType + '\'' +
-                       ", implementationLanguage='" + implementationLanguage + '\'' +
-                       ", cloneToAsset=" + cloneToAsset() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "formula='" + formula + '\'' +
+                ", formulaType='" + formulaType + '\'' +
+                ", implementationLanguage='" + implementationLanguage + '\'' +
+                "} " + super.toString();
     }
 
 

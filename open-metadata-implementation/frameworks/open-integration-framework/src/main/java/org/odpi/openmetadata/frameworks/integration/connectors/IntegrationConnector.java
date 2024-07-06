@@ -4,17 +4,11 @@ package org.odpi.openmetadata.frameworks.integration.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
-import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
-
-import java.util.List;
 
 /**
  * IntegrationConnector is the abstract interface for a connector that is managed by the integration services.
  * If the connector throws an exception from any of these methods, it is flagged with a failed status
  * and will not be called again until it is restarted.
- *
  * The setConnectorName and setIntegrationContext methods are called after initialize() and before start().
  */
 public interface IntegrationConnector

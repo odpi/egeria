@@ -230,12 +230,20 @@ public enum OCFErrorCode implements ExceptionMessageSet
                      "There is a mismatch between the asset in the open metadata catalog and the resource that it represents. Update the asset in the asset catalog so that it is matched with more appropriate services."),
 
     /**
-     * SURVEY-ACTION-SERVICE-400-008 - {0} asset {1} describes a resource called {2} does not exist
+     * OCF-CONNECTOR-400-008 - {0} asset {1} describes a resource called {2} does not exist
      */
     NO_RESOURCE(400, "OCF-CONNECTOR-400-008",
                 "{0} asset {1} describes a resource called {2} that does not exist",
                 "The connector terminates because it does not have access to the resource.",
                 "Ensure the resource is correctly identified in the asset. Rerun this request when the resource is created."),
+
+    /**
+     * OCF-CONNECTOR-400-009 - The {0} connector is unable to proceed with is processing of {1} because the configuration property called {2} was not supplied
+     */
+    MISSING_CONFIGURATION_PROPERTY(400, "OCF-CONNECTOR-400-008",
+                                   "The {0} connector is unable to proceed with is processing of {1} because the configuration property called {2} was not supplied",
+                                   "The connector stop processing the named element.",
+                                   "Update the source of the configuration properties.  This is typically in the connector's connection.  However, the configuration properties may be overridden by, say, the CatalogTarget relationship linking the connector to the resource it is processing."),
 
 
     /**

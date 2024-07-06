@@ -541,9 +541,9 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
-            if (! databaseType.equals(retrievedDatabase.getDatabaseType()))
+            if (! databaseType.equals(retrievedDatabase.getDeployedImplementationType()))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseType from Retrieve " + retrievedDatabase.getDatabaseType() + ")");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseType from Retrieve " + retrievedDatabase.getDeployedImplementationType() + ")");
             }
             if (! databaseVersion.equals(retrievedDatabase.getDatabaseVersion()))
             {
@@ -582,7 +582,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
-            if (! databaseType.equals(retrievedDatabase.getDatabaseType()))
+            if (! databaseType.equals(retrievedDatabase.getDeployedImplementationType()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseType from RetrieveByName)");
             }
@@ -630,9 +630,9 @@ public class CreateDatabaseTest
             DatabaseProperties properties = new DatabaseProperties();
 
             properties.setQualifiedName(databaseName);
-            properties.setDisplayName(databaseDisplayName); // check deprecated method still works
+            properties.setName(databaseDisplayName); // check deprecated method still works
             properties.setDescription(databaseDescription);
-            properties.setDatabaseType(databaseType);
+            properties.setDeployedImplementationType(databaseType);
             properties.setDatabaseVersion(databaseVersion);
 
             String databaseGUID = client.createDatabase(userId, databaseManagerGUID, databaseManagerName, properties);

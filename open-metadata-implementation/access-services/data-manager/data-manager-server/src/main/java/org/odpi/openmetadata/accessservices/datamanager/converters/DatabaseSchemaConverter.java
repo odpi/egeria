@@ -56,9 +56,8 @@ public class DatabaseSchemaConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof DatabaseSchemaElement)
+            if (returnBean instanceof DatabaseSchemaElement bean)
             {
-                DatabaseSchemaElement bean = (DatabaseSchemaElement) returnBean;
 
                 if (entity != null)
                 {
@@ -75,6 +74,7 @@ public class DatabaseSchemaConverter<B> extends DataManagerOMASConverter<B>
                     databaseSchemaProperties.setName(this.removeName(instanceProperties));
                     databaseSchemaProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     databaseSchemaProperties.setDescription(this.removeDescription(instanceProperties));
+                    databaseSchemaProperties.setDeployedImplementationType(this.removeDeployedImplementationType(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

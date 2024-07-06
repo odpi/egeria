@@ -116,18 +116,9 @@ public class HostRequestBody extends HostProperties
     public String toString()
     {
         return "HostRequestBody{" +
-                       "externalSourceGUID='" + externalSourceGUID + '\'' +
-                       ", externalSourceName='" + externalSourceName + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "externalSourceGUID='" + externalSourceGUID + '\'' +
+                ", externalSourceName='" + externalSourceName + '\'' +
+                "} " + super.toString();
     }
 
 

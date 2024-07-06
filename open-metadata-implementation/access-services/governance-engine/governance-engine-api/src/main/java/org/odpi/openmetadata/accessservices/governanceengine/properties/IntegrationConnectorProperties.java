@@ -21,11 +21,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class IntegrationConnectorProperties extends ReferenceableProperties
 {
-    private String     displayName       = null;
-    private String     versionIdentifier = null;
-    private String     description       = null;
-    private boolean    usesBlockingCalls = false;
-    private Connection connection        = null;
+    private String     name                       = null;
+    private String     versionIdentifier          = null;
+    private String     description                = null;
+    private String     deployedImplementationType = null;
+    private boolean    usesBlockingCalls          = false;
+    private Connection connection                 = null;
 
 
     /**
@@ -48,9 +49,10 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName                  = template.getDisplayName();
+            name                         = template.getName();
             versionIdentifier            = template.getVersionIdentifier();
             description                  = template.getDescription();
+            deployedImplementationType   = template.getDeployedImplementationType();
             usesBlockingCalls            = template.getUsesBlockingCalls();
             connection                   = template.getConnection();
         }
@@ -63,20 +65,20 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
      *
      * @return String name
      */
-    public String getDisplayName()
+    public String getName()
     {
-        return displayName;
+        return name;
     }
 
 
     /**
      * Set up the stored display name property for the asset.
      *
-     * @param displayName String name
+     * @param name String name
      */
-    public void setDisplayName(String displayName)
+    public void setName(String name)
     {
-        this.displayName = displayName;
+        this.name = name;
     }
 
 
@@ -100,6 +102,29 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+
+
+    /**
+     * Retrieve the name of the technology used for this data asset.
+     *
+     * @return string name
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the name of the technology used for this data asset.
+     *
+     * @param deployedImplementationType string name
+     */
+    public void setDeployedImplementationType(String deployedImplementationType)
+    {
+        this.deployedImplementationType = deployedImplementationType;
     }
 
 
@@ -178,16 +203,14 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
     public String toString()
     {
         return "IntegrationConnectorProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", usesBlockingCalls=" + usesBlockingCalls +
+                "name='" + name + '\'' +
                 ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", description='" + description + '\'' +
+                ", deployedImplementationType='" + deployedImplementationType + '\'' +
+                ", usesBlockingCalls=" + usesBlockingCalls +
                 ", connection=" + connection +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                '}';
+                "} " + super.toString();
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -211,8 +234,9 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
             return false;
         }
         IntegrationConnectorProperties that = (IntegrationConnectorProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
-                       Objects.equals(description, that.description) &&
+        return Objects.equals(name, that.name) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
                        Objects.equals(versionIdentifier, that.versionIdentifier) &&
                        (usesBlockingCalls == that.usesBlockingCalls) &&
                        Objects.equals(connection, that.connection);
@@ -227,6 +251,6 @@ public class IntegrationConnectorProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, versionIdentifier, usesBlockingCalls, connection);
+        return Objects.hash(super.hashCode(), name, description, deployedImplementationType, versionIdentifier, usesBlockingCalls, connection);
     }
 }

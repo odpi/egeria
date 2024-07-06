@@ -193,7 +193,7 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Create the Patch
          */
-        final String typeName = "ServerEndpoint";
+        final String typeName = OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -203,34 +203,29 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Update end 1.
          */
-        final String                     end1EntityType               = "ITInfrastructure";
         final String                     end1AttributeName            = "servers";
         final String                     end1AttributeDescription     = "Server(s) supporting this endpoint.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName),
                                                                                     end1AttributeName,
                                                                                     end1AttributeDescription,
                                                                                     end1AttributeDescriptionGUID,
-                                                                                    end1Cardinality);
+                                                                                    RelationshipEndCardinality.ANY_NUMBER);
         typeDefPatch.setEndDef1(relationshipEndDef);
 
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Endpoint";
         final String                     end2AttributeName            = "endpoints";
         final String                     end2AttributeDescription     = "Endpoints supported by this server.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ENDPOINT.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         typeDefPatch.setEndDef2(relationshipEndDef);
 
         return typeDefPatch;

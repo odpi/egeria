@@ -57,9 +57,8 @@ public class ValidValueSetConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ValidValueSetElement)
+            if (returnBean instanceof ValidValueSetElement bean)
             {
-                ValidValueSetElement    bean                 = (ValidValueSetElement) returnBean;
                 ValidValueSetProperties validValueProperties = new ValidValueSetProperties();
 
                 if (entity != null)

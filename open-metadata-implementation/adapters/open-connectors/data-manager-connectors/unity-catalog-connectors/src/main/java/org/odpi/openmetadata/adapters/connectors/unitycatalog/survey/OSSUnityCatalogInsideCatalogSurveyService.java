@@ -91,9 +91,9 @@ public class OSSUnityCatalogInsideCatalogSurveyService extends SurveyActionServi
             Connector     connectorToAsset = assetStore.getConnectorToAsset();
             AssetUniverse assetUniverse    = assetStore.getAssetProperties();
 
-            if (connectorToAsset instanceof OSSUnityCatalogResourceConnector atlasConnector)
+            if (connectorToAsset instanceof OSSUnityCatalogResourceConnector ucConnector)
             {
-                atlasConnector.start();
+                ucConnector.start();
 
                 AnnotationStore   annotationStore   = surveyContext.getAnnotationStore();
                 OpenMetadataStore openMetadataStore = surveyContext.getOpenMetadataStore();

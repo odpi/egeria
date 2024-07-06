@@ -57,9 +57,8 @@ public class ProcessConverter<B> extends ITInfrastructureOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ProcessElement)
+            if (returnBean instanceof ProcessElement bean)
             {
-                ProcessElement    bean              = (ProcessElement) returnBean;
                 ProcessProperties processProperties = new ProcessProperties();
 
                 if (entity != null)
@@ -74,7 +73,7 @@ public class ProcessConverter<B> extends ITInfrastructureOMASConverter<B>
                     processProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     processProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     processProperties.setName(this.removeName(instanceProperties));
-                    processProperties.setDisplayName(processProperties.getName());
+                    processProperties.setDeployedImplementationType(processProperties.getDeployedImplementationType());
                     processProperties.setDescription(this.removeDescription(instanceProperties));
 
                     processProperties.setFormula(this.removeFormulaType(instanceProperties));

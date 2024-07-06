@@ -4102,6 +4102,10 @@ public class OpenMetadataStoreRESTServices
                 {
                     return ElementStatus.DEPRECATED;
                 }
+                case DELETED ->
+                {
+                    return ElementStatus.DELETED;
+                }
                 case OTHER ->
                 {
                     return ElementStatus.OTHER;

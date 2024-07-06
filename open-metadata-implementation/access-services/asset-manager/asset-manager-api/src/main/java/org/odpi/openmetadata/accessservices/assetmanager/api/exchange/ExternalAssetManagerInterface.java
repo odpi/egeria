@@ -3,13 +3,9 @@
 package org.odpi.openmetadata.accessservices.assetmanager.api.exchange;
 
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
-
-import java.util.List;
 
 /**
  * ExternalAssetManagerInterface provides the interface for retrieving the identity of an external asset manager.

@@ -63,9 +63,8 @@ public class DataFieldConverter<B> extends DataManagerOMASConverter<B>
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
-            if (returnBean instanceof DataFieldElement)
+            if (returnBean instanceof DataFieldElement bean)
             {
-                DataFieldElement    bean       = (DataFieldElement) returnBean;
                 DataFieldProperties properties = new DataFieldProperties();
 
                 if (schemaAttributeEntity != null)

@@ -6,7 +6,6 @@ package org.odpi.openmetadata.frameworkservices.gaf.rest;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,14 +24,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = UpdateGovernanceServiceRequestBody.class, name = "UpdateGovernanceServiceRequestBody")
         })
-public class NewGovernanceServiceRequestBody implements Serializable
+public class NewGovernanceServiceRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
-    private String     qualifiedName         = null;
-    private String     displayName           = null;
-    private String     description           = null;
-    private Connection connection            = null;
+    private String     qualifiedName              = null;
+    private String     name                       = null;
+    private String     versionIdentifier          = null;
+    private String     description                = null;
+    private String     deployedImplementationType = null;
+    private Connection connection                 = null;
 
 
     /**
@@ -53,10 +52,12 @@ public class NewGovernanceServiceRequestBody implements Serializable
     {
         if (template != null)
         {
-            qualifiedName = template.getQualifiedName();
-            displayName = template.getDisplayName();
-            description = template.getDescription();
-            connection = template.getConnection();
+            qualifiedName              = template.getQualifiedName();
+            name                       = template.getName();
+            versionIdentifier          = template.getVersionIdentifier();
+            description                = template.getDescription();
+            deployedImplementationType = template.getDeployedImplementationType();
+            connection                 = template.getConnection();
         }
     }
 
@@ -83,33 +84,55 @@ public class NewGovernanceServiceRequestBody implements Serializable
         return qualifiedName;
     }
 
-
     /**
-     * Return the display name for messages and UI.
+     * Return the name of the resource that this asset represents.
      *
-     * @return string name
+     * @return string resource name
      */
-    public String getDisplayName()
+    public String getName()
     {
-        return displayName;
+        return name;
     }
 
 
     /**
-     * Set up the display name for messages and UI.
+     * Set up the name of the resource that this asset represents.
      *
-     * @param displayName string name
+     * @param name string resource name
      */
-    public void setDisplayName(String displayName)
+    public void setName(String name)
     {
-        this.displayName = displayName;
+        this.name = name;
     }
 
 
     /**
-     * Return the description of the governance engine.
+     * Set up the version identifier of the resource.
      *
-     * @return string description
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
+
+    /**
+     * Returns the stored description property for the asset.
+     * If no description is provided then null is returned.
+     *
+     * @return description String text
      */
     public String getDescription()
     {
@@ -118,13 +141,35 @@ public class NewGovernanceServiceRequestBody implements Serializable
 
 
     /**
-     * Set up the description of the governance engine.
+     * Set up the stored description property associated with the asset.
      *
-     * @param description string
+     * @param description String text
      */
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+
+    /**
+     * Retrieve the name of the technology used for this data asset.
+     *
+     * @return string name
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the name of the technology used for this data asset.
+     *
+     * @param deployedImplementationType string name
+     */
+    public void setDeployedImplementationType(String deployedImplementationType)
+    {
+        this.deployedImplementationType = deployedImplementationType;
     }
 
 
@@ -159,11 +204,13 @@ public class NewGovernanceServiceRequestBody implements Serializable
     public String toString()
     {
         return "NewGovernanceServiceRequestBody{" +
-                       "qualifiedName='" + qualifiedName + '\'' +
-                       ", displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", connection=" + connection +
-                       '}';
+                "qualifiedName='" + qualifiedName + '\'' +
+                ", name='" + name + '\'' +
+                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", description='" + description + '\'' +
+                ", deployedImplementationType='" + deployedImplementationType + '\'' +
+                ", connection=" + connection +
+                '}';
     }
 
 
@@ -186,7 +233,7 @@ public class NewGovernanceServiceRequestBody implements Serializable
         }
         NewGovernanceServiceRequestBody that = (NewGovernanceServiceRequestBody) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
-                       Objects.equals(displayName, that.displayName) &&
+                       Objects.equals(name, that.name) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(connection, that.connection);
     }
@@ -200,6 +247,6 @@ public class NewGovernanceServiceRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, displayName, description, connection);
+        return Objects.hash(qualifiedName, name, description, connection);
     }
 }

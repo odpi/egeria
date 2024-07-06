@@ -373,7 +373,9 @@ public class GovernanceConfigRESTServices
                                                                  typeName,
                                                                  requestBody.getQualifiedName(),
                                                                  requestBody.getDisplayName(),
+                                                                 requestBody.getVersionIdentifier(),
                                                                  requestBody.getDescription(),
+                                                                 requestBody.getDeployedImplementationType(),
                                                                  requestBody.getConnection()));
             }
                 else
@@ -597,7 +599,9 @@ public class GovernanceConfigRESTServices
                                                 guid,
                                                 requestBody.getQualifiedName(),
                                                 requestBody.getDisplayName(),
+                                                requestBody.getVersionIdentifier(),
                                                 requestBody.getDescription(),
+                                                requestBody.getDeployedImplementationType(),
                                                 requestBody.getConnection(),
                                                 requestBody.getAdditionalProperties(),
                                                 requestBody.getExtendedProperties());

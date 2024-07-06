@@ -140,19 +140,10 @@ public class AssetRequestBody extends AssetProperties
     public String toString()
     {
         return "AssetRequestBody{" +
-                       "externalSourceGUID='" + externalSourceGUID + '\'' +
-                       ", externalSourceName='" + externalSourceName + '\'' +
-                       ", initialStatus=" + initialStatus +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "externalSourceGUID='" + externalSourceGUID + '\'' +
+                ", externalSourceName='" + externalSourceName + '\'' +
+                ", initialStatus=" + initialStatus +
+                "} " + super.toString();
     }
 
 

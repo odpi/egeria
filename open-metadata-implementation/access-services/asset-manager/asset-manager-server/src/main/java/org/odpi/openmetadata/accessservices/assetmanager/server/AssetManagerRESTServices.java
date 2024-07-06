@@ -2,12 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementHeadersResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.MetadataCorrelationHeadersResponse;
@@ -317,10 +317,10 @@ public class AssetManagerRESTServices
                 ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
                                                                                                                                            serverName,
                                                                                                                                            methodName);
-                int permittedSynchronizationOrdinal = SynchronizationDirection.BOTH_DIRECTIONS.getOpenTypeOrdinal();
+                int permittedSynchronizationOrdinal = PermittedSynchronization.BOTH_DIRECTIONS.getOrdinal();
                 if (requestBody.getSynchronizationDirection() != null)
                 {
-                    permittedSynchronizationOrdinal = requestBody.getSynchronizationDirection().getOpenTypeOrdinal();
+                    permittedSynchronizationOrdinal = requestBody.getSynchronizationDirection().getOrdinal();
                 }
 
                 int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOrdinal();
@@ -345,13 +345,14 @@ public class AssetManagerRESTServices
                                                 requestBody.getExternalInstanceLastUpdatedBy(),
                                                 requestBody.getExternalInstanceLastUpdateTime(),
                                                 requestBody.getExternalInstanceVersion(),
-                                                requestBody.getAssetManagerGUID(),
+                                                requestBody.getExternalScopeGUID(),
                                                 assetManagerGUIDParameterName,
-                                                requestBody.getAssetManagerName(),
+                                                requestBody.getExternalScopeName(),
                                                 OpenMetadataType.CATALOG.typeName,
                                                 OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                 permittedSynchronizationOrdinal,
                                                 requestBody.getSynchronizationDescription(),
+                                                instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                 null,
                                                 null,
                                                 false,
@@ -426,10 +427,10 @@ public class AssetManagerRESTServices
                 ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
                                                                                                                                            serverName,
                                                                                                                                            methodName);
-                int permittedSynchronizationOrdinal = SynchronizationDirection.BOTH_DIRECTIONS.getOpenTypeOrdinal();
+                int permittedSynchronizationOrdinal = PermittedSynchronization.BOTH_DIRECTIONS.getOrdinal();
                 if (requestBody.getSynchronizationDirection() != null)
                 {
-                    permittedSynchronizationOrdinal = requestBody.getSynchronizationDirection().getOpenTypeOrdinal();
+                    permittedSynchronizationOrdinal = requestBody.getSynchronizationDirection().getOrdinal();
                 }
 
                 int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOrdinal();
@@ -454,13 +455,14 @@ public class AssetManagerRESTServices
                                                 requestBody.getExternalInstanceLastUpdatedBy(),
                                                 requestBody.getExternalInstanceLastUpdateTime(),
                                                 requestBody.getExternalInstanceVersion(),
-                                                requestBody.getAssetManagerGUID(),
+                                                requestBody.getExternalScopeName(),
                                                 assetManagerGUIDParameterName,
-                                                requestBody.getAssetManagerName(),
+                                                requestBody.getExternalScopeName(),
                                                 OpenMetadataType.CATALOG.typeName,
                                                 OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                 permittedSynchronizationOrdinal,
                                                 requestBody.getSynchronizationDescription(),
+                                                instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                 null,
                                                 null,
                                                 false,
@@ -536,8 +538,8 @@ public class AssetManagerRESTServices
                         instanceHandler.getExternalIdentifierHandler(userId, serverName, methodName);
 
                 if ((requestBody.getExternalIdentifier() != null) &&
-                    (requestBody.getAssetManagerGUID() != null) &&
-                    (requestBody.getAssetManagerName() != null))
+                    (requestBody.getExternalScopeGUID() != null) &&
+                    (requestBody.getExternalScopeName() != null))
                 {
                     response.setFlag(handler.confirmSynchronization(userId,
                                                                     openMetadataElementGUID,
@@ -545,10 +547,11 @@ public class AssetManagerRESTServices
                                                                     openMetadataElementTypeName,
                                                                     requestBody.getExternalIdentifier(),
                                                                     externalIdentifierParameterName,
-                                                                    requestBody.getAssetManagerGUID(),
+                                                                    requestBody.getExternalScopeGUID(),
                                                                     assetManagerGUIDParameterName,
-                                                                    requestBody.getAssetManagerName(),
+                                                                    requestBody.getExternalScopeName(),
                                                                     OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                     false,
                                                                     false,
                                                                     null,
@@ -631,10 +634,10 @@ public class AssetManagerRESTServices
                 ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> handler = instanceHandler.getExternalIdentifierHandler(userId,
                                                                                                                                            serverName,
                                                                                                                                            methodName);
-                int permittedSynchronizationOrdinal = SynchronizationDirection.BOTH_DIRECTIONS.getOpenTypeOrdinal();
+                int permittedSynchronizationOrdinal = PermittedSynchronization.BOTH_DIRECTIONS.getOrdinal();
                 if (requestBody.getMetadataCorrelationProperties().getSynchronizationDirection() != null)
                 {
-                    permittedSynchronizationOrdinal = requestBody.getMetadataCorrelationProperties().getSynchronizationDirection().getOpenTypeOrdinal();
+                    permittedSynchronizationOrdinal = requestBody.getMetadataCorrelationProperties().getSynchronizationDirection().getOrdinal();
                 }
 
                 int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOrdinal();
@@ -654,9 +657,10 @@ public class AssetManagerRESTServices
                                                  requestBody.getMetadataCorrelationProperties().getExternalIdentifierUsage(),
                                                  requestBody.getMetadataCorrelationProperties().getExternalIdentifierSource(),
                                                  requestBody.getMetadataCorrelationProperties().getMappingProperties(),
-                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
+                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
                                                  assetManagerGUIDParameterName,
-                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                  OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
                                                  permittedSynchronizationOrdinal,
                                                  requestBody.getMetadataCorrelationProperties().getSynchronizationDescription(),
@@ -744,10 +748,11 @@ public class AssetManagerRESTServices
                                                openMetadataElementTypeName,
                                                requestBody.getExternalIdentifier(),
                                                externalIdentifierParameterName,
-                                               requestBody.getAssetManagerGUID(),
+                                               requestBody.getExternalScopeGUID(),
                                                assetManagerGUIDParameterName,
-                                               requestBody.getAssetManagerName(),
+                                               requestBody.getExternalScopeName(),
                                                OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                               instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                forLineage,
                                                forDuplicateProcessing,
                                                null,
@@ -911,11 +916,12 @@ public class AssetManagerRESTServices
                                                                                                                                            methodName);
 
                 response.setElementList(handler.getElementsForExternalIdentifier(userId,
-                                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerGUID(),
+                                                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
                                                                                  assetManagerGUIDParameterName,
                                                                                  OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
-                                                                                 requestBody.getMetadataCorrelationProperties().getAssetManagerName(),
+                                                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
                                                                                  requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
+                                                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                                  startFrom,
                                                                                  pageSize,
                                                                                  forLineage,

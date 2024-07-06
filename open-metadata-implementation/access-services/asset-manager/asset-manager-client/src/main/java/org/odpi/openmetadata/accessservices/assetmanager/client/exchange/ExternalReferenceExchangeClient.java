@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.api.exchange.ExternalRe
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceLinkElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementResponse;

@@ -57,6 +57,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
@@ -411,6 +412,11 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                       ByteOrdering.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(ByteOrdering.values())));
 
+        addOpenMetadataEnumValidNames(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataProperty.DELETE_METHOD.name,
+                                      DeleteMethod.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(DeleteMethod.values())));
+
         addOpenMetadataEnumValidNames(OpenMetadataType.EXTERNAL_ID.typeName,
                                       OpenMetadataProperty.KEY_PATTERN.name,
                                       KeyPattern.getOpenTypeName(),
@@ -511,20 +517,35 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                       IncidentReportStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(IncidentReportStatus.values())));
 
-
         addOpenMetadataEnumValidIdentifiers(OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
                                             OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name,
                                             new ArrayList<>(Arrays.asList(RetentionBasis.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataType.RATING_TYPE_NAME,
+                                      OpenMetadataType.STARS_PROPERTY_NAME,
+                                      StarRating.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(StarRating.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataType.EXTERNAL_ID_SCOPE_RELATIONSHIP.typeName,
+                                      OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
+                                      PermittedSynchronization.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(PermittedSynchronization.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+                                      OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
+                                      PermittedSynchronization.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(PermittedSynchronization.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
+                                      PermittedSynchronization.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(PermittedSynchronization.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataType.TO_DO.typeName,
                                       OpenMetadataProperty.TO_DO_STATUS.name,
                                       ToDoStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(ToDoStatus.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataType.RATING_TYPE_NAME,
-                                      OpenMetadataType.STARS_PROPERTY_NAME,
-                                      StarRating.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(StarRating.values())));
 
 
         /*
@@ -1231,7 +1252,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     {
         final String methodName = "createDataFileCatalogTemplate";
 
-        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder();
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType()  + ":" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder();
         String               versionIdentifier  = "V1.0";
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
@@ -1247,7 +1268,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                                     "V1.0",
                                                                     null, methodName));
 
-        classifications.add(archiveHelper.getDataStoreEncodingClassification(PlaceholderProperty.FILE_ENCODING.getPlaceholder(), null, null, null));
+        classifications.add(archiveHelper.getDataAssetEncodingClassification(PlaceholderProperty.FILE_ENCODING.getPlaceholder(), null, null, null));
 
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
@@ -1309,7 +1330,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     {
         final String methodName = "createFolderCatalogTemplate";
 
-        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder();
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder();
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -1448,7 +1469,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     {
         final String methodName = "createSoftwareFileCatalogTemplate";
 
-        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder();
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder() + ":" + PlaceholderProperty.FILE_PATH_NAME.getPlaceholder();
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -1463,7 +1484,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                                     "V1.0",
                                                                     null, methodName));
 
-        classifications.add(archiveHelper.getDataStoreEncodingClassification(PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
+        classifications.add(archiveHelper.getDataAssetEncodingClassification(PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
                                                                              PlaceholderProperty.PROGRAMMING_LANGUAGE.getPlaceholder(),
                                                                              null,
                                                                              null));
@@ -1701,7 +1722,6 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     }
 
 
-
     /**
      * Create a catalog template for Unity Catalog
      */
@@ -1715,14 +1735,14 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                  null,
                                                  PlaceholderProperty.SERVER_NAME.getPlaceholder(),
                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                 PlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                                 null,
                                                  null,
                                                  provider.getConnectorType().getGUID(),
                                                  PlaceholderProperty.HOST_URL.getPlaceholder() + ":" +
                                                          PlaceholderProperty.PORT_NUMBER.getPlaceholder(),
                                                  null,
                                                  null,
-                                                 PlaceholderProperty.getServerWithUserIdAndPasswordPlaceholderPropertyTypes());
+                                                 UnityCatalogPlaceholderProperty.getServerPlaceholderPropertyTypes());
     }
 
 
@@ -2075,12 +2095,45 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
     private void addUCCatalogCatalogTemplate()
     {
-        createSoftwareCapabilityCatalogTemplate(DeployedImplementationType.OSS_UC_CATALOG,
-                                                UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder(),
-                                                PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                null,
-                                                null,
-                                                UnityCatalogPlaceholderProperty.getCatalogPlaceholderPropertyTypes());
+        final String methodName = "addUCCatalogCatalogTemplate";
+
+        DeployedImplementationType deployedImplementationType = DeployedImplementationType.OSS_UC_CATALOG;
+
+        String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":" + UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder();
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications    = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                               deployedImplementationType.getDeployedImplementationType());
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    "Create a " + deployedImplementationType.getDeployedImplementationType() + " SoftwareCapability.",
+                                                                    "V1.0",
+                                                                    null, methodName));
+
+        String capabilityGUID = archiveHelper.addSoftwareCapability(deployedImplementationType.getAssociatedTypeName(),
+                                                                    qualifiedName,
+                                                                    UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder(),
+                                                                    PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                                    deployedImplementationType.getDeployedImplementationType(),
+                                                                    PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    extendedProperties,
+                                                                    classifications,
+                                                                    null,
+                                                                    deployedImplementationType.getAssociatedTypeName(),
+                                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName);
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, capabilityGUID);
+
+        archiveHelper.addPlaceholderProperties(capabilityGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                               UnityCatalogPlaceholderProperty.getCatalogPlaceholderPropertyTypes());
     }
 
 
@@ -2090,10 +2143,8 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         DeployedImplementationType deployedImplementationType = DeployedImplementationType.OSS_UC_SCHEMA;
         String                     fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
-                                                              + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
-                                                              + UnityCatalogPlaceholderProperty.TABLE_NAME.getPlaceholder();
-        String                     qualifiedName              = deployedImplementationType.getAssociatedTypeName() + ":"
-                                                              + deployedImplementationType.getDeployedImplementationType() + ":"
+                                                              + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder();
+        String                     qualifiedName              = deployedImplementationType.getDeployedImplementationType() + ":"
                                                               + fullName;
 
         Map<String, Object>  extendedProperties = new HashMap<>();
@@ -2138,11 +2189,14 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                               + deployedImplementationType.getDeployedImplementationType() + ":"
                                                               + fullName;
 
-        Map<String, Object>  extendedProperties = new HashMap<>();
-        List<Classification> classifications    = new ArrayList<>();
+        Map<String, Object>  extendedProperties   = new HashMap<>();
+        Map<String, String>  facetProperties      = new HashMap<>();
+        List<Classification> classifications      = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
-        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
+
+        facetProperties.put(UnityCatalogPlaceholderProperty.VOLUME_TYPE.getName(), UnityCatalogPlaceholderProperty.VOLUME_TYPE.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a Volume from the Unity Catalog (UC).",
@@ -2158,6 +2212,15 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                   null,
                                                   extendedProperties,
                                                   classifications);
+
+        archiveHelper.addPropertyFacet(assetGUID,
+                                       deployedImplementationType.getAssociatedTypeName(),
+                                       OpenMetadataType.ASSET.typeName,
+                                       qualifiedName,
+                                       PropertyFacetValidValues.UNITY_CATALOG_SOURCE_VALUE,
+                                       PropertyFacetValidValues.UNITY_CATALOG_SCHEMA_VERSION_VALUE,
+                                       PropertyFacetValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+                                       facetProperties);
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
 
@@ -2182,10 +2245,15 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                               + deployedImplementationType.getDeployedImplementationType() + ":"
                                                               + fullName;
 
-        Map<String, Object>  extendedProperties = new HashMap<>();
-        List<Classification> classifications    = new ArrayList<>();
+        Map<String, Object>  extendedProperties   = new HashMap<>();
+        Map<String, String>  facetProperties = new HashMap<>();
+        List<Classification> classifications      = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
+
+        facetProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
+        facetProperties.put(UnityCatalogPlaceholderProperty.TABLE_TYPE.getName(), UnityCatalogPlaceholderProperty.TABLE_TYPE.getPlaceholder());
+        facetProperties.put(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getName(), UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a Table from the Unity Catalog (UC).",
@@ -2201,6 +2269,15 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                   null,
                                                   extendedProperties,
                                                   classifications);
+
+        archiveHelper.addPropertyFacet(assetGUID,
+                                       deployedImplementationType.getAssociatedTypeName(),
+                                       OpenMetadataType.ASSET.typeName,
+                                       qualifiedName,
+                                       PropertyFacetValidValues.UNITY_CATALOG_SOURCE_VALUE,
+                                       PropertyFacetValidValues.UNITY_CATALOG_SCHEMA_VERSION_VALUE,
+                                       PropertyFacetValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+                                       facetProperties);
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
 
@@ -2262,6 +2339,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
      * to the supplied connector type and an endpoint,
      *
      * @param deployedImplementationType deployed implementation type for the technology
+     * @param serverQualifiedName qualified name of the owning server
      * @param softwareCapabilityName name for the associated capability
      * @param softwareCapabilityDescription description for the software capability
      * @param softwareCapabilityClassification optional classification for the associated capability
@@ -2269,6 +2347,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
      * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
      */
     private   void createSoftwareCapabilityCatalogTemplate(DeployedImplementationType     deployedImplementationType,
+                                                           String                         serverQualifiedName,
                                                            String                         softwareCapabilityName,
                                                            String                         softwareCapabilityDescription,
                                                            Classification                 softwareCapabilityClassification,
@@ -2277,7 +2356,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     {
         final String methodName = "createSoftwareCapabilityCatalogTemplate";
 
-        String               qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + softwareCapabilityName;
+        String               qualifiedName      = deployedImplementationType.getAssociatedTypeName() + ":" +deployedImplementationType.getDeployedImplementationType() + ":" + serverQualifiedName + ":" + softwareCapabilityName;
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
@@ -2295,7 +2374,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         }
 
         String capabilityGUID = archiveHelper.addSoftwareCapability(deployedImplementationType.getAssociatedTypeName(),
-                                                                    qualifiedName + ":" + softwareCapabilityName,
+                                                                    qualifiedName,
                                                                     softwareCapabilityName,
                                                                     softwareCapabilityDescription,
                                                                     deployedImplementationType.getDeployedImplementationType(),
@@ -2333,6 +2412,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                                                             methodName);
 
         createSoftwareCapabilityCatalogTemplate(DeployedImplementationType.FILE_SYSTEM,
+                                                null,
                                                 PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder(),
                                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                 fileSystemClassification,
@@ -2350,6 +2430,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                                                             methodName);
 
         createSoftwareCapabilityCatalogTemplate(DeployedImplementationType.UNIX_FILE_SYSTEM,
+                                                null,
                                                 PlaceholderProperty.FILE_SYSTEM_NAME.getPlaceholder(),
                                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                 fileSystemClassification,

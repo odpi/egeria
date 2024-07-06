@@ -57,12 +57,10 @@ public class EventTypeConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof EventTypeElement)
+            if (returnBean instanceof EventTypeElement bean)
             {
                 if ((entity != null) && (entity.getProperties() != null))
                 {
-                    EventTypeElement bean = (EventTypeElement) returnBean;
-
                     bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, entity.getClassifications(), methodName));
 
                     EventTypeProperties eventType = new EventTypeProperties();

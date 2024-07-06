@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 
 import java.util.Date;
 import java.util.Objects;
@@ -27,9 +27,9 @@ public class RegisteredIntegrationConnectorProperties
     private String                   metadataSourceQualifiedName = null;
     private Date                     startDate                   = null;
     private long                     refreshTimeInterval         = 0L;
-    private Date                     stopDate                    = null;
-    private PermittedSynchronization permittedSynchronization    = null;
-    private boolean                  generateIntegrationReports  = true;
+    private Date                     stopDate                   = null;
+    private PermittedSynchronization permittedSynchronization   = null;
+    private boolean                  generateIntegrationReports = true;
 
 
     /**

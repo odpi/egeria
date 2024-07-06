@@ -117,6 +117,23 @@ public enum OIFAuditCode implements AuditLogMessageSet
                               "The integration connector has completed refresh processing of the catalog targets.",
                               "Check that the correct action targets have been processes, and adjust them if necessary before the next refresh."),
 
+    /**
+     * OIF-CONNECTOR-0010 - The {0} connector has detected an unsynchronized {1} element ({2}) in metadata collection {3} ({4}) but the permitted synchronization to catalog target {5} is {6}
+     */
+    IGNORED_EGERIA_ELEMENT("OIF-CONNECTOR-0010",
+                           AuditLogRecordSeverityLevel.ACTION,
+                           "The {0} connector has detected an unsynchronized {1} element ({2}) in metadata collection {3} ({4}) but the permitted synchronization to catalog target {5} is {6}",
+                           "The element is ignored.",
+                           "Determine why this element is in the metadata collection and determine if it should be synchronized with the catalog target.  If it should, then set up the permitted synchronization direction to allow it."),
+
+    /**
+     * OIF-CONNECTOR-0011 - The {0} connector is unsure which action to take for an element. This is a logic error.  The member element information is {1}
+     */
+    UNKNOWN_ACTION ("OIF-CONNECTOR-0011",
+                    AuditLogRecordSeverityLevel.ACTION,
+                    "The {0} connector is unsure which action to take for an element. This is a logic error.  The member element information is {1}",
+                    "The connector stops processing.",
+                    "Using information from the element, the set up of the connector, and the connector's logic to determine why this 'should not occur' case has happened."),
 
     ;
 

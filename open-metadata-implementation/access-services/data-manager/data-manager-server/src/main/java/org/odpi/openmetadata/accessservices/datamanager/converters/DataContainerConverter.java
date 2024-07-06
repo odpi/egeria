@@ -63,9 +63,8 @@ public class DataContainerConverter<B> extends DataManagerOMASConverter<B>
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
-            if (returnBean instanceof DataContainerElement)
+            if (returnBean instanceof DataContainerElement bean)
             {
-                DataContainerElement    bean       = (DataContainerElement) returnBean;
                 DataContainerProperties properties = new DataContainerProperties();
 
                 if (schemaAttributeEntity != null)

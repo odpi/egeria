@@ -130,11 +130,7 @@ public class UpdateGovernanceServiceRequestBody extends NewGovernanceServiceRequ
         return "UpdateGovernanceServiceRequestBody{" +
                 "additionalProperties=" + additionalProperties +
                 ", extendedProperties=" + extendedProperties +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", connection=" + getConnection() +
-                '}';
+                "} " + super.toString();
     }
 
 

@@ -57,9 +57,8 @@ public class FileFolderConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof FileFolderElement)
+            if (returnBean instanceof FileFolderElement bean)
             {
-                FileFolderElement bean = (FileFolderElement) returnBean;
                 FileFolderProperties fileFolderProperties = new FileFolderProperties();
 
                 if (entity != null)
@@ -89,7 +88,7 @@ public class FileFolderConverter<B> extends DataManagerOMASConverter<B>
                     fileFolderProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName, entity);
 
                     fileFolderProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
                     fileFolderProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));

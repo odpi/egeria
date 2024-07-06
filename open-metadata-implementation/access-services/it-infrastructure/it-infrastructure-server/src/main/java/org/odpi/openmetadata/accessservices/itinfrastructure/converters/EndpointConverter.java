@@ -56,9 +56,8 @@ public class EndpointConverter<B> extends ITInfrastructureOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof EndpointElement)
+            if (returnBean instanceof EndpointElement bean)
             {
-                EndpointElement    bean               = (EndpointElement) returnBean;
                 EndpointProperties endpointProperties = new EndpointProperties();
 
                 if (entity != null)

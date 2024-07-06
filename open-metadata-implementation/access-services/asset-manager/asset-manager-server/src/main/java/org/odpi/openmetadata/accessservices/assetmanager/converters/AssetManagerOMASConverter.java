@@ -7,8 +7,8 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -163,9 +163,9 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
      * Extract and delete the permittedSynchronization property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
-     * @return SynchronizationDirection enum
+     * @return PermittedSynchronization enum
      */
-    SynchronizationDirection removePermittedSynchronization(InstanceProperties  instanceProperties)
+    PermittedSynchronization removePermittedSynchronization(InstanceProperties  instanceProperties)
     {
         final String methodName = "removePermittedSynchronization";
 
@@ -176,16 +176,16 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
                                                                      instanceProperties,
                                                                      methodName);
 
-            for (SynchronizationDirection synchronizationDirection : SynchronizationDirection.values())
+            for (PermittedSynchronization permittedSynchronization : PermittedSynchronization.values())
             {
-                if (synchronizationDirection.getOpenTypeOrdinal() == ordinal)
+                if (permittedSynchronization.getOrdinal() == ordinal)
                 {
-                    return synchronizationDirection;
+                    return permittedSynchronization;
                 }
             }
         }
 
-        return SynchronizationDirection.BOTH_DIRECTIONS;
+        return PermittedSynchronization.BOTH_DIRECTIONS;
     }
 
 

@@ -27,9 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class CatalogTarget extends CatalogTargetProperties
 {
     private String              relationshipGUID            = null;
-    private String              catalogTargetName           = null;
-    private String              metadataSourceQualifiedName = null;
-    private Map<String, Object> configurationProperties     = null;
     private ElementStub         catalogTargetElement        = null;
 
 
@@ -49,12 +46,11 @@ public class CatalogTarget extends CatalogTargetProperties
      */
     public CatalogTarget(CatalogTarget template)
     {
+        super(template);
+
         if (template != null)
         {
             relationshipGUID = template.getRelationshipGUID();
-            catalogTargetName = template.getCatalogTargetName();
-            metadataSourceQualifiedName = template.getMetadataSourceQualifiedName();
-            configurationProperties = template.getConfigurationProperties();
             catalogTargetElement = template.getCatalogTargetElement();
         }
     }
@@ -79,87 +75,6 @@ public class CatalogTarget extends CatalogTargetProperties
     public void setRelationshipGUID(String relationshipGUID)
     {
         this.relationshipGUID = relationshipGUID;
-    }
-
-
-    /**
-     * Return the name of the catalog target.
-     *
-     * @return string
-     */
-    public String getCatalogTargetName()
-    {
-        return catalogTargetName;
-    }
-
-
-    /**
-     * Set up the name of the catalog target.
-     *
-     * @param catalogTargetName string
-     */
-    public void setCatalogTargetName(String catalogTargetName)
-    {
-        this.catalogTargetName = catalogTargetName;
-    }
-
-
-    /**
-     * Return the qualified name used for the metadata collection of catalogued elements.  It is the
-     * qualified name of a software capability.
-     *
-     * @return name
-     */
-    public String getMetadataSourceQualifiedName()
-    {
-        return metadataSourceQualifiedName;
-    }
-
-
-    /**
-     * Set up the qualified name used for the metadata collection of catalogued elements.  It is the
-     * qualified name of a software capability.
-     *
-     * @param metadataSourceQualifiedName name
-     */
-    public void setMetadataSourceQualifiedName(String metadataSourceQualifiedName)
-    {
-        this.metadataSourceQualifiedName = metadataSourceQualifiedName;
-    }
-
-
-    /**
-     * Set up the configuration properties for this action target.  These are used to override the configuration
-     * properties in the integration connector's connection whenever it is processing this action target.
-     *
-     * @param configurationProperties properties typically controlling the behaviour for the integration connector.
-     */
-    public void setConfigurationProperties(Map<String, Object> configurationProperties)
-    {
-        this.configurationProperties = configurationProperties;
-    }
-
-
-    /**
-     * Return a copy of the configuration properties.  These are used to override the configuration
-     * properties in the integration connector's connection whenever it is processing this action target.
-     *
-     * @return configuration properties typically controlling the behaviour for the integration connector.
-     */
-    public Map<String, Object> getConfigurationProperties()
-    {
-        if (configurationProperties == null)
-        {
-            return null;
-        }
-        else if (configurationProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(configurationProperties);
-        }
     }
 
 
@@ -195,13 +110,9 @@ public class CatalogTarget extends CatalogTargetProperties
     {
         return "CatalogTarget{" +
                 "relationshipGUID='" + relationshipGUID + '\'' +
-                ", catalogTargetName='" + catalogTargetName + '\'' +
-                ", metadataSourceQualifiedName='" + metadataSourceQualifiedName + '\'' +
-                ", configurationProperties='" + configurationProperties + '\'' +
                 ", catalogTargetElement=" + catalogTargetElement +
-                '}';
+                "} " + super.toString();
     }
-
 
     /**
      * Return comparison result based on the content of the properties.
@@ -212,21 +123,12 @@ public class CatalogTarget extends CatalogTargetProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof CatalogTarget that))
-        {
-            return false;
-        }
-        return Objects.equals(relationshipGUID, that.relationshipGUID) &&
-                Objects.equals(catalogTargetName, that.catalogTargetName) &&
-                Objects.equals(metadataSourceQualifiedName, that.metadataSourceQualifiedName) &&
-                Objects.equals(configurationProperties, that.configurationProperties) &&
-                Objects.equals(catalogTargetElement, that.catalogTargetElement);
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        CatalogTarget that = (CatalogTarget) objectToCompare;
+        return Objects.equals(relationshipGUID, that.relationshipGUID) && Objects.equals(catalogTargetElement, that.catalogTargetElement);
     }
-
 
     /**
      * Return hash code for this object
@@ -236,6 +138,6 @@ public class CatalogTarget extends CatalogTargetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(relationshipGUID, catalogTargetName, metadataSourceQualifiedName, configurationProperties, catalogTargetElement);
+        return Objects.hash(super.hashCode(), relationshipGUID, catalogTargetElement);
     }
 }

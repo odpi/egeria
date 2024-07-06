@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.converters.*;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ProcessHandler;
@@ -288,7 +289,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateObject(processProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(processProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME;
+        String typeName = OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName;
 
         if (processProperties.getTypeName() != null)
         {
@@ -302,6 +303,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                           processProperties.getTechnicalName(),
                                                           processProperties.getVersionIdentifier(),
                                                           processProperties.getTechnicalDescription(),
+                                                          processProperties.getDeployedImplementationType(),
                                                           processProperties.getFormula(),
                                                           processProperties.getFormulaType(),
                                                           processProperties.getImplementationLanguage(),
@@ -463,7 +465,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                         effectiveTime,
                                         methodName);
 
-        String typeName = OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME;
+        String typeName = OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName;
 
         if (processProperties.getTypeName() != null)
         {
@@ -480,6 +482,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                      processProperties.getTechnicalName(),
                                      processProperties.getVersionIdentifier(),
                                      processProperties.getTechnicalDescription(),
+                                     processProperties.getDeployedImplementationType(),
                                      processProperties.getFormula(),
                                      processProperties.getImplementationLanguage(),
                                      processProperties.getAdditionalProperties(),

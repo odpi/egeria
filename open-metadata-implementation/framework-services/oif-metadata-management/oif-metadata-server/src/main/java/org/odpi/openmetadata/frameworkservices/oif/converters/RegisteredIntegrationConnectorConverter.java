@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.frameworkservices.oif.converters;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.integration.properties.IntegrationConnectorElement;
 import org.odpi.openmetadata.frameworks.integration.properties.RegisteredIntegrationConnectorElement;
 import org.odpi.openmetadata.frameworks.integration.properties.RegisteredIntegrationConnectorProperties;
@@ -106,7 +106,7 @@ public class RegisteredIntegrationConnectorConverter
      * Extract and delete the permittedSynchronization property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
-     * @return SynchronizationDirection enum
+     * @return PermittedSynchronization enum
      */
     PermittedSynchronization removePermittedSynchronization(InstanceProperties  instanceProperties)
     {
@@ -119,11 +119,11 @@ public class RegisteredIntegrationConnectorConverter
                                                                      instanceProperties,
                                                                      methodName);
 
-            for (PermittedSynchronization synchronizationDirection : PermittedSynchronization.values())
+            for (PermittedSynchronization permittedSynchronization : PermittedSynchronization.values())
             {
-                if (synchronizationDirection.getOpenTypeOrdinal() == ordinal)
+                if (permittedSynchronization.getOrdinal() == ordinal)
                 {
-                    return synchronizationDirection;
+                    return permittedSynchronization;
                 }
             }
         }

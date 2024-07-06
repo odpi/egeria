@@ -16,10 +16,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -142,9 +144,9 @@ class ExchangeHandlerBase
     String getExternalSourceGUID(MetadataCorrelationProperties correlationProperties,
                                  boolean                       assetManagerIsHome)
     {
-        if ((assetManagerIsHome) && (correlationProperties != null) && (correlationProperties.getAssetManagerGUID() != null))
+        if ((assetManagerIsHome) && (correlationProperties != null) && (correlationProperties.getExternalScopeGUID() != null))
         {
-            return correlationProperties.getAssetManagerGUID();
+            return correlationProperties.getExternalScopeGUID();
         }
 
         return null;
@@ -180,9 +182,9 @@ class ExchangeHandlerBase
      */
     String getExternalSourceGUID(MetadataCorrelationProperties correlationProperties)
     {
-        if ((correlationProperties != null) && (correlationProperties.getAssetManagerGUID() != null))
+        if ((correlationProperties != null) && (correlationProperties.getExternalScopeGUID() != null))
         {
-            return correlationProperties.getAssetManagerGUID();
+            return correlationProperties.getExternalScopeGUID();
         }
 
         return null;
@@ -200,9 +202,9 @@ class ExchangeHandlerBase
     String getExternalSourceName(MetadataCorrelationProperties correlationProperties,
                                  boolean                       assetManagerIsHome)
     {
-        if ((assetManagerIsHome) && (correlationProperties != null) && (correlationProperties.getAssetManagerGUID() != null))
+        if ((assetManagerIsHome) && (correlationProperties != null) && (correlationProperties.getExternalScopeGUID() != null))
         {
-            return correlationProperties.getAssetManagerName();
+            return correlationProperties.getExternalScopeName();
         }
 
         return null;
@@ -238,9 +240,9 @@ class ExchangeHandlerBase
      */
     String getExternalSourceName(MetadataCorrelationProperties correlationProperties)
     {
-        if ((correlationProperties != null) && (correlationProperties.getAssetManagerGUID() != null))
+        if ((correlationProperties != null) && (correlationProperties.getExternalScopeGUID() != null))
         {
-            return correlationProperties.getAssetManagerName();
+            return correlationProperties.getExternalScopeName();
         }
 
         return null;
@@ -292,9 +294,9 @@ class ExchangeHandlerBase
 
         if (correlationProperties != null)
         {
-            if ((correlationProperties.getAssetManagerGUID() != null) && (correlationProperties.getExternalIdentifier() != null))
+            if ((correlationProperties.getExternalScopeGUID() != null) && (correlationProperties.getExternalIdentifier() != null))
             {
-                invalidParameterHandler.validateName(correlationProperties.getAssetManagerName(), assetManagerNameParameterName, methodName);
+                invalidParameterHandler.validateName(correlationProperties.getExternalScopeName(), assetManagerNameParameterName, methodName);
 
 
                 externalIdentifierHandler.setUpExternalIdentifier(userId,
@@ -313,13 +315,14 @@ class ExchangeHandlerBase
                                                                   correlationProperties.getExternalInstanceLastUpdatedBy(),
                                                                   correlationProperties.getExternalInstanceLastUpdateTime(),
                                                                   correlationProperties.getExternalInstanceVersion(),
-                                                                  correlationProperties.getAssetManagerGUID(),
+                                                                  correlationProperties.getExternalScopeGUID(),
                                                                   assetManagerGUIDParameterName,
-                                                                  correlationProperties.getAssetManagerName(),
+                                                                  correlationProperties.getExternalScopeName(),
                                                                   OpenMetadataType.CATALOG.typeName,
                                                                   OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                   getPermittedSynchronization(correlationProperties.getSynchronizationDirection()),
                                                                   correlationProperties.getSynchronizationDescription(),
+                                                                  supportedZones,
                                                                   null,
                                                                   null,
                                                                   forLineage,
@@ -337,13 +340,13 @@ class ExchangeHandlerBase
      * @param synchronizationDirection supplied direction
      * @return open metadata type ordinal - defaulting to "BOTH_DIRECTIONS"
      */
-    private int getPermittedSynchronization(SynchronizationDirection synchronizationDirection)
+    private int getPermittedSynchronization(PermittedSynchronization synchronizationDirection)
     {
-        int permittedSynchronization = SynchronizationDirection.BOTH_DIRECTIONS.getOpenTypeOrdinal();
+        int permittedSynchronization = PermittedSynchronization.BOTH_DIRECTIONS.getOrdinal();
 
         if (synchronizationDirection != null)
         {
-            permittedSynchronization = synchronizationDirection.getOpenTypeOrdinal();
+            permittedSynchronization = synchronizationDirection.getOrdinal();
         }
 
         return permittedSynchronization;
@@ -404,8 +407,8 @@ class ExchangeHandlerBase
 
         if ((correlationProperties != null) &&
                     (correlationProperties.getExternalIdentifier() != null) &&
-                    (correlationProperties.getAssetManagerGUID() != null) &&
-                    (correlationProperties.getAssetManagerName() != null))
+                    (correlationProperties.getExternalScopeGUID() != null) &&
+                    (correlationProperties.getExternalScopeName() != null))
         {
             return externalIdentifierHandler.confirmSynchronization(userId,
                                                                     elementGUID,
@@ -413,10 +416,11 @@ class ExchangeHandlerBase
                                                                     elementTypeName,
                                                                     correlationProperties.getExternalIdentifier(),
                                                                     externalIdentifierParameterName,
-                                                                    correlationProperties.getAssetManagerGUID(),
+                                                                    correlationProperties.getExternalScopeGUID(),
                                                                     scopeGUIDParameterName,
-                                                                    correlationProperties.getAssetManagerName(),
+                                                                    correlationProperties.getExternalScopeName(),
                                                                     OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                                                    supportedZones,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     effectiveTime,

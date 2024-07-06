@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.integrationservices.catalog.connector;
 
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.InfrastructureExchangeClient;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 
@@ -18,9 +18,9 @@ public class InfrastructureExchangeService
     private final String                       userId;
     private final String                       assetManagerGUID;
     private final String                       assetManagerName;
-    private final String                       connectorName;
-    private final SynchronizationDirection     synchronizationDirection;
-    private final AuditLog                     auditLog;
+    private final String                   connectorName;
+    private final PermittedSynchronization permittedSynchronization;
+    private final AuditLog                 auditLog;
 
     private boolean forLineage             = false;
     private boolean forDuplicateProcessing = false;
@@ -29,7 +29,7 @@ public class InfrastructureExchangeService
      * Create a new client to exchange data asset content with open metadata.
      *
      * @param infrastructureExchangeClient client for exchange requests
-     * @param synchronizationDirection direction(s) that metadata can flow
+     * @param permittedSynchronization direction(s) that metadata can flow
      * @param userId integration daemon's userId
      * @param assetManagerGUID unique identifier of the software server capability for the asset manager
      * @param assetManagerName unique name of the software server capability for the asset manager
@@ -37,7 +37,7 @@ public class InfrastructureExchangeService
      * @param auditLog logging destination
      */
     InfrastructureExchangeService(InfrastructureExchangeClient infrastructureExchangeClient,
-                                  SynchronizationDirection     synchronizationDirection,
+                                  PermittedSynchronization permittedSynchronization,
                                   String                       userId,
                                   String                       assetManagerGUID,
                                   String                       assetManagerName,
@@ -45,7 +45,7 @@ public class InfrastructureExchangeService
                                   AuditLog                     auditLog)
     {
         this.infrastructureExchangeClient = infrastructureExchangeClient;
-        this.synchronizationDirection     = synchronizationDirection;
+        this.permittedSynchronization     = permittedSynchronization;
         this.userId                       = userId;
         this.assetManagerGUID             = assetManagerGUID;
         this.assetManagerName             = assetManagerName;

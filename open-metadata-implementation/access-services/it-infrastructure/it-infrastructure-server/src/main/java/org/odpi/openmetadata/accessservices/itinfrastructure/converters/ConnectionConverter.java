@@ -67,9 +67,8 @@ public class ConnectionConverter<B> extends ITInfrastructureOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ConnectionElement)
+            if (returnBean instanceof ConnectionElement bean)
             {
-                ConnectionElement    bean                 = (ConnectionElement) returnBean;
                 ConnectionProperties connectionProperties = new ConnectionProperties();
 
                 if (primaryEntity != null)

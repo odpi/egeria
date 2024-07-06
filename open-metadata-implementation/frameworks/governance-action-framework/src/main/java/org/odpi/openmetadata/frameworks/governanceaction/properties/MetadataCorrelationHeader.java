@@ -1,11 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
+package org.odpi.openmetadata.frameworks.governanceaction.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 
 import java.util.Date;
 import java.util.Objects;
@@ -24,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MetadataCorrelationHeader extends MetadataCorrelationProperties
 {
-    private              Date lastSynchronized = null;
+    private Date lastSynchronized = null;
 
 
     /**
@@ -86,8 +85,8 @@ public class MetadataCorrelationHeader extends MetadataCorrelationProperties
     {
         return "MetadataCorrelationHeader{" +
                        "lastSynchronized=" + lastSynchronized +
-                       ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
-                       ", assetManagerName='" + getAssetManagerName() + '\'' +
+                       ", externalScopeGUID='" + getExternalScopeGUID() + '\'' +
+                       ", externalScopeName='" + getExternalScopeName() + '\'' +
                        ", synchronizationDirection=" + getSynchronizationDirection() +
                        ", synchronizationDescription='" + getSynchronizationDescription() + '\'' +
                        ", externalIdentifier='" + getExternalIdentifier() + '\'' +

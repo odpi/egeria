@@ -75,7 +75,6 @@ public class ITAssetRESTService
      * @param requestBody properties to store
      *
      * @return unique identifier of the new metadata element or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -120,6 +119,7 @@ public class ITAssetRESTService
                                                                 requestBody.getName(),
                                                                 requestBody.getVersionIdentifier(),
                                                                 requestBody.getDescription(),
+                                                                requestBody.getDeployedImplementationType(),
                                                                 requestBody.getAdditionalProperties(),
                                                                 typeName,
                                                                 requestBody.getExtendedProperties(),
@@ -160,6 +160,7 @@ public class ITAssetRESTService
                                                                 requestBody.getName(),
                                                                 requestBody.getVersionIdentifier(),
                                                                 requestBody.getDescription(),
+                                                                requestBody.getDeployedImplementationType(),
                                                                 requestBody.getAdditionalProperties(),
                                                                 typeName,
                                                                 requestBody.getExtendedProperties(),
@@ -232,59 +233,27 @@ public class ITAssetRESTService
     {
         if (status != null)
         {
-            switch (status)
+            return switch (status)
             {
-                case UNKNOWN:
-                    return InstanceStatus.UNKNOWN;
-
-                case DRAFT:
-                    return InstanceStatus.DRAFT;
-
-                case PREPARED:
-                    return InstanceStatus.PREPARED;
-
-                case PROPOSED:
-                    return InstanceStatus.PROPOSED;
-
-                case APPROVED:
-                    return InstanceStatus.APPROVED;
-
-                case REJECTED:
-                    return InstanceStatus.REJECTED;
-
-                case APPROVED_CONCEPT:
-                    return InstanceStatus.APPROVED_CONCEPT;
-
-                case UNDER_DEVELOPMENT:
-                    return InstanceStatus.UNDER_DEVELOPMENT;
-
-                case DEVELOPMENT_COMPLETE:
-                    return InstanceStatus.DEVELOPMENT_COMPLETE;
-
-                case APPROVED_FOR_DEPLOYMENT:
-                    return InstanceStatus.APPROVED_FOR_DEPLOYMENT;
-
-                case STANDBY:
-                    return InstanceStatus.STANDBY;
-
-                case ACTIVE:
-                    return InstanceStatus.ACTIVE;
-
-                case FAILED:
-                    return InstanceStatus.FAILED;
-
-                case DISABLED:
-                    return InstanceStatus.DISABLED;
-
-                case COMPLETE:
-                    return InstanceStatus.COMPLETE;
-
-                case DEPRECATED:
-                    return InstanceStatus.DEPRECATED;
-
-                case OTHER:
-                    return InstanceStatus.OTHER;
-            }
+                case UNKNOWN -> InstanceStatus.UNKNOWN;
+                case DRAFT -> InstanceStatus.DRAFT;
+                case PREPARED -> InstanceStatus.PREPARED;
+                case PROPOSED -> InstanceStatus.PROPOSED;
+                case APPROVED -> InstanceStatus.APPROVED;
+                case REJECTED -> InstanceStatus.REJECTED;
+                case APPROVED_CONCEPT -> InstanceStatus.APPROVED_CONCEPT;
+                case UNDER_DEVELOPMENT -> InstanceStatus.UNDER_DEVELOPMENT;
+                case DEVELOPMENT_COMPLETE -> InstanceStatus.DEVELOPMENT_COMPLETE;
+                case APPROVED_FOR_DEPLOYMENT -> InstanceStatus.APPROVED_FOR_DEPLOYMENT;
+                case STANDBY -> InstanceStatus.STANDBY;
+                case ACTIVE -> InstanceStatus.ACTIVE;
+                case FAILED -> InstanceStatus.FAILED;
+                case DISABLED -> InstanceStatus.DISABLED;
+                case COMPLETE -> InstanceStatus.COMPLETE;
+                case DEPRECATED -> InstanceStatus.DEPRECATED;
+                case DELETED -> InstanceStatus.DELETED;
+                case OTHER -> InstanceStatus.OTHER;
+            };
         }
 
         return InstanceStatus.ACTIVE;
@@ -301,7 +270,6 @@ public class ITAssetRESTService
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -343,6 +311,7 @@ public class ITAssetRESTService
                                                                 requestBody.getDisplayName(),
                                                                 requestBody.getVersionIdentifier(),
                                                                 requestBody.getDescription(),
+                                                                null,
                                                                 requestBody.getPathName(),
                                                                 requestBody.getNetworkAddress(),
                                                                 false,
@@ -401,7 +370,6 @@ public class ITAssetRESTService
      * @param requestBody new properties for this element
      *
      * @return void or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -441,9 +409,10 @@ public class ITAssetRESTService
                                     assetGUID,
                                     elementGUIDParameterName,
                                     requestBody.getQualifiedName(),
-                                    requestBody.getDisplayName(),
+                                    requestBody.getName(),
                                     requestBody.getVersionIdentifier(),
                                     requestBody.getDescription(),
+                                    requestBody.getDeployedImplementationType(),
                                     requestBody.getAdditionalProperties(),
                                     typeName,
                                     requestBody.getExtendedProperties(),
@@ -565,7 +534,6 @@ public class ITAssetRESTService
      * @param requestBody request body
      *
      * @return void or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -647,7 +615,6 @@ public class ITAssetRESTService
      * @param requestBody new properties
      *
      * @return void or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -719,7 +686,6 @@ public class ITAssetRESTService
      * @param requestBody unique identifier/name of software server capability representing the infrastructure manager
      *
      * @return void or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -799,7 +765,6 @@ public class ITAssetRESTService
      * @param requestBody properties
      *
      * @return void or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -878,7 +843,6 @@ public class ITAssetRESTService
      * @param requestBody properties
      *
      * @return void or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -954,7 +918,6 @@ public class ITAssetRESTService
      * @param requestBody properties
      *
      * @return void or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1024,7 +987,6 @@ public class ITAssetRESTService
      * @param requestBody null request body
      *
      * @return void or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1119,7 +1081,6 @@ public class ITAssetRESTService
      * @param requestBody unique identifier/name of software server capability representing the infrastructure manager
      *
      * @return void or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1187,7 +1148,6 @@ public class ITAssetRESTService
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1267,7 +1227,6 @@ public class ITAssetRESTService
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1348,7 +1307,6 @@ public class ITAssetRESTService
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1441,7 +1399,6 @@ public class ITAssetRESTService
      * @param requestBody effective time for the query
      *
      * @return list of matching metadata elements or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1528,7 +1485,6 @@ public class ITAssetRESTService
      * @param requestBody effectiveTime
      *
      * @return matching metadata element or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1627,6 +1583,8 @@ public class ITAssetRESTService
         return null;
     }
 
+
+
     /**
      * Return the list of assets linked by another asset.
      *
@@ -1642,7 +1600,6 @@ public class ITAssetRESTService
      * @param requestBody effective time for the query
      *
      * @return list of matching metadata elements or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)

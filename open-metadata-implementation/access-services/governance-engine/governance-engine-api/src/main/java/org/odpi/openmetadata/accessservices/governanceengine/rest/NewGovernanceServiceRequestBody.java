@@ -26,10 +26,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class NewGovernanceServiceRequestBody
 {
-    private String     qualifiedName         = null;
-    private String     displayName           = null;
-    private String     description           = null;
-    private Connection connection            = null;
+    private String     qualifiedName              = null;
+    private String     displayName                = null;
+    private String     versionIdentifier          = null;
+    private String     description                = null;
+    private String     deployedImplementationType = null;
+    private Connection connection                 = null;
 
 
     /**
@@ -50,10 +52,12 @@ public class NewGovernanceServiceRequestBody
     {
         if (template != null)
         {
-            qualifiedName = template.getQualifiedName();
-            displayName = template.getDisplayName();
-            description = template.getDescription();
-            connection = template.getConnection();
+            qualifiedName              = template.getQualifiedName();
+            displayName                = template.getDisplayName();
+            versionIdentifier          = template.getVersionIdentifier();
+            description                = template.getDescription();
+            deployedImplementationType = template.getDeployedImplementationType();
+            connection                 = template.getConnection();
         }
     }
 
@@ -103,6 +107,29 @@ public class NewGovernanceServiceRequestBody
     }
 
 
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
+
     /**
      * Return the description of the governance engine.
      *
@@ -122,6 +149,28 @@ public class NewGovernanceServiceRequestBody
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+
+    /**
+     * Retrieve the name of the technology used for this data asset.
+     *
+     * @return string name
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the name of the technology used for this data asset.
+     *
+     * @param deployedImplementationType string name
+     */
+    public void setDeployedImplementationType(String deployedImplementationType)
+    {
+        this.deployedImplementationType = deployedImplementationType;
     }
 
 
@@ -156,13 +205,14 @@ public class NewGovernanceServiceRequestBody
     public String toString()
     {
         return "NewGovernanceServiceRequestBody{" +
-                       "qualifiedName='" + qualifiedName + '\'' +
-                       ", displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", connection=" + connection +
-                       '}';
+                "qualifiedName='" + qualifiedName + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", description='" + description + '\'' +
+                ", deployedImplementationType='" + deployedImplementationType + '\'' +
+                ", connection=" + connection +
+                '}';
     }
-
 
     /**
      * Equals method that returns true if containing properties are the same.
@@ -185,6 +235,7 @@ public class NewGovernanceServiceRequestBody
         return Objects.equals(qualifiedName, that.qualifiedName) &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
+                       Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
                        Objects.equals(connection, that.connection);
     }
 
@@ -197,6 +248,6 @@ public class NewGovernanceServiceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, displayName, description, connection);
+        return Objects.hash(qualifiedName, displayName, description, deployedImplementationType, connection);
     }
 }

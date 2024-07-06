@@ -28,15 +28,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class GovernanceServiceProperties extends ReferenceableProperties
 {
-    private String              displayName                  = null;
+    private String              name                         = null;
+    private String              versionIdentifier            = null;
     private String              description                  = null;
-    private String              owner                        = null;
-    private String              ownerTypeName                = null;
-    private String              ownerPropertyName            = null;
-    private List<String>        zoneMembership               = null;
-    private String              originOrganizationGUID       = null;
-    private String              originBusinessCapabilityGUID = null;
-    private Map<String, String> otherOriginValues            = null;
+    private String              deployedImplementationType   = null;
 
     private Connection          connection                   = null;
 
@@ -61,15 +56,10 @@ public class GovernanceServiceProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName                  = template.getDisplayName();
+            name                         = template.getName();
+            versionIdentifier            = template.getVersionIdentifier();
             description                  = template.getDescription();
-            owner                        = template.getOwner();
-            ownerTypeName                = template.getOwnerTypeName();
-            ownerPropertyName            = template.getOwnerPropertyName();
-            zoneMembership               = template.getZoneMembership();
-            originOrganizationGUID       = template.getOriginOrganizationGUID();
-            originBusinessCapabilityGUID = template.getOriginBusinessCapabilityGUID();
-            otherOriginValues            = template.getOtherOriginValues();
+            deployedImplementationType   = template.getDeployedImplementationType();
             connection                   = template.getConnection();
         }
     }
@@ -81,20 +71,42 @@ public class GovernanceServiceProperties extends ReferenceableProperties
      *
      * @return String name
      */
-    public String getDisplayName()
+    public String getName()
     {
-        return displayName;
+        return name;
     }
 
 
     /**
      * Set up the stored display name property for the asset.
      *
-     * @param displayName String name
+     * @param name String name
      */
-    public void setDisplayName(String displayName)
+    public void setName(String name)
     {
-        this.displayName = displayName;
+        this.name = name;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @return string version name
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier of the resource.
+     *
+     * @param versionIdentifier string version name
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
     }
 
 
@@ -122,179 +134,24 @@ public class GovernanceServiceProperties extends ReferenceableProperties
 
 
     /**
-     * Returns the name of the owner for this asset.
+     * Retrieve the name of the technology used for this data asset.
      *
-     * @return owner String
+     * @return string name
      */
-    public String getOwner()
+    public String getDeployedImplementationType()
     {
-        return owner;
+        return deployedImplementationType;
     }
 
 
     /**
-     * Set up the name of the owner for this asset.
+     * Set up the name of the technology used for this data asset.
      *
-     * @param owner String name
+     * @param deployedImplementationType string name
      */
-    public void setOwner(String owner)
+    public void setDeployedImplementationType(String deployedImplementationType)
     {
-        this.owner = owner;
-    }
-
-
-
-    /**
-     * Return the type of owner stored in the owner property.
-     *
-     * @return String name
-     */
-    public String getOwnerTypeName()
-    {
-        return ownerTypeName;
-    }
-
-
-    /**
-     * Set up the type of owner stored in the owner property.
-     *
-     * @param ownerTypeName String name
-     */
-    public void setOwnerTypeName(String ownerTypeName)
-    {
-        this.ownerTypeName = ownerTypeName;
-    }
-
-
-    /**
-     * Return the property name used to identifier the owner.
-     *
-     * @return String name
-     */
-    public String getOwnerPropertyName()
-    {
-        return ownerPropertyName;
-    }
-
-
-    /**
-     * Set up the property name used to identifier the owner.
-     *
-     * @param ownerPropertyName String name
-     */
-    public void setOwnerPropertyName(String ownerPropertyName)
-    {
-        this.ownerPropertyName = ownerPropertyName;
-    }
-
-
-    /**
-     * Return the names of the zones that this governance service is a member of.
-     *
-     * @return list of zone names
-     */
-    public List<String> getZoneMembership()
-    {
-        if (zoneMembership == null)
-        {
-            return null;
-        }
-        else if (zoneMembership.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(zoneMembership);
-        }
-    }
-
-
-    /**
-     * Set up the names of the zones that this governance service is a member of.
-     *
-     * @param zoneMembership list of zone names
-     */
-    public void setZoneMembership(List<String> zoneMembership)
-    {
-        this.zoneMembership = zoneMembership;
-    }
-
-
-    /**
-     * Return the unique identifier for the organization that originated this governance service.
-     *
-     * @return string guid
-     */
-    public String getOriginOrganizationGUID()
-    {
-        return originOrganizationGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier for the organization that originated this governance service.
-     *
-     * @param originOrganizationGUID string guid
-     */
-    public void setOriginOrganizationGUID(String originOrganizationGUID)
-    {
-        this.originOrganizationGUID = originOrganizationGUID;
-    }
-
-
-    /**
-     * Return the unique identifier of the business capability that originated this governance service.
-     *
-     * @return string guid
-     */
-    public String getOriginBusinessCapabilityGUID()
-    {
-        return originBusinessCapabilityGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of the business capability that originated this governance service.
-     *
-     * @param originBusinessCapabilityGUID string guid
-     */
-    public void setOriginBusinessCapabilityGUID(String originBusinessCapabilityGUID)
-    {
-        this.originBusinessCapabilityGUID = originBusinessCapabilityGUID;
-    }
-
-
-    /**
-     * Return the properties that characterize where this governance service is from.
-     *
-     * @return map of name value pairs, all strings
-     */
-    public Map<String, String> getOtherOriginValues()
-    {
-        if (otherOriginValues == null)
-        {
-            return null;
-        }
-        else if (otherOriginValues.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(otherOriginValues);
-        }
-    }
-
-
-    /**
-     * Set up the properties that characterize where this governance service is from.
-     *
-     * @param otherOriginValues map of name value pairs, all strings
-     */
-    public void setOtherOriginValues(Map<String, String> otherOriginValues)
-    {
-        this.otherOriginValues = otherOriginValues;
+        this.deployedImplementationType = deployedImplementationType;
     }
 
 
@@ -329,19 +186,12 @@ public class GovernanceServiceProperties extends ReferenceableProperties
     public String toString()
     {
         return "GovernanceServiceProperties{" +
-                       "qualifiedName='" + getQualifiedName() + '\'' +
-                       ", displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", owner='" + owner + '\'' +
-                       ", ownerTypeName='" + ownerTypeName + '\'' +
-                       ", ownerPropertyName='" + ownerPropertyName + '\'' +
-                       ", zoneMembership=" + zoneMembership +
-                       ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
-                       ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
-                       ", otherOriginValues=" + otherOriginValues +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", connection=" + connection +
-                       '}';
+                "name='" + name + '\'' +
+                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", description='" + description + '\'' +
+                ", deployedImplementationType='" + deployedImplementationType + '\'' +
+                ", connection=" + connection +
+                "} " + super.toString();
     }
 
 
@@ -367,15 +217,10 @@ public class GovernanceServiceProperties extends ReferenceableProperties
             return false;
         }
         GovernanceServiceProperties that = (GovernanceServiceProperties) objectToCompare;
-        return Objects.equals(displayName, that.displayName) &&
+        return Objects.equals(name, that.name) &&
                        Objects.equals(description, that.description) &&
-                       Objects.equals(owner, that.owner) &&
-                       Objects.equals(ownerTypeName, that.ownerTypeName) &&
-                       Objects.equals(ownerPropertyName, that.ownerPropertyName) &&
-                       Objects.equals(zoneMembership, that.zoneMembership) &&
-                       Objects.equals(originOrganizationGUID, that.originOrganizationGUID) &&
-                       Objects.equals(originBusinessCapabilityGUID, that.originBusinessCapabilityGUID) &&
-                       Objects.equals(otherOriginValues, that.otherOriginValues) &&
+                       Objects.equals(versionIdentifier, that.versionIdentifier) &&
+                       Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
                        Objects.equals(connection, that.connection);
     }
 
@@ -388,7 +233,6 @@ public class GovernanceServiceProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, owner, ownerTypeName, ownerPropertyName, zoneMembership, originOrganizationGUID,
-                            originBusinessCapabilityGUID, otherOriginValues, connection);
+        return Objects.hash(super.hashCode(), name, description, versionIdentifier, deployedImplementationType, connection);
     }
 }

@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaUsage;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -182,7 +184,7 @@ public class OpenMetadataTypesArchive3_9
         /*
          * Create the Patch
          */
-        final String typeName = "ExternalReferenceLink";
+        final String typeName = OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -195,13 +197,9 @@ public class OpenMetadataTypesArchive3_9
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "pages";
-        final String attribute1Description     = "Range of pages in the external reference that this link refers.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PAGES.name,
+                                                           OpenMetadataProperty.PAGES.description,
+                                                           OpenMetadataProperty.PAGES.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -214,7 +212,7 @@ public class OpenMetadataTypesArchive3_9
         /*
          * Create the Patch
          */
-        final String typeName = "MediaReference";
+        final String typeName = OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -227,21 +225,14 @@ public class OpenMetadataTypesArchive3_9
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "mediaUsage";
-        final String attribute1Description     = "Specific media usage by the consumer that overrides the media usage document in the related media.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "mediaUsageOtherId";
-        final String attribute2Description     = "Unique identifier of the code (typically a valid value definition) that defines the media use.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("MediaUsage",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
+        property = archiveHelper.getEnumTypeDefAttribute(MediaUsage.getOpenTypeName(),
+                                                         OpenMetadataProperty.MEDIA_USAGE.name,
+                                                         OpenMetadataProperty.MEDIA_USAGE.description,
+                                                         OpenMetadataProperty.MEDIA_USAGE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.MEDIA_USAGE_OTHER_ID.name,
+                                                           OpenMetadataProperty.MEDIA_USAGE_OTHER_ID.description,
+                                                           OpenMetadataProperty.MEDIA_USAGE_OTHER_ID.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -254,7 +245,7 @@ public class OpenMetadataTypesArchive3_9
         /*
          * Create the Patch
          */
-        final String typeName = "RelatedMedia";
+        final String typeName = OpenMetadataType.RELATED_MEDIA.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -267,38 +258,24 @@ public class OpenMetadataTypesArchive3_9
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "defaultMediaUsage";
-        final String attribute1Description     = "Default media usage by a consumer.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "defaultMediaUsageOtherId";
-        final String attribute2Description     = "Unique identifier of the code (typically a valid value definition) that defines the media use.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "mediaUsage";
-        final String attribute3Description     = "Type of recommended media usage.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "mediaTypeOtherId";
-        final String attribute4Description     = "Unique identifier of the code (typically a valid value definition) that defines the media type.";
-        final String attribute4DescriptionGUID = null;
-
-
-        property = archiveHelper.getEnumTypeDefAttribute("MediaUsage",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
+        property = archiveHelper.getEnumTypeDefAttribute(MediaUsage.getOpenTypeName(),
+                                                         OpenMetadataProperty.DEFAULT_MEDIA_USAGE.name,
+                                                         OpenMetadataProperty.DEFAULT_MEDIA_USAGE.description,
+                                                         OpenMetadataProperty.DEFAULT_MEDIA_USAGE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DEFAULT_MEDIA_USAGE_OTHER_ID.name,
+                                                           OpenMetadataProperty.DEFAULT_MEDIA_USAGE_OTHER_ID.description,
+                                                           OpenMetadataProperty.DEFAULT_MEDIA_USAGE_OTHER_ID.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getArrayIntTypeDefAttribute(attribute3Name,
-                                                             attribute3Description,
-                                                             attribute3DescriptionGUID);
+        property = archiveHelper.getArrayIntTypeDefAttribute("mediaUsages",
+                                                             "Types of recommended media usage.",
+                                                             null);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-        property.setReplacedByAttribute(attribute1Name);
+        property.setReplacedByAttribute(OpenMetadataProperty.DEFAULT_MEDIA_USAGE.name);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.MEDIA_TYPE_OTHER_ID.name,
+                                                           OpenMetadataProperty.MEDIA_TYPE_OTHER_ID.description,
+                                                           OpenMetadataProperty.MEDIA_TYPE_OTHER_ID.descriptionGUID);
         properties.add(property);
 
 
@@ -312,14 +289,12 @@ public class OpenMetadataTypesArchive3_9
         /*
          * Create the Patch
          */
-        final String typeName = "ExternalReference";
-        final String description = "A link to an external reference source such as a web page, article or book.";
+        final String typeName = OpenMetadataType.EXTERNAL_REFERENCE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setDescription(description);
 
         /*
          * Build the attributes
@@ -327,161 +302,93 @@ public class OpenMetadataTypesArchive3_9
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
-        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
-        final String attribute2Name            = "referenceTitle";
-        final String attribute2Description     = "Full publication title of the external source.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "referenceAbstract";
-        final String attribute3Description     = "Summary of the key messages in the external source.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = OpenMetadataProperty.DESCRIPTION.name;
-        final String attribute4Description     = OpenMetadataProperty.DESCRIPTION.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
-        final String attribute5Name            = "authors";
-        final String attribute5Description     = "List of authors for the external source.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "numberOfPages";
-        final String attribute6Description     = "Number of pages that this external source has.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "pageRange";
-        final String attribute7Description     = "Range of pages that this reference covers. For example, if it is a journal article, this could be the range of pages for the article in the journal.";
-        final String attribute7DescriptionGUID = null;
-        final String attribute8Name            = "organization";
-        final String attribute8Description     = "Name of the organization that this external source is from.";
-        final String attribute8DescriptionGUID = null;
-        final String attribute9Name            = "publicationSeries";
-        final String attribute9Description     = "Name of the journal or series of publications that this external source is from.";
-        final String attribute9DescriptionGUID = null;
-        final String attribute10Name            = "publicationSeriesVolume";
-        final String attribute10Description     = "Name of the volume in the publication series that this external source is from.";
-        final String attribute10DescriptionGUID = null;
-        final String attribute11Name            = "edition";
-        final String attribute11Description     = "Name of the edition for this external source.";
-        final String attribute11DescriptionGUID = null;
-        final String attribute12Name            = "referenceVersion";
-        final String attribute12Description     = "Name of the revision or version of the external source.";
-        final String attribute12DescriptionGUID = null;
-        final String attribute13Name            = "url";
-        final String attribute13Description     = "Network address where this external source can be accessed from.";
-        final String attribute13DescriptionGUID = null;
-        final String attribute14Name            = "publisher";
-        final String attribute14Description     = "Name of the publisher responsible for producing this external source.";
-        final String attribute14DescriptionGUID = null;
-        final String attribute15Name            = "firstPublicationDate";
-        final String attribute15Description     = "Date of the first published version/edition of this external source.";
-        final String attribute15DescriptionGUID = null;
-        final String attribute16Name            = "publicationDate";
-        final String attribute16Description     = "Date when this version/edition of this external source was published.";
-        final String attribute16DescriptionGUID = null;
-        final String attribute17Name            = "publicationCity";
-        final String attribute17Description     = "City where the publishers are based.";
-        final String attribute17DescriptionGUID = null;
-        final String attribute18Name            = "publicationYear";
-        final String attribute18Description     = "Year when the publication of this version/edition of the external source was published.";
-        final String attribute18DescriptionGUID = null;
-        final String attribute19Name            = "publicationNumbers";
-        final String attribute19Description     = "List of unique numbers allocated by the publisher for this external source.  For example ISBN, ASIN, UNSPSC code.";
-        final String attribute19DescriptionGUID = null;
-        final String attribute20Name            = "license";
-        final String attribute20Description     = "Name of license associated with this external source.";
-        final String attribute20DescriptionGUID = null;
-        final String attribute21Name            = "copyright";
-        final String attribute21Description     = "Copyright statement associated with this external source.";
-        final String attribute21DescriptionGUID = null;
-        final String attribute22Name            = "attribution";
-        final String attribute22Description     = "Attribution statement to use when consuming this external resource.";
-        final String attribute22DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME.name,
+                                                           OpenMetadataProperty.DISPLAY_NAME.description,
+                                                           OpenMetadataProperty.DISPLAY_NAME.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.REFERENCE_TITLE.name,
+                                                           OpenMetadataProperty.REFERENCE_TITLE.description,
+                                                           OpenMetadataProperty.REFERENCE_TITLE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.REFERENCE_ABSTRACT.name,
+                                                           OpenMetadataProperty.REFERENCE_ABSTRACT.description,
+                                                           OpenMetadataProperty.REFERENCE_ABSTRACT.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
+                                                           OpenMetadataProperty.DESCRIPTION.description,
+                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute5Name,
-                                                                attribute5Description,
-                                                                attribute5DescriptionGUID);
+        property = archiveHelper.getArrayStringTypeDefAttribute(OpenMetadataProperty.AUTHORS.name,
+                                                                OpenMetadataProperty.AUTHORS.description,
+                                                                OpenMetadataProperty.AUTHORS.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute6Name,
-                                                        attribute6Description,
-                                                        attribute6DescriptionGUID);
+        property = archiveHelper.getIntTypeDefAttribute(OpenMetadataProperty.NUMBER_OF_PAGES.name,
+                                                        OpenMetadataProperty.NUMBER_OF_PAGES.description,
+                                                        OpenMetadataProperty.NUMBER_OF_PAGES.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
-                                                           attribute7Description,
-                                                           attribute7DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PAGE_RANGE.name,
+                                                           OpenMetadataProperty.PAGE_RANGE.description,
+                                                           OpenMetadataProperty.PAGE_RANGE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute8Name,
-                                                           attribute8Description,
-                                                           attribute8DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE_ORGANIZATION.name,
+                                                           OpenMetadataProperty.SOURCE_ORGANIZATION.description,
+                                                           OpenMetadataProperty.SOURCE_ORGANIZATION.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute9Name,
-                                                           attribute9Description,
-                                                           attribute9DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PUBLICATION_SERIES.name,
+                                                           OpenMetadataProperty.PUBLICATION_SERIES.description,
+                                                           OpenMetadataProperty.PUBLICATION_SERIES.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute10Name,
-                                                           attribute10Description,
-                                                           attribute10DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PUBLICATION_SERIES_VOLUME.name,
+                                                           OpenMetadataProperty.PUBLICATION_SERIES_VOLUME.description,
+                                                           OpenMetadataProperty.PUBLICATION_SERIES_VOLUME.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute11Name,
-                                                           attribute11Description,
-                                                           attribute11DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.EDITION.name,
+                                                           OpenMetadataProperty.EDITION.description,
+                                                           OpenMetadataProperty.EDITION.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute12Name,
-                                                           attribute12Description,
-                                                           attribute12DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.REFERENCE_VERSION.name,
+                                                           OpenMetadataProperty.REFERENCE_VERSION.description,
+                                                           OpenMetadataProperty.REFERENCE_VERSION.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute13Name,
-                                                           attribute13Description,
-                                                           attribute13DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.URL.name,
+                                                           OpenMetadataProperty.URL.description,
+                                                           OpenMetadataProperty.URL.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute14Name,
-                                                           attribute14Description,
-                                                           attribute14DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PUBLISHER.name,
+                                                           OpenMetadataProperty.PUBLISHER.description,
+                                                           OpenMetadataProperty.PUBLISHER.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute15Name,
-                                                         attribute15Description,
-                                                         attribute15DescriptionGUID);
+        property = archiveHelper.getDateTypeDefAttribute(OpenMetadataProperty.FIRST_PUB_DATE.name,
+                                                         OpenMetadataProperty.FIRST_PUB_DATE.description,
+                                                         OpenMetadataProperty.FIRST_PUB_DATE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute16Name,
-                                                         attribute16Description,
-                                                         attribute16DescriptionGUID);
+        property = archiveHelper.getDateTypeDefAttribute(OpenMetadataProperty.PUBLICATION_DATE.name,
+                                                         OpenMetadataProperty.PUBLICATION_DATE.description,
+                                                         OpenMetadataProperty.PUBLICATION_DATE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute17Name,
-                                                           attribute17Description,
-                                                           attribute17DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PUBLICATION_CITY.name,
+                                                           OpenMetadataProperty.PUBLICATION_CITY.description,
+                                                           OpenMetadataProperty.PUBLICATION_CITY.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute18Name,
-                                                           attribute18Description,
-                                                           attribute18DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.PUBLICATION_YEAR.name,
+                                                           OpenMetadataProperty.PUBLICATION_YEAR.description,
+                                                           OpenMetadataProperty.PUBLICATION_YEAR.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute19Name,
-                                                                attribute19Description,
-                                                                attribute19DescriptionGUID);
+        property = archiveHelper.getArrayStringTypeDefAttribute(OpenMetadataProperty.PUBLICATION_NUMBERS.name,
+                                                                OpenMetadataProperty.PUBLICATION_NUMBERS.description,
+                                                                OpenMetadataProperty.PUBLICATION_NUMBERS.descriptionGUID);
         properties.add(property);
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute20Name,
-                                                           attribute20Description,
-                                                           attribute20DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.LICENSE.name,
+                                                           OpenMetadataProperty.LICENSE.description,
+                                                           OpenMetadataProperty.LICENSE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute21Name,
-                                                           attribute21Description,
-                                                           attribute21DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.COPYRIGHT.name,
+                                                           OpenMetadataProperty.COPYRIGHT.description,
+                                                           OpenMetadataProperty.COPYRIGHT.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute22Name,
-                                                           attribute22Description,
-                                                           attribute22DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ATTRIBUTION.name,
+                                                           OpenMetadataProperty.ATTRIBUTION.description,
+                                                           OpenMetadataProperty.ATTRIBUTION.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);

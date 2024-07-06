@@ -2182,9 +2182,9 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
          */
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     endpointGUID,
-                                                                                    OpenMetadataType.ENDPOINT_TYPE_NAME,
-                                                                                    OpenMetadataType.SERVER_ENDPOINT_TYPE_GUID,
-                                                                                    OpenMetadataType.SERVER_ENDPOINT_TYPE_NAME,
+                                                                                    OpenMetadataType.ENDPOINT.typeName,
+                                                                                    OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName,
                                                                                     1,
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
@@ -2223,7 +2223,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
          */
         relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                  endpointGUID,
-                                                                 OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                                 OpenMetadataType.ENDPOINT.typeName,
                                                                  OpenMetadataType.CONNECTION_ENDPOINT_TYPE_GUID,
                                                                  OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
                                                                  2,
@@ -2924,7 +2924,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         {
             anchorIdentifiers = this.getAnchorGUIDForConnection(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.ENDPOINT_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.ENDPOINT.typeName))
         {
             anchorIdentifiers = this.getAnchorGUIDForEndpoint(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }

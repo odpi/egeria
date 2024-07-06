@@ -56,9 +56,8 @@ public class SoftwareCapabilityConverter<B> extends ITInfrastructureOMASConverte
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof SoftwareCapabilityElement)
+            if (returnBean instanceof SoftwareCapabilityElement bean)
             {
-                SoftwareCapabilityElement    bean                 = (SoftwareCapabilityElement) returnBean;
                 SoftwareCapabilityProperties capabilityProperties = new SoftwareCapabilityProperties();
 
                 if (entity != null)

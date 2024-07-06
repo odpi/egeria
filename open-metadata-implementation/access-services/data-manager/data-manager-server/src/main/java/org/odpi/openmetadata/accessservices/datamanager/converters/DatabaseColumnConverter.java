@@ -65,9 +65,8 @@ public class DatabaseColumnConverter<B> extends DataManagerOMASConverter<B>
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
-            if (returnBean instanceof DatabaseColumnElement)
+            if (returnBean instanceof DatabaseColumnElement bean)
             {
-                DatabaseColumnElement bean           = (DatabaseColumnElement) returnBean;
                 DatabaseColumnProperties  properties = new DatabaseColumnProperties();
 
                 if (schemaAttributeEntity != null)

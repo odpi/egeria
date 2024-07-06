@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
@@ -14,8 +14,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -255,30 +253,6 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
 
 
     /**
-     * Retrieve the endpoint from the asset connection.
-     *
-     * @param assetConnector asset connector
-     * @return endpoint or null
-     */
-    private String getNetworkAddress(OSSUnityCatalogResourceConnector assetConnector)
-    {
-        ConnectionProperties assetConnection = assetConnector.getConnection();
-
-        if (assetConnection != null)
-        {
-            EndpointProperties endpointProperties = assetConnection.getEndpoint();
-
-            if (endpointProperties != null)
-            {
-                return endpointProperties.getAddress();
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
      * Set up the element properties for a software capability that is to represent a UC Catalog.
      *
      * @param catalogQualifiedName qualified name computed from the network address and the name of the catalog.
@@ -343,7 +317,7 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
 
             if (friendshipConnectorGUID != null)
             {
-                CatalogTargetProperties catalogTargetProperties= new CatalogTargetProperties();
+                CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
 
                 catalogTargetProperties.setCatalogTargetName(ucCatalogName);
                 catalogTargetProperties.setMetadataSourceQualifiedName( ucCatalogQualifiedName);

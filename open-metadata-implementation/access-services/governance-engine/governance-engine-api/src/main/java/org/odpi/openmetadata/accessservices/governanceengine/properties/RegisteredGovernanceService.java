@@ -96,19 +96,15 @@ public class RegisteredGovernanceService extends GovernanceServiceProperties
      *
      * @return print out of variables in a JSON-style
      */
+
+
     @Override
     public String toString()
     {
         return "RegisteredGovernanceService{" +
                 "requestTypes=" + requestTypes +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", connection=" + getConnection() +
-                '}';
+                "} " + super.toString();
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.

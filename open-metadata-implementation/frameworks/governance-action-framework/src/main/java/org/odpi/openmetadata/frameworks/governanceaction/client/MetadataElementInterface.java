@@ -73,6 +73,25 @@ public interface MetadataElementInterface
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException;
 
+    /**
+     * Retrieve the metadata element using its unique name (typically the qualified name) and the DELETED status.
+     * This method assumes all effective dates, and forLineage and forDuplicateProcessing is set to false,
+     * to cast the widest net.
+     *
+     * @param userId                 caller's userId
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     *
+     * @return metadata element properties or null if not found
+     * @throws InvalidParameterException the unique identifier is null.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    OpenMetadataElement getDeletedElementByUniqueName(String  userId,
+                                                      String  uniqueName,
+                                                      String  uniquePropertyName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException;
 
     /**
      * Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).

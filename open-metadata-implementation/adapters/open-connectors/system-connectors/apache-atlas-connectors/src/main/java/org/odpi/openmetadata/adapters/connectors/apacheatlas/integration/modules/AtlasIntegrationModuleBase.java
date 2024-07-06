@@ -3,17 +3,17 @@
 package org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.DataStoreProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.OwnerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationAuditCode;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationErrorCode;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTConnector;
@@ -372,7 +372,7 @@ public abstract class AtlasIntegrationModuleBase
                                                                                                        atlasEntity.getUpdatedBy(),
                                                                                                        atlasEntity.getUpdateTime(),
                                                                                                        atlasEntity.getVersion(),
-                                                                                                       SynchronizationDirection.FROM_THIRD_PARTY);
+                                                                                                       PermittedSynchronization.FROM_THIRD_PARTY);
 
                 myContext.updateExternalIdentifier(egeriaGUID,
                                                    egeriaTypeName,
@@ -465,7 +465,7 @@ public abstract class AtlasIntegrationModuleBase
                                                                                                atlasEntity.getUpdatedBy(),
                                                                                                atlasEntity.getUpdateTime(),
                                                                                                atlasEntity.getVersion(),
-                                                                                               SynchronizationDirection.FROM_THIRD_PARTY);
+                                                                                               PermittedSynchronization.FROM_THIRD_PARTY);
 
         myContext.updateExternalIdentifier(egeriaGUID,
                                            egeriaTypeName,
@@ -531,7 +531,7 @@ public abstract class AtlasIntegrationModuleBase
      * @param externalInstanceLastUpdatedBy the username of the person or process that last updated the instance in the external system
      * @param externalInstanceLastUpdateTime the date/time that the instance in the external system was last updated
      * @param externalInstanceVersion the latest version of the element in the external system
-     * @param synchronizationDirection the permitted synchronization direction
+     * @param permittedSynchronization the permitted synchronization direction
      * @return properties object
      */
     protected ExternalIdentifierProperties getExternalIdentifier(String                   atlasGUID,
@@ -541,7 +541,7 @@ public abstract class AtlasIntegrationModuleBase
                                                                  String                   externalInstanceLastUpdatedBy,
                                                                  Date                     externalInstanceLastUpdateTime,
                                                                  long                     externalInstanceVersion,
-                                                                 SynchronizationDirection synchronizationDirection)
+                                                                 PermittedSynchronization permittedSynchronization)
     {
         return this.getExternalIdentifier(atlasGUID,
                                           atlasTypeName,
@@ -552,7 +552,7 @@ public abstract class AtlasIntegrationModuleBase
                                           externalInstanceLastUpdatedBy,
                                           externalInstanceLastUpdateTime,
                                           externalInstanceVersion,
-                                          synchronizationDirection);
+                                          permittedSynchronization);
     }
 
 
@@ -567,7 +567,7 @@ public abstract class AtlasIntegrationModuleBase
      * @param externalInstanceLastUpdatedBy the username of the person or process that last updated the instance in the external system
      * @param externalInstanceLastUpdateTime the date/time that the instance in the external system was last updated
      * @param externalInstanceVersion the latest version of the element in the external system
-     * @param synchronizationDirection the permitted synchronization direction
+     * @param permittedSynchronization the permitted synchronization direction
      * @return properties object
      */
     protected ExternalIdentifierProperties getExternalIdentifier(String                   atlasGUID,
@@ -579,7 +579,7 @@ public abstract class AtlasIntegrationModuleBase
                                                                  String                   externalInstanceLastUpdatedBy,
                                                                  Date                     externalInstanceLastUpdateTime,
                                                                  long                     externalInstanceVersion,
-                                                                 SynchronizationDirection synchronizationDirection)
+                                                                 PermittedSynchronization permittedSynchronization)
     {
         ExternalIdentifierProperties externalIdentifierProperties = new ExternalIdentifierProperties();
         externalIdentifierProperties.setExternalIdentifier(atlasGUID);
@@ -591,7 +591,7 @@ public abstract class AtlasIntegrationModuleBase
         externalIdentifierProperties.setExternalInstanceLastUpdatedBy(externalInstanceLastUpdatedBy);
         externalIdentifierProperties.setExternalInstanceLastUpdateTime(externalInstanceLastUpdateTime);
         externalIdentifierProperties.setExternalInstanceVersion(externalInstanceVersion);
-        externalIdentifierProperties.setSynchronizationDirection(synchronizationDirection);
+        externalIdentifierProperties.setSynchronizationDirection(permittedSynchronization);
 
         Map<String, String> mappingProperties = new HashMap<>();
 
@@ -679,7 +679,7 @@ public abstract class AtlasIntegrationModuleBase
                                                                                                atlasEntity.getUpdatedBy(),
                                                                                                atlasEntity.getUpdateTime(),
                                                                                                atlasEntity.getVersion(),
-                                                                                               SynchronizationDirection.TO_THIRD_PARTY);
+                                                                                               PermittedSynchronization.TO_THIRD_PARTY);
 
         myContext.addExternalIdentifier(egeriaElement.getElementHeader().getGUID(), egeriaElement.getElementHeader().getType().getTypeName(), externalIdentifierProperties);
     }
@@ -1079,7 +1079,7 @@ public abstract class AtlasIntegrationModuleBase
                                                                                                        atlasEntity.getUpdatedBy(),
                                                                                                        atlasEntity.getUpdateTime(),
                                                                                                        atlasEntity.getVersion(),
-                                                                                                       SynchronizationDirection.FROM_THIRD_PARTY);
+                                                                                                       PermittedSynchronization.FROM_THIRD_PARTY);
 
                 DataAssetProperties dataAssetProperties = this.getEgeriaDataSetProperties(atlasEntity, egeriaTypeName);
 

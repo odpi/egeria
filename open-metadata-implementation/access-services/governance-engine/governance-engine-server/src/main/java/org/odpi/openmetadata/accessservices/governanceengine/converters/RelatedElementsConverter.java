@@ -59,10 +59,8 @@ public class RelatedElementsConverter<B> extends GovernanceEngineOMASConverter<B
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof RelatedMetadataElements)
+            if (returnBean instanceof RelatedMetadataElements bean)
             {
-                RelatedMetadataElements bean = (RelatedMetadataElements) returnBean;
-
                 fillElementControlHeader(bean, relationship);
 
                 bean.setRelationshipGUID(relationship.getGUID());

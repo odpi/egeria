@@ -15,7 +15,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionPr
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectorTypeProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.EmbeddedConnectionProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.EndpointProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -31,6 +30,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -279,7 +279,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                     element.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                 element.getElementHeader().getGUID(),
                                                                                 endpointGUIDParameterName,
-                                                                                OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                                                OpenMetadataType.ENDPOINT.typeName,
                                                                                 assetManagerGUID,
                                                                                 assetManagerName,
                                                                                 forLineage,
@@ -289,7 +289,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
 
                     this.getSupplementaryProperties(element.getElementHeader().getGUID(),
                                                     endpointGUIDParameterName,
-                                                    OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                    OpenMetadataType.ENDPOINT.typeName,
                                                     element.getEndpointProperties(),
                                                     forLineage,
                                                     forDuplicateProcessing,
@@ -1406,8 +1406,8 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
             this.maintainSupplementaryProperties(userId,
                                                  endpointGUID,
                                                  endpointGUIDParameterName,
-                                                 OpenMetadataType.ENDPOINT_TYPE_NAME,
-                                                 OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                 OpenMetadataType.ENDPOINT.typeName,
+                                                 OpenMetadataType.ENDPOINT.typeName,
                                                  endpointProperties.getQualifiedName(),
                                                  endpointProperties,
                                                  true,
@@ -1419,7 +1419,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
             this.createExternalIdentifier(userId,
                                           endpointGUID,
                                           endpointGUIDParameterName,
-                                          OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                          OpenMetadataType.ENDPOINT.typeName,
                                           correlationProperties,
                                           false,
                                           false,
@@ -1480,7 +1480,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
             this.createExternalIdentifier(userId,
                                           endpointGUID,
                                           endpointGUIDParameterName,
-                                          OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                          OpenMetadataType.ENDPOINT.typeName,
                                           correlationProperties,
                                           false,
                                           false,
@@ -1558,8 +1558,8 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
         this.maintainSupplementaryProperties(userId,
                                              endpointGUID,
                                              endpointGUIDParameterName,
-                                             OpenMetadataType.ENDPOINT_TYPE_NAME,
-                                             OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                             OpenMetadataType.ENDPOINT.typeName,
+                                             OpenMetadataType.ENDPOINT.typeName,
                                              endpointProperties.getQualifiedName(),
                                              endpointProperties,
                                              isMergeUpdate,
@@ -1604,7 +1604,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         endpointGUID,
                                         endpointGUIDParameterName,
-                                        OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                        OpenMetadataType.ENDPOINT.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -1780,7 +1780,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                                                                            assetManagerGUID,
                                                                                            assetManagerGUIDParameterName,
                                                                                            OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
-                                                                                           OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                                                           OpenMetadataType.ENDPOINT.typeName,
                                                                                            startFrom,
                                                                                            validatedPageSize,
                                                                                            effectiveTime,
@@ -1801,7 +1801,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                         element.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                     entity.getGUID(),
                                                                                     entityGUIDParameterName,
-                                                                                    OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                                                    OpenMetadataType.ENDPOINT.typeName,
                                                                                     assetManagerGUID,
                                                                                     assetManagerName,
                                                                                     forLineage,
@@ -1811,7 +1811,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
 
                         this.getSupplementaryProperties(element.getElementHeader().getGUID(),
                                                         endpointGUIDParameterName,
-                                                        OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                        OpenMetadataType.ENDPOINT.typeName,
                                                         element.getEndpointProperties(),
                                                         forLineage,
                                                         forDuplicateProcessing,
@@ -1877,7 +1877,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
             element.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                         element.getElementHeader().getGUID(),
                                                                         entityGUIDParameterName,
-                                                                        OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                                        OpenMetadataType.ENDPOINT.typeName,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
                                                                         forLineage,
@@ -1887,7 +1887,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
 
             this.getSupplementaryProperties(element.getElementHeader().getGUID(),
                                             endpointGUIDParameterName,
-                                            OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                            OpenMetadataType.ENDPOINT.typeName,
                                             element.getEndpointProperties(),
                                             forLineage,
                                             forDuplicateProcessing,

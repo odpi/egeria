@@ -57,9 +57,8 @@ public class GovernanceActionProcessConverter<B> extends GovernanceEngineOMASCon
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof GovernanceActionProcessElement)
+            if (returnBean instanceof GovernanceActionProcessElement bean)
             {
-                GovernanceActionProcessElement    bean              = (GovernanceActionProcessElement) returnBean;
                 GovernanceActionProcessProperties processProperties = new GovernanceActionProcessProperties();
 
                 if (entity != null)

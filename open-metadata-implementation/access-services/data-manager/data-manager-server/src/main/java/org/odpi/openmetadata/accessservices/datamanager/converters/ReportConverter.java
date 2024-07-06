@@ -56,9 +56,8 @@ public class ReportConverter<B> extends DataManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ReportElement)
+            if (returnBean instanceof ReportElement bean)
             {
-                ReportElement    bean            = (ReportElement) returnBean;
                 ReportProperties reportProperties = new ReportProperties();
 
                 if (entity != null)
@@ -75,6 +74,7 @@ public class ReportConverter<B> extends DataManagerOMASConverter<B>
                     reportProperties.setName(this.removeName(instanceProperties));
                     reportProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     reportProperties.setDescription(this.removeDescription(instanceProperties));
+                    reportProperties.setDeployedImplementationType(this.removeDeployedImplementationType(instanceProperties));
 
                     reportProperties.setId(this.removeId(instanceProperties));
                     reportProperties.setAuthor(this.removeAuthor(instanceProperties));

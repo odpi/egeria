@@ -39,8 +39,8 @@ public class PropertyFacetBuilder extends ReferenceableBuilder
                          String               serverName)
     {
         super(qualifiedName,
-              OpenMetadataType.PROPERTY_FACET_TYPE_GUID,
-              OpenMetadataType.PROPERTY_FACET_TYPE_NAME,
+              OpenMetadataType.PROPERTY_FACET.typeGUID,
+              OpenMetadataType.PROPERTY_FACET.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -65,7 +65,7 @@ public class PropertyFacetBuilder extends ReferenceableBuilder
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                           instanceProperties,
-                                                                          OpenMetadataType.SCHEMA_VERSION_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.SCHEMA_VERSION.name,
                                                                           schemaVersion,
                                                                           methodName);
 
@@ -77,7 +77,7 @@ public class PropertyFacetBuilder extends ReferenceableBuilder
 
         instanceProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                              instanceProperties,
-                                                                             OpenMetadataType.PROPERTIES_PROPERTY_NAME,
+                                                                             OpenMetadataProperty.PROPERTIES.name,
                                                                              properties,
                                                                              methodName);
         return instanceProperties;

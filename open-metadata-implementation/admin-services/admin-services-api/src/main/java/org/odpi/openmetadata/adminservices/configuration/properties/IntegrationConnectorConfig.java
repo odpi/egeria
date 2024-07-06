@@ -7,9 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 
-import java.io.Serial;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -19,7 +18,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * IntegrationConnectorConfig provides the configuration properties used to create and manage an
  * integration connector that exchanges metadata with a third party technology.
- *
  * The integration connectors can:
  * <ul>
  *     <li>Listen on a blocking call for the third party technology to send a notification.</li>

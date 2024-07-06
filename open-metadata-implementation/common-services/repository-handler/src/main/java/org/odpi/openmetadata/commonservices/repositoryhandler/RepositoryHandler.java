@@ -1064,56 +1064,6 @@ public class RepositoryHandler
      * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
      * @param externalSourceName unique name for the external source.
      * @param entityGUID         unique identifier entity to update
-     * @param entityTypeGUID     type of entity to create
-     * @param entityTypeName     name of the entity's type
-     * @param properties         properties for the entity
-     * @param classifications    classifications for entity
-     * @param methodName         name of calling method
-     *
-     * @return returned entity containing the update
-     *
-     * @throws InvalidParameterException  problem with the GUID
-     * @throws PropertyServerException    problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public EntityDetail updateEntity(String               userId,
-                                     String               externalSourceGUID,
-                                     String               externalSourceName,
-                                     String               entityGUID,
-                                     String               entityTypeGUID,
-                                     String               entityTypeName,
-                                     InstanceProperties   properties,
-                                     List<Classification> classifications,
-                                     String               methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
-    {
-        final String entityGUIDParameterName = "entityGUID";
-
-        return this.updateEntity(userId,
-                                 externalSourceGUID,
-                                 externalSourceName,
-                                 entityGUID,
-                                 entityGUIDParameterName,
-                                 entityTypeGUID,
-                                 entityTypeName,
-                                 properties,
-                                 classifications,
-                                 false,
-                                 false,
-                                 new Date(),
-                                 methodName);
-    }
-
-
-    /**
-     * Update an existing entity in the open metadata repository.  Both the properties and the classifications are updated
-     * to the supplied values.
-     *
-     * @param userId             calling user
-     * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
-     * @param externalSourceName unique name for the external source.
-     * @param entityGUID         unique identifier entity to update
      * @param entityGUIDParameterName parameter supplying entityGUID
      * @param entityTypeGUID     type of entity to create
      * @param entityTypeName     name of the entity's type

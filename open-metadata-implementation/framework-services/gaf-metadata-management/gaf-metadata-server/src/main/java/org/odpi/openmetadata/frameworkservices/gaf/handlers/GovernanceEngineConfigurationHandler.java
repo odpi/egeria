@@ -421,7 +421,7 @@ public class GovernanceEngineConfigurationHandler
      * @param userId identifier of calling user
      * @param typeName type of governance service
      * @param qualifiedName  unique name for the governance service.
-     * @param displayName   display name for the governance service.
+     * @param name   display name for the governance service.
      * @param description  description of the analysis provided by the governance service.
      * @param connection   connection to instantiate the governance service implementation.
      * @param serviceSupportedZones supported zones for calling service
@@ -435,8 +435,10 @@ public class GovernanceEngineConfigurationHandler
     public String createGovernanceService(String       userId,
                                           String       typeName,
                                           String       qualifiedName,
-                                          String       displayName,
+                                          String       name,
+                                          String       versionIdentifier,
                                           String       description,
+                                          String       deployedImplementationType,
                                           Connection   connection,
                                           List<String> serviceSupportedZones) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
@@ -456,9 +458,10 @@ public class GovernanceEngineConfigurationHandler
                                                                             null,
                                                                             null,
                                                                             qualifiedName,
-                                                                            displayName,
-                                                                            null,
+                                                                            name,
+                                                                            versionIdentifier,
                                                                             description,
+                                                                            deployedImplementationType,
                                                                             null,
                                                                             typeName,
                                                                             null,
@@ -683,8 +686,10 @@ public class GovernanceEngineConfigurationHandler
      * @param userId identifier of calling user
      * @param guid unique identifier of the governance service - used to locate the definition.
      * @param qualifiedName new value for unique name of governance service.
-     * @param displayName new value for the display name.
-     * @param description new value for the description.
+     * @param name new value for the display name
+     * @param versionIdentifier version name
+     * @param description new value for the description
+     * @param deployedImplementationType technology type
      * @param connection connection used to create an instance of this governance service.
      * @param additionalProperties additional properties for the governance engine.
      * @param extendedProperties properties to populate the subtype of the governance service.
@@ -697,8 +702,10 @@ public class GovernanceEngineConfigurationHandler
     public void updateGovernanceService(String              userId,
                                         String              guid,
                                         String              qualifiedName,
-                                        String              displayName,
+                                        String              name,
+                                        String              versionIdentifier,
                                         String              description,
+                                        String              deployedImplementationType,
                                         Connection          connection,
                                         Map<String, String> additionalProperties,
                                         Map<String, Object> extendedProperties,
@@ -715,9 +722,10 @@ public class GovernanceEngineConfigurationHandler
                                                            guid,
                                                            guidParameter,
                                                            qualifiedName,
-                                                           displayName,
-                                                           null,
+                                                           name,
+                                                           versionIdentifier,
                                                            description,
+                                                           deployedImplementationType,
                                                            additionalProperties,
                                                            OpenMetadataType.GOVERNANCE_SERVICE.typeGUID,
                                                            OpenMetadataType.GOVERNANCE_SERVICE.typeName,

@@ -1209,6 +1209,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                case DISABLED -> InstanceStatus.DISABLED;
                                case COMPLETE -> InstanceStatus.COMPLETE;
                                case DEPRECATED -> InstanceStatus.DEPRECATED;
+                               case DELETED -> InstanceStatus.DELETED;
                                case OTHER -> InstanceStatus.OTHER;
                            };
         }

@@ -65,9 +65,8 @@ public class GovernanceServiceConverter<B> extends GovernanceEngineOMASConverter
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof GovernanceServiceElement)
+            if (returnBean instanceof GovernanceServiceElement bean)
             {
-                GovernanceServiceElement bean = (GovernanceServiceElement)returnBean;
                 GovernanceServiceProperties properties = new GovernanceServiceProperties();
 
                 if (primaryEntity != null)
@@ -85,8 +84,10 @@ public class GovernanceServiceConverter<B> extends GovernanceEngineOMASConverter
 
                     properties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    properties.setDisplayName(this.removeName(instanceProperties));
+                    properties.setName(this.removeName(instanceProperties));
+                    properties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     properties.setDescription(this.removeDescription(instanceProperties));
+                    properties.setDeployedImplementationType(this.removeDeployedImplementationType(instanceProperties));
 
                     if (supplementaryEntities != null)
                     {

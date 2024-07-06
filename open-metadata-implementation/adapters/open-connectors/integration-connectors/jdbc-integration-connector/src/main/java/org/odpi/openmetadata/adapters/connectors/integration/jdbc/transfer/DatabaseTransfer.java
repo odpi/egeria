@@ -111,7 +111,7 @@ public class DatabaseTransfer {
         databaseProperties.setName(StringUtils.isBlank(catalog) ? address : catalog);
         databaseProperties.setDatabaseInstance(driverName);
         databaseProperties.setDatabaseVersion(databaseProductVersion);
-        databaseProperties.setDatabaseType(databaseProductName);
+        databaseProperties.setDeployedImplementationType(databaseProductName);
         databaseProperties.setDatabaseImportedFrom(url);
 
         return databaseProperties;

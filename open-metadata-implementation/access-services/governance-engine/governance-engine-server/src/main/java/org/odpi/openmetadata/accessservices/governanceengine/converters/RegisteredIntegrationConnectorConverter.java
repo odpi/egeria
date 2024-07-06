@@ -5,9 +5,9 @@ package org.odpi.openmetadata.accessservices.governanceengine.converters;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.IntegrationConnectorElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredIntegrationConnectorElement;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredIntegrationConnectorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -105,7 +105,7 @@ public class RegisteredIntegrationConnectorConverter
      * Extract and delete the permittedSynchronization property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
-     * @return SynchronizationDirection enum
+     * @return PermittedSynchronization enum
      */
     PermittedSynchronization removePermittedSynchronization(InstanceProperties  instanceProperties)
     {
@@ -118,11 +118,11 @@ public class RegisteredIntegrationConnectorConverter
                                                                      instanceProperties,
                                                                      methodName);
 
-            for (PermittedSynchronization synchronizationDirection : PermittedSynchronization.values())
+            for (PermittedSynchronization permittedSynchronization : PermittedSynchronization.values())
             {
-                if (synchronizationDirection.getOpenTypeOrdinal() == ordinal)
+                if (permittedSynchronization.getOrdinal() == ordinal)
                 {
-                    return synchronizationDirection;
+                    return permittedSynchronization;
                 }
             }
         }

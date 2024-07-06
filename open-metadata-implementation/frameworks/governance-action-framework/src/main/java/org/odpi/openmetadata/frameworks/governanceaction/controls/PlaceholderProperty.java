@@ -29,6 +29,11 @@ public enum PlaceholderProperty
     PORT_NUMBER ("portNumber", "The number of the port to use to connect to a service.", "string", "1234"),
 
     /**
+     * The network address of the server
+     */
+    SERVER_NETWORK_ADDRESS("serverNetworkAddress", "The network address of the server.", "string", "http://localhost:8080"),
+
+    /**
      * The userId to store in the userId attribute of the connection.
      */
     CONNECTION_USER_ID ("connectionUserId",
@@ -323,7 +328,6 @@ public enum PlaceholderProperty
 
         placeholderPropertyTypes.add(PlaceholderProperty.HOST_URL.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
-        placeholderPropertyTypes.add(PlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
@@ -406,6 +410,7 @@ public enum PlaceholderProperty
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
+        placeholderPropertyTypes.add(FILE_SYSTEM_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_PATH_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_TYPE.getPlaceholderType());
@@ -427,6 +432,7 @@ public enum PlaceholderProperty
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
+        placeholderPropertyTypes.add(FILE_SYSTEM_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_PATH_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_TYPE.getPlaceholderType());
@@ -448,6 +454,7 @@ public enum PlaceholderProperty
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
+        placeholderPropertyTypes.add(FILE_SYSTEM_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(DIRECTORY_PATH_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(DIRECTORY_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(VERSION_IDENTIFIER.getPlaceholderType());
@@ -465,6 +472,7 @@ public enum PlaceholderProperty
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
+        placeholderPropertyTypes.add(FILE_SYSTEM_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_PATH_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_TYPE.getPlaceholderType());

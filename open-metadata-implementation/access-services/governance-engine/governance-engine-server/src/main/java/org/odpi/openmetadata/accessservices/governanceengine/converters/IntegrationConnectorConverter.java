@@ -65,9 +65,8 @@ public class IntegrationConnectorConverter<B> extends GovernanceEngineOMASConver
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof IntegrationConnectorElement)
+            if (returnBean instanceof IntegrationConnectorElement bean)
             {
-                IntegrationConnectorElement bean = (IntegrationConnectorElement)returnBean;
                 IntegrationConnectorProperties properties = new IntegrationConnectorProperties();
 
                 if (primaryEntity != null)
@@ -85,9 +84,10 @@ public class IntegrationConnectorConverter<B> extends GovernanceEngineOMASConver
 
                     properties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     properties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    properties.setDisplayName(this.removeName(instanceProperties));
+                    properties.setName(this.removeName(instanceProperties));
                     properties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     properties.setDescription(this.removeDescription(instanceProperties));
+                    properties.setDeployedImplementationType(this.removeDeployedImplementationType(instanceProperties));
                     properties.setUsesBlockingCalls(this.removeUsesBlockingCalls(instanceProperties));
 
                     if (supplementaryEntities != null)

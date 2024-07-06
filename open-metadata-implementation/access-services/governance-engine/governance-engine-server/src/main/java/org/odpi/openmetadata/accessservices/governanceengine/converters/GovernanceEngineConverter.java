@@ -56,9 +56,8 @@ public class GovernanceEngineConverter<B> extends GovernanceEngineOMASConverter<
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof GovernanceEngineElement)
+            if (returnBean instanceof GovernanceEngineElement bean)
             {
-                GovernanceEngineElement    bean = (GovernanceEngineElement) returnBean;
                 GovernanceEngineProperties properties = new GovernanceEngineProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));

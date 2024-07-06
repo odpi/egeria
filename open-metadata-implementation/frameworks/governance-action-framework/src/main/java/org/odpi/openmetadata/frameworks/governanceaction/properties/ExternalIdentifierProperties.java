@@ -1,13 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.assetmanager.properties;
+package org.odpi.openmetadata.frameworks.governanceaction.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 
 import java.util.Date;
 import java.util.Map;
@@ -24,8 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExternalIdentifierProperties
 {
-    private SynchronizationDirection synchronizationDirection       = null;
-    private String                   synchronizationDescription     = null;
+    private PermittedSynchronization permittedSynchronization   = null;
+    private String                   synchronizationDescription = null;
     private String                   externalIdentifier             = null;
     private String                   externalIdentifierName         = null;
     private String                   externalIdentifierUsage        = null;
@@ -56,7 +56,7 @@ public class ExternalIdentifierProperties
     {
         if (template != null)
         {
-            synchronizationDirection = template.getSynchronizationDirection();
+            permittedSynchronization   = template.getSynchronizationDirection();
             synchronizationDescription = template.getSynchronizationDescription();
             externalIdentifier = template.getExternalIdentifier();
             externalIdentifierName = template.getExternalIdentifierName();
@@ -78,20 +78,20 @@ public class ExternalIdentifierProperties
      *
      * @return enum
      */
-    public SynchronizationDirection getSynchronizationDirection()
+    public PermittedSynchronization getSynchronizationDirection()
     {
-        return synchronizationDirection;
+        return permittedSynchronization;
     }
 
 
     /**
      * Set up details of the synchronization direction.
      *
-     * @param synchronizationDirection enum
+     * @param permittedSynchronization enum
      */
-    public void setSynchronizationDirection(SynchronizationDirection synchronizationDirection)
+    public void setSynchronizationDirection(PermittedSynchronization permittedSynchronization)
     {
-        this.synchronizationDirection = synchronizationDirection;
+        this.permittedSynchronization = permittedSynchronization;
     }
 
 
@@ -381,7 +381,7 @@ public class ExternalIdentifierProperties
     public String toString()
     {
         return "ExternalIdentifierProperties{" +
-                       "synchronizationDirection=" + synchronizationDirection +
+                       "permittedSynchronization=" + permittedSynchronization +
                        ", synchronizationDescription='" + synchronizationDescription + '\'' +
                        ", externalIdentifier='" + externalIdentifier + '\'' +
                        ", externalIdentifierName='" + externalIdentifierName + '\'' +
@@ -435,7 +435,7 @@ public class ExternalIdentifierProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(synchronizationDirection, synchronizationDescription, externalIdentifier, externalIdentifierName, externalIdentifierUsage,
+        return Objects.hash(permittedSynchronization, synchronizationDescription, externalIdentifier, externalIdentifierName, externalIdentifierUsage,
                             externalIdentifierSource, keyPattern, mappingProperties);
     }
 }

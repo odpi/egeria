@@ -9,6 +9,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
  */
 public enum OpenMetadataProperty
 {
+    /* ======================================================
+     * These values are from the repository element header
+     */
+
     /**
      * Unique identifier of an open metadata entity or relationship.
      */
@@ -18,6 +22,15 @@ public enum OpenMetadataProperty
      * The unique identifier for the metadata collection that is the home for a metadata element.
      */
     METADATA_COLLECTION_ID("metadataCollectionId", "string", "The unique identifier for the metadata collection that is the home for a metadata element.", "151b9d80-8417-41c4-8f04-3ab90a387196", "01d7e832-ef18-4451-8e4c-4ba972292a8e"),
+
+    /**
+     * The unique identifier for the metadata collection that is the home for a metadata element.
+     */
+    METADATA_COLLECTION_NAME("metadataCollectionName", "string", "The unique name for the metadata collection that is the home for a metadata element.", "MyDataManagerForDatabase1", "25b43665-87e9-4637-9e6d-d0658ba26261"),
+
+    /* ======================================================
+     * These values are attributes defined in the type system.
+     */
 
     /**
      * Unique identifier of an open metadata entity, classification or relationship.
@@ -893,17 +906,28 @@ public enum OpenMetadataProperty
     /**
      * Guidance on how the element should be used.
      */
-    USAGE("usage"   , "string", "Guidance on how the element should be used.", null, "e92f8669-5a07-4130-9ad6-62aadca7a505"),
+    USAGE("usage", "string", "Guidance on how the element should be used.", null, "e92f8669-5a07-4130-9ad6-62aadca7a505"),
 
     /**
      * Details of where the element was sourced from.
      */
-    SOURCE("source"   , "string", "Details of the organization, person or process that created the element, or provided the information used to create the element.", null, "9c40c4e3-1d6d-45fd-8df0-f1a2e09db636"),
+    SOURCE("source", "string", "Details of the organization, person or process that created the element, or provided the information used to create the element.", null, "9c40c4e3-1d6d-45fd-8df0-f1a2e09db636"),
+
+    /**
+     * Deployed version number for this platform.
+     */
+    PLATFORM_VERSION("platformVersion", "string", "Deployed version number for this platform.", null, "03b0bab5-2a86-4720-8ab3-5b0d75c743dd"),
+
+
+    /**
+     * Deployed version number for this server.
+     */
+    SERVER_VERSION("serverVersion", "string", "Deployed version number for this server.", null, "c762845d-f333-43b3-bd98-8780bc979167"),
 
     /**
      * Level of confidence in the correctness of the element.
      */
-    CONFIDENCE("confidence"   , "int", "Level of confidence in the correctness of the element. 0=unknown; 1=low confidence; 100=total confidence.", "100", "26dd007a-cff3-45e7-963d-2a753c2b7000"),
+    CONFIDENCE("confidence", "int", "Level of confidence in the correctness of the element. 0=unknown; 1=low confidence; 100=total confidence.", "100", "26dd007a-cff3-45e7-963d-2a753c2b7000"),
 
     /**
      * The integration connector needs to use blocking calls to a third party technology and so needs to run in its own thread.
@@ -1122,7 +1146,205 @@ public enum OpenMetadataProperty
      */
     EMBEDDED_METADATA("embeddedMetadata", "map<string,string>", "Metadata properties embedded in the media file.", null, "af5a6693-e14c-489e-a76c-1a45248e9dbd"),
 
+    /**
+     * Full publication title of the external source.
+     */
+    REFERENCE_TITLE("referenceTitle", "string", "Full publication title of the external source.", null, "e98ea20f-111b-421d-91a5-586d469f990d"),
 
+    /**
+     * Summary of the key messages in the external source.
+     */
+    REFERENCE_ABSTRACT("referenceAbstract", "string", "Summary of the key messages in the external source.", null, "57b63b64-5139-45db-94e4-146a57389fe8"),
+
+    /**
+     * Name of the revision or version of the external source.
+     */
+    REFERENCE_VERSION("referenceVersion", "string", "Name of the revision or version of the external source.", null, "f0365e94-3c4b-4386-a75a-a03f6e78cb7d"),
+
+    /**
+     * List of authors for the external source.
+     */
+    AUTHORS("authors", "array<string>", "List of authors for the external source.", null, "b0dd1911-7bb6-47be-bd88-5a9c86f00fe0"),
+
+    /**
+     * Number of pages that this external source has.
+     */
+    NUMBER_OF_PAGES("numberOfPages", "int", "Number of pages that this external source has.", null, "dfdb0daa-3b5d-4f76-a674-bf2e683f587c"),
+
+    /**
+     * Range of pages that this reference covers.
+     */
+    PAGE_RANGE("pageRange", "string", "Range of pages that this reference covers. For example, if it is a journal article, this could be the range of pages for the article in the journal.", "35-98", "6a97b691-fbba-44ae-9557-f18b627a7fb1"),
+
+    /**
+     * Name of the journal or series of publications that this external source is from.
+     */
+    PUBLICATION_SERIES("publicationSeries", "string", "Name of the journal or series of publications that this external source is from.", null, "93426a39-9a40-475b-aa3c-937a3abfd40e"),
+
+    /**
+     * Name of the volume in the publication series that this external source is from.
+     */
+    PUBLICATION_SERIES_VOLUME("publicationSeriesVolume", "string", "Name of the volume in the publication series that this external source is from.", null, "9ba221d6-d9c6-4d4e-9e65-9bb0a523faff"),
+
+    /**
+     * Name of the edition for this external source.
+     */
+    EDITION("edition", "string", "Name of the edition for this external source.", "First Edition", "d327eb3c-22d5-4dc1-8206-fe82089c1011"),
+
+    /**
+     * Network address where this external source can be accessed from.
+     */
+    URL("url", "string", "Network address where this external source can be accessed from.", null, "604dbf10-335d-4132-8a32-c30fa9fec154"),
+
+    /**
+     * Name of the publisher responsible for producing this external source.
+     */
+    PUBLISHER("publisher", "string", "Name of the publisher responsible for producing this external source.", null, "3a92b878-c0ae-464b-a70b-63fd61a36ec5"),
+
+    /**
+     * Date of the first published version/edition of this external source.
+     */
+    FIRST_PUB_DATE("firstPublicationDate", "date", "Date of the first published version/edition of this external source.", null, "22eac39f-8097-4f17-84b2-d718f06b242c"),
+
+    /**
+     * Date when this version/edition of this external source was published.
+     */
+    PUBLICATION_DATE("publicationDate", "", "Date when this version/edition of this external source was published.", null, "1b6d0398-31f3-4f8e-9998-3b975323423d"),
+
+    /**
+     * City where the publishers are based.
+     */
+    PUBLICATION_CITY("publicationCity", "string", "City where the publishers are based.", "London", "16bb6599-a056-4d49-b757-833ba1bd2b38"),
+
+    /**
+     * Year when the publication of this version/edition of the external source was published.
+     */
+    PUBLICATION_YEAR("publicationYear", "string", "Year when the publication of this version/edition of the external source was published.", "2020", "5ae46954-7762-4ab5-87e2-828287e82013"),
+
+    /**
+     * List of unique numbers allocated by the publisher for this external source.  For example ISBN, ASIN, UNSPSC code.
+     */
+    PUBLICATION_NUMBERS("publicationNumbers", "array<string>", "List of unique numbers allocated by the publisher for this external source.  For example ISBN, ASIN, UNSPSC code.", null, "2c734b4c-de01-490f-9675-da4addc5efe4"),
+
+    /**
+     * Name of license associated with this external source.
+     */
+    LICENSE("license", "", "Name of license associated with this external source.", null, "c64f169a-863b-4355-b5a6-27338e1152c1"),
+
+    /**
+     * Copyright statement associated with this external source.
+     */
+    COPYRIGHT("copyright", "string", "Copyright statement associated with this external source.", null, "0ece8225-2dfe-4716-bfe2-bac791b6c5f7"),
+
+    /**
+     * Attribution statement to use when consuming this external resource.
+     */
+    ATTRIBUTION("attribution", "string", "Attribution statement to use when consuming this external resource.", null, "f2e665a5-c7e0-48c0-b3d6-e47c3b1fde02"),
+
+    /**
+     * Local identifier for the reference.
+     */
+    REFERENCE_ID("referenceId", "string", "Local identifier for the reference.", null, "90b32257-1795-4b2f-8383-bfdbdbc1ad89"),
+
+    /**
+     * Range of pages in the external reference that this link refers.
+     */
+    PAGES("pages", "string", "Range of pages in the external reference that this link refers.", "1-10", "31144831-a9df-47b1-9975-902e0f76836a"),
+
+    /**
+     * Specific media usage by the consumer that overrides the default media usage documented in the related media.
+     */
+    MEDIA_USAGE("mediaUsage", "MediaUsage", "Specific media usage by the consumer that overrides the default media usage documented in the related media.", null, "483bbce1-e070-46ad-8636-f813c9309e56"),
+
+    /**
+     * Unique identifier of the code (typically a valid value definition) that defines the media use.
+     */
+    MEDIA_USAGE_OTHER_ID("mediaUsageOtherId", "string", "Unique identifier of the code (typically a valid value definition) that defines the media use.", null, "66102545-c7b2-4501-a85e-de6e348a92a5"),
+
+    /**
+     * The most common, or expected use of this media resource.
+     */
+    DEFAULT_MEDIA_USAGE("defaultMediaUsage", "MediaUsage", "The most common, or expected use of this media resource.", null, "279f1eb4-e60c-4ebc-9568-cc545c2fe491"),
+
+    /**
+     * Unique identifier of the code (typically a valid value definition) that defines the media use.
+     */
+    DEFAULT_MEDIA_USAGE_OTHER_ID("defaultMediaUsageOtherId", "string", "Unique identifier of the code (typically a valid value definition) that defines the media use.", null, "7132f04f-92db-4571-9c98-f64f55390a55"),
+
+    /**
+     * Type of media.
+     */
+    MEDIA_TYPE("mediaType", "MediaType", "Type of media.", null, "d6581642-3fbd-447c-a90b-95bfa770491e"),
+
+    /**
+     * Unique identifier of the code (typically a valid value definition) that defines the media type.
+     */
+    MEDIA_TYPE_OTHER_ID("mediaTypeOtherId", "string", "Unique identifier of the code (typically a valid value definition) that defines the media type.", null, "4a839c98-31ec-4c0d-88c1-206e1b13b7f6"),
+
+    /**
+     * Local identifier for the media.
+     */
+    MEDIA_ID("mediaId", "string", "Local identifier for the media, from the perspective of the referencee.  For example. it may be the citation number in the list of references", "COLT-2", "1f738dc4-2df1-4177-919a-44b91b3ed22e"),
+
+    /**
+     * Name of the organization that this external source is from.
+     */
+    SOURCE_ORGANIZATION("sourceOrganization", "string", "Name of the organization that this external source is from.", null, ""),
+
+    /**
+     * Network address used to connect to the endpoint.
+     */
+    NETWORK_ADDRESS("networkAddress", "string", "Network address used to connect to the endpoint.", "https://localhost:9443", "0f38d466-e288-4971-bda8-1c5fde81bc82"),
+
+    /**
+     * Name of the protocol used to connect to the endpoint.
+     */
+    PROTOCOL("protocol", "string", "Name of the protocol used to connect to the endpoint.", "HTTPS", "173d3d2f-c0c2-4341-9693-20e3bb6abb86"),
+
+    /**
+     * Type of encryption used at the endpoint (if any).
+     */
+    ENCRYPTION_METHOD("encryptionMethod", "string", "Type of encryption used at the endpoint (if any).", null, "bc4a9ded-0414-4bbf-8cd2-c9ecc3e64ee9"),
+
+    /**
+     * Version of the database.
+     */
+    DATABASE_VERSION("databaseVersion", "string", "Version of the database.", null, "f13db2cf-a0fc-4790-ba50-74ae5443bf36"),
+
+    /**
+     * Instance of the database.
+     */
+    INSTANCE ("instance", "string", "Instance of the database.", null, "ecd5593a-647f-4767-b465-279e4bd35efc"),
+
+    /**
+     * importedFrom
+     */
+    IMPORTED_FROM("importedFrom", "string", "System that the database was imported from.", null, "6e7b1e16-bcf4-4010-becd-244506f1d3ed"),
+
+    /**
+     * Name of the language used to implement this component.
+     */
+    IMPLEMENTATION_LANGUAGE("implementationLanguage", "string", "Name of the language used to implement this component.", "Java", "e56dbaa5-6a2a-4aa0-8584-b3305234851f"),
+
+    /**
+     * The Date/time that this action was reviewed.
+     */
+    LAST_REVIEW_TIME("lastReviewTime", "date", "The Date/time that this action was reviewed.", null, "adac8415-11c8-43e9-8a43-92a799893555"),
+
+    /**
+     * Version of the property facet schema.
+     */
+    SCHEMA_VERSION("schemaVersion", "string", "Version of the property facet schema.", null, "7eb8affc-c5d5-4ab2-9395-2ac8216be397"),
+
+    /**
+     * properties
+     */
+    PROPERTIES("properties", "map<string, string>", "Property name-value pairs.", null, "6cf26b71-85db-41e0-9d7a-8e3fe956b649"),
+
+    /**
+     * Identifies which type of delete to use.
+     */
+    DELETE_METHOD("deleteMethod", "DeleteMethod", "Identifies which type of delete to use.", "ARCHIVE", "0028d073-fe1f-482d-b546-28a77dd712e2"),
     ;
 
 

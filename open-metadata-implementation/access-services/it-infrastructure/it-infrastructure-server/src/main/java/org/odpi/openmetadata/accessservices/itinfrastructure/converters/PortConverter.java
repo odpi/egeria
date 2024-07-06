@@ -57,9 +57,8 @@ public class PortConverter<B> extends ITInfrastructureOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof PortElement)
+            if (returnBean instanceof PortElement bean)
             {
-                PortElement    bean           = (PortElement) returnBean;
                 PortProperties portProperties = new PortProperties();
 
                 if (entity != null)

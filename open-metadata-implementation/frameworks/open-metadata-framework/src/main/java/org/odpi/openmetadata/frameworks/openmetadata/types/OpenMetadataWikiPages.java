@@ -40,6 +40,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0019_MORE_INFORMATION             = "https://egeria-project.org/types/0/0019-More-Information/";
 
     /**
+     * <a href="https://egeria-project.org/types/0/0020-Property-Facets/">...</a>
+     */
+    public static final String MODEL_0020_PROPERTY_FACETS              = "https://egeria-project.org/types/0/0020-Property-Facets/";
+
+    /**
      * <a href="https://egeria-project.org/types/0/0021-Collections/">...</a>
      */
     public static final String MODEL_0021_COLLECTIONS                  = "https://egeria-project.org/types/0/0021-Collections/";

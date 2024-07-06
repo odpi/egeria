@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Inform
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteLogElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties;
@@ -16,6 +15,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.TagPropertie
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 
 import java.util.Date;
 import java.util.List;

@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.HashMap;
@@ -24,9 +25,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
 {
-    private static final String versionProperty                    = "platformVersion";
-    private static final String sourceProperty                     = "source";
-    private static final String userIdProperty                     = "userId";
+    private static final String versionProperty = OpenMetadataProperty.PLATFORM_VERSION.name;
+    private static final String sourceProperty  = OpenMetadataProperty.SOURCE.name;
+    private static final String userIdProperty  = OpenMetadataProperty.USER_ID.name;
 
     private String platformVersion            = null;
     private String  platformSource  = null;
@@ -52,7 +53,7 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
 
         if (template != null)
         {
-            platformVersion            = template.getSoftwareServerPlatformVersion();
+            platformVersion = template.getSoftwareServerPlatformVersion();
             platformSource  = template.getSoftwareServerPlatformSource();
             platformUserId  = template.getSoftwareServerPlatformUserId();
         }
@@ -227,29 +228,11 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
     public String toString()
     {
         return "SoftwareServerPlatformProperties{" +
-                       "name='" + getName() + '\'' +
-                       ", versionIdentifier='" + getVersionIdentifier() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", platformType='" + getDeployedImplementationType() + '\'' +
-                       ", platformVersion='" + platformVersion + '\'' +
-                       ", platformSource='" + platformSource + '\'' +
-                       ", platformUserId='" + platformUserId + '\'' +
-                       ", cloneToAsset=" + cloneToAsset() +
-                       ", softwareServerPlatformType='" + getDeployedImplementationType() + '\'' +
-                       ", softwareServerPlatformVersion='" + getSoftwareServerPlatformVersion() + '\'' +
-                       ", softwareServerPlatformSource='" + getSoftwareServerPlatformSource() + '\'' +
-                       ", softwareServerPlatformUserId='" + getSoftwareServerPlatformUserId() + '\'' +
-                       '}';
+                "platformVersion='" + platformVersion + '\'' +
+                ", platformSource='" + platformSource + '\'' +
+                ", platformUserId='" + platformUserId + '\'' +
+                "} " + super.toString();
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.

@@ -310,7 +310,7 @@ public class ExternalReferenceRESTServices
 
                     InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                              null,
-                                                                                                             OpenMetadataType.REFERENCE_ID_PROPERTY_NAME,
+                                                                                                             OpenMetadataProperty.REFERENCE_ID.name,
                                                                                                              properties.getLinkId(),
                                                                                                              methodName);
 
@@ -322,7 +322,7 @@ public class ExternalReferenceRESTServices
 
                     relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                           relationshipProperties,
-                                                                                          OpenMetadataType.PAGES_PROPERTY_NAME,
+                                                                                          OpenMetadataProperty.PAGES.name,
                                                                                           properties.getPages(),
                                                                                           methodName);
 

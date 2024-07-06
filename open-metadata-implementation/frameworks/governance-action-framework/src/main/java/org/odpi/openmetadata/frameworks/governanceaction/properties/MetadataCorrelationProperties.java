@@ -1,9 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.assetmanager.properties;
+package org.odpi.openmetadata.frameworks.governanceaction.properties;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Objects;
 
@@ -21,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MetadataCorrelationProperties extends ExternalIdentifierProperties
 {
-    private String assetManagerGUID = null;
-    private String assetManagerName = null;
+    private String externalScopeGUID = null;
+    private String externalScopeName = null;
 
 
     /**
@@ -44,8 +46,8 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
         super(template);
         if (template != null)
         {
-            assetManagerGUID = template.getAssetManagerGUID();
-            assetManagerName = template.getAssetManagerName();
+            externalScopeGUID = template.getExternalScopeGUID();
+            externalScopeName = template.getExternalScopeName();
         }
     }
 
@@ -66,20 +68,20 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
      *
      * @return string guid
      */
-    public String getAssetManagerGUID()
+    public String getExternalScopeGUID()
     {
-        return assetManagerGUID;
+        return externalScopeGUID;
     }
 
 
     /**
      * Set up the unique identifier of the software server capability that represents the asset manager.
      *
-     * @param assetManagerGUID string guid
+     * @param externalScopeGUID string guid
      */
-    public void setAssetManagerGUID(String assetManagerGUID)
+    public void setExternalScopeGUID(String externalScopeGUID)
     {
-        this.assetManagerGUID = assetManagerGUID;
+        this.externalScopeGUID = externalScopeGUID;
     }
 
 
@@ -88,20 +90,20 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
      *
      * @return string name
      */
-    public String getAssetManagerName()
+    public String getExternalScopeName()
     {
-        return assetManagerName;
+        return externalScopeName;
     }
 
 
     /**
      * Set up the qualified name of the software server capability that represents the asset manager.
      *
-     * @param assetManagerName string name
+     * @param externalScopeName string name
      */
-    public void setAssetManagerName(String assetManagerName)
+    public void setExternalScopeName(String externalScopeName)
     {
-        this.assetManagerName = assetManagerName;
+        this.externalScopeName = externalScopeName;
     }
 
     /**
@@ -113,8 +115,8 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
     public String toString()
     {
         return "MetadataCorrelationProperties{" +
-                       "assetManagerGUID='" + assetManagerGUID + '\'' +
-                       ", assetManagerName='" + assetManagerName + '\'' +
+                       "externalScopeGUID='" + externalScopeGUID + '\'' +
+                       ", externalScopeName='" + externalScopeName + '\'' +
                        ", synchronizationDirection=" + getSynchronizationDirection() +
                        ", synchronizationDescription='" + getSynchronizationDescription() + '\'' +
                        ", externalIdentifier='" + getExternalIdentifier() + '\'' +
@@ -154,7 +156,7 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
             return false;
         }
         MetadataCorrelationProperties that = (MetadataCorrelationProperties) objectToCompare;
-        return Objects.equals(assetManagerGUID, that.assetManagerGUID) && Objects.equals(assetManagerName, that.assetManagerName);
+        return Objects.equals(externalScopeGUID, that.externalScopeGUID) && Objects.equals(externalScopeName, that.externalScopeName);
     }
 
 
@@ -166,6 +168,6 @@ public class MetadataCorrelationProperties extends ExternalIdentifierProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), assetManagerGUID, assetManagerName);
+        return Objects.hash(super.hashCode(), externalScopeGUID, externalScopeName);
     }
 }

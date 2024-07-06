@@ -653,6 +653,7 @@ public class FilesRESTServices
                                                                       requestBody.getName(),
                                                                       requestBody.getVersionIdentifier(),
                                                                       requestBody.getDescription(),
+                                                                      requestBody.getDeployedImplementationType(),
                                                                       requestBody.getCreateTime(),
                                                                       requestBody.getModifiedTime(),
                                                                       requestBody.getEncodingType(),

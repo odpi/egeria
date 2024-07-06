@@ -74,9 +74,8 @@ public class ITProfileConverter<B> extends ITInfrastructureOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ITProfileElement)
+            if (returnBean instanceof ITProfileElement bean)
             {
-                ITProfileElement    bean              = (ITProfileElement) returnBean;
                 ITProfileProperties profileProperties = new ITProfileProperties();
 
                 if (primaryEntity != null)

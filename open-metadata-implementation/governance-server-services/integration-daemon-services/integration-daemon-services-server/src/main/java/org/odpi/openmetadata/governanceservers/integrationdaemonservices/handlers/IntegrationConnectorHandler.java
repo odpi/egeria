@@ -15,8 +15,8 @@ import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnec
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContextRefreshProxy;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.integration.properties.RegisteredIntegrationConnectorElement;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationConnectorDedicatedThread;
@@ -137,6 +137,17 @@ public class IntegrationConnectorHandler
     public String getIntegrationConnectorId()
     {
         return integrationConnectorId;
+    }
+
+
+    /**
+     * Return the unique identifier of the connector entity from the configuration or the integration group definition.
+     *
+     * @return String name
+     */
+    public String getIntegrationConnectorGUID()
+    {
+        return integrationConnectorGUID;
     }
 
 

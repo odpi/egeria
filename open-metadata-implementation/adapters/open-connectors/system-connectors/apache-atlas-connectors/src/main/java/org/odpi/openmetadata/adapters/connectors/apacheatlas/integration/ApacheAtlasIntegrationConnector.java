@@ -31,7 +31,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDef;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefGallery;
-import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 

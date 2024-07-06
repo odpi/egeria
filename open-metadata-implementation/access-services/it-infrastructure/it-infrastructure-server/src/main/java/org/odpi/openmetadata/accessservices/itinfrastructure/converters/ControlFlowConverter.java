@@ -57,9 +57,8 @@ public class ControlFlowConverter<B> extends ITInfrastructureOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ControlFlowElement)
+            if (returnBean instanceof ControlFlowElement bean)
             {
-                ControlFlowElement    bean                  = (ControlFlowElement) returnBean;
                 ControlFlowProperties controlFlowProperties = new ControlFlowProperties();
 
                 if (relationship != null)

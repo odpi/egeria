@@ -307,15 +307,14 @@ public class ExternalReferenceRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ExternalReferenceLinkProperties)
+                if (requestBody.getProperties() instanceof ExternalReferenceLinkProperties properties)
                 {
                     OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
                     String serviceName = instanceHandler.getServiceName();
-                    ExternalReferenceLinkProperties properties = (ExternalReferenceLinkProperties)requestBody.getProperties();
 
                     InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                              null,
-                                                                                                             OpenMetadataType.REFERENCE_ID_PROPERTY_NAME,
+                                                                                                             OpenMetadataProperty.REFERENCE_ID.name,
                                                                                                              properties.getLinkId(),
                                                                                                              methodName);
 
@@ -327,7 +326,7 @@ public class ExternalReferenceRESTServices
 
                     relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                           relationshipProperties,
-                                                                                          OpenMetadataType.PAGES_PROPERTY_NAME,
+                                                                                          OpenMetadataProperty.PAGES.name,
                                                                                           properties.getPages(),
                                                                                           methodName);
 

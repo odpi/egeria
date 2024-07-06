@@ -78,7 +78,7 @@ public class ExternalReferenceConverter<B> extends AssetManagerOMASConverter<B>
                     externalReferenceProperties.setDescription(this.removeDescription(instanceProperties));
                     externalReferenceProperties.setUrl(this.removeURL(instanceProperties));
                     externalReferenceProperties.setVersion(this.removeReferenceVersion(instanceProperties));
-                    externalReferenceProperties.setOrganization(this.removeOrganization(instanceProperties));
+                    externalReferenceProperties.setOrganization(this.removeOwningOrganization(instanceProperties));
 
                     bean.setProperties(externalReferenceProperties);
                 }

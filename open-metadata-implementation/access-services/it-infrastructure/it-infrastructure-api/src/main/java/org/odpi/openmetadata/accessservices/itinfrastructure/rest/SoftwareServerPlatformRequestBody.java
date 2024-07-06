@@ -116,22 +116,9 @@ public class SoftwareServerPlatformRequestBody extends SoftwareServerPlatformPro
     public String toString()
     {
         return "SoftwareServerPlatformRequestBody{" +
-                       "externalSourceGUID='" + externalSourceGUID + '\'' +
-                       ", externalSourceName='" + externalSourceName + '\'' +
-                       ", softwareServerPlatformType='" + getDeployedImplementationType() + '\'' +
-                       ", softwareServerPlatformVersion='" + getSoftwareServerPlatformVersion() + '\'' +
-                       ", softwareServerPlatformSource='" + getSoftwareServerPlatformSource() + '\'' +
-                       ", softwareServerPlatformUserId='" + getSoftwareServerPlatformUserId() + '\'' +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "externalSourceGUID='" + externalSourceGUID + '\'' +
+                ", externalSourceName='" + externalSourceName + '\'' +
+                "} " + super.toString();
     }
 
 
