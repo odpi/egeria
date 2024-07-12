@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="OSSUnityCatalogInsideCatalogSyncSchema.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncSchema</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncVolumes.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncVolumes</a></code></dd>
+<dd><code><a href="OSSUnityCatalogInsideCatalogSyncCatalog.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncCatalog</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncSchema.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncSchema</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncTables.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncTables</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncVolumes.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncVolumes</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">OSSUnityCatalogInsideCatalogSyncBase</span>
@@ -235,13 +235,13 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Extract the storage location from the</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="../../../../frameworks/integration/iterator/MetadataCollectionIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MetadataCollectionIterator</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refreshEgeria()" class="member-name-link">refreshEgeria</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Review all the elements for the subtype stored in Egeria.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refreshUnityCatalog(org.odpi.openmetadata.frameworks.integration.iterator.MetadataCollectionIterator)" class="member-name-link">refreshUnityCatalog</a><wbr>(<a href="../../../../frameworks/integration/iterator/MetadataCollectionIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MetadataCollectionIterator</a>&nbsp;iterator)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refreshUnityCatalog(org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator)" class="member-name-link">refreshUnityCatalog</a><wbr>(<a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a>&nbsp;iterator)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Review all the elements for the subtype stored in UC.</div>
 </div>
@@ -398,8 +398,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="refreshEgeria()">
 <h3>refreshEgeria</h3>
-<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/integration/iterator/MetadataCollectionIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MetadataCollectionIterator</a></span>&nbsp;<span class="element-name">refreshEgeria</span>()
-                                                     throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a></span>&nbsp;<span class="element-name">refreshEgeria</span>()
+                                              throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Review all the elements for the subtype stored in Egeria.</div>
@@ -414,9 +414,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="refreshUnityCatalog(org.odpi.openmetadata.frameworks.integration.iterator.MetadataCollectionIterator)">
+<section class="detail" id="refreshUnityCatalog(org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator)">
 <h3>refreshUnityCatalog</h3>
-<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refreshUnityCatalog</span><wbr><span class="parameters">(<a href="../../../../frameworks/integration/iterator/MetadataCollectionIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MetadataCollectionIterator</a>&nbsp;iterator)</span>
+<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refreshUnityCatalog</span><wbr><span class="parameters">(<a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a>&nbsp;iterator)</span>
                                      throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -483,7 +483,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Populate and return the external identifier properties for a UC Schema.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>ucElement</code> - values from Unity Catalog</dd>
+<dd><code>ucElement</code> - values from Unity Catalog element</dd>
+<dd><code>schemaName</code> - name of the schema</dd>
 <dt>Returns:</dt>
 <dd>external identifier properties</dd>
 </dl>

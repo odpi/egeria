@@ -87,7 +87,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code>, <code><a href="../../../../frameworks/connectors/SecureConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">SecureConnectorExtension</a></code>, <code><a href="../../../../frameworks/connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code>, <code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code>, <code><a href="../../../../frameworks/integration/filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a></code>, <code><a href="../../../../frameworks/integration/filelistener/FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileListenerInterface</a></code>, <code><a href="../../../../integrationservices/files/connector/FilesIntegratorOMISConnector.html" title="interface in org.odpi.openmetadata.integrationservices.files.connector">FilesIntegratorOMISConnector</a></code></dd>
+<dd><code><a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code>, <code><a href="../../../../frameworks/connectors/SecureConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">SecureConnectorExtension</a></code>, <code><a href="../../../../frameworks/connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code>, <code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code>, <code><a href="../../../../integrationservices/files/connector/FilesIntegratorOMISConnector.html" title="interface in org.odpi.openmetadata.integrationservices.files.connector">FilesIntegratorOMISConnector</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">DataFilesMonitorIntegrationConnector</span>
@@ -141,39 +141,19 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onDirectoryChange(java.io.File)" class="member-name-link">onDirectoryChange</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directory)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DirectoryToMonitor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DirectoryToMonitor</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDirectoryToMonitor(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod,java.util.Map,java.util.Map)" class="member-name-link">createDirectoryToMonitor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogTargetGUID,
+ <a href="../../../../frameworks/openmetadata/enums/DeleteMethod.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeleteMethod</a>&nbsp;deleteMethod,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;templates,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Directory changed Event.</div>
+<div class="block">Creates a monitor for the target.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onDirectoryCreate(java.io.File)" class="member-name-link">onDirectoryCreate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directory)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refresh()" class="member-name-link">refresh</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Directory created Event.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onDirectoryDelete(java.io.File)" class="member-name-link">onDirectoryDelete</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directory)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Directory deleted Event.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onFileChange(java.io.File)" class="member-name-link">onFileChange</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">File changed Event.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onFileCreate(java.io.File)" class="member-name-link">onFileCreate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">File created Event.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#onFileDelete(java.io.File)" class="member-name-link">onFileDelete</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">File deleted Event.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refresh()" class="member-name-link">refresh</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.</div>
 </div>
 </div>
@@ -181,7 +161,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.adapters.connectors.integration.basicfiles.BasicFilesMonitorIntegrationConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.integration.basicfiles.<a href="BasicFilesMonitorIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">BasicFilesMonitorIntegrationConnectorBase</a></h3>
-<code><a href="BasicFilesMonitorIntegrationConnectorBase.html#disconnect()">disconnect</a>, <a href="BasicFilesMonitorIntegrationConnectorBase.html#start()">start</a></code></div>
+<code><a href="BasicFilesMonitorIntegrationConnectorBase.html#archiveFileInCatalog(java.io.File,org.odpi.openmetadata.accessservices.datamanager.metadataelements.DataFileElement,boolean,java.lang.String)">archiveFileInCatalog</a>, <a href="BasicFilesMonitorIntegrationConnectorBase.html#disconnect()">disconnect</a>, <a href="BasicFilesMonitorIntegrationConnectorBase.html#start()">start</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorConnector">Methods inherited from class&nbsp;org.odpi.openmetadata.integrationservices.files.connector.<a href="../../../../integrationservices/files/connector/FilesIntegratorConnector.html" title="class in org.odpi.openmetadata.integrationservices.files.connector">FilesIntegratorConnector</a></h3>
 <code><a href="../../../../integrationservices/files/connector/FilesIntegratorConnector.html#getContext()">getContext</a>, <a href="../../../../integrationservices/files/connector/FilesIntegratorConnector.html#setContext(org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorContext)">setContext</a></code></div>
@@ -223,6 +203,34 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="createDirectoryToMonitor(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod,java.util.Map,java.util.Map)">
+<h3>createDirectoryToMonitor</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="DirectoryToMonitor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DirectoryToMonitor</a></span>&nbsp;<span class="element-name">createDirectoryToMonitor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogTargetGUID,
+ <a href="../../../../frameworks/openmetadata/enums/DeleteMethod.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">DeleteMethod</a>&nbsp;deleteMethod,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;templates,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</span>
+                                            throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Creates a monitor for the target.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="BasicFilesMonitorIntegrationConnectorBase.html#createDirectoryToMonitor(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod,java.util.Map,java.util.Map)">createDirectoryToMonitor</a></code>&nbsp;in class&nbsp;<code><a href="BasicFilesMonitorIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">BasicFilesMonitorIntegrationConnectorBase</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>sourceName</code> - source of the pathname</dd>
+<dd><code>pathName</code> - pathname to the directory</dd>
+<dd><code>catalogTargetGUID</code> - optional catalog target GUID</dd>
+<dd><code>deleteMethod</code> - should the connector use delete or archive?</dd>
+<dd><code>templates</code> - names and GUIDs of templates</dd>
+<dd><code>configurationProperties</code> - parameters to further modify the behaviour of the connector.</dd>
+<dt>Returns:</dt>
+<dd>directory to monitor structure</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - connector problem</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="refresh()">
 <h3>refresh</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()
@@ -237,73 +245,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem with the connector.  It is not able to refresh the metadata.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="onFileCreate(java.io.File)">
-<h3>onFileCreate</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onFileCreate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</span></div>
-<div class="block">File created Event.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>file</code> - The file that was created</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="onFileDelete(java.io.File)">
-<h3>onFileDelete</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onFileDelete</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</span></div>
-<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../../frameworks/integration/filelistener/FileListenerInterface.html#onFileDelete(java.io.File)">FileListenerInterface</a></code></span></div>
-<div class="block">File deleted Event.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>file</code> - The file that was deleted</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="onFileChange(java.io.File)">
-<h3>onFileChange</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onFileChange</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</span></div>
-<div class="block">File changed Event.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>file</code> - The file that changed</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="onDirectoryCreate(java.io.File)">
-<h3>onDirectoryCreate</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onDirectoryCreate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directory)</span></div>
-<div class="block">Directory created Event.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>directory</code> - The directory that was created</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="onDirectoryChange(java.io.File)">
-<h3>onDirectoryChange</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onDirectoryChange</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directory)</span></div>
-<div class="block">Directory changed Event.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>directory</code> - The directory that changed</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="onDirectoryDelete(java.io.File)">
-<h3>onDirectoryDelete</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">onDirectoryDelete</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directory)</span></div>
-<div class="block">Directory deleted Event.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>directory</code> - The directory that was deleted</dd>
 </dl>
 </section>
 </li>

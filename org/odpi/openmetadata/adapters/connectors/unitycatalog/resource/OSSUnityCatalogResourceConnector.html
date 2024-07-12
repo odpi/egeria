@@ -160,13 +160,23 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create table.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createVolume(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.VolumeType,java.lang.String)" class="member-name-link">createVolume</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/TableInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">TableInfo</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createTable(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.TableProperties)" class="member-name-link">createTable</a><wbr>(<a href="../properties/TableProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">TableProperties</a>&nbsp;tableProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create table.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createVolume(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.VolumeType,java.lang.String)" class="member-name-link">createVolume</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;catalogName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;comment,
  <a href="../properties/VolumeType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeType</a>&nbsp;volumeType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;storageLocation)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create volume.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createVolume(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.VolumeProperties)" class="member-name-link">createVolume</a><wbr>(<a href="../properties/VolumeProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeProperties</a>&nbsp;volumeProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create volume.</div>
 </div>
@@ -626,6 +636,22 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
+<section class="detail" id="createVolume(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.VolumeProperties)">
+<h3>createVolume</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/VolumeInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeInfo</a></span>&nbsp;<span class="element-name">createVolume</span><wbr><span class="parameters">(<a href="../properties/VolumeProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">VolumeProperties</a>&nbsp;volumeProperties)</span>
+                        throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Create volume.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>volumeProperties</code> - properties</dd>
+<dt>Returns:</dt>
+<dd>resulting volume info</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="deleteVolume(java.lang.String)">
 <h3>deleteVolume</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteVolume</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fullName)</span>
@@ -717,6 +743,22 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dd><code>dataSourceFormat</code> - format</dd>
 <dd><code>columns</code> - list of columns in the table</dd>
 <dd><code>storageLocation</code> - directory name eg file:///Users/me/Code/uc/unitycatalog/etc/data/external/unity/default/tables/json_files/</dd>
+<dt>Returns:</dt>
+<dd>resulting table info</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the call</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createTable(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.TableProperties)">
+<h3>createTable</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/TableInfo.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">TableInfo</a></span>&nbsp;<span class="element-name">createTable</span><wbr><span class="parameters">(<a href="../properties/TableProperties.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">TableProperties</a>&nbsp;tableProperties)</span>
+                      throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Create table.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>tableProperties</code> - list of properties for the table</dd>
 <dt>Returns:</dt>
 <dd>resulting table info</dd>
 <dt>Throws:</dt>

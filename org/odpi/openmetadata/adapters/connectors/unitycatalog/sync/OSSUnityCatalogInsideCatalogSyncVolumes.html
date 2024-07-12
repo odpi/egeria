@@ -129,13 +129,13 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../frameworks/integration/iterator/MetadataCollectionIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MetadataCollectionIterator</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refreshEgeria()" class="member-name-link">refreshEgeria</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Review all the volumes stored in Egeria.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refreshUnityCatalog(org.odpi.openmetadata.frameworks.integration.iterator.MetadataCollectionIterator)" class="member-name-link">refreshUnityCatalog</a><wbr>(<a href="../../../../frameworks/integration/iterator/MetadataCollectionIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MetadataCollectionIterator</a>&nbsp;iterator)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refreshUnityCatalog(org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator)" class="member-name-link">refreshUnityCatalog</a><wbr>(<a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a>&nbsp;iterator)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Review all the schemas stored in UC.</div>
 </div>
@@ -201,8 +201,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="refreshEgeria()">
 <h3>refreshEgeria</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/integration/iterator/MetadataCollectionIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MetadataCollectionIterator</a></span>&nbsp;<span class="element-name">refreshEgeria</span>()
-                                            throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a></span>&nbsp;<span class="element-name">refreshEgeria</span>()
+                                     throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Review all the volumes stored in Egeria.</div>
@@ -219,16 +219,16 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="refreshUnityCatalog(org.odpi.openmetadata.frameworks.integration.iterator.MetadataCollectionIterator)">
+<section class="detail" id="refreshUnityCatalog(org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator)">
 <h3>refreshUnityCatalog</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refreshUnityCatalog</span><wbr><span class="parameters">(<a href="../../../../frameworks/integration/iterator/MetadataCollectionIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MetadataCollectionIterator</a>&nbsp;iterator)</span>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refreshUnityCatalog</span><wbr><span class="parameters">(<a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a>&nbsp;iterator)</span>
                             throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Review all the schemas stored in UC.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="OSSUnityCatalogInsideCatalogSyncBase.html#refreshUnityCatalog(org.odpi.openmetadata.frameworks.integration.iterator.MetadataCollectionIterator)">refreshUnityCatalog</a></code>&nbsp;in class&nbsp;<code><a href="OSSUnityCatalogInsideCatalogSyncBase.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncBase</a></code></dd>
+<dd><code><a href="OSSUnityCatalogInsideCatalogSyncBase.html#refreshUnityCatalog(org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator)">refreshUnityCatalog</a></code>&nbsp;in class&nbsp;<code><a href="OSSUnityCatalogInsideCatalogSyncBase.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncBase</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>iterator</code> - Metadata collection iterator</dd>
 <dt>Throws:</dt>

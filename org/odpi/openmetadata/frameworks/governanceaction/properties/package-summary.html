@@ -100,6 +100,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">The AttachedClassification bean describes a single classification associated with an element.</div>
 </div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">CatalogTarget contains the properties for one of the integration connector's catalog targets.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CatalogTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTargetProperties</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">Properties for the CatalogTarget relationship.</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab3"><a href="CompletionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">CompletionStatus</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">CompletionStatus defines the completion status of a governance action service.</div>
@@ -180,6 +188,32 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">IncidentImpactedElement describes the element that is impacted by the incident reported by the incident report.</div>
 </div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="IntegrationConnectorElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IntegrationConnectorElement</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">IntegrationConnectorElement contains the properties and header for an entity retrieved from the metadata
+ repository that represents an integration connector.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="IntegrationConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IntegrationConnectorProperties</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">IntegrationConnectorProperties contains the definition of an integration connector.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="IntegrationGroupElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IntegrationGroupElement</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">IntegrationGroupElement contains the properties and header for a software server capabilities entity retrieved from the metadata
+ repository that represents an integration group.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="IntegrationGroupProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IntegrationGroupProperties</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">IntegrationGroupProperties describe the properties needed to describe a specific integration group.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="IntegrationReport.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IntegrationReport</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">IntegrationReport contains the properties for one of the integration connector's integration report.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="IntegrationReportProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IntegrationReportProperties</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">IntegrationReportProperties contains the properties for an integration report.</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="MetadataCorrelationHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationHeader</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">MetadataCorrelationHeader provides details of the external identifier(s) and other correlation
@@ -257,96 +291,105 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">This enumeration defines the list of open metadata primitive types.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataRelationshipDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationshipDef</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataRelationship.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationship</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">Structure for returning a relationship between two metadata elements.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenMetadataRelationshipDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationshipDef</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">OpenMetadataRelationshipDef describes the type of a relationship.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="OpenMetadataRelationshipEndCardinality.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationshipEndCardinality</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="OpenMetadataRelationshipEndCardinality.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationshipEndCardinality</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">RelationshipCardinality is used in a OpenMetadataRelationshipEndDef to indicate how many relationships of this type
  can be connected to an entity instance.:
  
      
          UNKNOWN: uninitialized cardinality.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataRelationshipEndDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationshipEndDef</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenMetadataRelationshipEndDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataRelationshipEndDef</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">OpenMetadataRelationshipEndDef describes the type of the entity and the attribute information for one end of a OpenMetadataRelationshipDef.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDef</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDef</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">The OpenMetadataTypeDef is the base class for objects that store the properties of an open metadata type
  definition (call ed a OpenMetadataTypeDef).</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataTypeDefAttribute.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefAttribute</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenMetadataTypeDefAttribute.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefAttribute</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">OpenMetadataTypeDefAttribute stores the properties used to describe a attribute within a Classification,
  Entity or Relationship.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="OpenMetadataTypeDefAttributeStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefAttributeStatus</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="OpenMetadataTypeDefAttributeStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefAttributeStatus</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">OpenMetadataTypeDefAttributeStatus is an enum that describes the status of a specific typeDef attribute.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="OpenMetadataTypeDefCategory.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefCategory</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="OpenMetadataTypeDefCategory.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefCategory</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">The OpenMetadataTypeDefCategory defines the list of valid types of OpenMetadataTypeDef for open metadata instances.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenMetadataTypeDefElementHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefElementHeader</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataTypeDefElementHeader.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefElementHeader</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">OpenMetadataTypeDefElementHeader provides a common base for all typedef information.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataTypeDefGallery.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefGallery</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenMetadataTypeDefGallery.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefGallery</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">TypeDefGalleryResponse contains details of the AttributeTypeDefs and full TypeDefs supported by a rep</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenMetadataTypeDefLink.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefLink</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataTypeDefLink.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefLink</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">The OpenMetadataTypeDefLink holds basic identifying information used to link one OpenMetadataTypeDef to another.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataTypeDefProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefProperties</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenMetadataTypeDefProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefProperties</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">The OpenMetadataTypeDefProperties class provides support for arbitrary properties that belong to a OpenMetadataTypeDef object.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="OpenMetadataTypeDefStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefStatus</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="OpenMetadataTypeDefStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefStatus</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">OpenMetadataTypeDefStatus is an enum that describes the status of a specific typeDef.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="OpenMetadataTypeDefSummary.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefSummary</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="OpenMetadataTypeDefSummary.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataTypeDefSummary</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">The OpenMetadataTypeDefSummary holds basic identifying information for a specific OpenMetadataTypeDef.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">ProcessStatus</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">ProcessStatus</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">The ProcessStatus defines the status of a process.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ReferenceableProperties</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ReferenceableProperties</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Many open metadata entities are referenceable.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RegisteredGovernanceService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RegisteredGovernanceService</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RegisteredGovernanceService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RegisteredGovernanceService</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">RegisteredGovernanceService describes a governance action service that has been registered with a governance engine.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RegisteredGovernanceServiceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RegisteredGovernanceServiceElement</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RegisteredGovernanceServiceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RegisteredGovernanceServiceElement</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">RegisteredGovernanceServiceElement contains the properties and header for a governance service entity retrieved from the metadata
  repository plus its supported request types.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RegisteredGovernanceServiceProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RegisteredGovernanceServiceProperties</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RegisteredGovernanceServiceProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RegisteredGovernanceServiceProperties</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">RegisteredGovernanceServiceProperties provides a structure for carrying the properties for a SupportedGovernanceService relationship.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RegisteredIntegrationConnectorElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RegisteredIntegrationConnectorElement</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">RegisteredIntegrationConnectorElement contains the properties and header for a integration connector entity retrieved from the metadata
+ repository plus its supported request types.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RegisteredIntegrationConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RegisteredIntegrationConnectorProperties</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">RegisteredIntegrationConnectorProperties provides a structure for carrying the properties for a SupportedIntegrationConnector relationship.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">RelatedEngineActionElement contains the properties for a NextEngineAction relationship retrieved from the metadata repository.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElement</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">This property header implements any common mechanisms that all property objects need.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RelatedMetadataElements.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElements</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElement</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">Structure for returning a relationship between two metadata elements.</div>
+<div class="block">This property header implements any common mechanisms that all property objects need.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RelatedMetadataElementStub.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedMetadataElementStub</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
