@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.integration.properties;
 
 
 import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 
 import java.util.Objects;
 

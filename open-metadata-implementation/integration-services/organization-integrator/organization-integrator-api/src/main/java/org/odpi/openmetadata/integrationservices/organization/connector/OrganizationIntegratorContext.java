@@ -28,6 +28,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
@@ -59,6 +60,7 @@ public class OrganizationIntegratorContext extends IntegrationContext
      * @param connectorUserId userId for the connector
      * @param serverName name of the integration daemon
      * @param openIntegrationClient client for calling the metadata server
+     * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
      * @param organizationManagement client for exchange requests
      * @param securityGroupManagement client for exchange requests
@@ -78,6 +80,7 @@ public class OrganizationIntegratorContext extends IntegrationContext
                                          String                       connectorUserId,
                                          String                       serverName,
                                          OpenIntegrationClient        openIntegrationClient,
+                                         GovernanceConfiguration      governanceConfiguration,
                                          OpenMetadataClient           openMetadataStoreClient,
                                          OrganizationManagement       organizationManagement,
                                          SecurityGroupManagement      securityGroupManagement,
@@ -96,6 +99,7 @@ public class OrganizationIntegratorContext extends IntegrationContext
               connectorUserId,
               serverName,
               openIntegrationClient,
+              governanceConfiguration,
               openMetadataStoreClient,
               generateIntegrationReport,
               permittedSynchronization,

@@ -217,9 +217,9 @@ public class ProjectManagementResource
     @PostMapping(path = "/projects/{projectGUID}/delete")
 
     public VoidResponse removeProject(@PathVariable String                    serverName,
-                                        @PathVariable String                    userId,
-                                        @PathVariable String                    projectGUID,
-                                        @RequestBody ExternalSourceRequestBody requestBody)
+                                      @PathVariable String                    userId,
+                                      @PathVariable String                    projectGUID,
+                                      @RequestBody ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeProject(serverName, userId, projectGUID, requestBody);
     }
@@ -270,10 +270,10 @@ public class ProjectManagementResource
     @PostMapping(path = "/projects/by-name")
 
     public ProjectListResponse   getProjectsByName(@PathVariable String          serverName,
-                                                        @PathVariable String          userId,
-                                                        @RequestBody NameRequestBody requestBody,
-                                                        @RequestParam int             startFrom,
-                                                        @RequestParam int             pageSize)
+                                                   @PathVariable String          userId,
+                                                   @RequestBody NameRequestBody requestBody,
+                                                   @RequestParam int             startFrom,
+                                                   @RequestParam int             pageSize)
     {
         return restAPI.getProjectsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
@@ -347,9 +347,9 @@ public class ProjectManagementResource
     @GetMapping(path = "/projects")
 
     public ProjectListResponse   getProjectsByName(@PathVariable String          serverName,
-                                                        @PathVariable String          userId,
-                                                        @RequestParam int             startFrom,
-                                                        @RequestParam int             pageSize)
+                                                   @PathVariable String          userId,
+                                                   @RequestParam int             startFrom,
+                                                   @RequestParam int             pageSize)
     {
         return restAPI.getProjects(serverName, userId, startFrom, pageSize);
     }

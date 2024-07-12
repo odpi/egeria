@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
@@ -42,7 +42,7 @@ public abstract class GovernanceEngineHandler
 
     private final Map<String, EngineActionExecution> engineActionThreadMap = new HashMap<>();
 
-    private final GovernanceEngineConfigurationClient configurationClient;        /* Initialized in constructor */
+    protected final GovernanceConfigurationClient configurationClient;        /* Initialized in constructor */
 
     private final GovernanceServiceCacheMap  governanceServiceLookupTable = new GovernanceServiceCacheMap();
 
@@ -63,7 +63,7 @@ public abstract class GovernanceEngineHandler
                                    String                              serverName,
                                    String                              serverUserId,
                                    String                              engineServiceName,
-                                   GovernanceEngineConfigurationClient configurationClient,
+                                   GovernanceConfigurationClient configurationClient,
                                    GovernanceContextClient             engineActionClient,
                                    AuditLog                            auditLog,
                                    int                                 maxPageSize)

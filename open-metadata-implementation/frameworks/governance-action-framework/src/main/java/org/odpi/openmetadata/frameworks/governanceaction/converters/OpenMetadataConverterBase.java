@@ -8,12 +8,12 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementContr
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
@@ -122,7 +122,7 @@ public abstract class OpenMetadataConverterBase<B>
     @SuppressWarnings(value = "unused")
     public B getNewBean(Class<B>                beanClass,
                         OpenMetadataElement     element,
-                        RelatedMetadataElements relationship,
+                        OpenMetadataRelationship relationship,
                         String                  methodName) throws PropertyServerException
     {
         final String thisMethodName = "getNewBean(element, relationship)";
@@ -176,7 +176,7 @@ public abstract class OpenMetadataConverterBase<B>
     public B getNewComplexBean(Class<B>                      beanClass,
                                OpenMetadataElement           primaryElement,
                                List<OpenMetadataElement>     supplementaryEntities,
-                               List<RelatedMetadataElements> relationships,
+                               List<OpenMetadataRelationship> relationships,
                                String                        methodName) throws PropertyServerException
     {
         final String thisMethodName = "getNewComplexBean(with supplementary entities)";
@@ -199,7 +199,7 @@ public abstract class OpenMetadataConverterBase<B>
      */
     @SuppressWarnings(value = "unused")
     public B getNewRelatedMetadataElementsBean(Class<B>                beanClass,
-                                               RelatedMetadataElements relationship,
+                                               OpenMetadataRelationship relationship,
                                                String                  methodName) throws PropertyServerException
     {
         final String thisMethodName = "getNewRelatedMetadataElementsBean";
@@ -217,7 +217,7 @@ public abstract class OpenMetadataConverterBase<B>
      * @param schemaAttributeElement element containing the properties for the main schema attribute
      * @param typeClass name of type used to describe the schema type
      * @param schemaType bean containing the properties of the schema type - this is filled out by the schema type converter
-     * @param schemaAttributeRelatedMetadataElements relationships containing the links to other schema attributes
+     * @param schemaAttributeOpenMetadataElements relationships containing the links to other schema attributes
      * @param methodName calling method
      * @param <T> bean type used to create the schema type
      * @return bean populated with properties from the instances supplied
@@ -227,7 +227,7 @@ public abstract class OpenMetadataConverterBase<B>
                                            OpenMetadataElement           schemaAttributeElement,
                                            Class<T>                      typeClass,
                                            T                             schemaType,
-                                           List<RelatedMetadataElements> schemaAttributeRelatedMetadataElements,
+                                           List<OpenMetadataRelationship> schemaAttributeOpenMetadataElements,
                                            String                        methodName) throws PropertyServerException
     {
         final String thisMethodName = "getNewSchemaAttributeBean";
@@ -376,12 +376,12 @@ public abstract class OpenMetadataConverterBase<B>
      * @throws PropertyServerException an invalid instance has been returned from the metadata repositories
      */
     protected void handleBadRelatedMetadataElements(String                  beanClassName,
-                                                    RelatedMetadataElements relationship,
+                                                    OpenMetadataRelationship relationship,
                                                     String                  methodName) throws PropertyServerException
     {
         if (relationship == null)
         {
-            handleMissingMetadataInstance(beanClassName, RelatedMetadataElements.class.getName(), methodName);
+            handleMissingMetadataInstance(beanClassName, OpenMetadataRelationship.class.getName(), methodName);
         }
         else
         {
@@ -569,7 +569,7 @@ public abstract class OpenMetadataConverterBase<B>
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
     public ElementStub getElementStub(Class<B>                beanClass,
-                                      RelatedMetadataElements relationship,
+                                      OpenMetadataRelationship relationship,
                                       String                  methodName) throws PropertyServerException
     {
         if (relationship != null)
@@ -585,7 +585,7 @@ public abstract class OpenMetadataConverterBase<B>
         else
         {
             this.handleMissingMetadataInstance(beanClass.getName(),
-                                               RelatedMetadataElements.class.getName(),
+                                               OpenMetadataRelationship.class.getName(),
                                                methodName);
         }
 

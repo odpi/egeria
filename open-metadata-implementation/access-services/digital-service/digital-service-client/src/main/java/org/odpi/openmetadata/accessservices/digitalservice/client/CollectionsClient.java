@@ -19,7 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ClassificationCondition;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.MatchCriteria;
@@ -985,19 +985,19 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
     {
-        List<RelatedMetadataElements> linkedResources = openMetadataStoreClient.getMetadataElementRelationships(userId,
-                                                                                                                collectionGUID,
-                                                                                                                elementGUID,
-                                                                                                                OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                                                                false,
-                                                                                                                false,
-                                                                                                                new Date(),
-                                                                                                                0,
-                                                                                                                0);
+        List<OpenMetadataRelationship> linkedResources = openMetadataStoreClient.getMetadataElementRelationships(userId,
+                                                                                                                 collectionGUID,
+                                                                                                                 elementGUID,
+                                                                                                                 OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                                                                 false,
+                                                                                                                 false,
+                                                                                                                 new Date(),
+                                                                                                                 0,
+                                                                                                                 0);
 
         if (linkedResources != null)
         {
-            for (RelatedMetadataElements relatedMetadataElement : linkedResources)
+            for (OpenMetadataRelationship relatedMetadataElement : linkedResources)
             {
                 if (relatedMetadataElement != null)
                 {

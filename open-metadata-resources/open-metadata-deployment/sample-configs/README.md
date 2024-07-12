@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
-# Sample server configurations
+# Default server configurations
 
 This directory contains the server configurations for five [OMAG Servers](https://egeria-project.org/concepts/omag-server/):
 
@@ -42,20 +42,14 @@ The final server provides the services for Egeria's UIs.
   support calls from non-Java environments such as python and javascript.
  Egeria's user interfaces make calls to the view server.
 
+These server configurations can be (re)created using the `BuildSampleconfigs.http` script.
+
 ## Starting the servers
-
-To use these configurations, copy their directories under the `platform/data` directory. Then copy `opt/sample-data` to `platform/sample-data`.
-
-```bash
-mkdir ../../platform/data/servers
-cp -r * ../../platform/data/servers
-cp -r ../sample-data ../../platform
-```
 
 Ensure the OMAG Server Platform is running at `https://localhost:9443`.
 
 You can start the servers one at a time using the following curl command,
-replacing `{{server}}` with the name of the server to start.  Message appear from the platform to indicate the
+replacing `{{server}}` with the name of the server to start.  Messages appear from the platform's stdout to indicate the
 status of the server.
 
 ```bash
@@ -70,6 +64,30 @@ startup.server.list=active-metadata-store,engine-host,integration-daemon,view-se
 When the platform is restarted the servers start in the order listed.  
 More information on the `application.properties` file can be found in the
 [Configuring an OMAG Server Platform](https://egeria-project.org/guides/admin/configuring-the-omag-server-platform/) documentation.
+
+## Loading some sample metadata
+
+The `integration-daemon` server is set up to monitor files that are copied under
+either the `landing-area` or `sample-data` directories under the platform directory.
+
+For example, if you run the following command from this directory (ie `...platform/data/servers`)
+```bash
+cp -r ../../../opt/sample-data ../..
+```
+A set of data files is copied into the `sample-data` directory and will be automatically catalogued by Egeria.
+
+## Loading the Coco Pharmaceuticals Metadata
+
+Running the `AddCocoMetadata.http` script will add metadata from the Coco Pharmaceuticals scenarios.  This includes
+activating the `ClinicalTrials@CocoPharmaceuticals` engine to the `engine-host` server.
+
+## Connecting the metadata stores via a cohort
+
+Running the `ConnectCohort.http` script connects `simple-metadata-store` and `active-metadata-store` together in a 
+cohort.  This enables you to query the metadata in `simple-metadata-store` when you use the services of `view-server`.
+
+(`view-server` is connected to `active-metadata-store`.  The cohort turns requests to `active-metadata-store` into
+a federated query across both `active-metadata-store` and `simple-metadata-store`.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

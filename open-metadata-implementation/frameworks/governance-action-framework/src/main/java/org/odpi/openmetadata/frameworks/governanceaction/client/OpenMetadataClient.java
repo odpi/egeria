@@ -431,6 +431,36 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
 
 
     /**
+     * Retrieve the metadata element connected to the supplied element for a relationship type that only allows one
+     * relationship to be attached.
+     *
+     * @param userId                 caller's userId
+     * @param elementGUID            unique identifier for the starting metadata element
+     * @param startingAtEnd          indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param relationshipTypeName   type name of relationships to follow (or null for all)
+     * @param forLineage             the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return list of related elements
+     *
+     * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store or multiple relationships have been returned
+     */
+    @Override
+    public abstract  RelatedMetadataElement getRelatedMetadataElement(String  userId,
+                                                                      String  elementGUID,
+                                                                      int     startingAtEnd,
+                                                                      String  relationshipTypeName,
+                                                                      boolean forLineage,
+                                                                      boolean forDuplicateProcessing,
+                                                                      Date    effectiveTime) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException;
+
+
+    /**
      * Retrieve the relationships linking to the supplied elements.
      *
      * @param userId caller's userId
@@ -449,15 +479,15 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public abstract List<RelatedMetadataElements> getMetadataElementRelationships(String  userId,
-                                                                                  String  metadataElementAtEnd1GUID,
-                                                                                  String  metadataElementAtEnd2GUID,
-                                                                                  String  relationshipTypeName,
-                                                                                  boolean forLineage,
-                                                                                  boolean forDuplicateProcessing,
-                                                                                  Date    effectiveTime,
-                                                                                  int     startFrom,
-                                                                                  int     pageSize) throws InvalidParameterException,
+    public abstract List<OpenMetadataRelationship> getMetadataElementRelationships(String  userId,
+                                                                                   String  metadataElementAtEnd1GUID,
+                                                                                   String  metadataElementAtEnd2GUID,
+                                                                                   String  relationshipTypeName,
+                                                                                   boolean forLineage,
+                                                                                   boolean forDuplicateProcessing,
+                                                                                   Date    effectiveTime,
+                                                                                   int     startFrom,
+                                                                                   int     pageSize) throws InvalidParameterException,
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException;
 
@@ -527,16 +557,16 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public  abstract List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           userId,
-                                                                                            String           relationshipTypeName,
-                                                                                            SearchProperties searchProperties,
-                                                                                            String           sequencingProperty,
-                                                                                            SequencingOrder  sequencingOrder,
-                                                                                            boolean          forLineage,
-                                                                                            boolean          forDuplicateProcessing,
-                                                                                            Date             effectiveTime,
-                                                                                            int              startFrom,
-                                                                                            int              pageSize) throws InvalidParameterException,
+    public  abstract List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String           userId,
+                                                                                             String           relationshipTypeName,
+                                                                                             SearchProperties searchProperties,
+                                                                                             String           sequencingProperty,
+                                                                                             SequencingOrder  sequencingOrder,
+                                                                                             boolean          forLineage,
+                                                                                             boolean          forDuplicateProcessing,
+                                                                                             Date             effectiveTime,
+                                                                                             int              startFrom,
+                                                                                             int              pageSize) throws InvalidParameterException,
                                                                                                                               UserNotAuthorizedException,
                                                                                                                               PropertyServerException;
 
@@ -555,11 +585,11 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
-    public  abstract RelatedMetadataElements getRelationshipByGUID(String  userId,
-                                                                   String  relationshipGUID,
-                                                                   boolean forLineage,
-                                                                   boolean forDuplicateProcessing,
-                                                                   Date    effectiveTime) throws InvalidParameterException,
+    public  abstract OpenMetadataRelationship getRelationshipByGUID(String  userId,
+                                                                    String  relationshipGUID,
+                                                                    boolean forLineage,
+                                                                    boolean forDuplicateProcessing,
+                                                                    Date    effectiveTime) throws InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException;
 

@@ -21,7 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = CatalogTargetsResponse.class, name = "CatalogTargetsResponse"),
+                @JsonSubTypes.Type(value = IntegrationReportResponse.class, name = "IntegrationReportResponse"),
+                @JsonSubTypes.Type(value = IntegrationReportsResponse.class, name = "IntegrationReportsResponse"),
         })
 public abstract class OMAGOIFAPIResponse extends FFDCResponseBase
 {

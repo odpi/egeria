@@ -12,12 +12,24 @@ Content-Type: application/json
 
 {
   "name": "test4schema1",
-  "catalog_name" : "test",
+  "catalog_name" : "clinical_trials",
   "comment": "Test catalog4 schema 1",
   "properties": {
     "egeriaGUID" : "c14d6b99-7202-4f04-a05d-49f0fdd7373d"
   }
 }
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "clinical_trial_drop_foot",
+  "catalog_name" : "unity",
+  "comment": "Example clinical trail used for education and testing of governance procedures."
+}
+
 
 ###
 # @name get schema
@@ -40,6 +52,6 @@ Content-Type: application/json
 
 ###
 # @name delete schema
-DELETE {{ucURL}}/api/2.1/unity-catalog/schemas/test.test4schema1
+DELETE {{ucURL}}/api/2.1/unity-catalog/schemas/unity.clinical_trial_drop_foot
 Content-Type: application/json
 

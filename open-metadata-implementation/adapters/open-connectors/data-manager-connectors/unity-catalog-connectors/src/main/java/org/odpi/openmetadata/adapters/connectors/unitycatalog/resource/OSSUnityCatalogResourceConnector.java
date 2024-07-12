@@ -332,12 +332,14 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
             callPatchRESTCall(methodName,
                               CatalogInfo.class,
                               urlTemplate,
+                              requestBody,
                               name);
 
             requestBody.setNew_name(name);
             return callPatchRESTCall(methodName,
                                      CatalogInfo.class,
                                      urlTemplate,
+                                     requestBody,
                                      name);
         }
         else
@@ -345,6 +347,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
             return callPatchRESTCall(methodName,
                                      CatalogInfo.class,
                                      urlTemplate,
+                                     requestBody,
                                      name);
         }
     }
@@ -487,12 +490,14 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
             callPatchRESTCall(methodName,
                               SchemaInfo.class,
                               urlTemplate,
+                              requestBody,
                               fullName);
 
             requestBody.setNew_name(oldName);
             return callPatchRESTCall(methodName,
                                      SchemaInfo.class,
                                      urlTemplate,
+                                     requestBody,
                                      fullName);
         }
         else
@@ -501,6 +506,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
             return callPatchRESTCall(methodName,
                                      SchemaInfo.class,
                                      urlTemplate,
+                                     requestBody,
                                      fullName);
         }
 
@@ -531,9 +537,6 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
                                    VolumeType          volumeType,
                                    String              storageLocation) throws PropertyServerException
     {
-        final String methodName = "createVolume";
-        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/volumes";
-
         VolumeProperties volumeProperties = new VolumeProperties();
 
         volumeProperties.setName(name);
@@ -542,6 +545,23 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         volumeProperties.setComment(comment);
         volumeProperties.setVolume_type(volumeType);
         volumeProperties.setStorage_location(storageLocation);
+
+        return createVolume(volumeProperties);
+    }
+
+
+    /**
+     * Create volume.
+     *
+     * @param volumeProperties properties
+     *
+     * @return resulting volume info
+     * @throws PropertyServerException problem with the call
+     */
+    public VolumeInfo createVolume(VolumeProperties volumeProperties) throws PropertyServerException
+    {
+        final String methodName = "createVolume";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/volumes";
 
         return callPostRESTCallNoParams(methodName,
                                         VolumeInfo.class,
@@ -647,12 +667,14 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
             callPatchRESTCall(methodName,
                               VolumeInfo.class,
                               urlTemplate,
+                              requestBody,
                               fullName);
 
             requestBody.setNew_name(oldName);
             return callPatchRESTCall(methodName,
                                      VolumeInfo.class,
                                      urlTemplate,
+                                     requestBody,
                                      fullName);
         }
         else
@@ -661,6 +683,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
             return callPatchRESTCall(methodName,
                                      VolumeInfo.class,
                                      urlTemplate,
+                                     requestBody,
                                      fullName);
         }
     }
@@ -696,9 +719,6 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
                                  String              storageLocation,
                                  Map<String, String> properties) throws PropertyServerException
     {
-        final String methodName = "createTable";
-        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/tables";
-
         TableProperties tableProperties = new TableProperties();
 
         tableProperties.setName(name);
@@ -711,11 +731,30 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         tableProperties.setStorage_location(storageLocation);
         tableProperties.setProperties(properties);
 
+        return createTable(tableProperties);
+    }
+
+
+
+    /**
+     * Create table.
+     *
+     * @param tableProperties list of properties for the table
+     *
+     * @return resulting table info
+     * @throws PropertyServerException problem with the call
+     */
+    public TableInfo createTable(TableProperties tableProperties) throws PropertyServerException
+    {
+        final String methodName = "createTable";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/tables";
+
         return callPostRESTCallNoParams(methodName,
                                         TableInfo.class,
                                         urlTemplate,
                                         tableProperties);
     }
+
 
 
     /**

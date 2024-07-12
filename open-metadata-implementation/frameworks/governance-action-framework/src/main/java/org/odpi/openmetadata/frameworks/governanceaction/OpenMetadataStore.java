@@ -9,10 +9,11 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.*;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
+import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,14 +28,14 @@ import java.util.Map;
 public class OpenMetadataStore
 {
     protected final OpenMetadataClient openMetadataClient;
-    private final String               userId;
-    private final String               externalSourceGUID;
-    private final String               externalSourceName;
-    private final String               originatorGUID;
+    private final   String             userId;
+    private         String             externalSourceGUID;
+    private         String             externalSourceName;
+    private final   String             originatorGUID;
 
-    private boolean               forLineage = false;
-    private boolean               forDuplicateProcessing = false;
-    private boolean               useCurrentEffectiveTime = false;
+    private boolean forLineage              = false;
+    private boolean forDuplicateProcessing  = false;
+    private boolean useCurrentEffectiveTime = false;
 
 
     /**
@@ -158,6 +159,20 @@ public class OpenMetadataStore
         }
 
         return null;
+    }
+
+
+    /**
+     * Set up the externalSourceGUID and Name.
+     *
+     * @param externalSourceGUID unique identifier of the source metadata collection
+     * @param externalSourceName unique name of the source metadata collection
+     */
+    public void setExternalSourceIds(String externalSourceGUID,
+                                     String externalSourceName)
+    {
+        this.externalSourceGUID = externalSourceGUID;
+        this.externalSourceName = externalSourceName;
     }
 
 
@@ -537,6 +552,38 @@ public class OpenMetadataStore
 
 
     /**
+     * Retrieve the metadata element connected to the supplied element for a relationship type that only allows one
+     * relationship to be attached.
+     *
+     * @param elementGUID            unique identifier for the starting metadata element
+     * @param startingAtEnd          indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param relationshipTypeName   type name of relationships to follow (or null for all)
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return list of related elements
+     *
+     * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException    there is a problem accessing the metadata store or multiple relationships have been returned
+     */
+    public RelatedMetadataElement getRelatedMetadataElement(String  elementGUID,
+                                                            int     startingAtEnd,
+                                                            String  relationshipTypeName,
+                                                            Date    effectiveTime) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        return openMetadataClient.getRelatedMetadataElement(userId,
+                                                            elementGUID,
+                                                            startingAtEnd,
+                                                            relationshipTypeName,
+                                                            forLineage,
+                                                            forDuplicateProcessing,
+                                                            effectiveTime);
+    }
+
+
+    /**
      * Retrieve the relationships linking to the supplied elements.
      *
      * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
@@ -550,11 +597,11 @@ public class OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<RelatedMetadataElements> getMetadataElementRelationships(String  metadataElementAtEnd1GUID,
-                                                                         String  metadataElementAtEnd2GUID,
-                                                                         String  relationshipTypeName,
-                                                                         int     startFrom,
-                                                                         int     pageSize) throws InvalidParameterException,
+    public List<OpenMetadataRelationship> getMetadataElementRelationships(String  metadataElementAtEnd1GUID,
+                                                                          String  metadataElementAtEnd2GUID,
+                                                                          String  relationshipTypeName,
+                                                                          int     startFrom,
+                                                                          int     pageSize) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
@@ -636,12 +683,12 @@ public class OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
-                                                                                  SearchProperties searchProperties,
-                                                                                  String           sequencingProperty,
-                                                                                  SequencingOrder  sequencingOrder,
-                                                                                  int              startFrom,
-                                                                                  int              pageSize) throws InvalidParameterException,
+    public List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
+                                                                                   SearchProperties searchProperties,
+                                                                                   String           sequencingProperty,
+                                                                                   SequencingOrder  sequencingOrder,
+                                                                                   int              startFrom,
+                                                                                   int              pageSize) throws InvalidParameterException,
                                                                                                                     UserNotAuthorizedException,
                                                                                                                     PropertyServerException
     {
@@ -668,9 +715,9 @@ public class OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public RelatedMetadataElements getRelationshipByGUID(String  relationshipGUID) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public OpenMetadataRelationship getRelationshipByGUID(String  relationshipGUID) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         return openMetadataClient.getRelationshipByGUID(userId, relationshipGUID, forLineage, forDuplicateProcessing, getEffectiveTime());
     }

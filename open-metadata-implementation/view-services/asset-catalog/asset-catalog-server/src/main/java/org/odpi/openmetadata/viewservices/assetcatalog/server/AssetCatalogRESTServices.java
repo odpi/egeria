@@ -12,16 +12,12 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -735,7 +731,7 @@ public class AssetCatalogRESTServices extends TokenController
 
 
     private AssetCatalogBean getAssetCatalogBean(OpenMetadataElement           openMetadataElement,
-                                                 List<RelatedMetadataElements> relatedMetadataElementsList,
+                                                 List<OpenMetadataRelationship> openMetadataRelationshipList,
                                                  Element                       anchorElement,
                                                  String                        methodName)
     {
@@ -794,7 +790,7 @@ public class AssetCatalogRESTServices extends TokenController
                 assetCatalogBean.setAnchorElement(anchorElement);
             }
 
-            assetCatalogBean.setRelationships(this.getRelationships(relatedMetadataElementsList));
+            assetCatalogBean.setRelationships(this.getRelationships(openMetadataRelationshipList));
         }
 
         return null;
@@ -828,16 +824,16 @@ public class AssetCatalogRESTServices extends TokenController
     /**
      * Return a list of relationships in the Asset Catalog OMVS format.
      *
-     * @param relatedMetadataElementsList relationships retrieved from the open metadata store
+     * @param openMetadataRelationshipList relationships retrieved from the open metadata store
      * @return reformatted relationships
      */
-    private List<Relationship> getRelationships(List<RelatedMetadataElements> relatedMetadataElementsList)
+    private List<Relationship> getRelationships(List<OpenMetadataRelationship> openMetadataRelationshipList)
     {
-        if (relatedMetadataElementsList != null)
+        if (openMetadataRelationshipList != null)
         {
             List<Relationship> results = new ArrayList<>();
 
-            for (RelatedMetadataElements relatedMetadataElements : relatedMetadataElementsList)
+            for (OpenMetadataRelationship openMetadataRelationship : openMetadataRelationshipList)
             {
 
             }

@@ -6,6 +6,7 @@ package org.odpi.openmetadata.samples.archiveutilities.combo;
 import org.odpi.openmetadata.archiveutilities.openconnectors.CoreContentArchiveWriter;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
+import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveGUIDMap;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;

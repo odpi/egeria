@@ -53,7 +53,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                          String                              partnerServerName,
                                          String                              partnerURLRoot,
                                          String                              serverUserId,
-                                         GovernanceEngineConfigurationClient configurationClient,
+                                         GovernanceConfigurationClient       configurationClient,
                                          GovernanceContextClient             engineActionClient,
                                          GovernanceContextClient             governanceContextClient,
                                          AuditLog                            auditLog,
@@ -147,6 +147,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                                                                                                partnerServerName,
                                                                                                                partnerURLRoot,
                                                                                                                governanceContextClient,
+                                                                                                               configurationClient,
                                                                                                                requestedStartDate,
                                                                                                                auditLog,
                                                                                                                maxPageSize);

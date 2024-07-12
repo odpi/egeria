@@ -27,13 +27,22 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum OpenMetadataStoreErrorCode implements ExceptionMessageSet
 {
     /**
-     * OPEN-METADATA-STORE-404-002 - The open metadata repository services are not initialized for the {0} operation
+     * OPEN-METADATA-STORE-404-001 - The open metadata repository services are not initialized for the {0} operation
      */
-    OMRS_NOT_INITIALIZED(404, "OPEN-METADATA-STORE-404-002",
+    OMRS_NOT_INITIALIZED(404, "OPEN-METADATA-STORE-404-001",
                          "The open metadata repository services are not initialized for the {0} operation",
                          "The system is unable to connect to the open metadata property server.",
                          "Check that the server where the Open Metadata Store Services are running initialized correctly.  " +
                                  "Correct any errors discovered and retry the request when the open metadata services are available."),
+
+
+    /**
+     * OPEN-METADATA-STORE-409-001 - Multiple {0} relationships are attached to {1} metadata element {2}
+     */
+    MULTIPLE_RELATIONSHIPS_FOUND(404, "OPEN-METADATA-STORE-409-001",
+                         "Multiple {0} relationships are attached to metadata element {1}",
+                         "This relationship type is a singleton, which means that only once relationship of this type can be attached to an element.  The system is unable to retrieve the singleton relationship because there are more than one relationship defined.",
+                         "Using a different method, retrieve all of the relationships of this type for this element and either delete/archive the relationships no longer needed, or adjust their effectivity date(s) so that only one relationship is effective at any one time."),
 
     ;
 

@@ -7,11 +7,11 @@ import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.A
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectElement;
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.AssignmentScopeProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectTeamProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ResourceListProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.StakeholderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StakeholderProperties;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.ActorProfileListResponse;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.ExternalSourceRequestBody;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.PersonRoleListResponse;

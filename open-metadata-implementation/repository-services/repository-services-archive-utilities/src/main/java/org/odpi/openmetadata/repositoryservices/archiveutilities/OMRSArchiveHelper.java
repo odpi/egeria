@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.archiveutilities;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
@@ -275,6 +276,21 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
                                           String                  descriptionGUID)
     {
         return this.getDefaultEntityDef(guid, name, superType, description, descriptionGUID, null);
+    }
+
+
+    /**
+     * Sets up a default EntityDef.  Calling methods can override the default values.  This EntityDef
+     * has no attribute defined.
+     *
+     * @param type type description enum
+     * @param superType Super type for this entity (null for top-level)
+     * @return Initialized EntityDef
+     */
+    public EntityDef  getDefaultEntityDef(OpenMetadataType type,
+                                          TypeDefLink      superType)
+    {
+        return this.getDefaultEntityDef(type.typeGUID, type.typeName, superType, type.description, type.descriptionGUID, type.wikiURL);
     }
 
 
@@ -1061,6 +1077,29 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
      * Returns a basic RelationshipDef without any attributes or ends set up.
      * The caller is responsible for adding the attributes and ends definition.
      *
+     * @param type type description for the relationship
+     * @param superType Super type for this relationship (null for top-level)
+     * @param propagationRule should classifications propagate over this relationship?
+     * @return RelationshipDef with no ends defined.
+     */
+    public RelationshipDef getBasicRelationshipDef(OpenMetadataType              type,
+                                                   TypeDefLink                   superType,
+                                                   ClassificationPropagationRule propagationRule)
+    {
+        return this.getBasicRelationshipDef(type.typeGUID,
+                                            type.typeName,
+                                            superType,
+                                            type.description,
+                                            type.descriptionGUID,
+                                            type.wikiURL,
+                                            propagationRule);
+    }
+
+
+    /**
+     * Returns a basic RelationshipDef without any attributes or ends set up.
+     * The caller is responsible for adding the attributes and ends definition.
+     *
      * @param guid unique identifier for the relationship
      * @param name name of the relationship
      * @param superType Super type for this relationship (null for top-level)
@@ -1196,6 +1235,38 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         validEntityDefs.add(validEntityDef);
 
         return this.getClassificationDef(guid, name, superType, description, descriptionGUID, validEntityDefs, propagatable);
+    }
+
+
+    /**
+     * Returns a basic ClassificationDef without any attributes.   The caller is responsible for adding the
+     * attribute definitions.
+     *
+     * @param type type description of the classification
+     * @param superType Super type for this classification (null for top-level)
+     * @param validEntityDef which entities can this classification be linked to.
+     * @param propagatable can the classification propagate over relationships?
+     * @return ClassificationDef with no attributes defined.
+     */
+    public ClassificationDef getClassificationDef(OpenMetadataType              type,
+                                                  TypeDefLink                   superType,
+                                                  TypeDefLink                   validEntityDef,
+                                                  boolean                       propagatable)
+    {
+        /*
+         * Set up the supplied validEntityType as an array and call the method to create the ClassificationDef.
+         */
+        ArrayList<TypeDefLink>   validEntityDefs = new ArrayList<>();
+        validEntityDefs.add(validEntityDef);
+
+        return this.getClassificationDef(type.typeGUID,
+                                         type.typeName,
+                                         superType,
+                                         type.description,
+                                         type.descriptionGUID,
+                                         type.wikiURL,
+                                         validEntityDefs,
+                                         propagatable);
     }
 
 

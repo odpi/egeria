@@ -363,7 +363,7 @@ public enum DeployedImplementationType
      */
     OSS_UC_TABLE("OSS Unity Catalog (UC) Table",
                   DeployedImplementationType.DATA_ASSET,
-                  OpenMetadataType.TABLE_DATA_SET.typeName,
+                  OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.typeName,
                   null,
                   "A relational table within the Unity Catalog (UC) 'catalog of catalogs'.",
                   "https://github.com/unitycatalog/unitycatalog"),

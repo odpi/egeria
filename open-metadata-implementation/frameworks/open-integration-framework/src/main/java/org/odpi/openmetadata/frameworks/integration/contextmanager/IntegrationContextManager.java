@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
@@ -23,6 +24,7 @@ public class IntegrationContextManager
     protected String                       partnerOMASPlatformRootURL   = null;
     protected String                       partnerOMASServerName        = null;
     protected OpenIntegrationClient        openIntegrationClient        = null;
+    protected GovernanceConfiguration      governanceConfiguration      = null;
     protected ConnectedAssetContext        connectedAssetContext        = null;
     protected OpenMetadataClient           openMetadataStoreClient      = null;
     protected String                       localServerUserId            = null;
@@ -169,6 +171,7 @@ public class IntegrationContextManager
                                                         connectorUserId,
                                                         partnerOMASServerName,
                                                         openIntegrationClient,
+                                                        governanceConfiguration,
                                                         openMetadataStoreClient,
                                                         generateIntegrationReport,
                                                         permittedSynchronization,

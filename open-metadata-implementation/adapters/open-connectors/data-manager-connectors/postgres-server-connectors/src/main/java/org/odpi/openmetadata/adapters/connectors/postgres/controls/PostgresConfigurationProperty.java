@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.postgres.controls;
 
 import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,28 +17,28 @@ public enum PostgresConfigurationProperty
     /**
      * The host IP address or domain name of the database server.
      */
-    HOST_IDENTIFIER (PostgresPlaceholderProperty.HOST_IDENTIFIER.getName(),
-                     PostgresPlaceholderProperty.HOST_IDENTIFIER.getDescription(),
-                     PostgresPlaceholderProperty.HOST_IDENTIFIER.getDataType(),
-                     PostgresPlaceholderProperty.HOST_IDENTIFIER.getExample(),
+    HOST_IDENTIFIER (PlaceholderProperty.HOST_IDENTIFIER.getName(),
+                     PlaceholderProperty.HOST_IDENTIFIER.getDescription(),
+                     PlaceholderProperty.HOST_IDENTIFIER.getDataType(),
+                     PlaceholderProperty.HOST_IDENTIFIER.getExample(),
                      true),
 
     /**
      * The number of the port to use to connect to the database server.
      */
-    PORT_NUMBER (PostgresPlaceholderProperty.PORT_NUMBER.getName(),
-                 PostgresPlaceholderProperty.PORT_NUMBER.getDescription(),
-                 PostgresPlaceholderProperty.PORT_NUMBER.getDataType(),
-                 PostgresPlaceholderProperty.PORT_NUMBER.getExample(),
+    PORT_NUMBER (PlaceholderProperty.PORT_NUMBER.getName(),
+                 PlaceholderProperty.PORT_NUMBER.getDescription(),
+                 PlaceholderProperty.PORT_NUMBER.getDataType(),
+                 PlaceholderProperty.PORT_NUMBER.getExample(),
                  true),
 
     /**
      * The name of the database server being catalogued.
      */
-    SERVER_NAME (PostgresPlaceholderProperty.SERVER_NAME.getName(),
-                 PostgresPlaceholderProperty.SERVER_NAME.getDescription(),
-                 PostgresPlaceholderProperty.SERVER_NAME.getDataType(),
-                 PostgresPlaceholderProperty.SERVER_NAME.getExample(),
+    SERVER_NAME (PlaceholderProperty.SERVER_NAME.getName(),
+                 PlaceholderProperty.SERVER_NAME.getDescription(),
+                 PlaceholderProperty.SERVER_NAME.getDataType(),
+                 PlaceholderProperty.SERVER_NAME.getExample(),
                  true),
 
     /**

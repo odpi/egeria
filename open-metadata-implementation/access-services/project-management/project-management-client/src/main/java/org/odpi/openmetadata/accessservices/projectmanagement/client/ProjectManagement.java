@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.projectmanagement.client;
 
 import org.odpi.openmetadata.accessservices.projectmanagement.api.ProjectsInterface;
+import org.odpi.openmetadata.accessservices.projectmanagement.api.RelatedElementsInterface;
 import org.odpi.openmetadata.accessservices.projectmanagement.client.converters.ProjectConverter;
 import org.odpi.openmetadata.accessservices.projectmanagement.client.converters.TeamMemberConverter;
 import org.odpi.openmetadata.accessservices.projectmanagement.client.rest.ProjectManagementRESTClient;
@@ -10,8 +11,8 @@ import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.A
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectElement;
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectTeamMember;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectTeamProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.ActorProfileListResponse;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.ProjectResponse;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.ProjectListResponse;

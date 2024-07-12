@@ -581,18 +581,8 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addTabularFileColumnEntity()
     {
-        final String guid            = "af6265e7-5f58-4a9c-9ae7-8d4284be62bd";
-        final String name            = "TabularFileColumn";
-        final String description     = "A column in a tabular file.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "TabularColumn";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.TABULAR_FILE_COLUMN,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TABULAR_COLUMN.typeName));
 
     }
 
@@ -672,13 +662,11 @@ public class OpenMetadataTypesArchive2_11
     {
         final String typeName = "RelationalTableType";
 
-        final String superTypeName = "ComplexSchemaType";
-
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
+        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName));
 
         return typeDefPatch;
     }
@@ -712,11 +700,9 @@ public class OpenMetadataTypesArchive2_11
         final String description     = "A list of event types that flow on a topic.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SchemaTypeChoice";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_TYPE_CHOICE.typeName),
                                                  description,
                                                  descriptionGUID);
 
@@ -735,11 +721,9 @@ public class OpenMetadataTypesArchive2_11
         final String description     = "A data field in an event type.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SchemaAttribute";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
                                                  description,
                                                  descriptionGUID);
 
@@ -775,11 +759,9 @@ public class OpenMetadataTypesArchive2_11
         final String description     = "A list of parameters for an API.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "ComplexSchemaType";
-
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName),
                                                                 description,
                                                                 descriptionGUID);
 
@@ -818,11 +800,9 @@ public class OpenMetadataTypesArchive2_11
         final String description     = "A data value that is part of a API definition.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SchemaAttribute";
-
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
                                                                 description,
                                                                 descriptionGUID);
 
@@ -880,11 +860,9 @@ public class OpenMetadataTypesArchive2_11
         final String description     = "A structure describing data that is to be displayed.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "ComplexSchemaType";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName),
                                                  description,
                                                  descriptionGUID);
     }
@@ -902,11 +880,9 @@ public class OpenMetadataTypesArchive2_11
         final String description     = "A grouping of display data fields (and nested containers) for a report, form or similar data display asset.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SchemaAttribute";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
                                                  description,
                                                  descriptionGUID);
 
@@ -926,11 +902,9 @@ public class OpenMetadataTypesArchive2_11
         final String description     = "A data display field.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SchemaAttribute";
-
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
                                                                 description,
                                                                 descriptionGUID);
 
@@ -967,11 +941,9 @@ public class OpenMetadataTypesArchive2_11
         final String description     = "A structure describing data that being queried and formatted to support a user display or report.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "ComplexSchemaType";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName),
                                                  description,
                                                  descriptionGUID);
     }
@@ -989,11 +961,9 @@ public class OpenMetadataTypesArchive2_11
         final String description     = "A grouping of display data fields (and nested containers) for a query.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SchemaAttribute";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
                                                  description,
                                                  descriptionGUID);
     }
@@ -1011,11 +981,9 @@ public class OpenMetadataTypesArchive2_11
         final String description     = "A data field that is returned by a query.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SchemaAttribute";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
                                                  description,
                                                  descriptionGUID);
     }

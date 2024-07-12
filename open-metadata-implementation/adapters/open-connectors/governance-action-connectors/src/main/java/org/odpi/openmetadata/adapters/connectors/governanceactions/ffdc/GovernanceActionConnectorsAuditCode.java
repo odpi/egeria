@@ -273,7 +273,7 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
      */
     MISSING_TEMPLATE("GOVERNANCE-ACTION-CONNECTORS-0023",
                      AuditLogRecordSeverityLevel.ERROR,
-                               "The {0} governance action service is unable to retrieve the template {1} configured in property {2}.  The asset {3} was created without a template",
+                               "The {0} governance action service is unable to retrieve the template {1} configured in property {2}.",
                                "The asset is created with the supplied parameters.",
                                "Determine whether the template name is specified incorrectly, or if the name is correct, why it is not accessible to governance service.  Once the situation has been corrected, future assets will be created with the right template.  However this asset may need some remediation to add the values that would have been added by the template."),
 

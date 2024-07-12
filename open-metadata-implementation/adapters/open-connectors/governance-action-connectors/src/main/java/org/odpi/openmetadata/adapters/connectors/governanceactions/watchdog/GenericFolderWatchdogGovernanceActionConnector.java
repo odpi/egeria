@@ -25,8 +25,6 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
     private String folderName = null;
     private String folderGUID = null;
 
-    private final PropertyHelper propertyHelper = new PropertyHelper();
-
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
      * This is a standard method from the Open Connector Framework (OCF) so

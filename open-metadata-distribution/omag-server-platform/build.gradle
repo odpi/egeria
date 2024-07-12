@@ -93,6 +93,7 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-archives:open-connector-archives')
     implementation project(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries')
     implementation project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples')
+    implementation project(':open-metadata-resources:open-metadata-samples:governance-action-samples')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-deploy-sample')
@@ -169,6 +170,11 @@ distributions {
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/data" }
                 fileMode = 0755
             }
+            into('assembly/platform/data/servers') {
+                // Add all sample configs
+                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/sample-configs" }
+                fileMode = 0755
+            }
             into('assembly/platform/logs') {
                 // Describe the log files
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/logs" }
@@ -212,6 +218,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:lineage-warehouse-connectors:lineage-warehouse-janus-connector').jar }
                 from { project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples').jar }
+                from { project(':open-metadata-resources:open-metadata-samples:governance-action-samples').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors').jar }
@@ -306,11 +313,6 @@ distributions {
                             include 'data-files/*.csv'
                             include 'database/*/*.sql'
                         }
-                fileMode = 0755
-            }
-            into('assembly/opt/sample-configs') {
-                // Add all sample configs
-                from { "$rootProject.projectDir/open-metadata-resources/open-metadata-deployment/sample-configs" }
                 fileMode = 0755
             }
             into('assembly/opt/sample-clients') {

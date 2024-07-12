@@ -3,7 +3,7 @@
 
 # Additional runtime utilities
 
-These directories contain files client programs that may be useful when running Egeria. 
+These directories contain client programs that may be useful when running Egeria. 
 
 
 

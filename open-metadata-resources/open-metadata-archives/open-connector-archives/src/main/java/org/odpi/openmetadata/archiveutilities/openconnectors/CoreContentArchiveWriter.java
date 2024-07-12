@@ -74,6 +74,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.samples.archiveutilities.GovernanceArchiveHelper;
 
+
 import java.util.*;
 
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
@@ -143,7 +144,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         List<OpenMetadataArchive> dependentOpenMetadataArchives = new ArrayList<>();
 
         /*
-         * This value allows the Coco Types to be based on the existing open metadata types
+         * This value allows the elements from the archive to be based on the existing open metadata types
          */
         dependentOpenMetadataArchives.add(new OpenMetadataTypesArchive().getOpenMetadataArchive());
 
@@ -876,13 +877,16 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                         ResourceUse.CATALOG_RESOURCE.getResourceUse(),
                                                         ResourceUse.CATALOG_RESOURCE.getDescription());
 
+        /*
+         * The landing area connector expects to be given catalog targets that are folders representing directories inside the landing area directory.
+         */
         configurationProperties.put("catalogAllFiles", "true");
         String landingAreaIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(DataFilesMonitorIntegrationProvider.class.getName(),
                                                                                            configurationProperties,
                                                                                           OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":LandingAreaFilesMonitorIntegrationConnector",
                                                                                           "LandingAreaFilesMonitorIntegrationConnector",
-                                                                                          "Catalogs files found under the landing-area directory (folder).",
-                                                                                          "landing-area",
+                                                                                          "Catalogs files found under the landing-area directory (folder) via catalog targets.",
+                                                                                          null,
                                                                                           null);
 
         archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
@@ -1032,24 +1036,25 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         /*
          * Register the governance services that are going to be in the default governance engines.
          */
-        GovernanceActionDescription fileProvisionerDescription        = this.getFileProvisioningGovernanceActionService();
-        GovernanceActionDescription watchDogServiceDescription        = this.getWatchdogGovernanceActionService();
-        GovernanceActionDescription originSeekerDescription           = this.getOriginSeekerGovernanceActionService();
-        GovernanceActionDescription qualifiedNameDeDupDescription     = this.getQualifiedNameDeDupGovernanceActionService();
-        GovernanceActionDescription zonePublisherDescription          = this.getZonePublisherGovernanceActionService();
-        GovernanceActionDescription evaluateAnnotationsDescription    = this.getEvaluateAnnotationsGovernanceActionService();
-        GovernanceActionDescription writeAuditLogDescription          = this.getWriteAuditLogGovernanceActionService();
-        GovernanceActionDescription dayOfWeekDescription              = this.getDayOfWeekGovernanceActionService();
-        GovernanceActionDescription verifyAssetDescription            = this.getVerifyAssetGovernanceActionService();
-        GovernanceActionDescription csvSurveyDescription              = this.getCSVFileSurveyService();
-        GovernanceActionDescription fileSurveyDescription             = this.getDataFileSurveyService();
-        GovernanceActionDescription folderSurveyDescription           = this.getFolderSurveyService();
-        GovernanceActionDescription atlasSurveyDescription            = this.getAtlasSurveyService();
-        GovernanceActionDescription ucServerSurveyDescription         = this.getUCServerSurveyService();
-        GovernanceActionDescription ucCatalogSurveyDescription        = this.getUCCatalogSurveyService();
-        GovernanceActionDescription postgresServerSurveyDescription   = this.getPostgresServerSurveyService();
-        GovernanceActionDescription postgresDatabaseSurveyDescription = this.getPostgresDatabaseSurveyService();
-        GovernanceActionDescription kafkaServerSurveyDescription      = this.getKafkaServerSurveyService();
+        GovernanceActionDescription fileProvisionerDescription                 = this.getFileProvisioningGovernanceActionService();
+        GovernanceActionDescription watchDogServiceDescription                 = this.getWatchdogGovernanceActionService();
+        GovernanceActionDescription originSeekerDescription                    = this.getOriginSeekerGovernanceActionService();
+        GovernanceActionDescription qualifiedNameDeDupDescription              = this.getQualifiedNameDeDupGovernanceActionService();
+        GovernanceActionDescription zonePublisherDescription                   = this.getZonePublisherGovernanceActionService();
+        GovernanceActionDescription evaluateAnnotationsDescription             = this.getEvaluateAnnotationsGovernanceActionService();
+        GovernanceActionDescription writeAuditLogDescription                   = this.getWriteAuditLogGovernanceActionService();
+        GovernanceActionDescription dayOfWeekDescription                       = this.getDayOfWeekGovernanceActionService();
+        GovernanceActionDescription verifyAssetDescription                     = this.getVerifyAssetGovernanceActionService();
+        GovernanceActionDescription csvSurveyDescription                       = this.getCSVFileSurveyService();
+        GovernanceActionDescription fileSurveyDescription                      = this.getDataFileSurveyService();
+        GovernanceActionDescription folderSurveyDescription                    = this.getFolderSurveyService();
+        GovernanceActionDescription atlasSurveyDescription                     = this.getAtlasSurveyService();
+        GovernanceActionDescription ucServerSurveyDescription                  = this.getUCServerSurveyService();
+        GovernanceActionDescription ucCatalogSurveyDescription                 = this.getUCCatalogSurveyService();
+        GovernanceActionDescription postgresServerSurveyDescription            = this.getPostgresServerSurveyService();
+        GovernanceActionDescription postgresDatabaseSurveyDescription          = this.getPostgresDatabaseSurveyService();
+        GovernanceActionDescription kafkaServerSurveyDescription               = this.getKafkaServerSurveyService();
+
 
         /*
          * Define the FileProvisioning engine.
@@ -1071,6 +1076,8 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         this.addSeekOriginRequestType(assetOnboardingEngineGUID, assetOnboardingEngineName, originSeekerDescription);
         this.addSetZoneMembershipRequestType(assetOnboardingEngineGUID, assetOnboardingEngineName, zonePublisherDescription);
         this.addVerifyAssetRequestType(assetOnboardingEngineGUID, assetOnboardingEngineName, verifyAssetDescription);
+
+        this.addOnboardingGovernanceActionProcess(fileProvisioningEngineGUID, assetOnboardingEngineGUID);
 
         /*
          * Define the Stewardship engine
@@ -1100,7 +1107,6 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         this.addPostgresServerRequestType(assetSurveyEngineGUID, assetSurveyEngineName, postgresServerSurveyDescription);
         this.addPostgresDatabaseRequestType(assetSurveyEngineGUID, assetSurveyEngineName, postgresDatabaseSurveyDescription);
         this.addKafkaServerRequestType(assetSurveyEngineGUID, assetSurveyEngineName, kafkaServerSurveyDescription);
-
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
@@ -1684,14 +1690,14 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                  DeployedImplementationType.POSTGRESQL_DATABASE_MANAGER,
                                                  "Database Management System (DBMS)",
                                                  null,
-                                                 PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder(),
-                                                 PostgresPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholder(),
+                                                 PlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                  PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
                                                  PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
                                                  provider.getConnectorType().getGUID(),
                                                  "jdbc:postgresql://" +
-                                                         PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
-                                                         PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/postgres",
+                                                         PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/postgres",
                                                  null,
                                                  null,
                                                  placeholderPropertyTypes);
@@ -2100,11 +2106,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         DeployedImplementationType deployedImplementationType = DeployedImplementationType.OSS_UC_CATALOG;
 
         String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + ":" + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":" + UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder();
-        Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
-
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                               deployedImplementationType.getDeployedImplementationType());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a " + deployedImplementationType.getDeployedImplementationType() + " SoftwareCapability.",
@@ -2120,7 +2122,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                                     null,
                                                                     null,
                                                                     null,
-                                                                    extendedProperties,
+                                                                    null,
                                                                     classifications,
                                                                     null,
                                                                     deployedImplementationType.getAssociatedTypeName(),
@@ -2145,6 +2147,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         String                     fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
                                                               + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder();
         String                     qualifiedName              = deployedImplementationType.getDeployedImplementationType() + ":"
+                                                              + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":"
                                                               + fullName;
 
         Map<String, Object>  extendedProperties = new HashMap<>();
@@ -2185,9 +2188,10 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         String                     fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
                                                               + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
                                                               + UnityCatalogPlaceholderProperty.VOLUME_NAME.getPlaceholder();
-        String                     qualifiedName              = deployedImplementationType.getAssociatedTypeName() + ":"
-                                                              + deployedImplementationType.getDeployedImplementationType() + ":"
+        String                     qualifiedName              = deployedImplementationType.getDeployedImplementationType() + ":"
+                                                              + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":"
                                                               + fullName;
+        String connectorTypeGUID = new DataFolderProvider().getConnectorType().getGUID();
 
         Map<String, Object>  extendedProperties   = new HashMap<>();
         Map<String, String>  facetProperties      = new HashMap<>();
@@ -2197,6 +2201,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
 
         facetProperties.put(UnityCatalogPlaceholderProperty.VOLUME_TYPE.getName(), UnityCatalogPlaceholderProperty.VOLUME_TYPE.getPlaceholder());
+        facetProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a Volume from the Unity Catalog (UC).",
@@ -2222,6 +2227,33 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                        PropertyFacetValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
                                        facetProperties);
 
+        String endpointGUID = archiveHelper.addEndpoint(assetGUID,
+                                                        deployedImplementationType.getAssociatedTypeName(),
+                                                        OpenMetadataType.ASSET.typeName,
+                                                        qualifiedName + ":Endpoint",
+                                                        fullName + " endpoint",
+                                                        null,
+                                                        UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder(),
+                                                        null,
+                                                        null);
+
+        String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
+                                                            fullName + " connection",
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            connectorTypeGUID,
+                                                            endpointGUID,
+                                                            assetGUID,
+                                                            deployedImplementationType.getAssociatedTypeName(),
+                                                            OpenMetadataType.ASSET.typeName);
+
+        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
 
         archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
@@ -2241,25 +2273,32 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         String                     fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
                                                               + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
                                                               + UnityCatalogPlaceholderProperty.TABLE_NAME.getPlaceholder();
-        String                     qualifiedName              = deployedImplementationType.getAssociatedTypeName() + ":"
-                                                              + deployedImplementationType.getDeployedImplementationType() + ":"
+        String                     qualifiedName              = deployedImplementationType.getDeployedImplementationType() + ":"
+                                                              + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":"
                                                               + fullName;
 
         Map<String, Object>  extendedProperties   = new HashMap<>();
-        Map<String, String>  facetProperties = new HashMap<>();
+        Map<String, Object>  folderProperties     = new HashMap<>();
+        Map<String, String>  facetProperties      = new HashMap<>();
         List<Classification> classifications      = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
 
+        folderProperties.put(OpenMetadataProperty.PATH_NAME.name, UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
+
         facetProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
         facetProperties.put(UnityCatalogPlaceholderProperty.TABLE_TYPE.getName(), UnityCatalogPlaceholderProperty.TABLE_TYPE.getPlaceholder());
-        facetProperties.put(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getName(), UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a Table from the Unity Catalog (UC).",
                                                                     "V1.0",
                                                                     null,
                                                                     methodName));
+
+        classifications.add(archiveHelper.getDataAssetEncodingClassification(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getPlaceholder(),
+                                                                             null,
+                                                                             null,
+                                                                             null));
 
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
@@ -2269,6 +2308,21 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                   null,
                                                   extendedProperties,
                                                   classifications);
+
+
+        String folderGUID = archiveHelper.addAnchoredAsset(OpenMetadataType.DATA_FOLDER.typeName,
+                                                           assetGUID,
+                                                           deployedImplementationType.getAssociatedTypeName(),
+                                                           OpenMetadataType.ASSET.typeName,
+                                                           qualifiedName + "_storageLocation",
+                                                           fullName + "_storageLocation",
+                                                           PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                           "Location of files for table " + fullName,
+                                                           null,
+                                                           folderProperties,
+                                                           classifications);
+
+        archiveHelper.addDataContentForDataSet(folderGUID, assetGUID);
 
         archiveHelper.addPropertyFacet(assetGUID,
                                        deployedImplementationType.getAssociatedTypeName(),
@@ -2298,8 +2352,8 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         String                     fullName                   = UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder() + "."
                                                               + UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder() + "."
                                                               + UnityCatalogPlaceholderProperty.FUNCTION_NAME.getPlaceholder();
-        String                     qualifiedName              = deployedImplementationType.getAssociatedTypeName() + ":"
-                                                              + deployedImplementationType.getDeployedImplementationType() + ":"
+        String                     qualifiedName              = deployedImplementationType.getDeployedImplementationType() + ":"
+                                                              + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + ":"
                                                               + fullName;
 
         Map<String, Object>  extendedProperties = new HashMap<>();
@@ -2555,13 +2609,13 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         this.createServerAssetCatalogTemplate(DeployedImplementationType.POSTGRESQL_DATABASE,
                                               PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
                                               PostgresPlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholder(),
-                                              PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                              PlaceholderProperty.SERVER_NAME.getPlaceholder(),
                                               PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
                                               PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
                                               provider.getConnectorType().getGUID(),
                                               "jdbc:postgresql://" +
-                                                         PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
-                                                         PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                                         PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
                                               null,
                                               null,
                                               placeholderPropertyTypes);
@@ -2580,13 +2634,13 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         this.createServerAssetCatalogTemplate(DeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
                                               PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
                                               PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder(),
-                                              PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder() + "." + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                              PlaceholderProperty.SERVER_NAME.getPlaceholder() + "." + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
                                               PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
                                               PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
                                               provider.getConnectorType().getGUID(),
                                               "jdbc:postgresql://" +
-                                                      PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
-                                                      PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
+                                                      PlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                      PlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
                                                       PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "?currentSchema=" +
                                                       PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
                                               null,
@@ -2618,7 +2672,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         this.createServerAssetCatalogTemplate(DeployedImplementationType.APACHE_KAFKA_TOPIC,
                                               KafkaPlaceholderProperty.SHORT_TOPIC_NAME.getPlaceholder(),
                                               KafkaPlaceholderProperty.TOPIC_DESCRIPTION.getPlaceholder(),
-                                              PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder() + "." + KafkaPlaceholderProperty.FULL_TOPIC_NAME.getPlaceholder() + ":inOut",
+                                              PlaceholderProperty.SERVER_NAME.getPlaceholder() + "." + KafkaPlaceholderProperty.FULL_TOPIC_NAME.getPlaceholder() + ":inOut",
                                               null,
                                               null,
                                               provider.getConnectorType().getGUID(),
@@ -3222,7 +3276,6 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
     }
 
 
-
     /**
      * Create an entity for the File Provisioning governance action service.
      *
@@ -3571,7 +3624,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                                                     governanceEngineGUID,
                                                                                     governanceEngineTypeName,
                                                                                     OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
-                                                                                    "Egeria:GovernanceActionType:" + governanceEngineName + ":" + governanceRequestType,
+                                                                                    governanceEngineName + ":" + governanceRequestType,
                                                                                     governanceRequestType + " (" + governanceEngineName + ")",
                                                                                     governanceActionDescription.governanceServiceDescription,
                                                                                     0,
@@ -4408,6 +4461,143 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                             governanceActionDescription);
     }
 
+
+
+    /**
+     * Create the onboarding process for clinical trials.
+     */
+    private void addOnboardingGovernanceActionProcess(String fileProvisioningEngineGUID,
+                                                      String onboardingEngineGUID)
+    {
+         String qualifiedName = "Coco:GovernanceActionProcess:ClinicalTrials:WeeklyMeasurements:Onboarding";
+
+        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                      qualifiedName,
+                                                                      "Onboard Landing Area Files",
+                                                                      "V1.0",
+                                                                      """
+                                                                              Ensures that new files added to the landing are correctly catalogued in the data lake.
+
+                                                                              This process performs the follow function:
+                                                                                   1) The physical file is moved to the data lake and renamed,
+                                                                                   2) A new asset is created for the new file,
+                                                                                   3) Lineage is created between the original file asset and the new file asset,
+                                                                                   4) The owner and origin are assigned,
+                                                                                   5) The governance zones are assigned to make the new asset visible to the research team.""",
+                                                                      null,
+                                                                      0,
+                                                                      null,
+                                                                      null,
+                                                                      null);
+
+        String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        qualifiedName + ":MoveWeeklyMeasurementsFile",
+                                                                        "Move Weekly Measurements File",
+                                                                        "The physical file is moved to the data lake and renamed, an asset is created for the new file (in the quarantine zone) and a lineage relationship is created between the original file asset and the new file asset.",
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step1GUID != null)
+        {
+            archiveHelper.addGovernanceActionExecutor(step1GUID,
+                                                      "move-file",
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      fileProvisioningEngineGUID);
+
+            archiveHelper.addGovernanceActionProcessFlow(processGUID,
+                                                         null,
+                                                         step1GUID);
+        }
+
+        String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        qualifiedName + ":SeekOrigin",
+                                                                        "Seek and validate origin",
+                                                                        "Validate that origin of the file is correctly set up.",
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step2GUID != null)
+        {
+            archiveHelper.addGovernanceActionExecutor(step2GUID,
+                                                      "seek-origin-of-asset",
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      onboardingEngineGUID);
+
+            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, "provisioning-complete", false, step2GUID);
+        }
+
+        String step3GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        qualifiedName + ":SetZones",
+                                                                        "Publish asset.",
+                                                                        "Set up the zones in the asset so that is it visible in the data lake.",
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step3GUID != null)
+        {
+            archiveHelper.addGovernanceActionExecutor(step3GUID,
+                                                      "set-zone-membership-for-asset",
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      onboardingEngineGUID);
+
+            archiveHelper.addNextGovernanceActionProcessStep(step2GUID, "origin-assigned", false, step3GUID);
+            archiveHelper.addNextGovernanceActionProcessStep(step2GUID, "origin-already-assigned", false, step3GUID);
+        }
+    }
 
 
     private void createDailyGovernanceActionProcess(String governanceEngineGUID)

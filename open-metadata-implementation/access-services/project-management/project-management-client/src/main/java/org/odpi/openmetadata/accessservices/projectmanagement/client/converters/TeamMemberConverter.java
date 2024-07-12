@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.projectmanagement.client.converters;
 
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectTeamMember;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectTeamProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;

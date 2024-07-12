@@ -12,20 +12,20 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClass
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface;
 import org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface;
 import org.odpi.openmetadata.frameworks.integration.filelistener.FilesListenerManager;
-import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.reports.IntegrationReportWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -44,6 +44,7 @@ public class IntegrationContext
     protected final PropertyHelper           propertyHelper = new PropertyHelper();
 
     protected final OpenIntegrationClient    openIntegrationClient;
+    protected final GovernanceConfiguration  governanceConfiguration;
     protected final OpenMetadataClient       openMetadataStoreClient;
     protected final String                   userId;
     protected final String                   connectorName;
@@ -76,6 +77,7 @@ public class IntegrationContext
      * @param connectorUserId userId for the connector
      * @param serverName name of the integration daemon
      * @param openIntegrationClient client for calling the metadata server
+     * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
      * @param generateIntegrationReport should the connector generate an integration reports?
      * @param permittedSynchronization enum
@@ -90,6 +92,7 @@ public class IntegrationContext
                               String                       connectorUserId,
                               String                       serverName,
                               OpenIntegrationClient        openIntegrationClient,
+                              GovernanceConfiguration      governanceConfiguration,
                               OpenMetadataClient           openMetadataStoreClient,
                               boolean                      generateIntegrationReport,
                               PermittedSynchronization     permittedSynchronization,
@@ -100,6 +103,7 @@ public class IntegrationContext
                               int                          maxPageSize)
     {
         this.openIntegrationClient        = openIntegrationClient;
+        this.governanceConfiguration      = governanceConfiguration;
         this.openMetadataStoreClient      = openMetadataStoreClient;
         this.permittedSynchronization     = permittedSynchronization;
         this.userId                       = connectorUserId;
@@ -202,9 +206,9 @@ public class IntegrationContext
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        if ((openIntegrationClient != null) && (integrationConnectorGUID != null))
+        if ((governanceConfiguration != null) && (integrationConnectorGUID != null))
         {
-            return openIntegrationClient.addCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID, properties);
+            return governanceConfiguration.addCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID, properties);
         }
 
         return null;
@@ -229,9 +233,9 @@ public class IntegrationContext
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        if ((openIntegrationClient != null) && (integrationConnectorGUID != null))
+        if ((governanceConfiguration != null) && (integrationConnectorGUID != null))
         {
-            return openIntegrationClient.addCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID, properties);
+            return governanceConfiguration.addCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID, properties);
         }
 
         return null;
@@ -253,9 +257,9 @@ public class IntegrationContext
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        if ((openIntegrationClient != null) && (integrationConnectorGUID != null))
+        if ((governanceConfiguration != null) && (integrationConnectorGUID != null))
         {
-            openIntegrationClient.updateCatalogTarget(userId, relationshipGUID, properties);
+            governanceConfiguration.updateCatalogTarget(userId, relationshipGUID, properties);
         }
     }
 
@@ -274,9 +278,9 @@ public class IntegrationContext
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
     {
-        if ((openIntegrationClient != null) && (integrationConnectorGUID != null))
+        if ((governanceConfiguration != null) && (integrationConnectorGUID != null))
         {
-            return openIntegrationClient.getCatalogTarget(userId, relationshipGUID);
+            return governanceConfiguration.getCatalogTarget(userId, relationshipGUID);
         }
 
         return null;
@@ -301,9 +305,9 @@ public class IntegrationContext
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        if ((openIntegrationClient != null) && (integrationConnectorGUID != null))
+        if ((governanceConfiguration != null) && (integrationConnectorGUID != null))
         {
-            return openIntegrationClient.getCatalogTargets(userId, integrationConnectorGUID, startingFrom, maximumResults);
+            return governanceConfiguration.getCatalogTargets(userId, integrationConnectorGUID, startingFrom, maximumResults);
         }
 
         return null;
@@ -328,9 +332,9 @@ public class IntegrationContext
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        if ((openIntegrationClient != null) && (integrationConnectorGUID != null))
+        if ((governanceConfiguration != null) && (integrationConnectorGUID != null))
         {
-            return openIntegrationClient.getCatalogTargets(userId, integrationConnectorGUID, startingFrom, maximumResults);
+            return governanceConfiguration.getCatalogTargets(userId, integrationConnectorGUID, startingFrom, maximumResults);
         }
 
         return null;
@@ -350,9 +354,9 @@ public class IntegrationContext
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        if ((openIntegrationClient != null) && (integrationConnectorGUID != null))
+        if ((governanceConfiguration != null) && (integrationConnectorGUID != null))
         {
-            openIntegrationClient.removeCatalogTarget(userId, relationshipGUID);
+            governanceConfiguration.removeCatalogTarget(userId, relationshipGUID);
         }
     }
 
@@ -428,6 +432,8 @@ public class IntegrationContext
                 }
             }
         }
+
+        integrationGovernanceContext.setExternalSourceIds(externalSourceGUID, externalSourceName);
     }
 
 
@@ -460,6 +466,8 @@ public class IntegrationContext
 
             externalSourceCache.put(metadataSourceQualifiedName, metadataSourceGUID);
         }
+
+        integrationGovernanceContext.setExternalSourceIds(externalSourceGUID, externalSourceName);
     }
 
 

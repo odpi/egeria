@@ -15,11 +15,13 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-archives:open-connector-archives')
     implementation project(':open-metadata-resources:open-metadata-archives:content-pack-helpers')
     implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    runtimeOnly project(':open-metadata-implementation:frameworks:survey-action-framework')
+    implementation project(':open-metadata-implementation:frameworks:survey-action-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
+    implementation project(':open-metadata-resources:open-metadata-samples:governance-action-samples')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     runtimeOnly 'ch.qos.logback:logback-classic'
 

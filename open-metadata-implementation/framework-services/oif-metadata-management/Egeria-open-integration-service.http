@@ -58,9 +58,3 @@ GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{access_ser
 GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{access_service}}/open-integration/users/{{user}}/integration-reports?
     startingFrom=0&
     maximumResults=0
-
-###
-# @name getCatalogTargets
-GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{access_service}}/open-integration/users/{{user}}/integration-connectors/{{guid}}/catalog-targets?
-    startingFrom=0&
-    maximumResults=0

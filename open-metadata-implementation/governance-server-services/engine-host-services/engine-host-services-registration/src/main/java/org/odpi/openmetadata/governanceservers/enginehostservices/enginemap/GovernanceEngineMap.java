@@ -3,8 +3,8 @@
 
 package org.odpi.openmetadata.governanceservers.enginehostservices.enginemap;
 
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -32,9 +32,9 @@ public class GovernanceEngineMap
 
     private final String                              localServerName;
     private final String                              localServerUserId;
-    private final String                              localServerPassword;
-    private final GovernanceEngineConfigurationClient configurationClient;
-    private final GovernanceContextClient             engineActionClient;
+    private final String                        localServerPassword;
+    private final GovernanceConfigurationClient configurationClient;
+    private final GovernanceContextClient       engineActionClient;
     private final AuditLog                            auditLog;
     private final int                                 maxPageSize;
 
@@ -53,7 +53,7 @@ public class GovernanceEngineMap
     public GovernanceEngineMap(String                              localServerName,
                                String                              localServerUserId,
                                String                              localServerPassword,
-                               GovernanceEngineConfigurationClient configurationClient,
+                               GovernanceConfigurationClient configurationClient,
                                GovernanceContextClient engineActionClient,
                                AuditLog                            auditLog,
                                int                                 maxPageSize)

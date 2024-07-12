@@ -3,14 +3,13 @@
 package org.odpi.openmetadata.accessservices.projectmanagement.client.converters;
 
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -204,7 +203,7 @@ public class ProjectConverter<B> extends ProjectManagementConverterBase<B>
     @SuppressWarnings(value = "unused")
     public B getNewBean(Class<B>                beanClass,
                         OpenMetadataElement     element,
-                        RelatedMetadataElements relationship,
+                        OpenMetadataRelationship relationship,
                         String                  methodName) throws PropertyServerException
     {
         B returnBean = this.getNewBean(beanClass, element, methodName);

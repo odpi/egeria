@@ -10,6 +10,7 @@ import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActi
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.*;
+import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineProperties;
@@ -50,6 +51,8 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      * @param governanceActionServiceConnector connector that does the work
      * @param partnerServerName name of the metadata server used by the governance service
      * @param partnerServerPlatformURLRoot location of the metadata server used by the governance service
+     * @param governanceContextClient client for services supporting the completion of a governance action service
+     * @param governanceConfiguration client for services that configure the governance servers
      * @param startDate date/time that the governance service should start executing
      * @param auditLog destination for log messages
      * @param maxPageSize maximum value allowed for page size
@@ -71,6 +74,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                    String                     partnerServerName,
                                    String                     partnerServerPlatformURLRoot,
                                    GovernanceContextClient    governanceContextClient,
+                                   GovernanceConfiguration    governanceConfiguration,
                                    Date                       startDate,
                                    AuditLog                   auditLog,
                                    int                        maxPageSize) throws InvalidParameterException
@@ -111,6 +115,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                                                               requestSourceElements,
                                                                               actionTargetElements,
                                                                               openMetadataClient,
+                                                                              governanceConfiguration,
                                                                               governanceContextClient,
                                                                               governanceContextClient,
                                                                               governanceContextClient,

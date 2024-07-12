@@ -7,6 +7,7 @@ package org.odpi.openmetadata.frameworks.integration.iterator;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 
@@ -24,6 +25,7 @@ import java.util.Map;
 public class MemberElement
 {
     private final OpenMetadataElement              element;
+    private final RelatedMetadataElement           rootSchemaType;
     private final List<MetadataCorrelationHeader>  externalIdentifiers;
     private final Map<String, Map<String, String>> vendorProperties;
     private final String                           catalogTargetName;
@@ -38,6 +40,7 @@ public class MemberElement
      * Create a member element.
      *
      * @param element open metadata element
+     * @param rootSchemaType the schema type element ar the root of the schema (if exists)
      * @param externalIdentifiers external identifiers for this element from the third party system
      * @param vendorProperties additional properties related to the particular technology deployment.
      * @param isElementActive is the element retrieved either archived or deleted (false) or still actively available (true)
@@ -47,6 +50,7 @@ public class MemberElement
      * @param auditLog logging destination
      */
     MemberElement(OpenMetadataElement              element,
+                  RelatedMetadataElement           rootSchemaType,
                   List<MetadataCorrelationHeader>  externalIdentifiers,
                   Map<String, Map<String, String>> vendorProperties,
                   boolean                          isElementActive,
@@ -56,6 +60,7 @@ public class MemberElement
                   AuditLog                         auditLog)
     {
         this.element                        = element;
+        this.rootSchemaType                 = rootSchemaType;
         this.externalIdentifiers            = externalIdentifiers;
         this.vendorProperties               = vendorProperties;
         this.isElementActive                = isElementActive;
@@ -93,6 +98,18 @@ public class MemberElement
     public OpenMetadataElement getElement()
     {
         return element;
+    }
+
+
+    /**
+     * Return the related schema type element that is the root of the element's schema.  This is only
+     * present on assets - and not all assets have a schema.
+     *
+     * @return related metadata element
+     */
+    public RelatedMetadataElement getRootSchemaType()
+    {
+        return rootSchemaType;
     }
 
 
@@ -284,7 +301,7 @@ public class MemberElement
 
         if (elementComparisonDate == null)
         {
-            elementComparisonDate = element.getVersions().getUpdateTime();
+            elementComparisonDate = element.getVersions().getCreateTime();
         }
 
         Date thirdPartyComparisonDate = thirdPartyElementLastUpdateTime;

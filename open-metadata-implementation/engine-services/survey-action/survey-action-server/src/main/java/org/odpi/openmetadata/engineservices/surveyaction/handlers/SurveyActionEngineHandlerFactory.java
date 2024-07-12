@@ -6,7 +6,7 @@ package org.odpi.openmetadata.engineservices.surveyaction.handlers;
 import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.FileSystemAssetOwner;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.accessservices.assetowner.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.accessservices.assetowner.client.ConnectedAssetClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
@@ -43,7 +43,7 @@ public class SurveyActionEngineHandlerFactory extends GovernanceEngineHandlerFac
                                                                  String                              localServerPassword,
                                                                  String                              partnerServerName,
                                                                  String                              partnerURLRoot,
-                                                                 GovernanceEngineConfigurationClient configurationClient,
+                                                                 GovernanceConfigurationClient configurationClient,
                                                                  GovernanceContextClient             serverClient,
                                                                  AuditLog                            auditLog,
                                                                  int                                 maxPageSize) throws InvalidParameterException

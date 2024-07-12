@@ -3018,8 +3018,78 @@ public class SimpleCatalogArchiveHelper
     }
 
 
+
+
     /**
-     * Create an asset entity.
+     * Create an asset entity with the supplied anchor.
+     *
+     * @param typeName name of asset subtype to use - default is Asset
+     * @param anchorGUID unique identifier of the anchor
+     * @param anchorTypeName type name of the anchor
+     * @param anchorDomainName domain name of the anchor
+     * @param qualifiedName unique name for the asset
+     * @param name display name for the asset
+     * @param versionIdentifier version for the asset
+     * @param description description about the asset
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     * @param classifications list of classifications (if any)
+     *
+     * @return id for the asset
+     */
+    public String addAnchoredAsset(String               typeName,
+                                   String               anchorGUID,
+                                   String               anchorTypeName,
+                                   String               anchorDomainName,
+                                   String               qualifiedName,
+                                   String               name,
+                                   String               versionIdentifier,
+                                   String               description,
+                                   Map<String, String>  additionalProperties,
+                                   Map<String, Object>  extendedProperties,
+                                   List<Classification> classifications)
+    {
+        final String methodName = "addAsset";
+
+        String assetTypeName = OpenMetadataType.ASSET.typeName;
+
+        if (typeName != null)
+        {
+            assetTypeName = typeName;
+        }
+
+        List<Classification> entityClassifications = classifications;
+
+        if (entityClassifications == null)
+        {
+            entityClassifications = new ArrayList<>();
+        }
+
+        String guid = idToGUIDMap.getGUID(qualifiedName);
+
+        entityClassifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, anchorDomainName, methodName));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAME.name, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
+        properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        EntityDetail assetEntity = archiveHelper.getEntityDetail(assetTypeName,
+                                                                 guid,
+                                                                 properties,
+                                                                 InstanceStatus.ACTIVE,
+                                                                 entityClassifications);
+
+        archiveBuilder.addEntity(assetEntity);
+
+        return assetEntity.getGUID();
+    }
+
+
+    /**
+     * Create an asset entity that is anchored to itself.
      *
      * @param typeName name of asset subtype to use - default is Asset
      * @param qualifiedName unique name for the asset
@@ -4406,7 +4476,7 @@ public class SimpleCatalogArchiveHelper
 
             DeployedImplementationType definition = DeployedImplementationType.getDefinitionFromDeployedImplementationType(deployedImplementationType);
 
-            if (definition != null)
+            if ((definition != null) && (archiveBuilder.queryEntity(this.idToGUIDMap.getGUID(definition.getQualifiedName())) != null))
             {
                 this.addResourceListRelationship(definition.getQualifiedName(),
                                                  qualifiedName,

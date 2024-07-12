@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.projectmanagement.api;
 
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.AssignmentScopeProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.RelationshipProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ResourceListProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.StakeholderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StakeholderProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

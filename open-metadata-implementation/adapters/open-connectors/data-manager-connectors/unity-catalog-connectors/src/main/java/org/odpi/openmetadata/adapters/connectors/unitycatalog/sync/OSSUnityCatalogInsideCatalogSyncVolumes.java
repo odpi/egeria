@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
 import org.odpi.openmetadata.frameworks.integration.iterator.MetadataCollectionIterator;
@@ -35,8 +36,6 @@ import java.util.Map;
 public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsideCatalogSyncBase
 {
     private final String entityTypeName = OpenMetadataType.DATA_FOLDER.typeName;
-    private final String parentLinkTypeName = OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName;
-    private final boolean parentAtEnd1 = false;
 
     private String templateGUID = null;
 
@@ -97,9 +96,9 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
      */
-    protected MetadataCollectionIterator refreshEgeria() throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+    protected IntegrationIterator refreshEgeria() throws InvalidParameterException,
+                                                         PropertyServerException,
+                                                         UserNotAuthorizedException
     {
         final String methodName = "refreshEgeriaVolumes";
 
@@ -168,9 +167,9 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
      */
-    protected void refreshUnityCatalog(MetadataCollectionIterator iterator) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
+    protected void refreshUnityCatalog(IntegrationIterator iterator) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
     {
         List<SchemaInfo> ucSchemaList = ucConnector.listSchemas(catalogName);
 
@@ -252,6 +251,9 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
+        final String parentLinkTypeName = OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName;
+        final boolean parentAtEnd1 = false;
+
         String ucVolumeGUID;
 
         if (templateGUID != null)
@@ -281,7 +283,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                                            null,
                                                                            null,
                                                                            this.getElementProperties(qualifiedName, volumeInfo),
-                                                                           context.getAssetManagerGUID(),
+                                                                           schemaGUID,
                                                                            parentLinkTypeName,
                                                                            null,
                                                                            parentAtEnd1);
@@ -390,9 +392,8 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
     private void updateElementInThirdParty(VolumeInfo    volumeInfo,
                                            MemberElement memberElement) throws PropertyServerException
     {
-        ucConnector.updateVolume(volumeInfo.getFull_name(),
-                                 this.getUCNameFromMember(memberElement),
-                                 this.getUCCommentFomMember(memberElement));
+        this.deleteElementInThirdParty(volumeInfo);
+        this.createElementInThirdParty(volumeInfo.getSchema_name(), memberElement);
     }
 
 

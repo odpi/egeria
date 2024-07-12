@@ -32,12 +32,6 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
     private List<String> publishZones = null;
 
     /**
-     * Property helper supports isTypeOf method.
-     */
-    private final PropertyHelper propertyHelper = new PropertyHelper();
-
-
-    /**
      * Indicates that the governance action service is completely configured and can begin processing.
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
@@ -193,9 +187,7 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
      */
     private ElementProperties getZoneProperties()
     {
-        PropertyHelper helper = new PropertyHelper();
-
-        return helper.addStringArrayProperty(null, OpenMetadataProperty.ZONE_MEMBERSHIP.name, publishZones);
+        return propertyHelper.addStringArrayProperty(null, OpenMetadataProperty.ZONE_MEMBERSHIP.name, publishZones);
     }
 
 

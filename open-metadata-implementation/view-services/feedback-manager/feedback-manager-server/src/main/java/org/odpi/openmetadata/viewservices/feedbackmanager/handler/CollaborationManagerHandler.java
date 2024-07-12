@@ -11,9 +11,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementStub;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
@@ -145,7 +145,7 @@ public class CollaborationManagerHandler
 
 
     /**
-     * Retrieve any rating previously added by this user.
+     * Retrieve any feedback previously added by this user.
      *
      * @param userId      userId of user making request.
      * @param elementGUID   unique identifier for the element.
@@ -546,19 +546,19 @@ public class CollaborationManagerHandler
                                                                                      OpenMetadataProperty.IS_PUBLIC.name,
                                                                                      isPublic);
 
-        List<RelatedMetadataElements> relationships = client.getMetadataElementRelationships(userId,
-                                                                                             parentGUID,
-                                                                                             commentGUID,
-                                                                                             OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
-                                                                                             false,
-                                                                                             false,
-                                                                                             null,
-                                                                                             0,
-                                                                                             0);
+        List<OpenMetadataRelationship> relationships = client.getMetadataElementRelationships(userId,
+                                                                                              parentGUID,
+                                                                                              commentGUID,
+                                                                                              OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
+                                                                                              false,
+                                                                                              false,
+                                                                                              null,
+                                                                                              0,
+                                                                                              0);
 
         if (relationships != null)
         {
-            for (RelatedMetadataElements relationship : relationships)
+            for (OpenMetadataRelationship relationship : relationships)
             {
                 if (relationship != null)
                 {
@@ -634,19 +634,19 @@ public class CollaborationManagerHandler
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
-        List<RelatedMetadataElements> relationships = client.getMetadataElementRelationships(userId,
-                                                                                             questionCommentGUID,
-                                                                                             answerCommentGUID,
-                                                                                             OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
-                                                                                             false,
-                                                                                             false,
-                                                                                             effectiveTime,
-                                                                                             0,
-                                                                                             0);
+        List<OpenMetadataRelationship> relationships = client.getMetadataElementRelationships(userId,
+                                                                                              questionCommentGUID,
+                                                                                              answerCommentGUID,
+                                                                                              OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
+                                                                                              false,
+                                                                                              false,
+                                                                                              effectiveTime,
+                                                                                              0,
+                                                                                              0);
 
         if (relationships != null)
         {
-            for (RelatedMetadataElements relationship : relationships)
+            for (OpenMetadataRelationship relationship : relationships)
             {
                 if (relationship != null)
                 {
@@ -1220,19 +1220,19 @@ public class CollaborationManagerHandler
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
     {
-        List<RelatedMetadataElements> relationships = client.getMetadataElementRelationships(userId,
-                                                                                             elementGUID,
-                                                                                             tagGUID,
-                                                                                             OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
-                                                                                             false,
-                                                                                             false,
-                                                                                             effectiveTime,
-                                                                                             0,
-                                                                                             0);
+        List<OpenMetadataRelationship> relationships = client.getMetadataElementRelationships(userId,
+                                                                                              elementGUID,
+                                                                                              tagGUID,
+                                                                                              OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
+                                                                                              false,
+                                                                                              false,
+                                                                                              effectiveTime,
+                                                                                              0,
+                                                                                              0);
 
         if (relationships != null)
         {
-            for (RelatedMetadataElements relationship : relationships)
+            for (OpenMetadataRelationship relationship : relationships)
             {
                 if (relationship != null)
                 {
@@ -1273,7 +1273,7 @@ public class CollaborationManagerHandler
     {
         List<RelatedMetadataElement> relatedMetadataElements = client.getRelatedMetadataElements(userId,
                                                                                                  tagGUID,
-                                                                                                 1,
+                                                                                                 2,
                                                                                                  OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
                                                                                                  false,
                                                                                                  false,

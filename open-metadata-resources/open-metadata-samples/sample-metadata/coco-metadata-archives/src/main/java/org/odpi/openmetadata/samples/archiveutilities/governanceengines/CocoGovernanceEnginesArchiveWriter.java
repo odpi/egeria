@@ -5,14 +5,28 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OriginSeekerGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.WriteAuditLogRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
+import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestTypeType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStepType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.ProjectDefinition;
+import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialHospitalOnboardingProvider;
+import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialSetUpDataLakeProvider;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -42,7 +56,32 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
               archiveDescription,
               new Date(),
               archiveFileName,
-              null);
+              new OpenMetadataArchive[]{ new CocoGovernanceProgramArchiveWriter().getOpenMetadataArchive() });
+    }
+
+
+
+    /**
+     * Create an entity for the AssetSurvey governance engine.
+     *
+     * @param clinicalTrialsEngineName name
+     * @return unique identifier for the governance engine
+     */
+    private String getClinicalTrialsEngine(String clinicalTrialsEngineName)
+    {
+        final String engineDisplayName = "Clinical Trials Engine";
+        final String engineDescription = "Manages the set up and operation of clinical trials at Coco Pharmaceuticals.";
+
+        return archiveHelper.addGovernanceEngine(OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                                                 clinicalTrialsEngineName,
+                                                 engineDisplayName,
+                                                 engineDescription,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null,
+                                                 null);
     }
 
 
@@ -115,6 +154,195 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
                                                  null,
                                                  null,
                                                  null);
+    }
+
+
+    /**
+     * GovernanceActionDescription provides details for calling a governance service.
+     */
+    static class GovernanceActionDescription
+    {
+        String                     governanceServiceGUID        = null;
+        String                     governanceServiceDescription = null;
+        List<RequestTypeType>      supportedRequestTypes        = null;
+        List<RequestParameterType> supportedRequestParameters   = null;
+        List<ActionTargetType>     supportedActionTargets       = null;
+        List<AnalysisStepType>     supportedAnalysisSteps       = null;
+        List<AnnotationTypeType>   supportedAnnotationTypes     = null;
+        List<RequestParameterType> producedRequestParameters    = null;
+        List<ActionTargetType>     producedActionTargets        = null;
+        List<GuardType>            producedGuards               = null;
+        ResourceUse                resourceUse                  = null;
+    }
+
+
+
+    /**
+     * Create a governance action description from the governance service's provider.
+     *
+     * @param resourceUse how is this
+     * @param provider connector provider
+     * @return governance action description
+     */
+    private GovernanceActionDescription getGovernanceActionDescription(ResourceUse                   resourceUse,
+                                                                       GovernanceServiceProviderBase provider,
+                                                                       String                        governanceServiceDescription)
+    {
+        GovernanceActionDescription governanceActionDescription = new GovernanceActionDescription();
+
+        governanceActionDescription.resourceUse                  = resourceUse;
+        governanceActionDescription.supportedRequestTypes        = provider.getSupportedRequestTypes();
+        governanceActionDescription.supportedRequestParameters   = provider.getSupportedRequestParameters();
+        governanceActionDescription.supportedActionTargets       = provider.getSupportedActionTargetTypes();
+        governanceActionDescription.producedRequestParameters    = provider.getProducedRequestParameters();
+        governanceActionDescription.producedActionTargets        = provider.getProducedActionTargetTypes();
+        governanceActionDescription.producedGuards               = provider.getProducedGuards();
+
+        if (provider instanceof SurveyActionServiceProvider surveyActionServiceProvider)
+        {
+            governanceActionDescription.supportedAnalysisSteps = surveyActionServiceProvider.getSupportedAnalysisSteps();
+            governanceActionDescription.supportedAnnotationTypes = surveyActionServiceProvider.getProducedAnnotationTypes();
+        }
+
+        governanceActionDescription.governanceServiceDescription = governanceServiceDescription;
+
+        return governanceActionDescription;
+    }
+
+
+
+    /**
+     * Add details of a request type to the engine.
+     *
+     * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineName name of the governance engine
+     * @param governanceEngineTypeName type of engine
+     * @param governanceRequestType name of request type
+     * @param serviceRequestType internal name of the request type
+     * @param requestParameters any request parameters
+     * @param governanceActionDescription description of the governance action if and
+     */
+    private void addRequestType(String                      governanceEngineGUID,
+                                String                      governanceEngineName,
+                                String                      governanceEngineTypeName,
+                                String                      governanceRequestType,
+                                String                      serviceRequestType,
+                                Map<String, String>         requestParameters,
+                                GovernanceActionDescription governanceActionDescription,
+                                String                      supportedElementQualifiedName)
+    {
+        archiveHelper.addSupportedGovernanceService(governanceEngineGUID,
+                                                    governanceRequestType,
+                                                    serviceRequestType,
+                                                    requestParameters,
+                                                    governanceActionDescription.governanceServiceGUID);
+
+        if (governanceActionDescription.supportedActionTargets != null)
+        {
+            String governanceActionTypeGUID = archiveHelper.addGovernanceActionType(null,
+                                                                                    governanceEngineGUID,
+                                                                                    governanceEngineTypeName,
+                                                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                                                                    governanceEngineName + ":" + governanceRequestType,
+                                                                                    governanceRequestType + " (" + governanceEngineName + ")",
+                                                                                    governanceActionDescription.governanceServiceDescription,
+                                                                                    0,
+                                                                                    governanceActionDescription.supportedRequestParameters,
+                                                                                    governanceActionDescription.supportedActionTargets,
+                                                                                    governanceActionDescription.supportedAnalysisSteps,
+                                                                                    governanceActionDescription.supportedAnnotationTypes,
+                                                                                    governanceActionDescription.producedRequestParameters,
+                                                                                    governanceActionDescription.producedActionTargets,
+                                                                                    governanceActionDescription.producedGuards,
+                                                                                    0,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null);
+
+
+            if (governanceActionTypeGUID != null)
+            {
+                archiveHelper.addGovernanceActionExecutor(governanceActionTypeGUID,
+                                                          governanceRequestType,
+                                                          requestParameters,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          null,
+                                                          governanceEngineGUID);
+
+                if (supportedElementQualifiedName != null)
+                {
+                    String supportedElementGUID = archiveHelper.queryGUID(supportedElementQualifiedName);
+                    archiveHelper.addResourceListRelationshipByGUID(supportedElementGUID,
+                                                                    governanceActionTypeGUID,
+                                                                    governanceActionDescription.resourceUse.getResourceUse(),
+                                                                    governanceActionDescription.governanceServiceDescription,
+                                                                    requestParameters,
+                                                                    false);
+                }
+            }
+        }
+    }
+
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @return descriptive information on the governance service
+     */
+    private GovernanceActionDescription getInitiateCaptureForClinicalTrialGovernanceActionService()
+    {
+        final String governanceServiceName = "set-up-data-lake-for-clinical-trial-governance-action-service";
+        final String governanceServiceDisplayName = "Set up Data Lake to capture weekly patient measurements";
+        final String governanceServiceDescription = "Sets up the storage definitions that support the receipt of weekly patient measurement data for a clinical trial.  This data is accessible through OSS Unity Catalog (UC).";
+        final String governanceServiceProviderClassName = CocoClinicalTrialSetUpDataLakeProvider.class.getName();
+
+        CocoClinicalTrialSetUpDataLakeProvider provider = new CocoClinicalTrialSetUpDataLakeProvider();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.PROVISION_RESOURCE,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                                                                                               governanceServiceProviderClassName,
+                                                                                               null,
+                                                                                               governanceServiceName,
+                                                                                               governanceServiceDisplayName,
+                                                                                               governanceServiceDescription,
+                                                                                               null);
+        return governanceActionDescription;
+    }
+
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @return descriptive information on the governance service
+     */
+    private GovernanceActionDescription getHospitalOnboardingClinicalTrialGovernanceActionService()
+    {
+        final String governanceServiceName = "onboard-hospital-for-clinical-trial-governance-action-service";
+        final String governanceServiceDisplayName = "Onboard a Hospital into a Clinical Trial Governance Action Service";
+        final String governanceServiceDescription = "Sets up the landing area for data from a hospital as part of a clinical trial, along with the pipeline that catalogued the data and moved it into the data lake.  The aim is that the data is moved from the landing area as soon as possible.";
+        final String governanceServiceProviderClassName = CocoClinicalTrialHospitalOnboardingProvider.class.getName();
+
+        CocoClinicalTrialHospitalOnboardingProvider provider = new CocoClinicalTrialHospitalOnboardingProvider();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.PROVISION_RESOURCE,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                                                                                               governanceServiceProviderClassName,
+                                                                                               null,
+                                                                                               governanceServiceName,
+                                                                                               governanceServiceDisplayName,
+                                                                                               governanceServiceDescription,
+                                                                                               null);
+        return governanceActionDescription;
     }
 
 
@@ -306,6 +534,53 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
     }
 
 
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addSetUpDataLakeForClinicalTrialRequestType(String                      governanceEngineGUID,
+                                                             String                      governanceEngineName,
+                                                             GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "set-up-data-lake";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription,
+                            ProjectDefinition.CLINICAL_TRIALS.getQualifiedName());
+    }
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addOnboardHospitalToClinicalTrialRequestType(String                      governanceEngineGUID,
+                                                              String                      governanceEngineName,
+                                                              GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "onboard-hospital";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription,
+                            ProjectDefinition.CLINICAL_TRIALS.getQualifiedName());
+    }
+
 
     /**
      * Set up the request type that links the governance engine to the governance service.
@@ -321,148 +596,6 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
         archiveHelper.addSupportedGovernanceService(governanceEngineGUID, governanceServiceRequestType, null, null, governanceServiceGUID);
     }
 
-
-    /**
-     * Create the onboarding process for clinical trials.
-     */
-    private void addOnboardingGovernanceActionProcess()
-    {
-        String governanceEngineGUID = archiveHelper.getGUID("AssetOnboarding");
-
-        String qualifiedName = "Coco:GovernanceActionProcess:ClinicalTrials:DropFoot:WeeklyMeasurements:Onboarding";
-
-        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                                                      qualifiedName,
-                                                                      "Onboard Weekly Drop Foot Measurement Files",
-                                                                      "V1.0",
-                                                                      """
-                                                                              Ensures that new weekly drop foot measurement files from the hospitals are correctly catalogued in the data lake.
-
-                                                                              This process performs the follow function:
-                                                                                   1) The physical file is moved to the data lake and renamed,
-                                                                                   2) A new asset is created for the new file,
-                                                                                   3) Lineage is created between the original file asset and the new file asset,
-                                                                                   4) The owner and origin are assigned,
-                                                                                   5) The governance zones are assigned to make the new asset visible to the research team.""",
-                                                                      null,
-                                                                      0,
-                                                                      null,
-                                                                      null,
-                                                                      null);
-
-        String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
-                                                                        processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                                                        OpenMetadataType.ASSET.typeName,
-                                                                        qualifiedName + ":MoveWeeklyMeasurementsFile",
-                                                                        "Move Weekly Measurements File",
-                                                                        "The physical file is moved to the data lake and renamed, an asset is created for the new file (in the quarantine zone) and a lineage relationship is created between the original file asset and the new file asset.",
-                                                                        0,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        0,
-                                                                        true,
-                                                                        null,
-                                                                        null,
-                                                                        null);
-
-        if (step1GUID != null)
-        {
-            archiveHelper.addGovernanceActionExecutor(step1GUID,
-                                                      "move-file",
-                                                      null,
-                                                      null,
-                                                      null,
-                                                      null,
-                                                      null,
-                                                      governanceEngineGUID);
-
-            archiveHelper.addGovernanceActionProcessFlow(processGUID,
-                                                         null,
-                                                         step1GUID);
-        }
-
-        String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
-                                                                        processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                                                        OpenMetadataType.ASSET.typeName,
-                                                                        "Egeria:DailyGovernanceActionProcess:MondayTask",
-                                                                        "Output Monday's task",
-                                                                        null,
-                                                                        0,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        0,
-                                                                        true,
-                                                                        null,
-                                                                        null,
-                                                                        null);
-
-        if (step2GUID != null)
-        {
-            Map<String, String> requestParameters = new HashMap<>();
-
-            requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Monday is: Wash");
-            archiveHelper.addGovernanceActionExecutor(step2GUID,
-                                                      "write-to-audit-log",
-                                                      requestParameters,
-                                                      null,
-                                                      null,
-                                                      null,
-                                                      null,
-                                                      governanceEngineGUID);
-
-            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, "monday", false, step2GUID);
-        }
-
-        String step3GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
-                                                                        processGUID,
-                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                                                        OpenMetadataType.ASSET.typeName,
-                                                                        "Egeria:DailyGovernanceActionProcess:TuesdayTask",
-                                                                        "Output Tuesday's task",
-                                                                        null,
-                                                                        0,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        0,
-                                                                        true,
-                                                                        null,
-                                                                        null,
-                                                                        null);
-
-        if (step3GUID != null)
-        {
-            Map<String, String> requestParameters = new HashMap<>();
-
-            requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Tuesday is: Iron");
-            archiveHelper.addGovernanceActionExecutor(step3GUID,
-                                                      "write-to-audit-log",
-                                                      requestParameters,
-                                                      null,
-                                                      null,
-                                                      null,
-                                                      null,
-                                                      governanceEngineGUID);
-
-            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, "tuesday", false, step3GUID);
-        }
-    }
 
 
     /**
@@ -488,14 +621,25 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
         this.addMoveFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
         this.addDeleteFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
 
-        this.addOnboardingGovernanceActionProcess();
 
         String assetDiscoveryEngineGUID = this.getAssetDiscoveryEngine();
 
         String assetQualityEngineGUID = this.getAssetQualityEngine();
         // todo add services when they written
 
+        /*
+         * Define the Clinical Trials engine
+         */
+        GovernanceActionDescription clinicalTrialInitiateDescription           = this.getInitiateCaptureForClinicalTrialGovernanceActionService();
+        GovernanceActionDescription clinicalTrialHospitalOnboardingDescription = this.getHospitalOnboardingClinicalTrialGovernanceActionService();
+
+        String clinicalTrialsEngineName = "ClinicalTrials@CocoPharmaceuticals";
+        String clinicalTrialsEngineGUID = this.getClinicalTrialsEngine(clinicalTrialsEngineName);
+
+        this.addSetUpDataLakeForClinicalTrialRequestType(clinicalTrialsEngineGUID, clinicalTrialsEngineName, clinicalTrialInitiateDescription);
+        this.addOnboardHospitalToClinicalTrialRequestType(clinicalTrialsEngineGUID, clinicalTrialsEngineName, clinicalTrialHospitalOnboardingDescription);
     }
+
 
     /**
      * Generates and writes out an open metadata archive for Coco Pharmaceuticals governance engines.

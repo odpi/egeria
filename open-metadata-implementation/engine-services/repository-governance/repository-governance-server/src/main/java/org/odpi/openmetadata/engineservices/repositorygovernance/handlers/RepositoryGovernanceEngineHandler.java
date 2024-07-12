@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.engineservices.repositorygovernance.handlers;
 
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -42,7 +42,7 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
     public RepositoryGovernanceEngineHandler(EngineConfig                        engineConfig,
                                              String                              serverName,
                                              String                              serverUserId,
-                                             GovernanceEngineConfigurationClient configurationClient,
+                                             GovernanceConfigurationClient configurationClient,
                                              GovernanceContextClient             engineActionClient,
                                              EnterpriseRepositoryServicesClient  repositoryGovernanceEngineClient,
                                              AuditLog                            auditLog,

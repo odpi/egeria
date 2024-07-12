@@ -4,7 +4,7 @@ package org.odpi.openmetadata.engineservices.governanceaction.admin;
 
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineEventClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -46,7 +46,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                            String                              localServerUserId,
                            String                              localServerPassword,
                            int                                 maxPageSize,
-                           GovernanceEngineConfigurationClient configurationClient,
+                           GovernanceConfigurationClient configurationClient,
                            EngineServiceConfig                 engineServiceConfig,
                            GovernanceEngineMap                 governanceEngineMap) throws OMAGConfigurationErrorException
     {

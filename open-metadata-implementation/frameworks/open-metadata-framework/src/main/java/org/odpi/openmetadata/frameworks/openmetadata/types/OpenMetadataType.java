@@ -1679,6 +1679,142 @@ public enum OpenMetadataType
     /* ============================================================================================================================*/
 
     /**
+     * An element that is part of a schema definition.
+     */
+    SCHEMA_ELEMENT("718d4244-8559-49ed-ad5a-10e5c305a656",
+                   "SchemaElement",
+                   OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
+                   "e134ce59-0252-4876-b6cd-196a56713deb",
+                   "An element that is part of a schema definition."),
+
+    /**
+     * A specific type description.
+     */
+    SCHEMA_TYPE("5bd4a3e7-d22d-4a3d-a115-066ee8e0754f",
+                "SchemaType",
+                OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
+                "e1eaec90-41e9-4816-802d-3069663790f5",
+                "A specific type description."),
+
+    /**
+     * A fixed simple value.
+     */
+    LITERAL_SCHEMA_TYPE("520ebb91-c4eb-4d46-a3b1-974875cdcf0d",
+                        "LiteralSchemaType",
+                        OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
+                        "61686e00-ed01-4462-a665-151d20340946",
+                        "A fixed simple value."),
+
+    /**
+     * A single valued data item.
+     */
+    SIMPLE_SCHEMA_TYPE("b5ec6e07-6419-4225-9dc4-fb55aba255c6",
+                       "SimpleSchemaType",
+                       OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
+                       "571cf586-6d31-4b69-ba3f-22f6db250765",
+                       "A single valued data item."),
+
+    /**
+     * A specific primitive type.
+     */
+    PRIMITIVE_SCHEMA_TYPE("f0f75fba-9136-4082-8352-0ad74f3c36ed",
+                          "PrimitiveSchemaType",
+                          OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
+                          "ed8d01c9-d413-4fb1-affd-56d1fa523558",
+                          "A specific primitive type."),
+
+    /**
+     * A single valued type with fixed list of valid values.
+     */
+    ENUM_SCHEMA_TYPE("24b092ac-42e9-43dc-aeca-eb034ce307d9",
+                     "EnumSchemaType",
+                     OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
+                     "794b3c89-a2ab-49ea-b77f-14c491518cfa",
+                     "A single valued type with fixed list of valid values."),
+
+    /**
+     * A list of alternative schema types for attribute.
+     */
+    SCHEMA_TYPE_CHOICE("5caf954a-3e33-4cbd-b17d-8b8613bd2db8",
+                       "SchemaTypeChoice",
+                       OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
+                       "72cfe678-3160-4ed6-9f90-e04ced0aa98f",
+                       "A list of alternative schema types for attribute."),
+
+    /**
+     * The list of alternative schema types.
+     */
+    SCHEMA_TYPE_OPTION_RELATIONSHIP("eb4f1f98-c649-4560-8a46-da17c02764a9",
+                                    "SchemaTypeOption",
+                                    OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
+                                    "e3a332ff-cbf2-4d2b-bb74-cb04b002690d",
+                                    "The list of alternative schema types."),
+
+    /**
+     * The structure of the data stored in a digital resource described by the attached asset.
+     */
+    ASSET_SCHEMA_TYPE_RELATIONSHIP("815b004d-73c6-4728-9dd9-536f4fe803cd",
+                                   "AssetSchemaType",
+                                   OpenMetadataWikiPages.MODEL_0503_ASSET_SCHEMA,
+                                   "ea278feb-8073-49a3-8acf-006124ef0959",
+                                   "The structure of the data stored in a digital resource described by the attached asset."),
+
+    /**
+     * A concrete implementation example for a schema element.
+     */
+    IMPLEMENTATION_SNIPPET("49990755-2faa-4a62-a1f3-9124b9c73df4",
+                           "ImplementationSnippet",
+                           OpenMetadataWikiPages.MODEL_0504_SNIPPETS,
+                           "1c085070-8d26-4488-b973-f46a4c49498d",
+                           "A concrete implementation example for a schema element."),
+
+    /**
+     * Link between an element such as a schema type or data class and an implementation snippet.
+     */
+    ASSOCIATED_SNIPPET_RELATIONSHIP("6f89c320-22aa-4d99-9a97-442e8d214655",
+                                    "AssociatedSnippet",
+                                    OpenMetadataWikiPages.MODEL_0504_SNIPPETS,
+                                    "6e39e1a1-20a2-428c-b823-0c7ee0a9fdd1",
+                                    "Link between an element such as a schema type or data class and an implementation snippet."),
+
+    /**
+     * Link between a schema type and an implementation component.
+     */
+    SCHEMA_TYPE_IMPLEMENTATION_RELATIONSHIP("eed5565d-7ac2-46fe-9a26-4722fad8d993",
+                                            "SchemaTypeImplementation",
+                                            OpenMetadataWikiPages.MODEL_0504_SNIPPETS,
+                                            "29c9224b-9120-4a09-aaf1-a0a9d881f037",
+                                            "Link between a schema type and an implementation component."),
+
+    /**
+     * A schema type that has a complex structure of nested attributes and types.
+     */
+    COMPLEX_SCHEMA_TYPE("786a6199-0ce8-47bf-b006-9ace1c5510e4",
+                        "ComplexSchemaType",
+                        OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
+                        "d4d92678-4b22-410b-8563-5d2b0d107c6b",
+                        "A schema type that has a complex structure of nested attributes and types."),
+
+    /**
+     * A schema type that has a list of attributes, typically of different types.
+     */
+    STRUCT_SCHEMA_TYPE("a13b409f-fd67-4506-8d94-14dfafd250a4",
+                       "StructSchemaType",
+                       OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
+                       "26d86816-e8b0-4a17-9250-fed94f47ea5b",
+                       "A schema type that has a list of attributes, typically of different types."),
+
+
+    /**
+     * Link between a complex schema type and its attributes.
+     */
+    ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP("86b176a2-015c-44a6-8106-54d5d69ba661",
+                                      "AttributeForSchema",
+                                      OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
+                                      "40ed8943-c33f-4d55-912c-4bc0b97cb509",
+                                      "Link between a complex schema type and its attributes."),
+
+    /**
      * A schema element that nests another schema type in its parent.
      */
     SCHEMA_ATTRIBUTE("1a5e159b-913a-43b1-95fe-04433b25fca9",
@@ -1686,6 +1822,34 @@ public enum OpenMetadataType
                      OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
                      "473366bc-c474-439d-b7c8-8a36af5a523b",
                      "A schema element that nests another schema type in its parent."),
+
+    /**
+     * Type information embedded within an attribute.
+     */
+    TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION("e2bb76bb-774a-43ff-9045-3a05f663d5d9",
+                                           "TypeEmbeddedAttribute",
+                                           OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
+                                           "b7daca27-d524-4f04-9c01-788a1306a651",
+                                           "Type information embedded within an attribute."),
+
+
+    /**
+     * The direct parent-child relationship between attributes with an embedded type.
+     */
+    NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP("0ffb9d87-7074-45da-a9b0-ae0859611133",
+                                         "NestedSchemaAttribute",
+                                         OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
+                                         "31b00f9b-a5c8-4408-800a-e7238e663a37",
+                                         "The direct parent-child relationship between attributes with an embedded type."),
+
+    /**
+     * The schema type for an attribute.
+     */
+    SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP("2d955049-e59b-45dd-8e62-cde1add59f9e",
+                                       "SchemaAttributeType",
+                                       OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
+                                       "156e4d0f-301f-4472-a45d-b2b4dfb4a13d",
+                                       "The schema type for an attribute."),
 
     /**
      * The root of a complex schema - normally attaches to an asset or port.
@@ -1696,6 +1860,32 @@ public enum OpenMetadataType
                      "3e788ad5-4cad-4790-8744-0ad6674cb7b4",
                      "The root of a complex schema - normally attaches to an asset or port."),
 
+    /**
+     * A schema type for a table oriented data structure.
+     */
+    TABULAR_SCHEMA_TYPE("248975ec-8019-4b8a-9caf-084c8b724233",
+                        "TabularSchemaType",
+                        OpenMetadataWikiPages.MODEL_0530_TABULAR_SCHEMAS,
+                        "62230df6-9d05-416d-9015-da428e5cd0e1",
+                        "A schema type for a table oriented data structure."),
+
+    /**
+     * A column attribute for a table oriented data structure.
+     */
+    TABULAR_COLUMN("d81a0425-4e9b-4f31-bc1c-e18c3566da10",
+                   "TabularColumn",
+                   OpenMetadataWikiPages.MODEL_0530_TABULAR_SCHEMAS,
+                   "f1eae42e-50ff-44dc-8fd4-4954915fb09c",
+                   "A column attribute for a table oriented data structure."),
+
+    /**
+     * A column in a tabular file.
+     */
+    TABULAR_FILE_COLUMN("af6265e7-5f58-4a9c-9ae7-8d4284be62bd",
+                        "TabularFileColumn",
+                        OpenMetadataWikiPages.MODEL_0530_TABULAR_SCHEMAS,
+                        "ebe8d246-9c59-415b-b920-ea251a02185f",
+                        "A column in a tabular file."),
 
     /**
      * A schema type for a graph data structure.

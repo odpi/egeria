@@ -8,8 +8,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.OpenMetadataConverterBase;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
@@ -48,7 +48,7 @@ public abstract class AssetOwnerConverterBase<B> extends OpenMetadataConverterBa
      */
     public RelatedElement getRelatedElement(Class<B>                beanClass,
                                             OpenMetadataElement     element,
-                                            RelatedMetadataElements relationship,
+                                            OpenMetadataRelationship relationship,
                                             String                  methodName) throws PropertyServerException
     {
         RelatedElement  relatedElement = new RelatedElement();
@@ -69,7 +69,7 @@ public abstract class AssetOwnerConverterBase<B> extends OpenMetadataConverterBa
         }
         else
         {
-            handleMissingMetadataInstance(beanClass.getName(), RelatedMetadataElements.class.getName(), methodName);
+            handleMissingMetadataInstance(beanClass.getName(), OpenMetadataRelationship.class.getName(), methodName);
         }
 
         if (element != null)
@@ -119,7 +119,7 @@ public abstract class AssetOwnerConverterBase<B> extends OpenMetadataConverterBa
         }
         else
         {
-            handleMissingMetadataInstance(beanClass.getName(), RelatedMetadataElements.class.getName(), methodName);
+            handleMissingMetadataInstance(beanClass.getName(), OpenMetadataRelationship.class.getName(), methodName);
         }
 
         return relatedElement;

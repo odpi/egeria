@@ -4,22 +4,18 @@ package org.odpi.openmetadata.frameworkservices.oif.handlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationReport;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationReportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
-import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReport;
-import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties;
 import org.odpi.openmetadata.frameworkservices.oif.builder.IntegrationReportBuilder;
-import org.odpi.openmetadata.frameworkservices.oif.converters.CatalogTargetConverter;
 import org.odpi.openmetadata.frameworkservices.oif.converters.IntegrationReportConverter;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
@@ -34,9 +30,7 @@ import java.util.List;
 public class OpenIntegrationHandler
 {
     private final ReferenceableHandler<IntegrationReport>  integrationReportHandler;
-    private final SoftwareCapabilityHandler<CatalogTarget> integrationGroupHandler;
     private final InvalidParameterHandler                  invalidParameterHandler;
-    private final CatalogTargetConverter<CatalogTarget>    catalogTargetConverter;
 
 
     /**
@@ -68,20 +62,7 @@ public class OpenIntegrationHandler
                                   AuditLog                           auditLog)
     {
         this.invalidParameterHandler = invalidParameterHandler;
-        this.catalogTargetConverter = new CatalogTargetConverter<>(repositoryHelper, serviceName, serverName);
-        this.integrationGroupHandler = new SoftwareCapabilityHandler<>(catalogTargetConverter,
-                                                                       CatalogTarget.class,
-                                                                       serviceName,
-                                                                       serverName,
-                                                                       invalidParameterHandler,
-                                                                       repositoryHandler,
-                                                                       repositoryHelper,
-                                                                       localServerUserId,
-                                                                       securityVerifier,
-                                                                       supportedZones,
-                                                                       defaultZones,
-                                                                       publishZones,
-                                                                       auditLog);
+
 
         this.integrationReportHandler = new ReferenceableHandler<>(new IntegrationReportConverter<>(repositoryHelper, serviceName, serverName),
                                                                    IntegrationReport.class,
@@ -96,65 +77,6 @@ public class OpenIntegrationHandler
                                                                    defaultZones,
                                                                    publishZones,
                                                                    auditLog);
-    }
-
-
-    /**
-     * Retrieve the identifiers of the metadata elements identified as catalog targets with an integration connector.
-     *
-     * @param userId identifier of calling user.
-     * @param integrationConnectorGUID unique identifier of the integration connector.
-     * @param startingFrom initial position in the stored list.
-     * @param maximumResults maximum number of definitions to return on this call.
-     *
-     * @return list of unique identifiers
-     * @throws InvalidParameterException one of the parameters is null or invalid,
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the integration connector definition.
-     */
-    public List<CatalogTarget> getCatalogTargets(String  userId,
-                                                 String  integrationConnectorGUID,
-                                                 int     startingFrom,
-                                                 int     maximumResults) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
-    {
-        final String methodName = "getCatalogTargets";
-        final String integrationConnectorGUIDParameter = "integrationConnectorGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integrationConnectorGUID, integrationConnectorGUIDParameter, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
-
-        List<Relationship> relationships = integrationGroupHandler.getAttachmentLinks(userId,
-                                                                                      integrationConnectorGUID,
-                                                                                      integrationConnectorGUIDParameter,
-                                                                                      OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                                                                      OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
-                                                                                      OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
-                                                                                      null,
-                                                                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                                      2,
-                                                                                      false,
-                                                                                      false,
-                                                                                      startingFrom,
-                                                                                      maximumResults,
-                                                                                      new Date(),
-                                                                                      methodName);
-
-        if (relationships != null)
-        {
-            List<CatalogTarget> results = new ArrayList<>();
-
-            for (Relationship relationship : relationships)
-            {
-                results.add(catalogTargetConverter.getNewBean(CatalogTarget.class, relationship, methodName));
-            }
-
-            return results;
-        }
-
-        return null;
     }
 
 
@@ -211,8 +133,8 @@ public class OpenIntegrationHandler
                                                                             OpenMetadataType.INTEGRATION_REPORT_TYPE_GUID,
                                                                             OpenMetadataType.INTEGRATION_REPORT_TYPE_NAME,
                                                                             integrationReportHandler.getRepositoryHelper(),
-                                                                            integrationGroupHandler.getServiceName(),
-                                                                            integrationGroupHandler.getServerName());
+                                                                            integrationReportHandler.getServiceName(),
+                                                                            integrationReportHandler.getServerName());
 
 
             builder.setAnchors(userId,
@@ -337,7 +259,7 @@ public class OpenIntegrationHandler
                                                                                                   2,
                                                                                                   true,
                                                                                                   true,
-                                                                                                  integrationGroupHandler.getSupportedZones(),
+                                                                                                  integrationReportHandler.getSupportedZones(),
                                                                                                   startingFrom,
                                                                                                   0,
                                                                                                   null,

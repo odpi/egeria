@@ -20,12 +20,12 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClas
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
-import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
-import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetResponse;
-import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetsResponse;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetResponse;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetsResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.automatedcuration.converters.ReferenceableConverter;
 import org.odpi.openmetadata.viewservices.automatedcuration.properties.CatalogTemplate;
@@ -760,7 +760,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
+                GovernanceConfigurationClient handler = instanceHandler.getGovernanceConfigurationClient(userId, serverName, methodName);
 
                 response.setGUID(handler.addCatalogTarget(userId,
                                                           integrationConnectorGUID,
@@ -787,7 +787,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Update a catalog target for an integration connector.
      *
      * @param serverName name of the service to route the request to.
-     * @param relationshipGUID unique identifier of the rleationship.
+     * @param relationshipGUID unique identifier of the relationship.
      * @param requestBody properties for the relationship.
      *
      * @return void or
@@ -816,7 +816,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
+                GovernanceConfigurationClient handler = instanceHandler.getGovernanceConfigurationClient(userId, serverName, methodName);
 
                 handler.updateCatalogTarget(userId, relationshipGUID, requestBody);
             }
@@ -864,7 +864,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
+            GovernanceConfigurationClient handler = instanceHandler.getGovernanceConfigurationClient(userId, serverName, methodName);
 
             response.setElement(handler.getCatalogTarget(userId, relationshipGUID));
         }
@@ -911,7 +911,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
+            GovernanceConfigurationClient handler = instanceHandler.getGovernanceConfigurationClient(userId, serverName, methodName);
 
             response.setElements(handler.getCatalogTargets(userId, integrationConnectorGUID, startFrom, pageSize));
         }
@@ -957,7 +957,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
+            GovernanceConfigurationClient handler = instanceHandler.getGovernanceConfigurationClient(userId, serverName, methodName);
 
             handler.removeCatalogTarget(userId, relationshipGUID);
         }

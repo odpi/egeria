@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ViewServic
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.viewservices.feedbackmanager.ffdc.FeedbackManagerErrorCode;
 import org.odpi.openmetadata.viewservices.feedbackmanager.handler.CollaborationManagerHandler;
 
 import java.util.HashMap;
@@ -76,10 +77,12 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
      *
      * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param methodName calling method
      * @return client
      */
     public CollaborationManagerHandler getCollaborationManagerHandler(String viewServiceURLMarker,
-                                                                      String accessServiceURLMarker) throws InvalidParameterException
+                                                                      String accessServiceURLMarker,
+                                                                      String methodName) throws InvalidParameterException
     {
 
         CollaborationManagerHandler collaborationManagerHandler = null;
@@ -88,32 +91,43 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
         {
             collaborationManagerHandler = collaborationManagerHandlerMap.get(viewServiceURLMarker);
 
-            for (ViewServiceDescription viewServiceDescription : ViewServiceDescription.values())
+            if (collaborationManagerHandler == null)
             {
-                if (viewServiceDescription.getViewServiceURLMarker().equals(viewServiceURLMarker))
+                for (ViewServiceDescription viewServiceDescription : ViewServiceDescription.values())
                 {
-                    String viewServicePartnerService = viewServiceDescription.getViewServicePartnerService();
-
-                    if (viewServicePartnerService != null)
+                    if (viewServiceDescription.getViewServiceURLMarker().equals(viewServiceURLMarker))
                     {
-                        for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
-                        {
-                            if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
-                            {
-                                collaborationManagerHandler = new CollaborationManagerHandler(serverName,
-                                                                                              remoteServerName,
-                                                                                              remoteServerURL,
-                                                                                              auditLog,
-                                                                                              accessServiceDescription.getAccessServiceURLMarker(),
-                                                                                              maxPageSize);
+                        String viewServicePartnerService = viewServiceDescription.getViewServicePartnerService();
 
-                                collaborationManagerHandlerMap.put(accessServiceDescription.getAccessServiceURLMarker(),
-                                                                   collaborationManagerHandler);
-                                collaborationManagerHandlerMap.put(viewServiceURLMarker,
-                                                                   collaborationManagerHandler);
+                        if (viewServicePartnerService != null)
+                        {
+                            for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
+                            {
+                                if (accessServiceDescription.getAccessServiceFullName().equals(viewServicePartnerService))
+                                {
+                                    collaborationManagerHandler = new CollaborationManagerHandler(serverName,
+                                                                                                  remoteServerName,
+                                                                                                  remoteServerURL,
+                                                                                                  auditLog,
+                                                                                                  accessServiceDescription.getAccessServiceURLMarker(),
+                                                                                                  maxPageSize);
+
+                                    collaborationManagerHandlerMap.put(accessServiceDescription.getAccessServiceURLMarker(),
+                                                                       collaborationManagerHandler);
+                                    collaborationManagerHandlerMap.put(viewServiceURLMarker,
+                                                                       collaborationManagerHandler);
+                                }
                             }
                         }
                     }
+                }
+
+                if (collaborationManagerHandler == null)
+                {
+                    throw new InvalidParameterException(FeedbackManagerErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        "viewServiceURLMarker");
                 }
             }
         }
@@ -140,7 +154,14 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
                     }
                 }
             }
+        }
 
+        if (collaborationManagerHandler == null)
+        {
+            throw new InvalidParameterException(FeedbackManagerErrorCode.INVALID_URL_MARKER.getMessageDefinition(accessServiceURLMarker),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                "accessServiceURLMarker");
         }
 
         return collaborationManagerHandler;

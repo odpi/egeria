@@ -114,17 +114,17 @@ public enum PlaceholderProperty
     /**
      * The full pathname of the file including the directory names, file name and file extension.
      */
-    DIRECTORY_PATH_NAME ("directoryPathName", "The full path name of the directory including the parent directory names and optional file system name, if applicable", "string", "/a/b/c"),
+    DIRECTORY_PATH_NAME ("directoryPathName", "The full path name of the directory including the parent directory names and optional file system name, if applicable", "string", "/a/b/myFiles"),
 
     /**
      * The name of the leaf directory, without its enclosing directories.
      */
-    DIRECTORY_NAME("directoryName", "The name of the leaf directory, without its enclosing directories.", "string", "myFolder"),
+    DIRECTORY_NAME("directoryName", "The name of the leaf directory, without its enclosing directories.", "string", "myFiles"),
 
     /**
      * The full pathname of the file including the directory names, file name and file extension.
      */
-    FILE_PATH_NAME ("filePathName", "The full path name of the file including the directory names, file name and optional file extension, if applicable.", "string", "/a/b/c/myFile.txt"),
+    FILE_PATH_NAME ("filePathName", "The full path name of the file including the directory names, file name and optional file extension, if applicable.", "string", "/a/b/myFiles/myFile.txt"),
 
     /**
      * The short name of the file with its extension but without the directory names.
@@ -171,6 +171,13 @@ public enum PlaceholderProperty
                        "Descriptive metadata values embedded within the file.",
                        "map<string, string>",
                        null),
+
+
+    /**
+     * The date/time that the data/resource was received.
+     */
+    RECEIVED_DATE("dateReceived", "The date/time that the data/resource was received.", "string", "2024-07-10T16:11:09"),
+
 
     ;
 

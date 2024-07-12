@@ -415,11 +415,10 @@ public class OpenMetadataTypesArchive2_7
     private TypeDefPatch updateCalculatedValueClassification()
     {
         final String typeName = "CalculatedValue";
-        final String linkedToEntity = "SchemaElement";
 
         final List<TypeDefLink> linkedToEntities = new ArrayList<>();
 
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(linkedToEntity));
+        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ELEMENT.typeName));
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

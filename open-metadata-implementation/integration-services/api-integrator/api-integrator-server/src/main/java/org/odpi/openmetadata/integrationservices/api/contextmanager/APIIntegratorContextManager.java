@@ -82,6 +82,7 @@ public class APIIntegratorContextManager extends IntegrationContextManager
     public void createClients(int maxPageSize) throws InvalidParameterException
     {
         super.openIntegrationClient = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
+        super.governanceConfiguration = new GovernanceConfigurationClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
         super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
 
         if (localServerPassword == null)
@@ -233,6 +234,7 @@ public class APIIntegratorContextManager extends IntegrationContextManager
                                                                               connectorUserId,
                                                                               partnerOMASServerName,
                                                                               openIntegrationClient,
+                                                                              governanceConfiguration,
                                                                               openMetadataStoreClient,
                                                                               apiManagerClient,
                                                                               connectionManagerClient,

@@ -48,14 +48,14 @@ public class FeedbackManagerInstanceHandler extends OMVSServiceInstanceHandler
                                                                       String viewServiceURLMarker,
                                                                       String accessServiceURLMarker,
                                                                       String serviceOperationName) throws InvalidParameterException,
-                                                                                                              PropertyServerException,
-                                                                                                              UserNotAuthorizedException
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException
     {
         FeedbackManagerInstance instance = (FeedbackManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getCollaborationManagerHandler(viewServiceURLMarker, accessServiceURLMarker);
+            return instance.getCollaborationManagerHandler(viewServiceURLMarker, accessServiceURLMarker, serviceOperationName);
         }
 
         return null;

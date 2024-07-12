@@ -43,9 +43,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class AssetProperties extends SupplementaryProperties
 {
-    private String              name                         = null;
-    private String              versionIdentifier            = null;
-    private String              description                  = null;
+    private String name                       = null;
+    private String versionIdentifier          = null;
+    private String description                = null;
+    private String deployedImplementationType = null;
 
 
     /**
@@ -70,6 +71,7 @@ public class AssetProperties extends SupplementaryProperties
             name                         = template.getName();
             versionIdentifier            = template.getVersionIdentifier();
             description                  = template.getDescription();
+            deployedImplementationType   = template.getDeployedImplementationType();
         }
     }
 
@@ -143,6 +145,28 @@ public class AssetProperties extends SupplementaryProperties
 
 
     /**
+     * Retrieve the name of the technology used for this data asset.
+     *
+     * @return string name
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the name of the technology used for this data asset.
+     *
+     * @param deployedImplementationType string name
+     */
+    public void setDeployedImplementationType(String deployedImplementationType)
+    {
+        this.deployedImplementationType = deployedImplementationType;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -151,19 +175,11 @@ public class AssetProperties extends SupplementaryProperties
     public String toString()
     {
         return "AssetProperties{" +
-                       "name='" + name + '\'' +
-                       ", versionIdentifier='" + versionIdentifier + '\'' +
-                       ", description='" + description + '\'' +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", displaySummary='" + getDisplaySummary() + '\'' +
-                       ", displayDescription='" + getDisplayDescription() + '\'' +
-                       ", abbreviation='" + getAbbreviation() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
-                       '}';
+                "name='" + name + '\'' +
+                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", description='" + description + '\'' +
+                ", deployedImplementationType='" + deployedImplementationType + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -182,6 +198,7 @@ public class AssetProperties extends SupplementaryProperties
         AssetProperties that = (AssetProperties) objectToCompare;
         return Objects.equals(name, that.name) &&
                 Objects.equals(versionIdentifier, that.versionIdentifier) &&
+                Objects.equals(description, that.deployedImplementationType) &&
                 Objects.equals(description, that.description);
     }
 
@@ -193,6 +210,6 @@ public class AssetProperties extends SupplementaryProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, versionIdentifier, description);
+        return Objects.hash(super.hashCode(), name, versionIdentifier, description, deployedImplementationType);
     }
 }

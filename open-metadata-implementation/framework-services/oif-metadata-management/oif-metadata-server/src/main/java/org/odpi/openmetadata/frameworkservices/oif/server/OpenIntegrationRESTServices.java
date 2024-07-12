@@ -11,9 +11,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationReportProperties;
 import org.odpi.openmetadata.frameworkservices.oif.handlers.OpenIntegrationHandler;
-import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetsResponse;
 import org.odpi.openmetadata.frameworkservices.oif.rest.IntegrationReportResponse;
 import org.odpi.openmetadata.frameworkservices.oif.rest.IntegrationReportsResponse;
 import org.odpi.openmetadata.frameworkservices.oif.rest.MetadataSourceRequestBody;
@@ -165,53 +164,6 @@ public class OpenIntegrationRESTServices
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Retrieve the identifiers of the metadata elements identified as catalog targets with an integration connector.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId identifier of calling user.
-     * @param integrationConnectorGUID unique identifier of the integration connector.
-     * @param startingFrom initial position in the stored list.
-     * @param maximumResults maximum number of definitions to return on this call.
-     *
-     * @return list of unique identifiers or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem retrieving the integration connector definition.
-     */
-    public CatalogTargetsResponse  getCatalogTargets(String  serverName,
-                                                     String  serviceURLMarker,
-                                                     String  userId,
-                                                     String  integrationConnectorGUID,
-                                                     int     startingFrom,
-                                                     int     maximumResults)
-    {
-        final String methodName = "getCatalogTargets";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        CatalogTargetsResponse response = new CatalogTargetsResponse();
-        AuditLog                             auditLog = null;
-
-        try
-        {
-            OpenIntegrationHandler handler = instanceHandler.getOpenIntegrationHandler(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName,methodName);
-            response.setElements(handler.getCatalogTargets(userId, integrationConnectorGUID, startingFrom, maximumResults));
         }
         catch (Exception error)
         {

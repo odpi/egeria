@@ -43,14 +43,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Asset extends GovernedReferenceable
 {
-    protected String              resourceName          = null;
-    protected String              resourceDescription   = null;
-    protected String              versionIdentifier     = null;
-    protected String              displayName           = null;
-    protected String              displaySummary        = null;
-    protected String              displayDescription    = null;
-    protected String              abbreviation          = null;
-    protected String              usage                 = null;
+    /*
+     * Properties from the asset entity
+     */
+    protected String resourceName               = null;
+    protected String resourceDescription        = null;
+    protected String versionIdentifier          = null;
+    protected String deployedImplementationType = null;
+
+    /*
+     * Supplementary properties stored in a linked glossary term.
+     */
+    protected String displayName                = null;
+    protected String displaySummary             = null;
+    protected String displayDescription         = null;
+    protected String abbreviation               = null;
+    protected String usage                      = null;
 
 
     /**
@@ -72,14 +80,15 @@ public class Asset extends GovernedReferenceable
 
         if (template != null)
         {
-            resourceName           = template.getResourceName();
-            resourceDescription    = template.getResourceDescription();
-            versionIdentifier      = template.getVersionIdentifier();
-            displayName            = template.getDisplayName();
-            displaySummary         = template.getDisplaySummary();
-            displayDescription     = template.getDisplayDescription();
-            abbreviation           = template.getAbbreviation();
-            usage                  = template.getUsage();
+            resourceName               = template.getResourceName();
+            resourceDescription        = template.getResourceDescription();
+            versionIdentifier          = template.getVersionIdentifier();
+            deployedImplementationType = template.getDeployedImplementationType();
+            displayName                = template.getDisplayName();
+            displaySummary             = template.getDisplaySummary();
+            displayDescription         = template.getDisplayDescription();
+            abbreviation               = template.getAbbreviation();
+            usage                      = template.getUsage();
         }
     }
 
@@ -146,6 +155,28 @@ public class Asset extends GovernedReferenceable
     public void setVersionIdentifier(String versionIdentifier)
     {
         this.versionIdentifier = versionIdentifier;
+    }
+
+
+    /**
+     * Retrieve the name of the technology used for this asset.
+     *
+     * @return string name
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the name of the technology used for this asset.
+     *
+     * @param deployedImplementationType string name
+     */
+    public void setDeployedImplementationType(String deployedImplementationType)
+    {
+        this.deployedImplementationType = deployedImplementationType;
     }
 
 
@@ -274,26 +305,16 @@ public class Asset extends GovernedReferenceable
     public String toString()
     {
         return "Asset{" +
-                       "resourceName='" + resourceName + '\'' +
-                       ", resourceDescription='" + resourceDescription + '\'' +
-                       ", versionIdentifier='" + versionIdentifier + '\'' +
-                       ", displayName='" + displayName + '\'' +
-                       ", displaySummary='" + displaySummary + '\'' +
-                       ", displayDescription='" + displayDescription + '\'' +
-                       ", abbreviation='" + abbreviation + '\'' +
-                       ", usage='" + usage + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", status=" + getStatus() +
-                       ", type=" + getType() +
-                       ", versions=" + getVersions() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", meanings=" + getMeanings() +
-                       ", searchKeywords=" + getSearchKeywords() +
-                       ", headerVersion=" + getHeaderVersion() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       '}';
+                "resourceName='" + resourceName + '\'' +
+                ", resourceDescription='" + resourceDescription + '\'' +
+                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", deployedImplementationType='" + deployedImplementationType + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", displaySummary='" + displaySummary + '\'' +
+                ", displayDescription='" + displayDescription + '\'' +
+                ", abbreviation='" + abbreviation + '\'' +
+                ", usage='" + usage + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -321,6 +342,7 @@ public class Asset extends GovernedReferenceable
         return Objects.equals(resourceName, asset.resourceName) &&
                 Objects.equals(resourceDescription, asset.resourceDescription) &&
                 Objects.equals(versionIdentifier, asset.versionIdentifier) &&
+                Objects.equals(deployedImplementationType, asset.deployedImplementationType) &&
                 Objects.equals(displayName, asset.displayName) &&
                 Objects.equals(displaySummary, asset.displaySummary) &&
                 Objects.equals(displayDescription, asset.displayDescription) &&
@@ -338,6 +360,7 @@ public class Asset extends GovernedReferenceable
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), resourceName, resourceDescription, versionIdentifier,
-                            displayName, displaySummary, displayDescription, abbreviation, usage);
+                            deployedImplementationType, displayName, displaySummary, displayDescription,
+                            abbreviation, usage);
     }
 }

@@ -4,18 +4,14 @@
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.FileFolderProperties;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
-import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -24,9 +20,37 @@ import java.util.List;
  */
 public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorIntegrationConnectorBase
 {
-    private static final Logger log = LoggerFactory.getLogger(DataFolderMonitorIntegrationConnector.class);
 
-    private ConnectorCheckedException savedException = null;
+    /**
+     * Creates a monitor for the target.
+     *
+     * @param sourceName source of the pathname
+     * @param pathName pathname to the directory
+     * @param catalogTargetGUID optional catalog target GUID
+     * @param deleteMethod should the connector use delete or archive?
+     * @param templates names and GUIDs of templates
+     * @param configurationProperties parameters to further modify the behaviour of the connector.
+     * @return directory to monitor structure
+     */
+    public DirectoryToMonitor createDirectoryToMonitor(String              sourceName,
+                                                       String              pathName,
+                                                       String              catalogTargetGUID,
+                                                       DeleteMethod        deleteMethod,
+                                                       Map<String,String>  templates,
+                                                       Map<String, Object> configurationProperties) throws ConnectorCheckedException
+    {
+        return new DataFolderMonitorForTarget(connectorName,
+                                              sourceName,
+                                              pathName,
+                                              catalogTargetGUID,
+                                              deleteMethod,
+                                              templates,
+                                              configurationProperties,
+                                              this,
+                                              this.getFolderElement(new File(pathName)),
+                                              auditLog);
+    }
+
 
     /**
      * Retrieve the Folder element from the open metadata repositories.
@@ -54,302 +78,14 @@ public class DataFolderMonitorIntegrationConnector extends BasicFilesMonitorInte
     @Override
     public void refresh() throws ConnectorCheckedException
     {
-        /*
-         * Throw an error if the cataloguing failed
-         */
-        if (savedException != null)
-        {
-            throw savedException;
-        }
-    }
-
-
-    /**
-     * Indicate that the data folder has changed.
-     *
-     * @param fileChanged the file in the directory that changed
-     * @param modifiedTime the time that the asset was last updated
-     * @param methodName calling method
-     */
-    private void updateDataFolder(File   fileChanged,
-                                  Date   modifiedTime,
-                                  String methodName) throws ConnectorCheckedException
-    {
         List<DirectoryToMonitor> directoriesToMonitor = super.getDirectoriesToMonitor();
 
         for (DirectoryToMonitor directoryToMonitor : directoriesToMonitor)
         {
-            if (super.isActive())
-            {
-                try
-                {
-                    if (fileChanged.getAbsolutePath().startsWith(directoryToMonitor.directoryFile.getAbsolutePath()))
-                    {
-                        /*
-                         * The directory matches this directory.
-                         */
-                        if (directoryToMonitor.dataFolderElement == null)
-                        {
-                            directoryToMonitor.dataFolderElement = this.getFolderElement(directoryToMonitor.directoryFile);
-                        }
-
-                        if (directoryToMonitor.dataFolderElement != null)
-                        {
-                            Date lastRecordedChange = directoryToMonitor.dataFolderElement.getFileFolderProperties().getModifiedTime();
-
-                            if ((lastRecordedChange == null) || (lastRecordedChange.before(new Date(directoryToMonitor.directoryFile.lastModified()))))
-                            {
-                                FileFolderProperties properties = new FileFolderProperties();
-
-                                properties.setModifiedTime(modifiedTime);
-                                this.getContext().updateDataFolderInCatalog(directoryToMonitor.dataFolderElement.getElementHeader().getGUID(), true,
-                                                                            properties);
-
-                                if (auditLog != null)
-                                {
-                                    auditLog.logMessage(methodName,
-                                                        BasicFilesIntegrationConnectorsAuditCode.DATA_FOLDER_UPDATED_FOR_FILE.getMessageDefinition(
-                                                                connectorName,
-                                                                directoryToMonitor.directoryFile.getAbsolutePath(),
-                                                                modifiedTime.toString(),
-                                                                fileChanged.getAbsolutePath()));
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception error)
-                {
-                    if (auditLog != null)
-                    {
-                        String folderGUID = null;
-
-                        if (directoryToMonitor.dataFolderElement != null)
-                        {
-                            folderGUID = directoryToMonitor.dataFolderElement.getElementHeader().getGUID();
-                        }
-
-                        auditLog.logException(methodName,
-                                              BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_FOLDER_UPDATE.getMessageDefinition(
-                                                      error.getClass().getName(),
-                                                      connectorName,
-                                                      folderGUID,
-                                                      directoryToMonitor.directoryFile.getAbsolutePath(),
-                                                      error.getMessage()),
-                                              error);
-
-                    }
-                }
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
-
-
-    /**
-     * File created Event.
-     *
-     * @param file The file that was created
-     */
-    @Override
-    public void onFileCreate(File file)
-    {
-        final String methodName = "onFileCreate";
-
-        log.debug("File created: " + file.getName());
-
-        try
-        {
-            this.updateDataFolder(file, new Date(), methodName);
-        }
-        catch (ConnectorCheckedException error)
-        {
-            savedException = error;
-        }
-        catch (Exception error)
-        {
-            savedException = new ConnectorCheckedException(BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                                              error.getClass().getName(),
-                                                                                                                                              file.getAbsolutePath(),
-                                                                                                                                              methodName,
-                                                                                                                                              error.getMessage()),
-                                                           this.getClass().getName(),
-                                                           methodName,
-                                                           error);
-        }
-    }
-
-
-    /**
-     * File deleted Event.
-     *
-     * @param file The file that was deleted
-     */
-    @Override
-    public void onFileDelete(File file)
-    {
-        final String methodName = "onFileDelete";
-
-        log.debug("File deleted: " + file.getName());
-
-        try
-        {
-            this.updateDataFolder(file, new Date(), methodName);
-        }
-        catch (ConnectorCheckedException error)
-        {
-            savedException = error;
-        }
-        catch (Exception error)
-        {
-            savedException = new ConnectorCheckedException(BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                                              error.getClass().getName(),
-                                                                                                                                              file.getAbsolutePath(),
-                                                                                                                                              methodName,
-                                                                                                                                              error.getMessage()),
-                                                           this.getClass().getName(),
-                                                           methodName,
-                                                           error);
-        }
-    }
-
-
-    /**
-     * File changed Event.
-     *
-     * @param file The file that changed
-     */
-    @Override
-    public void onFileChange(File file)
-    {
-        final String methodName = "onFileChange";
-
-        log.debug("File changed: " + file.getName());
-
-        try
-        {
-            this.updateDataFolder(file, new Date(), methodName);
-        }
-        catch (ConnectorCheckedException error)
-        {
-            savedException = error;
-        }
-        catch (Exception error)
-        {
-            savedException = new ConnectorCheckedException(BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                                              error.getClass().getName(),
-                                                                                                                                              file.getAbsolutePath(),
-                                                                                                                                              methodName,
-                                                                                                                                              error.getMessage()),
-                                                           this.getClass().getName(),
-                                                           methodName,
-                                                           error);
-        }
-    }
-
-
-    /**
-     * Directory created Event.
-     *
-     * @param directory The directory that was created
-     */
-    @Override
-    public void onDirectoryCreate(File directory)
-    {
-        final String methodName = "onDirectoryCreate";
-
-        log.debug("Folder created: " + directory.getName());
-
-        try
-        {
-            this.updateDataFolder(directory, new Date(), methodName);
-        }
-        catch (ConnectorCheckedException error)
-        {
-            savedException = error;
-        }
-        catch (Exception error)
-        {
-            savedException = new ConnectorCheckedException(BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                                              error.getClass().getName(),
-                                                                                                                                              directory.getAbsolutePath(),
-                                                                                                                                              methodName,
-                                                                                                                                              error.getMessage()),
-                                                           this.getClass().getName(),
-                                                           methodName,
-                                                           error);
-        }
-    }
-
-
-    /**
-     * Directory deleted Event.
-     *
-     * @param directory The directory that was deleted
-     */
-    @Override
-    public void onDirectoryDelete(File directory)
-    {
-        final String methodName = "onDirectoryDelete";
-
-        log.debug("Folder deleted: " + directory.getName());
-
-        try
-        {
-            this.updateDataFolder(directory, new Date(), methodName);
-        }
-        catch (ConnectorCheckedException error)
-        {
-            savedException = error;
-        }
-        catch (Exception error)
-        {
-            savedException = new ConnectorCheckedException(BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                                              error.getClass().getName(),
-                                                                                                                                              directory.getAbsolutePath(),
-                                                                                                                                              methodName,
-                                                                                                                                              error.getMessage()),
-                                                           this.getClass().getName(),
-                                                           methodName,
-                                                           error);
-        }
-    }
-
-
-    /**
-     * Directory changed Event.
-     *
-     * @param directory The directory that changed
-     */
-    @Override
-    public void onDirectoryChange(final File directory)
-    {
-        final String methodName = "onDirectoryChange";
-
-        log.debug("Folder changed: " + directory.getName());
-
-
-        try
-        {
-            this.updateDataFolder(directory, new Date(), methodName);
-        }
-        catch (ConnectorCheckedException error)
-        {
-            savedException = error;
-        }
-        catch (Exception error)
-        {
-            savedException = new ConnectorCheckedException(BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                                              error.getClass().getName(),
-                                                                                                                                              directory.getAbsolutePath(),
-                                                                                                                                              methodName,
-                                                                                                                                              error.getMessage()),
-                                                           this.getClass().getName(),
-                                                           methodName,
-                                                           error);
+            /*
+             * Sweep one - cataloguing all files
+             */
+            directoryToMonitor.refresh();
         }
     }
 }

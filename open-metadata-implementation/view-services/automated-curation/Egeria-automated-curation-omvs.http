@@ -505,7 +505,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "filter" : "Egeria:GovernanceActionType:AssetSurvey:survey-kafka-server"
+   "filter" : "AssetSurvey:survey-kafka-server"
 }
 
 ###
@@ -669,7 +669,7 @@ Content-Type: application/json
 
 {
   "class" : "InitiateGovernanceActionTypeRequestBody",
-  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:AssetSurvey:survey-folder",
+  "governanceActionTypeQualifiedName": "AssetSurvey:survey-folder",
   "actionTargets": [
     {
       "class" : "NewActionTarget",
@@ -687,7 +687,7 @@ Content-Type: application/json
 
 {
   "class" : "InitiateGovernanceActionTypeRequestBody",
-  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:AssetSurvey:survey-kafka-server",
+  "governanceActionTypeQualifiedName": "AssetSurvey:survey-kafka-server",
   "actionTargets": [
     {
       "class" : "NewActionTarget",
@@ -705,7 +705,7 @@ Content-Type: application/json
 
 {
   "class" : "InitiateGovernanceActionTypeRequestBody",
-  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:AssetSurvey:survey-postgres-server",
+  "governanceActionTypeQualifiedName": "AssetSurvey:survey-postgres-server",
   "actionTargets": [
     {
       "class" : "NewActionTarget",
@@ -723,7 +723,7 @@ Content-Type: application/json
 
 {
   "class" : "InitiateGovernanceActionTypeRequestBody",
-  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:AssetSurvey:survey-postgres-database",
+  "governanceActionTypeQualifiedName": "AssetSurvey:survey-postgres-database",
   "actionTargets": [
     {
       "class" : "NewActionTarget",
@@ -736,7 +736,7 @@ Content-Type: application/json
 # Full request body for initiateGovernanceActionType
 #{
 #    "class" : "InitiateGovernanceActionTypeRequestBody",
-#    "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:AssetSurvey:survey-folder",
+#    "governanceActionTypeQualifiedName": "AssetSurvey:survey-folder",
 #    "requestParameters": {
 #        "parameterName1" : "parameterValue1",
 #        "parameterName2" : "parameterValue2"

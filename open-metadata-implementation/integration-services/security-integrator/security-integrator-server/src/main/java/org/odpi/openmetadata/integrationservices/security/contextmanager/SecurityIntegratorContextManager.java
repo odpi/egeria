@@ -79,6 +79,7 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
     {
         super.openIntegrationClient = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
         super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
+        super.governanceConfiguration = new GovernanceConfigurationClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
 
         SecurityManagerRESTClient restClient;
 
@@ -220,6 +221,7 @@ public class SecurityIntegratorContextManager extends IntegrationContextManager
                                                                                         connectorUserId,
                                                                                         partnerOMASServerName,
                                                                                         openIntegrationClient,
+                                                                                        governanceConfiguration,
                                                                                         openMetadataStoreClient,
                                                                                         securityManagerClient,
                                                                                         eventClient,

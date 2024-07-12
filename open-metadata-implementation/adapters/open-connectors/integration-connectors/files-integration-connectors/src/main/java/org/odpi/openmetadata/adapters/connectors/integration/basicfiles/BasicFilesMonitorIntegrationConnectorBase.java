@@ -4,7 +4,9 @@
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
 import org.apache.commons.io.FileUtils;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DataFileElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.ArchiveProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.FileFolderProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsErrorCode;
@@ -13,14 +15,15 @@ import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exc
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface;
-import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorConnector;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -30,52 +33,9 @@ import static org.odpi.openmetadata.adapters.connectors.integration.basicfiles.B
 /**
  * BasicFilesMonitorIntegrationConnectorBase provides common methods for the connectors in this module.
  */
-public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesIntegratorConnector implements FileDirectoryListenerInterface
+public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesIntegratorConnector
 {
-    String  fileTemplateQualifiedName           = null;
-    String  directoryTemplateQualifiedName      = null;
-    String  toDoTemplateQualifiedName           = null;
-    String  incidentReportTemplateQualifiedName = null;
-    boolean allowCatalogDelete                  = false;
-    boolean waitForDirectory                    = false;
-    boolean catalogClassifiedFiles              = true;
 
-    /**
-     * Directory to monitor caches information about a specific directory that is at the root of the monitoring.
-     */
-    static class DirectoryToMonitor
-    {
-        /**
-         * Where did information about this directory come from?
-         */
-        String            sourceName        = null;
-
-        /**
-         * What is the short name for this directory?
-         */
-        String            directoryName     = null;
-
-        /**
-         * This is the folder element describing this directory from the open metadata ecosystem.
-         */
-        FileFolderElement dataFolderElement = null;
-
-        /**
-         * This is the Java File object that is accessing the directory.
-         */
-        File              directoryFile     = null;
-
-        /**
-         * This boolean indicates that the connector is registered to listen for changes in the directory.
-         */
-        boolean           isListening       = false;
-
-        /**
-         * This is the unique identifier of the CatalogTarget relationship that this directory matches.
-         * Null means the value was supplied in the endpoint.
-         */
-        String            catalogTargetGUID = null;
-    }
 
     /**
      * Maintains a list of directories that are the root of the monitoring.
@@ -94,53 +54,6 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
     {
         super.start();
 
-        final String methodName = "start";
-
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
-
-        if (configurationProperties != null)
-        {
-            if (configurationProperties.containsKey(BasicFilesMonitorIntegrationProviderBase.ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY))
-            {
-                allowCatalogDelete = true;
-            }
-
-            if (configurationProperties.containsKey(BasicFilesMonitorIntegrationProviderBase.CATALOG_ALL_FILES_CONFIGURATION_PROPERTY))
-            {
-                catalogClassifiedFiles = false;
-            }
-
-            if (configurationProperties.containsKey(BasicFilesMonitorIntegrationProviderBase.WAIT_FOR_DIRECTORY_CONFIGURATION_PROPERTY))
-            {
-                waitForDirectory = true;
-            }
-
-            if (configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.FILE_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY) != null)
-            {
-                fileTemplateQualifiedName = configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.FILE_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
-            }
-
-            if (configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.DIRECTORY_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY) != null)
-            {
-                directoryTemplateQualifiedName = configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.DIRECTORY_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
-            }
-
-            if (configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.TO_DO_TEMPLATE_CONFIGURATION_PROPERTY) != null)
-            {
-                directoryTemplateQualifiedName = configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.TO_DO_TEMPLATE_CONFIGURATION_PROPERTY).toString();
-            }
-
-            if (configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.INCIDENT_REPORT_TEMPLATE_CONFIGURATION_PROPERTY) != null)
-            {
-                directoryTemplateQualifiedName = configurationProperties.get(BasicFilesMonitorIntegrationProviderBase.INCIDENT_REPORT_TEMPLATE_CONFIGURATION_PROPERTY).toString();
-            }
-        }
-
-        /*
-         * Used for the message logging.
-         */
-        String endpointNetworkAddress = null;
-
         /*
          * The first possible catalog target is the endpoint from the connection.  It may be null.
          */
@@ -148,25 +61,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
 
         if (endpoint != null)
         {
-            endpointNetworkAddress = endpoint.getAddress();
-
-            monitorEndpoint();
-        }
-
-        /*
-         * Record the configuration
-         */
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                BasicFilesIntegrationConnectorsAuditCode.CONNECTOR_CONFIGURATION.getMessageDefinition(connectorName,
-                                                                                                                      endpointNetworkAddress,
-                                                                                                                      Boolean.toString(allowCatalogDelete),
-                                                                                                                      Boolean.toString(waitForDirectory),
-                                                                                                                      fileTemplateQualifiedName,
-                                                                                                                      directoryTemplateQualifiedName,
-                                                                                                                      toDoTemplateQualifiedName,
-                                                                                                                      incidentReportTemplateQualifiedName));
+            monitorEndpoint(connectionProperties.getConfigurationProperties());
         }
     }
 
@@ -174,9 +69,10 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
     /**
      * Add fixed endpoint to monitoring list
      *
+     * @param configurationProperties configuration properties from the connector's connection
      * @throws ConnectorCheckedException connector problem
      */
-    private void monitorEndpoint() throws ConnectorCheckedException
+    private void monitorEndpoint(Map<String, Object> configurationProperties) throws ConnectorCheckedException
     {
         /*
          * The first possible catalog target is the endpoint from the connection.  It may be null.
@@ -200,11 +96,34 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
 
             DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.ENDPOINT.typeName + ":" + OpenMetadataProperty.NETWORK_ADDRESS.name,
                                                                             endpoint.getAddress(),
-                                                                            null);
+                                                                            null,
+                                                                            null,
+                                                                            null,
+                                                                            configurationProperties);
 
             directoriesToMonitor.add(directoryToMonitor);
         }
     }
+
+
+    /**
+     * Creates a monitor for the target.
+     *
+     * @param sourceName source of the pathname
+     * @param pathName pathname to the directory
+     * @param catalogTargetGUID optional catalog target GUID
+     * @param deleteMethod should the connector use delete or archive?
+     * @param templates names and GUIDs of templates
+     * @param configurationProperties parameters to further modify the behaviour of the connector.
+     * @return directory to monitor structure
+     * @throws ConnectorCheckedException connector problem
+     */
+    protected abstract DirectoryToMonitor createDirectoryToMonitor(String              sourceName,
+                                                                   String              pathName,
+                                                                   String              catalogTargetGUID,
+                                                                   DeleteMethod        deleteMethod,
+                                                                   Map<String,String>  templates,
+                                                                   Map<String, Object> configurationProperties) throws ConnectorCheckedException;
 
 
     /**
@@ -213,22 +132,29 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
      * @param sourceName source of the pathname
      * @param pathName pathname to the directory
      * @param catalogTargetGUID optional catalog target GUID
+     * @param deleteMethod should the connector use delete or archive?
+     * @param templates names and GUIDs of templates
+     * @param configurationProperties parameters to further modify the behaviour of the connector.
      * @return directory to monitor structure
      * @throws ConnectorCheckedException problem with the path name
      */
-    private DirectoryToMonitor checkDirectoryToMonitor(String sourceName,
-                                                       String pathName,
-                                                       String catalogTargetGUID) throws ConnectorCheckedException
+    private DirectoryToMonitor checkDirectoryToMonitor(String              sourceName,
+                                                       String              pathName,
+                                                       String              catalogTargetGUID,
+                                                       DeleteMethod        deleteMethod,
+                                                       Map<String,String>  templates,
+                                                       Map<String, Object> configurationProperties) throws ConnectorCheckedException
     {
         final String methodName = "checkDirectoryToMonitor";
 
-        DirectoryToMonitor directoryToMonitor = new DirectoryToMonitor();
+        DirectoryToMonitor directoryToMonitor = createDirectoryToMonitor(sourceName,
+                                                                         pathName,
+                                                                         catalogTargetGUID,
+                                                                         deleteMethod,
+                                                                         templates,
+                                                                         configurationProperties);
 
-        directoryToMonitor.sourceName = sourceName;
-        directoryToMonitor.directoryName = pathName;
-        directoryToMonitor.directoryFile = new File(pathName);
-        directoryToMonitor.dataFolderElement = this.getFolderElement(directoryToMonitor.directoryFile);
-        directoryToMonitor.catalogTargetGUID = catalogTargetGUID;
+
 
         try
         {
@@ -261,7 +187,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
         }
         catch (IllegalArgumentException notFound)
         {
-            if (! waitForDirectory)
+            if (! directoryToMonitor.waitForDirectory)
             {
                 this.throwConfigException(BasicFilesIntegrationConnectorsErrorCode.FILES_LOCATION_NOT_DIRECTORY,
                                           directoryToMonitor.sourceName,
@@ -333,7 +259,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
 
                     if (! directoryToMonitor.isListening)
                     {
-                        this.getContext().registerDirectoryTreeListener(this, directoryToMonitor.directoryFile, null);
+                        this.getContext().registerDirectoryTreeListener(directoryToMonitor, directoryToMonitor.directoryFile, null);
                         directoryToMonitor.isListening = true;
                     }
                 }
@@ -429,7 +355,10 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                 {
                     DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME + ":" + catalogTarget.getRelationshipGUID(),
                                                                                     fileFolderElement.getFileFolderProperties().getPathName(),
-                                                                                    catalogTarget.getRelationshipGUID());
+                                                                                    catalogTarget.getRelationshipGUID(),
+                                                                                    catalogTarget.getDeleteMethod(),
+                                                                                    catalogTarget.getTemplateProperties(),
+                                                                                    catalogTarget.getConfigurationProperties());
 
                     directoriesToMonitor.add(directoryToMonitor);
                 }
@@ -605,6 +534,96 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
         }
 
         return null;
+    }
+
+
+    /**
+     * The file no longer exists so this method updates the metadata catalog. This may be a call to delete() or an archive action
+     * depending on the setting of the allowCatalogDelete configuration property.
+     *
+     * @param file Java file access object
+     * @param retrievedElement catalogued element
+     * @param methodName calling method
+     */
+    public void archiveFileInCatalog(File            file,
+                                     DataFileElement retrievedElement,
+                                     boolean         allowCatalogDelete,
+                                     String          methodName)
+    {
+        if (this.isActive())
+        {
+            try
+            {
+                DataFileElement cataloguedElement = retrievedElement;
+
+                if (cataloguedElement == null)
+                {
+                    cataloguedElement = this.getContext().getFileByPathName(file.getAbsolutePath());
+                }
+
+                if (cataloguedElement == null)
+                {
+                    return;
+                }
+
+                if ((cataloguedElement.getElementHeader() != null) && (cataloguedElement.getElementHeader().getGUID() != null) &&
+                        (cataloguedElement.getDataFileProperties() != null) && (cataloguedElement.getDataFileProperties().getPathName() != null))
+                {
+                    if (allowCatalogDelete)
+                    {
+                        this.getContext().deleteDataFileFromCatalog(cataloguedElement.getElementHeader().getGUID(),
+                                                                                    cataloguedElement.getDataFileProperties().getPathName());
+
+                        if (auditLog != null)
+                        {
+                            auditLog.logMessage(methodName,
+                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_DELETED.getMessageDefinition(connectorName,
+                                                                                                                                cataloguedElement.getDataFileProperties().getPathName(),
+                                                                                                                                cataloguedElement.getElementHeader().getGUID()));
+                        }
+                    }
+                    else
+                    {
+                        ArchiveProperties archiveProperties = new ArchiveProperties();
+
+                        archiveProperties.setArchiveDate(new Date());
+                        archiveProperties.setArchiveProcess(connectorName);
+
+                        this.getContext().archiveDataFileInCatalog(cataloguedElement.getElementHeader().getGUID(), archiveProperties);
+
+                        if (auditLog != null)
+                        {
+                            auditLog.logMessage(methodName,
+                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_ARCHIVED.getMessageDefinition(connectorName,
+                                                                                                                                 cataloguedElement.getDataFileProperties().getPathName(),
+                                                                                                                                 cataloguedElement.getElementHeader().getGUID()));
+                        }
+                    }
+                }
+                else
+                {
+                    if (auditLog != null)
+                    {
+                        auditLog.logMessage(methodName,
+                                            BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(connectorName,
+                                                                                                                           cataloguedElement.toString()));
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logException(methodName,
+                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
+                                                  error.getClass().getName(),
+                                                  connectorName,
+                                                  file.getAbsolutePath(),
+                                                  error.getMessage()),
+                                          error);
+                }
+            }
+        }
     }
 
 

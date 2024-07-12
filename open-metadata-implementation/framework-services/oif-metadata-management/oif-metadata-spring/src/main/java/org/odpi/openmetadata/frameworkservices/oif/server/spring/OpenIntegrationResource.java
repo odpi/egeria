@@ -8,8 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties;
-import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetsResponse;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationReportProperties;
 import org.odpi.openmetadata.frameworkservices.oif.rest.IntegrationReportResponse;
 import org.odpi.openmetadata.frameworkservices.oif.rest.IntegrationReportsResponse;
 import org.odpi.openmetadata.frameworkservices.oif.rest.MetadataSourceRequestBody;
@@ -90,39 +89,6 @@ public class OpenIntegrationResource
                                              @RequestBody  MetadataSourceRequestBody requestBody)
     {
         return restAPI.createMetadataSource(serverName, serviceURLMarker, userId, requestBody);
-    }
-
-
-    /**
-     * Retrieve the identifiers of the metadata elements identified as catalog targets with an integration connector.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId identifier of calling user.
-     * @param integrationConnectorGUID unique identifier of the integration connector.
-     * @param startingFrom initial position in the stored list.
-     * @param maximumResults maximum number of definitions to return on this call.
-     *
-     * @return list of unique identifiers or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem storing the integration connector definition.
-     */
-    @GetMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets")
-
-    @Operation(summary="getCatalogTargets",
-            description="Retrieve the identifiers of the metadata elements identified as catalog targets with an integration connector.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/catalog-target/"))
-
-    public CatalogTargetsResponse  getCatalogTargets(@PathVariable String  serverName,
-                                                     @PathVariable String  serviceURLMarker,
-                                                     @PathVariable String  userId,
-                                                     @PathVariable String  integrationConnectorGUID,
-                                                     @RequestParam int     startingFrom,
-                                                     @RequestParam int     maximumResults)
-    {
-        return restAPI.getCatalogTargets(serverName, serviceURLMarker, userId, integrationConnectorGUID, startingFrom, maximumResults);
     }
 
 

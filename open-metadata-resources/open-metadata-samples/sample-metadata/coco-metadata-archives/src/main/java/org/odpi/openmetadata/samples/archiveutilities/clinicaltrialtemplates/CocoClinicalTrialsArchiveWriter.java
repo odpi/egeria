@@ -6,6 +6,8 @@ package org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.archiveutilities.openconnectors.CoreContentArchiveWriter;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileType;
@@ -17,6 +19,7 @@ import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGove
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.LicenseTypeDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.ProjectDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
+import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialPlaceholderProperty;
 
 import java.util.*;
 
@@ -148,12 +151,15 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
     }
 
 
+    /**
+     * Return the GUID of the template.
+     */
     private void writeLandingAreaWeeklyMeasurementsTemplate()
     {
         final String methodName = "writeLandingAreaWeeklyMeasurementsTemplate";
         Map<String, Object>  extendedProperties = new HashMap<>();
 
-        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.PATH_NAME.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, PlaceholderProperty.FILE_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FileType.CSV_FILE.getDeployedImplementationType().getDeployedImplementationType());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, FileType.CSV_FILE.getFileTypeName());
@@ -166,14 +172,14 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
         List<String> zones = new ArrayList<>();
         zones.add(CocoGovernanceZoneDefinition.LANDING_AREA.getZoneName());
         zones.add(CocoGovernanceZoneDefinition.QUARANTINE.getZoneName());
-        zones.add(PlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder());
+        zones.add(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder());
         classifications.add(archiveHelper.getAssetZoneMembershipClassification(zones));
 
         Map<String, String> otherOriginValues = new HashMap<>();
-        otherOriginValues.put("contact", PlaceholderProperty.CONTACT_NAME.getPlaceholder());
-        otherOriginValues.put("dept", PlaceholderProperty.CONTACT_DEPT.getPlaceholder());
+        otherOriginValues.put("contact", CocoClinicalTrialPlaceholderProperty.CONTACT_NAME.getPlaceholder());
+        otherOriginValues.put("dept", CocoClinicalTrialPlaceholderProperty.CONTACT_DEPT.getPlaceholder());
 
-        classifications.add(archiveHelper.getAssetOriginClassification(PlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
+        classifications.add(archiveHelper.getAssetOriginClassification(CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
                                                                        OpenMetadataProperty.NAME.name,
                                                                        null,
                                                                        null,
@@ -187,13 +193,11 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                                                     null,
                                                                     methodName));
 
-        String qualifiedName = "CSVFile:LandingArea:ClinicalTrial:" + PlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + ":WeeklyMeasurement:" + PlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + ":"+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() +":"+ PlaceholderProperty.PATH_NAME.getPlaceholder();
-
-
+        String qualifiedName = "CSVFile:LandingArea:ClinicalTrial:" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + ":WeeklyMeasurement:" + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + ":"+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() +":"+ PlaceholderProperty.FILE_PATH_NAME.getPlaceholder();
 
         String assetGUID = archiveHelper.addAsset(FileType.CSV_FILE.getAssetSubTypeName(),
                                                   qualifiedName,
-                                                  PlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " teddy bear measurements received on "+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() +" for "+ PlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
+                                                  CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " teddy bear measurements received on "+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() +" for "+ CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
                                                   "V1.0",
                                                   "Dated measurements of patient's progression presented in a tabular format with columns of PatientId, Date, AngleLeft and AngleRight.",
                                                   this.getAssetAdditionalProperties(),
@@ -206,7 +210,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                                         qualifiedName + "_endpoint",
                                                         null,
                                                         null,
-                                                        PlaceholderProperty.PATH_NAME.getPlaceholder(),
+                                                        PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
                                                         null,
                                                         null);
 
@@ -233,11 +237,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                FileType.CSV_FILE.getAssetSubTypeName(),
                                                OpenMetadataType.ASSET.typeName,
-                                               PlaceholderProperty.getPlaceholderPropertyTypes());
-
-        String deployedImplementationTypeGUID = archiveHelper.getGUID(FileType.CSV_FILE.getDeployedImplementationType().getQualifiedName());
-
-        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+                                               CocoClinicalTrialPlaceholderProperty.getPlaceholderPropertyTypes());
 
         String licenseTypeGUID = archiveHelper.getGUID(LicenseTypeDefinition.CLINICAL_TRIAL_LICENSE.getQualifiedName());
 
@@ -249,11 +249,11 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
         Map<String, String> obligations = new HashMap<>();
         obligations.put("retention", "20 years");
         archiveHelper.addLicense(assetGUID,
-                                 "ClinicalTrial:" + PlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + ":WeeklyMeasurement:" + PlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
+                                 "ClinicalTrial:" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + ":WeeklyMeasurement:" + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
                                  null,
                                  null,
                                  null,
-                                 PlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
+                                 CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
                                  "Organization",
                                  "name",
                                  "tanyatidie",
@@ -358,7 +358,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
 
         Map<String, String> additionalProperties = new HashMap<>();
 
-        for (PlaceholderProperty placeholderProperty : PlaceholderProperty.values())
+        for (CocoClinicalTrialPlaceholderProperty placeholderProperty : CocoClinicalTrialPlaceholderProperty.values())
         {
             additionalProperties.put(placeholderProperty.getName(), placeholderProperty.getPlaceholder());
         }
@@ -371,7 +371,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
         final String methodName = "writeDataLakeWeeklyMeasurementsTemplate";
         Map<String, Object>  extendedProperties = new HashMap<>();
 
-        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.PATH_NAME.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, PlaceholderProperty.FILE_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FileType.CSV_FILE.getDeployedImplementationType().getDeployedImplementationType());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, FileType.CSV_FILE.getFileTypeName());
@@ -393,11 +393,11 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                                                     null,
                                                                     methodName));
 
-        String qualifiedName = "CSVFile:DataLake:ClinicalTrial:" + PlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + ":WeeklyMeasurement:" + PlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + ":"+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() +":"+ PlaceholderProperty.PATH_NAME.getPlaceholder();
+        String qualifiedName = "CSVFile:DataLake:ClinicalTrial:" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + ":WeeklyMeasurement:" + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + ":" + PlaceholderProperty.RECEIVED_DATE.getPlaceholder() + ":" +PlaceholderProperty.FILE_PATH_NAME.getPlaceholder();
 
         String assetGUID = archiveHelper.addAsset(FileType.CSV_FILE.getAssetSubTypeName(),
                                                   qualifiedName,
-                                                  PlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " teddy bear measurements received on "+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() +" for "+ PlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
+                                                  CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " teddy bear measurements received on " + PlaceholderProperty.RECEIVED_DATE.getPlaceholder() +" for "+ CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
                                                   "V1.0",
                                                   "Dated measurements of patient's progression presented in a tabular format with columns of PatientId, Date, AngleLeft and AngleRight.",
                                                   this.getAssetAdditionalProperties(),
@@ -410,7 +410,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                                         qualifiedName + "_endpoint",
                                                         null,
                                                         null,
-                                                        PlaceholderProperty.PATH_NAME.getPlaceholder(),
+                                                        PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
                                                         null,
                                                         null);
 
@@ -437,11 +437,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                FileType.CSV_FILE.getAssetSubTypeName(),
                                                OpenMetadataType.ASSET.typeName,
-                                               PlaceholderProperty.getPlaceholderPropertyTypes());
-
-        String deployedImplementationTypeGUID = archiveHelper.getGUID(FileType.CSV_FILE.getDeployedImplementationType().getQualifiedName());
-
-        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+                                               CocoClinicalTrialPlaceholderProperty.getPlaceholderPropertyTypes());
 
         String licenseTypeGUID = archiveHelper.getGUID(LicenseTypeDefinition.CLINICAL_TRIAL_LICENSE.getQualifiedName());
 
@@ -453,11 +449,11 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
         Map<String, String> obligations = new HashMap<>();
         obligations.put("retention", "20 years");
         archiveHelper.addLicense(assetGUID,
-                                 "ClinicalTrial:" + PlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + ":WeeklyMeasurement:" + PlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
+                                 "ClinicalTrial:" + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder() + ":WeeklyMeasurement:" + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
                                  null,
                                  null,
                                  null,
-                                 PlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
+                                 CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
                                  "Organization",
                                  "name",
                                  "tanyatidie",

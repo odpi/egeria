@@ -336,4 +336,34 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
 
         return null;
     }
+
+
+
+
+    /**
+     * This method returns the object for the tenant to use to work with the Asset Owner API.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public GovernanceConfigurationClient getGovernanceConfigurationClient(String userId,
+                                                                         String serverName,
+                                                                         String serviceOperationName) throws InvalidParameterException,
+                                                                                                             PropertyServerException,
+                                                                                                             UserNotAuthorizedException
+    {
+        AutomatedCurationInstance instance = (AutomatedCurationInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getGovernanceConfigurationClient();
+        }
+
+        return null;
+    }
 }

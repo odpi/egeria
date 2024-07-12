@@ -43,7 +43,6 @@ public class AssetConverter<B> extends AssetOwnerOMASConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @Override
-    @SuppressWarnings(value = "deprecation")
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
@@ -55,9 +54,8 @@ public class AssetConverter<B> extends AssetOwnerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof AssetElement)
+            if (returnBean instanceof AssetElement bean)
             {
-                AssetElement bean = (AssetElement) returnBean;
                 AssetProperties assetProperties = new AssetProperties();
 
                 if (entity != null)
@@ -75,6 +73,7 @@ public class AssetConverter<B> extends AssetOwnerOMASConverter<B>
                     assetProperties.setDisplayName(assetProperties.getName());
                     assetProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
                     assetProperties.setDescription(this.removeDescription(instanceProperties));
+                    assetProperties.setDeployedImplementationType(this.removeDeployedImplementationType(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

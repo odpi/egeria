@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworkservices.oif.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReport;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationReport;
 
 import java.util.Arrays;
 import java.util.Objects;

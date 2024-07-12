@@ -2,15 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.IntegrationGroupConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
-import org.odpi.openmetadata.frameworks.integration.properties.IntegrationGroupElement;
-import org.odpi.openmetadata.frameworks.integration.properties.IntegrationGroupProperties;
-import org.odpi.openmetadata.frameworks.integration.properties.RegisteredIntegrationConnectorElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationGroupElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationGroupProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredIntegrationConnectorElement;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
@@ -38,7 +38,7 @@ public class IntegrationGroupHandler
     private   IntegrationGroupElement    integrationGroupElement    = null;
 
 
-    private final IntegrationGroupConfigurationClient configurationClient;        /* Initialized in constructor */
+    private final GovernanceConfigurationClient configurationClient;        /* Initialized in constructor */
 
     private final IntegrationConnectorCacheMap           integrationConnectorLookupTable;
     private final Map<String, IntegrationContextManager> contextManagerMap;
@@ -64,7 +64,7 @@ public class IntegrationGroupHandler
                                    IntegrationConnectorCacheMap           integrationConnectorCacheMap,
                                    String                                 serverName,
                                    String                                 serverUserId,
-                                   IntegrationGroupConfigurationClient    configurationClient,
+                                   GovernanceConfigurationClient          configurationClient,
                                    AuditLog                               auditLog,
                                    int                                    maxPageSize)
     {

@@ -5,9 +5,12 @@ package org.odpi.openmetadata.viewservices.projectmanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectTeamProperties;
+import org.odpi.openmetadata.accessservices.projectmanagement.rest.ExternalSourceRequestBody;
+import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelatedElementListResponse;
+import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
 import org.odpi.openmetadata.viewservices.projectmanager.rest.*;
 import org.odpi.openmetadata.viewservices.projectmanager.server.ProjectManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -393,7 +396,7 @@ public class ProjectManagerResource
                                          @PathVariable String                projectGUID,
                                          @PathVariable String                actorGUID,
                                          @RequestBody(required = false)
-                                                       ProjectTeamProperties requestBody)
+                                                      ProjectTeamProperties requestBody)
     {
         return restAPI.addToProjectTeam(serverName, projectGUID, actorGUID, requestBody);
     }
@@ -481,6 +484,122 @@ public class ProjectManagerResource
                                                    @RequestBody(required = false)  NullRequestBody requestBody)
     {
         return restAPI.clearProjectManagementRole(serverName, projectGUID, projectRoleGUID, requestBody);
+    }
+
+
+    /**
+     * Create a "ResourceList" relationship between a consuming element and an element that represents resources.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param elementGUID unique identifier of the element
+     * @param resourceGUID unique identifier of the resource
+     * @param requestBody relationship properties
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/related-elements/{elementGUID}/resource-list/{resourceGUID}")
+
+    @Operation(summary="setupResource",
+            description="Create a 'ResourceList' relationship between a consuming element (such as a project) and an element that represents a resource.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/resource"))
+
+    public VoidResponse setupResource(@PathVariable String                  serverName,
+                                      @PathVariable String                  elementGUID,
+                                      @PathVariable String                  resourceGUID,
+                                      @RequestBody(required = false) RelationshipRequestBody requestBody)
+    {
+        return restAPI.setupResource(serverName, elementGUID, resourceGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a "ResourceList" relationship between two referenceables.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param elementGUID unique identifier of the element
+     * @param resourceGUID unique identifier of the resource
+     * @param requestBody external source identifiers
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/related-elements/{elementGUID}/resource-list/{resourceGUID}/delete")
+
+    @Operation(summary="clearResource",
+            description="Remove a 'ResourceList' relationship between a consuming element and an element that represents a resource.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/resource"))
+
+    public VoidResponse clearResource(@PathVariable String                    serverName,
+                                      @PathVariable String                    elementGUID,
+                                      @PathVariable String                    resourceGUID,
+                                      @RequestBody(required = false) ExternalSourceRequestBody requestBody)
+    {
+        return restAPI.clearResource(serverName, elementGUID, resourceGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of resources assigned to an element via the "ResourceList" relationship between two referenceables.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param elementGUID unique identifier of the element
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @GetMapping(path = "/related-elements/resource-list/by-assignee/{elementGUID}")
+
+    @Operation(summary="getResourceList",
+            description="Retrieve the list of resources assigned to an element (such as a project) via the 'ResourceList' relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/resource"))
+
+    public RelatedElementListResponse getResourceList(@PathVariable String serverName,
+                                                      @PathVariable String elementGUID,
+                                                      @RequestParam int   startFrom,
+                                                      @RequestParam int   pageSize)
+    {
+        return restAPI.getResourceList(serverName, elementGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of elements assigned to a resource via the "ResourceList" relationship between two referenceables.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param resourceGUID unique identifier of the resource
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @GetMapping(path = "/related-elements/resource-list/by-resource/{resourceGUID}")
+
+    @Operation(summary="getSupportedByResource",
+            description="Retrieve the list of elements (such as projects, technology types, ...) assigned to a resource via the ResourceList' relationship.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/resource"))
+
+    public RelatedElementListResponse getSupportedByResource(@PathVariable String serverName,
+                                                             @PathVariable String resourceGUID,
+                                                             @RequestParam int   startFrom,
+                                                             @RequestParam int   pageSize)
+    {
+        return restAPI.getSupportedByResource(serverName, resourceGUID, startFrom, pageSize);
     }
 }
 

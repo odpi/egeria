@@ -88,6 +88,7 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
     {
         super.openIntegrationClient = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
         super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
+        super.governanceConfiguration = new GovernanceConfigurationClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
 
         if (localServerPassword == null)
         {
@@ -193,6 +194,7 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
                                                                                                     connectorUserId,
                                                                                                     partnerOMASServerName,
                                                                                                     openIntegrationClient,
+                                                                                                    governanceConfiguration,
                                                                                                     openMetadataStoreClient,
                                                                                                     capabilityManagerClient,
                                                                                                     connectionManagerClient,

@@ -6,8 +6,8 @@ import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.Coll
 import org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
@@ -194,7 +194,7 @@ public class CollectionConverter<B> extends DigitalServiceConverterBase<B>
     @SuppressWarnings(value = "unused")
     public B getNewBean(Class<B>                beanClass,
                         OpenMetadataElement     element,
-                        RelatedMetadataElements relationship,
+                        OpenMetadataRelationship relationship,
                         String                  methodName) throws PropertyServerException
     {
         B returnBean = this.getNewBean(beanClass, element, methodName);

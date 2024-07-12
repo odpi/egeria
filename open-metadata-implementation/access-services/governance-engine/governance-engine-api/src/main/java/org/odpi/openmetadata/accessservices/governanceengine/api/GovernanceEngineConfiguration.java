@@ -17,7 +17,7 @@ import java.util.Map;
 
 
 /**
- * GovernanceEngineConfiguration supports the configuration of governance engine and governance services.
+ * GovernanceConfiguration supports the configuration of governance engine and governance services.
  */
 public interface GovernanceEngineConfiguration
 {
