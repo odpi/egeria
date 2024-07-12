@@ -29,7 +29,7 @@ public enum UnityCatalogPlaceholderProperty
     /**
      * The location where the data associated with this element in Unity Catalog is stored.
      */
-    STORAGE_LOCATION ("ucStorageLocation", "The location where the data associated with this element in Unity Catalog is stored.", "string", ".a/b/c"),
+    STORAGE_LOCATION ("ucStorageLocation", "The location where the data associated with this element in Unity Catalog is stored.", "string", "a/b/c"),
 
     /**
      * The name of a table within a schema and catalog in Unity Catalog (UC).

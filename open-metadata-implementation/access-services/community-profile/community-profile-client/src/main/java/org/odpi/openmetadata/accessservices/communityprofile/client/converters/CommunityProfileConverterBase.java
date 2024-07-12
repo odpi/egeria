@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.converters.OpenMetadata
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
@@ -50,7 +50,7 @@ public abstract class CommunityProfileConverterBase<B> extends OpenMetadataConve
      */
     public RelatedElement getRelatedElement(Class<B>                beanClass,
                                             OpenMetadataElement     element,
-                                            RelatedMetadataElements relationship,
+                                            OpenMetadataRelationship relationship,
                                             String                  methodName) throws PropertyServerException
     {
         RelatedElement  relatedElement = new RelatedElement();
@@ -71,7 +71,7 @@ public abstract class CommunityProfileConverterBase<B> extends OpenMetadataConve
         }
         else
         {
-            handleMissingMetadataInstance(beanClass.getName(), RelatedMetadataElements.class.getName(), methodName);
+            handleMissingMetadataInstance(beanClass.getName(), OpenMetadataRelationship.class.getName(), methodName);
         }
 
         if (element != null)
@@ -121,7 +121,7 @@ public abstract class CommunityProfileConverterBase<B> extends OpenMetadataConve
         }
         else
         {
-            handleMissingMetadataInstance(beanClass.getName(), RelatedMetadataElements.class.getName(), methodName);
+            handleMissingMetadataInstance(beanClass.getName(), OpenMetadataRelationship.class.getName(), methodName);
         }
 
         return relatedElement;

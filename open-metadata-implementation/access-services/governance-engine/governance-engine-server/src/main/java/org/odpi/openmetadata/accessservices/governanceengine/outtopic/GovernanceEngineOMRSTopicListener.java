@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.outtopic;
 
 import org.odpi.openmetadata.accessservices.governanceengine.converters.GovernanceEngineOMASConverter;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.MetadataElement;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -17,7 +18,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogRelatedE
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
@@ -117,46 +117,46 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param relationship relationship from the repository
      * @return related metadata elements object
      */
-    private RelatedMetadataElements getRelatedElements(Relationship relationship)
+    private OpenMetadataRelationship getRelatedElements(Relationship relationship)
     {
         if (relationship != null)
         {
-            RelatedMetadataElements relatedMetadataElements = new RelatedMetadataElements();
+            OpenMetadataRelationship openMetadataRelationship = new OpenMetadataRelationship();
 
-            converter.fillElementControlHeader(relatedMetadataElements, relationship);
+            converter.fillElementControlHeader(openMetadataRelationship, relationship);
 
-            relatedMetadataElements.setRelationshipGUID(relationship.getGUID());
-            relatedMetadataElements.setRelationshipType(converter.getElementType(relationship));
+            openMetadataRelationship.setRelationshipGUID(relationship.getGUID());
+            openMetadataRelationship.setRelationshipType(converter.getElementType(relationship));
 
             if (relationship.getProperties() != null)
             {
-                relatedMetadataElements.setRelationshipProperties(converter.mapElementProperties(relationship.getProperties()));
-                relatedMetadataElements.setEffectiveFromTime(relationship.getProperties().getEffectiveFromTime());
-                relatedMetadataElements.setEffectiveToTime(relationship.getProperties().getEffectiveToTime());
+                openMetadataRelationship.setRelationshipProperties(converter.mapElementProperties(relationship.getProperties()));
+                openMetadataRelationship.setEffectiveFromTime(relationship.getProperties().getEffectiveFromTime());
+                openMetadataRelationship.setEffectiveToTime(relationship.getProperties().getEffectiveToTime());
             }
 
             if (relationship.getEntityOneProxy() != null)
             {
-                relatedMetadataElements.setElementGUIDAtEnd1(relationship.getEntityOneProxy().getGUID());
+                openMetadataRelationship.setElementGUIDAtEnd1(relationship.getEntityOneProxy().getGUID());
 
                 ElementStub elementStub = new ElementStub();
                 fillElementControlHeader(elementStub, relationship.getEntityOneProxy());
                 elementStub.setUniqueName(getQualifiedName(relationship.getEntityOneProxy().getUniqueProperties()));
-                relatedMetadataElements.setElementAtEnd1(elementStub);
+                openMetadataRelationship.setElementAtEnd1(elementStub);
             }
 
             if (relationship.getEntityTwoProxy() != null)
             {
-                relatedMetadataElements.setElementGUIDAtEnd2(relationship.getEntityTwoProxy().getGUID());
+                openMetadataRelationship.setElementGUIDAtEnd2(relationship.getEntityTwoProxy().getGUID());
             }
 
             if (repositoryHelper.getTypeDefByName(serviceName, relationship.getType().getTypeDefName()) instanceof RelationshipDef relationshipDef)
             {
-                relatedMetadataElements.setLabelAtEnd1(relationshipDef.getEndDef1().getAttributeName());
-                relatedMetadataElements.setLabelAtEnd2(relationshipDef.getEndDef2().getAttributeName());
+                openMetadataRelationship.setLabelAtEnd1(relationshipDef.getEndDef1().getAttributeName());
+                openMetadataRelationship.setLabelAtEnd2(relationshipDef.getEndDef2().getAttributeName());
             }
 
-            return relatedMetadataElements;
+            return openMetadataRelationship;
         }
 
         return null;

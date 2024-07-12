@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server;
 
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.IntegrationGroupConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationGroupConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
-import org.odpi.openmetadata.frameworkservices.oif.client.rest.OpenIntegrationRESTClient;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorCacheMap;
@@ -208,18 +207,17 @@ public class IntegrationDaemonOperationalServices
                         String groupName             = this.getIntegrationGroupName(integrationGroupConfig);
 
                         GAFRESTClient               gafRESTClient = new GAFRESTClient(partnerOMASServerName, partnerOMASRootURL, auditLog);
-                        OpenIntegrationRESTClient   openIntegrationRESTClient = new OpenIntegrationRESTClient(partnerOMASServerName, partnerOMASRootURL, auditLog);
                         GovernanceServerEventClient eventClient = new GovernanceServerEventClient(partnerOMASServerName,
                                                                                                   partnerOMASRootURL,
                                                                                                   gafRESTClient,
                                                                                                   maxPageSize,
                                                                                                   auditLog,
                                                                                                   localServerId+groupName);
-                        IntegrationGroupConfigurationClient configurationClient = new IntegrationGroupConfigurationClient(partnerOMASServerName,
-                                                                                                                          partnerOMASRootURL,
-                                                                                                                          openIntegrationRESTClient,
-                                                                                                                          maxPageSize,
-                                                                                                                          auditLog);
+                        GovernanceConfigurationClient configurationClient = new GovernanceConfigurationClient(partnerOMASServerName,
+                                                                                                              partnerOMASRootURL,
+                                                                                                              gafRESTClient,
+                                                                                                              maxPageSize,
+                                                                                                              auditLog);
 
                         Map<String, IntegrationContextManager> contextManagerMap = new HashMap<>();
                         Map<String, String>                    integrationServiceNameMap = new HashMap<>();
@@ -280,7 +278,8 @@ public class IntegrationDaemonOperationalServices
                                                                                                                          localServerUserId,
                                                                                                                          localServerName,
                                                                                                                          partnerOMASServerName,
-                                                                                                                         partnerOMASRootURL);
+                                                                                                                         partnerOMASRootURL,
+                                                                                                                         maxPageSize);
                         configurationRefreshThreads.add(configurationRefreshThread);
                         Thread thread = new Thread(configurationRefreshThread, configurationRefreshThread.getClass().getName());
                         thread.start();

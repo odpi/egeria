@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.projectmanagement.converters;
 
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;

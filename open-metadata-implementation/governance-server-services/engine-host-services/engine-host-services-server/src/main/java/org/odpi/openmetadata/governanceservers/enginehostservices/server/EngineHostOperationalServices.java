@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.enginehostservices.server;
 
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.OpenGovernanceClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig;
@@ -156,11 +156,11 @@ public class EngineHostOperationalServices
             /*
              * This is the client used to retrieve configuration and the client used to manage governance action entities
              */
-            GovernanceEngineConfigurationClient configurationClient = new GovernanceEngineConfigurationClient(accessServiceServerName,
-                                                                                                              accessServiceRootURL,
-                                                                                                              restClient,
-                                                                                                              maxPageSize,
-                                                                                                              auditLog);
+            GovernanceConfigurationClient configurationClient = new GovernanceConfigurationClient(accessServiceServerName,
+                                                                                                  accessServiceRootURL,
+                                                                                                  restClient,
+                                                                                                  maxPageSize,
+                                                                                                  auditLog);
 
             GovernanceContextClient engineActionClient = new GovernanceContextClient(accessServiceServerName,
                                                                                      accessServiceRootURL,
@@ -354,7 +354,7 @@ public class EngineHostOperationalServices
      * @throws OMAGConfigurationErrorException problem with the configuration
      */
     private List<String> initializeEngineServices(List<EngineServiceConfig>            engineServiceConfigList,
-                                                  GovernanceEngineConfigurationClient  configurationClient,
+                                                  GovernanceConfigurationClient configurationClient,
                                                   Map<String, List<String>>            serviceEngineLists,
                                                   GovernanceEngineMap                  governanceEngineHandlers) throws OMAGConfigurationErrorException
     {

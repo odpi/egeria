@@ -6,9 +6,8 @@ import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.A
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectElement;
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectTeamMember;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectTeamProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.TemplateProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

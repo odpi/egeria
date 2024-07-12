@@ -2,8 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.surveyaction.admin;
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -13,8 +12,6 @@ import org.odpi.openmetadata.engineservices.surveyaction.server.SurveyActionInst
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.EngineServiceAdmin;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
-
-import java.util.List;
 
 /**
  * SurveyActionAdmin is called during server start up to set up the Survey Action OMES.
@@ -45,7 +42,7 @@ public class SurveyActionAdmin extends EngineServiceAdmin
                            String                              localServerUserId,
                            String                              localServerPassword,
                            int                                 maxPageSize,
-                           GovernanceEngineConfigurationClient configurationClient,
+                           GovernanceConfigurationClient configurationClient,
                            EngineServiceConfig                 engineServiceConfig,
                            GovernanceEngineMap                 governanceEngineMap) throws OMAGConfigurationErrorException
     {

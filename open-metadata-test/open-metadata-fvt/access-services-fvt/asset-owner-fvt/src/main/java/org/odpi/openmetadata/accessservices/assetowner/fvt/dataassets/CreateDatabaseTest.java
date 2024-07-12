@@ -16,6 +16,8 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -475,14 +477,14 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
+            if (! databaseType.equals(retrievedDatabase.getDeployedImplementationType()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad deployedImplementationType from Retrieve)");
+            }
 
             Map<String, Object> databaseExtendedProperties = retrievedDatabase.getExtendedProperties();
 
-            if (! databaseType.equals(databaseExtendedProperties.get("deployedImplementationType")))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseType from Retrieve).  Retrieve Element: " + retrievedDatabase);
-            }
-            if (! databaseVersion.equals(databaseExtendedProperties.get("databaseVersion")))
+            if (! databaseVersion.equals(databaseExtendedProperties.get(OpenMetadataProperty.DATABASE_VERSION.name)))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseVersion from Retrieve).  Retrieve Element: " + retrievedDatabase);
             }
@@ -519,14 +521,13 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
-
+            if (! databaseType.equals(retrievedDatabase.getDeployedImplementationType()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad deployedImplementationType from RetrieveByName)");
+            }
             databaseExtendedProperties = retrievedDatabase.getExtendedProperties();
 
-            if (! databaseType.equals(databaseExtendedProperties.get("deployedImplementationType")))
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseType from RetrieveByName).  Retrieve Element: " + retrievedDatabase);
-            }
-            if (! databaseVersion.equals(databaseExtendedProperties.get("databaseVersion")))
+            if (! databaseVersion.equals(databaseExtendedProperties.get(OpenMetadataProperty.DATABASE_VERSION.name)))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad databaseVersion from RetrieveByName).  Retrieve Element: " + retrievedDatabase);
             }

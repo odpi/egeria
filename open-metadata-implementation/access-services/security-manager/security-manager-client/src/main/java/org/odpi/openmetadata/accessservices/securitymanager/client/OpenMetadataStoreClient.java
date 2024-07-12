@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.securitymanager.client;
 
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworkservices.gaf.client.OpenMetadataClientBase;
 
@@ -13,7 +14,7 @@ import org.odpi.openmetadata.frameworkservices.gaf.client.OpenMetadataClientBase
  */
 public class OpenMetadataStoreClient extends OpenMetadataClientBase
 {
-    private final static String serviceURLMarker = "security-manager";
+    private final static String serviceURLMarker = AccessServiceDescription.SECURITY_MANAGER_OMAS.getAccessServiceURLMarker();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.

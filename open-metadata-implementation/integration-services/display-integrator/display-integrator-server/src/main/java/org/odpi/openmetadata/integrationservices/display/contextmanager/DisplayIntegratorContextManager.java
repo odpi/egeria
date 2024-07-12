@@ -80,6 +80,7 @@ public class DisplayIntegratorContextManager extends IntegrationContextManager
     {
         super.openIntegrationClient = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
         super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
+        super.governanceConfiguration = new GovernanceConfigurationClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
 
         if (localServerPassword == null)
         {
@@ -217,6 +218,7 @@ public class DisplayIntegratorContextManager extends IntegrationContextManager
                                                                                       connectorUserId,
                                                                                       partnerOMASServerName,
                                                                                       openIntegrationClient,
+                                                                                      governanceConfiguration,
                                                                                       openMetadataStoreClient,
                                                                                       displayApplicationClient,
                                                                                       dataManagerEventClient,

@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads;
 
 
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.IntegrationGroupConfigurationClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
@@ -30,6 +30,7 @@ public class GroupConfigurationRefreshThread implements Runnable
     private final String                      localServerName;
     private final String                      accessServiceServerName;
     private final String                      accessServiceRootURL;
+    private final int                         maxPageSize;
 
     private volatile boolean                  keepTrying = true;
 
@@ -48,6 +49,7 @@ public class GroupConfigurationRefreshThread implements Runnable
      * @param localServerName this server's name
      * @param accessServiceServerName metadata server's name
      * @param accessServiceRootURL platform location for metadata server
+     * @param maxPageSize max results
      */
     public GroupConfigurationRefreshThread(String                               groupName,
                                            IntegrationGroupHandler              groupHandler,
@@ -56,7 +58,8 @@ public class GroupConfigurationRefreshThread implements Runnable
                                            String                               localServerUserId,
                                            String                               localServerName,
                                            String                               accessServiceServerName,
-                                           String                               accessServiceRootURL)
+                                           String                               accessServiceRootURL,
+                                           int                                  maxPageSize)
     {
         this.groupName               = groupName;
         this.groupHandler            = groupHandler;
@@ -66,6 +69,7 @@ public class GroupConfigurationRefreshThread implements Runnable
         this.localServerName         = localServerName;
         this.accessServiceServerName = accessServiceServerName;
         this.accessServiceRootURL    = accessServiceRootURL;
+        this.maxPageSize             = maxPageSize;
     }
 
 
@@ -88,8 +92,9 @@ public class GroupConfigurationRefreshThread implements Runnable
             {
                 try
                 {
-                    IntegrationGroupConfigurationClient configurationClient = new IntegrationGroupConfigurationClient(accessServiceServerName,
-                                                                                                                      accessServiceRootURL);
+                    GovernanceConfigurationClient configurationClient = new GovernanceConfigurationClient(accessServiceServerName,
+                                                                                                          accessServiceRootURL,
+                                                                                                          maxPageSize);
                     eventClient.registerListener(localServerUserId,
                                                  new GovernanceServerOutTopicListener(groupName,
                                                                                       groupHandler,

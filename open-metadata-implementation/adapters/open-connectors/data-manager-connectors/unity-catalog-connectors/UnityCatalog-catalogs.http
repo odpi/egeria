@@ -12,16 +12,26 @@ POST {{ucURL}}/api/2.1/unity-catalog/catalogs
 Content-Type: application/json
 
 {
-  "name": "test7",
-  "comment": "Test catalog7",
+  "name": "clinical_trials",
+  "comment": "anothertry",
   "properties": {
     "egeriaGUID" : "c14d6b99-7202-4f04-a05d-49f0fdd7373d"
   }
 }
 
 ###
+# @name create catalog
+POST {{ucURL}}/api/2.1/unity-catalog/catalogs
+Content-Type: application/json
+
+{
+  "name": "trials",
+  "comment": "Clinical trials data for personalized medicine research."
+}
+
+###
 # @name get catalog
-GET {{ucURL}}/api/2.1/unity-catalog/catalogs/test3
+GET {{ucURL}}/api/2.1/unity-catalog/catalogs/coco-clinical-trials
 Content-Type: application/json
 
 

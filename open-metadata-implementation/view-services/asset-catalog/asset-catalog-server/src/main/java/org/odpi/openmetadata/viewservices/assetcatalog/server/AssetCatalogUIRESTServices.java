@@ -15,7 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.assetcatalog.beans.*;
@@ -551,7 +551,7 @@ public class AssetCatalogUIRESTServices extends TokenController
 
 
     private AssetCatalogBean getAssetCatalogBean(OpenMetadataElement           openMetadataElement,
-                                                 List<RelatedMetadataElements> relatedMetadataElementsList,
+                                                 List<OpenMetadataRelationship> openMetadataRelationshipList,
                                                  Element                       anchorElement,
                                                  String                        methodName)
     {
@@ -610,7 +610,7 @@ public class AssetCatalogUIRESTServices extends TokenController
                 assetCatalogBean.setAnchorElement(anchorElement);
             }
 
-            assetCatalogBean.setRelationships(this.getRelationships(relatedMetadataElementsList));
+            assetCatalogBean.setRelationships(this.getRelationships(openMetadataRelationshipList));
         }
 
         return null;
@@ -644,16 +644,16 @@ public class AssetCatalogUIRESTServices extends TokenController
     /**
      * Return a list of relationships in the Asset Catalog OMVS format.
      *
-     * @param relatedMetadataElementsList relationships retrieved from the open metadata store
+     * @param openMetadataRelationshipList relationships retrieved from the open metadata store
      * @return reformatted relationships
      */
-    private List<Relationship> getRelationships(List<RelatedMetadataElements> relatedMetadataElementsList)
+    private List<Relationship> getRelationships(List<OpenMetadataRelationship> openMetadataRelationshipList)
     {
-        if (relatedMetadataElementsList != null)
+        if (openMetadataRelationshipList != null)
         {
             List<Relationship> results = new ArrayList<>();
 
-            for (RelatedMetadataElements relatedMetadataElements : relatedMetadataElementsList)
+            for (OpenMetadataRelationship openMetadataRelationship : openMetadataRelationshipList)
             {
 
             }

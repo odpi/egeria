@@ -3,9 +3,7 @@
 package org.odpi.openmetadata.engineservices.repositorygovernance.admin;
 
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
-import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -15,8 +13,6 @@ import org.odpi.openmetadata.engineservices.repositorygovernance.server.Reposito
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.EngineServiceAdmin;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
-
-import java.util.List;
 
 /**
  * RepositoryGovernanceAdmin is called during server start-up and initializes the Repository Governance OMES.
@@ -47,7 +43,7 @@ public class RepositoryGovernanceAdmin extends EngineServiceAdmin
                            String                              localServerUserId,
                            String                              localServerPassword,
                            int                                 maxPageSize,
-                           GovernanceEngineConfigurationClient configurationClient,
+                           GovernanceConfigurationClient configurationClient,
                            EngineServiceConfig                 engineServiceConfig,
                            GovernanceEngineMap                 governanceEngineMap) throws OMAGConfigurationErrorException
     {

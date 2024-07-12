@@ -4,8 +4,8 @@ package org.odpi.openmetadata.engineservices.surveyaction.handlers;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.FileSystemAssetOwner;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.accessservices.assetowner.client.ConnectedAssetClient;
 import org.odpi.openmetadata.accessservices.assetowner.client.SurveyAssetStoreClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
@@ -58,7 +58,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
     public SurveyActionEngineHandler(EngineConfig                        engineConfig,
                                      String                              serverName,
                                      String                              serverUserId,
-                                     GovernanceEngineConfigurationClient configurationClient,
+                                     GovernanceConfigurationClient configurationClient,
                                      GovernanceContextClient             engineActionClient,
                                      ConnectedAssetClient                connectedAssetClient,
                                      FileSystemAssetOwner                fileSystemAssetOwner,

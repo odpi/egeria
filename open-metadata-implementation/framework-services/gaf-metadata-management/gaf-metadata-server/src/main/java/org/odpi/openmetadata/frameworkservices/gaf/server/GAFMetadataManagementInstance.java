@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.*;
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreErrorCode;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.GovernanceEngineConfigurationHandler;
+import org.odpi.openmetadata.frameworkservices.gaf.handlers.IntegrationGroupConfigurationHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -25,8 +26,9 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
 {
     private final static CommonServicesDescription myDescription = CommonServicesDescription.GAF_METADATA_MANAGEMENT;
 
-    private final GovernanceEngineConfigurationHandler        governanceEngineConfigurationHandler;
-    private final MetadataElementHandler<OpenMetadataElement> metadataElementHandler;
+    private final GovernanceEngineConfigurationHandler                                   governanceEngineConfigurationHandler;
+    private final IntegrationGroupConfigurationHandler                                   integrationGroupConfigurationHandler;
+    private final MetadataElementHandler<OpenMetadataElement>                            metadataElementHandler;
     private final ValidValuesHandler<ValidMetadataValue>                                 validMetadataValuesHandler;
     private final ValidValuesHandler<ValidMetadataValueDetail>                           validMetadataValuesDetailHandler;
     private final EngineActionHandler<EngineActionElement>                               engineActionHandler;
@@ -79,6 +81,17 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
                                                                                                  publishZones,
                                                                                                  auditLog);
 
+            this.integrationGroupConfigurationHandler = new IntegrationGroupConfigurationHandler(serviceName,
+                                                                                                 serverName,
+                                                                                                 invalidParameterHandler,
+                                                                                                 repositoryHandler,
+                                                                                                 repositoryHelper,
+                                                                                                 localServerUserId,
+                                                                                                 securityVerifier,
+                                                                                                 supportedZones,
+                                                                                                 defaultZones,
+                                                                                                 publishZones,
+                                                                                                 auditLog);
 
             this.metadataElementHandler = new MetadataElementHandler<>(new MetadataElementConverter<>(repositoryHelper, serviceName, serverName),
                                                                        OpenMetadataElement.class,
@@ -215,6 +228,17 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
         return governanceEngineConfigurationHandler;
     }
 
+
+
+    /**
+     * Return the handler for integration group configuration requests.
+     *
+     * @return handler object
+     */
+    IntegrationGroupConfigurationHandler getIntegrationGroupConfigurationHandler()
+    {
+        return integrationGroupConfigurationHandler;
+    }
 
     /**
      * Return the handler for open metadata store requests.

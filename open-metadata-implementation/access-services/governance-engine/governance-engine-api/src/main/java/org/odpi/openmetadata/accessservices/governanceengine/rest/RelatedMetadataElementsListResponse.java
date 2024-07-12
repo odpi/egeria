@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelatedMetadataElementsListResponse is a response object for passing back a a list of GAF RelatedMetadataElements
+ * RelatedMetadataElementsListResponse is a response object for passing back a a list of GAF OpenMetadataRelationship
  * or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedMetadataElementsListResponse extends GovernanceEngineOMASAPIResponse
 {
-    private List<RelatedMetadataElements> elementList = null;
+    private List<OpenMetadataRelationship> elementList = null;
 
 
     /**
@@ -57,7 +57,7 @@ public class RelatedMetadataElementsListResponse extends GovernanceEngineOMASAPI
      *
      * @return result object
      */
-    public List<RelatedMetadataElements> getElementList()
+    public List<OpenMetadataRelationship> getElementList()
     {
         if (elementList == null)
         {
@@ -79,7 +79,7 @@ public class RelatedMetadataElementsListResponse extends GovernanceEngineOMASAPI
      *
      * @param elementList result object
      */
-    public void setElementList(List<RelatedMetadataElements> elementList)
+    public void setElementList(List<OpenMetadataRelationship> elementList)
     {
         this.elementList = elementList;
     }

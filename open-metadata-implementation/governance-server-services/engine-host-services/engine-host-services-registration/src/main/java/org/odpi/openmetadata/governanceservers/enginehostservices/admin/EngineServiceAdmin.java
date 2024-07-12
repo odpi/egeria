@@ -3,8 +3,7 @@
 package org.odpi.openmetadata.governanceservers.enginehostservices.admin;
 
 
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -48,7 +47,7 @@ public abstract class EngineServiceAdmin
                                     String                              localServerUserId,
                                     String                              localServerPassword,
                                     int                                 maxPageSize,
-                                    GovernanceEngineConfigurationClient configurationClient,
+                                    GovernanceConfigurationClient configurationClient,
                                     EngineServiceConfig                 engineServiceConfig,
                                     GovernanceEngineMap                 governanceEngineMap) throws OMAGConfigurationErrorException;
 

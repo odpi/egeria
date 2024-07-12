@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
 import org.odpi.openmetadata.frameworks.integration.iterator.MetadataCollectionIterator;
@@ -32,12 +33,10 @@ import java.util.Map;
  */
 public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsideCatalogSyncBase
 {
-    private final String parentLinkTypeName = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName;
-    private final boolean parentAtEnd1 = true;
     private String templateGUID = null;
 
     /**
-     * Setup the schema synchronizer.
+     * Set up the schema synchronizer.
      *
      * @param connectorName name of this connector
      * @param context context for the connector
@@ -92,25 +91,25 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
      */
-    protected MetadataCollectionIterator refreshEgeria() throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+    protected IntegrationIterator refreshEgeria() throws InvalidParameterException,
+                                                         PropertyServerException,
+                                                         UserNotAuthorizedException
     {
-        final String methodName = "refreshEgeriaSchemas";
+        final String methodName = "refreshEgeria";
 
-        MetadataCollectionIterator schemaIterator = new MetadataCollectionIterator(this.context.getMetadataSourceGUID(),
-                                                                                   this.context.getMetadataSourceQualifiedName(),
-                                                                                   catalogTargetName,
-                                                                                   connectorName,
-                                                                                   deployedImplementationType.getAssociatedTypeName(),
-                                                                                   openMetadataAccess,
-                                                                                   targetPermittedSynchronization,
-                                                                                   context.getMaxPageSize(),
-                                                                                   auditLog);
+        MetadataCollectionIterator iterator = new MetadataCollectionIterator(this.context.getMetadataSourceGUID(),
+                                                                             this.context.getMetadataSourceQualifiedName(),
+                                                                             catalogTargetName,
+                                                                             connectorName,
+                                                                             deployedImplementationType.getAssociatedTypeName(),
+                                                                             openMetadataAccess,
+                                                                             targetPermittedSynchronization,
+                                                                             context.getMaxPageSize(),
+                                                                             auditLog);
 
-        while (schemaIterator.moreToReceive())
+        while (iterator.moreToReceive())
         {
-            MemberElement nextElement = schemaIterator.getNextMember();
+            MemberElement nextElement = iterator.getNextMember();
 
             if (nextElement != null)
             {
@@ -144,7 +143,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
             }
         }
 
-        return schemaIterator;
+        return iterator;
     }
 
 
@@ -157,9 +156,9 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
      */
-    protected void refreshUnityCatalog(MetadataCollectionIterator iterator) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
+    protected void refreshUnityCatalog(IntegrationIterator iterator) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
     {
         List<SchemaInfo> ucSchemaList = ucConnector.listSchemas(catalogName);
 
@@ -221,6 +220,9 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
+        final String parentLinkTypeName = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName;
+        final boolean parentAtEnd1 = true;
+
         String ucSchemaGUID;
 
         if (templateGUID != null)
@@ -245,7 +247,19 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         {
             ucSchemaGUID = openMetadataAccess.createMetadataElementInStore(deployedImplementationType.getAssociatedTypeName(),
                                                                            ElementStatus.ACTIVE,
-                                                                           this.getElementProperties(schemaInfo));
+                                                                           null,
+                                                                           context.getAssetManagerGUID(),
+                                                                           false,
+                                                                           null,
+                                                                           null,
+                                                                           this.getElementProperties(schemaInfo),
+                                                                           context.getAssetManagerGUID(),
+                                                                           parentLinkTypeName,
+                                                                           propertyHelper.addEnumProperty(null,
+                                                                                                          OpenMetadataProperty.USE_TYPE.name,
+                                                                                                          ServerAssetUseType.getOpenTypeName(),
+                                                                                                          ServerAssetUseType.OWNS.getName()),
+                                                                           parentAtEnd1);
         }
 
         context.addExternalIdentifier(ucSchemaGUID,
@@ -296,10 +310,10 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
      */
     private void createElementInThirdParty(MemberElement memberElement) throws PropertyServerException
     {
-        ucConnector.createSchema(this.getUCNameFromMember(memberElement),
+        ucConnector.createSchema(super.getUCNameFromMember(memberElement),
                                  catalogName,
-                                 this.getUCCommentFomMember(memberElement),
-                                 this.getUCPropertiesFomMember(memberElement));
+                                 super.getUCCommentFomMember(memberElement),
+                                 super.getUCPropertiesFomMember(memberElement));
     }
 
 
@@ -370,6 +384,10 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DESCRIPTION.name,
                                                              info.getComment());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                             DeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType());
 
         elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                 OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,

@@ -1,0 +1,46 @@
+#
+# These commands add the CocoComboArchive to active-metadata-store and a new governance engine for clinical trials
+# to engine-host.  They use IntelliJ's HTTP Client.
+#
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+
+
+###
+# ---------------------------------------------
+# Metadata Assess Store: active-metadata-store
+#
+##
+
+###
+# @name Load open metadata archive file
+# Load a file that contains open metadata types and instances.
+POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/active-metadata-store/instance/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/CocoComboArchive.omarchive
+
+
+###
+# -------------------------
+# Engine Host: engine-host
+#
+
+###
+# Add the ClinicalTrials at CocoPharmaceuticals engine to engine-host
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/engine
+Content-Type: application/json
+
+{
+      "class": "EngineConfig",
+      "engineId": "113c35dc-ea92-40ce-aef2-daf9e08c1b05",
+      "engineQualifiedName": "ClinicalTrials@CocoPharmaceuticals",
+      "engineUserId": "generalnpa"
+}
+
+###
+# Restart the engine-host  server on the OMAG Server Platform.
+POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/engine-host/instance
+
+
+###

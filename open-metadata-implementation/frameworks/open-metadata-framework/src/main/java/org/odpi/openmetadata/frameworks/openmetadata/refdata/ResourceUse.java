@@ -79,6 +79,20 @@ public enum ResourceUse
                       null),
 
     /**
+     * A template that can be used in conjunction with a governance action or connector.
+     */
+    SUPPORTING_TEMPLATE("Supporting Template",
+                        "A template that can be used in conjunction with a governance action or connector.",
+                        null),
+
+    /**
+     * A process that automates some of the work associated with the element.
+     */
+    SUPPORTING_PROCESS("Supporting Process",
+                       "A process that automates some of the work associated with the element.",
+                       null),
+
+    /**
      * A type of service that can be hosted on a type of server.
      */
     HOSTED_SERVICE("Hosted Service",
@@ -133,6 +147,8 @@ public enum ResourceUse
     DERIVED_ELEMENT_TEMPLATE("Derived Element Template",
                              "A template to create an element from the values in the linked element.  The placeholder properties match the attribute names of the linked element.",
                              new ResourceUseProperties[]{ResourceUseProperties.PARENT_RELATIONSHIP_TYPE_NAME}),
+
+
 
     ;
 

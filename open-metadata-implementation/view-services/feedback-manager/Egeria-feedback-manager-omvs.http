@@ -301,7 +301,7 @@ Content-Type: application/json
 ###
 # @name getTag
 # Return the informal tag for the supplied unique identifier (tagGUID).
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/tags/{{tagGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/tags/{{tagGUID}}/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -356,7 +356,7 @@ Content-Type: application/json
 # @name getElementsByTag
 # Return the list of elements that are linked to a specific tag.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/by-tag/{{tagGUID}}?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/by-tag/{{tagGUID}}/retrieve?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

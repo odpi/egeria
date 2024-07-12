@@ -116,7 +116,7 @@ public class ConfigEngineHostServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param engines  URL root and server name for the metadata server.
+     * @param engines  list of engines supported by the server
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException unexpected exception or
@@ -135,6 +135,34 @@ public class ConfigEngineHostServicesResource
                                       @RequestBody  List<EngineConfig> engines)
     {
         return adminAPI.setEngineList(userId, serverName, engines);
+    }
+
+
+    /**
+     * Add another engine to the list of governance engines that will use the metadata from the same metadata access server as the
+     * engine host uses for retrieving the engine configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param engine  definition of a single engine
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @PostMapping("/engine")
+
+    @Operation(summary="addEngine",
+            description="Add another engine the list of governance engine that will use the metadata from the same metadata access server as the" +
+                    " engine host uses for retrieving the engine configuration.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-engine/"))
+
+    public VoidResponse addEngine(@PathVariable String       userId,
+                                  @PathVariable String       serverName,
+                                  @RequestBody  EngineConfig engine)
+    {
+        return adminAPI.addEngine(userId, serverName, engine);
     }
 
 

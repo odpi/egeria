@@ -13,10 +13,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ArchiveProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ArrayTypePropertyValue;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ClassificationCondition;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -61,8 +61,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 {
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
-    private final RelatedElementsConverter<RelatedMetadataElements> relatedElementsConverter;
-    private final RelatedElementConverter<RelatedMetadataElement>   relatedElementConverter;
+    private final RelatedElementsConverter<OpenMetadataRelationship> relatedElementsConverter;
+    private final RelatedElementConverter<RelatedMetadataElement>    relatedElementConverter;
 
     private static final Logger log = LoggerFactory.getLogger(MetadataElementHandler.class);
 
@@ -524,17 +524,17 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<RelatedMetadataElements> getMetadataElementRelationships(String       userId,
-                                                                         String       metadataElementAtEnd1GUID,
-                                                                         String       relationshipTypeName,
-                                                                         String       metadataElementAtEnd2GUID,
-                                                                         boolean      forLineage,
-                                                                         boolean      forDuplicateProcessing,
-                                                                         List<String> serviceSupportedZones,
-                                                                         Date         effectiveTime,
-                                                                         int          startFrom,
-                                                                         int          pageSize,
-                                                                         String       methodName) throws InvalidParameterException,
+    public List<OpenMetadataRelationship> getMetadataElementRelationships(String       userId,
+                                                                          String       metadataElementAtEnd1GUID,
+                                                                          String       relationshipTypeName,
+                                                                          String       metadataElementAtEnd2GUID,
+                                                                          boolean      forLineage,
+                                                                          boolean      forDuplicateProcessing,
+                                                                          List<String> serviceSupportedZones,
+                                                                          Date         effectiveTime,
+                                                                          int          startFrom,
+                                                                          int          pageSize,
+                                                                          String       methodName) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
@@ -570,11 +570,11 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
         if (relationships != null)
         {
-            List<RelatedMetadataElements> results = new ArrayList<>();
+            List<OpenMetadataRelationship> results = new ArrayList<>();
 
             for (Relationship relationship : relationships)
             {
-                results.add(relatedElementsConverter.getNewRelationshipBean(RelatedMetadataElements.class,
+                results.add(relatedElementsConverter.getNewRelationshipBean(OpenMetadataRelationship.class,
                                                                             relationship,
                                                                             methodName));
             }
@@ -1244,20 +1244,20 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public  List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String              userId,
-                                                                                   String              relationshipTypeName,
-                                                                                   SearchProperties    searchProperties,
-                                                                                   List<ElementStatus> limitResultsByStatus,
-                                                                                   Date                asOfTime,
-                                                                                   String              sequencingProperty,
-                                                                                   SequencingOrder     sequencingOrder,
-                                                                                   boolean             forLineage,
-                                                                                   boolean             forDuplicateProcessing,
-                                                                                   List<String>        serviceSupportedZones,
-                                                                                   Date                effectiveTime,
-                                                                                   int                 startFrom,
-                                                                                   int                 pageSize,
-                                                                                   String              methodName) throws InvalidParameterException,
+    public  List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String              userId,
+                                                                                    String              relationshipTypeName,
+                                                                                    SearchProperties    searchProperties,
+                                                                                    List<ElementStatus> limitResultsByStatus,
+                                                                                    Date                asOfTime,
+                                                                                    String              sequencingProperty,
+                                                                                    SequencingOrder     sequencingOrder,
+                                                                                    boolean             forLineage,
+                                                                                    boolean             forDuplicateProcessing,
+                                                                                    List<String>        serviceSupportedZones,
+                                                                                    Date                effectiveTime,
+                                                                                    int                 startFrom,
+                                                                                    int                 pageSize,
+                                                                                    String              methodName) throws InvalidParameterException,
                                                                                                                           UserNotAuthorizedException,
                                                                                                                           PropertyServerException
     {
@@ -1280,13 +1280,13 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
         if (relationships != null)
         {
-            List<RelatedMetadataElements> results = new ArrayList<>();
+            List<OpenMetadataRelationship> results = new ArrayList<>();
 
             for (Relationship relationship : relationships)
             {
                 if (relationship != null)
                 {
-                    results.add(relatedElementsConverter.getNewRelationshipBean(RelatedMetadataElements.class,
+                    results.add(relatedElementsConverter.getNewRelationshipBean(OpenMetadataRelationship.class,
                                                                                 relationship,
                                                                                 methodName));
                 }

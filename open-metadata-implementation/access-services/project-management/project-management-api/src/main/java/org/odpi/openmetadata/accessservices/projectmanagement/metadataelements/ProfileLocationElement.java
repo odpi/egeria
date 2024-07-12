@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.projectmanagement.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProfileLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ProfileLocationProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.Objects;

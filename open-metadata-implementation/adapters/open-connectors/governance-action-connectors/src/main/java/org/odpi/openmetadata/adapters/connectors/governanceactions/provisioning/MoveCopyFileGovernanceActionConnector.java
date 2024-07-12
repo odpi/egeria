@@ -11,6 +11,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.ProvisioningGovernanceActionService;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassification;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.*;
@@ -30,7 +33,6 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
      */
     private static final Map<String, Integer> fileIndexMap = new HashMap<>();
 
-    private final PropertyHelper propertyHelper = new PropertyHelper();
 
     private String  topLevelProcessName                  = MoveCopyFileGovernanceActionProvider.DEFAULT_TOP_LEVEL_PROCESS_NAME_PROPERTY;
     private String  destinationFileTemplateQualifiedName = null;
@@ -721,19 +723,21 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
      * @throws InvalidParameterException one of the parameters passed to open metadata is invalid (probably a bug in this code)
      * @throws UserNotAuthorizedException the userId for the connector does not have the authority it needs
      * @throws PropertyServerException there is a problem with the metadata server(s)
+     * @throws IOException problem accessing the file
      */
     private String createLineage(String destinationFilePathName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                                                        PropertyServerException, IOException
     {
         final String methodName              = "createLineage";
-        final String childProcessTypeName    = "TransientEmbeddedProcess";
-        final String topLevelProcessTypeName = "DeployedConnector";
+        final String childProcessTypeName    = OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName;
+        final String topLevelProcessTypeName = OpenMetadataType.DEPLOYED_CONNECTOR.typeName;
 
         OpenMetadataStore metadataStore = governanceContext.getOpenMetadataStore();
 
-        String fileName = FilenameUtils.getName(destinationFilePathName);
-        String fileExtension = FilenameUtils.getExtension(destinationFilePathName);
+        FileClassifier     fileClassifier = new FileClassifier(metadataStore);
+        FileClassification destinationFileClassification = fileClassifier.classifyFile(destinationFilePathName);
+
         String newFileGUID;
 
         governanceContext.getOpenMetadataStore().setForLineage(true);
@@ -741,11 +745,11 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         String topLevelProcessGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(topLevelProcessName, null);
         String processGUID;
 
+        /*
+         * Ensure that the top level process is set up
+         */
         if (topLevelProcessGUID == null)
         {
-            /*
-             * Ensure that the top level process is set up
-             */
             if (topLevelProcessTemplateQualifiedName == null)
             {
                 topLevelProcessGUID = governanceContext.createProcess(topLevelProcessTypeName,
@@ -764,8 +768,15 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             }
         }
 
+        /*
+         * Determine if the lineage is attached at the top-level process, or at a child process that represents this
+         * run of the job.  processGUID is set to the unique identifier of the process that lineage should connect to.
+         */
         if (childProcessLineage)
         {
+            /*
+             * A child process is created for each provisioning job.
+             */
             processGUID = governanceContext.createChildProcess(childProcessTypeName,
                                                                ElementStatus.ACTIVE,
                                                                topLevelProcessName + connectorInstanceId,
@@ -778,43 +789,94 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             processGUID = topLevelProcessGUID;
         }
 
+        /*
+         * The source file GUID is null if the source file name is not passed by an action target.
+         */
         if (sourceFileGUID == null)
         {
-            sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, "pathName");
+            sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, OpenMetadataProperty.PATH_NAME.name);
 
             if (sourceFileGUID == null)
             {
                 sourceFileGUID = metadataStore.getMetadataElementGUIDByUniqueName(sourceFileName, null);
             }
-
-            if (! sourceLineageFromFile)
-            {
-                sourceFileGUID = getFolderGUID(sourceFileGUID);
-            }
         }
 
-        ElementProperties extendedProperties = propertyHelper.addStringProperty(null, "pathName", destinationFilePathName);
-        extendedProperties = propertyHelper.addStringProperty(extendedProperties, "fileName", fileName);
+        /*
+         * Cataloguing the new destination file.
+         */
+        String assetTypeName = destinationFileClassification.getAssetTypeName();
+        String qualifiedName = assetTypeName + ":" + destinationFilePathName;
 
-        String            assetTypeName = this.getAssetTypeName(fileExtension);
+        String parentGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFolderName, OpenMetadataProperty.PATH_NAME.name);
 
-        if (destinationFileTemplateQualifiedName == null)
+        if (parentGUID == null)
         {
-            newFileGUID = governanceContext.createAsset(assetTypeName, assetTypeName + ":" + destinationFilePathName, fileName, null, null, extendedProperties);
+            parentGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFolderName, OpenMetadataProperty.NAME.name);
         }
-        else
-        {
-            String assetTemplateGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFileTemplateQualifiedName, null);
 
-            newFileGUID = governanceContext.createAssetFromTemplate(assetTypeName, assetTemplateGUID, "CSVFile:" + destinationFilePathName, fileName, null, null, extendedProperties);
+        ElementProperties destinationFileProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName);
+        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.NAME.name, destinationFileClassification.getFileName());
+        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.FILE_NAME.name, destinationFileClassification.getFileName());
+        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.FILE_TYPE.name, destinationFileClassification.getFileType());
+        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.FILE_EXTENSION.name, destinationFileClassification.getFileExtension());
+        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, destinationFileClassification.getDeployedImplementationType());
+
+        if (destinationFileTemplateQualifiedName != null)
+        {
+            String assetTemplateGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFileTemplateQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
 
             if ((assetTemplateGUID == null) && (auditLog != null))
             {
                 auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.MISSING_TEMPLATE.getMessageDefinition(governanceServiceName,
                                                                                                                           destinationFileTemplateQualifiedName,
-                                                                                                                          RequestParameter.DESTINATION_TEMPLATE_NAME.getName(),
-                                                                                                                          newFileGUID));
+                                                                                                                          RequestParameter.DESTINATION_TEMPLATE_NAME.getName()));
             }
+
+            newFileGUID = metadataStore.createMetadataElementFromTemplate(assetTypeName,
+                                                                          null,
+                                                                          true,
+                                                                          null,
+                                                                          null,
+                                                                          assetTemplateGUID,
+                                                                          destinationFileProperties,
+                                                                          null,
+                                                                          parentGUID,
+                                                                          OpenMetadataType.NESTED_FILE_TYPE_NAME,
+                                                                          null,
+                                                                          true);        }
+        else if (sourceFileGUID != null)
+        {
+            /*
+             * Use the source file as a template
+             */
+            newFileGUID = metadataStore.createMetadataElementFromTemplate(assetTypeName,
+                                                                          null,
+                                                                          true,
+                                                                          null,
+                                                                          null,
+                                                                          sourceFileGUID,
+                                                                          destinationFileProperties,
+                                                                          null,
+                                                                          parentGUID,
+                                                                          OpenMetadataType.NESTED_FILE_TYPE_NAME,
+                                                                          null,
+                                                                          true);
+        }
+        else // no template
+        {
+            newFileGUID = metadataStore.createMetadataElementInStore(assetTypeName,
+                                                                     ElementStatus.ACTIVE,
+                                                                     null,
+                                                                     null,
+                                                                     true,
+                                                                     null,
+                                                                     null,
+                                                                     destinationFileProperties,
+                                                                     parentGUID,
+                                                                     OpenMetadataType.NESTED_FILE_TYPE_NAME,
+                                                                     null,
+                                                                     true);
         }
 
         if (! destinationLineageToFile)
@@ -822,7 +884,11 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             newFileGUID = getFolderGUID(newFileGUID);
         }
 
-        sourceFileGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(sourceFileName, "pathName");
+        if (! sourceLineageFromFile)
+        {
+            sourceFileGUID = getFolderGUID(sourceFileGUID);
+        }
+
         if (sourceFileGUID != null)
         {
             governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_TYPE_NAME, sourceFileGUID, null, null, null, processGUID);
@@ -863,7 +929,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         List<RelatedMetadataElement> relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(fileGUID,
                                                                                                            2,
-                                                                                                           "NestedFile",
+                                                                                                           OpenMetadataType.NESTED_FILE_TYPE_NAME,
                                                                                                            0,
                                                                                                            0);
 
@@ -879,33 +945,5 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         }
 
         return folderGUID;
-    }
-
-
-    /**
-     * Determine the open metadata type to use based on the file extension from the file name.  If no file extension, or it is unrecognized
-     * then the default is "DataFile".
-     *
-     * @param fileExtension file extension extracted from the file name
-     * @return asset type name to use
-     */
-    private String getAssetTypeName(String fileExtension)
-    {
-        String assetTypeName = "DataFile";
-
-        if (fileExtension != null)
-        {
-            assetTypeName = switch (fileExtension)
-            {
-                case "csv" -> "CSVFile";
-                case "json" -> "JSONFile";
-                case "avro" -> "AvroFile";
-                case "pdf", "doc", "docx", "ppt", "pptx", "xls", "xlsx", "md" -> "Document";
-                case "jpg", "jpeg", "png", "gif", "mp3", "mp4" -> "MediaFile";
-                default -> assetTypeName;
-            };
-        }
-
-        return assetTypeName;
     }
 }

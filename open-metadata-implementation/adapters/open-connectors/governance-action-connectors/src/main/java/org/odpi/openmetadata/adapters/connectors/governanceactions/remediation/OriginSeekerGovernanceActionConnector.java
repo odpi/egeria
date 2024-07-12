@@ -37,8 +37,6 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
     private static final String detectedOriginsProperty   = "detectedOrigins";
     private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
 
-    private final PropertyHelper propertyHelper = new PropertyHelper();
-
 
     /**
      * Indicates that the governance action service is completely configured and can begin processing.

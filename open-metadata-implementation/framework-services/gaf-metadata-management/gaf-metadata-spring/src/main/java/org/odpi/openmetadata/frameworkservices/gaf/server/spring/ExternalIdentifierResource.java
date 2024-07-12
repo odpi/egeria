@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.*;
  * Server-side REST API support for asset manager independent REST endpoints
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/framework-services/{serviceURLMarker}/governance-context-service/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/framework-services/{serviceURLMarker}/open-metadata-store/users/{userId}")
 
-@Tag(name="Framework Services: Governance Context Service",
-        description="Provides support for services used to control the status of an Engine Action during the execution of a governance service in an Engine Host.",
+@Tag(name="Framework Services: Open Metadata Store Services",
+        description="Provides generic open metadata retrieval and management services for Open Metadata Access Services (OMASs).",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/gaf-metadata-management/"))
 

@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.integrationservices.analytics.connector;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
@@ -23,6 +24,7 @@ public class AnalyticsIntegratorContext extends IntegrationContext
      * @param connectorUserId userId for the connector
      * @param serverName name of the integration daemon
      * @param openIntegrationClient client for calling the metadata server
+     * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
      * @param generateIntegrationReport should the connector generate an integration reports?
      * @param permittedSynchronization the direction of integration permitted by the integration connector
@@ -38,6 +40,7 @@ public class AnalyticsIntegratorContext extends IntegrationContext
                                       String                       connectorUserId,
                                       String                       serverName,
                                       OpenIntegrationClient        openIntegrationClient,
+                                      GovernanceConfiguration      governanceConfiguration,
                                       OpenMetadataClient           openMetadataStoreClient,
                                       boolean                      generateIntegrationReport,
                                       PermittedSynchronization     permittedSynchronization,
@@ -52,6 +55,7 @@ public class AnalyticsIntegratorContext extends IntegrationContext
               connectorUserId,
               serverName,
               openIntegrationClient,
+              governanceConfiguration,
               openMetadataStoreClient,
               generateIntegrationReport,
               permittedSynchronization,

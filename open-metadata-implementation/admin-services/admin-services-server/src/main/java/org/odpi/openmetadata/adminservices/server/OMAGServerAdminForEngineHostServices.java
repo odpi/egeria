@@ -20,9 +20,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * OMAGServerAdminForEngineServices provides the server-side support for the services that add engine services
@@ -293,6 +291,106 @@ public class OMAGServerAdminForEngineHostServices
 
         return response;
     }
+
+
+
+
+    /**
+     * Set up the list of governance engines that will use the metadata from the same metadata access server as the
+     * engine host uses for retrieving the engine configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param engine  new engine
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public VoidResponse addEngine(String       userId,
+                                  String       serverName,
+                                  EngineConfig engine)
+    {
+        final String methodName = "addEngine";
+        final String engineParameterName = "engine";
+        final String engineNameParameterName = "engine.qualifiedName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validatePropertyNotNull(engine, engineParameterName, serverName, methodName);
+            errorHandler.validatePropertyNotNull(engine.getEngineQualifiedName(), engineNameParameterName, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            List<String> configAuditTrail = serverConfig.getAuditTrail();
+
+            if (configAuditTrail == null)
+            {
+                configAuditTrail = new ArrayList<>();
+            }
+
+            configAuditTrail.add(new Date() + " " + userId + " add new engine " + engine.getEngineQualifiedName() + " to list.");
+
+            serverConfig.setAuditTrail(configAuditTrail);
+
+            EngineHostServicesConfig engineHostServicesConfig = serverConfig.getEngineHostServicesConfig();
+
+            if (engineHostServicesConfig == null)
+            {
+                engineHostServicesConfig = new EngineHostServicesConfig();
+                if (serverConfig.getRepositoryServicesConfig() == null)
+                {
+                    OMRSConfigurationFactory omrsConfigurationFactory = new OMRSConfigurationFactory();
+
+                    serverConfig.setRepositoryServicesConfig(omrsConfigurationFactory.getDefaultRepositoryServicesConfig());
+                }
+            }
+
+            Map<String, EngineConfig> engines = new HashMap<>();
+
+            if (engineHostServicesConfig.getEngineList() != null)
+            {
+                for (EngineConfig engineConfig : engineHostServicesConfig.getEngineList())
+                {
+                    if ((engineConfig != null) && (engineConfig.getEngineQualifiedName() != null) && (!engineConfig.getEngineQualifiedName().isBlank()))
+                    {
+                        engines.put(engineConfig.getEngineQualifiedName(), engineConfig);
+                    }
+                }
+            }
+
+            engines.put(engine.getEngineQualifiedName(), engine);
+
+            engineHostServicesConfig.setEngineList(new ArrayList<>(engines.values()));
+
+            serverConfig.setEngineHostServicesConfig(engineHostServicesConfig);
+
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
 
 
     /**

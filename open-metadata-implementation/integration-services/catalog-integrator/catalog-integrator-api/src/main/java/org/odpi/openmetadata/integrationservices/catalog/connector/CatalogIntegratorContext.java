@@ -16,6 +16,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.Infrast
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.LineageExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ValidValuesExchangeClient;
+import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
@@ -130,6 +131,7 @@ public class CatalogIntegratorContext extends IntegrationContext
      * @param connectorUserId userId for the connector
      * @param serverName name of the integration daemon
      * @param openIntegrationClient client for calling the metadata server
+     * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
      * @param assetManagerClient common client to map requests to
      * @param eventClient client to register for events
@@ -160,6 +162,7 @@ public class CatalogIntegratorContext extends IntegrationContext
                                     String                          connectorUserId,
                                     String                          serverName,
                                     OpenIntegrationClient           openIntegrationClient,
+                                    GovernanceConfiguration         governanceConfiguration,
                                     OpenMetadataClient              openMetadataStoreClient,
                                     ExternalAssetManagerClient      assetManagerClient,
                                     AssetManagerEventClient         eventClient,
@@ -189,6 +192,7 @@ public class CatalogIntegratorContext extends IntegrationContext
               connectorUserId,
               serverName,
               openIntegrationClient,
+              governanceConfiguration,
               openMetadataStoreClient,
               generateIntegrationReport,
               permittedSynchronization,

@@ -96,6 +96,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
         super.openIntegrationClient = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
         super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
         this.openGovernanceClient = new OpenGovernanceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
+        super.governanceConfiguration = new GovernanceConfigurationClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
 
         AssetManagerRESTClient restClient;
 
@@ -212,6 +213,7 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
                                                                                       connectorUserId,
                                                                                       partnerOMASServerName,
                                                                                       openIntegrationClient,
+                                                                                      governanceConfiguration,
                                                                                       openMetadataStoreClient,
                                                                                       openGovernanceClient,
                                                                                       this,

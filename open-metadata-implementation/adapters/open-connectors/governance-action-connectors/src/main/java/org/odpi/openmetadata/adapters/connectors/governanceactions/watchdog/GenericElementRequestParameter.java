@@ -16,20 +16,20 @@ import java.util.List;
  */
 public enum GenericElementRequestParameter
 {
-    INSTANCE_TO_MONITOR                  ("instanceToMonitor", "Requests that the governance action service monitors a single metadata instance.", "", ""),
-    INTERESTING_TYPE_NAME                ("interestingTypeName", "Defines the type of element that this monitor is focused on.", "", ""),
-    ACTION_TARGET_NAME                   ("actionTargetName", "Override the action target name used for the element that has been created, updated or deleted.  Default is 'receivedElement'.", "", ""),
-    ACTION_TARGET_TWO_NAME               ("actionTargetNameTwo", "Override the action target name used for the related element to the one that has been created, updated or deleted.  Default is 'receivedElementTwo'.", "", ""),
-    NEW_ELEMENT_PROCESS_NAME             ("newElementProcessName", "Qualified name of the process to run each time a new element event is detected.", "", ""),
-    UPDATED_ELEMENT_PROCESS_NAME         ("updatedElementProcessName", "Qualified name of the process to run each time an update element event is detected.", "", ""),
-    DELETED_ELEMENT_PROCESS_NAME         ("deletedElementProcessName", "Qualified name of the process to run each time a delete element event is detected.", "", ""),
-    CLASSIFIED_ELEMENT_PROCESS_NAME      ("classifiedElementProcessName", "Qualified name of the process to run each time a classified element event is detected.", "", ""),
-    RECLASSIFIED_ELEMENT_PROCESS_NAME    ("reclassifiedElementProcessName", "Qualified name of the process to run each time a reclassified element event is detected.", "", ""),
-    DECLASSIFIED_ELEMENT_PROCESS_NAME    ("declassifiedElementProcessName", "Qualified name of the process to run each time a declassified element event is detected.", "", ""),
-    NEW_RELATIONSHIP_PROCESS_NAME        ("newRelationshipProcessName", "Qualified name of the process to run each time a new relationship event is detected.", "", ""),
-    UPDATED_RELATIONSHIP_PROCESS_NAME    ("updatedRelationshipProcessName", "Qualified name of the process to run each time an updated relationship event is detected.", "", ""),
-    DELETED_RELATIONSHIP_PROCESS_NAME    ("deletedRelationshipProcessName", "Qualified name of the process to run each time a deleted relationship event is detected.", "", ""),
-    CHANGED_PROPERTIES                   ("ChangedProperties", "A common separated list of property names that have changed values that are added to the request properties.", "", ""),
+    INSTANCE_TO_MONITOR                  ("instanceToMonitor", "Requests that the governance action service monitors a single metadata instance.", "string", ""),
+    INTERESTING_TYPE_NAME                ("interestingTypeName", "Defines the type of element that this monitor is focused on.", "string", ""),
+    ACTION_TARGET_NAME                   ("actionTargetName", "Override the action target name used for the element that has been created, updated or deleted.  Default is 'receivedElement'.", "string", ""),
+    ACTION_TARGET_TWO_NAME               ("actionTargetNameTwo", "Override the action target name used for the related element to the one that has been created, updated or deleted.  Default is 'receivedElementTwo'.", "string", ""),
+    NEW_ELEMENT_PROCESS_NAME             ("newElementProcessName", "Qualified name of the process to run each time a new element event is detected.", "string", ""),
+    UPDATED_ELEMENT_PROCESS_NAME         ("updatedElementProcessName", "Qualified name of the process to run each time an update element event is detected.", "string", ""),
+    DELETED_ELEMENT_PROCESS_NAME         ("deletedElementProcessName", "Qualified name of the process to run each time a delete element event is detected.", "string", ""),
+    CLASSIFIED_ELEMENT_PROCESS_NAME      ("classifiedElementProcessName", "Qualified name of the process to run each time a classified element event is detected.", "string", ""),
+    RECLASSIFIED_ELEMENT_PROCESS_NAME    ("reclassifiedElementProcessName", "Qualified name of the process to run each time a reclassified element event is detected.", "string", ""),
+    DECLASSIFIED_ELEMENT_PROCESS_NAME    ("declassifiedElementProcessName", "Qualified name of the process to run each time a declassified element event is detected.", "string", ""),
+    NEW_RELATIONSHIP_PROCESS_NAME        ("newRelationshipProcessName", "Qualified name of the process to run each time a new relationship event is detected.", "string", ""),
+    UPDATED_RELATIONSHIP_PROCESS_NAME    ("updatedRelationshipProcessName", "Qualified name of the process to run each time an updated relationship event is detected.", "string", ""),
+    DELETED_RELATIONSHIP_PROCESS_NAME    ("deletedRelationshipProcessName", "Qualified name of the process to run each time a deleted relationship event is detected.", "string", ""),
+    CHANGED_PROPERTIES                   ("ChangedProperties", "A common separated list of property names that have changed values that are added to the request properties.", "string", ""),
 
     ;
 

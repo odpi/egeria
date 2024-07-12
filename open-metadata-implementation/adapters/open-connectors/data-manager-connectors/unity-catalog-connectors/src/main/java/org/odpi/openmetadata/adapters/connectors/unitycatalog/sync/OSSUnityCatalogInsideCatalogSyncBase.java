@@ -6,19 +6,19 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.VolumeType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
+import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
-import org.odpi.openmetadata.frameworks.integration.iterator.MetadataCollectionIterator;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -117,7 +117,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         /*
          * Sweep 1 - consider all the elements stored in Egeria.
          */
-        MetadataCollectionIterator iterator = this.refreshEgeria();
+       IntegrationIterator iterator = this.refreshEgeria();
 
         /*
          * Sweep 2 - Query UC to discover any elements that have been missed.
@@ -139,9 +139,9 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
      */
-    protected abstract MetadataCollectionIterator refreshEgeria() throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException;
+    protected abstract IntegrationIterator refreshEgeria() throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException;
 
 
     /**
@@ -153,9 +153,9 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
      */
-    protected abstract void refreshUnityCatalog(MetadataCollectionIterator iterator) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException;
+    protected abstract void refreshUnityCatalog(IntegrationIterator iterator) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException;
 
 
     /**
@@ -206,7 +206,8 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
     /**
      * Populate and return the external identifier properties for a UC Schema.
      *
-     * @param ucElement values from Unity Catalog
+     * @param ucElement values from Unity Catalog element
+     * @param schemaName name of the schema
      * @return external identifier properties
      */
     protected ExternalIdentifierProperties getExternalIdentifierProperties(ElementBase ucElement,
@@ -223,6 +224,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
 
         mappingProperties.put(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(), catalogName);
         mappingProperties.put(UnityCatalogPlaceholderProperty.SCHEMA_NAME.getName(), schemaName);
+        mappingProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.name, ucServerEndpoint);
 
         externalIdentifierProperties.setMappingProperties(mappingProperties);
 
@@ -257,7 +259,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                                                 OpenMetadataProperty.PROPERTIES.name,
                                                                 facetProperties);
 
-        openMetadataAccess.createMetadataElementInStore(deployedImplementationType.getAssociatedTypeName(),
+        openMetadataAccess.createMetadataElementInStore(OpenMetadataType.PROPERTY_FACET.typeName,
                                                         ElementStatus.ACTIVE,
                                                         null,
                                                         parentGUID,

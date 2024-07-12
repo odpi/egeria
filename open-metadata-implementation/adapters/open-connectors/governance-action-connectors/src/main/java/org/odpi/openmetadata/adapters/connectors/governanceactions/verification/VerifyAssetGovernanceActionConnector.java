@@ -23,8 +23,6 @@ import java.util.List;
  */
 public class VerifyAssetGovernanceActionConnector extends VerificationGovernanceActionService
 {
-    private final PropertyHelper propertyHelper = new PropertyHelper();
-
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
      * This is a standard method from the Open Connector Framework (OCF) so

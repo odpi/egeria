@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -57,9 +57,9 @@ public class RelatedElementsConverter<B> extends OpenMetadataStoreConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof RelatedMetadataElements)
+            if (returnBean instanceof OpenMetadataRelationship)
             {
-                RelatedMetadataElements bean = (RelatedMetadataElements) returnBean;
+                OpenMetadataRelationship bean = (OpenMetadataRelationship) returnBean;
 
                 fillElementControlHeader(bean, relationship);
 

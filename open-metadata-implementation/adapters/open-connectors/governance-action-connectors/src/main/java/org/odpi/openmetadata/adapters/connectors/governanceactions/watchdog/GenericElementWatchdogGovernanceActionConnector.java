@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
 import java.util.*;
@@ -150,12 +150,12 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                 {
                     WatchdogRelatedElementsEvent relatedElementsEvent = (WatchdogRelatedElementsEvent) event;
 
-                    RelatedMetadataElements relatedMetadataElements = relatedElementsEvent.getRelatedMetadataElements();
+                    OpenMetadataRelationship openMetadataRelationship = relatedElementsEvent.getRelatedMetadataElements();
 
-                if (relatedMetadataElements != null)
+                if (openMetadataRelationship != null)
                 {
-                    String end1GUID = relatedMetadataElements.getElementGUIDAtEnd1();
-                    String end2GUID = relatedMetadataElements.getElementGUIDAtEnd2();
+                    String end1GUID = openMetadataRelationship.getElementGUIDAtEnd1();
+                    String end2GUID = openMetadataRelationship.getElementGUIDAtEnd2();
 
                         if ((instancesToListenTo == null) ||
                                     (instancesToListenTo.contains(end1GUID)) ||
@@ -163,8 +163,8 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                         {
                             Map<String, String> requestParameters = new HashMap<>();
 
-                            requestParameters.put("RelationshipGUID", relatedMetadataElements.getRelationshipGUID());
-                            requestParameters.put("RelationshipTypeName", relatedMetadataElements.getRelationshipType().getTypeName());
+                            requestParameters.put("RelationshipGUID", openMetadataRelationship.getRelationshipGUID());
+                            requestParameters.put("RelationshipTypeName", openMetadataRelationship.getRelationshipType().getTypeName());
 
                             List<NewActionTarget> actionTargets = new ArrayList<>();
 
@@ -196,7 +196,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                                 }
 
                                 requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
-                                                                                               relatedMetadataElements.getRelationshipProperties()));
+                                                                                               openMetadataRelationship.getRelationshipProperties()));
 
                                 initiateProcess(updatedRelationshipProcessName,
                                                 requestParameters,

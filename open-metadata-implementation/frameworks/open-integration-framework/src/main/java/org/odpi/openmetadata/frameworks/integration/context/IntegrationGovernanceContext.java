@@ -9,8 +9,8 @@ package org.odpi.openmetadata.frameworks.integration.context;
  */
 public class IntegrationGovernanceContext
 {
-    protected final OpenMetadataAccess      openMetadataAccess;
-    protected final MultiLanguageManagement multiLanguageManagement;
+    protected final OpenMetadataAccess         openMetadataAccess;
+    protected final MultiLanguageManagement    multiLanguageManagement;
     protected final StewardshipAction          stewardshipAction;
     protected final ValidMetadataValuesContext validMetadataValues;
 
@@ -32,6 +32,19 @@ public class IntegrationGovernanceContext
         this.multiLanguageManagement     = multiLanguageManagement;
         this.stewardshipAction           = stewardshipAction;
         this.validMetadataValues         = validMetadataValuesContext;
+    }
+
+
+    /**
+     * Set up the externalSourceGUID and Name.
+     *
+     * @param externalSourceGUID unique identifier of the source metadata collection
+     * @param externalSourceName unique name of the source metadata collection
+     */
+    public void setExternalSourceIds(String externalSourceGUID,
+                                     String externalSourceName)
+    {
+        this.openMetadataAccess.setExternalSourceIds(externalSourceGUID, externalSourceName);
     }
 
 

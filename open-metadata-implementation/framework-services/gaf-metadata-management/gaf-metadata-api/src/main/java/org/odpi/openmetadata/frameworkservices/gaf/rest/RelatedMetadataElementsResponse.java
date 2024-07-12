@@ -6,8 +6,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -18,14 +17,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * RelatedMetadataElementsResponse is the response structure used on the OMAS REST API calls that return the GAF
- * definition of the relationship (RelatedMetadataElements).
+ * definition of the relationship (OpenMetadataRelationship).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedMetadataElementsResponse extends OMAGGAFAPIResponse
 {
-   private RelatedMetadataElements element = null;
+   private OpenMetadataRelationship element = null;
 
 
     /**
@@ -58,7 +57,7 @@ public class RelatedMetadataElementsResponse extends OMAGGAFAPIResponse
      *
      * @return bean
      */
-    public RelatedMetadataElements getElement()
+    public OpenMetadataRelationship getElement()
     {
         return element;
     }
@@ -69,7 +68,7 @@ public class RelatedMetadataElementsResponse extends OMAGGAFAPIResponse
      *
      * @param element  bean
      */
-    public void setElement(RelatedMetadataElements element)
+    public void setElement(OpenMetadataRelationship element)
     {
         this.element = element;
     }

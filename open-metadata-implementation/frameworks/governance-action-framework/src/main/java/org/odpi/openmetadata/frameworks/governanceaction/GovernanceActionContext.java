@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.client.*;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
@@ -51,6 +52,7 @@ public class GovernanceActionContext implements GovernanceContext,
     private final WatchDogEventInterface           watchDogEventClient;
     private final OpenMetadataClient               openMetadataClient;
     private final OpenMetadataStore                openMetadataStore;
+    private final GovernanceConfiguration          governanceConfiguration;
     private final PropertyHelper                   propertyHelper = new PropertyHelper();
 
 
@@ -79,6 +81,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                    List<RequestSourceElement>       requestSourceElements,
                                    List<ActionTargetElement>        actionTargetElements,
                                    OpenMetadataClient               openMetadataClient,
+                                   GovernanceConfiguration          governanceConfiguration,
                                    ActionControlInterface           actionControlClient,
                                    DuplicateManagementInterface     duplicateManagementClient,
                                    GovernanceActionProcessInterface governanceActionProcessClient,
@@ -93,6 +96,7 @@ public class GovernanceActionContext implements GovernanceContext,
         this.requestSourceElements = requestSourceElements;
         this.actionTargetElements = actionTargetElements;
         this.openMetadataClient = openMetadataClient;
+        this.governanceConfiguration = governanceConfiguration;
         this.actionControlClient = actionControlClient;
         this.duplicateManagementClient = duplicateManagementClient;
         this.governanceActionProcessClient = governanceActionProcessClient;
@@ -389,6 +393,676 @@ public class GovernanceActionContext implements GovernanceContext,
     {
         return completionStatus;
     }
+
+    /**
+     * Create a new governance engine definition.
+     *
+     * @param governanceEngineType type of governance engine to create
+     * @param qualifiedName        unique name for the governance engine.
+     * @param displayName          display name for messages and user interfaces.
+     * @param description          description of the types of governance services that will be associated with
+     *                             this governance engine.
+     * @return unique identifier (guid) of the governance engine definition.  This is for use on other requests.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem storing the governance engine definition.
+     */
+    @Override
+    public String createGovernanceEngine(String governanceEngineType, String qualifiedName, String displayName, String description) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.createGovernanceEngine(userId, governanceEngineType, qualifiedName, displayName, description);
+    }
+
+
+    /**
+     * Return the properties from a governance engine definition.
+     *
+     * @param guid unique identifier (guid) of the governance engine definition.
+     * @return properties from the governance engine definition.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the governance engine definition.
+     */
+    @Override
+    public GovernanceEngineElement getGovernanceEngineByGUID(String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getGovernanceEngineByGUID(userId, guid);
+    }
+
+    /**
+     * Return the properties from a governance engine definition.
+     *
+     * @param name qualified name or display name (if unique).
+     * @return properties from the governance engine definition.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the governance engine definition.
+     */
+    @Override
+    public GovernanceEngineElement getGovernanceEngineByName(String name) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getGovernanceEngineByName(userId, name);
+    }
+
+    /**
+     * Return the list of governance engine definitions that are stored.
+     *
+     * @param governanceEngineType type of governance engine to create
+     * @param startingFrom         initial position in the stored list.
+     * @param maximumResults       maximum number of definitions to return on this call.
+     * @return list of governance engine definitions.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the governance engine definitions.
+     */
+    @Override
+    public List<GovernanceEngineElement> getAllGovernanceEngines(String governanceEngineType, int startingFrom, int maximumResults) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getAllGovernanceEngines(userId, governanceEngineType, startingFrom, maximumResults);
+    }
+
+    /**
+     * Update the properties of an existing governance engine definition.  Use the current value to
+     * keep a property value the same, or use the new value.  Null means remove the property from
+     * the definition.
+     *
+     * @param guid                 unique identifier of the governance engine - used to locate the definition.
+     * @param qualifiedName        new value for unique name of governance engine.
+     * @param displayName          new value for the display name.
+     * @param description          new description for the governance engine.
+     * @param typeDescription      new description of the type ofg governance engine.
+     * @param version              new version number for the governance engine implementation.
+     * @param patchLevel           new patch level for the governance engine implementation.
+     * @param source               new source description for the implementation of the governance engine.
+     * @param additionalProperties additional properties for the governance engine.
+     * @param extendedProperties   properties to populate the subtype of the governance engine.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem storing the governance engine definition.
+     */
+    @Override
+    public void updateGovernanceEngine(String guid, String qualifiedName, String displayName, String description, String typeDescription, String version, String patchLevel, String source, Map<String, String> additionalProperties, Map<String, Object> extendedProperties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.updateGovernanceEngine(userId, guid, qualifiedName,displayName,description,typeDescription, version, patchLevel, source, additionalProperties, extendedProperties);
+    }
+
+    /**
+     * Remove the properties of the governance engine.  Both the guid and the qualified name is supplied
+     * to validate that the correct governance engine is being deleted.
+     *
+     * @param guid          unique identifier of the governance engine - used to locate the definition.
+     * @param qualifiedName unique name for the governance engine.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the governance engine definition.
+     */
+    @Override
+    public void deleteGovernanceEngine(String guid, String qualifiedName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.deleteGovernanceEngine(userId, guid, qualifiedName);
+    }
+
+    /**
+     * Create a governance service definition.  The same governance service can be associated with multiple
+     * governance engines.
+     *
+     * @param governanceServiceType type of the governance service to create
+     * @param qualifiedName         unique name for the governance service.
+     * @param displayName           display name for the governance service.
+     * @param description           description of the analysis provided by the governance service.
+     * @param connection            connection to instantiate the governance service implementation.
+     * @return unique identifier of the governance service.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem storing the governance service definition.
+     */
+    @Override
+    public String createGovernanceService(String governanceServiceType, String qualifiedName, String displayName, String description, Connection connection) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.createGovernanceService(userId, governanceServiceType, qualifiedName, displayName, description, connection);
+    }
+
+    /**
+     * Return the properties from a governance service definition.
+     *
+     * @param guid unique identifier (guid) of the governance service definition.
+     * @return properties of the governance service.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the governance service definition.
+     */
+    @Override
+    public GovernanceServiceElement getGovernanceServiceByGUID(String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getGovernanceServiceByGUID(userId, guid);
+    }
+
+    /**
+     * Return the properties from a governance service definition.
+     *
+     * @param name qualified name or display name (if unique).
+     * @return properties from the governance engine definition.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the governance engine definition.
+     */
+    @Override
+    public GovernanceServiceElement getGovernanceServiceByName(String name) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getGovernanceServiceByName(userId, name);
+    }
+
+    /**
+     * Return the list of governance services definitions that are stored.
+     *
+     * @param startingFrom   initial position in the stored list.
+     * @param maximumResults maximum number of definitions to return on this call.
+     * @return list of governance service definitions.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the governance service definitions.
+     */
+    @Override
+    public List<GovernanceServiceElement> getAllGovernanceServices(int startingFrom, int maximumResults) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getAllGovernanceServices(userId, startingFrom, maximumResults);
+    }
+
+    /**
+     * Return the list of governance engines that a specific governance service is registered with.
+     *
+     * @param governanceServiceGUID governance service to search for.
+     * @return list of governance engine unique identifiers (guids)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the governance service and/or governance engine definitions.
+     */
+    @Override
+    public List<String> getGovernanceServiceRegistrations(String governanceServiceGUID) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getGovernanceServiceRegistrations(userId, governanceServiceGUID);
+    }
+
+    /**
+     * Update the properties of an existing governance service definition.  Use the current value to
+     * keep a property value the same, or use the new value.  Null means remove the property from
+     * the definition.
+     *
+     * @param guid                 unique identifier of the governance service - used to locate the definition.
+     * @param qualifiedName        new value for unique name of governance service.
+     * @param displayName          new value for the display name.
+     * @param description          new value for the description.
+     * @param connection           connection used to create an instance of this governance service.
+     * @param additionalProperties additional properties for the governance engine.
+     * @param extendedProperties   properties to populate the subtype of the governance service.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem storing the governance service definition.
+     */
+    @Override
+    public void updateGovernanceService(String guid, String qualifiedName, String displayName, String description, Connection connection, Map<String, String> additionalProperties, Map<String, Object> extendedProperties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.updateGovernanceService(userId, guid, qualifiedName, displayName, description, connection, additionalProperties, extendedProperties);
+    }
+
+    /**
+     * Remove the properties of the governance service.  Both the guid and the qualified name is supplied
+     * to validate that the correct governance service is being deleted.  The governance service is also
+     * unregistered from its governance engines.
+     *
+     * @param guid          unique identifier of the governance service - used to locate the definition.
+     * @param qualifiedName unique name for the governance service.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the governance service definition.
+     */
+    @Override
+    public void deleteGovernanceService(String guid, String qualifiedName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.deleteGovernanceService(userId, guid, qualifiedName);
+    }
+
+    /**
+     * Register a governance service with a specific governance engine.
+     *
+     * @param governanceEngineGUID  unique identifier of the governance engine.
+     * @param governanceServiceGUID unique identifier of the governance service.
+     * @param requestType           request type that this governance service is able to process.
+     * @param requestParameters     list of parameters that are passed to the governance service (via
+     *                              the context).  These values can be overridden on the actual governance service request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the governance service and/or governance engine definitions.
+     */
+    @Override
+    public void registerGovernanceServiceWithEngine(String governanceEngineGUID, String governanceServiceGUID, String requestType, Map<String, String> requestParameters) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.registerGovernanceServiceWithEngine(userId, governanceEngineGUID, governanceServiceGUID, requestType, requestParameters);
+    }
+
+    /**
+     * Register a governance service with a specific governance engine.
+     *
+     * @param governanceEngineGUID  unique identifier of the governance engine.
+     * @param governanceServiceGUID unique identifier of the governance service.
+     * @param governanceRequestType governance request type used by caller.
+     * @param serviceRequestType    mapped governance request type that this governance service is able to process.
+     * @param requestParameters     list of parameters that are passed to the governance service (via
+     *                              the governance context).  These values can be overridden on the actual governance request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the governance service and/or governance engine definitions.
+     */
+    @Override
+    public void registerGovernanceServiceWithEngine(String governanceEngineGUID, String governanceServiceGUID, String governanceRequestType, String serviceRequestType, Map<String, String> requestParameters) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.registerGovernanceServiceWithEngine(userId, governanceEngineGUID, governanceServiceGUID, governanceRequestType, serviceRequestType, requestParameters);
+    }
+
+    /**
+     * Retrieve a specific governance service registered with a governance engine.
+     *
+     * @param governanceEngineGUID  unique identifier of the governance engine.
+     * @param governanceServiceGUID unique identifier of the governance service.
+     * @return details of the governance service and the asset types it is registered for.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the governance service and/or governance engine definitions.
+     */
+    @Override
+    public RegisteredGovernanceServiceElement getRegisteredGovernanceService(String governanceEngineGUID, String governanceServiceGUID) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getRegisteredGovernanceService(userId, governanceEngineGUID, governanceServiceGUID);
+    }
+
+    /**
+     * Retrieve the identifiers of the governance services registered with a governance engine.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine.
+     * @param startingFrom         initial position in the stored list.
+     * @param maximumResults       maximum number of definitions to return on this call.
+     * @return list of unique identifiers
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the governance service and/or governance engine definitions.
+     */
+    @Override
+    public List<RegisteredGovernanceServiceElement> getRegisteredGovernanceServices(String governanceEngineGUID, int startingFrom, int maximumResults) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getRegisteredGovernanceServices(userId, governanceEngineGUID, startingFrom, maximumResults);
+    }
+
+    /**
+     * Unregister a governance service from the governance engine.
+     *
+     * @param governanceEngineGUID  unique identifier of the governance engine.
+     * @param governanceServiceGUID unique identifier of the governance service.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the governance service and/or governance engine definitions.
+     */
+    @Override
+    public void unregisterGovernanceServiceFromEngine(String governanceEngineGUID, String governanceServiceGUID) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.unregisterGovernanceServiceFromEngine(userId, governanceEngineGUID, governanceServiceGUID);
+    }
+
+    /**
+     * Create a new integration group definition.
+     *
+     * @param properties values that will be associated with this integration group.
+     * @return unique identifier (guid) of the integration group definition.  This is for use on other requests.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem storing the integration group definition.
+     */
+    @Override
+    public String createIntegrationGroup(IntegrationGroupProperties properties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.createIntegrationGroup(userId, properties);
+    }
+
+    /**
+     * Return the properties from an integration group definition.
+     *
+     * @param guid unique identifier (guid) of the integration group definition.
+     * @return properties from the integration group definition.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration group definition.
+     */
+    @Override
+    public IntegrationGroupElement getIntegrationGroupByGUID(String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getIntegrationGroupByGUID(userId, guid);
+    }
+
+    /**
+     * Return the properties from an integration group definition.
+     *
+     * @param name qualified name or display name (if unique).
+     * @return properties from the integration group definition.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration group definition.
+     */
+    @Override
+    public IntegrationGroupElement getIntegrationGroupByName(String name) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getIntegrationGroupByName(userId, name);
+    }
+
+    /**
+     * Return the list of integration group definitions that are stored.
+     *
+     * @param startingFrom   initial position in the stored list.
+     * @param maximumResults maximum number of definitions to return on this call.
+     * @return list of integration group definitions.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration group definitions.
+     */
+    @Override
+    public List<IntegrationGroupElement> getAllIntegrationGroups(int startingFrom, int maximumResults) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getAllIntegrationGroups(userId, startingFrom, maximumResults);
+    }
+
+    /**
+     * Update the properties of an existing integration group definition.  Use the current value to
+     * keep a property value the same, or use the new value.  Null means remove the property from
+     * the definition.
+     *
+     * @param guid          unique identifier of the integration group - used to locate the definition.
+     * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
+     *                      matching names, or should the entire properties of the instance be replaced?
+     * @param properties    values that will be associated with this integration group.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem storing the integration group definition.
+     */
+    @Override
+    public void updateIntegrationGroup(String guid, boolean isMergeUpdate, IntegrationGroupProperties properties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.updateIntegrationGroup(userId, guid, isMergeUpdate, properties);
+    }
+
+    /**
+     * Remove the properties of the integration group.  Both the guid and the qualified name is supplied
+     * to validate that the correct integration group is being deleted.
+     *
+     * @param guid          unique identifier of the integration group - used to locate the definition.
+     * @param qualifiedName unique name for the integration group.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration group definition.
+     */
+    @Override
+    public void deleteIntegrationGroup(String guid, String qualifiedName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.deleteIntegrationGroup(userId, guid, qualifiedName);
+    }
+
+    /**
+     * Create an integration connector definition.  The same integration connector can be associated with multiple
+     * integration groups.
+     *
+     * @param properties values that will be associated with this integration connector - including the connection.
+     * @return unique identifier of the integration connector.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem storing the integration connector definition.
+     */
+    @Override
+    public String createIntegrationConnector(IntegrationConnectorProperties properties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.createIntegrationConnector(userId, properties);
+    }
+
+    /**
+     * Return the properties from an integration connector definition.
+     *
+     * @param guid unique identifier (guid) of the integration connector definition.
+     * @return properties of the integration connector.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration connector definition.
+     */
+    @Override
+    public IntegrationConnectorElement getIntegrationConnectorByGUID(String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getIntegrationConnectorByGUID(userId, guid);
+    }
+
+    /**
+     * Return the properties from an integration connector definition.
+     *
+     * @param name qualified name or display name (if unique).
+     * @return properties from the integration group definition.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration group definition.
+     */
+    @Override
+    public IntegrationConnectorElement getIntegrationConnectorByName(String name) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getIntegrationConnectorByName(userId, name);
+    }
+
+    /**
+     * Return the list of integration connectors definitions that are stored.
+     *
+     * @param startingFrom   initial position in the stored list.
+     * @param maximumResults maximum number of definitions to return on this call.
+     * @return list of integration connector definitions.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration connector definitions.
+     */
+    @Override
+    public List<IntegrationConnectorElement> getAllIntegrationConnectors(int startingFrom, int maximumResults) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getAllIntegrationConnectors(userId, startingFrom, maximumResults);
+    }
+
+    /**
+     * Return the list of integration groups that a specific integration connector is registered with.
+     *
+     * @param integrationConnectorGUID integration connector to search for.
+     * @return list of integration group unique identifiers (guids)
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration connector and/or integration group definitions.
+     */
+    @Override
+    public List<String> getIntegrationConnectorRegistrations(String integrationConnectorGUID) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getIntegrationConnectorRegistrations(userId, integrationConnectorGUID);
+    }
+
+    /**
+     * Update the properties of an existing integration connector definition.  Use the current value to
+     * keep a property value the same, or use the new value.  Null means remove the property from
+     * the definition.
+     *
+     * @param guid          unique identifier of the integration connector - used to locate the definition.
+     * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
+     *                      matching names, or should the entire properties of the instance be replaced?
+     * @param properties    values that will be associated with this integration connector - including the connection.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration connector definition.
+     */
+    @Override
+    public void updateIntegrationConnector(String guid, boolean isMergeUpdate, IntegrationConnectorProperties properties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.updateIntegrationConnector(userId, guid, isMergeUpdate, properties);
+    }
+
+    /**
+     * Remove the properties of the integration connector.  Both the guid and the qualified name is supplied
+     * to validate that the correct integration connector is being deleted.  The integration connector is also
+     * unregistered from its integration groups.
+     *
+     * @param guid          unique identifier of the integration connector - used to locate the definition.
+     * @param qualifiedName unique name for the integration connector.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration connector definition.
+     */
+    @Override
+    public void deleteIntegrationConnector(String guid, String qualifiedName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.deleteIntegrationConnector(userId, guid, qualifiedName);
+    }
+
+    /**
+     * Register an integration connector with a specific integration group.
+     *
+     * @param integrationGroupGUID     unique identifier of the integration group.
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @param properties               list of parameters that are used to control to the integration connector.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration connector and/or integration group definitions.
+     */
+    @Override
+    public void registerIntegrationConnectorWithGroup(String integrationGroupGUID, String integrationConnectorGUID, RegisteredIntegrationConnectorProperties properties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.registerIntegrationConnectorWithGroup(userId, integrationGroupGUID, integrationConnectorGUID, properties);
+    }
+
+    /**
+     * Retrieve a specific integration connector registered with an integration group.
+     *
+     * @param integrationGroupGUID     unique identifier of the integration group.
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @return details of the integration connector and the asset types it is registered for.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration connector and/or integration group definitions.
+     */
+    @Override
+    public RegisteredIntegrationConnectorElement getRegisteredIntegrationConnector(String integrationGroupGUID, String integrationConnectorGUID) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getRegisteredIntegrationConnector(userId, integrationGroupGUID, integrationConnectorGUID);
+    }
+
+    /**
+     * Retrieve the identifiers of the integration connectors registered with an integration group.
+     *
+     * @param integrationGroupGUID unique identifier of the integration group.
+     * @param startingFrom         initial position in the stored list.
+     * @param maximumResults       maximum number of definitions to return on this call.
+     * @return list of unique identifiers
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration connector and/or integration group definitions.
+     */
+    @Override
+    public List<RegisteredIntegrationConnectorElement> getRegisteredIntegrationConnectors(String integrationGroupGUID, int startingFrom, int maximumResults) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getRegisteredIntegrationConnectors(userId, integrationGroupGUID, startingFrom, maximumResults);
+    }
+
+    /**
+     * Unregister an integration connector from the integration group.
+     *
+     * @param integrationGroupGUID     unique identifier of the integration group.
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration connector and/or integration group definitions.
+     */
+    @Override
+    public void unregisterIntegrationConnectorFromGroup(String integrationGroupGUID, String integrationConnectorGUID) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.unregisterIntegrationConnectorFromGroup(userId, integrationGroupGUID, integrationConnectorGUID);
+    }
+
+    /**
+     * Add a catalog target to an integration connector.
+     *
+     * @param integrationConnectorGUID unique identifier of the integration service.
+     * @param metadataElementGUID      unique identifier of the metadata element that is a catalog target.
+     * @param properties               properties for the relationship.
+     * @return catalog target GUID
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem storing the catalog target definition.
+     */
+    @Override
+    public String addCatalogTarget(String integrationConnectorGUID, String metadataElementGUID, CatalogTargetProperties properties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.addCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID, properties);
+    }
+
+    /**
+     * Update a catalog target for an integration connector.
+     *
+     * @param catalogTargetGUID unique identifier of the relationship.
+     * @param properties        properties for the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem storing the catalog target definition.
+     */
+    @Override
+    public void updateCatalogTarget(String catalogTargetGUID, CatalogTargetProperties properties) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.updateCatalogTarget(userId, catalogTargetGUID, properties);
+    }
+
+    /**
+     * Retrieve a specific catalog target associated with an integration connector.
+     *
+     * @param relationshipGUID unique identifier of the catalog target.
+     * @return details of the integration connector and the elements it is to catalog
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration connector definition.
+     */
+    @Override
+    public CatalogTarget getCatalogTarget(String relationshipGUID) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getCatalogTarget(userId, relationshipGUID);
+    }
+
+    /**
+     * Retrieve the identifiers of the metadata elements identified as catalog targets with an integration connector.
+     *
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @param startingFrom             initial position in the stored list.
+     * @param maximumResults           maximum number of definitions to return on this call.
+     * @return list of unique identifiers
+     * @throws InvalidParameterException  one of the parameters is null or invalid,
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem retrieving the integration connector definition.
+     */
+    @Override
+    public List<CatalogTarget> getCatalogTargets(String integrationConnectorGUID, int startingFrom, int maximumResults) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        return governanceConfiguration.getCatalogTargets(userId, integrationConnectorGUID, startingFrom, maximumResults);
+    }
+
+    /**
+     * Unregister a catalog target from the integration connector.
+     *
+     * @param relationshipGUID unique identifier of the catalog target relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException    problem accessing/updating the integration connector definition.
+     */
+    @Override
+    public void removeCatalogTarget(String relationshipGUID) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+    {
+        governanceConfiguration.removeCatalogTarget(userId, relationshipGUID);
+    }
+
+
+    /*
+     * Governance Configuration methods
+     */
+
 
 
     /*
@@ -2034,7 +2708,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * associated with the supplied request type.  The governance action remains to act as a record
      * of the actions taken for auditing.
      *
-     * @param qualifiedName unique identifier to give this governance action
+     * @param qualifiedName unique identifier to give this engine action
      * @param domainIdentifier governance domain associated with this action (0=ALL)
      * @param displayName display name for this action
      * @param description description for this action
@@ -2138,6 +2812,42 @@ public class GovernanceActionContext implements GovernanceContext,
                                                         null,
                                                         engineActionGUID,
                                                         governanceEngineName);
+    }
+
+    /**
+     * Using the named governance action type as a template, initiate an engine action.
+     *
+     * @param governanceActionTypeQualifiedName unique name of the governance action type to use
+     * @param requestSourceGUIDs  request source elements for the resulting governance service
+     * @param actionTargets list of action target names to GUIDs for the resulting governance service
+     * @param startTime future start time or null for "as soon as possible".
+     * @param requestParameters request properties to be passed to the engine action
+     * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
+     * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
+     *
+     * @return unique identifier of the engine action
+     * @throws InvalidParameterException null or unrecognized qualified name of the type
+     * @throws UserNotAuthorizedException the caller is not authorized to create an engine action
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public String initiateGovernanceActionType(String                governanceActionTypeQualifiedName,
+                                               List<String>          requestSourceGUIDs,
+                                               List<NewActionTarget> actionTargets,
+                                               Date                  startTime,
+                                               Map<String, String>   requestParameters,
+                                               String                originatorServiceName,
+                                               String                originatorEngineName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        return actionControlClient.initiateGovernanceActionType(userId,
+                                                                governanceActionTypeQualifiedName,
+                                                                requestSourceGUIDs,
+                                                                actionTargets,
+                                                                startTime,
+                                                                requestParameters,
+                                                                originatorServiceName,
+                                                                originatorEngineName);
     }
 
 

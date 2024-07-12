@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datamanager.client;
 
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 
@@ -11,7 +12,7 @@ import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.Con
  */
 public class ConnectedAssetClient extends ConnectedAssetClientBase
 {
-    private final static String serviceURLMarker = "community-profile";
+    private final static String serviceURLMarker = AccessServiceDescription.DATA_MANAGER_OMAS.getAccessServiceURLMarker();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.

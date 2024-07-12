@@ -1099,9 +1099,9 @@ public class FeedbackManagerRESTServices extends TokenController
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public InformalTagResponse getTag(String                        serverName,
+                                      String                        guid,
                                       String                        viewServiceURLMarker,
                                       String                        accessServiceURLMarker,
-                                      String                        guid,
                                       EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getTag";

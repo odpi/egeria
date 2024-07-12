@@ -43,6 +43,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
@@ -70,6 +71,7 @@ public class TopicIntegratorContext extends IntegrationContext
      * @param connectorUserId userId for the connector
      * @param serverName name of the integration daemon
      * @param openIntegrationClient client for calling the metadata server
+     * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
      * @param eventBrokerClient client to map request to
      * @param connectionManagerClient client for managing connections
@@ -89,6 +91,7 @@ public class TopicIntegratorContext extends IntegrationContext
                                   String                       connectorUserId,
                                   String                       serverName,
                                   OpenIntegrationClient        openIntegrationClient,
+                                  GovernanceConfiguration      governanceConfiguration,
                                   OpenMetadataClient           openMetadataStoreClient,
                                   EventBrokerClient            eventBrokerClient,
                                   ConnectionManagerClient      connectionManagerClient,
@@ -107,6 +110,7 @@ public class TopicIntegratorContext extends IntegrationContext
               connectorUserId,
               serverName,
               openIntegrationClient,
+              governanceConfiguration,
               openMetadataStoreClient,
               generateIntegrationReport,
               permittedSynchronization,

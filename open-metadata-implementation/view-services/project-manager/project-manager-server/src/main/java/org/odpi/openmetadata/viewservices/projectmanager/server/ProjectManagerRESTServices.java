@@ -4,12 +4,17 @@
 package org.odpi.openmetadata.viewservices.projectmanager.server;
 
 import org.odpi.openmetadata.accessservices.projectmanagement.client.ProjectManagement;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.*;
+import org.odpi.openmetadata.accessservices.projectmanagement.rest.ExternalSourceRequestBody;
+import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelatedElementListResponse;
+import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.projectmanager.rest.*;
@@ -332,7 +337,6 @@ public class ProjectManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**
@@ -872,6 +876,228 @@ public class ProjectManagerRESTServices extends TokenController
                                                null,
                                                projectGUID,
                                                projectRoleGUID);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+    
+
+    /**
+     * Create a "ResourceList" relationship between a consuming element and an element that represents resources.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param elementGUID unique identifier of the element
+     * @param resourceGUID unique identifier of the resource
+     * @param requestBody relationship properties
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setupResource(String                  serverName,
+                                      String                  elementGUID,
+                                      String                  resourceGUID,
+                                      RelationshipRequestBody requestBody)
+    {
+        final String methodName = "setupResource";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ResourceListProperties resourceListProperties)
+                {
+                    handler.setupResource(userId,
+                                          null,
+                                          null,
+                                          elementGUID,
+                                          resourceListProperties,
+                                          resourceGUID);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ResourceListProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Remove a "ResourceList" relationship between two referenceables.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param elementGUID unique identifier of the element
+     * @param resourceGUID unique identifier of the resource
+     * @param requestBody external source identifiers
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearResource(String                    serverName,
+                                      String                    elementGUID,
+                                      String                    resourceGUID,
+                                      ExternalSourceRequestBody requestBody)
+    {
+        final String methodName = "clearResource";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.clearResource(userId,
+                                      requestBody.getExternalSourceGUID(),
+                                      requestBody.getExternalSourceName(),
+                                      elementGUID,
+                                      resourceGUID);
+            }
+            else
+            {
+                handler.clearResource(userId,
+                                      null,
+                                      null,
+                                      elementGUID,
+                                      resourceGUID);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of resources assigned to an element via the "ResourceList" relationship between two referenceables.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param elementGUID unique identifier of the element
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public RelatedElementListResponse getResourceList(String serverName,
+                                                      String elementGUID,
+                                                      int   startFrom,
+                                                      int   pageSize)
+    {
+        final String methodName = "getResourceList";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        RelatedElementListResponse response = new RelatedElementListResponse();
+        AuditLog            auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+
+            response.setElements(handler.getResourceList(userId, elementGUID, startFrom, pageSize));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of elements assigned to a resource via the "ResourceList" relationship between two referenceables.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param resourceGUID unique identifier of the resource
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public RelatedElementListResponse getSupportedByResource(String serverName,
+                                                             String resourceGUID,
+                                                             int   startFrom,
+                                                             int   pageSize)
+    {
+        final String methodName = "getSupportedByResource";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        RelatedElementListResponse response = new RelatedElementListResponse();
+        AuditLog            auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectManagement handler = instanceHandler.getProjectManagement(userId, serverName, methodName);
+
+            response.setElements(handler.getSupportedByResource(userId, resourceGUID, startFrom, pageSize));
         }
         catch (Exception error)
         {

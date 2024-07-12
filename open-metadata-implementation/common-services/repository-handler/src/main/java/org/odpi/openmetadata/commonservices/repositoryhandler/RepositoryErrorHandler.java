@@ -714,23 +714,6 @@ public class RepositoryErrorHandler
      * Throw an exception if an unexpected repository error is received
      *
      * @param error  caught exception
-     * @param methodName  name of the method making the call.
-     *
-     * @throws PropertyServerException unexpected exception from property server
-     */
-    public void handleRepositoryError(Exception  error,
-                                      String     methodName) throws PropertyServerException
-    {
-        final String localMethodName = "handleRepositoryError";
-
-        handleRepositoryError(error, methodName, localMethodName);
-    }
-
-
-    /**
-     * Throw an exception if an unexpected repository error is received
-     *
-     * @param error  caught exception
      * @param methodName  name of the method called by the external party
      * @param localMethodName name of method that called this error
      *

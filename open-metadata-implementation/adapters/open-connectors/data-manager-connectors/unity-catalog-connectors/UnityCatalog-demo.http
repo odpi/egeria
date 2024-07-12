@@ -1,4 +1,4 @@
-# Egeria-automated-curation-view-service
+# Unity catalog enablement demo
 
 @baseURL=https://localhost:9443
 @viewServer=view-server
@@ -63,12 +63,23 @@ Content-Type: application/json
 
 
 ###
+# @name getTechnologyTypeDetail
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog (UC) Volume"
+}
+
+###
 # =====================================================================================================================
 # Create a server asset for the OSS Unity Catalog
 #
 
 ###
-# @name getTechnologyTypeTemplates (UC Server)
+# @name getTechnologyTypeTemplates (OSS Unity Catalog (UC) Server)
 # Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
 Authorization: Bearer {{token}}
@@ -80,7 +91,7 @@ Content-Type: application/json
 
 
 ###
-# @name createElementFromTemplate
+# @name createElementFromTemplate (OSS Unity Catalog (UC) Server)
 # Create a new element from a template.
 # Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
@@ -92,20 +103,21 @@ Content-Type: application/json
   "isOwnAnchor" : true,
   "placeholderPropertyValues" : {
     "hostURL" : "http://localhost",
-    "portNumber" : "8081",
-    "serverName" : "Default Unity Catalog2",
-    "serverDescription" : "Instance of the OSS Unity Catalog (UC) Server running on the local machine.",
+    "portNumber" : "8080",
+    "serverName" : "Local Unity Catalog",
+    "versionIdentifier" : "V1.0",
+    "description" : "Instance of the OSS Unity Catalog (UC) Server running on the local machine.",
     "serverUserId" : "uc"
   }
 }
 
 ###
 
-@ucCatalogTemplateGUID=b54f7847-7123-4758-97ba-6789b34dc6fb
+@ucCatalogTemplateGUID=f7b05a3e-913c-497d-96f5-acdeb2ec897e
 
 ###
 
-@serverGUID=d8ab0f6a-4017-45f5-972b-f46cd3593a84
+@serverGUID=108226c3-ffc5-4b40-b212-e6bdfaa3accb
 
 ###
 # @name getTechnologyTypeElements (UC Server)
@@ -117,6 +129,17 @@ Content-Type: application/json
 {
   "filter" : "OSS Unity Catalog (UC) Server"
 }
+
+
+###
+# @name=getAssetGraph
+# Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{serverGUID}}/as-graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
 
 ###
 # =====================================================================================================================
@@ -204,9 +227,9 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "catalogTargetName" : "defaultUCServer",
+  "catalogTargetName" : "localUCServer",
   "templates" : {
-    "OSS Unity Catalog (UC) Catalog" : "b54f7847-7123-4758-97ba-6789b34dc6fb"
+    "OSS Unity Catalog (UC) Catalog" : "f7b05a3e-913c-497d-96f5-acdeb2ec897e"
   },
   "configurationProperties" : {
     "OSSUnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81"
@@ -268,4 +291,31 @@ Content-Type: application/json
   "filter" : "OSS Unity Catalog (UC) Catalog"
 }
 
+
+
+###
+# @name getTechnologyTypeElements
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog (UC) Schema"
+}
+
+###
+
+@assetGUID=5e44ba90-9813-411d-aa62-36e5cc2cdf24
+
+
+
+###
+# @name=getAssetGraph
+# Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{assetGUID}}/as-graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
 

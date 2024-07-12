@@ -1208,10 +1208,10 @@ public class OpenMetadataStoreRESTServices
 
             if (relationship != null)
             {
-                RelatedElementsConverter<RelatedMetadataElements> converter = new RelatedElementsConverter<>(handler.getRepositoryHelper(),
-                                                                                                             handler.getServiceName(),
-                                                                                                             serverName);
-                response.setElement(converter.getNewRelationshipBean(RelatedMetadataElements.class,
+                RelatedElementsConverter<OpenMetadataRelationship> converter = new RelatedElementsConverter<>(handler.getRepositoryHelper(),
+                                                                                                              handler.getServiceName(),
+                                                                                                              serverName);
+                response.setElement(converter.getNewRelationshipBean(OpenMetadataRelationship.class,
                                                                      relationship,
                                                                      methodName));
             }

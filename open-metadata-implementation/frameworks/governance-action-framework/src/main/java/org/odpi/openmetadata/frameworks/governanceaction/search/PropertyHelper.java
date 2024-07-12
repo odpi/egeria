@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFRuntimeException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -625,7 +626,7 @@ public class PropertyHelper
                 {
                     ArrayTypePropertyValue arrayTypePropertyValue = new ArrayTypePropertyValue();
 
-                    if (propertyAsList.size() != 0)
+                    if (! propertyAsList.isEmpty())
                     {
                         int index = 0;
 
@@ -2605,6 +2606,64 @@ public class PropertyHelper
             matchProperties.setMatchCriteria(matchCriteria);
         }
         return matchProperties;
+    }
+
+
+    /**
+     * Extract a particular classification from an open metadata element.
+     *
+     * @param openMetadataElement source element
+     * @param classificationName name of the classification to extract
+     * @return requested classification, or null
+     */
+    public AttachedClassification getClassification(OpenMetadataElement openMetadataElement,
+                                                    String              classificationName)
+    {
+        if ((openMetadataElement != null) && (classificationName != null))
+        {
+            List<AttachedClassification> classifications = openMetadataElement.getClassifications();
+
+            if (classifications != null)
+            {
+                for (AttachedClassification classification : classifications)
+                {
+                    if (classificationName.equals(classification.getClassificationName()))
+                    {
+                        return classification;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract a particular property from a classification if found attached to an open metadata element.
+     *
+     * @param openMetadataElement source element
+     * @param classificationName name of the classification to extract
+     * @param propertyName name of property to extract
+     * @param methodName calling method
+     * @return string property or null
+     */
+    public String getStringPropertyFromClassification(OpenMetadataElement openMetadataElement,
+                                                      String              classificationName,
+                                                      String              propertyName,
+                                                      String              methodName)
+    {
+        AttachedClassification classification = this.getClassification(openMetadataElement, classificationName);
+
+        if (classification != null)
+        {
+            return this.getStringProperty(classificationName,
+                                          propertyName,
+                                          classification.getClassificationProperties(),
+                                          methodName);
+        }
+
+        return null;
     }
 
 

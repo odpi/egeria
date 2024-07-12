@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
@@ -36,6 +37,7 @@ public class DisplayIntegratorContext extends IntegrationContext
      * @param connectorUserId userId for the connector
      * @param serverName name of the integration daemon
      * @param openIntegrationClient client for calling the metadata server
+     * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
      * @param displayApplicationClient client to map request to
      * @param eventClient client to register for events
@@ -53,6 +55,7 @@ public class DisplayIntegratorContext extends IntegrationContext
                                     String                       connectorUserId,
                                     String                       serverName,
                                     OpenIntegrationClient        openIntegrationClient,
+                                    GovernanceConfiguration      governanceConfiguration,
                                     OpenMetadataClient           openMetadataStoreClient,
                                     DisplayApplicationClient     displayApplicationClient,
                                     DataManagerEventClient       eventClient,
@@ -69,6 +72,7 @@ public class DisplayIntegratorContext extends IntegrationContext
               connectorUserId,
               serverName,
               openIntegrationClient,
+              governanceConfiguration,
               openMetadataStoreClient,
               generateIntegrationReport,
               permittedSynchronization,

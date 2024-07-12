@@ -46,7 +46,7 @@ public class CatalogTargetProperties
      *
      * @param template element to copy
      */
-    public CatalogTargetProperties(org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties template)
+    public CatalogTargetProperties(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties template)
     {
         if (template != null)
         {

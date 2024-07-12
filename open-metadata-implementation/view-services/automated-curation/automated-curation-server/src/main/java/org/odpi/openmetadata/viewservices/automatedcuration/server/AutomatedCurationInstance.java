@@ -28,6 +28,7 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
     private final OpenMetadataStoreClient      openMetadataStoreClient;
     private final OpenGovernanceClient         openGovernanceClient;
     private final OpenIntegrationServiceClient openIntegrationServiceClient;
+    private final GovernanceConfigurationClient governanceConfigurationClient;
     private final ConnectedAssetClient         connectedAssetClient;
 
     /**
@@ -67,6 +68,7 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
         openMetadataStoreClient      = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
         openGovernanceClient         = new OpenGovernanceClient(remoteServerName, remoteServerURL, maxPageSize);
         openIntegrationServiceClient = new OpenIntegrationServiceClient(remoteServerName, remoteServerURL, maxPageSize);
+        governanceConfigurationClient = new GovernanceConfigurationClient(remoteServerName, remoteServerURL, maxPageSize);
     }
 
 
@@ -184,7 +186,7 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the open governance client.  This client is from the Governance Action Framework (GAF) and is for
+     * Return the open integration client.  This client is from the Governance Action Framework (GAF) and is for
      * working with automation services.
      *
      * @return client
@@ -192,5 +194,17 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
     public OpenIntegrationServiceClient getOpenIntegrationServiceClient()
     {
         return openIntegrationServiceClient;
+    }
+
+
+    /**
+     * Return the  governance configuration client.  This client is from the Governance Action Framework (GAF) and is for
+     * working with automation services.
+     *
+     * @return client
+     */
+    public GovernanceConfigurationClient getGovernanceConfigurationClient()
+    {
+        return governanceConfigurationClient;
     }
 }

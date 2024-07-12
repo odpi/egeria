@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 
 import java.util.Objects;
 
@@ -28,8 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class WatchdogRelatedElementsEvent extends WatchdogGovernanceEvent
 {
-    private RelatedMetadataElements relatedMetadataElements = null;
-    private RelatedMetadataElements previousRelatedMetadataElements = null;
+    private OpenMetadataRelationship openMetadataRelationship         = null;
+    private OpenMetadataRelationship previousOpenMetadataRelationship = null;
 
 
     /**
@@ -52,8 +52,8 @@ public class WatchdogRelatedElementsEvent extends WatchdogGovernanceEvent
 
         if (template != null)
         {
-            relatedMetadataElements = template.getRelatedMetadataElements();
-            previousRelatedMetadataElements = template.getPreviousRelatedMetadataElements();
+            openMetadataRelationship         = template.getRelatedMetadataElements();
+            previousOpenMetadataRelationship = template.getPreviousRelatedMetadataElements();
         }
     }
 
@@ -63,20 +63,20 @@ public class WatchdogRelatedElementsEvent extends WatchdogGovernanceEvent
      *
      * @return relationship
      */
-    public RelatedMetadataElements getRelatedMetadataElements()
+    public OpenMetadataRelationship getRelatedMetadataElements()
     {
-        return relatedMetadataElements;
+        return openMetadataRelationship;
     }
 
 
     /**
      * Set up the relationship details for the subject of this event.
      *
-     * @param relatedMetadataElements relationship
+     * @param openMetadataRelationship relationship
      */
-    public void setRelatedMetadataElements(RelatedMetadataElements relatedMetadataElements)
+    public void setRelatedMetadataElements(OpenMetadataRelationship openMetadataRelationship)
     {
-        this.relatedMetadataElements = relatedMetadataElements;
+        this.openMetadataRelationship = openMetadataRelationship;
     }
 
 
@@ -86,9 +86,9 @@ public class WatchdogRelatedElementsEvent extends WatchdogGovernanceEvent
      *
      * @return relationship
      */
-    public RelatedMetadataElements getPreviousRelatedMetadataElements()
+    public OpenMetadataRelationship getPreviousRelatedMetadataElements()
     {
-        return previousRelatedMetadataElements;
+        return previousOpenMetadataRelationship;
     }
 
 
@@ -96,11 +96,11 @@ public class WatchdogRelatedElementsEvent extends WatchdogGovernanceEvent
      * For UPDATED_RELATIONSHIP_PROPERTIES only, set up the value is set to the previous values
      * for the relationship, if available.  For other event types, this is null.
      *
-     * @param previousRelatedMetadataElements relationship
+     * @param previousOpenMetadataRelationship relationship
      */
-    public void setPreviousRelatedMetadataElements(RelatedMetadataElements previousRelatedMetadataElements)
+    public void setPreviousRelatedMetadataElements(OpenMetadataRelationship previousOpenMetadataRelationship)
     {
-        this.previousRelatedMetadataElements = previousRelatedMetadataElements;
+        this.previousOpenMetadataRelationship = previousOpenMetadataRelationship;
     }
 
 
@@ -113,8 +113,8 @@ public class WatchdogRelatedElementsEvent extends WatchdogGovernanceEvent
     public String toString()
     {
         return "WatchdogRelatedElementsEvent{" +
-                       "relatedMetadataElements=" + relatedMetadataElements +
-                       ", previousRelatedMetadataElements=" + previousRelatedMetadataElements +
+                       "openMetadataRelationship=" + openMetadataRelationship +
+                       ", previousOpenMetadataRelationship=" + previousOpenMetadataRelationship +
                        ", eventType=" + getEventType() +
                        '}';
     }
@@ -142,8 +142,8 @@ public class WatchdogRelatedElementsEvent extends WatchdogGovernanceEvent
             return false;
         }
         WatchdogRelatedElementsEvent that = (WatchdogRelatedElementsEvent) objectToCompare;
-        return Objects.equals(relatedMetadataElements, that.relatedMetadataElements) &&
-                       Objects.equals(previousRelatedMetadataElements, that.previousRelatedMetadataElements);
+        return Objects.equals(openMetadataRelationship, that.openMetadataRelationship) &&
+                       Objects.equals(previousOpenMetadataRelationship, that.previousOpenMetadataRelationship);
     }
 
 
@@ -155,6 +155,6 @@ public class WatchdogRelatedElementsEvent extends WatchdogGovernanceEvent
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relatedMetadataElements, previousRelatedMetadataElements);
+        return Objects.hash(super.hashCode(), openMetadataRelationship, previousOpenMetadataRelationship);
     }
 }

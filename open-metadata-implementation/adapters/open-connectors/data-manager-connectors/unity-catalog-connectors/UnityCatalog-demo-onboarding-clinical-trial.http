@@ -1,0 +1,157 @@
+
+@ucURL=http://localhost:8080
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+
+###
+# @name findProjects
+# Returns the list of projects matching the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Clinical"
+}
+
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "clinical_trial_drop_foot",
+  "catalog_name" : "unity",
+  "comment": "Example clinical trial used for education and testing of governance procedures."
+}
+
+
+###
+# @name findGovernanceActionTypes (Clinical Trials)
+# Retrieve the list of governance action type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Clinical"
+}
+
+
+
+###
+# @name initiate set-up-data-lake
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "InitiateGovernanceActionTypeRequestBody",
+  "governanceActionTypeQualifiedName": "ClinicalTrials@CocoPharmaceuticals:set-up-data-lake",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "clinicalTrialProject",
+      "actionTargetGUID": "target guid goes here"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "dataLakeSchema",
+      "actionTargetGUID": "target guid goes here"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "volumeTemplate",
+      "actionTargetGUID": "target guid goes here"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "dataLakeRootFolder",
+      "actionTargetGUID": "target guid goes here"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "lastUpdateConnector",
+      "actionTargetGUID": "target guid goes here"
+    }]
+}
+
+###
+# @name initiate onboard-hospital
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "InitiateGovernanceActionTypeRequestBody",
+  "governanceActionTypeQualifiedName": "ClinicalTrials@CocoPharmaceuticals:onboard-hospital",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "clinicalTrialProject",
+      "actionTargetGUID": "target guid goes here"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospital",
+      "actionTargetGUID": "target guid goes here"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "volumeTemplate",
+      "actionTargetGUID": "target guid goes here"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "dataLakeRootFolder",
+      "actionTargetGUID": "target guid goes here"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "lastUpdateConnector",
+      "actionTargetGUID": "target guid goes here"
+    }]
+}
+###
+# @name list volumes
+GET {{ucURL}}/api/2.1/unity-catalog/volumes?catalog_name=unity&schema_name=clinical_trial_drop_foot&max_results=10
+
+###
+# @name create volume
+POST {{ucURL}}/api/2.1/unity-catalog/volumes
+Content-Type: application/json
+
+{
+  "name": "weekly_measurements",
+  "catalog_name" : "unity",
+  "schema_name": "clinical_trial_drop_foot",
+  "comment": "Weekly measurements for patients on clinical trial",
+  "volume_type": "EXTERNAL",
+  "storage_location": "/Users/amandachessell/Code/uc/unitycatalog/etc/data/external/unity/clinical_trial_drop_foot/volumes/weekly_measurements/"
+}
+
+###
+# @name get volume
+GET {{ucURL}}/api/2.1/unity-catalog/volumes/unity.clinical_trial_drop_foot.weekly_measurements
+Content-Type: application/json
+

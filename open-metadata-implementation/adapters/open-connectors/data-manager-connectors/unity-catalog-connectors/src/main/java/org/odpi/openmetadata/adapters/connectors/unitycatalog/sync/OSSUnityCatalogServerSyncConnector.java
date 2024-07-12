@@ -3,34 +3,17 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.CatalogInfo;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
-import org.odpi.openmetadata.frameworks.integration.context.IntegrationGovernanceContext;
-import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
-import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,8 +21,6 @@ import java.util.Map;
  */
 public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnector implements CatalogTargetIntegrator
 {
-    final PropertyHelper propertyHelper = new PropertyHelper();
-
     String defaultFriendshipGUID = null;
 
     /**
@@ -94,6 +75,9 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
                         }
 
                         catalogCatalogs(null,
+                                        "endpoint",
+                                        this.getContext().getPermittedSynchronization(),
+                                        null,
                                         connectionProperties.getConfigurationProperties(),
                                         unityCatalogResourceConnector);
                     }
@@ -138,9 +122,20 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
 
                 OSSUnityCatalogResourceConnector assetConnector = (OSSUnityCatalogResourceConnector) connector;
 
+                assetConnector.setUCInstanceName(connectorName + ":" + requestedCatalogTarget.getCatalogTargetName());
                 assetConnector.start();
 
+                PermittedSynchronization permittedSynchronization = this.getContext().getPermittedSynchronization();
+
+                if (requestedCatalogTarget.getPermittedSynchronization() != null)
+                {
+                    permittedSynchronization = requestedCatalogTarget.getPermittedSynchronization();
+                }
+
                 catalogCatalogs(ucServerGUID,
+                                requestedCatalogTarget.getCatalogTargetName(),
+                                permittedSynchronization,
+                                requestedCatalogTarget.getTemplateProperties(),
                                 requestedCatalogTarget.getConfigurationProperties(),
                                 assetConnector);
 
@@ -172,69 +167,40 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
      * Catalog a catalog retrieved from the requested UC server.
      *
      * @param ucServerGUID unique identifier of the entity representing the Unity Catalog Server
+     * @param catalogTargetName name of the target
+     * @param permittedSynchronization direction of metadata exchange
+     * @param templateProperties names of the templates
      * @param configurationProperties configuration properties
      * @param assetConnector connector to the database server
      * @throws ConnectorCheckedException unrecoverable error
      */
     private void catalogCatalogs(String                           ucServerGUID,
+                                 String                           catalogTargetName,
+                                 PermittedSynchronization         permittedSynchronization,
+                                 Map<String, String>              templateProperties,
                                  Map<String, Object>              configurationProperties,
                                  OSSUnityCatalogResourceConnector assetConnector) throws ConnectorCheckedException
     {
         final String methodName = "catalogCatalogs";
 
-        IntegrationGovernanceContext integrationGovernanceContext = this.getContext().getIntegrationGovernanceContext();
-        OpenMetadataAccess           openMetadataAccess           = integrationGovernanceContext.getOpenMetadataAccess();
-
         try
         {
-            String  ucServerEndpoint = this.getNetworkAddress(assetConnector);
+            String ucServerEndpoint = this.getNetworkAddress(assetConnector);
+            String friendshipConnectorGUID = getFriendshipGUID(configurationProperties);
 
-            List<CatalogInfo>  ucCatalogs = assetConnector.listCatalogs();
+            OSSUnityCatalogInsideCatalogSyncCatalog syncCatalog = new OSSUnityCatalogInsideCatalogSyncCatalog(connectorName,
+                                                                                                              this.getContext(),
+                                                                                                              catalogTargetName,
+                                                                                                              ucServerGUID,
+                                                                                                              friendshipConnectorGUID,
+                                                                                                              permittedSynchronization,
+                                                                                                              assetConnector,
+                                                                                                              ucServerEndpoint,
+                                                                                                              templateProperties,
+                                                                                                              configurationProperties,
+                                                                                                              auditLog);
 
-            if (ucCatalogs != null)
-            {
-                for (CatalogInfo ucCatalog : ucCatalogs)
-                {
-                    if (ucCatalog != null)
-                    {
-                        this.getContext().setMetadataSourceQualifiedName(null);
-
-                        String ucCatalogQualifiedName = "UnityCatalog:" + ucServerEndpoint + ":" + ucCatalog.getName();
-
-                        OpenMetadataElement ucCatalogElement = openMetadataAccess.getMetadataElementByUniqueName(ucCatalogQualifiedName,
-                                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name);
-                        String ucCatalogGUID;
-                        if (ucCatalogElement != null)
-                        {
-                            ucCatalogGUID = ucCatalogElement.getElementGUID();
-                            /*
-                             * Element already catalogued. Update if necessary.
-                             */
-                            openMetadataAccess.updateMetadataElementInStore(ucCatalogElement.getElementGUID(),
-                                                                            false,
-                                                                            this.getElementPropertiesForCatalog(ucCatalogQualifiedName, ucCatalog));
-
-                            this.getContext().setMetadataSourceQualifiedName(ucCatalogGUID, ucCatalogQualifiedName);
-                            this.getContext().updateExternalIdentifier(ucCatalogGUID, OpenMetadataType.CATALOG.typeName, this.getExternalIdentifierProperties(ucCatalog));
-                            this.getContext().confirmSynchronization(ucCatalogGUID, OpenMetadataType.CATALOG.typeName, ucCatalog.getName());
-                        }
-                        else
-                        {
-                            ucCatalogGUID = openMetadataAccess.createMetadataElementInStore(OpenMetadataType.CATALOG.typeName,
-                                                                                            ElementStatus.ACTIVE,
-                                                                                            this.getElementPropertiesForCatalog(ucCatalogQualifiedName, ucCatalog));
-
-                            this.getContext().setMetadataSourceQualifiedName(ucCatalogGUID, ucCatalogQualifiedName);
-                            this.getContext().addExternalIdentifier(ucCatalogGUID,
-                                                                    OpenMetadataType.CATALOG.typeName,
-                                                                    this.getExternalIdentifierProperties(ucCatalog));
-                            addCatalogTarget(ucServerGUID, ucCatalogQualifiedName, ucCatalog.getName(), configurationProperties);
-
-                        }
-                    }
-                }
-            }
-
+            syncCatalog.refresh();
         }
         catch (ConnectorCheckedException exception)
         {
@@ -248,95 +214,6 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
                                                                                         methodName,
                                                                                         exception.getMessage()),
                                   exception);
-        }
-    }
-
-
-    /**
-     * Set up the element properties for a software capability that is to represent a UC Catalog.
-     *
-     * @param catalogQualifiedName qualified name computed from the network address and the name of the catalog.
-     * @param ucCatalog catalog information extracted from UC
-     *
-     * @return element properties suitable for create or update
-     */
-    private ElementProperties getElementPropertiesForCatalog(String      catalogQualifiedName,
-                                                             CatalogInfo ucCatalog)
-    {
-        ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                               catalogQualifiedName);
-
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataProperty.NAME.name,
-                                                             ucCatalog.getName());
-
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataProperty.DESCRIPTION.name,
-                                                             ucCatalog.getComment());
-
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                             DeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType());
-
-        elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                ucCatalog.getProperties());
-
-        return elementProperties;
-    }
-
-
-    /**
-     * Add a catalog target relationship between the UC server's asset and the connector that is able to
-     * catalog inside a UC catalog.  This will start the cataloging of the datasets within this UC catalog.
-     *
-     * @param ucServerGUID unique identifier of the server asset - this is null if the UC Server was passed as an endpoint nor a catalog target
-     * @param ucCatalogQualifiedName qualified name of the UC Catalog's software capability - becomes metadataSourceQualifiedName
-     * @param ucCatalogName name of the catalog - may be used as a placeholder property
-     * @param configurationProperties configuration properties for this server
-     *
-     * @throws ConnectorCheckedException the connector should shut down
-     * @throws InvalidParameterException error from call to the metadata store
-     * @throws PropertyServerException error from call to the metadata store
-     * @throws UserNotAuthorizedException error from call to the metadata store
-     */
-    private void addCatalogTarget(String              ucServerGUID,
-                                  String              ucCatalogQualifiedName,
-                                  String              ucCatalogName,
-                                  Map<String, Object> configurationProperties) throws ConnectorCheckedException,
-                                                                                      InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
-    {
-        final String methodName = "addCatalogTarget";
-
-        if (ucServerGUID != null)
-        {
-            String friendshipConnectorGUID = getFriendshipGUID(configurationProperties);
-
-            if (friendshipConnectorGUID != null)
-            {
-                CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
-
-                catalogTargetProperties.setCatalogTargetName(ucCatalogName);
-                catalogTargetProperties.setMetadataSourceQualifiedName( ucCatalogQualifiedName);
-
-                Map<String, Object> targetConfigurationProperties = new HashMap<>();
-
-                targetConfigurationProperties.put(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(), ucCatalogName);
-
-                catalogTargetProperties.setConfigurationProperties(targetConfigurationProperties);
-
-                String relationshipGUID = getContext().addCatalogTarget(defaultFriendshipGUID, ucServerGUID, catalogTargetProperties);
-
-                auditLog.logMessage(methodName,
-                                    UCAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,
-                                                                                        relationshipGUID,
-                                                                                        friendshipConnectorGUID,
-                                                                                        ucServerGUID,
-                                                                                        ucCatalogName));
-            }
         }
     }
 
@@ -358,25 +235,6 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
         }
 
         return friendshipGUID;
-    }
-
-
-    /**
-     * Populate and return the external identifier properties for a UC catalog.
-     *
-     * @param ucCatalog values from Unity Catalog
-     * @return external identifier properties
-     */
-    private ExternalIdentifierProperties getExternalIdentifierProperties(CatalogInfo ucCatalog)
-    {
-        ExternalIdentifierProperties externalIdentifierProperties = new ExternalIdentifierProperties();
-
-        externalIdentifierProperties.setExternalIdentifier(ucCatalog.getName());
-        externalIdentifierProperties.setExternalIdentifierSource(DeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType());
-        externalIdentifierProperties.setExternalInstanceCreationTime(new Date(ucCatalog.getCreated_at()));
-        externalIdentifierProperties.setExternalInstanceLastUpdateTime(new Date(ucCatalog.getUpdated_at()));
-
-        return externalIdentifierProperties;
     }
 
 

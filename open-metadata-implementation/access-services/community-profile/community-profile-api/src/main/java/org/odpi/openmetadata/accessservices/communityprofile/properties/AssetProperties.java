@@ -19,11 +19,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetProperties extends ReferenceableProperties
 {
-    private String name                 = null;
-    private String versionIdentifier    = null;
-    private String description          = null;
-    private Date   dateAssetCreated     = null;
-    private Date   dateAssetLastUpdated = null;
+    private String name                       = null;
+    private String versionIdentifier          = null;
+    private String description                = null;
+    private String deployedImplementationType = null;
+    private Date   dateAssetCreated           = null;
+    private Date   dateAssetLastUpdated       = null;
 
 
     /**
@@ -49,6 +50,7 @@ public class AssetProperties extends ReferenceableProperties
             this.name = template.getName();
             this.versionIdentifier = template.getVersionIdentifier();
             this.description = template.getDescription();
+            this.deployedImplementationType = template.getDeployedImplementationType();
             this.dateAssetCreated = template.getDateAssetCreated();
             this.dateAssetLastUpdated = template.getDateAssetLastUpdated();
         }
@@ -121,6 +123,29 @@ public class AssetProperties extends ReferenceableProperties
     }
 
 
+
+    /**
+     * Retrieve the name of the technology used for this data asset.
+     *
+     * @return string name
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the name of the technology used for this data asset.
+     *
+     * @param deployedImplementationType string name
+     */
+    public void setDeployedImplementationType(String deployedImplementationType)
+    {
+        this.deployedImplementationType = deployedImplementationType;
+    }
+
+
     /**
      * Return the date that the asset was created.
      *
@@ -189,19 +214,13 @@ public class AssetProperties extends ReferenceableProperties
     public String toString()
     {
         return "AssetProperties{" +
-                       "name='" + name + '\'' +
-                       ", versionIdentifier='" + versionIdentifier + '\'' +
-                       ", description='" + description + '\'' +
-                       ", dateAssetCreated=" + dateAssetCreated +
-                       ", dateAssetLastUpdated=" + dateAssetLastUpdated +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "name='" + name + '\'' +
+                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", description='" + description + '\'' +
+                ", deployedImplementationType='" + deployedImplementationType + '\'' +
+                ", dateAssetCreated=" + dateAssetCreated +
+                ", dateAssetLastUpdated=" + dateAssetLastUpdated +
+                "} " + super.toString();
     }
 
 
@@ -214,40 +233,12 @@ public class AssetProperties extends ReferenceableProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof AssetProperties))
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         AssetProperties that = (AssetProperties) objectToCompare;
-
-        if (name != null ? ! name.equals(that.name) : that.name != null)
-        {
-            return false;
-        }
-        if (versionIdentifier != null ? ! versionIdentifier.equals(that.versionIdentifier) : that.versionIdentifier != null)
-        {
-            return false;
-        }
-        if (description != null ? ! description.equals(that.description) : that.description != null)
-        {
-            return false;
-        }
-        if (dateAssetCreated != null ? ! dateAssetCreated.equals(that.dateAssetCreated) : that.dateAssetCreated != null)
-        {
-            return false;
-        }
-        return dateAssetLastUpdated != null ? dateAssetLastUpdated.equals(that.dateAssetLastUpdated) : that.dateAssetLastUpdated == null;
+        return Objects.equals(name, that.name) && Objects.equals(versionIdentifier, that.versionIdentifier) && Objects.equals(description, that.description) && Objects.equals(deployedImplementationType, that.deployedImplementationType) && Objects.equals(dateAssetCreated, that.dateAssetCreated) && Objects.equals(dateAssetLastUpdated, that.dateAssetLastUpdated);
     }
-
 
     /**
      * Return hash code for this object
@@ -257,7 +248,6 @@ public class AssetProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getName(), getVersionIdentifier(), getDescription(), getDateAssetCreated(),
-                            getDateAssetLastUpdated(), getExtendedProperties(), getAdditionalProperties());
+        return Objects.hash(super.hashCode(), name, versionIdentifier, description, deployedImplementationType, dateAssetCreated, dateAssetLastUpdated);
     }
 }

@@ -153,6 +153,10 @@ public class RepositoryHandler
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
+        catch (InvalidParameterException error)
+        {
+            throw error;
+        }
         catch (Exception error)
         {
             errorHandler.handleRepositoryError(error, methodName, localMethodName);

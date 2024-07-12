@@ -1855,9 +1855,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Create the Patch
          */
-        final String typeName = "SchemaElement";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SCHEMA_ELEMENT.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -1868,13 +1866,9 @@ public class OpenMetadataTypesArchive2_4
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name = "anchorGUID";
-        final String attribute1Description = "Optional identification of the Asset that this schema element is a part of.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID.name,
+                                                           OpenMetadataProperty.ANCHOR_GUID.description,
+                                                           OpenMetadataProperty.ANCHOR_GUID.descriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
 
         properties.add(property);
@@ -2001,9 +1995,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Create the Patch
          */
-        final String typeName = "SchemaAttribute";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -2035,14 +2027,12 @@ public class OpenMetadataTypesArchive2_4
         final String description     = "A field within a schema that is calculated via the formula and query targets rather than stored.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "SchemaType";
-
         ClassificationDef classificationDef =  archiveHelper.getClassificationDef(guid,
                                                                                   name,
                                                                                   null,
                                                                                   description,
                                                                                   descriptionGUID,
-                                                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_TYPE.typeName),
                                                                                   false);
         /*
          * Build the attributes
@@ -2071,11 +2061,9 @@ public class OpenMetadataTypesArchive2_4
         final String description     = "The schema type is defined using an external schema.";
         final String descriptionGUID = null;
 
-        final String superTypeName   = "SchemaType";
-
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_TYPE.typeName),
                                                  description,
                                                  descriptionGUID);
     }
@@ -2101,7 +2089,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SchemaElement";
+        final String                     end1EntityType               = OpenMetadataType.SCHEMA_ELEMENT.typeName;
         final String                     end1AttributeName            = "usedInSchema";
         final String                     end1AttributeDescription     = "Connection point for a reusable schema type.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -2118,13 +2106,12 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "SchemaType";
         final String                     end2AttributeName            = "externalSchemaType";
         final String                     end2AttributeDescription     = "The schema type that is being reused in another schema.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_TYPE.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -2155,14 +2142,13 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SchemaElement";
         final String                     end1AttributeName            = "usedBy";
         final String                     end1AttributeDescription     =
                 "Use of another schema type to derive all or part of this schema type's value.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ELEMENT.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -2173,13 +2159,12 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "SchemaElement";
         final String                     end2AttributeName            = "queryTarget";
         final String                     end2AttributeDescription     = "Used to provide data values to the other schema type.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ELEMENT.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -2220,9 +2205,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Create the Patch
          */
-        final String typeName = "SchemaTypeOption";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -2230,17 +2213,15 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SchemaElement";
         final String                     end1AttributeName            = "schemaOptionalUses";
         final String                     end1AttributeDescription     = "Schema where this schema type is reused.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ELEMENT.typeName),
                                                                                     end1AttributeName,
                                                                                     end1AttributeDescription,
                                                                                     end1AttributeDescriptionGUID,
-                                                                                    end1Cardinality);
+                                                                                    RelationshipEndCardinality.ANY_NUMBER);
         typeDefPatch.setEndDef2(relationshipEndDef);
 
         return typeDefPatch;
@@ -2262,13 +2243,12 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SchemaElement";
         final String                     end1AttributeName            = "parentMapFrom";
         final String                     end1AttributeDescription     = "Used in map to describe the domain (value mapped from).";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ELEMENT.typeName),
                                                                                     end1AttributeName,
                                                                                     end1AttributeDescription,
                                                                                     end1AttributeDescriptionGUID,
@@ -2294,13 +2274,12 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SchemaElement";
         final String                     end1AttributeName            = "parentMapTo";
         final String                     end1AttributeDescription     = "Used in map to describe the range (value mapped to).";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ELEMENT.typeName),
                                                                                     end1AttributeName,
                                                                                     end1AttributeDescription,
                                                                                     end1AttributeDescriptionGUID,

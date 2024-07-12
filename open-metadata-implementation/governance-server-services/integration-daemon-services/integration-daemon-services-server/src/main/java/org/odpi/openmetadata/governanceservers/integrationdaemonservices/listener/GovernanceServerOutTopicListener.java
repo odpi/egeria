@@ -5,7 +5,7 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.listen
 
 
 import org.odpi.openmetadata.accessservices.governanceserver.api.GovernanceServerEventListener;
-import org.odpi.openmetadata.accessservices.governanceserver.client.IntegrationGroupConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceserver.events.GovernanceServerEvent;
 import org.odpi.openmetadata.accessservices.governanceserver.events.IntegrationConnectorConfigurationEvent;
 import org.odpi.openmetadata.accessservices.governanceserver.events.IntegrationGroupConfigurationEvent;
@@ -22,11 +22,11 @@ import java.util.List;
  */
 public class GovernanceServerOutTopicListener extends GovernanceServerEventListener
 {
-    private final String                               groupName;
-    private final IntegrationGroupHandler             groupHandler;
-    private final IntegrationGroupConfigurationClient configurationClient;
-    private final String                              userId;
-    private final AuditLog                             auditLog;
+    private final String                        groupName;
+    private final IntegrationGroupHandler       groupHandler;
+    private final GovernanceConfigurationClient configurationClient;
+    private final String                        userId;
+    private final AuditLog                      auditLog;
 
     /**
      * Constructor for the listener.  Its job is to receive events and pass the information received on to the
@@ -39,11 +39,11 @@ public class GovernanceServerOutTopicListener extends GovernanceServerEventListe
      * @param userId useRId to use when calling the metadata server
      * @param auditLog logging destination
      */
-    public GovernanceServerOutTopicListener(String                               groupName,
-                                            IntegrationGroupHandler              integrationGroupHandler,
-                                            IntegrationGroupConfigurationClient  configurationClient,
-                                            String                               userId,
-                                            AuditLog                             auditLog)
+    public GovernanceServerOutTopicListener(String                        groupName,
+                                            IntegrationGroupHandler       integrationGroupHandler,
+                                            GovernanceConfigurationClient configurationClient,
+                                            String                        userId,
+                                            AuditLog                      auditLog)
     {
         this.groupName                = groupName;
         this.groupHandler             = integrationGroupHandler;

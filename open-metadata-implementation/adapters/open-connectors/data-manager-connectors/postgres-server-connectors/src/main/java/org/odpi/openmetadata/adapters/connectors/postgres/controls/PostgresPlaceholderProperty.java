@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.postgres.controls;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderPropertyType;
 
 import java.util.ArrayList;
@@ -15,16 +16,6 @@ import java.util.List;
  */
 public enum PostgresPlaceholderProperty
 {
-    /**
-     * The host IP address or domain name.
-     */
-    HOST_IDENTIFIER ("hostIdentifier", "The host IP address or domain name.", "string", "coconet.com"),
-
-    /**
-     * The number of the port to use to connect to a service.
-     */
-    PORT_NUMBER ("portNumber", "The number of the port to use to connect to the server.", "string", "1234"),
-
     /**
      * The name of the database being catalogued.
      */
@@ -57,15 +48,6 @@ public enum PostgresPlaceholderProperty
                        "string",
                        "myDatabase"),
 
-    /**
-     * The name of the server being catalogued.
-     */
-    SERVER_NAME ("serverName", "The name of the server being catalogued.", "string", "myServer"),
-
-    /**
-     * The description of the server being catalogued.
-     */
-    SERVER_DESCRIPTION ("serverDescription", "The description of the server being catalogued.", "string", null),
 
     /**
      * The name of the schema being catalogued.
@@ -173,10 +155,10 @@ public enum PostgresPlaceholderProperty
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholderType());
 
@@ -193,9 +175,9 @@ public enum PostgresPlaceholderProperty
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
@@ -214,9 +196,9 @@ public enum PostgresPlaceholderProperty
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholderType());

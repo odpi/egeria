@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClas
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
-import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationReportProperties;
 
 import java.util.*;
 

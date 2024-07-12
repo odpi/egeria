@@ -80,6 +80,7 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
     {
         super.openIntegrationClient = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
         super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
+        super.governanceConfiguration = new GovernanceConfigurationClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
 
         CommunityProfileRESTClient restClient;
 
@@ -196,6 +197,7 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
                                                                                                 connectorUserId,
                                                                                                 partnerOMASServerName,
                                                                                                 openIntegrationClient,
+                                                                                                governanceConfiguration,
                                                                                                 openMetadataStoreClient,
                                                                                                 organizationManagement,
                                                                                                 securityGroupManagement,

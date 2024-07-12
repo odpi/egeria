@@ -3,8 +3,8 @@
 
 package org.odpi.openmetadata.governanceservers.enginehostservices.registration;
 
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -38,7 +38,7 @@ public abstract class GovernanceEngineHandlerFactory
                                                                           String                              localServerPassword,
                                                                           String                              partnerServerName,
                                                                           String                              partnerURLRoot,
-                                                                          GovernanceEngineConfigurationClient configurationClient,
+                                                                          GovernanceConfigurationClient configurationClient,
                                                                           GovernanceContextClient             serverClient,
                                                                           AuditLog                            auditLog,
                                                                           int                                 maxPageSize) throws InvalidParameterException;

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datascience.client;
 
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
@@ -18,7 +19,7 @@ import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.Con
  */
 public class ConnectedAssetClient extends ConnectedAssetClientBase
 {
-    private static final String  serviceURLName = "data-science";
+    private static final String  serviceURLName = AccessServiceDescription.DATA_SCIENCE_OMAS.getAccessServiceURLMarker();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.

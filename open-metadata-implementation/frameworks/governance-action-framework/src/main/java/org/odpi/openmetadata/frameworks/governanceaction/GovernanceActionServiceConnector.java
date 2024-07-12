@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public abstract class GovernanceActionServiceConnector extends ConnectorBase imp
     protected String          governanceServiceName = "<Unknown>";
     protected AuditLog        auditLog = null;
     protected List<Connector> embeddedConnectors = null;
+    protected PropertyHelper  propertyHelper = new PropertyHelper();
 
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it

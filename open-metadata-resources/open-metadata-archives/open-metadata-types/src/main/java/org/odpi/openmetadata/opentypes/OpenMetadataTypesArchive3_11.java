@@ -1677,13 +1677,12 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "SchemaType";
         final String                     end2AttributeName            = "solutionPortSchema";
         final String                     end2AttributeDescription     = "Structure of the solution port's data.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_TYPE.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,

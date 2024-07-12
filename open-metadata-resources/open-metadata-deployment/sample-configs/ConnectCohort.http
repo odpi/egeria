@@ -1,0 +1,40 @@
+#
+# These commands connect simple-metadata-store and active-metadata-store together in a cohort called "sinpleCohort".
+# They use IntelliJ's HTTP Client.
+#
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+@cohort=sampleCohort
+
+# ---------------------------------------------
+# Metadata Assess Store: simple-metadata-store
+#
+###
+# The Cohort uses Apache Kafka and so simple-metadata-store need information about your kafka.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/event-bus
+Content-Type: application/json
+
+{
+    "producer": {
+        "bootstrap.servers": "{{kafkaep}}"
+    },
+    "consumer":{
+        "bootstrap.servers": "{{kafkaep}}"
+    }
+}
+
+###
+# Add the server to the cohort.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/cohorts/{{cohort}}
+
+
+###
+# ---------------------------------------------
+# Metadata Assess Store: active-metadata-store
+#
+##
+# Add the server to the cohort.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/cohorts/{{cohort}}
+
+
+###

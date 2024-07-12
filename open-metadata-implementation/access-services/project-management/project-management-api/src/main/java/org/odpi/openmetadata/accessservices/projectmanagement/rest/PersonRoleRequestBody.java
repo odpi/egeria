@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.projectmanagement.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.PersonRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
 
 import java.util.Objects;
 
