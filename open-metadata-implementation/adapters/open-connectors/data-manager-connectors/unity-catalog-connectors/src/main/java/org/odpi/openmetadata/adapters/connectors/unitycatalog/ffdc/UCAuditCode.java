@@ -97,6 +97,41 @@ public enum UCAuditCode implements AuditLogMessageSet
                       "The connector has requested that its friendship connector starts to catalog a new Unity Catalog (UC) catalog.",
                       "Verify that the cataloguing starts the next time that the friendship connector refreshes."),
 
+    IDENTITY_MISMATCH("UNITY-CATALOG-CONNECTOR-0010",
+                       AuditLogRecordSeverityLevel.ACTION,
+                       "The {0} Connector has detected a change in the identity of element {1}.  The original id was {2} and now it is {3} in Unity Catalog (UC) {4}",
+                       "The connector will continue to synchronize metadata with Unity Catalog (UC) catalog.",
+                       "Verify that the element is being correctly synchronized.  It is possible that there are two different elements with the same name. Also investigate why this element changed in Unity Catalog when it is owned by the open metadata ecosystem.  It may be that the structure of the element was changed and the UC element was replaced to reflect the new data structure.  If this is a planned change then all is ok, if it is unexpected then take steps to repair the data source and prevent it happening again."),
+
+    TABLE_UPDATE("UNITY-CATALOG-CONNECTOR-0011",
+                 AuditLogRecordSeverityLevel.ACTION,
+                 "The {0} Connector has detected a change in the open metadata that controls the definition of table {1} but is unable to update the table in Unity Catalog (UC) at {2}",
+                 "The connector will continue to synchronize metadata with Unity Catalog (UC) catalog.  However, this table will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog does not support an update request.",
+                 "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the table in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source."),
+
+    VOLUME_UPDATE("UNITY-CATALOG-CONNECTOR-0012",
+                 AuditLogRecordSeverityLevel.ACTION,
+                 "The {0} Connector has detected a change in the open metadata element {1} that controls the definition of volume {2} but is unable to update the volume in Unity Catalog (UC) at {3}",
+                 "The connector will continue to synchronize metadata with Unity Catalog (UC) catalog.  However, this volume will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog does not support a full update request.",
+                 "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the volume in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying data source."),
+
+    FUNCTION_UPDATE("UNITY-CATALOG-CONNECTOR-0013",
+                  AuditLogRecordSeverityLevel.ACTION,
+                  "The {0} Connector has detected a change in the open metadata element {1} that controls the definition of function {2} but is unable to update the function in Unity Catalog (UC) at {3}",
+                  "The connector will continue to synchronize metadata with Unity Catalog (UC) catalog.  However, this function will remain unchanged and out of sync with the open metadata ecosystem because Unity Catalog does not support a full update request.",
+                  "Validate that the change in the open metadata ecosystem is intended.  If it is, manually update the volume in Unity Catalog using the CLI.  There may also need to be some data migration in the underlying called data sources."),
+
+    UC_ELEMENT_DELETE("UNITY-CATALOG-CONNECTOR-0014",
+                  AuditLogRecordSeverityLevel.INFO,
+                  "The {0} Connector has detected that the open metadata element that controls the definition of element {1} in Unity Catalog (UC) at {2} has been deleted",
+                  "The connector will delete the element in Unity Catalog (UC) catalog.",
+                  "Validate that the change in the open metadata ecosystem is intended.  If it is, no additional action is required.  If the element is still required, investigate what happened to the element in the open metadata ecosystem.   It may have moved zones or metadata collections or its security controls changed, making it invisible to the connector.  Or it may have been soft-deleted which means it can be restored."),
+
+    MISSING_METHOD("UNITY-CATALOG-CONNECTOR-0015",
+                  AuditLogRecordSeverityLevel.ACTION,
+                  "The {0} Connector has called method {1} that is not implemented and so is not able to synchronize element {2} with the Unity Catalog (UC) at {3}",
+                  "The connector will continue to synchronize metadata with Unity Catalog (UC) catalog.  However, the current element will remain unchanged and out of sync with the open metadata ecosystem.",
+                  "Update the connector code to implement this method."),
     ;
 
     private final String                     logMessageId;

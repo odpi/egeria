@@ -3,17 +3,20 @@
 package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CollectionType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
+import org.odpi.openmetadata.samples.archiveutilities.organization.OrganizationDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 
 /**
@@ -53,6 +56,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
     {
         writeDomains();
         writeLicenseTypes();
+        writeCertificationTypes();
         writeZones();
         writeSubjectAreaDefinitions();
         writeCommunities();
@@ -155,6 +159,33 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
         }
     }
 
+
+    /**
+     * Creates CertificationType definitions.
+     */
+    private void writeCertificationTypes()
+    {
+        for (CertificationTypeDefinition certificationTypeDefinition : CertificationTypeDefinition.values())
+        {
+            Map<String, Object> extendedProperties = new HashMap<>();
+
+            extendedProperties.put(OpenMetadataType.DETAILS_PROPERTY_NAME, certificationTypeDefinition.getDetails());
+
+            archiveHelper.addGovernanceDefinition(OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                                                  certificationTypeDefinition.getQualifiedName(),
+                                                  certificationTypeDefinition.getTitle(),
+                                                  certificationTypeDefinition.getSummary(),
+                                                  certificationTypeDefinition.getScope().getPreferredValue(),
+                                                  certificationTypeDefinition.getDescription(),
+                                                  0,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  extendedProperties);
+        }
+    }
 
 
 
@@ -421,5 +452,46 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
 
             }
         }
+
+        archiveHelper.addGovernedByRelationship(ProjectDefinition.CLINICAL_TRIALS.getQualifiedName(),
+                                                CertificationTypeDefinition.DROP_FOOT_APPROVED_HOSPITAL.getQualifiedName());
+
+        String oakDeneGUID = archiveHelper.queryGUID(OrganizationDefinition.OAK_DENE.getQualifiedName());
+        String hamptonGUID = archiveHelper.queryGUID(OrganizationDefinition.HAMPTON.getQualifiedName());
+        String dropFootGUID = archiveHelper.queryGUID(CertificationTypeDefinition.DROP_FOOT_APPROVED_HOSPITAL.getQualifiedName());
+
+        archiveHelper.addCertification(oakDeneGUID,
+                                       UUID.randomUUID().toString(),
+                                       new Date(),
+                                       null,
+                                       null,
+                                       PersonDefinition.TESSA_TUBE.getQualifiedName(),
+                                       OpenMetadataType.PERSON_TYPE_NAME,
+                                       OpenMetadataProperty.QUALIFIED_NAME.name,
+                                       PersonDefinition.TANYA_TIDIE.getQualifiedName(),
+                                       OpenMetadataType.PERSON_TYPE_NAME,
+                                       OpenMetadataProperty.QUALIFIED_NAME.name,
+                                       PersonDefinition.ROBBIE_RECORDS.getQualifiedName(),
+                                       OpenMetadataType.PERSON_TYPE_NAME,
+                                       OpenMetadataProperty.QUALIFIED_NAME.name,
+                                       null,
+                                       dropFootGUID);
+
+        archiveHelper.addCertification(hamptonGUID,
+                                       UUID.randomUUID().toString(),
+                                       new Date(),
+                                       null,
+                                       null,
+                                       PersonDefinition.TESSA_TUBE.getQualifiedName(),
+                                       OpenMetadataType.PERSON_TYPE_NAME,
+                                       OpenMetadataProperty.QUALIFIED_NAME.name,
+                                       PersonDefinition.TANYA_TIDIE.getQualifiedName(),
+                                       OpenMetadataType.PERSON_TYPE_NAME,
+                                       OpenMetadataProperty.QUALIFIED_NAME.name,
+                                       PersonDefinition.GRANT_ABLE.getQualifiedName(),
+                                       OpenMetadataType.PERSON_TYPE_NAME,
+                                       OpenMetadataProperty.QUALIFIED_NAME.name,
+                                       null,
+                                       dropFootGUID);
     }
 }

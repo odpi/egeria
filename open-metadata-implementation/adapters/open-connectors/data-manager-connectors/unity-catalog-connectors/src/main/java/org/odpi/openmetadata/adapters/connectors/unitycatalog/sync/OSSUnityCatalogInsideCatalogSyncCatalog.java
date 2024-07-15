@@ -38,8 +38,6 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
     private final String ucServerGUID;
 
     private final String parentLinkTypeName = OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName;
-    private final boolean parentAtEnd1 = true;
-    private final int     parentAtEnd = 1;
 
 
     /**
@@ -105,6 +103,7 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
     {
         final String methodName = "refreshEgeria";
 
+        int parentAtEnd = 1;
         RelatedElementsIterator iterator = new RelatedElementsIterator(this.context.getMetadataSourceGUID(),
                                                                        this.context.getMetadataSourceQualifiedName(),
                                                                        catalogTargetName,
@@ -236,6 +235,7 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
         String ucCatalogGUID;
         String qualifiedName = super.getQualifiedName(catalogInfo.getName());
 
+        boolean parentAtEnd1 = true;
         if (templateGUID != null)
         {
             ucCatalogGUID = openMetadataAccess.createMetadataElementFromTemplate(deployedImplementationType.getAssociatedTypeName(),
@@ -278,22 +278,25 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
         context.setMetadataSourceQualifiedName(ucCatalogGUID, qualifiedName);
         context.addExternalIdentifier(ucCatalogGUID,
                                       OpenMetadataType.CATALOG.typeName,
-                                      this.getExternalIdentifierProperties(catalogInfo, null));
-        addCatalogTarget(ucServerGUID, qualifiedName, catalogInfo.getName(), configurationProperties);
+                                      this.getExternalIdentifierProperties(catalogInfo,
+                                                                           null,
+                                                                           UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
+                                                                           catalogInfo.getId()));
+        addCatalogTarget(ucServerGUID, qualifiedName, catalogInfo.getName(), templates, configurationProperties);
     }
 
 
     /**
      * Update an element in open metadata.
      *
-     * @param info object from UC
+     * @param catalogInfo object from UC
      * @param memberElement existing element in egeria
      *
      * @throws InvalidParameterException parameter error
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException authorization error
      */
-    protected void updateElementInEgeria(CatalogInfo   info,
+    protected void updateElementInEgeria(CatalogInfo   catalogInfo,
                                          MemberElement memberElement) throws InvalidParameterException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
@@ -301,15 +304,18 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
         String egeriaCatalogGUID = memberElement.getElement().getElementGUID();
 
         openMetadataAccess.updateMetadataElementInStore(egeriaCatalogGUID,
-                                                        false, getElementProperties(info));
+                                                        false, getElementProperties(catalogInfo));
 
         context.updateExternalIdentifier(egeriaCatalogGUID,
                                          deployedImplementationType.getAssociatedTypeName(),
-                                         this.getExternalIdentifierProperties(info, info.getName()));
+                                         this.getExternalIdentifierProperties(catalogInfo,
+                                                                              null,
+                                                                              UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
+                                                                              catalogInfo.getId()));
 
         context.confirmSynchronization(egeriaCatalogGUID,
                                        deployedImplementationType.getAssociatedTypeName(),
-                                       info.getName());
+                                       catalogInfo.getName());
     }
 
 
@@ -338,10 +344,10 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
     private void updateElementInThirdParty(CatalogInfo    catalogInfo,
                                            MemberElement memberElement) throws PropertyServerException
     {
-        CatalogInfo newInfo = ucConnector.updateCatalog(catalogInfo.getName(),
-                                                        this.getUCNameFromMember(memberElement),
-                                                        this.getUCCommentFomMember(memberElement),
-                                                        this.getUCPropertiesFomMember(memberElement));
+        ucConnector.updateCatalog(catalogInfo.getName(),
+                                  this.getUCNameFromMember(memberElement),
+                                  this.getUCCommentFomMember(memberElement),
+                                  this.getUCPropertiesFomMember(memberElement));
     }
 
 
@@ -435,6 +441,7 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
      * @param ucServerGUID unique identifier of the server asset - this is null if the UC Server was passed as an endpoint nor a catalog target
      * @param ucCatalogQualifiedName qualified name of the UC Catalog's software capability - becomes metadataSourceQualifiedName
      * @param ucCatalogName name of the catalog - may be used as a placeholder property
+     * @param templates list of templates
      * @param configurationProperties configuration properties for this server
      *
      * @throws InvalidParameterException error from call to the metadata store
@@ -444,6 +451,7 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
     private void addCatalogTarget(String              ucServerGUID,
                                   String              ucCatalogQualifiedName,
                                   String              ucCatalogName,
+                                  Map<String, String> templates,
                                   Map<String, Object> configurationProperties) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
@@ -458,6 +466,7 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
 
                 catalogTargetProperties.setCatalogTargetName(ucCatalogName);
                 catalogTargetProperties.setMetadataSourceQualifiedName(ucCatalogQualifiedName);
+                catalogTargetProperties.setTemplateProperties(templates);
 
                 Map<String, Object> targetConfigurationProperties = new HashMap<>();
 

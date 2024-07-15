@@ -16,11 +16,11 @@ import java.util.List;
  */
 public enum CocoClinicalTrialPlaceholderProperty
 {
-    CLINICAL_TRIAL_ID("clinicalTrialId", "Add the identifier of the clinical trial.", "string", "xxx"),
-    CLINICAL_TRIAL_NAME("clinicalTrialName", "Add the display name of the clinical trial.", "string", "xxx"),
-    HOSPITAL_NAME("hospitalName", "Add the name of the hospital that sent the measurements.", "string", "xxx"),
-    CONTACT_NAME("contactName", "Add the name of the person at the hospital who is responsible for supplying the measurements.", "string", "xxx"),
-    CONTACT_DEPT("contactDept", "Add the hospital department where the contact name works.", "string", "xxx"),
+    CLINICAL_TRIAL_ID("clinicalTrialId", "Add the identifier of the clinical trial.", "string", "PROJ-CT-TBDF"),
+    CLINICAL_TRIAL_NAME("clinicalTrialName", "Add the display name of the clinical trial.", "string", "Teddy Bear Drop Foot"),
+    HOSPITAL_NAME("hospitalName", "Add the name of the hospital that sent the measurements.", "string", "Oak Dene Hospital"),
+    CONTACT_NAME("contactName", "Add the name of the person at the hospital who is responsible for supplying the measurements.", "string", "Robbie Records"),
+    CONTACT_EMAIL("contactEmail", "Add the email used to contact the person from the hospital.", "string", "RobbieRec@oak-dene.org"),
     ;
 
     public final String           name;

@@ -92,8 +92,8 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
      */
     private String getAssetGovernanceEngine()
     {
-        final String assetGovernanceEngineName        = "AssetGovernance";
-        final String assetGovernanceEngineDisplayName = "AssetGovernance Governance Action Engine";
+        final String assetGovernanceEngineName        = "AssetGovernance@CocoPharmaceuticals";
+        final String assetGovernanceEngineDisplayName = "Asset Governance Governance Action Engine";
         final String assetGovernanceEngineDescription = "Monitors, validates and enriches metadata relating to assets.";
 
         return archiveHelper.addGovernanceEngine(OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
@@ -116,8 +116,8 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
      */
     private String getAssetDiscoveryEngine()
     {
-        final String assetDiscoveryEngineName        = "AssetDiscovery";
-        final String assetDiscoveryEngineDisplayName = "AssetDiscovery Survey Action Engine";
+        final String assetDiscoveryEngineName        = "AssetDiscovery@CocoPharmaceuticals";
+        final String assetDiscoveryEngineDisplayName = "Asset Discovery Survey Action Engine";
         final String assetDiscoveryEngineDescription = "Extracts metadata about a digital resource and attach it to its asset description.";
 
         return archiveHelper.addGovernanceEngine(OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
@@ -140,8 +140,8 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
      */
     private String getAssetQualityEngine()
     {
-        final String assetQualityEngineName        = "AssetQuality";
-        final String assetQualityEngineDisplayName = "AssetQuality Survey Action Engine";
+        final String assetQualityEngineName        = "AssetQuality@CocoPharmaceuticals";
+        final String assetQualityEngineDisplayName = "Asset Quality Survey Action Engine";
         final String assetQualityEngineDescription = "Assess the quality of a digital resource identified by the asset in the request.";
 
         return archiveHelper.addGovernanceEngine(OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,

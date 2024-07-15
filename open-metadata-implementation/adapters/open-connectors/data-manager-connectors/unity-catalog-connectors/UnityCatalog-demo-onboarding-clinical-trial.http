@@ -19,6 +19,13 @@ Content-Type: application/json
 > {% client.global.set("token", response.body); %}
 
 
+###
+# =====================================================================================================================
+# A governance action process describes a well-defined series of steps that gets something done.
+# The commands below will help you find and underatns the process that provisions fromed from the landing area into
+# Coco Data Lake.
+
+@projectGUID=a2915132-9d9a-4449-846f-43a871b5a6a0
 
 ###
 # @name findProjects
@@ -52,7 +59,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Clinical"
+  "filter" : "onboard-hospital"
 }
 
 
@@ -95,8 +102,42 @@ Content-Type: application/json
     }]
 }
 
+
 ###
-# @name initiate onboard-hospital
+# =====================================================================================================================
+# A governance action process describes a well-defined series of steps that gets something done.
+# The commands below will help you find and underatns the process that provisions fromed from the landing area into
+# Coco Data Lake.
+
+@newElementProcessName=Coco:GovernanceActionProcess:ClinicalTrials:WeeklyMeasurements:Onboarding
+@newElementProcessGUID=508d3878-8eae-47e5-8507-ee936f33b418
+
+
+###
+# @name getGovernanceActionProcessesByName
+# Retrieve the list of governance action process metadata elements with a matching qualified or display name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/by-name?
+    startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "{{newElementProcessName}}"
+}
+
+
+###
+# @name=getAssetGraph for New Element Process
+# Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{newElementProcessGUID}}/as-graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name initiate onboard-hospital (Oak Dene)
 # Using the named governance action type as a template, initiate a single engine action.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
 Authorization: Bearer {{token}}
@@ -118,20 +159,31 @@ Content-Type: application/json
     },
     {
       "class" : "NewActionTarget",
-      "actionTargetName": "volumeTemplate",
+      "actionTargetName": "hospitalTemplate",
       "actionTargetGUID": "target guid goes here"
     },
     {
       "class" : "NewActionTarget",
-      "actionTargetName": "dataLakeRootFolder",
+      "actionTargetName": "newElementProcess",
+      "actionTargetGUID": "{{newElementProcessGUID}}"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "landingAreaConnector",
       "actionTargetGUID": "target guid goes here"
     },
     {
       "class" : "NewActionTarget",
-      "actionTargetName": "lastUpdateConnector",
+      "actionTargetName": "landingAreaFolder",
+      "actionTargetGUID": "target guid goes here"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "contactPerson",
       "actionTargetGUID": "target guid goes here"
     }]
 }
+
 ###
 # @name list volumes
 GET {{ucURL}}/api/2.1/unity-catalog/volumes?catalog_name=unity&schema_name=clinical_trial_drop_foot&max_results=10

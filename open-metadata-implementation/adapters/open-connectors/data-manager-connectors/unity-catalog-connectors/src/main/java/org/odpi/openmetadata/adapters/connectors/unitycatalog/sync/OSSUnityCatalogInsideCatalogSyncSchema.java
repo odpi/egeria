@@ -233,7 +233,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                                                 null,
                                                                                 null,
                                                                                 templateGUID,
-                                                                                this.getElementProperties(super.getQualifiedName(schemaInfo.getFull_name()), schemaInfo),
+                                                                                null,
                                                                                 this.getPlaceholderProperties(schemaInfo),
                                                                                 context.getAssetManagerGUID(),
                                                                                 parentLinkTypeName,
@@ -252,7 +252,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                                            false,
                                                                            null,
                                                                            null,
-                                                                           this.getElementProperties(schemaInfo),
+                                                                           this.getElementProperties(super.getQualifiedName(schemaInfo.getFull_name()), schemaInfo),
                                                                            context.getAssetManagerGUID(),
                                                                            parentLinkTypeName,
                                                                            propertyHelper.addEnumProperty(null,
@@ -264,7 +264,10 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
 
         context.addExternalIdentifier(ucSchemaGUID,
                                       deployedImplementationType.getAssociatedTypeName(),
-                                      this.getExternalIdentifierProperties(schemaInfo, schemaInfo.getName()));
+                                      this.getExternalIdentifierProperties(schemaInfo,
+                                                                           schemaInfo.getName(),
+                                                                           PlaceholderProperty.SCHEMA_NAME.getName(),
+                                                                           schemaInfo.getSchema_id()));
 
         ucFullNameToEgeriaGUID.put(schemaInfo.getFull_name(), ucSchemaGUID);
     }
@@ -275,14 +278,14 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
     /**
      * Update an element in open metadata.
      *
-     * @param info object from UC
+     * @param schemaInfo object from UC
      * @param memberElement existing element in egeria
      *
      * @throws InvalidParameterException parameter error
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException authorization error
      */
-    protected void updateElementInEgeria(SchemaInfo    info,
+    protected void updateElementInEgeria(SchemaInfo    schemaInfo,
                                          MemberElement memberElement) throws InvalidParameterException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
@@ -290,15 +293,18 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         String egeriaSchemaGUID = memberElement.getElement().getElementGUID();
 
         openMetadataAccess.updateMetadataElementInStore(egeriaSchemaGUID,
-                                                        false, getElementProperties(info));
+                                                        false, getElementProperties(schemaInfo));
 
         context.updateExternalIdentifier(egeriaSchemaGUID,
                                          deployedImplementationType.getAssociatedTypeName(),
-                                         this.getExternalIdentifierProperties(info, info.getName()));
+                                         this.getExternalIdentifierProperties(schemaInfo,
+                                                                              schemaInfo.getName(),
+                                                                              PlaceholderProperty.SCHEMA_NAME.getName(),
+                                                                              schemaInfo.getSchema_id()));
 
         context.confirmSynchronization(egeriaSchemaGUID,
                                        deployedImplementationType.getAssociatedTypeName(),
-                                       info.getName());
+                                       schemaInfo.getName());
     }
 
 

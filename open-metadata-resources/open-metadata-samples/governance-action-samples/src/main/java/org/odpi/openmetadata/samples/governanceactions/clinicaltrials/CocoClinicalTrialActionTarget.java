@@ -26,6 +26,16 @@ public enum CocoClinicalTrialActionTarget
             null,
             true),
 
+
+    /**
+     * Project used to control the clinical trial.
+     */
+    HOSPITAL("hospital",
+            "Hospital that will be supplying data for the clinical trial.",
+            OpenMetadataType.ORGANIZATION_TYPE_NAME,
+            null,
+            true),
+
     /**
      * Schema where the weekly measurements volume is to reside.
      */
@@ -34,7 +44,6 @@ public enum CocoClinicalTrialActionTarget
            OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
            null,
            true),
-
 
     /**
      * Template used to catalog the new volume.
@@ -46,10 +55,28 @@ public enum CocoClinicalTrialActionTarget
                     true),
 
     /**
+     * Template used to catalog the landing area folder for a particular hospital.
+     */
+    HOSPITAL_TEMPLATE("hospitalTemplate",
+                      "Template used to catalog the landing area folder for a particular hospital.",
+                      OpenMetadataType.FILE_FOLDER.typeName,
+                      null,
+                      true),
+
+    /**
      * Folder describing the root directory for the data lake.
      */
     ROOT_FOLDER("dataLakeRootFolder",
                 "Folder describing the root directory for the data lake.",
+                OpenMetadataType.FILE_FOLDER.typeName,
+                null,
+                true),
+
+    /**
+     * Folder describing the place where new files will be stored by the hospital.
+     */
+    LANDING_AREA_FOLDER("landingAreaFolder",
+                "Folder describing the place where new files will be stored by the hospital.",
                 OpenMetadataType.FILE_FOLDER.typeName,
                 null,
                 true),
@@ -63,10 +90,36 @@ public enum CocoClinicalTrialActionTarget
                     null,
                     false),
 
+    /**
+     * Integration connector that maintains the last update date for the volume.
+     */
+    LANDING_AREA_CONNECTOR("landingAreaConnector",
+                          "Integration connector that maintains the last update date for the volume.",
+                          DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                          null,
+                          true),
+
+
+    /**
+     * The process that should run to provision files from the landing area into the data lake.
+     */
+    NEW_ELEMENT_PROCESS("newElementProcess",
+                        "The process that should run to provision files from the landing area into the data lake.",
+                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                        null,
+                        true),
+
+
+    /**
+     * The person who can be contacted if there are problems with the data from this hospital.
+     */
+    CONTACT_PERSON("contactPerson",
+                        "The person who can be contacted if there are problems with the data from this hospital.",
+                        OpenMetadataType.PERSON_TYPE_NAME,
+                        null,
+                        true),
 
     ;
-
-
 
     /**
      * Action target name
@@ -78,12 +131,10 @@ public enum CocoClinicalTrialActionTarget
      */
     public final String description;
 
-
     /**
      * The open metadata type name of the element that can be this type of action target.
      */
     public final String typeName;
-
 
     /**
      * The deployed implementation type allows the service to be more specific about the resources it works with.
@@ -94,6 +145,7 @@ public enum CocoClinicalTrialActionTarget
      * Is this ActionTarget required for the service to work successfully.
      */
     private final boolean required;
+
 
     /**
      * Constructor for the enum.
@@ -123,14 +175,17 @@ public enum CocoClinicalTrialActionTarget
      *
      * @return list
      */
-    public static List<ActionTargetType> getActionTargetTypes()
+    public static List<ActionTargetType> getHospitalActionTargetTypes()
     {
         List<ActionTargetType> actionTargetTypes = new ArrayList<>();
 
-        for (CocoClinicalTrialActionTarget actionTarget : CocoClinicalTrialActionTarget.values())
-        {
-            actionTargetTypes.add(actionTarget.getActionTargetType());
-        }
+        actionTargetTypes.add(PROJECT.getActionTargetType());
+        actionTargetTypes.add(HOSPITAL.getActionTargetType());
+        actionTargetTypes.add(HOSPITAL_TEMPLATE.getActionTargetType());
+        actionTargetTypes.add(LANDING_AREA_CONNECTOR.getActionTargetType());
+        actionTargetTypes.add(LANDING_AREA_FOLDER.getActionTargetType());
+        actionTargetTypes.add(NEW_ELEMENT_PROCESS.getActionTargetType());
+        actionTargetTypes.add(CONTACT_PERSON.getActionTargetType());
 
         return actionTargetTypes;
     }
@@ -149,6 +204,7 @@ public enum CocoClinicalTrialActionTarget
         actionTargetTypes.add(SCHEMA.getActionTargetType());
         actionTargetTypes.add(ROOT_FOLDER.getActionTargetType());
         actionTargetTypes.add(VOLUME_TEMPLATE.getActionTargetType());
+        actionTargetTypes.add(LAST_UPDATE_CONNECTOR.getActionTargetType());
 
         return actionTargetTypes;
     }

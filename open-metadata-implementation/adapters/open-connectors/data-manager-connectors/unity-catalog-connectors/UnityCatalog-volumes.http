@@ -3,7 +3,7 @@
 
 ###
 # @name list volumes
-GET {{ucURL}}/api/2.1/unity-catalog/volumes?catalog_name=unity&schema_name=clinical_trial_drop_foot&max_results=10
+GET {{ucURL}}/api/2.1/unity-catalog/volumes?catalog_name=unity&schema_name=default&max_results=10
 
 ###
 # @name create volume

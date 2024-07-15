@@ -194,6 +194,18 @@ public class GovernanceActionContext implements GovernanceContext,
 
 
     /**
+     * Return the maximum number of elements that can be returned on a request.
+     *
+     * @return int
+     */
+    @Override
+    public int getMaxPageSize()
+    {
+        return openMetadataClient.getMaxPagingSize();
+    }
+
+
+    /**
      * Create an incident report to capture the situation detected by this governance action service.
      * This incident report will be processed by other governance activities.
      *

@@ -90,7 +90,7 @@ dependencies {
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
     implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample')
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types-utility')
-    implementation project(':open-metadata-resources:open-metadata-archives:open-connector-archives')
+    implementation project(':open-metadata-resources:open-metadata-archives:core-content-pack')
     implementation project(':open-metadata-resources:open-metadata-samples:sample-metadata:big-glossaries')
     implementation project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples')
     implementation project(':open-metadata-resources:open-metadata-samples:governance-action-samples')
@@ -289,9 +289,9 @@ distributions {
                 from { "$rootProject.projectDir/open-metadata-distribution/omag-server-platform/docs/opt" }
                 fileMode = 0755
             }
-            into('assembly/opt') {
-                from(rootProject.projectDir) {
-                    include 'sample-data/*/*'
+            into('assembly/opt/coco-pharmaceuticals') {
+                from("$rootProject.projectDir/open-metadata-resources/open-metadata-samples/sample-data") {
+                    include '*/*'
                 }
                 fileMode = 0755
             }

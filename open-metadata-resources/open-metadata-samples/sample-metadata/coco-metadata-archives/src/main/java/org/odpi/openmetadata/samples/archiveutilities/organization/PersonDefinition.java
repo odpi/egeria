@@ -486,12 +486,12 @@ public enum PersonDefinition
                    null,
                    CountryCodeDefinition.USA,
                    EmployeeTypeDefinition.PARTNER,
-                   "Patient Data Manager (Hampton Hospital)",
+                   "Patient Data Manager (Oak Dene Hospital)",
                    null,
                    "robbierecords",
                    "cn=robbierecords,ou=people,ou=users,o=cocoPharma",
-                   "RobbieRec@hh-care.org",
-                   WorkLocationDefinition.HAMPTON_HOSPITAL),
+                   "RobbieRec@oak-dene.org",
+                   WorkLocationDefinition.OAK_DENE_HOSPITAL),
 
     /**
      * Miss Angela Cummings

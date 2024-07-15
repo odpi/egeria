@@ -11,8 +11,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
-import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
+import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesAuditCode;
+import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesErrorCode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -139,43 +139,43 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
             {
                 if (dataLakeCatalogQualifiedGUID == null)
                 {
-                    auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.MISSING_CATALOG.getMessageDefinition(governanceServiceName,
-                                                                                                                             dataLakeCatalogQualifiedName));
+                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_CATALOG.getMessageDefinition(governanceServiceName,
+                                                                                                                          dataLakeCatalogQualifiedName));
                 }
                 if ((clinicalTrialId == null) || (clinicalTrialId.isBlank()))
                 {
-                    auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                           CocoClinicalTrialRequestParameter.CLINICAL_TRIAL_ID.getName()));
+                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                                        CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getName()));
                 }
                 if ((clinicalTrialName == null) || (clinicalTrialName.isBlank()))
                 {
-                    auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                           CocoClinicalTrialRequestParameter.CLINICAL_TRIAL_NAME.getName()));
+                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                                        CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getName()));
                 }
                 if ((ucCatalogName == null) || (ucCatalogName.isBlank()))
                 {
-                    auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                           UnityCatalogPlaceholderProperty.CATALOG_NAME.getName()));
+                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                                        UnityCatalogPlaceholderProperty.CATALOG_NAME.getName()));
                 }
                 if ((ucSchemaName == null) || (ucSchemaName.isBlank()))
                 {
-                    auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                           UnityCatalogPlaceholderProperty.CATALOG_NAME.getName()));
+                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                                        UnityCatalogPlaceholderProperty.CATALOG_NAME.getName()));
                 }
                 if (schemaGUID == null)
                 {
-                    auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                           CocoClinicalTrialActionTarget.SCHEMA.getName()));
+                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                                        CocoClinicalTrialActionTarget.SCHEMA.getName()));
                 }
                 if (volumeTemplateGUID == null)
                 {
-                    auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                           CocoClinicalTrialActionTarget.VOLUME_TEMPLATE.getName()));
+                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                                        CocoClinicalTrialActionTarget.VOLUME_TEMPLATE.getName()));
                 }
                 if (dataLakeRootFolderPathName == null)
                 {
-                    auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                           CocoClinicalTrialActionTarget.ROOT_FOLDER.getName()));
+                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                                        CocoClinicalTrialActionTarget.ROOT_FOLDER.getName()));
                 }
 
                 completionStatus = CocoClinicalTrialGuard.MISSING_INFO.getCompletionStatus();
@@ -209,9 +209,9 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
         }
         catch (Exception error)
         {
-            throw new ConnectorCheckedException(GovernanceActionConnectorsErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(governanceServiceName,
-                                                                                                                              error.getClass().getName(),
-                                                                                                                              error.getMessage()),
+            throw new ConnectorCheckedException(GovernanceActionSamplesErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                           error.getClass().getName(),
+                                                                                                                           error.getMessage()),
                                                 error.getClass().getName(),
                                                 methodName,
                                                 error);

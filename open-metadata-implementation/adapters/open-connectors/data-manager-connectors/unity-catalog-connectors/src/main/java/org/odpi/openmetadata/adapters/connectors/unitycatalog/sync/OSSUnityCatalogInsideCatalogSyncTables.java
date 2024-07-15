@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.*;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -159,7 +160,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
 
     /**
-     * Review all the schemas stored in UC.
+     * Review all the tables stored in UC.
      *
      * @param iterator  Metadata collection iterator
      *
@@ -191,9 +192,9 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                             {
                                 if (tableInfo != null)
                                 {
-                                    if (ucFullNameToEgeriaGUID.get(tableInfo.getTable_id()) == null)
+                                    if (ucFullNameToEgeriaGUID.get(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName()) == null)
                                     {
-                                        String ucTableQualifiedName = this.getQualifiedName(tableInfo.getTable_id());
+                                        String ucTableQualifiedName = this.getQualifiedName(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName());
 
                                         MemberElement memberElement = iterator.getMemberByQualifiedName(ucTableQualifiedName);
                                         MemberAction memberAction = memberElement.getMemberAction(this.getDateFromLong(tableInfo.getCreated_at()),
@@ -248,8 +249,8 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
      */
     private void createElementInEgeria(String     schemaGUID,
                                        TableInfo tableInfo) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
     {
         final String parentLinkTypeName = OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName;
         final boolean parentAtEnd1 = false;
@@ -264,7 +265,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                                                 null,
                                                                                 null,
                                                                                 templateGUID,
-                                                                                this.getElementProperties(tableInfo),
+                                                                                null,
                                                                                 this.getPlaceholderProperties(tableInfo),
                                                                                 schemaGUID,
                                                                                 parentLinkTypeName,
@@ -273,7 +274,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         }
         else
         {
-            String qualifiedName = super.getQualifiedName(tableInfo.getTable_id());
+            String qualifiedName = super.getQualifiedName(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName());
 
             ucTableGUID = openMetadataAccess.createMetadataElementInStore(deployedImplementationType.getAssociatedTypeName(),
                                                                            ElementStatus.ACTIVE,
@@ -292,12 +293,22 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
             if (tableInfo.getTable_type() != null)
             {
-                facetProperties.put(UnityCatalogPlaceholderProperty.VOLUME_TYPE.getName(), tableInfo.getTable_type().getValue());
+                facetProperties.put(UnityCatalogPlaceholderProperty.TABLE_TYPE.getName(), tableInfo.getTable_type().getValue());
             }
             else
             {
-                facetProperties.put(UnityCatalogPlaceholderProperty.VOLUME_TYPE.getName(), null);
+                facetProperties.put(UnityCatalogPlaceholderProperty.TABLE_TYPE.getName(), null);
             }
+
+            if (tableInfo.getData_source_format() != null)
+            {
+                facetProperties.put(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getName(), tableInfo.getData_source_format().getValue());
+            }
+            else
+            {
+                facetProperties.put(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getName(), null);
+            }
+
 
             super.addPropertyFacet(ucTableGUID, qualifiedName, facetProperties);
         }
@@ -305,9 +316,13 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         context.addExternalIdentifier(ucTableGUID,
                                       deployedImplementationType.getAssociatedTypeName(),
                                       this.getExternalIdentifierProperties(tableInfo,
-                                                                           tableInfo.getSchema_name()));
+                                                                           tableInfo.getSchema_name(),
+                                                                           UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
+                                                                           tableInfo.getTable_id()));
 
-        ucFullNameToEgeriaGUID.put(tableInfo.getTable_id(), ucTableGUID);
+        this.createSchemaAttributesForUCTable(ucTableGUID, tableInfo);
+
+        ucFullNameToEgeriaGUID.put(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(), ucTableGUID);
     }
 
 
@@ -332,7 +347,12 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                         this.getElementProperties(tableInfo));
 
         context.updateExternalIdentifier(egeriaTableGUID, entityTypeName, this.getExternalIdentifierProperties(tableInfo,
-                                                                                                                tableInfo.getSchema_name()));
+                                                                                                               tableInfo.getSchema_name(),
+                                                                                                               UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
+                                                                                                               tableInfo.getTable_id()));
+
+        this.updateSchemaAttributesForUCTable(memberElement, tableInfo);
+
         context.confirmSynchronization(egeriaTableGUID, entityTypeName, tableInfo.getName());
     }
 
@@ -429,25 +449,37 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
      * @throws PropertyServerException open metadata repository error or problem communicating with UC
      * @throws UserNotAuthorizedException authorization error
      */
-    private void updateElementInThirdParty(TableInfo    tableInfo,
+    private void updateElementInThirdParty(TableInfo     tableInfo,
                                            MemberElement memberElement) throws PropertyServerException,
                                                                                InvalidParameterException,
                                                                                UserNotAuthorizedException
     {
-        this.deleteElementInThirdParty(tableInfo);
-        this.createElementInThirdParty(tableInfo.getSchema_name(), memberElement);
+        final String methodName = "updateElementInThirdParty";
+
+        auditLog.logMessage(methodName,
+                            UCAuditCode.TABLE_UPDATE.getMessageDefinition(connectorName,
+                                                                          memberElement.getElement().getElementGUID(),
+                                                                          tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(),
+                                                                          ucServerEndpoint));
     }
 
 
     /**
+     * Delete the table from Unity Catalog.
      *
-     * @param info info object describing the element to delete.
+     * @param tableInfo info object describing the element to delete.
      *
      * @throws PropertyServerException problem connecting to UC
      */
-    private void deleteElementInThirdParty(TableInfo  info) throws PropertyServerException
+    private void deleteElementInThirdParty(TableInfo     tableInfo) throws PropertyServerException
     {
-        ucConnector.deleteTable(info.getTable_id());
+        final String methodName = "deleteElementInThirdParty";
+
+        auditLog.logMessage(methodName,
+                            UCAuditCode.UC_ELEMENT_DELETE.getMessageDefinition(connectorName,
+                                                                               tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(),
+                                                                               ucServerEndpoint));
+        ucConnector.deleteTable(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName());
     }
 
 
@@ -464,7 +496,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
         placeholderProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), ucServerEndpoint);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(), info.getCatalog_name());
         placeholderProperties.put(UnityCatalogPlaceholderProperty.SCHEMA_NAME.getName(), info.getSchema_name());
-        placeholderProperties.put(UnityCatalogPlaceholderProperty.TABLE_NAME.getName(), info.getTable_id());
+        placeholderProperties.put(UnityCatalogPlaceholderProperty.TABLE_NAME.getName(), info.getName());
         placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), info.getComment());
         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), null);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), info.getStorage_location());
@@ -492,24 +524,27 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
     /**
      * Set up the element properties for an asset from the info object.
      *
-     * @param info  information extracted from UC
+     * @param tableInfo  information extracted from UC
      *
      * @return element properties suitable for create or update
      */
-    private ElementProperties getElementProperties(TableInfo info)
+    private ElementProperties getElementProperties(TableInfo tableInfo)
     {
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
                                                                                OpenMetadataProperty.NAME.name,
-                                                                               info.getTable_id());
+                                                                               tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName());
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DESCRIPTION.name,
-                                                             info.getComment());
+                                                             tableInfo.getComment());
 
         elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                 OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                info.getProperties());
+                                                                tableInfo.getProperties());
 
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                             DeployedImplementationType.OSS_UC_TABLE.getDeployedImplementationType());
         return elementProperties;
     }
 
@@ -579,9 +614,10 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
 
     /**
+     * Return the column information from a schema element.
      *
-     * @param schemaAttribute
-     * @return
+     * @param schemaAttribute column information from open metadata
+     * @return columnInfo
      */
     private ColumnInfo getUCColumnFromSchemaAttribute(RelatedMetadataElement schemaAttribute)
     {
@@ -604,6 +640,8 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
+        final String methodName = "createSchemaAttributesForUCTable";
+
         /*
          * Create the root schema type.
          */
@@ -619,5 +657,36 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                         OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                                         null,
                                                         true);
+
+        auditLog.logMessage(methodName,
+                            UCAuditCode.MISSING_METHOD.getMessageDefinition(connectorName,
+                                                                            methodName,
+                                                                            tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(),
+                                                                            ucServerEndpoint));
+    }
+
+
+    /**
+     * Create the schema attributes in open metadata reflect the columns from UC.
+     *
+     * @param memberElement details of the table in open metadata
+     * @param tableInfo details about the table to add to the schema attributes
+     *
+     * @throws InvalidParameterException parameter error
+     * @throws PropertyServerException open metadata repository error or problem communicating with UC
+     * @throws UserNotAuthorizedException authorization error
+     */
+    private void updateSchemaAttributesForUCTable(MemberElement memberElement,
+                                                  TableInfo     tableInfo) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "updateSchemaAttributesForUCTable";
+
+        auditLog.logMessage(methodName,
+                            UCAuditCode.MISSING_METHOD.getMessageDefinition(connectorName,
+                                                                            methodName,
+                                                                            tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(),
+                                                                            ucServerEndpoint));
     }
 }
