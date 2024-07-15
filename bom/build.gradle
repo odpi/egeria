@@ -30,7 +30,7 @@ ext {
     classmateVersion = '1.5.1'
     collections4Version = '4.4'
     // Version 1.17.0 breaks XTDB because of a change in lucene's library names
-    commonscodecVersion = '1.16.0'
+    commonscodecVersion = '1.17.0'
     commonsconfiguration2Version = '2.10.1'
     commonsconfigurationVersion = '1.10'
     commonsioVersion = '2.16.1'
