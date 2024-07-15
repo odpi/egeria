@@ -141,7 +141,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *
      * @return maxPagingSize new value
      */
+    @Override
     public int getMaxPagingSize() { return  invalidParameterHandler.getMaxPagingSize(); }
+
 
     /**
      * Convert the date into a long to send in URL.

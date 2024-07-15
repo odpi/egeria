@@ -735,7 +735,6 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
     }
 
 
-
     /**
      * Create table.
      *
@@ -817,6 +816,100 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         if (response != null)
         {
             return response.getTables();
+        }
+
+        return null;
+    }
+
+
+
+
+    /*
+     *===========================================================================
+     * Specialized methods - Functions
+     */
+
+
+    /**
+     * Create function.
+     *
+     * @param functionProperties list of properties for the function
+     *
+     * @return resulting function info
+     * @throws PropertyServerException problem with the call
+     */
+    public FunctionInfo createFunction(FunctionProperties functionProperties) throws PropertyServerException
+    {
+        final String methodName = "createFunction";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/functions";
+
+        return callPostRESTCallNoParams(methodName,
+                                        FunctionInfo.class,
+                                        urlTemplate,
+                                        functionProperties);
+    }
+
+
+    /**
+     * Delete function.
+     *
+     * @param fullName fullName of the function
+     * @throws PropertyServerException problem with the call
+     */
+    public void deleteFunction(String  fullName) throws PropertyServerException
+    {
+        final String methodName = "deleteFunction";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/functions/{0}";
+
+        callDeleteRESTCall(methodName,
+                           Object.class,
+                           urlTemplate,
+                           fullName);
+    }
+
+
+    /**
+     * Get function.
+     *
+     * @param fullName fullName of the function
+     * @return resulting function info
+     * @throws PropertyServerException problem with the call
+     */
+    public FunctionInfo getFunction(String fullName) throws PropertyServerException
+    {
+        final String methodName = "getFunction";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/functions/{0}";
+
+        return callGetRESTCall(methodName,
+                               FunctionInfo.class,
+                               urlTemplate,
+                               fullName);
+    }
+
+
+    /**
+     * Get all functions.
+     *
+     * @param catalogName name of the catalog
+     * @param schemaName name of the schema
+     * @return resulting function info
+     * @throws PropertyServerException problem with the call
+     */
+    public List<FunctionInfo> listFunctions(String catalogName,
+                                            String schemaName) throws PropertyServerException
+    {
+        final String methodName = "listFunction";
+        final String urlTemplate = targetRootURL + "/api/2.1/unity-catalog/functions?catalog_name={1}&schema_name={2}";
+
+        ListFunctionsResponse response = callGetRESTCall(methodName,
+                                                         ListFunctionsResponse.class,
+                                                         urlTemplate,
+                                                         catalogName,
+                                                         schemaName);
+
+        if (response != null)
+        {
+            return response.getFunctions();
         }
 
         return null;

@@ -5644,13 +5644,147 @@ public class SimpleCatalogArchiveHelper
                                                                methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
-                                                                     idToGUIDMap.getGUID(licensedElementGUID + "_to_" + licenseTypeGUID + "_license_relationship"),
+                                                                     idToGUIDMap.getGUID(licensedElementGUID + "_to_" + licenseTypeGUID + "_license_relationship_" + licenseGUID),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
     }
 
+
+    /**
+     * Create a licence relationship.
+     *
+     * @param certifiedElementGUID unique identifier for the element that is certified.
+     * @param certificationGUID - unique identifier of the certification
+     * @param startDate start date for the certification
+     * @param endDate end date for the certification
+     * @param conditions conditions
+     * @param certifiedBy identity of source
+     * @param certifiedByTypeName type of identity of source
+     * @param certifiedByPropertyName property name use to identify source
+     * @param custodian identity of person responsible for overseeing use
+     * @param custodianTypeName type name of custodian
+     * @param custodianPropertyName property name used to identify custodian
+     * @param recipient identity of person receiving
+     * @param recipientTypeName type of person element
+     * @param recipientPropertyName property name use to identify recipient
+     * @param notes notes
+     * @param certificationTypeGUID unique identifier for the license type.
+     */
+    public void addCertification(String              certifiedElementGUID,
+                                 String              certificationGUID,
+                                 Date                startDate,
+                                 Date                endDate,
+                                 String              conditions,
+                                 String              certifiedBy,
+                                 String              certifiedByTypeName,
+                                 String              certifiedByPropertyName,
+                                 String              custodian,
+                                 String              custodianTypeName,
+                                 String              custodianPropertyName,
+                                 String              recipient,
+                                 String              recipientTypeName,
+                                 String              recipientPropertyName,
+                                 String              notes,
+                                 String              certificationTypeGUID)
+    {
+        final String methodName = "addCertification";
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(certifiedElementGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(certificationTypeGUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                                  null,
+                                                                                  OpenMetadataType.CERTIFICATE_GUID_PROPERTY_NAME,
+                                                                                  certificationGUID,
+                                                                                  methodName);
+
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName,
+                                                             properties,
+                                                             OpenMetadataType.START_PROPERTY_NAME,
+                                                             startDate,
+                                                             methodName);
+
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName,
+                                                             properties,
+                                                             OpenMetadataType.END_PROPERTY_NAME,
+                                                             endDate,
+                                                             methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.CONDITIONS_PROPERTY_NAME,
+                                                               conditions,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.CERTIFIED_BY_PROPERTY_NAME,
+                                                               certifiedBy,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.CERTIFIED_BY_TYPE_NAME_PROPERTY_NAME,
+                                                               certifiedByTypeName,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.CERTIFIED_BY_PROPERTY_NAME_PROPERTY_NAME,
+                                                               certifiedByPropertyName,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.CUSTODIAN_PROPERTY_NAME,
+                                                               custodian,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.CUSTODIAN_TYPE_NAME_PROPERTY_NAME,
+                                                               custodianTypeName,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.CUSTODIAN_PROPERTY_NAME_PROPERTY_NAME,
+                                                               custodianPropertyName,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.RECIPIENT_PROPERTY_NAME,
+                                                               recipient,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.RECIPIENT_TYPE_NAME_PROPERTY_NAME,
+                                                               recipientTypeName,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.RECIPIENT_PROPERTY_NAME_PROPERTY_NAME,
+                                                               recipientPropertyName,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.NOTES_PROPERTY_NAME,
+                                                               notes,
+                                                               methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(certifiedElementGUID + "_to_" + certificationTypeGUID + "_certification_relationship_" + certificationGUID),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
 
     /**
      * Create a semantic assignment between a term and a Referenceable - for example a model element.

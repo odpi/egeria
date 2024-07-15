@@ -7,7 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreP
 import org.odpi.openmetadata.archiveutilities.openconnectors.CoreContentArchiveWriter;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileType;
@@ -177,7 +177,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
 
         Map<String, String> otherOriginValues = new HashMap<>();
         otherOriginValues.put("contact", CocoClinicalTrialPlaceholderProperty.CONTACT_NAME.getPlaceholder());
-        otherOriginValues.put("dept", CocoClinicalTrialPlaceholderProperty.CONTACT_DEPT.getPlaceholder());
+        otherOriginValues.put("dept", CocoClinicalTrialPlaceholderProperty.CONTACT_EMAIL.getPlaceholder());
 
         classifications.add(archiveHelper.getAssetOriginClassification(CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
                                                                        OpenMetadataProperty.NAME.name,
@@ -347,6 +347,11 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
 
         glossaryTermGUID = archiveHelper.getGUID(GlossaryTermDefinition.ANGLE_RIGHT.getTemplateSubstituteQualifiedName());
         archiveHelper.addSemanticAssignment(schemaAttributeGUID, glossaryTermGUID);
+
+        archiveHelper.addResourceListRelationship(ProjectDefinition.DROP_FOOT_CLINICAL_TRIAL.getQualifiedName(),
+                                                  qualifiedName,
+                                                  ResourceUse.SUPPORTING_TEMPLATE.getResourceUse(),
+                                                  ResourceUse.SUPPORTING_TEMPLATE.getDescription());
     }
 
 

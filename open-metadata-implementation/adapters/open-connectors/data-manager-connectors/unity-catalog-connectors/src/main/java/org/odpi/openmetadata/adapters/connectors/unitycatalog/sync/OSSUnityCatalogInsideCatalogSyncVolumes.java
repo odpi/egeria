@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.SchemaInfo;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.VolumeInfo;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.VolumeType;
@@ -159,7 +160,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
 
 
     /**
-     * Review all the schemas stored in UC.
+     * Review all the volumes stored in UC.
      *
      * @param iterator  Metadata collection iterator
      *
@@ -264,7 +265,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                                                 null,
                                                                                 null,
                                                                                 templateGUID,
-                                                                                this.getElementProperties(volumeInfo),
+                                                                                null,
                                                                                 this.getPlaceholderProperties(volumeInfo),
                                                                                 schemaGUID,
                                                                                 parentLinkTypeName,
@@ -305,7 +306,9 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
         context.addExternalIdentifier(ucVolumeGUID,
                                       deployedImplementationType.getAssociatedTypeName(),
                                       this.getExternalIdentifierProperties(volumeInfo,
-                                                                           volumeInfo.getSchema_name()));
+                                                                           volumeInfo.getSchema_name(),
+                                                                           UnityCatalogPlaceholderProperty.VOLUME_NAME.getName(),
+                                                                           volumeInfo.getVolume_id()));
 
         ucFullNameToEgeriaGUID.put(volumeInfo.getFull_name(), ucVolumeGUID);
     }
@@ -332,7 +335,9 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                         this.getElementProperties(volumeInfo));
 
         context.updateExternalIdentifier(egeriaVolumeGUID, entityTypeName, this.getExternalIdentifierProperties(volumeInfo,
-                                                                                                                volumeInfo.getSchema_name()));
+                                                                                                                volumeInfo.getSchema_name(),
+                                                                                                                UnityCatalogPlaceholderProperty.VOLUME_NAME.getName(),
+                                                                                                                volumeInfo.getVolume_id()));
         context.confirmSynchronization(egeriaVolumeGUID, entityTypeName, volumeInfo.getName());
     }
 
@@ -392,20 +397,32 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
     private void updateElementInThirdParty(VolumeInfo    volumeInfo,
                                            MemberElement memberElement) throws PropertyServerException
     {
-        this.deleteElementInThirdParty(volumeInfo);
-        this.createElementInThirdParty(volumeInfo.getSchema_name(), memberElement);
+        final String methodName = "updateElementInThirdParty";
+        auditLog.logMessage(methodName,
+                            UCAuditCode.VOLUME_UPDATE.getMessageDefinition(connectorName,
+                                                                           memberElement.getElement().getElementGUID(),
+                                                                           volumeInfo.getFull_name(),
+                                                                           ucServerEndpoint));
     }
 
 
     /**
+     * Delete the volume from Unity Catalog.
      *
-     * @param info info object describing the element to delete.
+     * @param volumeInfo info object describing the element to delete.
      *
      * @throws PropertyServerException problem connecting to UC
      */
-    private void deleteElementInThirdParty(VolumeInfo  info) throws PropertyServerException
+    private void deleteElementInThirdParty(VolumeInfo  volumeInfo) throws PropertyServerException
     {
-        ucConnector.deleteVolume(info.getFull_name());
+        final String methodName = "deleteElementInThirdParty";
+
+        auditLog.logMessage(methodName,
+                            UCAuditCode.UC_ELEMENT_DELETE.getMessageDefinition(connectorName,
+                                                                               volumeInfo.getFull_name(),
+                                                                               ucServerEndpoint));
+
+        ucConnector.deleteVolume(volumeInfo.getFull_name());
     }
 
 
@@ -422,7 +439,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
         placeholderProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), ucServerEndpoint);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(), info.getCatalog_name());
         placeholderProperties.put(UnityCatalogPlaceholderProperty.SCHEMA_NAME.getName(), info.getSchema_name());
-        placeholderProperties.put(UnityCatalogPlaceholderProperty.VOLUME_NAME.getName(), info.getVolume_id());
+        placeholderProperties.put(UnityCatalogPlaceholderProperty.VOLUME_NAME.getName(), info.getName());
         placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), info.getComment());
         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), null);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), info.getStorage_location());
@@ -463,6 +480,10 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
         elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                 OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                 info.getProperties());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                             DeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType());
 
         return elementProperties;
     }

@@ -3931,7 +3931,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         /*
          * Only adding LatestChange classification to anchors that are Assets or Glossaries.
          */
-        if ((repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.ASSET.typeName)) ||
+        if ((repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.ASSET.typeName))||
+            (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.ROOT_SCHEMA_TYPE.typeName)) ||
             (repositoryHelper.isTypeOf(serviceName, anchorTypeName, OpenMetadataType.GLOSSARY_TYPE_NAME)))
         {
             if (! OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classificationName))

@@ -736,7 +736,7 @@ public class AssetOwnerOMRSTopicListener extends OMRSTopicListenerBase
 
                     assetHandler.validateAnchorEntity(userId,
                                                       fullEntity.getGUID(),
-                                                      OpenMetadataType.ASSET.typeName,
+                                                      fullEntity.getType().getTypeDefName(),
                                                       fullEntity,
                                                       guidParameterName,
                                                       false,
@@ -785,13 +785,23 @@ public class AssetOwnerOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
-     * Asset Owner OMAS only publishes events of type Asset.
+     * Asset Owner OMAS only publishes events of type Asset or RootSchemaType.
      *
      * @param entityHeader entity element
      * @return flag to say whether to publish the event.
      */
     private boolean isTypeOfInterest(InstanceHeader entityHeader)
     {
-        return repositoryHelper.isTypeOf(serviceName, entityHeader.getType().getTypeDefName(), OpenMetadataType.ASSET.typeName);
+        if (repositoryHelper.isTypeOf(serviceName, entityHeader.getType().getTypeDefName(), OpenMetadataType.ASSET.typeName))
+        {
+            return true;
+        }
+
+        if (repositoryHelper.isTypeOf(serviceName, entityHeader.getType().getTypeDefName(), OpenMetadataType.ROOT_SCHEMA_TYPE.typeName))
+        {
+            return true;
+        }
+
+        return false;
     }
 }

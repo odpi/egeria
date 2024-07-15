@@ -82,7 +82,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
         if (DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName()))
         {
             if ((requestedCatalogTarget.getConfigurationProperties() != null) &&
-                (requestedCatalogTarget.getConfigurationProperties().get(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName()) != null))
+                    (requestedCatalogTarget.getConfigurationProperties().get(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName()) != null))
             {
                 try
                 {
@@ -200,6 +200,34 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
                                                                                                               auditLog);
 
             ucFullNameToEgeriaGUID.putAll(syncVolumes.refresh());
+
+            OSSUnityCatalogInsideCatalogSyncTables syncTables = new OSSUnityCatalogInsideCatalogSyncTables(connectorName,
+                                                                                                           this.getContext(),
+                                                                                                           catalogTargetName,
+                                                                                                           catalogName,
+                                                                                                           ucFullNameToEgeriaGUID,
+                                                                                                           targetPermittedSynchronization,
+                                                                                                           ucConnector,
+                                                                                                           ucServerEndpoint,
+                                                                                                           templates,
+                                                                                                           configurationProperties,
+                                                                                                           auditLog);
+
+            ucFullNameToEgeriaGUID.putAll(syncTables.refresh());
+
+            OSSUnityCatalogInsideCatalogSyncFunctions syncFunctions = new OSSUnityCatalogInsideCatalogSyncFunctions(connectorName,
+                                                                                                                    this.getContext(),
+                                                                                                                    catalogTargetName,
+                                                                                                                    catalogName,
+                                                                                                                    ucFullNameToEgeriaGUID,
+                                                                                                                    targetPermittedSynchronization,
+                                                                                                                    ucConnector,
+                                                                                                                    ucServerEndpoint,
+                                                                                                                    templates,
+                                                                                                                    configurationProperties,
+                                                                                                                    auditLog);
+
+            ucFullNameToEgeriaGUID.putAll(syncFunctions.refresh());
         }
         catch (Exception exception)
         {

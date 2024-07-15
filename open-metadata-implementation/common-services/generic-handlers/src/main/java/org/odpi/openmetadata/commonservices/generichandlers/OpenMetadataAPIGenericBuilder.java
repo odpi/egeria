@@ -438,7 +438,6 @@ public class OpenMetadataAPIGenericBuilder
 
         if (templateProperties != null)
         {
-
             if ((templateProperties.getPropertyCount() == 0) ||
                     (placeholderProperties == null) ||
                     (placeholderProperties.isEmpty()))
@@ -458,12 +457,24 @@ public class OpenMetadataAPIGenericBuilder
                     {
                         if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
                         {
-                            repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                         newTemplateProperties,
-                                                                         propertyName,
-                                                                         replacePrimitiveStringWithPlaceholders(primitivePropertyValue,
-                                                                                                                placeholderProperties),
-                                                                         methodName);
+                            String newProperty = replacePrimitiveStringWithPlaceholders(primitivePropertyValue,
+                                                                                        placeholderProperties);
+
+                            if (newProperty != null)
+                            {
+                                repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                             newTemplateProperties,
+                                                                             propertyName,
+                                                                             newProperty,
+                                                                             methodName);
+                            }
+                            else
+                            {
+                                repositoryHelper.removeStringProperty(serviceName,
+                                                                      propertyName,
+                                                                      newTemplateProperties,
+                                                                      methodName);
+                            }
                         }
                     }
                     else if (instancePropertyValue instanceof ArrayPropertyValue arrayPropertyValue)
@@ -514,11 +525,11 @@ public class OpenMetadataAPIGenericBuilder
         {
             for (String placeholderName : placeholderProperties.keySet())
             {
-                String placeholderMatchString = "{{"+ placeholderName + "}}";
+                String placeholderMatchString = "{{" + placeholderName + "}}";
 
                 if (propertyValue.equals(placeholderMatchString))
                 {
-                    propertyValue = placeholderProperties.get(placeholderName);
+                    return placeholderProperties.get(placeholderName);
                 }
                 else
                 {
@@ -529,7 +540,14 @@ public class OpenMetadataAPIGenericBuilder
                     {
                         if (! propertyValue.equals(configBits[0]))
                         {
-                            propertyValue = configBits[0] + placeholderProperties.get(placeholderName);
+                            if (placeholderProperties.get(placeholderName) != null)
+                            {
+                                propertyValue = configBits[0] + placeholderProperties.get(placeholderName);
+                            }
+                            else
+                            {
+                                propertyValue = configBits[0];
+                            }
                         }
                     }
                     else if (configBits.length > 1)
@@ -541,7 +559,10 @@ public class OpenMetadataAPIGenericBuilder
                         {
                             if (! firstPart)
                             {
-                                newConfigString.append(placeholderProperties.get(placeholderName));
+                                if (placeholderProperties.get(placeholderName) != null)
+                                {
+                                    newConfigString.append(placeholderProperties.get(placeholderName));
+                                }
                             }
 
                             firstPart = false;
@@ -554,7 +575,10 @@ public class OpenMetadataAPIGenericBuilder
 
                         if (propertyValue.endsWith(placeholderMatchString))
                         {
-                            newConfigString.append(placeholderProperties.get(placeholderName));
+                            if (placeholderProperties.get(placeholderName) != null)
+                            {
+                                newConfigString.append(placeholderProperties.get(placeholderName));
+                            }
                         }
 
                         propertyValue = newConfigString.toString();

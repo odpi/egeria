@@ -4,7 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 
 /**
- * The ScopeDefinition is used to define the different scope of responsibility assigned to an individual term, person or activity.
+ * The ScopeDefinition is used to define the different scope of responsibility assigned to an individual, term, person or activity.
  */
 public enum ScopeDefinition
 {
@@ -32,6 +32,11 @@ public enum ScopeDefinition
      * Within the team.
      */
     WITHIN_TEAM ("Within Team","Within the team."),
+
+    /**
+     * Within the project.
+     */
+    WITHIN_PROJECT ("Within Project","Within the project."),
 
     /**
      * Within the local site.

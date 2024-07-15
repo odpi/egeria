@@ -81,6 +81,14 @@ public interface GovernanceContext
 
 
     /**
+     * Return the maximum number of elements that can be returned on a request.
+     *
+     * @return int
+     */
+    int getMaxPageSize();
+
+
+    /**
      * Create an incident report to capture the situation detected by this governance action service.
      * This incident report will be processed by other governance activities.
      *

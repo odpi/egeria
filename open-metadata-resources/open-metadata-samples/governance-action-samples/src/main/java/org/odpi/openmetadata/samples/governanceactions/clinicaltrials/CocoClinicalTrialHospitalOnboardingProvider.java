@@ -25,7 +25,7 @@ public class CocoClinicalTrialHospitalOnboardingProvider extends GovernanceActio
         super();
         super.setConnectorClassName(connectorClassName);
 
-        supportedRequestParameters = CocoClinicalTrialRequestParameter.getOnboardHospitalRequestParameterTypes();
+        supportedActionTargetTypes = CocoClinicalTrialActionTarget.getHospitalActionTargetTypes();
 
         producedGuards = CocoClinicalTrialGuard.getGuardTypes();
 

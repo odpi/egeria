@@ -211,11 +211,13 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @return external identifier properties
      */
     protected ExternalIdentifierProperties getExternalIdentifierProperties(ElementBase ucElement,
-                                                                           String      schemaName)
+                                                                           String      schemaName,
+                                                                           String      elementName,
+                                                                           String      id)
     {
         ExternalIdentifierProperties externalIdentifierProperties = new ExternalIdentifierProperties();
 
-        externalIdentifierProperties.setExternalIdentifier(ucElement.getName());
+        externalIdentifierProperties.setExternalIdentifier(id);
         externalIdentifierProperties.setExternalIdentifierSource(DeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType());
         externalIdentifierProperties.setExternalInstanceCreationTime(new Date(ucElement.getCreated_at()));
         externalIdentifierProperties.setExternalInstanceLastUpdateTime(new Date(ucElement.getUpdated_at()));
@@ -224,6 +226,8 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
 
         mappingProperties.put(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(), catalogName);
         mappingProperties.put(UnityCatalogPlaceholderProperty.SCHEMA_NAME.getName(), schemaName);
+        mappingProperties.put(elementName, ucElement.getName());
+
         mappingProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.name, ucServerEndpoint);
 
         externalIdentifierProperties.setMappingProperties(mappingProperties);

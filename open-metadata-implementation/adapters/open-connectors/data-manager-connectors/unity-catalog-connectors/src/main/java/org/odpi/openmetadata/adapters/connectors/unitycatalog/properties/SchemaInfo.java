@@ -124,6 +124,7 @@ public class SchemaInfo extends SchemaProperties implements ElementBase
         this.full_name = full_name;
     }
 
+
     /**
      * Standard toString method.
      *

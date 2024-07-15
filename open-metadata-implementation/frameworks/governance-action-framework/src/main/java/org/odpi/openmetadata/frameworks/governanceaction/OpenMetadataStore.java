@@ -81,6 +81,14 @@ public class OpenMetadataStore
 
 
     /**
+     * Get the maximum paging size.
+     *
+     * @return maxPagingSize new value
+     */
+    public int getMaxPagingSize() { return openMetadataClient.getMaxPagingSize(); }
+
+
+    /**
      * Return the forLineage setting.
      *
      * @return boolean

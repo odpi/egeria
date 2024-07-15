@@ -63,6 +63,14 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
 
 
     /**
+     * Get the maximum paging size.
+     *
+     * @return maxPagingSize new value
+     */
+    public abstract int getMaxPagingSize();
+
+
+    /**
      * Returns the list of different types of metadata organized into two groups.  The first are the
      * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
      * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
