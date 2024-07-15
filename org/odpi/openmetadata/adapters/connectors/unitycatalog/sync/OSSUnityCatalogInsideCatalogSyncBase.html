@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="OSSUnityCatalogInsideCatalogSyncCatalog.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncCatalog</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncSchema.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncSchema</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncTables.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncTables</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncVolumes.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncVolumes</a></code></dd>
+<dd><code><a href="OSSUnityCatalogInsideCatalogSyncCatalog.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncCatalog</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncFunctions.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncFunctions</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncSchema.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncSchema</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncTables.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncTables</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncVolumes.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncVolumes</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">OSSUnityCatalogInsideCatalogSyncBase</span>
@@ -195,8 +195,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Convert the long value returned by UC into a date (or null).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../frameworks/governanceaction/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ExternalIdentifierProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalIdentifierProperties(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase,java.lang.String)" class="member-name-link">getExternalIdentifierProperties</a><wbr>(<a href="../properties/ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a>&nbsp;ucElement,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalIdentifierProperties(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getExternalIdentifierProperties</a><wbr>(<a href="../properties/ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a>&nbsp;ucElement,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Populate and return the external identifier properties for a UC Schema.</div>
 </div>
@@ -476,10 +478,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getExternalIdentifierProperties(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase,java.lang.String)">
+<section class="detail" id="getExternalIdentifierProperties(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase,java.lang.String,java.lang.String,java.lang.String)">
 <h3>getExternalIdentifierProperties</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/governanceaction/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ExternalIdentifierProperties</a></span>&nbsp;<span class="element-name">getExternalIdentifierProperties</span><wbr><span class="parameters">(<a href="../properties/ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a>&nbsp;ucElement,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id)</span></div>
 <div class="block">Populate and return the external identifier properties for a UC Schema.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

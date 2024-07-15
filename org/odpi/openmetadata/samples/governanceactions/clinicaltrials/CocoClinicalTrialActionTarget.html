@@ -107,9 +107,33 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#LAST_UPDATE_CONNECTOR" class="member-name-link">LAST_UPDATE_CONNECTOR</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CONTACT_PERSON" class="member-name-link">CONTACT_PERSON</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">The person who can be contacted if there are problems with the data from this hospital.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#HOSPITAL" class="member-name-link">HOSPITAL</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Project used to control the clinical trial.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#HOSPITAL_TEMPLATE" class="member-name-link">HOSPITAL_TEMPLATE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Template used to catalog the landing area folder for a particular hospital.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#LANDING_AREA_CONNECTOR" class="member-name-link">LANDING_AREA_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Integration connector that maintains the last update date for the volume.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#LANDING_AREA_FOLDER" class="member-name-link">LANDING_AREA_FOLDER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Folder describing the place where new files will be stored by the hospital.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#LAST_UPDATE_CONNECTOR" class="member-name-link">LAST_UPDATE_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Integration connector that maintains the last update date for the volume.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NEW_ELEMENT_PROCESS" class="member-name-link">NEW_ELEMENT_PROCESS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The process that should run to provision files from the landing area into the data lake.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#PROJECT" class="member-name-link">PROJECT</a></code></div>
 <div class="col-last odd-row-color">
@@ -173,21 +197,21 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return an action target type for use in the governance action service's provider.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getActionTargetTypes()" class="member-name-link">getActionTargetTypes</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Return all the action targets defined in this enum.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedImplementationType()" class="member-name-link">getDeployedImplementationType</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedImplementationType()" class="member-name-link">getDeployedImplementationType</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the preferred value of the deployed implementation type of the element that is linked to for
  this type of action target.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the description of the action target.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getHospitalActionTargetTypes()" class="member-name-link">getHospitalActionTargetTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return all the action targets defined in this enum.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
@@ -248,6 +272,13 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="HOSPITAL">
+<h3>HOSPITAL</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CocoClinicalTrialActionTarget.html" title="enum class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialActionTarget</a></span>&nbsp;<span class="element-name">HOSPITAL</span></div>
+<div class="block">Project used to control the clinical trial.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="SCHEMA">
 <h3>SCHEMA</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CocoClinicalTrialActionTarget.html" title="enum class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialActionTarget</a></span>&nbsp;<span class="element-name">SCHEMA</span></div>
@@ -262,6 +293,13 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="HOSPITAL_TEMPLATE">
+<h3>HOSPITAL_TEMPLATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CocoClinicalTrialActionTarget.html" title="enum class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialActionTarget</a></span>&nbsp;<span class="element-name">HOSPITAL_TEMPLATE</span></div>
+<div class="block">Template used to catalog the landing area folder for a particular hospital.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="ROOT_FOLDER">
 <h3>ROOT_FOLDER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CocoClinicalTrialActionTarget.html" title="enum class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialActionTarget</a></span>&nbsp;<span class="element-name">ROOT_FOLDER</span></div>
@@ -269,10 +307,38 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="LANDING_AREA_FOLDER">
+<h3>LANDING_AREA_FOLDER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CocoClinicalTrialActionTarget.html" title="enum class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialActionTarget</a></span>&nbsp;<span class="element-name">LANDING_AREA_FOLDER</span></div>
+<div class="block">Folder describing the place where new files will be stored by the hospital.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="LAST_UPDATE_CONNECTOR">
 <h3>LAST_UPDATE_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CocoClinicalTrialActionTarget.html" title="enum class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialActionTarget</a></span>&nbsp;<span class="element-name">LAST_UPDATE_CONNECTOR</span></div>
 <div class="block">Integration connector that maintains the last update date for the volume.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LANDING_AREA_CONNECTOR">
+<h3>LANDING_AREA_CONNECTOR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CocoClinicalTrialActionTarget.html" title="enum class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialActionTarget</a></span>&nbsp;<span class="element-name">LANDING_AREA_CONNECTOR</span></div>
+<div class="block">Integration connector that maintains the last update date for the volume.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NEW_ELEMENT_PROCESS">
+<h3>NEW_ELEMENT_PROCESS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CocoClinicalTrialActionTarget.html" title="enum class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialActionTarget</a></span>&nbsp;<span class="element-name">NEW_ELEMENT_PROCESS</span></div>
+<div class="block">The process that should run to provision files from the landing area into the data lake.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CONTACT_PERSON">
+<h3>CONTACT_PERSON</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CocoClinicalTrialActionTarget.html" title="enum class in org.odpi.openmetadata.samples.governanceactions.clinicaltrials">CocoClinicalTrialActionTarget</a></span>&nbsp;<span class="element-name">CONTACT_PERSON</span></div>
+<div class="block">The person who can be contacted if there are problems with the data from this hospital.</div>
 </section>
 </li>
 </ul>
@@ -344,9 +410,9 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getActionTargetTypes()">
-<h3>getActionTargetTypes</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</span>&nbsp;<span class="element-name">getActionTargetTypes</span>()</div>
+<section class="detail" id="getHospitalActionTargetTypes()">
+<h3>getHospitalActionTargetTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</span>&nbsp;<span class="element-name">getHospitalActionTargetTypes</span>()</div>
 <div class="block">Return all the action targets defined in this enum.</div>
 <dl class="notes">
 <dt>Returns:</dt>
