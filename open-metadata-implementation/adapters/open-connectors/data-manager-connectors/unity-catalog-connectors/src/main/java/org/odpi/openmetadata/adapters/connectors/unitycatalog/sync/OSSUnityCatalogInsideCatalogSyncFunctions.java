@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
@@ -133,12 +132,12 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                     // this is not necessarily an error
                 }
 
-                MemberAction memberAction;
+                MemberAction memberAction = MemberAction.NO_ACTION;
                 if (functionInfo == null)
                 {
                     memberAction = nextElement.getMemberAction(null, null);
                 }
-                else
+                else if (noMismatchInExternalIdentifier(functionInfo.getFunction_id(), nextElement))
                 {
                     memberAction = nextElement.getMemberAction(this.getDateFromLong(functionInfo.getCreated_at()),
                                                                this.getDateFromLong(functionInfo.getUpdated_at()));
@@ -197,7 +196,11 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                         MemberElement memberElement = iterator.getMemberByQualifiedName(ucFunctionQualifiedName);
                                         MemberAction memberAction = memberElement.getMemberAction(this.getDateFromLong(functionInfo.getCreated_at()),
                                                                                                   this.getDateFromLong(functionInfo.getUpdated_at()));
-                                        this.takeAction(schemaGUID, functionInfo.getSchema_name(), memberAction, memberElement, functionInfo);
+
+                                        if (noMismatchInExternalIdentifier(functionInfo.getFunction_id(), memberElement))
+                                        {
+                                            this.takeAction(schemaGUID, functionInfo.getSchema_name(), memberAction, memberElement, functionInfo);
+                                        }
                                     }
                                 }
                             }
@@ -221,9 +224,9 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                             String        schemaName,
                             MemberAction  memberAction,
                             MemberElement memberElement,
-                            FunctionInfo    functionInfo) throws InvalidParameterException,
-                                                             PropertyServerException,
-                                                             UserNotAuthorizedException
+                            FunctionInfo  functionInfo) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
     {
         switch (memberAction)
         {
@@ -307,7 +310,8 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                       this.getExternalIdentifierProperties(functionInfo,
                                                                            functionInfo.getSchema_name(),
                                                                            UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(),
-                                                                           functionInfo.getFunction_id()));
+                                                                           functionInfo.getFunction_id(),
+                                                                           PermittedSynchronization.FROM_THIRD_PARTY));
 
         this.createSchemaAttributesForUCFunction(ucFunctionGUID, functionInfo);
 
@@ -335,14 +339,9 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                                         false,
                                                         this.getElementProperties(functionInfo));
 
-        context.updateExternalIdentifier(egeriaFunctionGUID, entityTypeName, this.getExternalIdentifierProperties(functionInfo,
-                                                                                                               functionInfo.getSchema_name(),
-                                                                                                               UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(),
-                                                                                                               functionInfo.getFunction_id()));
-
         this.updateSchemaAttributesForUCFunction(memberElement, functionInfo);
 
-        context.confirmSynchronization(egeriaFunctionGUID, entityTypeName, functionInfo.getName());
+        context.confirmSynchronization(egeriaFunctionGUID, entityTypeName, functionInfo.getFunction_id());
     }
 
 
@@ -351,7 +350,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
      *
      * @param memberElement elements from Egeria
      * @throws InvalidParameterException parameter error
-     * @throws PropertyServerException repository error
+     * @throws PropertyServerException repository error or problem communicating with UC
      * @throws UserNotAuthorizedException authorization error
      */
     private void createElementInThirdParty(String        schemaName,
@@ -366,7 +365,15 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
         functionProperties.setName(super.getUCNameFromMember(memberElement));
 
         // todo - complete parameter mapping
-        ucConnector.createFunction(functionProperties);
+        FunctionInfo functionInfo = ucConnector.createFunction(functionProperties);
+
+        context.addExternalIdentifier(memberElement.getElement().getElementGUID(),
+                                      deployedImplementationType.getAssociatedTypeName(),
+                                      this.getExternalIdentifierProperties(functionInfo,
+                                                                           functionInfo.getSchema_name(),
+                                                                           UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(),
+                                                                           functionInfo.getFunction_id(),
+                                                                           PermittedSynchronization.TO_THIRD_PARTY));
     }
 
 

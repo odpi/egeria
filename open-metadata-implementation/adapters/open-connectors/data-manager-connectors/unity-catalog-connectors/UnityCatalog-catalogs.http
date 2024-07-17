@@ -37,10 +37,11 @@ Content-Type: application/json
 
 ###
 # @name patch catalog
-PATCH {{ucURL}}/api/2.1/unity-catalog/catalogs/test4
+PATCH {{ucURL}}/api/2.1/unity-catalog/catalogs/test41
 Content-Type: application/json
 
 {
+  "new_name" : "clinical_trials",
   "comment" : "This is a comment",
   "properties": {
     "egeriaGUID" : "c14d6b99-7202-4f04-a05d-49f0fdd7373d"

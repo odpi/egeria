@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * Provides the specialist methods for working with Unity Catalog (UC) Catalog.
  */
-public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsideCatalogSyncBase
+public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatalogSyncBase
 {
     private final String friendshipConnectorGUID;
 
@@ -54,17 +54,17 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
      * @param configurationProperties configuration properties supplied through the catalog target
      * @param auditLog logging destination
      */
-    public OSSUnityCatalogInsideCatalogSyncCatalog(String                           connectorName,
-                                                   CatalogIntegratorContext         context,
-                                                   String                           catalogTargetName,
-                                                   String                           ucServerGUID,
-                                                   String                           friendshipConnectorGUID,
-                                                   PermittedSynchronization         targetPermittedSynchronization,
-                                                   OSSUnityCatalogResourceConnector ucConnector,
-                                                   String                           ucServerEndpoint,
-                                                   Map<String, String>              templates,
-                                                   Map<String, Object>              configurationProperties,
-                                                   AuditLog                         auditLog)
+    public OSSUnityCatalogServerSyncCatalog(String                           connectorName,
+                                            CatalogIntegratorContext         context,
+                                            String                           catalogTargetName,
+                                            String                           ucServerGUID,
+                                            String                           friendshipConnectorGUID,
+                                            PermittedSynchronization         targetPermittedSynchronization,
+                                            OSSUnityCatalogResourceConnector ucConnector,
+                                            String                           ucServerEndpoint,
+                                            Map<String, String>              templates,
+                                            Map<String, Object>              configurationProperties,
+                                            AuditLog                         auditLog)
     {
         super(connectorName,
               context,
@@ -141,12 +141,12 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
                     // this is not necessarily an error
                 }
 
-                MemberAction memberAction;
+                MemberAction memberAction = MemberAction.NO_ACTION;
                 if (info == null)
                 {
                     memberAction = nextElement.getMemberAction(null, null);
                 }
-                else
+                else if (noMismatchInExternalIdentifier(info.getId(), nextElement))
                 {
                     memberAction = nextElement.getMemberAction(this.getDateFromLong(info.getCreated_at()), this.getDateFromLong(info.getUpdated_at()));
                 }
@@ -187,7 +187,11 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
                         MemberElement memberElement = iterator.getMemberByQualifiedName(ucCatalogQualifiedName);
                         MemberAction memberAction   = memberElement.getMemberAction(this.getDateFromLong(catalogInfo.getCreated_at()),
                                                                                     this.getDateFromLong(catalogInfo.getUpdated_at()));
-                        this.takeAction(memberAction, memberElement, catalogInfo);
+
+                        if (noMismatchInExternalIdentifier(catalogInfo.getId(), memberElement))
+                        {
+                            this.takeAction(memberAction, memberElement, catalogInfo);
+                        }
                     }
                 }
             }
@@ -281,7 +285,8 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
                                       this.getExternalIdentifierProperties(catalogInfo,
                                                                            null,
                                                                            UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
-                                                                           catalogInfo.getId()));
+                                                                           catalogInfo.getId(),
+                                                                           PermittedSynchronization.FROM_THIRD_PARTY));
         addCatalogTarget(ucServerGUID, qualifiedName, catalogInfo.getName(), templates, configurationProperties);
     }
 
@@ -304,18 +309,12 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
         String egeriaCatalogGUID = memberElement.getElement().getElementGUID();
 
         openMetadataAccess.updateMetadataElementInStore(egeriaCatalogGUID,
-                                                        false, getElementProperties(catalogInfo));
-
-        context.updateExternalIdentifier(egeriaCatalogGUID,
-                                         deployedImplementationType.getAssociatedTypeName(),
-                                         this.getExternalIdentifierProperties(catalogInfo,
-                                                                              null,
-                                                                              UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
-                                                                              catalogInfo.getId()));
+                                                        false,
+                                                        getElementProperties(catalogInfo));
 
         context.confirmSynchronization(egeriaCatalogGUID,
                                        deployedImplementationType.getAssociatedTypeName(),
-                                       catalogInfo.getName());
+                                       catalogInfo.getId());
     }
 
 
@@ -323,13 +322,25 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
      * Create a catalog in UC.
      *
      * @param memberElement elements from Egeria
-     * @throws PropertyServerException problem communicating with UC
+     * @throws InvalidParameterException parameter error
+     * @throws PropertyServerException repository error or problem communicating with UC
+     * @throws UserNotAuthorizedException authorization error
      */
-    private void createElementInThirdParty(MemberElement memberElement) throws PropertyServerException
+    private void createElementInThirdParty(MemberElement memberElement) throws PropertyServerException,
+                                                                               InvalidParameterException,
+                                                                               UserNotAuthorizedException
     {
-        ucConnector.createCatalog(this.getUCNameFromMember(memberElement),
-                                  this.getUCCommentFomMember(memberElement),
-                                  this.getUCPropertiesFomMember(memberElement));
+        CatalogInfo catalogInfo = ucConnector.createCatalog(this.getUCNameFromMember(memberElement),
+                                                            this.getUCCommentFomMember(memberElement),
+                                                            this.getUCPropertiesFomMember(memberElement));
+
+        context.addExternalIdentifier(memberElement.getElement().getElementGUID(),
+                                      OpenMetadataType.CATALOG.typeName,
+                                      this.getExternalIdentifierProperties(catalogInfo,
+                                                                           null,
+                                                                           UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
+                                                                           catalogInfo.getId(),
+                                                                           PermittedSynchronization.TO_THIRD_PARTY));
     }
 
 
@@ -344,10 +355,13 @@ public class OSSUnityCatalogInsideCatalogSyncCatalog extends OSSUnityCatalogInsi
     private void updateElementInThirdParty(CatalogInfo    catalogInfo,
                                            MemberElement memberElement) throws PropertyServerException
     {
-        ucConnector.updateCatalog(catalogInfo.getName(),
-                                  this.getUCNameFromMember(memberElement),
-                                  this.getUCCommentFomMember(memberElement),
-                                  this.getUCPropertiesFomMember(memberElement));
+        final String methodName = "updateElementInThirdParty";
+
+        auditLog.logMessage(methodName,
+                            UCAuditCode.CATALOG_UPDATE.getMessageDefinition(connectorName,
+                                                                             memberElement.getElement().getElementGUID(),
+                                                                             catalogInfo.getName(),
+                                                                             ucServerEndpoint));
     }
 
 

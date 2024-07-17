@@ -323,7 +323,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         requestBody.setComment(comment);
         requestBody.setProperties(properties);
 
-        if (newName == null)
+        if ((newName == null) || (newName.equals(name)))
         {
             /*
              * new_name must not be null.
