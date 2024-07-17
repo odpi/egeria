@@ -135,12 +135,12 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                     // this is not necessarily an error
                 }
 
-                MemberAction memberAction;
+                MemberAction memberAction = MemberAction.NO_ACTION;
                 if (tableInfo == null)
                 {
                     memberAction = nextElement.getMemberAction(null, null);
                 }
-                else
+                else if (noMismatchInExternalIdentifier(tableInfo.getTable_id(), nextElement))
                 {
                     memberAction = nextElement.getMemberAction(this.getDateFromLong(tableInfo.getCreated_at()),
                                                                this.getDateFromLong(tableInfo.getUpdated_at()));
@@ -199,7 +199,10 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                         MemberElement memberElement = iterator.getMemberByQualifiedName(ucTableQualifiedName);
                                         MemberAction memberAction = memberElement.getMemberAction(this.getDateFromLong(tableInfo.getCreated_at()),
                                                                                                   this.getDateFromLong(tableInfo.getUpdated_at()));
-                                        this.takeAction(schemaGUID, tableInfo.getSchema_name(), memberAction, memberElement, tableInfo);
+                                        if (noMismatchInExternalIdentifier(tableInfo.getTable_id(), memberElement))
+                                        {
+                                            this.takeAction(schemaGUID, tableInfo.getSchema_name(), memberAction, memberElement, tableInfo);
+                                        }
                                     }
                                 }
                             }
@@ -318,7 +321,8 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                       this.getExternalIdentifierProperties(tableInfo,
                                                                            tableInfo.getSchema_name(),
                                                                            UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
-                                                                           tableInfo.getTable_id()));
+                                                                           tableInfo.getTable_id(),
+                                                                           PermittedSynchronization.FROM_THIRD_PARTY));
 
         this.createSchemaAttributesForUCTable(ucTableGUID, tableInfo);
 
@@ -346,14 +350,9 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                         false,
                                                         this.getElementProperties(tableInfo));
 
-        context.updateExternalIdentifier(egeriaTableGUID, entityTypeName, this.getExternalIdentifierProperties(tableInfo,
-                                                                                                               tableInfo.getSchema_name(),
-                                                                                                               UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
-                                                                                                               tableInfo.getTable_id()));
-
         this.updateSchemaAttributesForUCTable(memberElement, tableInfo);
 
-        context.confirmSynchronization(egeriaTableGUID, entityTypeName, tableInfo.getName());
+        context.confirmSynchronization(egeriaTableGUID, entityTypeName, tableInfo.getTable_id());
     }
 
 
@@ -362,7 +361,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
      *
      * @param memberElement elements from Egeria
      * @throws InvalidParameterException parameter error
-     * @throws PropertyServerException repository error
+     * @throws PropertyServerException repository error or problem communicating with UC
      * @throws UserNotAuthorizedException authorization error
      */
     private void createElementInThirdParty(String        schemaName,
@@ -370,15 +369,23 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                                                InvalidParameterException,
                                                                                UserNotAuthorizedException
     {
-        ucConnector.createTable(super.getUCNameFromMember(memberElement),
-                                catalogName,
-                                schemaName,
-                                super.getUCCommentFomMember(memberElement),
-                                this.getUCTableTypeFromMember(memberElement),
-                                this.getUCDataSourceFormatFromMember(memberElement),
-                                this.getUCColumnsForTable(memberElement),
-                                super.getUCStorageLocationFromMember(memberElement),
-                                super.getUCPropertiesFomMember(memberElement));
+        TableInfo tableInfo = ucConnector.createTable(super.getUCNameFromMember(memberElement),
+                                                      catalogName,
+                                                      schemaName,
+                                                      super.getUCCommentFomMember(memberElement),
+                                                      this.getUCTableTypeFromMember(memberElement),
+                                                      this.getUCDataSourceFormatFromMember(memberElement),
+                                                      this.getUCColumnsForTable(memberElement),
+                                                      super.getUCStorageLocationFromMember(memberElement),
+                                                      super.getUCPropertiesFomMember(memberElement));
+
+        context.addExternalIdentifier(memberElement.getElement().getElementGUID(),
+                                      deployedImplementationType.getAssociatedTypeName(),
+                                      this.getExternalIdentifierProperties(tableInfo,
+                                                                           tableInfo.getSchema_name(),
+                                                                           UnityCatalogPlaceholderProperty.TABLE_NAME.getName(),
+                                                                           tableInfo.getTable_id(),
+                                                                           PermittedSynchronization.FROM_THIRD_PARTY));
     }
 
 

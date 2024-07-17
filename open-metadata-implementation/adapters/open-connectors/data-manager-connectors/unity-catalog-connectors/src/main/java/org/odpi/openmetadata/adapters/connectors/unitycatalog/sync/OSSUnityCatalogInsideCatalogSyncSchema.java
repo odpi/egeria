@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.SchemaInfo;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -129,12 +130,12 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                     // this is not necessarily an error
                 }
 
-                MemberAction memberAction;
+                MemberAction memberAction = MemberAction.NO_ACTION;
                 if (schemaInfo == null)
                 {
                     memberAction = nextElement.getMemberAction(null, null);
                 }
-                else
+                else if (noMismatchInExternalIdentifier(schemaInfo.getSchema_id(), nextElement))
                 {
                     memberAction = nextElement.getMemberAction(this.getDateFromLong(schemaInfo.getCreated_at()), this.getDateFromLong(schemaInfo.getUpdated_at()));
                 }
@@ -175,7 +176,10 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                         MemberElement memberElement = iterator.getMemberByQualifiedName(ucSchemaQualifiedName);
                         MemberAction memberAction   = memberElement.getMemberAction(this.getDateFromLong(schemaInfo.getCreated_at()),
                                                                                     this.getDateFromLong(schemaInfo.getUpdated_at()));
-                        this.takeAction(memberAction, memberElement, schemaInfo);
+                        if (noMismatchInExternalIdentifier(schemaInfo.getSchema_id(), memberElement))
+                        {
+                            this.takeAction(memberAction, memberElement, schemaInfo);
+                        }
                     }
                 }
             }
@@ -267,7 +271,8 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                       this.getExternalIdentifierProperties(schemaInfo,
                                                                            schemaInfo.getName(),
                                                                            PlaceholderProperty.SCHEMA_NAME.getName(),
-                                                                           schemaInfo.getSchema_id()));
+                                                                           schemaInfo.getSchema_id(),
+                                                                           PermittedSynchronization.FROM_THIRD_PARTY));
 
         ucFullNameToEgeriaGUID.put(schemaInfo.getFull_name(), ucSchemaGUID);
     }
@@ -295,16 +300,9 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
         openMetadataAccess.updateMetadataElementInStore(egeriaSchemaGUID,
                                                         false, getElementProperties(schemaInfo));
 
-        context.updateExternalIdentifier(egeriaSchemaGUID,
-                                         deployedImplementationType.getAssociatedTypeName(),
-                                         this.getExternalIdentifierProperties(schemaInfo,
-                                                                              schemaInfo.getName(),
-                                                                              PlaceholderProperty.SCHEMA_NAME.getName(),
-                                                                              schemaInfo.getSchema_id()));
-
         context.confirmSynchronization(egeriaSchemaGUID,
                                        deployedImplementationType.getAssociatedTypeName(),
-                                       schemaInfo.getName());
+                                       schemaInfo.getSchema_id());
     }
 
 
@@ -312,14 +310,26 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
      * Create a schema in UC.
      *
      * @param memberElement elements from Egeria
-     * @throws PropertyServerException problem communicating with UC
+     * @throws InvalidParameterException parameter error
+     * @throws PropertyServerException repository error or problem communicating with UC
+     * @throws UserNotAuthorizedException authorization error
      */
-    private void createElementInThirdParty(MemberElement memberElement) throws PropertyServerException
+    private void createElementInThirdParty(MemberElement memberElement) throws PropertyServerException,
+                                                                               InvalidParameterException,
+                                                                               UserNotAuthorizedException
     {
-        ucConnector.createSchema(super.getUCNameFromMember(memberElement),
-                                 catalogName,
-                                 super.getUCCommentFomMember(memberElement),
-                                 super.getUCPropertiesFomMember(memberElement));
+        SchemaInfo schemaInfo = ucConnector.createSchema(super.getUCNameFromMember(memberElement),
+                                                         catalogName,
+                                                         super.getUCCommentFomMember(memberElement),
+                                                         super.getUCPropertiesFomMember(memberElement));
+
+        context.addExternalIdentifier(memberElement.getElement().getElementGUID(),
+                                      deployedImplementationType.getAssociatedTypeName(),
+                                      this.getExternalIdentifierProperties(schemaInfo,
+                                                                           schemaInfo.getName(),
+                                                                           PlaceholderProperty.SCHEMA_NAME.getName(),
+                                                                           schemaInfo.getSchema_id(),
+                                                                           PermittedSynchronization.TO_THIRD_PARTY));
     }
 
 
@@ -334,10 +344,13 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
     private void updateElementInThirdParty(SchemaInfo    schemaInfo,
                                            MemberElement memberElement) throws PropertyServerException
     {
-        SchemaInfo newInfo = ucConnector.updateSchema(schemaInfo.getFull_name(),
-                                                      this.getUCNameFromMember(memberElement),
-                                                      this.getUCCommentFomMember(memberElement),
-                                                      this.getUCPropertiesFomMember(memberElement));
+        final String methodName = "updateElementInThirdParty";
+
+        auditLog.logMessage(methodName,
+                            UCAuditCode.SCHEMA_UPDATE.getMessageDefinition(connectorName,
+                                                                             memberElement.getElement().getElementGUID(),
+                                                                             schemaInfo.getCatalog_name() + "." + schemaInfo.getName(),
+                                                                             ucServerEndpoint));
     }
 
 

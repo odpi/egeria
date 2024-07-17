@@ -174,6 +174,8 @@ public abstract class IntegrationIterator
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException
     {
+        final String methodName = "fillOutMemberElement";
+
         List<MetadataCorrelationHeader>    correlationHeaders = null;
         RelatedMetadataElement             rootSchemaType     = null;
         Map<String, Map<String, String>>   vendorProperties   = null;
@@ -184,6 +186,16 @@ public abstract class IntegrationIterator
             {
                 correlationHeaders = openMetadataAccess.getMetadataCorrelationHeaders(metadataCollectionGUID,
                                                                                       metadataCollectionQualifiedName,
+                                                                                      element.getElementGUID(),
+                                                                                      element.getType().getTypeName());
+            }
+            else if (propertyHelper.isTypeOf(element, OpenMetadataType.SOFTWARE_CAPABILITY.typeName))
+            {
+                correlationHeaders = openMetadataAccess.getMetadataCorrelationHeaders(element.getElementGUID(),
+                                                                                      propertyHelper.getStringProperty(element.getElementGUID(),
+                                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                                       element.getElementProperties(),
+                                                                                                                       methodName),
                                                                                       element.getElementGUID(),
                                                                                       element.getType().getTypeName());
             }

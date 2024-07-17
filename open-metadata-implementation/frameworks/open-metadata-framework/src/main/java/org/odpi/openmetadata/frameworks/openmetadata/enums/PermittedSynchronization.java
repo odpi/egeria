@@ -199,6 +199,6 @@ public enum PermittedSynchronization implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "PermittedSynchronization{" + name + "= name }";
+        return "PermittedSynchronization{ name=" + name + " }";
     }
 }

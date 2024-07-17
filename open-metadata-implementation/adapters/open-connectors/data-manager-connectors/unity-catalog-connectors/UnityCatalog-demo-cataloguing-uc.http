@@ -116,7 +116,7 @@ Content-Type: application/json
 
 ###
 
-@serverGUID=3189db57-1a25-421b-8c18-c428340428b4
+@serverGUID=add server guid here
 
 ###
 # @name getTechnologyTypeElements (UC Server)

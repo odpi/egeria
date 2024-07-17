@@ -69,6 +69,11 @@ public class MemberElement
         this.targetPermittedSynchronization = targetPermittedSynchronization;
         this.auditLog                       = auditLog;
 
+        if (element == null)
+        {
+            this.instanceSyncDirection = PermittedSynchronization.FROM_THIRD_PARTY;
+        }
+
         if (externalIdentifiers != null)
         {
             for (MetadataCorrelationHeader externalIdentifier : externalIdentifiers)
@@ -146,8 +151,8 @@ public class MemberElement
      * @param thirdPartyElementLastUpdateTime the time that the element was last updated in the third party
      * @return the action to take
      */
-    public MemberAction getMemberAction(Date thirdPartyElementCreationTime,
-                                        Date thirdPartyElementLastUpdateTime)
+    public MemberAction getMemberAction(Date   thirdPartyElementCreationTime,
+                                        Date   thirdPartyElementLastUpdateTime)
     {
         final String methodName = "getMemberAction";
 
@@ -255,15 +260,7 @@ public class MemberElement
         }
         else /* No element in Egeria. */
         {
-            if ((instanceSyncDirection == PermittedSynchronization.FROM_THIRD_PARTY) ||
-                (instanceSyncDirection == PermittedSynchronization.BOTH_DIRECTIONS))
-            {
-                return MemberAction.CREATE_INSTANCE_IN_OPEN_METADATA;
-            }
-            else if (instanceSyncDirection == PermittedSynchronization.TO_THIRD_PARTY)
-            {
-                return MemberAction.DELETE_INSTANCE_IN_THIRD_PARTY;
-            }
+            return MemberAction.CREATE_INSTANCE_IN_OPEN_METADATA;
         }
 
         /*
@@ -320,7 +317,29 @@ public class MemberElement
 
         if (elementComparisonDate.after(thirdPartyComparisonDate))
         {
-            return DateComparison.EGERIA_COPY_NEWEST;
+            /*
+             * Egeria has the newest copy - has it been updated since the last
+             * synchronization date?
+             */
+            if (externalIdentifiers != null)
+            {
+                for (MetadataCorrelationHeader externalIdentifier : externalIdentifiers)
+                {
+                    if (externalIdentifier != null)
+                    {
+                        if ((externalIdentifier.getLastSynchronized() != null) && (externalIdentifier.getLastSynchronized().before(elementComparisonDate)))
+                        {
+                            return DateComparison.EGERIA_COPY_NEWEST;
+                        }
+                    }
+                }
+
+                return DateComparison.DATES_EQUAL;
+            }
+            else
+            {
+                return DateComparison.EGERIA_COPY_NEWEST;
+            }
         }
 
         return DateComparison.DATES_EQUAL;

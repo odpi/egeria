@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -14,6 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
@@ -26,9 +28,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Common functions for the synchronizing between Egeria and Unity Catalog.
@@ -210,10 +210,11 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @param schemaName name of the schema
      * @return external identifier properties
      */
-    protected ExternalIdentifierProperties getExternalIdentifierProperties(ElementBase ucElement,
-                                                                           String      schemaName,
-                                                                           String      elementName,
-                                                                           String      id)
+    protected ExternalIdentifierProperties getExternalIdentifierProperties(ElementBase              ucElement,
+                                                                           String                   schemaName,
+                                                                           String                   elementName,
+                                                                           String                   id,
+                                                                           PermittedSynchronization instanceSynchronizationDirection)
     {
         ExternalIdentifierProperties externalIdentifierProperties = new ExternalIdentifierProperties();
 
@@ -231,6 +232,8 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         mappingProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.name, ucServerEndpoint);
 
         externalIdentifierProperties.setMappingProperties(mappingProperties);
+
+        externalIdentifierProperties.setSynchronizationDirection(instanceSynchronizationDirection);
 
         return externalIdentifierProperties;
     }
@@ -277,6 +280,52 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                                                                          OpenMetadataProperty.SOURCE.name,
                                                                                          PropertyFacetValidValues.UNITY_CATALOG_SOURCE_VALUE),
                                                         true);
+    }
+
+
+
+    /**
+     * Check that the name of the third party element has not changed with respect to Egeria.
+     *
+     * @param thirdPartyExternalIdentifier id from Unity Catalog
+     * @param memberElement element from Egeria
+     * @return boolean
+     */
+    protected boolean noMismatchInExternalIdentifier(String        thirdPartyExternalIdentifier,
+                                                     MemberElement memberElement)
+    {
+        final String methodName = "noMismatchInExternalIdentifier";
+
+        if ((thirdPartyExternalIdentifier == null) || (memberElement == null) || (memberElement.getExternalIdentifiers() == null))
+        {
+            return true;
+        }
+
+        List<String> externalIdentifiers = new ArrayList<>();
+
+        for (MetadataCorrelationHeader correlationHeader : memberElement.getExternalIdentifiers())
+        {
+            if ((correlationHeader != null) && (correlationHeader.getExternalIdentifier() != null))
+            {
+                externalIdentifiers.add(correlationHeader.getExternalIdentifier());
+
+                if (thirdPartyExternalIdentifier.equals(correlationHeader.getExternalIdentifier()))
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (externalIdentifiers.isEmpty())
+        {
+            return true;
+        }
+
+        auditLog.logMessage(methodName, UCAuditCode.IDENTITY_MISMATCH.getMessageDefinition(connectorName,
+                                                                                           externalIdentifiers.toString(),
+                                                                                           thirdPartyExternalIdentifier,
+                                                                                           ucServerEndpoint));
+        return false;
     }
 
 

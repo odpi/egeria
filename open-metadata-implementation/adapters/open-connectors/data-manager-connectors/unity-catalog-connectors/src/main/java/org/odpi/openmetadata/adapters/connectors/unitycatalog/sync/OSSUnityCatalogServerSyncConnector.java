@@ -188,17 +188,17 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
             String ucServerEndpoint = this.getNetworkAddress(assetConnector);
             String friendshipConnectorGUID = getFriendshipGUID(configurationProperties);
 
-            OSSUnityCatalogInsideCatalogSyncCatalog syncCatalog = new OSSUnityCatalogInsideCatalogSyncCatalog(connectorName,
-                                                                                                              this.getContext(),
-                                                                                                              catalogTargetName,
-                                                                                                              ucServerGUID,
-                                                                                                              friendshipConnectorGUID,
-                                                                                                              permittedSynchronization,
-                                                                                                              assetConnector,
-                                                                                                              ucServerEndpoint,
-                                                                                                              templateProperties,
-                                                                                                              configurationProperties,
-                                                                                                              auditLog);
+            OSSUnityCatalogServerSyncCatalog syncCatalog = new OSSUnityCatalogServerSyncCatalog(connectorName,
+                                                                                                this.getContext(),
+                                                                                                catalogTargetName,
+                                                                                                ucServerGUID,
+                                                                                                friendshipConnectorGUID,
+                                                                                                permittedSynchronization,
+                                                                                                assetConnector,
+                                                                                                ucServerEndpoint,
+                                                                                                templateProperties,
+                                                                                                configurationProperties,
+                                                                                                auditLog);
 
             syncCatalog.refresh();
         }
