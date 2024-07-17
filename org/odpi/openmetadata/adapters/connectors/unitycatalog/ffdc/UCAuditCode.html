@@ -115,44 +115,70 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#CATALOGED_DATABASE" class="member-name-link">CATALOGED_DATABASE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CATALOG_UPDATE" class="member-name-link">CATALOG_UPDATE</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">UNITY-CATALOG-CONNECTOR-0011 - The {0} Connector has detected a change in the open metadata that controls the definition of catalog {1} but is unable to update the catalog in Unity Catalog (UC) at {2}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CATALOGED_DATABASE" class="member-name-link">CATALOGED_DATABASE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">UNITY-CATALOG-CONNECTOR-0003 - The {0} integration connector has catalogued data set {1} ({2})</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CLIENT_SIDE_REST_API_ERROR" class="member-name-link">CLIENT_SIDE_REST_API_ERROR</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#CLIENT_SIDE_REST_API_ERROR" class="member-name-link">CLIENT_SIDE_REST_API_ERROR</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">UNITY-CATALOG-CONNECTOR-0005 - A client-side exception was received from API call {0} to server {1} at {2}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#FRIENDSHIP_GUID" class="member-name-link">FRIENDSHIP_GUID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#FUNCTION_UPDATE" class="member-name-link">FUNCTION_UPDATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#IDENTITY_MISMATCH" class="member-name-link">IDENTITY_MISMATCH</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#IGNORING_ENDPOINT" class="member-name-link">IGNORING_ENDPOINT</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#MISSING_METHOD" class="member-name-link">MISSING_METHOD</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#NEW_CATALOG_TARGET" class="member-name-link">NEW_CATALOG_TARGET</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#NO_DATABASES" class="member-name-link">NO_DATABASES</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#FRIENDSHIP_GUID" class="member-name-link">FRIENDSHIP_GUID</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">UNITY-CATALOG-CONNECTOR-0007 - The {0} OSS Unity Catalog Connector has been supplied with a friendship connector with GUID {1}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#FUNCTION_UPDATE" class="member-name-link">FUNCTION_UPDATE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">UNITY-CATALOG-CONNECTOR-0002 - The {0} survey action service is unable to retrieve details of any databases for Unity Catalog Server {1}</div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0015 - The {0} Connector has detected a change in the open metadata element {1} that controls the definition of function {2} but is unable to update the function in Unity Catalog (UC) at {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#IDENTITY_MISMATCH" class="member-name-link">IDENTITY_MISMATCH</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">UNITY-CATALOG-CONNECTOR-0010 - The {0} Connector has detected a change in the identity of element {1}.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#IGNORING_ENDPOINT" class="member-name-link">IGNORING_ENDPOINT</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">UNITY-CATALOG-CONNECTOR-0008 - The {0} OSS Unity Inside Catalog Synchronizer Connector only works with catalog targets</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#MISSING_METHOD" class="member-name-link">MISSING_METHOD</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">UNITY-CATALOG-CONNECTOR-0017 - The {0} Connector has called method {1} that is not implemented and so is not able to synchronize element {2} with the Unity Catalog (UC) at {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#NEW_CATALOG_TARGET" class="member-name-link">NEW_CATALOG_TARGET</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">UNITY-CATALOG-CONNECTOR-0009 - The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to Unity Catalog Server Asset {3} for Unity Catalog (UC) {4}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NO_CATALOGS" class="member-name-link">NO_CATALOGS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">UNITY-CATALOG-CONNECTOR-0002 - The {0} connector is unable to retrieve details of any catalogs for Unity Catalog Server {1} ({2})</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SCHEMA_UPDATE" class="member-name-link">SCHEMA_UPDATE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">UNITY-CATALOG-CONNECTOR-0012 - The {0} Connector has detected a change in the open metadata that controls the definition of schema {1} but is unable to update the schema in Unity Catalog (UC) at {2}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#SKIPPING_DATABASE" class="member-name-link">SKIPPING_DATABASE</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">UNITY-CATALOG-CONNECTOR-0004 - he {0} integration connector is skipping data set {1} ({2}) because it is already catalogued</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#TABLE_UPDATE" class="member-name-link">TABLE_UPDATE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">UNITY-CATALOG-CONNECTOR-0013 - The {0} Connector has detected a change in the open metadata that controls the definition of table {1} but is unable to update the table in Unity Catalog (UC) at {2}</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#UC_ELEMENT_DELETE" class="member-name-link">UC_ELEMENT_DELETE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">UNITY-CATALOG-CONNECTOR-0016 - The {0} Connector has detected that the open metadata element that controls the definition of element {1} in Unity Catalog (UC) at {2} has been deleted</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">UNITY-CATALOG-CONNECTOR-0001 - The Unity Catalog connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#VOLUME_UPDATE" class="member-name-link">VOLUME_UPDATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">UNITY-CATALOG-CONNECTOR-0014 - The {0} Connector has detected a change in the open metadata element {1} that controls the definition of volume {2} but is unable to update the volume in Unity Catalog (UC) at {3}</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#WRONG_REST_CONNECTOR" class="member-name-link">WRONG_REST_CONNECTOR</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">UNITY-CATALOG-CONNECTOR-0006 - The {0} Apache Atlas Survey Action Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}</div>
@@ -225,10 +251,10 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="NO_DATABASES">
-<h3>NO_DATABASES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">NO_DATABASES</span></div>
-<div class="block">UNITY-CATALOG-CONNECTOR-0002 - The {0} survey action service is unable to retrieve details of any databases for Unity Catalog Server {1}</div>
+<section class="detail" id="NO_CATALOGS">
+<h3>NO_CATALOGS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">NO_CATALOGS</span></div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0002 - The {0} connector is unable to retrieve details of any catalogs for Unity Catalog Server {1} ({2})</div>
 </section>
 </li>
 <li>
@@ -263,54 +289,77 @@ the order they are declared.</div>
 <section class="detail" id="FRIENDSHIP_GUID">
 <h3>FRIENDSHIP_GUID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">FRIENDSHIP_GUID</span></div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0007 - The {0} OSS Unity Catalog Connector has been supplied with a friendship connector with GUID {1}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="IGNORING_ENDPOINT">
 <h3>IGNORING_ENDPOINT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">IGNORING_ENDPOINT</span></div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0008 - The {0} OSS Unity Inside Catalog Synchronizer Connector only works with catalog targets</div>
 </section>
 </li>
 <li>
 <section class="detail" id="NEW_CATALOG_TARGET">
 <h3>NEW_CATALOG_TARGET</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">NEW_CATALOG_TARGET</span></div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0009 - The {0} Connector has added a catalog target relationship {1} from friendship connector {2} to Unity Catalog Server Asset {3} for Unity Catalog (UC) {4}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="IDENTITY_MISMATCH">
 <h3>IDENTITY_MISMATCH</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">IDENTITY_MISMATCH</span></div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0010 - The {0} Connector has detected a change in the identity of element {1}.  The original id was from {2} and now it is {3} in Unity Catalog (UC) {4}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CATALOG_UPDATE">
+<h3>CATALOG_UPDATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">CATALOG_UPDATE</span></div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0011 - The {0} Connector has detected a change in the open metadata that controls the definition of catalog {1} but is unable to update the catalog in Unity Catalog (UC) at {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SCHEMA_UPDATE">
+<h3>SCHEMA_UPDATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">SCHEMA_UPDATE</span></div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0012 - The {0} Connector has detected a change in the open metadata that controls the definition of schema {1} but is unable to update the schema in Unity Catalog (UC) at {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TABLE_UPDATE">
 <h3>TABLE_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">TABLE_UPDATE</span></div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0013 - The {0} Connector has detected a change in the open metadata that controls the definition of table {1} but is unable to update the table in Unity Catalog (UC) at {2}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="VOLUME_UPDATE">
 <h3>VOLUME_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">VOLUME_UPDATE</span></div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0014 - The {0} Connector has detected a change in the open metadata element {1} that controls the definition of volume {2} but is unable to update the volume in Unity Catalog (UC) at {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="FUNCTION_UPDATE">
 <h3>FUNCTION_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">FUNCTION_UPDATE</span></div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0015 - The {0} Connector has detected a change in the open metadata element {1} that controls the definition of function {2} but is unable to update the function in Unity Catalog (UC) at {3}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UC_ELEMENT_DELETE">
 <h3>UC_ELEMENT_DELETE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">UC_ELEMENT_DELETE</span></div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0016 - The {0} Connector has detected that the open metadata element that controls the definition of element {1} in Unity Catalog (UC) at {2} has been deleted</div>
 </section>
 </li>
 <li>
 <section class="detail" id="MISSING_METHOD">
 <h3>MISSING_METHOD</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">MISSING_METHOD</span></div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0017 - The {0} Connector has called method {1} that is not implemented and so is not able to synchronize element {2} with the Unity Catalog (UC) at {3}</div>
 </section>
 </li>
 </ul>

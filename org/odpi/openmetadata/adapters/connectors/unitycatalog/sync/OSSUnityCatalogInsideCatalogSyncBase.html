@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="OSSUnityCatalogInsideCatalogSyncCatalog.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncCatalog</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncFunctions.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncFunctions</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncSchema.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncSchema</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncTables.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncTables</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncVolumes.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncVolumes</a></code></dd>
+<dd><code><a href="OSSUnityCatalogInsideCatalogSyncFunctions.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncFunctions</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncSchema.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncSchema</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncTables.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncTables</a></code>, <code><a href="OSSUnityCatalogInsideCatalogSyncVolumes.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncVolumes</a></code>, <code><a href="OSSUnityCatalogServerSyncCatalog.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogServerSyncCatalog</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">OSSUnityCatalogInsideCatalogSyncBase</span>
@@ -195,10 +195,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Convert the long value returned by UC into a date (or null).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../frameworks/governanceaction/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ExternalIdentifierProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalIdentifierProperties(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getExternalIdentifierProperties</a><wbr>(<a href="../properties/ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a>&nbsp;ucElement,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalIdentifierProperties(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization)" class="member-name-link">getExternalIdentifierProperties</a><wbr>(<a href="../properties/ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a>&nbsp;ucElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
+ <a href="../../../../frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;instanceSynchronizationDirection)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Populate and return the external identifier properties for a UC Schema.</div>
 </div>
@@ -237,14 +238,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Extract the storage location from the</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refreshEgeria()" class="member-name-link">refreshEgeria</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#noMismatchInExternalIdentifier(java.lang.String,org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)" class="member-name-link">noMismatchInExternalIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;thirdPartyExternalIdentifier,
+ <a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Check that the name of the third party element has not changed with respect to Egeria.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refreshEgeria()" class="member-name-link">refreshEgeria</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Review all the elements for the subtype stored in Egeria.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refreshUnityCatalog(org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator)" class="member-name-link">refreshUnityCatalog</a><wbr>(<a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a>&nbsp;iterator)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refreshUnityCatalog(org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator)" class="member-name-link">refreshUnityCatalog</a><wbr>(<a href="../../../../frameworks/integration/iterator/IntegrationIterator.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">IntegrationIterator</a>&nbsp;iterator)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Review all the elements for the subtype stored in UC.</div>
 </div>
 </div>
@@ -478,12 +485,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getExternalIdentifierProperties(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="getExternalIdentifierProperties(org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.ElementBase,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization)">
 <h3>getExternalIdentifierProperties</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/governanceaction/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ExternalIdentifierProperties</a></span>&nbsp;<span class="element-name">getExternalIdentifierProperties</span><wbr><span class="parameters">(<a href="../properties/ElementBase.html" title="interface in org.odpi.openmetadata.adapters.connectors.unitycatalog.properties">ElementBase</a>&nbsp;ucElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id,
+ <a href="../../../../frameworks/openmetadata/enums/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">PermittedSynchronization</a>&nbsp;instanceSynchronizationDirection)</span></div>
 <div class="block">Populate and return the external identifier properties for a UC Schema.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -513,6 +521,21 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code></dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code></dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="noMismatchInExternalIdentifier(java.lang.String,org.odpi.openmetadata.frameworks.integration.iterator.MemberElement)">
+<h3>noMismatchInExternalIdentifier</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">noMismatchInExternalIdentifier</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;thirdPartyExternalIdentifier,
+ <a href="../../../../frameworks/integration/iterator/MemberElement.html" title="class in org.odpi.openmetadata.frameworks.integration.iterator">MemberElement</a>&nbsp;memberElement)</span></div>
+<div class="block">Check that the name of the third party element has not changed with respect to Egeria.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>thirdPartyExternalIdentifier</code> - id from Unity Catalog</dd>
+<dd><code>memberElement</code> - element from Egeria</dd>
+<dt>Returns:</dt>
+<dd>boolean</dd>
 </dl>
 </section>
 </li>
