@@ -5,8 +5,6 @@ package org.odpi.openmetadata.frameworks.connectors;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
@@ -14,6 +12,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperti
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,10 @@ import java.util.UUID;
 /**
  * ConnectorProviderBase is a base class for a connector provider.  It manages all the class loading
  * for subclass implementations of the connector provider along with the generation of new connector guids.
- *
  * ConnectorProviderBase creates a connector instance with the class name from the private variable called
  * connectorClassName.  This class name is initialized to null.  If the getConnector method is called when
  * the connectorClassName is null, it throws ConnectorCheckedException.
  * This is its default behaviour.
- *
  * To use the ConnectorProviderBase, create a new class that extends the ConnectorProviderBase class
  * and in the constructor call super.setConnectorClassName("your connector's class name");
  */
@@ -333,7 +331,7 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
          */
         try
         {
-            Class<?>   connectorClass = Class.forName(connectorClassName);
+            Class<?>   connectorClass = getClassForConnector();
             Object     potentialConnector = connectorClass.getDeclaredConstructor().newInstance();
 
             connector = (Connector)potentialConnector;
@@ -403,6 +401,18 @@ public abstract class ConnectorProviderBase extends ConnectorProvider implements
         log.debug("getConnector returns: " + connector.getConnectorInstanceId() + ", " + connection.getConnectionName());
 
         return connector;
+    }
+
+
+    /**
+     * Use the standard class loader to retrieve the class for the connector.
+     *
+     * @return class
+     * @throws ClassNotFoundException unable to locate a class by that name on the class path
+     */
+    protected Class<?> getClassForConnector() throws ClassNotFoundException
+    {
+        return Class.forName(connectorClassName);
     }
 
 
