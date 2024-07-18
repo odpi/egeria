@@ -9,7 +9,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
  * The OMRSRepositoryConnectorProviderBase provides a base class for the connector provider supporting OMRS Connectors.
  * It adds no function but provides a placeholder for additional function if needed for the creation of
  * any OMRS Repository connectors.
- *
  * It extends ConnectorProviderBase which does the creation of connector instances.  The subclasses of
  * OMRSRepositoryConnectorProviderBase must initialize ConnectorProviderBase with the Java class
  * name of the OMRS Connector implementation (by calling super.setConnectorClassName(className)).
