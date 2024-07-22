@@ -69,7 +69,7 @@ Content-Type: application/json
 
 ###
 
-@server1GUID=7a70c3de-f798-42cf-844f-1ee2dac824aa
+@server1GUID=a0fa7331-a926-47a2-8fb0-31e01ba5f08a
 
 
 ###
@@ -226,7 +226,7 @@ Content-Type: application/json
 
 ###
 
-@ucSchemaGUID=632ac7ff-6ca1-4d06-b160-0daad5486727
+@ucSchemaGUID=c857b5a1-e497-4436-ac6b-c2265dcc4892
 
 ###
 # @name=getAssetGraph (schemas)
@@ -251,7 +251,7 @@ Content-Type: application/json
 
 ###
 
-@ucVolumeGUID=5e44ba90-9813-411d-aa62-36e5cc2cdf24
+@ucVolumeGUID=0df2166f-5aa8-4a9d-b21f-c62b38d9b974
 
 ###
 # @name=getAssetGraph (volumes)
@@ -262,6 +262,28 @@ GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+
+###
+
+@ucVolumeSurveyName=AssetSurvey:survey-unity-catalog-volume
+
+###
+# @name initiateGovernanceActionType
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "InitiateGovernanceActionTypeRequestBody",
+  "governanceActionTypeQualifiedName": "{{ucVolumeSurveyName}}",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "volume",
+      "actionTargetGUID": "{{ucVolumeGUID}}"
+    } ]
+}
 
 ###
 # @name getTechnologyTypeElements (Tables)

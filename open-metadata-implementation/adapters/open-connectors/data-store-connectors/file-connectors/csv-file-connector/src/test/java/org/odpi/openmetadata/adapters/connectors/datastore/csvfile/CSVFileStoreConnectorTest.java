@@ -302,7 +302,7 @@ public class CSVFileStoreConnectorTest
         }
         catch (FileException  error)
         {
-            assertTrue("BASIC-FILE-CONNECTOR-404-001 The file named BadFileName in the Connection object CSVFileStore.Connection.Test does not exist".equals(error.getMessage()));
+            assertTrue("BASIC-FILE-CONNECTOR-404-002 The file named BadFileName in the Connection object CSVFileStore.Connection.Test does not exist".equals(error.getMessage()));
         }
         catch (Exception exception)
         {

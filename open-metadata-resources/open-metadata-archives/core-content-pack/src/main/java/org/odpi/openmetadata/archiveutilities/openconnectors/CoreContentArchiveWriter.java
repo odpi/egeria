@@ -1778,7 +1778,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         DeployedImplementationType deployedImplementationType = DeployedImplementationType.OMAG_SERVER_PLATFORM;
         DeployedImplementationType softwareCapabilityType = DeployedImplementationType.USER_AUTHENTICATION_MANAGER;
         String softwareCapabilityName = "User Token Manager";
-        String serverName = "Default OMAG Server Platform";
+        String serverName = "Default Local OMAG Server Platform";
         String userId = "garygeeke";
         String connectorTypeGUID = provider.getConnectorType().getGUID();
         String networkAddress = "https://localhost:9443";

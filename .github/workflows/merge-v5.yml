@@ -30,23 +30,8 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      # Build first - lombok & other pre-processing may be needed. safer...
-      - name: build and publish to maven central
-        if: ${{ github.ref == 'refs/heads/main'}}
-        uses: gradle/gradle-build-action@v3
-        with:
-          cache-read-only: false
-          arguments: build publish
-        # Import secrets needed for code signing and distribution
-        env:
-          OSSRH_GPG_KEYID: ${{ secrets.OSSRH_GPG_KEYID }}
-          OSSRH_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
-          OSSRH_GPG_PRIVATE_KEY: ${{ secrets.OSSRH_GPG_PRIVATE_KEY }}
-          ORG_GRADLE_PROJECT_mavenRepoPass: ${{ secrets.OSSRH_TOKEN }}
-          ORG_GRADLE_PROJECT_mavenRepoUser: ${{ secrets.OSSRH_USERNAME }}
-      # In other cases just build but don't publish
+      # Just build but don't publish (yet)
       - name: build (no publish to maven central)
-        if: ${{ github.ref != 'refs/heads/main'}}
         uses: gradle/gradle-build-action@v3
         with:
           cache-read-only: false
@@ -125,3 +110,17 @@ jobs:
           name: Jacoco Coverage Report
           path: build/reports/jacoco/codeCoverageReport
           if-no-files-found: ignore
+      # Build and publish to Maven central for main branch only - this often fails which is why it is done last
+      - name: build and publish to maven central
+        if: ${{ github.ref == 'refs/heads/main'}}
+        uses: gradle/gradle-build-action@v3
+        with:
+          cache-read-only: false
+          arguments: build publish
+        # Import secrets needed for code signing and distribution
+        env:
+          OSSRH_GPG_KEYID: ${{ secrets.OSSRH_GPG_KEYID }}
+          OSSRH_GPG_PASSPHRASE: ${{ secrets.OSSRH_GPG_PASSPHRASE }}
+          OSSRH_GPG_PRIVATE_KEY: ${{ secrets.OSSRH_GPG_PRIVATE_KEY }}
+          ORG_GRADLE_PROJECT_mavenRepoPass: ${{ secrets.OSSRH_TOKEN }}
+          ORG_GRADLE_PROJECT_mavenRepoUser: ${{ secrets.OSSRH_USERNAME }}

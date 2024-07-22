@@ -51,16 +51,41 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
 
     /**
-     * BASIC-FILE-CONNECTOR-400-004 - The file {0} given in Connection object {1} is a directory
+     * BASIC-FILE-CONNECTOR-400-005 - The folder name is null in the Connection object {0}
      */
-    FILE_SPECIFIED(400, "BASIC-FILE-CONNECTOR-400-004",
-                        "The pathname {0} given in Connection object {1} points to a file not a directory",
-                        "The connector is unable to work with a file.",
-                        "Ensure a valid directory name is passed in the address property in the Endpoint object of the Connection object."),
+    FOLDER_NOT_SPECIFIED(400, "BASIC-FILE-CONNECTOR-400-005",
+                         "The folder name is null in the Connection object {0}",
+                         "The connector is unable to open the folder because the name of the folder is not passed in the Connection object.",
+                         "The name of the folder should be set up in the address property of the connection's Endpoint object."),
+
     /**
-     * BASIC-FILE-CONNECTOR-404-001 - The file named {0} in the Connection object {1} does not exist
+     * BASIC-FILE-CONNECTOR-400-006 - The folder {0} given in Connection object {1} is a file
      */
-    FILE_NOT_FOUND(404, "BASIC-FILE-CONNECTOR-404-001",
+    FILE_NOT_DIRECTORY(400, "BASIC-FILE-CONNECTOR-400-006",
+                       "The folder {0} given in Connection object {1} is a file",
+                       "The connector is unable to work with a file.",
+                       "Ensure a valid folder name is passed in the address property in the Endpoint object of the Connection object."),
+
+    /**
+     * BASIC-FILE-CONNECTOR-400-007 - The folder {0} given in Connection object {1} is not readable
+     */
+    FOLDER_NOT_READABLE(400, "BASIC-FILE-CONNECTOR-400-007",
+                        "The folder {0} given in Connection object {1} is not readable",
+                        "The connector is unable to open the folder because it does not have permission to read the file.",
+                        "Ensure a readable folder name is passed in the address property in the Endpoint object of the Connection object."),
+
+    /**
+     * BASIC-FILE-CONNECTOR-404-001 - The folder named {0} in the Connection object {1} does not exist
+     */
+    FOLDER_NOT_FOUND(404, "BASIC-FILE-CONNECTOR-404-001",
+                     "The folder named {0} in the Connection object {1} does not exist",
+                     "The connector is unable to open the folder because it does not exist.",
+                     "Add the name of an existing folder to the address property of the connection's Endpoint object."),
+
+    /**
+     * BASIC-FILE-CONNECTOR-404-002 - The file named {0} in the Connection object {1} does not exist
+     */
+    FILE_NOT_FOUND(404, "BASIC-FILE-CONNECTOR-404-002",
              "The file named {0} in the Connection object {1} does not exist",
              "The connector is unable to locate the file it has been asked to work with.",
              "Ensure that the name of the file in the address property of the connection's Endpoint object matches the location of the file " +
