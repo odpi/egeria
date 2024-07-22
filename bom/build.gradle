@@ -85,7 +85,7 @@ ext {
     quartzVersion = '2.3.2'
     // TODO: May be able to remove as moving to jakarta servlet
     servletVersion = '4.0.1'
-    jakartaServletVersion = '6.0.0'
+    jakartaServletVersion = '6.1.0'
     sleepycatVersion = '18.3.12'
     slf4jVersion = '2.0.6'
     snappyVersion = '1.1.10.5'
