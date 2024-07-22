@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
@@ -54,6 +55,8 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
      * @param ucServerEndpoint the server endpoint used to constructing the qualified names
      * @param templates templates supplied through the catalog target
      * @param configurationProperties configuration properties supplied through the catalog target
+     * @param excludeNames list of catalogs to ignore (and include all others)
+     * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
      * @param auditLog logging destination
      */
     public OSSUnityCatalogInsideCatalogSyncTables(String                           connectorName,
@@ -66,6 +69,8 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                   String                           ucServerEndpoint,
                                                   Map<String, String>              templates,
                                                   Map<String, Object>              configurationProperties,
+                                                  List<String>                     excludeNames,
+                                                  List<String>                     includeNames,
                                                   AuditLog                         auditLog)
     {
         super(connectorName,
@@ -79,6 +84,8 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
               DeployedImplementationType.OSS_UC_TABLE,
               templates,
               configurationProperties,
+              excludeNames,
+              includeNames,
               auditLog);
 
         if (templates != null)
@@ -126,31 +133,34 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                                      nextElement.getElement().getElementProperties(),
                                                                      methodName);
 
-                try
+                if (context.elementShouldBeCatalogued(tableName, excludeNames, includeNames))
                 {
-                    tableInfo = ucConnector.getTable(tableName);
-                }
-                catch (Exception missing)
-                {
-                    // this is not necessarily an error
-                }
+                    try
+                    {
+                        tableInfo = ucConnector.getTable(tableName);
+                    }
+                    catch (Exception missing)
+                    {
+                        // this is not necessarily an error
+                    }
 
-                MemberAction memberAction = MemberAction.NO_ACTION;
-                if (tableInfo == null)
-                {
-                    memberAction = nextElement.getMemberAction(null, null);
-                }
-                else if (noMismatchInExternalIdentifier(tableInfo.getTable_id(), nextElement))
-                {
-                    memberAction = nextElement.getMemberAction(this.getDateFromLong(tableInfo.getCreated_at()),
-                                                               this.getDateFromLong(tableInfo.getUpdated_at()));
-                }
+                    MemberAction memberAction = MemberAction.NO_ACTION;
+                    if (tableInfo == null)
+                    {
+                        memberAction = nextElement.getMemberAction(null, null);
+                    }
+                    else if (noMismatchInExternalIdentifier(tableInfo.getTable_id(), nextElement))
+                    {
+                        memberAction = nextElement.getMemberAction(this.getDateFromLong(tableInfo.getCreated_at()),
+                                                                   this.getDateFromLong(tableInfo.getUpdated_at()));
+                    }
 
-                this.takeAction(context.getAnchorGUID(nextElement.getElement()),
-                                super.getUCSchemaFomMember(nextElement),
-                                memberAction,
-                                nextElement,
-                                tableInfo);
+                    this.takeAction(context.getAnchorGUID(nextElement.getElement()),
+                                    super.getUCSchemaFomMember(nextElement),
+                                    memberAction,
+                                    nextElement,
+                                    tableInfo);
+                }
             }
         }
 
@@ -649,6 +659,9 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
     {
         final String methodName = "createSchemaAttributesForUCTable";
 
+        ElementProperties properties = propertyHelper.addStringProperty(null,
+                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                        super.getQualifiedName(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName()) + "_rootSchemaType");
         /*
          * Create the root schema type.
          */
@@ -659,7 +672,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                                                         false,
                                                         null,
                                                         null,
-                                                        null,
+                                                        properties,
                                                         tableGUID,
                                                         OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                                         null,

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.adminservices.registration.OMAGViewServiceRegistrat
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.serveroperations.ffdc.ServerOpsAuditCode;
 import org.odpi.openmetadata.serveroperations.ffdc.ServerOpsErrorCode;
 import org.odpi.openmetadata.adminservices.classifier.ServerTypeClassifier;
@@ -1914,6 +1915,67 @@ public class OMAGServerOperationalServices
             OMRSOperationalServices         repositoryServicesInstance = instance.getOperationalRepositoryServices();
 
             repositoryServicesInstance.addOpenMetadataArchive(serverName, connection, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Exception error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param openMetadataArchive contents of the open metadata archive file.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or openMetadataArchive parameter.
+     */
+    public VoidResponse addOpenMetadataArchive(String              userId,
+                                               String              serverName,
+                                               OpenMetadataArchive openMetadataArchive)
+    {
+        final String methodName = "addOpenMetadataArchive";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validatePropertyNotNull(openMetadataArchive, "openMetadataArchive", serverName, methodName);
+
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
+            OMRSOperationalServices         repositoryServicesInstance = instance.getOperationalRepositoryServices();
+            OpenMetadataArchiveWrapper      archiveWrapper = new OpenMetadataArchiveWrapper();
+
+            archiveWrapper.setArchiveContents(openMetadataArchive);
+
+            repositoryServicesInstance.addOpenMetadataArchive(serverName, archiveWrapper, methodName);
         }
         catch (InvalidParameterException error)
         {

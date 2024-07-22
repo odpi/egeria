@@ -81,16 +81,6 @@ public class RegisteredGovernanceServiceProperties
      */
     public Map<String, String> getRequestParameters()
     {
-        if (requestParameters == null)
-        {
-            return null;
-        }
-
-        if (requestParameters.isEmpty())
-        {
-            return null;
-        }
-
         return requestParameters;
     }
 

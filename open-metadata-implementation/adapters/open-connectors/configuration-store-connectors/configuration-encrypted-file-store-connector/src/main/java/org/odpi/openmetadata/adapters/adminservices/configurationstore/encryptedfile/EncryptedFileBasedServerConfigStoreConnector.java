@@ -20,6 +20,8 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCo
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -659,7 +661,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
 
         log.debug("Attempting to retrieve encryption key from secure local file.");
         try {
-            keysetHandle = CleartextKeysetHandle.read(JsonKeysetReader.withFile(secureFile));
+            keysetHandle = CleartextKeysetHandle.read(JsonKeysetReader.withInputStream(new FileInputStream(secureFile)));
         } catch (GeneralSecurityException | IOException e) {
             throw new OCFRuntimeException(DocStoreErrorCode.INVALID_KEYSTORE.getMessageDefinition(e.getClass().getName(), e.getMessage()),
                                           this.getClass().getName(),
@@ -742,7 +744,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
         log.info("Generating and storing new encryption key for secure file-based configuration.");
         try {
             KeysetHandle keysetHandle = KeysetHandle.generateNew(KEY_TEMPLATE);
-            CleartextKeysetHandle.write(keysetHandle, JsonKeysetWriter.withFile(secureFile));
+            CleartextKeysetHandle.write(keysetHandle, JsonKeysetWriter.withOutputStream(new FileOutputStream(secureFile)));
         } catch (GeneralSecurityException | IOException e) {
             throw new OCFRuntimeException(DocStoreErrorCode.INVALID_FILE.getMessageDefinition(),
                                           this.getClass().getName(),

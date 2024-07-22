@@ -126,18 +126,7 @@ public class OpenMetadataElement extends ElementControlHeader
      */
     public List<AttachedClassification> getClassifications()
     {
-        if (classifications == null)
-        {
-            return null;
-        }
-        else if (classifications.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(classifications);
-        }
+        return classifications;
     }
 
 

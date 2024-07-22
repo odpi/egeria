@@ -200,6 +200,18 @@ public class SimpleCatalogArchiveHelper
         return idToGUIDMap.getGUID(qualifiedName);
     }
 
+    /**
+     * Return the guid of an element based on its qualified name.  This is a lookup in the GUID map not the archive.
+     * This means if the qualified name is not known, a new GUID is generated.
+     *
+     * @param qualifiedName qualified name ot look up
+     * @param guid  fixed unique identifier
+     */
+    public void setGUID(String qualifiedName,
+                        String guid)
+    {
+        idToGUIDMap.setGUID(qualifiedName, guid);
+    }
 
 
     /**

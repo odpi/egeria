@@ -73,16 +73,16 @@ public class TestVirtualConnection
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getClassifications() == null);
+        assertTrue(resultObject.getClassifications() != null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
-        assertTrue(resultObject.getAdditionalProperties() == null);
+        assertTrue(resultObject.getAdditionalProperties() != null);
 
         assertTrue(resultObject.getDisplayName().equals("TestDisplayName"));
         assertTrue(resultObject.getDescription().equals("TestDescription"));
         assertTrue(resultObject.getConnectorType().equals(connectorType));
         assertTrue(resultObject.getEndpoint().equals(endpoint));
-        assertTrue(resultObject.getSecuredProperties() == null);
+        assertTrue(resultObject.getSecuredProperties() != null);
 
         assertTrue(resultObject.getEmbeddedConnections() != null);
     }
@@ -140,7 +140,7 @@ public class TestVirtualConnection
 
         nullObject.setEmbeddedConnections(new ArrayList<>());
 
-        assertTrue(nullObject.getEmbeddedConnections() == null);
+        assertTrue(nullObject.getEmbeddedConnections() != null);
     }
 
 

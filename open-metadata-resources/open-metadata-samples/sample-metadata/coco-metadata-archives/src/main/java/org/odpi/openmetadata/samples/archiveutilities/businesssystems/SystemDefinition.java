@@ -157,7 +157,7 @@ public enum SystemDefinition
                       null,
                       SystemTypeDefinition.CLOUD_SAAS_SERVICE,
                       "V5.2",
-                      PersonDefinition.FAITH_BROKER,
+                      PersonDefinition.REGGIE_MINT,
                       FacilityDefinition.CLOUD_PROVIDER_TRAVEL,
                       "https://bethere.com/expenses",
                       null,

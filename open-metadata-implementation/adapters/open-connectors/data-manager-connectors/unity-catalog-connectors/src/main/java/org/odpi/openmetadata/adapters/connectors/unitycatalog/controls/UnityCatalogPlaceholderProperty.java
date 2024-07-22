@@ -19,7 +19,7 @@ public enum UnityCatalogPlaceholderProperty
     /**
      * The name of the catalog being described.
      */
-    CATALOG_NAME ("ucCatalogName", "The name of the catalog within Unity Catalog (UC).", "string", "my_catalog"),
+    CATALOG_NAME ("ucCatalogName", "The name of a catalog within Unity Catalog (UC).", "string", "my_catalog"),
 
     /**
      * The name of a schema within a catalog in Unity Catalog (UC).

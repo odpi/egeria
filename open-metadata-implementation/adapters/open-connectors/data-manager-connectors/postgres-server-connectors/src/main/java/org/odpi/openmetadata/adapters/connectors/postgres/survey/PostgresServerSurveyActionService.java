@@ -5,24 +5,21 @@ package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * JDBCResourceConnector provides basic implementation of {@link DataSource} interface in order to get a {@link Connection} to
@@ -33,11 +30,6 @@ import java.util.*;
  */
 public class PostgresServerSurveyActionService extends SurveyActionServiceConnector
 {
-    private final PropertyHelper propertyHelper = new PropertyHelper();
-
-    private Connector connector = null;
-
-
     /**
      * Indicates that the survey action service is completely configured and can begin processing.
      *
@@ -55,31 +47,10 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
             AnnotationStore  annotationStore = surveyContext.getAnnotationStore();
             SurveyAssetStore assetStore      = surveyContext.getAssetStore();
 
-            annotationStore.setAnalysisStep(AnalysisStep.CHECK_ASSET.getName());
-
-            /*
-             * Before performing any real work, check the type of the asset.
-             */
-            AssetUniverse assetUniverse = assetStore.getAssetProperties();
-
-            if (assetUniverse == null)
-            {
-                super.throwNoAsset(assetStore.getAssetGUID(), surveyActionServiceName, methodName);
-                return;
-            }
-            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.SOFTWARE_SERVER.typeName))
-            {
-                super.throwWrongTypeOfAsset(assetUniverse.getGUID(),
-                                            assetUniverse.getType().getTypeName(),
-                                            OpenMetadataType.SOFTWARE_SERVER.typeName,
-                                            methodName);
-                return;
-            }
-
             /*
              * The asset should have a special connector for databases.  If the connector is wrong the cast will fail.
              */
-            connector = assetStore.getConnectorToAsset();
+            connector = super.performCheckAssetAnalysisStep(JDBCResourceConnector.class, OpenMetadataType.SOFTWARE_SERVER.typeName);
             JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
             assetConnector.start();
 
@@ -147,22 +118,5 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
         {
             super.handleUnexpectedException(methodName, error);
         }
-    }
-
-
-    /**
-     * Free up any resources held since the connector is no longer needed.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
-     */
-    @Override
-    public  synchronized void disconnect() throws ConnectorCheckedException
-    {
-        if (connector != null)
-        {
-            connector.disconnect();
-        }
-
-        super.disconnect();
     }
 }

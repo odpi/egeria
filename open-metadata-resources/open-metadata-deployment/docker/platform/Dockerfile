@@ -22,26 +22,27 @@ ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
 ARG VCS_DATE=unknown
+ARG CONTAINER=unknown
 
-ENV version ${version}
+ENV version=${version}
 
 # Labels from https://github.com/opencontainers/image-spec/blob/master/annotations.md#pre-defined-annotation-keys (with additions prefixed ext)
-LABEL org.opencontainers.image.vendor = "ODPi" \
-      org.opencontainers.image.title = "Egeria OMAG Server Platform" \
-      org.opencontainers.image.description = "Common image for Egeria's OMAG Server Platform runtime. Based on RedHat UBI 8 openjdk-17 image." \
-      org.opencontainers.image.url = "https://egeria-project.org/" \
-      org.opencontainers.image.source = "$VCS_ORIGIN" \
-      org.opencontainers.image.authors = "Egeria project community" \
-      org.opencontainers.image.revision = "$VCS_REF" \
-      org.opencontainers.image.licenses = "Apache-2.0" \
-      org.opencontainers.image.created = "$BUILD_TIME" \
-      org.opencontainers.image.version = "$version" \
-      org.opencontainers.image.documentation = "https://github.com/odpi/egeria/tree/main/open-metadata-resources/open-metadata-deployment/docker/platform" \
-      org.opencontainers.image.ext.vcs-date = "$VCS_DATE" \
-      org.opencontainers.image.ext.docker.cmd = "docker run -d -p 9443:9443 odpi/egeria-platform" \
-      org.opencontainers.image.ext.docker.cmd.devel = "docker run -d -p 9443:9443 -p 5005:5005 -e JAVA_DEBUG=true odpi/egeria-platform" \
-      org.opencontainers.image.ext.docker.debug = "docker exec -it $CONTAINER /bin/sh" \
-      org.opencontainers.image.ext.docker.params = "JAVA_DEBUG=set to true to enable JVM debugging"
+LABEL org.opencontainers.image.vendor="ODPi" \
+      org.opencontainers.image.title="Egeria OMAG Server Platform" \
+      org.opencontainers.image.description="Common image for Egeria's OMAG Server Platform runtime. Based on RedHat UBI 8 openjdk-17 image." \
+      org.opencontainers.image.url="https://egeria-project.org/" \
+      org.opencontainers.image.source="$VCS_ORIGIN" \
+      org.opencontainers.image.authors="Egeria project community" \
+      org.opencontainers.image.revision="$VCS_REF" \
+      org.opencontainers.image.licenses="Apache-2.0" \
+      org.opencontainers.image.created="$BUILD_TIME" \
+      org.opencontainers.image.version="$version" \
+      org.opencontainers.image.documentation="https://github.com/odpi/egeria/tree/main/open-metadata-resources/open-metadata-deployment/docker/platform" \
+      org.opencontainers.image.ext.vcs-date="$VCS_DATE" \
+      org.opencontainers.image.ext.docker.cmd="docker run -d -p 9443:9443 odpi/egeria-platform" \
+      org.opencontainers.image.ext.docker.cmd.devel="docker run -d -p 9443:9443 -p 5005:5005 -e JAVA_DEBUG=true odpi/egeria-platform" \
+      org.opencontainers.image.ext.docker.debug="docker exec -it $CONTAINER /bin/sh" \
+      org.opencontainers.image.ext.docker.params="JAVA_DEBUG=set to true to enable JVM debugging"
 
 # Copy the files to package into the container.  The chmod sets up the needed file permissions for the
 # libraries and the data directory.

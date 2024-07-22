@@ -116,18 +116,7 @@ public class ElementType
      */
     public List<String> getSuperTypeNames()
     {
-        if (superTypeNames == null)
-        {
-            return null;
-        }
-        else if (superTypeNames.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(superTypeNames);
-        }
+        return superTypeNames;
     }
 
 

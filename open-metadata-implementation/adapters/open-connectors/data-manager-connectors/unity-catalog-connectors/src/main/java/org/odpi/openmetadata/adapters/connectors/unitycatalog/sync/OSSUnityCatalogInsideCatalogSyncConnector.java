@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
@@ -15,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +24,15 @@ import java.util.Map;
  */
 public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegratorConnector implements CatalogTargetIntegrator
 {
+    private List<String> defaultExcludeSchemaNames   = null;
+    private List<String> defaultIncludeSchemaNames   = null;
+    private List<String> defaultExcludeTableNames    = null;
+    private List<String> defaultIncludeTableNames    = null;
+    private List<String> defaultExcludeFunctionNames = null;
+    private List<String> defaultIncludeFunctionNames = null;
+    private List<String> defaultExcludeVolumeNames   = null;
+    private List<String> defaultIncludeVolumeNames   = null;
+
     /**
      * Indicates that the connector is completely configured and can begin processing.
      *
@@ -51,6 +62,31 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
                 }
             }
         }
+
+        this.defaultExcludeSchemaNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
+                                                                             connectionProperties.getConfigurationProperties(),
+                                                                             null);
+        this.defaultIncludeSchemaNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                                                                             connectionProperties.getConfigurationProperties(),
+                                                                             null);
+        this.defaultExcludeTableNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_TABLE_NAMES.getName(),
+                                                                            connectionProperties.getConfigurationProperties(),
+                                                                            null);
+        this.defaultIncludeTableNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_TABLE_NAMES.getName(),
+                                                                            connectionProperties.getConfigurationProperties(),
+                                                                            null);
+        this.defaultExcludeFunctionNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_FUNCTION_NAMES.getName(),
+                                                                               connectionProperties.getConfigurationProperties(),
+                                                                               null);
+        this.defaultIncludeFunctionNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_FUNCTION_NAMES.getName(),
+                                                                               connectionProperties.getConfigurationProperties(),
+                                                                               null);
+        this.defaultExcludeVolumeNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_VOLUME_NAMES.getName(),
+                                                                             connectionProperties.getConfigurationProperties(),
+                                                                             null);
+        this.defaultIncludeVolumeNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_VOLUME_NAMES.getName(),
+                                                                             connectionProperties.getConfigurationProperties(),
+                                                                             null);
     }
 
 
@@ -171,6 +207,31 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
     {
         final String methodName = "refreshCatalog(" + catalogName + ")";
 
+        List<String> excludeSchemaNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_SCHEMA_NAMES.getName(),
+                                                                              configurationProperties,
+                                                                              defaultExcludeSchemaNames);
+        List<String> includeSchemaNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_SCHEMA_NAMES.getName(),
+                                                                              configurationProperties,
+                                                                              defaultIncludeSchemaNames);
+        List<String> excludeTableNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_TABLE_NAMES.getName(),
+                                                                             configurationProperties,
+                                                                             defaultExcludeTableNames);
+        List<String> includeTableNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_TABLE_NAMES.getName(),
+                                                                             configurationProperties,
+                                                                             defaultIncludeTableNames);
+        List<String> excludeFunctionNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_FUNCTION_NAMES.getName(),
+                                                                                configurationProperties,
+                                                                                defaultExcludeFunctionNames);
+        List<String> includeFunctionNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_FUNCTION_NAMES.getName(),
+                                                                                configurationProperties,
+                                                                                defaultIncludeFunctionNames);
+        List<String> excludeVolumeNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_VOLUME_NAMES.getName(),
+                                                                              configurationProperties,
+                                                                              defaultExcludeVolumeNames);
+        List<String> includeVolumeNames = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_VOLUME_NAMES.getName(),
+                                                                              configurationProperties,
+                                                                              defaultIncludeVolumeNames);
+
         try
         {
             OSSUnityCatalogInsideCatalogSyncSchema syncSchema = new OSSUnityCatalogInsideCatalogSyncSchema(connectorName,
@@ -183,6 +244,8 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
                                                                                                            ucServerEndpoint,
                                                                                                            templates,
                                                                                                            configurationProperties,
+                                                                                                           excludeSchemaNames,
+                                                                                                           includeSchemaNames,
                                                                                                            auditLog);
 
             ucFullNameToEgeriaGUID.putAll(syncSchema.refresh());
@@ -197,6 +260,8 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
                                                                                                               ucServerEndpoint,
                                                                                                               templates,
                                                                                                               configurationProperties,
+                                                                                                              excludeVolumeNames,
+                                                                                                              includeVolumeNames,
                                                                                                               auditLog);
 
             ucFullNameToEgeriaGUID.putAll(syncVolumes.refresh());
@@ -211,6 +276,8 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
                                                                                                            ucServerEndpoint,
                                                                                                            templates,
                                                                                                            configurationProperties,
+                                                                                                           excludeTableNames,
+                                                                                                           includeTableNames,
                                                                                                            auditLog);
 
             ucFullNameToEgeriaGUID.putAll(syncTables.refresh());
@@ -225,6 +292,8 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
                                                                                                                     ucServerEndpoint,
                                                                                                                     templates,
                                                                                                                     configurationProperties,
+                                                                                                                    excludeFunctionNames,
+                                                                                                                    includeFunctionNames,
                                                                                                                     auditLog);
 
             ucFullNameToEgeriaGUID.putAll(syncFunctions.refresh());

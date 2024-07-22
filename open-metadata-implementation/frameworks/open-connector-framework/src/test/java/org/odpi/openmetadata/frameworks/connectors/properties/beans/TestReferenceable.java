@@ -62,10 +62,10 @@ public class TestReferenceable
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getClassifications() == null);
+        assertTrue(resultObject.getClassifications() != null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
-        assertTrue(resultObject.getAdditionalProperties() == null);
+        assertTrue(resultObject.getAdditionalProperties() != null);
     }
 
 
@@ -132,7 +132,7 @@ public class TestReferenceable
         testObject = new Asset();
         testObject.setAdditionalProperties(propertyMap);
 
-        assertTrue(testObject.getAdditionalProperties() == null);
+        assertTrue(testObject.getAdditionalProperties() != null);
 
         propertyMap.put("propertyName", "propertyValue");
         testObject = new Asset();

@@ -193,7 +193,21 @@ public enum HostDefinition
                                    "21.1",
                                    null,
                                    new String[]{"machines"},
-                                   1000),
+                                   1900),
+
+    /**
+     * winch06 - Winchester data centre metadata host Edge01.
+     */
+    AUS_OMAG_EDGE_03("longhorn",
+                       "Austin data centre standard machine for metadata host Edge03.",
+                       HostTypeDefinition.BARE_METAL,
+                       FacilityDefinition.WINCHESTER_DC,
+                       "https://winch06.coco.com",
+                       "Ubuntu",
+                       "22.04",
+                       null,
+                       new String[]{"machines"},
+                       2000),
 
     /**
      * winch01 - Winchester data centre standard machine 01.
@@ -210,6 +224,21 @@ public enum HostDefinition
                                      1000),
 
     /**
+     * winch06 - Winchester data centre metadata host Edge01.
+     */
+    WINCH_OMAG_EDGE_01("winch06",
+                       "Winchester data centre metadata host machine 06.",
+                       HostTypeDefinition.BARE_METAL,
+                       FacilityDefinition.WINCHESTER_DC,
+                       "https://winch06.coco.com",
+                       "Ubuntu",
+                       "22.04",
+                       null,
+                       new String[]{"machines"},
+                       2000),
+
+
+    /**
      * ed04 - Edmonton data centre standard machine 04.
      */
     ED_MANUFACTURING_CONTROL_HOST("ed04",
@@ -222,6 +251,20 @@ public enum HostDefinition
                                   null,
                                   new String[]{"machines"},
                                   1000),
+
+    /**
+     * ed04 - Edmonton data centre standard machine 04.
+     */
+    ED_OMAG_EDGE_02("ed013",
+                    "Edmonton data centre metadata host machine 13.",
+                    HostTypeDefinition.BARE_METAL,
+                    FacilityDefinition.EDMONTON_OFFICE,
+                    "https://ed013.coco.com",
+                    "Ubuntu",
+                    "23.04",
+                    null,
+                    new String[]{"machines"},
+                    2005),
 
     /**
      * ams14 - Amsterdam data centre standard machine ams14.

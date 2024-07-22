@@ -112,18 +112,7 @@ public class ValidValueImplementation extends PropertyBase
      */
     public Map<String, String> getAdditionalValues()
     {
-        if (additionalValues == null)
-        {
-            return null;
-        }
-        else if (additionalValues.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalValues);
-        }
+        return additionalValues;
     }
 
 

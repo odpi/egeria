@@ -74,10 +74,10 @@ public class TestCertification
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getClassifications() == null);
+        assertTrue(resultObject.getClassifications() != null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
-        assertTrue(resultObject.getAdditionalProperties() == null);
+        assertTrue(resultObject.getAdditionalProperties() != null);
 
         assertTrue(resultObject.getCertificateGUID().equals("TestCertificationTypeGUID"));
         assertTrue(resultObject.getCertificationTypeName().equals("TestCertificationTypeName"));

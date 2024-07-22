@@ -112,7 +112,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         try
         {
             /*
-             * Create the client that calls Apache Atlas.
+             * Create the client that calls Unity Catalog.
              */
             RESTClientFactory factory = new RESTClientFactory(ucInstanceName,
                                                               targetRootURL,

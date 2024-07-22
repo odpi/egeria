@@ -3,8 +3,10 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
 import org.odpi.openmetadata.frameworks.surveyaction.measurements.*;
 
@@ -17,55 +19,112 @@ import java.util.Map;
 /**
  * The UnityCatalogAnnotationType enum describes the annotation types used by the unity catalog survey action service.
  */
-public enum UnityCatalogAnnotationType
+public enum UnityCatalogAnnotationType implements AnnotationType
 {
-    DATABASE_TABLE_SIZES("Capture Database Table Sizes",
+    RESOURCE_INVENTORY("Log of Unity Catalog (UC) Resources",
+                 OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
+                 "Log file of resource name, description and deployed implementation type.",
+                 "If resource are missing, check the security permissions of the survey service's userId.",
+                 AnalysisStep.PRODUCE_INVENTORY.getName(),
+                 getProfilePropertiesPropertyName(),
+                 null),
+
+    CATALOG_LIST("Capture List of Unity Catalog (UC) Catalogs",
+                 OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
+                 "Extract the list of visible catalog in a Unity Catalog (UC) server.",
+                 "If catalogs are missing, check the security permissions of the survey service's userId.",
+                 AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName(),
+                 getProfilePropertiesPropertyName(),
+                 null),
+
+    SCHEMA_LIST("Capture List of Unity Catalog (UC) Schemas",
+                OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
+                "Extract the list of visible schema in the surveyed Unity Catalog (UC) resource (server or catalog).",
+                "Schemas listed include their catalog name and schema name.  If schemas are missing, check the security permissions of the survey service's userId.",
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName(),
+                getProfilePropertiesPropertyName(),
+                null),
+
+    TABLE_LIST("Capture List of Unity Catalog (UC) Tables",
+               OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
+               "Extract the list of visible tables in the surveyed Unity Catalog (UC) resource (server, catalog or schema).",
+               "Tables listed include their catalog name, schema name and table name.  If tables are missing, check the security permissions of the survey service's userId.",
+               AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName(),
+               getProfilePropertiesPropertyName(),
+               null),
+
+    FUNCTION_LIST("Capture List of Unity Catalog (UC) Functions",
+                  OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
+                  "Extract the list of visible functions in the surveyed Unity Catalog (UC) resource (server, catalog or schema).",
+                  "Functions listed include their catalog name, schema name and function name.  If functions are missing, check the security permissions of the survey service's userId.",
+                  AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName(),
+                  getProfilePropertiesPropertyName(),
+                  null),
+
+    VOLUME_LIST("Capture List of Unity Catalog (UC) Volumes",
+                OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
+                "Extract the list of visible volumes in the surveyed Unity Catalog (UC) resource (server, catalog or schema).",
+                "Volumes listed include their catalog name, schema name and volume name.  If volumes are missing, check the security permissions of the survey service's userId.",
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName(),
+                getProfilePropertiesPropertyName(),
+                null),
+
+    CATALOG_TABLE_SIZES("Capture Unity Catalog (UC) Catalog Table Sizes",
                          OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                         "Extract the sizes of the visible tables in a database.",
-                         "Tables listed include their database name and schema name.  If tables are missing, check the security permissions of the survey service's database userId.",
-                         null,
+                         "Extract the sizes of the visible tables in a Unity Catalog (UC) catalog.",
+                         "Tables listed include their catalog name and schema name.  If tables are missing, check the security permissions of the survey service's userId.",
+                        AnalysisStep.PROFILE_DATA.getName(),
+                        null,
                          null),
 
-    DATABASE_SCHEMA_TABLE_SIZES("Capture Table Sizes for a Database Schema",
-                                OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                                "Extract the sizes of the visible tables in a database schema.",
-                                "Tables listed include their database name and schema name.  If tables are missing, check the security permissions of the survey service's database userId.",
-                                null,
-                                null),
+    SCHEMA_TABLE_SIZES("Capture Table Sizes for a Database Schema",
+                       OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
+                       "Extract the sizes of the visible tables in a Unity Catalog (UC) schema.",
+                       "Tables listed include their catalog name and schema name.  If tables are missing, check the security permissions of the survey service's userId.",
+                       AnalysisStep.PROFILE_DATA.getName(),
+                       null,
+                       null),
 
-    DATABASE_METRICS("Capture Database Metrics",
+    SERVER_METRICS("Capture Unity Catalog (UC) Server Metrics",
                    OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
                    "Capture summary statistics about a database.",
-                   "This annotation retrieves statistics about a database and its usage.",
+                   "This annotation retrieves statistics about a Unity Catalog (UC) server and its contents.",
+                   AnalysisStep.MEASURE_RESOURCE.getName(),
                    null,
-                   RelationalDatabaseMetric.getMetrics()),
-    SCHEMA_METRICS("Capture Database Schema Metrics",
+                   UnityCatalogMetric.getServerMetrics()),
+
+    CATALOG_METRICS("Capture Unity Catalog (UC) Catalog Metrics",
                    OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
-                   "Capture summary statistics about the database tables in a database schema.",
+                   "Capture summary statistics about a Unity Catalog (UC) catalog.",
+                   "This annotation retrieves statistics about a catalog and its schemas, tables, volumes and functions.",
+                    AnalysisStep.MEASURE_RESOURCE.getName(),
+                    null,
+                    UnityCatalogMetric.getCatalogMetrics()),
+
+    SCHEMA_METRICS("Capture Unity Catalog (UC) Schema Metrics",
+                   OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
+                   "Capture summary statistics about the tables in a Unity Catalog (UC) schema.",
                    "This annotation retrieves statistics about individual tables and columns, and aggregates them into a summary for the schema.",
+                   AnalysisStep.MEASURE_RESOURCE.getName(),
                    null,
-                   RelationalSchemaMetric.getMetrics()),
+                   UnityCatalogMetric.getSchemaMetrics()),
 
-    TABLE_METRICS("Capture Database Table Metrics",
+    TABLE_METRICS("Capture Unity Catalog (UC) Table Metrics",
                   OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
-                  "Capture summary statistics about a database table.",
+                  "Capture summary statistics about a Unity Catalog (UC) table.",
                   "This annotation retrieves statistics about individual columns and aggregates them into a summary for the table.",
+                  AnalysisStep.MEASURE_RESOURCE.getName(),
                   null,
-                  RelationalTableMetric.getMetrics()),
+                  UnityCatalogMetric.getTableMetrics()),
 
-    COLUMN_METRICS("Capture Database Column Metrics",
+    COLUMN_METRICS("Capture Unity Catalog (UC) Column Metrics",
                    OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
-                   "Capture summary statistics about a database column.",
+                   "Capture summary statistics about a Unity Catalog (UC) column.",
                    "This annotation retrieves statistics about an individual column.",
+                   AnalysisStep.MEASURE_RESOURCE.getName(),
                    null,
-                   RelationalColumnMetric.getMetrics()),
+                   UnityCatalogMetric.getColumnMetrics()),
 
-    COLUMN_VALUES("Capture Frequent Values for Column",
-                  OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                  "Capture the most common values stored in the column and their frequencies.",
-                  "This annotation extracts the statistics maintained by the database.",
-                  null,
-                  null),
     ;
 
 
@@ -73,6 +132,7 @@ public enum UnityCatalogAnnotationType
     public final String             openMetadataTypeName;
     public final String             summary;
     public final String             explanation;
+    public final String             analysisStepName;
     public final List<String>       profilePropertyNames;
     public final List<SurveyMetric> metrics;
 
@@ -84,6 +144,7 @@ public enum UnityCatalogAnnotationType
      * @param openMetadataTypeName the open metadata type used for this annotation type
      * @param summary short explanation of the annotation type
      * @param explanation explanation of the annotation type
+     * @param analysisStepName name of the step that produces this annotation
      * @param profilePropertyNames list of property names filled out in the ResourceProfileAnnotation
      * @param metrics optional metrics
      */
@@ -91,6 +152,7 @@ public enum UnityCatalogAnnotationType
                                String                openMetadataTypeName,
                                String                summary,
                                String                explanation,
+                               String                analysisStepName,
                                List<String>          profilePropertyNames,
                                List<SurveyMetric>    metrics)
     {
@@ -98,6 +160,7 @@ public enum UnityCatalogAnnotationType
         this.openMetadataTypeName = openMetadataTypeName;
         this.summary              = summary;
         this.explanation          = explanation;
+        this.analysisStepName     = analysisStepName;
         this.profilePropertyNames = profilePropertyNames;
         this.metrics              = metrics;
     }
@@ -105,6 +168,69 @@ public enum UnityCatalogAnnotationType
 
     /**
      * Return the defined annotation types for the PostgreSQL Server
+     * survey action service as a list of annotation type types.
+     *
+     * @return list
+     */
+    public static List<AnnotationTypeType> getServerAnnotationTypeTypes()
+    {
+        List<AnnotationTypeType> annotationTypeTypes = new ArrayList<>();
+
+        annotationTypeTypes.add(RESOURCE_INVENTORY.getAnnotationTypeType());
+        annotationTypeTypes.add(SERVER_METRICS.getAnnotationTypeType());
+        annotationTypeTypes.add(CATALOG_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(SCHEMA_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(TABLE_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(FUNCTION_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(VOLUME_LIST.getAnnotationTypeType());
+
+        return annotationTypeTypes;
+    }
+
+
+    /**
+     * Return the defined annotation types for the UC catalog
+     * survey action service as a list of annotation type types.
+     *
+     * @return list
+     */
+    public static List<AnnotationTypeType> getCatalogAnnotationTypeTypes()
+    {
+        List<AnnotationTypeType> annotationTypeTypes = new ArrayList<>();
+
+        annotationTypeTypes.add(RESOURCE_INVENTORY.getAnnotationTypeType());
+        annotationTypeTypes.add(CATALOG_METRICS.getAnnotationTypeType());
+        annotationTypeTypes.add(SCHEMA_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(TABLE_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(FUNCTION_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(VOLUME_LIST.getAnnotationTypeType());
+
+        return annotationTypeTypes;
+    }
+
+
+    /**
+     * Return the defined annotation types for the UC schema
+     * survey action service as a list of annotation type types.
+     *
+     * @return list
+     */
+    public static List<AnnotationTypeType> getSchemaAnnotationTypeTypes()
+    {
+        List<AnnotationTypeType> annotationTypeTypes = new ArrayList<>();
+
+        annotationTypeTypes.add(RESOURCE_INVENTORY.getAnnotationTypeType());
+        annotationTypeTypes.add(SCHEMA_METRICS.getAnnotationTypeType());
+        annotationTypeTypes.add(TABLE_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(FUNCTION_LIST.getAnnotationTypeType());
+        annotationTypeTypes.add(VOLUME_LIST.getAnnotationTypeType());
+
+        return annotationTypeTypes;
+    }
+
+
+    /**
+     * Return the defined annotation types for the UC Server
      * survey action service as a list of annotation type types.
      *
      * @return list
@@ -121,6 +247,14 @@ public enum UnityCatalogAnnotationType
         return annotationTypeTypes;
     }
 
+    private static List<String> getProfilePropertiesPropertyName()
+    {
+        List<String> propertyNames = new ArrayList<>();
+
+        propertyNames.add(OpenMetadataProperty.PROFILE_PROPERTIES.name);
+
+        return propertyNames;
+    }
 
     /**
      * Return the name of the annotation type.
@@ -140,7 +274,7 @@ public enum UnityCatalogAnnotationType
      */
     public String getAnalysisStep()
     {
-        return AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName();
+        return analysisStepName;
     }
 
 
@@ -178,6 +312,18 @@ public enum UnityCatalogAnnotationType
 
 
     /**
+     * Return the expression used in the annotation type processing.
+     *
+     * @return string
+     */
+    @Override
+    public String getExpression()
+    {
+        return null;
+    }
+
+
+    /**
      * Return the list of property names that make up this profile entry
      *
      * @return list of property names
@@ -200,7 +346,7 @@ public enum UnityCatalogAnnotationType
 
         annotationTypeType.setName(name);
         annotationTypeType.setOpenMetadataTypeName(openMetadataTypeName);
-        annotationTypeType.setAnalysisStepName(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
+        annotationTypeType.setAnalysisStepName(analysisStepName);
         annotationTypeType.setSummary(summary);
         annotationTypeType.setExplanation(explanation);
 

@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class StructTypePropertyValue extends PropertyValue
 {
-    private static final long    serialVersionUID = 1L;
-
     private ElementProperties attributes = null;
 
 
@@ -69,7 +67,12 @@ public class StructTypePropertyValue extends PropertyValue
      */
     public String valueAsString()
     {
-        return mapValuesAsString(attributes.getPropertyValueMap()).toString();
+        if (attributes != null)
+        {
+            return mapValuesAsString(attributes.getPropertyValueMap()).toString();
+        }
+
+        return null;
     }
 
 
@@ -80,7 +83,12 @@ public class StructTypePropertyValue extends PropertyValue
      */
     public Object valueAsObject()
     {
-        return mapValuesAsObject(attributes.getPropertyValueMap());
+        if (attributes != null)
+        {
+            return mapValuesAsObject(attributes.getPropertyValueMap());
+        }
+
+        return null;
     }
 
 

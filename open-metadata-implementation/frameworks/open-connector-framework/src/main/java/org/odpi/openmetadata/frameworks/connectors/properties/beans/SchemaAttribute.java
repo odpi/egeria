@@ -524,18 +524,7 @@ public class SchemaAttribute extends SchemaElement
      */
     public List<SchemaAttributeRelationship> getAttributeRelationships()
     {
-        if (attributeRelationships == null)
-        {
-            return null;
-        }
-        else if (attributeRelationships.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(attributeRelationships);
-        }
+        return attributeRelationships;
     }
 
 

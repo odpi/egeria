@@ -113,15 +113,6 @@ public class RequestForActionAnnotation extends DataFieldAnnotation
      */
     public Map<String, String> getActionProperties()
     {
-        if (actionProperties == null)
-        {
-            return null;
-        }
-        else if (actionProperties.isEmpty())
-        {
-            return null;
-        }
-
         return actionProperties;
     }
 

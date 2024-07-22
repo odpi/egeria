@@ -251,18 +251,7 @@ public class ContactMethodProperties
      */
     public Map<String, Object> getExtendedProperties()
     {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
-        }
+        return extendedProperties;
     }
 
 

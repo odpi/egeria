@@ -3,35 +3,24 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.survey;
 
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogSurveyRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogAnnotationType;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogMetric;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCErrorCode;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.*;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceMeasureAnnotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
 
-public class OSSUnityCatalogServerSurveyService extends SurveyActionServiceConnector
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class OSSUnityCatalogServerSurveyService extends OSSUnityCatalogServerSurveyBase
 {
-    final static PropertyHelper propertyHelper = new PropertyHelper();
-
-
-    /**
-     * This is the point after which the processing stops.  The default is PROFILE - which
-     * is the last analysis step.  It can be changed through configuration properties or
-     * analysis properties passed when this discovery service is called.
-     */
-    private String finalAnalysisStep = AnalysisStep.PROFILE_DATA.getName();
-
-
     /**
      * Indicates that the survey service is completely configured and can begin processing.
      * This is where the function of the discovery service is implemented.
@@ -47,84 +36,164 @@ public class OSSUnityCatalogServerSurveyService extends SurveyActionServiceConne
 
         final String methodName = "start";
 
-        if (connectionProperties.getConfigurationProperties() != null)
-        {
-            Object finalAnalysisStepPropertyObject = connectionProperties.getConfigurationProperties().get(UnityCatalogSurveyRequestParameter.FINAL_ANALYSIS_STEP.getName());
-
-            if (finalAnalysisStepPropertyObject != null)
-            {
-                String finalAnalysisProperty = finalAnalysisStepPropertyObject.toString();
-
-                if ((finalAnalysisProperty.equals(AnalysisStep.MEASURE_RESOURCE.getName())) ||
-                        (finalAnalysisProperty.equals(AnalysisStep.SCHEMA_EXTRACTION.getName())))
-                {
-                    finalAnalysisStep = finalAnalysisProperty;
-                }
-            }
-        }
-
-        /*
-         * The finalAnalysisStep property in analysisProperties takes precedent over the value in the
-         * configuration properties.
-         */
-        if (surveyContext.getRequestParameters() != null)
-        {
-            String finalAnalysisProperty = surveyContext.getRequestParameters().get(UnityCatalogSurveyRequestParameter.FINAL_ANALYSIS_STEP.getName());
-
-            if ((finalAnalysisProperty.equals(AnalysisStep.MEASURE_RESOURCE.getName())) ||
-                    (finalAnalysisProperty.equals(AnalysisStep.SCHEMA_EXTRACTION.getName())))
-            {
-                finalAnalysisStep = finalAnalysisProperty;
-            }
-        }
+        this.setFinalAnalysisStep();
 
         try
         {
-            String           assetGUID  = surveyContext.getAssetGUID();
-            SurveyAssetStore assetStore = surveyContext.getAssetStore();
+            connector = performCheckAssetAnalysisStep(OSSUnityCatalogResourceConnector.class,
+                                                      OpenMetadataType.SOFTWARE_SERVER.typeName);
 
-            surveyContext.getAnnotationStore().setAnalysisStep(AnalysisStep.CHECK_ASSET.getName());
+            OSSUnityCatalogResourceConnector ucConnector = (OSSUnityCatalogResourceConnector)connector;
 
-            Connector     connectorToAsset = assetStore.getConnectorToAsset();
-            AssetUniverse assetUniverse    = assetStore.getAssetProperties();
+            AnnotationStore   annotationStore   = surveyContext.getAnnotationStore();
 
-            if (connectorToAsset instanceof OSSUnityCatalogResourceConnector atlasConnector)
+            /*
+             * The MEASURE RESOURCE analysis step gathers simple statistics from Unity Catalog
+             */
+            annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
+
+            Map<String, String> catalogList  = new HashMap<>();
+            Map<String, String> schemaList   = new HashMap<>();
+            Map<String, String> functionList = new HashMap<>();
+            Map<String, String> tableList    = new HashMap<>();
+            Map<String, String> volumeList   = new HashMap<>();
+
+            long catalogCount  = 0;
+            long schemaCount   = 0;
+            long functionCount = 0;
+            long tableCount    = 0;
+            long volumeCount   = 0;
+
+            List<CatalogInfo> catalogInfos = ucConnector.listCatalogs();
+
+            if (catalogInfos != null)
             {
-                atlasConnector.start();
+                for (CatalogInfo catalogInfo : catalogInfos)
+                {
+                    if (catalogInfo != null)
+                    {
+                        catalogList.put(catalogInfo.getName(), catalogInfo.getComment());
+                        catalogCount ++;
 
-                AnnotationStore   annotationStore   = surveyContext.getAnnotationStore();
-                OpenMetadataStore openMetadataStore = surveyContext.getOpenMetadataStore();
+                        List<SchemaInfo> schemaInfos = ucConnector.listSchemas(catalogInfo.getName());
 
-                /*
-                 * The STATS analysis step gathers simple statistics from Apache Atlas
-                 */
-                annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
+                        if (schemaInfos != null)
+                        {
+                            for (SchemaInfo schemaInfo : schemaInfos)
+                            {
+                                if (schemaInfo != null)
+                                {
+                                    schemaList.put(schemaInfo.getFull_name(), schemaInfo.getComment());
+                                    schemaCount ++;
 
+                                    List<VolumeInfo> volumeInfos = ucConnector.listVolumes(catalogInfo.getName(), schemaInfo.getName());
+
+                                    if (volumeInfos != null)
+                                    {
+                                        for (VolumeInfo volumeInfo : volumeInfos)
+                                        {
+                                            if (volumeInfo != null)
+                                            {
+                                                volumeList.put(volumeInfo.getFull_name(), volumeInfo.getComment());
+                                                volumeCount ++;
+                                            }
+                                        }
+                                    }
+
+                                    List<TableInfo> tableInfos = ucConnector.listTables(catalogInfo.getName(), schemaInfo.getName());
+
+                                    if (tableInfos != null)
+                                    {
+                                        for (TableInfo tableInfo : tableInfos)
+                                        {
+                                            if (tableInfo != null)
+                                            {
+                                                tableList.put(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(), tableInfo.getComment());
+                                                tableCount ++;
+                                            }
+                                        }
+                                    }
+
+                                    List<FunctionInfo> functionInfos = ucConnector.listFunctions(catalogInfo.getName(), schemaInfo.getName());
+
+                                    if (functionInfos != null)
+                                    {
+                                        for (FunctionInfo functionInfo : functionInfos)
+                                        {
+                                            if (functionInfo != null)
+                                            {
+                                                functionList.put(functionInfo.getFull_name(), functionInfo.getComment());
+                                                functionCount ++;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            else
+
+            ResourceMeasureAnnotation resourceMeasureAnnotation = new ResourceMeasureAnnotation();
+
+            setUpAnnotation(resourceMeasureAnnotation, UnityCatalogAnnotationType.SERVER_METRICS);
+
+            Map<String, String> resourceProperties = new HashMap<>();
+
+            resourceProperties.put(UnityCatalogMetric.NO_OF_CATALOGS.getPropertyName(), Long.toString(catalogCount));
+            resourceProperties.put(UnityCatalogMetric.NO_OF_SCHEMAS.getPropertyName(), Long.toString(schemaCount));
+            resourceProperties.put(UnityCatalogMetric.NO_OF_FUNCTIONS.getPropertyName(), Long.toString(functionCount));
+            resourceProperties.put(UnityCatalogMetric.NO_OF_TABLES.getPropertyName(), Long.toString(tableCount));
+            resourceProperties.put(UnityCatalogMetric.NO_OF_VOLUMES.getPropertyName(), Long.toString(volumeCount));
+
+            Map<String, Long>   resourceCounts     = new HashMap<>();
+
+            resourceCounts.put(UnityCatalogMetric.NO_OF_CATALOGS.getPropertyName(), catalogCount);
+            resourceCounts.put(UnityCatalogMetric.NO_OF_SCHEMAS.getPropertyName(), schemaCount);
+            resourceCounts.put(UnityCatalogMetric.NO_OF_FUNCTIONS.getPropertyName(), functionCount);
+            resourceCounts.put(UnityCatalogMetric.NO_OF_TABLES.getPropertyName(), tableCount);
+            resourceCounts.put(UnityCatalogMetric.NO_OF_VOLUMES.getPropertyName(), volumeCount);
+
+            resourceMeasureAnnotation.setJsonProperties(this.getJSONProperties(resourceCounts));
+            resourceMeasureAnnotation.setResourceProperties(resourceProperties);
+
+            annotationStore.addAnnotation(resourceMeasureAnnotation, surveyContext.getAssetGUID());
+
+            if (! finalAnalysisStep.equals(AnalysisStep.MEASURE_RESOURCE.getName()))
             {
-                String connectorToAssetClassName = "null";
+                annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
-                if (connectorToAsset != null)
+                ResourceProfileAnnotation resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.CATALOG_LIST, catalogList);
+
+                annotationStore.addAnnotation(resourceProfileAnnotation, surveyContext.getAssetGUID());
+
+                resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.SCHEMA_LIST, schemaList);
+
+                annotationStore.addAnnotation(resourceProfileAnnotation, surveyContext.getAssetGUID());
+
+                resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.FUNCTION_LIST, functionList);
+
+                annotationStore.addAnnotation(resourceProfileAnnotation, surveyContext.getAssetGUID());
+
+                resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.TABLE_LIST, tableList);
+
+                annotationStore.addAnnotation(resourceProfileAnnotation, surveyContext.getAssetGUID());
+
+                resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.VOLUME_LIST, volumeList);
+
+                annotationStore.addAnnotation(resourceProfileAnnotation, surveyContext.getAssetGUID());
+
+                if (! finalAnalysisStep.equals(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName()))
                 {
-                    connectorToAssetClassName = connectorToAsset.getClass().getName();
-                }
+                    annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
 
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        UCAuditCode.WRONG_REST_CONNECTOR.getMessageDefinition(surveyActionServiceName,
-                                                                                              connectorToAssetClassName,
-                                                                                              OSSUnityCatalogResourceConnector.class.getName(),
-                                                                                              assetGUID));
+                    super.writeInventory("serverResources",
+                                         catalogList,
+                                         schemaList,
+                                         functionList,
+                                         tableList,
+                                         volumeList);
                 }
-
-                throw new ConnectorCheckedException(UCErrorCode.WRONG_REST_CONNECTOR.getMessageDefinition(surveyActionServiceName,
-                                                                                                          connectorToAssetClassName,
-                                                                                                          OSSUnityCatalogResourceConnector.class.getName(),
-                                                                                                          assetGUID),
-                                                    this.getClass().getName(),
-                                                    methodName);
             }
         }
         catch (ConnectorCheckedException error)
@@ -140,21 +209,5 @@ public class OSSUnityCatalogServerSurveyService extends SurveyActionServiceConne
                                                 this.getClass().getName(),
                                                 methodName);
         }
-    }
-
-
-    /**
-     * Transfer common properties into the annotation.
-     *
-     * @param annotation          output annotation
-     * @param atlasAnnotationType annotation type definition
-     */
-    private void setUpAnnotation(Annotation annotation,
-                                 UnityCatalogAnnotationType atlasAnnotationType)
-    {
-        annotation.setAnnotationType(atlasAnnotationType.getName());
-        annotation.setAnalysisStep(atlasAnnotationType.getAnalysisStep());
-        annotation.setSummary(atlasAnnotationType.getSummary());
-        annotation.setExplanation(atlasAnnotationType.getExplanation());
     }
 }

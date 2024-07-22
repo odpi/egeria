@@ -77,10 +77,10 @@ public class TestRelatedMediaReference
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getClassifications() == null);
+        assertTrue(resultObject.getClassifications() != null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
-        assertTrue(resultObject.getAdditionalProperties() == null);
+        assertTrue(resultObject.getAdditionalProperties() != null);
 
         assertTrue(resultObject.getReferenceId().equals("TestReferenceId"));
         assertTrue(resultObject.getLinkDescription().equals("TestLinkDescription"));

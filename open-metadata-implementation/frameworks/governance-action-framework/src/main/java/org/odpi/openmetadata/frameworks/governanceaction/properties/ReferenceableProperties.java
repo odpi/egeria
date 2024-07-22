@@ -100,18 +100,7 @@ public class ReferenceableProperties
      */
     public Map<String, String> getAdditionalProperties()
     {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
+        return additionalProperties;
     }
 
 

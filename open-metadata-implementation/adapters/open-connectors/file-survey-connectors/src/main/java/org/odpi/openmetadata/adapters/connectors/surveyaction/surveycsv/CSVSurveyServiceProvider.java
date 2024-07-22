@@ -8,6 +8,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.SurveyFileAnnotationType;
 
 import java.util.ArrayList;
 
@@ -85,5 +87,9 @@ public class CSVSurveyServiceProvider extends SurveyActionServiceProvider
         componentDescription.setComponentWikiURL(connectorWikiPage);
 
         super.setConnectorComponentDescription(componentDescription);
+
+        super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE, AnalysisStep.SCHEMA_EXTRACTION, AnalysisStep.PROFILE_DATA});
+        super.producedAnnotationTypes    = SurveyFileAnnotationType.getCSVSurveyAnnotationTypeTypes();
     }
 }

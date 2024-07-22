@@ -57,7 +57,7 @@ public class TestLike
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getClassifications() == null);
+        assertTrue(resultObject.getClassifications() != null);
 
         assertTrue(resultObject.getUser().equals("TestUser"));
     }

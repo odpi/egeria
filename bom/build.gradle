@@ -49,9 +49,6 @@ ext {
     hamcrestVersion = '2.2'
     hdrhistogramVersion = '2.2.2'
     hibernatevalidatorVersion = '8.0.1.Final'
-    // TODO There is now a version 5 codestream of the next 2 http dependencies
-    httpclientVersion = '4.5.14'
-    httpcoreVersion = '4.4.16'
     jacksonVersion = '2.15.0'
     jacksonDatabindVersion = '2.17.1'
     jacksonaslVersion = '1.9.14-atlassian-6'
@@ -86,8 +83,6 @@ ext {
     nettyVersion = '4.1.111.Final'
     prometheusVersion = '1.13.1'
     quartzVersion = '2.3.2'
-    reflectionsVersion = '0.10.2'
-    sanitizerVersion = '1.2.3'
     // TODO: May be able to remove as moving to jakarta servlet
     servletVersion = '4.0.1'
     jakartaServletVersion = '6.0.0'
@@ -102,7 +97,6 @@ ext {
     springsecurityJwtVersion = '1.1.1.RELEASE'
     testngVersion = '7.10.2'
     swaggerVersion = '2.2.22'
-    thriftVersion = '0.20.0'
     springwebVersion = '6.0.6'
     tinkVersion = '1.13.0'
     tomcatVersion = '10.1.13'
@@ -112,10 +106,8 @@ ext {
     jnrVersion = '3.1.19'
     cassandraVersion = '4.1.5'
     protobufVersion = '3.25.3'
-    osgiVersion = '8.0.0'
     log4jVersion = '2.23.1'
     jacksonjdk8Version = '2.17.1'
-    reactivestreamsVersion = '1.0.4'
     springdocStarterVersion = '2.2.0'
     jacocoVersion = '0.8.8'
     snakeYamlVersion = '2.2'
@@ -141,7 +133,6 @@ dependencies {
         api("com.github.spotbugs:spotbugs-annotations:${spotbugsVersion}")
         api("com.google.code.findbugs:jsr305:${findbugsVersion}")
         api("com.google.guava:guava:${guavaVersion}")
-        api("com.mikesamuel:json-sanitizer:${sanitizerVersion}")
         api("com.sleepycat:je:${sleepycatVersion}")
         api("commons-codec:commons-codec:${commonscodecVersion}")
         api("commons-io:commons-io:${commonsioVersion}")
@@ -169,10 +160,6 @@ dependencies {
         api("org.apache.avro:avro:${avroVersion}")
         api("org.apache.commons:commons-collections4:${collections4Version}")
         api("org.apache.commons:commons-lang3:${lang3Version}")
-        api("org.apache.httpcomponents:httpclient:${httpclientVersion}")
-        api("org.apache.httpcomponents:httpcore:${httpcoreVersion}")
-        api("org.apache.httpcomponents:httpcore-nio:${httpcoreVersion}")
-        api("org.apache.httpcomponents:httpcore-osgi:${httpcoreVersion}")
         api("org.apache.jena:jena-core:${jenaVersion}")
         api("org.apache.kafka:kafka-clients:${kafkaVersion}")
         api("org.apache.lucene:lucene-core:${luceneVersion}")
@@ -206,7 +193,6 @@ dependencies {
         api("org.javassist:${javassistVersion}")
         api("org.postgresql:postgresql:${postgresVersion}")
         api("org.quartz-scheduler:quartz:${quartzVersion}")
-        api("org.reflections:reflections:${reflectionsVersion}")
         api("org.slf4j:jcl-over-slf4j:${slf4jVersion}")
         api("org.slf4j:slf4j-api:${slf4jVersion}")
         api("org.springframework.boot:spring-boot-autoconfigure:${springbootVersion}")
@@ -242,18 +228,14 @@ dependencies {
         api("commons-configuration:commons-configuration:${commonsconfigurationVersion}")
         api("org.apache.commons:commons-configuration2:${commonsconfiguration2Version}")
         api("org.hibernate:hibernate-validator:${hibernatevalidatorVersion}")
-        api("org.apache.thrift:libthrift:${thriftVersion}")
         api("org.apache.cassandra:cassandra-all:${cassandraVersion}")
         api("org.apache.ant:ant:${antVersion}")
         api("com.google.protobuf:protobuf-java:${protobufVersion}")
         api("com.google.code.gson:gson:${gsonVersion}")
         api("com.github.jnr:jnr-posix:${jnrVersion}")
-        api("org.osgi:org.osgi.core:${osgiVersion}")
         api("org.apache.logging.log4j:log4j-api:${log4jVersion}")
         api("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${jacksonjdk8Version}")
-        api("org.reactivestreams:reactive-streams:${reactivestreamsVersion}")
 
-        api("org.projectlombok:lombok:${lombokVersion}")
         api("org.projectlombok:lombok:${lombokVersion}")
         api("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocStarterVersion}")
         api("io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}")

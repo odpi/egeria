@@ -26,20 +26,20 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum UCErrorCode implements ExceptionMessageSet
 {
     /**
-     * UNITY-CATALOG-CONNECTOR-400-001 - Connection {0} has been configured without the URL to the database
+     * UNITY-CATALOG-CONNECTOR-400-001 - Connection {0} has been configured without the URL to the Unity Catalog (UC)
      */
     NULL_URL(400, "UNITY-CATALOG-CONNECTOR-400-001",
-                     "Connection {0} has been configured without the URL to the database",
+                     "Connection {0} has been configured without the URL to the Unity Catalog (UC)",
                      "The connector is unable to start because the endpoint of its connection has a null address property.",
                      "Update the connection's endpoint to include the connection string needed to connect to the desired database."),
 
     /**
-     * UNITY-CATALOG-CONNECTOR-400-002 - The {0} Apache Atlas Discovery Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}
+     * UNITY-CATALOG-CONNECTOR-400-002 - The {0} Unity Catalog Connector has not been supplied with a {1} property value
      */
-    WRONG_REST_CONNECTOR(400, "UNITY-CATALOG-CONNECTOR-400-002",
-                         "The {0} Unity Catalog Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
-                         "The connector is unable to continue to profile Unity Catalog because it can not call its REST API.",
-                         "Use the details from the error message to determine the correct class of the connector to use.  It should be specified in the connector type of an embedded connection as part of the failing connector's Connection.  When the connection information has been corrected, restart the failing connector."),
+    MISSING_PROPERTY_NAME(400, "UNITY-CATALOG-CONNECTOR-400-002",
+                         "The {0} Unity Catalog Connector has not been supplied with a {1} property value",
+                         "The connector is unable to continue because it is not sure which elements to work on.",
+                         "Add this property to either the connector's configuration properties (or if it is a governance service, to the request parameters) and retry the request."),
 
 
     /**

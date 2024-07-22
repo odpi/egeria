@@ -136,8 +136,8 @@ public class TestSchemaAttribute
         nullObject.setAdditionalProperties(new HashMap<>());
         nullObject.setAttributeRelationships(new ArrayList<>());
 
-        assertTrue(nullObject.getClassifications() == null);
-        assertTrue(nullObject.getAdditionalProperties() == null);
+        assertTrue(nullObject.getClassifications() != null);
+        assertTrue(nullObject.getAdditionalProperties() != null);
 
     }
 

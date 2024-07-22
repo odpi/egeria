@@ -111,7 +111,7 @@ public class TestSchemaElement
         testObject = new MockSchemaElement();
         testObject.setAdditionalProperties(propertyMap);
 
-        assertTrue(testObject.getAdditionalProperties() == null);
+        assertTrue(testObject.getAdditionalProperties() != null);
 
         propertyMap.put("propertyName", "propertyValue");
         testObject = new MockSchemaElement();

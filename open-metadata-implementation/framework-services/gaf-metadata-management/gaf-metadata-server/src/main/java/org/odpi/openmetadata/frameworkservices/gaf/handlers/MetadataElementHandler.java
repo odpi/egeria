@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworkservices.gaf.handlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableBuilder;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
@@ -14,6 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ArchiveProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
@@ -64,6 +66,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
     private final RelatedElementsConverter<OpenMetadataRelationship> relatedElementsConverter;
     private final RelatedElementConverter<RelatedMetadataElement>    relatedElementConverter;
 
+    private final FilesAndFoldersHandler<Object, Object, Object>     filesAndFoldersHandler;
     private static final Logger log = LoggerFactory.getLogger(MetadataElementHandler.class);
 
     /**
@@ -113,6 +116,24 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
         relatedElementsConverter = new RelatedElementsConverter<>(repositoryHelper, serviceName, serverName);
         relatedElementConverter = new RelatedElementConverter<>(repositoryHelper, serviceName, serverName);
+
+        filesAndFoldersHandler = new FilesAndFoldersHandler<>(null,
+                                                              Object.class,
+                                                              null,
+                                                              Object.class,
+                                                              null,
+                                                              Object.class,
+                                                              serviceName,
+                                                              serverName,
+                                                              invalidParameterHandler,
+                                                              repositoryHandler,
+                                                              repositoryHelper,
+                                                              localServerUserId,
+                                                              securityVerifier,
+                                                              supportedZones,
+                                                              defaultZones,
+                                                              publishZones,
+                                                              auditLog);
     }
 
 
@@ -1374,6 +1395,16 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                   methodName,
                                                                                   repositoryHelper);
 
+        if (repositoryHelper.isTypeOf(serviceName, metadataElementTypeName, OpenMetadataType.REFERENCEABLE.typeName))
+        {
+            String qualifiedName = propertyHelper.getStringProperty(serviceName,
+                                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                    properties,
+                                                                    methodName);
+
+            invalidParameterHandler.validateName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, methodName);
+        }
+
         MetadataElementBuilder builder = new MetadataElementBuilder(metadataElementTypeGUID,
                                                                     metadataElementTypeName,
                                                                     getElementPropertiesAsOMRSMap(properties),
@@ -1491,6 +1522,32 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                  serviceSupportedZones,
                                                  effectiveTime,
                                                  methodName);
+                }
+            }
+
+
+            if ((repositoryHelper.isTypeOf(serviceName, metadataElementTypeName, OpenMetadataType.DATA_FILE.typeName)) ||
+                (repositoryHelper.isTypeOf(serviceName, metadataElementTypeName, OpenMetadataType.FILE_FOLDER.typeName)))
+            {
+                String pathName = propertyHelper.getStringProperty(serviceName,
+                                                                   OpenMetadataProperty.PATH_NAME.name,
+                                                                   properties,
+                                                                   methodName);
+
+                if (pathName != null)
+                {
+                    filesAndFoldersHandler.addFileAssetPath(userId,
+                                                            externalSourceGUID,
+                                                            externalSourceName,
+                                                            metadataElementGUID,
+                                                            "metadataElementGUID",
+                                                            metadataElementTypeName,
+                                                            pathName,
+                                                            OpenMetadataProperty.PATH_NAME.name,
+                                                            false,
+                                                            false,
+                                                            effectiveTime,
+                                                            methodName);
                 }
             }
 

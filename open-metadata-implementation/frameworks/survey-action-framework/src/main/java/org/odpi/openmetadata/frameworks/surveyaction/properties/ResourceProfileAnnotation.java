@@ -284,16 +284,7 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
      */
     public Map<String, String> getProfileProperties()
     {
-        if (profileProperties == null)
-        {
-            return null;
-        }
-        else if (profileProperties.isEmpty())
-        {
-            return null;
-        }
-
-        return new HashMap<>(profileProperties);
+        return profileProperties;
     }
 
 
@@ -315,16 +306,7 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
      */
     public Map<String, Boolean> getProfileFlags()
     {
-        if (profileFlags == null)
-        {
-            return null;
-        }
-        else if (profileFlags.isEmpty())
-        {
-            return null;
-        }
-
-        return new HashMap<>(profileFlags);
+        return profileFlags;
     }
 
 
@@ -346,16 +328,7 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
      */
     public Map<String, Date> getProfileDates()
     {
-        if (profileDates == null)
-        {
-            return null;
-        }
-        else if (profileDates.isEmpty())
-        {
-            return null;
-        }
-
-        return new HashMap<>(profileDates);
+        return profileDates;
     }
 
 
@@ -377,16 +350,7 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
      */
     public Map<String, Long> getProfileCounts()
     {
-        if (profileCounts == null)
-        {
-            return null;
-        }
-        else if (profileCounts.isEmpty())
-        {
-            return null;
-        }
-
-        return new HashMap<>(profileCounts);
+        return profileCounts;
     }
 
 
@@ -408,16 +372,7 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
      */
     public Map<String, Double> getProfileDoubles()
     {
-        if (profileDoubles == null)
-        {
-            return null;
-        }
-        else if (profileDoubles.isEmpty())
-        {
-            return null;
-        }
-
-        return new HashMap<>(profileDoubles);
+        return profileDoubles;
     }
 
 
@@ -439,16 +394,7 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
      */
     public List<String> getValueList()
     {
-        if (valueList == null)
-        {
-            return null;
-        }
-        else if (valueList.isEmpty())
-        {
-            return null;
-        }
-
-        return new ArrayList<>(valueList);
+        return valueList;
     }
 
 
@@ -470,16 +416,7 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
      */
     public Map<String, Integer> getValueCount()
     {
-        if (valueCount == null)
-        {
-            return null;
-        }
-        else if (valueCount.isEmpty())
-        {
-            return null;
-        }
-
-        return new HashMap<>(valueCount);
+        return valueCount;
     }
 
 

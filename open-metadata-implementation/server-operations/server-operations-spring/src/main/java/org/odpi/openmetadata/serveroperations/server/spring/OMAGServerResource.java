@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.serveroperations.rest.OMAGServerStatusResponse;
 import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.serveroperations.server.OMAGServerOperationalServices;
@@ -142,7 +143,7 @@ public class OMAGServerResource
     @Operation(summary="addOpenMetadataArchiveFile",
                description="An open metadata archive contains metadata types and instances.  This operation loads an open metadata " +
                                    "archive that is readable through the connector identified by the connection.  " +
-                                   "It can be used with OMAG servers that are of type Cohort Member.",
+                                   "It can be used with OMAG servers that are of type Open Metadata Store.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/open-metadata-archives/"))
 
@@ -169,7 +170,7 @@ public class OMAGServerResource
     @Operation(summary="addOpenMetadataArchive",
                description="An open metadata archive contains metadata types and instances.  This operation loads an open metadata " +
                                    "archive that is readable through the connector identified by the connection.  " +
-                                   "It can be used with OMAG servers that are of type Cohort Member.",
+                                   "It can be used with OMAG servers that are of type Open Metadata Store.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/open-metadata-archives/"))
 
@@ -178,5 +179,32 @@ public class OMAGServerResource
                                                @RequestBody  Connection connection)
     {
         return serverOperationalServices.addOpenMetadataArchive(userId, serverName, connection);
+    }
+
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param openMetadataArchive openMetadataArchive for the open metadata archive.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or openMetadataArchive parameter.
+     */
+    @PostMapping(path = "/servers/{serverName}/instance/open-metadata-archives/archive-content")
+
+    @Operation(summary="addOpenMetadataArchiveContent",
+            description="An open metadata archive contains metadata types and instances.  This operation loads the supplied open metadata " +
+                    "archive into the local repository.  It can be used with OMAG servers that are of type Open Metadata Store.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/open-metadata-archives/"))
+
+    public VoidResponse addOpenMetadataArchive(@PathVariable String             userId,
+                                               @PathVariable String             serverName,
+                                               @RequestBody OpenMetadataArchive openMetadataArchive)
+    {
+        return serverOperationalServices.addOpenMetadataArchive(userId, serverName, openMetadataArchive);
     }
 }

@@ -70,7 +70,12 @@ public class StructPropertyValue extends InstancePropertyValue
      */
     public String valueAsString()
     {
-        return mapValuesAsString(attributes.getInstanceProperties()).toString();
+        if (attributes != null)
+        {
+            return mapValuesAsString(attributes.getInstanceProperties()).toString();
+        }
+
+        return null;
     }
 
 
@@ -81,7 +86,12 @@ public class StructPropertyValue extends InstancePropertyValue
      */
     public Object valueAsObject()
     {
-        return mapValuesAsObject(attributes.getInstanceProperties());
+        if (attributes != null)
+        {
+            return mapValuesAsObject(attributes.getInstanceProperties());
+        }
+
+        return null;
     }
 
 
@@ -141,7 +151,7 @@ public class StructPropertyValue extends InstancePropertyValue
         {
             return true;
         }
-        if (! (objectToCompare instanceof StructPropertyValue))
+        if (! (objectToCompare instanceof StructPropertyValue that))
         {
             return false;
         }
@@ -149,8 +159,6 @@ public class StructPropertyValue extends InstancePropertyValue
         {
             return false;
         }
-
-        StructPropertyValue that = (StructPropertyValue) objectToCompare;
 
         return attributes != null ? attributes.equals(that.attributes) : that.attributes == null;
     }

@@ -58,18 +58,7 @@ public class OpenMetadataTypeDefProperties extends OpenMetadataTypeDefElementHea
      */
     public Map<String, Object> getTypeDefProperties()
     {
-        if (typeDefProperties == null)
-        {
-            return null;
-        }
-        else if (typeDefProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(typeDefProperties);
-        }
+        return typeDefProperties;
     }
 
 

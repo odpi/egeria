@@ -47,6 +47,8 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
     protected final Map<String, Object>              configurationProperties;
     protected final AuditLog                         auditLog;
     protected final OpenMetadataAccess               openMetadataAccess;
+    protected final List<String>                     excludeNames;
+    protected final List<String>                     includeNames;
 
     /*
      * This map lists the elements that are synchronized.
@@ -69,6 +71,8 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
      * @param ucServerEndpoint the server endpoint used to constructing the qualified names
      * @param templates templates supplied through the catalog target
      * @param configurationProperties configuration properties supplied through the catalog target
+     * @param excludeNames list of catalogs to ignore (and include all others)
+     * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
      * @param auditLog logging destination
      */
     public OSSUnityCatalogInsideCatalogSyncBase(String                           connectorName,
@@ -82,6 +86,8 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
                                                 DeployedImplementationType       deployedImplementationType,
                                                 Map<String, String>              templates,
                                                 Map<String, Object>              configurationProperties,
+                                                List<String>                     excludeNames,
+                                                List<String>                     includeNames,
                                                 AuditLog                         auditLog)
     {
         this.connectorName                  = connectorName;
@@ -95,6 +101,8 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         this.deployedImplementationType     = deployedImplementationType;
         this.templates                      = templates;
         this.configurationProperties        = configurationProperties;
+        this.excludeNames                   = excludeNames;
+        this.includeNames                   = includeNames;
         this.auditLog                       = auditLog;
 
         this.openMetadataAccess             = context.getIntegrationGovernanceContext().getOpenMetadataAccess();

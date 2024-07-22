@@ -68,10 +68,10 @@ public class TestAPIOperation
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getClassifications() == null);
+        assertTrue(resultObject.getClassifications() != null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
-        assertTrue(resultObject.getAdditionalProperties() == null);
+        assertTrue(resultObject.getAdditionalProperties() != null);
 
         assertTrue(resultObject.getVersionNumber().equals("TestVersionNumber"));
         assertTrue(resultObject.getAuthor().equals("TestAuthor"));

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -73,10 +72,10 @@ public class TestAsset
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getClassifications() == null);
+        assertTrue(resultObject.getClassifications() != null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
-        assertTrue(resultObject.getAdditionalProperties() == null);
+        assertTrue(resultObject.getAdditionalProperties() != null);
 
         assertTrue(resultObject.getResourceName().equals("TestResourceName"));
         assertTrue(resultObject.getResourceDescription().equals("TestResourceDescription"));
@@ -85,7 +84,7 @@ public class TestAsset
         assertTrue(resultObject.getDisplaySummary().equals("TestDisplaySummary"));
         assertTrue(resultObject.getAbbreviation().equals("TestAbbreviation"));
         assertTrue(resultObject.getUsage().equals("TestUsage"));
-        assertTrue(resultObject.getExtendedProperties() == null);
+        assertTrue(resultObject.getExtendedProperties() != null);
     }
 
 
@@ -142,7 +141,7 @@ public class TestAsset
         testObject = new Asset();
         testObject.setExtendedProperties(propertyMap);
 
-        assertTrue(testObject.getExtendedProperties() == null);
+        assertTrue(testObject.getExtendedProperties() != null);
 
         propertyMap.put("propertyName", "propertyValue");
         testObject = new Asset();

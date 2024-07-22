@@ -127,18 +127,7 @@ public class CatalogTargetProperties
      */
     public Map<String, Object> getConfigurationProperties()
     {
-        if (configurationProperties == null)
-        {
-            return null;
-        }
-        else if (configurationProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(configurationProperties);
-        }
+        return configurationProperties;
     }
 
 
@@ -160,18 +149,7 @@ public class CatalogTargetProperties
      */
     public Map<String, String> getTemplateProperties()
     {
-        if (templateProperties == null)
-        {
-            return null;
-        }
-        else if (templateProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(templateProperties);
-        }
+        return templateProperties;
     }
 
     /**

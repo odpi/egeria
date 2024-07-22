@@ -58,18 +58,7 @@ public class SecurityTags extends ElementClassificationHeader
      */
     public List<String> getSecurityLabels()
     {
-        if (securityLabels == null)
-        {
-            return null;
-        }
-        else if (securityLabels.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(securityLabels);
-        }
+        return securityLabels;
     }
 
 
@@ -91,18 +80,7 @@ public class SecurityTags extends ElementClassificationHeader
      */
     public Map<String, Object> getSecurityProperties()
     {
-        if (securityProperties == null)
-        {
-            return null;
-        }
-        else if (securityProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(securityProperties);
-        }
+        return securityProperties;
     }
 
 

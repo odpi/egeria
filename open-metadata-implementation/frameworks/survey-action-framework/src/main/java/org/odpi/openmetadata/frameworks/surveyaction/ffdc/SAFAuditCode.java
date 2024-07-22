@@ -31,12 +31,33 @@ public enum SAFAuditCode implements AuditLogMessageSet
                         "Monitor the shutdown of the survey action service."),
 
 
-    WRONG_TYPE_OF_CONNECTOR("OCF-CONNECTION-400-011",
+    WRONG_TYPE_OF_CONNECTOR("SAF-CONNECTOR-0002",
                             AuditLogRecordSeverityLevel.ERROR,
                             "The {0} Survey Acton Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
                             "The survey is unable to continue since it is unable to work with the supplied connector.",
                             "Use the details from the error message to determine the class of the connector.  " +
                                     "Update the connector type associated with its Connection in the metadata store."),
+
+    /**
+     * SAF-CONNECTOR-0003 - The survey action service {0} is creating log file {1}
+     */
+    CREATING_LOG_FILE("SAF-CONNECTOR-0003",
+                      AuditLogRecordSeverityLevel.INFO,
+                      "The survey action service {0} is creating log file {1} which is catalogued as CSVFile asset {2}",
+                      "This message tells the survey team that a particular survey log file is being created.",
+                      "No specific action is required.  The results are added to the log file and the asset for this log file is catalogued as a CSV file."),
+
+
+    /**
+     * SAF-CONNECTOR-0004 - The survey action service {0} is overriding log file {1}
+     */
+    REUSING_LOG_FILE("SAF-CONNECTOR-0004",
+                     AuditLogRecordSeverityLevel.INFO,
+                     "The survey action service {0} is overriding log file {1}",
+                     "This message warns the survey team that a particular survey log file is being reused.",
+                     "No specific action is required.  The new results are appended to the existing results."),
+
+
     ;
 
     private final String                      logMessageId;

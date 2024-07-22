@@ -36,6 +36,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
 {
     private String templateGUID = null;
 
+
     /**
      * Set up the schema synchronizer.
      *
@@ -49,6 +50,8 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
      * @param ucServerEndpoint the server endpoint used to constructing the qualified names
      * @param templates templates supplied through the catalog target
      * @param configurationProperties configuration properties supplied through the catalog target
+     * @param excludeNames list of catalogs to ignore (and include all others)
+     * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
      * @param auditLog logging destination
      */
     public OSSUnityCatalogInsideCatalogSyncSchema(String                           connectorName,
@@ -61,6 +64,8 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                                                   String                           ucServerEndpoint,
                                                   Map<String, String>              templates,
                                                   Map<String, Object>              configurationProperties,
+                                                  List<String>                     excludeNames,
+                                                  List<String>                     includeNames,
                                                   AuditLog                         auditLog)
     {
         super(connectorName,
@@ -74,6 +79,8 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
               DeployedImplementationType.OSS_UC_SCHEMA,
               templates,
               configurationProperties,
+              excludeNames,
+              includeNames,
               auditLog);
 
         if (templates != null)

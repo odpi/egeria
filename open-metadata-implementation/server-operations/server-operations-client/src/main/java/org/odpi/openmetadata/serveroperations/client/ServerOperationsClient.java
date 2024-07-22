@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.serveroperations.client.rest.ServerOperationsRESTClient;
 import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerStatus;
@@ -300,5 +301,34 @@ public class ServerOperationsClient
         invalidParameterHandler.validateConnection(connection, parameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName, urlTemplate, connection, userId, serverName);
+    }
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param userId calling user
+     * @param serverName server to start
+     * @param openMetadataArchive openMetadataArchive for the open metadata archive.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void addOpenMetadataArchiveContent(String              userId,
+                                              String              serverName,
+                                              OpenMetadataArchive openMetadataArchive) throws UserNotAuthorizedException,
+                                                                                              InvalidParameterException,
+                                                                                              PropertyServerException
+    {
+        final String methodName    = "addOpenMetadataArchiveContent";
+        final String parameterName = "openMetadataArchive";
+        final String serverNameParameter  = "serverName";
+        final String urlTemplate   = platformRootURL + retrieveURLTemplatePrefix + "/servers/{1}/instance/open-metadata-archives/archive-content";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(serverName, serverNameParameter, methodName);
+        invalidParameterHandler.validateObject(openMetadataArchive, parameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName, urlTemplate, openMetadataArchive, userId, serverName);
     }
 }

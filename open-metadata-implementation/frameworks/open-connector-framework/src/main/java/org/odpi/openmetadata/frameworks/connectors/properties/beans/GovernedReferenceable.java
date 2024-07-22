@@ -69,18 +69,7 @@ public class GovernedReferenceable extends Referenceable
      */
     public List<Meaning> getMeanings()
     {
-        if (meanings == null)
-        {
-            return null;
-        }
-        else if (meanings.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(meanings);
-        }
+        return meanings;
     }
 
 
@@ -102,16 +91,6 @@ public class GovernedReferenceable extends Referenceable
      */
     public List<SearchKeyword> getSearchKeywords()
     {
-        if (searchKeywords == null)
-        {
-            return null;
-        }
-
-        if (searchKeywords.isEmpty())
-        {
-            return null;
-        }
-
         return searchKeywords;
     }
 

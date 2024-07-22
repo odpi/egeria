@@ -37,6 +37,11 @@ import org.springframework.stereotype.Component;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import java.util.*;
 
+// TODO Remove when custom class loaders are in place for repository connectors
+// This import statement is not strictly needed - however it is attempting to pull in the right level of
+// Lucene for XTDB
+import org.apache.lucene.queryparser.classic.QueryParserBase;
+
 
 /**
  * OMAGServerPlatform provides the main program for the OMAG Server Platform.

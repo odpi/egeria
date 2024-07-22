@@ -19,59 +19,14 @@ Content-Type: application/json
 > {% client.global.set("token", response.body); %}
 
 
-
 ###
-# =====================================================================================================================
-# What do we know about the OSS Unity Catalog
-#
 
-
-###
-# @name findTechnologyTypes
-# Retrieve the list of deployed implementation type metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "filter" : "Unity Catalog"
-}
-
-
-###
-# @name getTechnologyTypeDetail
-# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "filter" : "OSS Unity Catalog (UC) Server"
-}
-
-
-###
-# @name getTechnologyTypeDetail
-# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "filter" : "OSS Unity Catalog (UC) Catalog"
-}
-
-
-###
-# @name getTechnologyTypeDetail
-# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "filter" : "OSS Unity Catalog (UC) Volume"
-}
+@ucServerTemplateGUID=dcca9788-b30f-4007-b1ac-ec634aff6879
+@ucCatalogTemplateGUID=5ee006aa-a6d6-411b-9b8d-5f720c079cae
+@ucSchemaTemplateGUID=5bf92b0f-3970-41ea-b0a3-aacfbf6fd92e
+@ucVolumeTemplateGUID=92d2d2dc-0798-41f0-9512-b10548d312b7
+@ucTableTemplateGUID=6cc1e5f5-4c1e-4290-a80e-e06643ffb13d
+@ucFunctionTemplateGUID=a490ba65-6104-4213-9be9-524e16fed8aa
 
 ###
 # =====================================================================================================================
@@ -79,19 +34,19 @@ Content-Type: application/json
 #
 
 ###
-# @name getTechnologyTypeTemplates (OSS Unity Catalog (UC) Server)
+# @name getTechnologyTypeTemplates (OSS Unity Catalog Server)
 # Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog (UC) Server"
+  "filter" : "OSS Unity Catalog Server"
 }
 
 
 ###
-# @name createElementFromTemplate (OSS Unity Catalog (UC) Server)
+# @name createElementFromTemplate (OSS Unity Catalog Server 1)
 # Create a new element from a template.
 # Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
@@ -99,24 +54,23 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "templateGUID" : "1077a346-7a50-4cb0-a795-b219bafaabf6",
+  "templateGUID" : "{{ucServerTemplateGUID}}",
   "isOwnAnchor" : true,
   "placeholderPropertyValues" : {
     "hostURL" : "http://localhost",
     "portNumber" : "8080",
-    "serverName" : "Local Unity Catalog",
+    "serverName" : "Unity Catalog 1",
     "versionIdentifier" : "V1.0",
-    "description" : "Instance of the OSS Unity Catalog (UC) Server running on the local machine.",
-    "serverUserId" : "uc",
+    "description" : "First instance of the OSS Unity Catalog (UC) Server.",
+    "serverUserId" : "uc1",
     "versionIdentifier" : "V1.0"
   }
 }
 
-
-
 ###
 
-@serverGUID=add server guid here
+@server1GUID=7a70c3de-f798-42cf-844f-1ee2dac824aa
+
 
 ###
 # @name getTechnologyTypeElements (UC Server)
@@ -126,85 +80,41 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog (UC) Server"
+  "filter" : "OSS Unity Catalog Server"
 }
 
 
 ###
-# @name=getAssetGraph
+# @name=getAssetGraph (UC Server 1)
 # Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
 #
 # Asset: https://egeria-project.org/concepts/asset/
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{serverGUID}}/as-graph?startFrom=0&pageSize=0
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{server1GUID}}/as-graph?startFrom=0&pageSize=0
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+###
+
+@ucServerSurveyName=AssetSurvey:survey-unity-catalog-server
 
 ###
-# =====================================================================================================================
-# Discover the templates
-#
-
-@ucCatalogTemplateGUID=f7b05a3e-913c-497d-96f5-acdeb2ec897e
-@ucSchemaTemplateGUID=d68f5aa3-152e-40fa-8c16-e73db8d925d6
-@ucVolumeTemplateGUID=dfc0c928-0db3-4eb4-a1f0-0760dab168c5
-@ucTableTemplateGUID=cb34184b-d6a9-4a27-9fd2-ea4c78978f9f
-@ucFunctionTemplateGUID=5b72bd18-665d-4696-8ebb-f6d0885312e2
-
-###
-# @name getTechnologyTypeTemplates (UC Catalog)
-# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
+# @name initiateGovernanceActionType
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog (UC) Catalog"
+  "class" : "InitiateGovernanceActionTypeRequestBody",
+  "governanceActionTypeQualifiedName": "{{ucServerSurveyName}}",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "uc1",
+      "actionTargetGUID": "{{server1GUID}}"
+    } ]
 }
 
-###
-# @name getTechnologyTypeTemplates (UC Schema)
-# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "filter" : "OSS Unity Catalog (UC) Schema"
-}
-
-###
-# @name getTechnologyTypeTemplates (UC Volume)
-# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "filter" : "OSS Unity Catalog (UC) Volume"
-}
-
-###
-# @name getTechnologyTypeTemplates (UC Table)
-# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "filter" : "OSS Unity Catalog (UC) Table"
-}
-
-###
-# @name getTechnologyTypeTemplates (UC Function)
-# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "filter" : "OSS Unity Catalog (UC) Function"
-}
 
 
 ###
@@ -217,24 +127,24 @@ Content-Type: application/json
 @friendshipGUID=74dde22f-2249-4ea3-af2b-b39e73f79b81
 
 ###
-# @name addCatalogTarget
+# @name addCatalogTarget (UC Server 1)
 # Add a catalog target to the Unity Catalog Server Sync integration connector.
 # Notice that details of all of the templates for different types of UC elements are passed.  These
 # are not used directly by this connector, but passed to the friendship connector
 # (Unity Catalog Inside Catalog Sync integration conenctor) to support its cataloguing.
 # Further Information: https://egeria-project.org/concepts/integration-connector/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets/{{serverGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets/{{server1GUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "catalogTargetName" : "localUCServer",
+  "catalogTargetName" : "uc1",
   "templateProperties" : {
-    "OSS Unity Catalog (UC) Catalog"  : "{{ucCatalogTemplateGUID}}",
-    "OSS Unity Catalog (UC) Schema"   : "{{ucSchemaTemplateGUID}}",
-    "OSS Unity Catalog (UC) Volume"   : "{{ucVolumeTemplateGUID}}",
-    "OSS Unity Catalog (UC) Table"    : "{{ucTableTemplateGUID}}",
-    "OSS Unity Catalog (UC) Function" : "{{ucFunctionTemplateGUID}}"
+    "OSS Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
+    "OSS Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
+    "OSS Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
+    "OSS Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
+    "OSS Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
   },
   "configurationProperties" : {
     "OSSUnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81"
@@ -268,7 +178,7 @@ Content-Type: application/json
 # @name getCatalogTargets (OSSUnityCatalogInsideCatalogSynchronizer)
 # Retrieve the details of the metadata elements identified as catalog targets with an integration connector.
 # Further Information: https://egeria-project.org/concepts/integration-connector/
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{friendshipGUID}}/catalog-targets?startFrom=0&pageSize=10
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{friendshipGUID}}/catalog-targets?startFrom=0&pageSize=20
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -296,7 +206,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog (UC) Catalog"
+  "filter" : "OSS Unity Catalog Catalog"
 }
 
 ###
@@ -311,12 +221,12 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog (UC) Schema"
+  "filter" : "OSS Unity Catalog Schema"
 }
 
 ###
 
-@ucSchemaGUID=efc3248e-194a-4f90-92e9-1acd01dd05a5
+@ucSchemaGUID=632ac7ff-6ca1-4d06-b160-0daad5486727
 
 ###
 # @name=getAssetGraph (schemas)
@@ -336,7 +246,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog (UC) Volume"
+  "filter" : "OSS Unity Catalog Volume"
 }
 
 ###
@@ -361,7 +271,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog (UC) Table"
+  "filter" : "OSS Unity Catalog Table"
 }
 
 ###
@@ -377,3 +287,162 @@ GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+###
+# @name createElementFromTemplate (OSS Unity Catalog Server 2)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "{{ucServerTemplateGUID}}",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "hostURL" : "http://egeria.pdr-associates.com",
+    "portNumber" : "8070",
+    "serverName" : "Unity Catalog 2",
+    "versionIdentifier" : "V1.0",
+    "description" : "Second instance of the OSS Unity Catalog (UC) Server.",
+    "serverUserId" : "uc2",
+    "versionIdentifier" : "V1.0"
+  }
+}
+
+###
+
+@server2GUID=233a4e31-f489-47a8-b597-9be6d12cc0f0
+
+###
+# @name=getAssetGraph (UC Server 2)
+# Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{server2GUID}}/as-graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name addCatalogTarget (UC Server 2)
+# Add a catalog target to the Unity Catalog Server Sync integration connector.
+# Notice that details of all of the templates for different types of UC elements are passed.  These
+# are not used directly by this connector, but passed to the friendship connector
+# (Unity Catalog Inside Catalog Sync integration conenctor) to support its cataloguing.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets/{{server2GUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "catalogTargetName" : "uc2",
+  "templateProperties" : {
+    "OSS Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
+    "OSS Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
+    "OSS Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
+    "OSS Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
+    "OSS Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
+  },
+  "configurationProperties" : {
+    "OSSUnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81"
+  }
+}
+
+###
+
+@catalogTargetRelationshipGUID=d38ec279-d3d7-4820-8795-262f26fb22cd
+
+###
+
+
+###
+# @name getCatalogTarget
+# Retrieve a specific catalog target associated with an integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{catalogTargetRelationshipGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+
+###
+# @name updateCatalogTarget
+# Update a catalog target for an integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{catalogTargetRelationshipGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "catalogTargetName" : "uc2",
+  "templateProperties" : {
+    "OSS Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
+    "OSS Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
+    "OSS Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
+    "OSS Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
+    "OSS Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
+  },
+  "configurationProperties" : {
+    "OSSUnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81",
+    "excludeCatalogNames" : "unity"
+  }
+}
+
+###
+# @name Refresh Integration Connector (OSSUnityCatalogServerSynchronizer)
+# Refreshes all Integration Connectors running in an integration daemon
+POST {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/users/garygeeke/integration-connectors/refresh
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "OSSUnityCatalogServerSynchronizer"
+}
+
+
+
+###
+# @name updateCatalogTarget
+# Update a catalog target for an integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{catalogTargetRelationshipGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "catalogTargetName" : "uc2",
+  "templateProperties" : {
+    "OSS Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
+    "OSS Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
+    "OSS Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
+    "OSS Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
+    "OSS Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
+  },
+  "configurationProperties" : {
+    "OSSUnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81"
+  }
+}
+
+
+###
+# @name getTechnologyTypeElements (UC Server)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog Catalog"
+}
+
+
+###
+
+@catalogGUID=eeb1bb8e-11fc-4946-a027-9034bb67f12d
+
+###
+# @name deleteMetadataElement
+# Delete a specific metadata element.
+
+POST {{baseURL}}/servers/active-metadata-store/open-metadata/framework-services/asset-owner/open-metadata-store/users/peterprofile/metadata-elements/{{catalogGUID}}/delete
+Content-Type: application/json

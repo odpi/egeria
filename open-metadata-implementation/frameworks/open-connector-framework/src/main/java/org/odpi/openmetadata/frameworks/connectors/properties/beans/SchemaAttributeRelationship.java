@@ -130,18 +130,7 @@ public class SchemaAttributeRelationship extends PropertyBase
      */
     public Map<String, Object> getLinkProperties()
     {
-        if (linkProperties == null)
-        {
-            return null;
-        }
-        else if (linkProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(linkProperties);
-        }
+        return linkProperties;
     }
 
 

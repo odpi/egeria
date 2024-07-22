@@ -106,15 +106,6 @@ public class RelationshipAdviceAnnotation extends DataFieldAnnotation
      */
     public Map<String, String> getRelationshipProperties()
     {
-        if (relationshipProperties == null)
-        {
-            return null;
-        }
-        else if (relationshipProperties.isEmpty())
-        {
-            return null;
-        }
-
         return relationshipProperties;
     }
 

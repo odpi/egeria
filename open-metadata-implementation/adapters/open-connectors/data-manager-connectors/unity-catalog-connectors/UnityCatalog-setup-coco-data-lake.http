@@ -1,0 +1,674 @@
+###
+# Create the basic structure of the CocoDataLake
+#
+#@ucURL=http://localhost:8080
+@ucURL=http://egeria.pdr-associates.com:8070
+
+
+###
+# @name list catalogs to check what is defined
+GET {{ucURL}}/api/2.1/unity-catalog/catalogs?max_results=10
+
+
+#----------------------------------------------------------------------------
+# Clinical Trials
+#----------------------------------------------------------------------------
+###
+# @name create catalog
+POST {{ucURL}}/api/2.1/unity-catalog/catalogs
+Content-Type: application/json
+
+{
+  "name": "clinical_trials",
+  "comment": "Clinical trials data for personalized medicine research."
+}
+
+###
+# @name list schemas
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=clinical_trials&max_results=10
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "werewolf_transformation",
+  "catalog_name" : "clinical_trials",
+  "comment": "New treatment for accelerating the recovery of a werewolf after transformation."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "hiccups",
+  "catalog_name" : "clinical_trials",
+  "comment": "New treatment for hiccups."
+}
+
+
+###
+#----------------------------------------------------------------------------
+# Finance
+#----------------------------------------------------------------------------
+###
+# @name create catalog
+POST {{ucURL}}/api/2.1/unity-catalog/catalogs
+Content-Type: application/json
+
+{
+  "name": "finance",
+  "comment": "Historical financial data for Coco Pharmaceuticals."
+}
+
+###
+# @name list schemas
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=finance&max_results=10
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "invoices_received",
+  "catalog_name" : "finance",
+  "comment": "Details of the invoices from business partners for goods and services."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "invoices_sent",
+  "catalog_name" : "finance",
+  "comment": "Details of the invoices sent to business partners for goods and services."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "patient_invoices",
+  "catalog_name" : "finance",
+  "comment": "Details of the invoices sent to cover individual treatment costs."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "cash_received",
+  "catalog_name" : "finance",
+  "comment": "Details of monies received."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "payroll",
+  "catalog_name" : "finance",
+  "comment": "Data from payroll for analysis."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "employee_expenses",
+  "catalog_name" : "finance",
+  "comment": "Data from employee expenses."
+}
+
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "ledgers",
+  "catalog_name" : "finance",
+  "comment": "Historical data from ledgers."
+}
+
+
+###
+#----------------------------------------------------------------------------
+# Procurement
+#----------------------------------------------------------------------------
+###
+# @name create catalog
+POST {{ucURL}}/api/2.1/unity-catalog/catalogs
+Content-Type: application/json
+
+{
+  "name": "procurement",
+  "comment": "Supplier and purchasing history for Coco Pharmaceuticals."
+}
+
+###
+# @name list schemas
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=procurement&max_results=10
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "orders",
+  "catalog_name" : "procurement",
+  "comment": "Details of the orders made to business partners for goods and services."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "goods_received",
+  "catalog_name" : "procurement",
+  "comment": "Details of the packages received from business partners for goods and services."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "goods_returned",
+  "catalog_name" : "procurement",
+  "comment": "Details of the goods returned to business partners for various reasons."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "invoices",
+  "catalog_name" : "procurement",
+  "comment": "Details of the invoices to business partners for goods and services."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "supplier_history",
+  "catalog_name" : "procurement",
+  "comment": "Details of  business partners supplying goods and services."
+}
+
+###
+#----------------------------------------------------------------------------
+# Inventory
+#----------------------------------------------------------------------------
+###
+# @name create catalog
+POST {{ucURL}}/api/2.1/unity-catalog/catalogs
+Content-Type: application/json
+
+{
+  "name": "inventory",
+  "comment": "Inventory levels from warehouses and distribution points for Coco Pharmaceuticals."
+}
+
+###
+# @name list schemas
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=inventory&max_results=10
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "stock_levels",
+  "catalog_name" : "inventory",
+  "comment": "Details of the changing stock levels over time."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "stock_audit",
+  "catalog_name" : "inventory",
+  "comment": "Results of regular stock check activity."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "goods_inwards",
+  "catalog_name" : "inventory",
+  "comment": "Data relating to incoming goods to the warehouses and distribution centres."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "stock_management",
+  "catalog_name" : "inventory",
+  "comment": "Data relating to the efficiency of stock managed through the distribution network."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "stock_shrinkage",
+  "catalog_name" : "inventory",
+  "comment": "Data relating to the loss of stock in the distribution network.  Includes pilfering of part shipments and theft of whole shipments."
+}
+
+###
+#----------------------------------------------------------------------------
+# Manufacturing
+#----------------------------------------------------------------------------
+###
+# @name create catalog
+POST {{ucURL}}/api/2.1/unity-catalog/catalogs
+Content-Type: application/json
+
+{
+  "name": "manufacturing",
+  "comment": "Manufacturing run data from all factories for Coco Pharmaceuticals."
+}
+
+###
+# @name list schemas
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=manufacturing&max_results=10
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "parts_inventory",
+  "catalog_name" : "manufacturing",
+  "comment": "Details of the parts needed to maintain the production equipment."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "production_run_timings",
+  "catalog_name" : "manufacturing",
+  "comment": "Details of the production runs for each factory."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "production_run_timings",
+  "catalog_name" : "manufacturing",
+  "comment": "Details of the production runs for each factory."
+}
+
+###
+#----------------------------------------------------------------------------
+# Hospital Delivery (Logistics)
+#----------------------------------------------------------------------------
+###
+# @name create catalog
+POST {{ucURL}}/api/2.1/unity-catalog/catalogs
+Content-Type: application/json
+
+{
+  "name": "hospital_delivery",
+  "comment": "Product delivery data to hospitals for Coco Pharmaceuticals."
+}
+
+###
+# @name list schemas
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=hospital_delivery&max_results=10
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "patient_shipments",
+  "catalog_name" : "hospital_delivery",
+  "comment": "Details of the treatment packages sent to hospitals for individual patients."
+}
+
+###
+#----------------------------------------------------------------------------
+# Patient Treatment
+#----------------------------------------------------------------------------
+###
+# @name create catalog
+POST {{ucURL}}/api/2.1/unity-catalog/catalogs
+Content-Type: application/json
+
+{
+  "name": "patient_treatment",
+  "comment": "Patient treatment data for Coco Pharmaceuticals."
+}
+
+
+###
+# @name list schemas
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=patient_treatment&max_results=10
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "patient_recipes",
+  "catalog_name" : "patient_treatment",
+  "comment": "Details of the approved recipes, their costs, popularity and value."
+}
+
+
+###
+#----------------------------------------------------------------------------
+# Sustainability Reporting
+#----------------------------------------------------------------------------
+###
+# @name create catalog
+POST {{ucURL}}/api/2.1/unity-catalog/catalogs
+Content-Type: application/json
+
+{
+  "name": "sustainability_reporting",
+  "comment": "Sustainability reporting for Coco Pharmaceuticals."
+}
+
+###
+# @name list schemas
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=sustainability_reporting&max_results=10
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "cfc_free_certification_program",
+  "catalog_name" : "sustainability_reporting",
+  "comment": "Data from the CFC-free locations campaign."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "business_travel",
+  "catalog_name" : "sustainability_reporting",
+  "comment": "Data on employee travel."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "sustainability_metrics",
+  "catalog_name" : "sustainability_reporting",
+  "comment": "Sustainability metrics and measures used in reporting."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "locations",
+  "catalog_name" : "sustainability_reporting",
+  "comment": "Historical location data."
+}
+
+###
+#----------------------------------------------------------------------------
+# Human Resources
+#----------------------------------------------------------------------------
+###
+# @name create catalog
+POST {{ucURL}}/api/2.1/unity-catalog/catalogs
+Content-Type: application/json
+
+{
+  "name": "human_resources",
+  "comment": "Employee hiring, retention and termination for Coco Pharmaceuticals."
+}
+
+###
+# @name list schemas
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=human_resources&max_results=10
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "employee_retention",
+  "catalog_name" : "human_resources",
+  "comment": "Data from ongoing employee retention monitoring."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "employee_d_e_and_i",
+  "catalog_name" : "human_resources",
+  "comment": "Data from employee diversity, equity and inclusion surveys and analysis."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "payroll",
+  "catalog_name" : "human_resources",
+  "comment": "Data from payroll for analysis of cost, equity and assurance."
+}
+
+
+###
+#----------------------------------------------------------------------------
+# Hazardous Materials
+#----------------------------------------------------------------------------
+###
+# @name create catalog
+POST {{ucURL}}/api/2.1/unity-catalog/catalogs
+Content-Type: application/json
+
+{
+  "name": "haz_mat",
+  "comment": "History of hazardous materials for Coco Pharmaceuticals."
+}
+
+###
+# @name list schemas
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=haz_mat&max_results=10
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "inventory",
+  "catalog_name" : "haz_mat",
+  "comment": "Data from current inventory."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "risk_analysis",
+  "catalog_name" : "haz_mat",
+  "comment": "Historical haz mat data with risk analysis."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "incidents",
+  "catalog_name" : "human_resources",
+  "comment": "Historical haz mat data with risk analysis."
+}
+
+
+###
+#----------------------------------------------------------------------------
+# Data Office
+#----------------------------------------------------------------------------
+###
+# @name create catalog
+POST {{ucURL}}/api/2.1/unity-catalog/catalogs
+Content-Type: application/json
+
+{
+  "name": "data_office",
+  "comment": "Data management history for Coco Pharmaceuticals."
+}
+
+###
+# @name list schemas
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=data_office&max_results=10
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "data_incidents",
+  "catalog_name" : "data_office",
+  "comment": "Data from data-related incidents."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "project_purposes",
+  "catalog_name" : "data_office",
+  "comment": "Data from existing projects that manage sensitive data."
+}
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "data_growth",
+  "catalog_name" : "data_office",
+  "comment": "Data about the amount and types of data being accumulated by Coco Pharmaceuticals."
+}
+
+
+###
+#----------------------------------------------------------------------------
+# Security
+#----------------------------------------------------------------------------
+###
+# @name create catalog
+POST {{ucURL}}/api/2.1/unity-catalog/catalogs
+Content-Type: application/json
+
+{
+  "name": "security",
+  "comment": "Security's historical data for Coco Pharmaceuticals."
+}
+
+###
+# @name list schemas
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=data_office&max_results=10
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "security_incidents",
+  "catalog_name" : "security",
+  "comment": "Data from security incidents."
+}
+
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "user_identities",
+  "catalog_name" : "security",
+  "comment": "Historical inventories of user identities for Coco Pharmaceuticals."
+}
+
+
+###
+#----------------------------------------------------------------------------
+# Finished
+#----------------------------------------------------------------------------
+
+###
+# @name list catalogs
+GET {{ucURL}}/api/2.1/unity-catalog/catalogs?max_results=10

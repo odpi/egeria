@@ -61,18 +61,7 @@ public class ResourceMeasureAnnotation extends Annotation
      */
     public Map<String, String> getResourceProperties()
     {
-        if (resourceProperties == null)
-        {
-            return null;
-        }
-        else if (resourceProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(resourceProperties);
-        }
+        return resourceProperties;
     }
 
 

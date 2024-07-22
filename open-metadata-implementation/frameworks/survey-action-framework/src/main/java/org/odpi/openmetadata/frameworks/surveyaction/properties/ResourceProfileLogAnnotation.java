@@ -53,15 +53,6 @@ public class ResourceProfileLogAnnotation extends DataFieldAnnotation
      */
     public List<String> getResourceProfileLogGUIDs()
     {
-        if (resourceProfileLogGUIDs == null)
-        {
-            return null;
-        }
-        else if (resourceProfileLogGUIDs.isEmpty())
-        {
-            return null;
-        }
-
         return resourceProfileLogGUIDs;
     }
 

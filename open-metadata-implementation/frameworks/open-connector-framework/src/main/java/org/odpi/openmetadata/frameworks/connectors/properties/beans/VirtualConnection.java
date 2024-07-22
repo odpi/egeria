@@ -83,18 +83,7 @@ public class VirtualConnection extends Connection
      */
     public List<EmbeddedConnection> getEmbeddedConnections()
     {
-        if (embeddedConnections == null)
-        {
-            return null;
-        }
-        else if (embeddedConnections.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(embeddedConnections);
-        }
+        return embeddedConnections;
     }
 
 

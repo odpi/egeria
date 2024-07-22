@@ -4,10 +4,11 @@ package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder;
 
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderConnector;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.FolderRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.SurveyFolderAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.extractors.FileStatsExtractor;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc.SurveyServiceAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -16,7 +17,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
@@ -35,11 +35,6 @@ import java.util.*;
  */
 public class FolderSurveyService extends SurveyActionServiceConnector
 {
-    private final PropertyHelper propertyHelper = new PropertyHelper();
-    private       Connector      connector      = null;
-
-
-
     /**
      * Return the updated value count for this column.
      *
@@ -77,27 +72,9 @@ public class FolderSurveyService extends SurveyActionServiceConnector
         {
             AnnotationStore          annotationStore   = getSurveyContext().getAnnotationStore();
             SurveyAssetStore         assetStore        = surveyContext.getAssetStore();
+            AssetUniverse            assetUniverse     = assetStore.getAssetProperties();
 
-            annotationStore.setAnalysisStep(AnalysisStep.CHECK_ASSET.getName());
-
-            /*
-             * Before performing any real work, check the type of the asset.
-             */
-            AssetUniverse assetUniverse = assetStore.getAssetProperties();
-
-            if (assetUniverse == null)
-            {
-                super.throwNoAsset(assetStore.getAssetGUID(), surveyActionServiceName, methodName);
-                return;
-            }
-            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.FILE_FOLDER.typeName))
-            {
-                super.throwWrongTypeOfAsset(assetUniverse.getGUID(),
-                                            assetUniverse.getType().getTypeName(),
-                                            OpenMetadataType.FILE_FOLDER.typeName,
-                                            methodName);
-                return;
-            }
+            performCheckAssetAnalysisStep(OpenMetadataType.FILE_FOLDER.typeName);
 
             boolean deepFolderAnalysis = false;
             boolean deepFileAnalysis   = false;
@@ -169,13 +146,36 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
             FolderProfile folderProfile = profileFolder(rootFolder, logFileProgress, deepFolderAnalysis, deepFileAnalysis);
 
-            List<Annotation> resourceMeasures = folderProfile.getAnnotations(annotationStore.getSurveyReportGUID());
+            List<Annotation> annotations = folderProfile.getAnnotations(annotationStore.getSurveyReportGUID());
 
-            if (resourceMeasures != null)
+            if (annotations != null)
             {
-                for (Annotation resourceMeasure : resourceMeasures)
+                for (Annotation annotation : annotations)
                 {
-                    annotationStore.addAnnotation(resourceMeasure, null);
+                    if (AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName().equals(annotation.getAnalysisStep()))
+                    {
+                        annotationStore.addAnnotation(annotation, null);
+                    }
+                }
+
+                annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_ACTIONS.getName());
+
+                for (Annotation annotation : annotations)
+                {
+                    if (AnalysisStep.PRODUCE_ACTIONS.getName().equals(annotation.getAnalysisStep()))
+                    {
+                        annotationStore.addAnnotation(annotation, null);
+                    }
+                }
+
+                annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
+
+                for (Annotation annotation : annotations)
+                {
+                    if (AnalysisStep.PRODUCE_INVENTORY.getName().equals(annotation.getAnalysisStep()))
+                    {
+                        annotationStore.addAnnotation(annotation, null);
+                    }
                 }
             }
         }
@@ -340,7 +340,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
     /**
      * FolderProfile gathers information about a directory and its subdirectories.
      */
-    static class FolderProfile
+    private class FolderProfile
     {
         private final AuditLog auditLog;
         private final String   pathName;
@@ -394,6 +394,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
             this.surveyActionServiceName      = surveyActionServiceName;
             this.surveyAssetStore             = surveyAssetStore;
         }
+
 
         /**
          * Capture details of inaccessible files.
@@ -543,7 +544,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
 
         /**
-         * Return the annotations from this
+         * Return the annotations from this survey
          *
          * @param surveyReportGUID unique identifier of the survey report
          * @return list of annotations
@@ -560,12 +561,10 @@ public class FolderSurveyService extends SurveyActionServiceConnector
             dataProfile.setValueCount(fileExtensionCounts);
             savedAnnotations.add(dataProfile);
 
-            ResourceProfileLogAnnotation dataProfileLog = new ResourceProfileLogAnnotation();
-
-            setUpAnnotation(dataProfileLog, SurveyFolderAnnotationType.PROFILE_FILE_NAMES);
-            List<String> dataProfileDataGUIDs = new ArrayList<>();
-            dataProfileDataGUIDs.add(setUpExternalLogFile(surveyReportGUID, fileNameCounts));
-            dataProfileLog.setResourceProfileLogGUIDs(dataProfileDataGUIDs);
+            ResourceProfileLogAnnotation dataProfileLog = writeNameCountInventory(SurveyFolderAnnotationType.PROFILE_FILE_NAMES,
+                                                                                 "fileNameCounts",
+                                                                                  fileNameCounts,
+                                                                                  surveyReportGUID);
             savedAnnotations.add(dataProfileLog);
 
             if (! missingReferenceData.isEmpty())
@@ -614,89 +613,6 @@ public class FolderSurveyService extends SurveyActionServiceConnector
             return savedAnnotations;
         }
 
-
-
-        /**
-         * Transfer common properties into the annotation.
-         *
-         * @param annotation output annotation
-         * @param annotationType annotation type definition
-         */
-        private void setUpAnnotation(Annotation                 annotation,
-                                     SurveyFolderAnnotationType annotationType)
-        {
-            annotation.setAnnotationType(annotationType.getName());
-            annotation.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
-            annotation.setSummary(annotationType.getSummary());
-            annotation.setExplanation(annotationType.getExplanation());
-        }
-
-
-        /**
-         * Create and catalog a CSV file to store data about the file names.
-         *
-         * @param surveyReportGUID identifier of the survey report
-         * @param fileNameCounts map of file names and how many times they appear
-         * @return unique identifier of the GUID for the CSV asset
-         * @throws IOException problem writing file
-         * @throws InvalidParameterException problem creating CSV file asset
-         * @throws PropertyServerException repository problem creating CSV file asset
-         * @throws UserNotAuthorizedException authorization problem creating CSV file asset
-         * @throws ConnectorCheckedException exception thrown if connector is no longer active
-         */
-        private String setUpExternalLogFile(String surveyReportGUID,
-                                            Map<String, Integer> fileNameCounts) throws IOException,
-                                                                                        InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        ConnectorCheckedException
-        {
-            final String methodName = "setUpExternalLogFile";
-
-            String           logFileName = "surveys/report-" + surveyReportGUID + "-fileNameCounts.csv";
-            File             logFile = new File(logFileName);
-            boolean          newLogFile = false;
-
-            try
-            {
-                FileUtils.sizeOf(logFile);
-            }
-            catch (IllegalArgumentException notFound)
-            {
-                newLogFile = true;
-                FileUtils.writeStringToFile(logFile, "FileName, Number of Occurrences\n", (String)null, false);
-            }
-
-            String assetGUID = surveyAssetStore.addCSVFileToCatalog("File name counts for survey report " + surveyReportGUID,
-                                                                    "Shows how many occurrences of each file name was found in the nested directory structure.",
-                                                                    logFile.getAbsolutePath(),
-                                                                    null,
-                                                                    ',',
-                                                                    '"');
-
-            if (newLogFile)
-            {
-                auditLog.logMessage(methodName,
-                                    SurveyServiceAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                                  logFileName,
-                                                                                                  assetGUID));
-            }
-            else
-            {
-                auditLog.logMessage(methodName,
-                                    SurveyServiceAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                                 logFileName));
-            }
-
-            for (String fileName : fileNameCounts.keySet())
-            {
-                String row = fileName + "," + fileNameCounts.get(fileName) + "\n";
-
-                FileUtils.writeStringToFile(logFile, row, (String)null, true);
-            }
-
-            return assetGUID;
-        }
 
 
         /**

@@ -119,7 +119,7 @@ public class TestEndpointProperties
         assertTrue(resultObject.getClassifications() == null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
-        assertTrue(resultObject.getAdditionalProperties() == null);
+        assertTrue(resultObject.getAdditionalProperties() != null);
 
         assertTrue(resultObject.getDisplayName().equals("TestDisplayName"));
         assertTrue(resultObject.getDescription().equals("TestDescription"));

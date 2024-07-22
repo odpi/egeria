@@ -490,18 +490,7 @@ public class ConnectorType extends Referenceable
      */
     public List<String> getRecognizedAdditionalProperties()
     {
-        if (recognizedAdditionalProperties == null)
-        {
-            return null;
-        }
-        else if (recognizedAdditionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return recognizedAdditionalProperties;
-        }
+        return recognizedAdditionalProperties;
     }
 
 
@@ -526,18 +515,7 @@ public class ConnectorType extends Referenceable
      */
     public List<String> getRecognizedConfigurationProperties()
     {
-        if (recognizedConfigurationProperties == null)
-        {
-            return null;
-        }
-        else if (recognizedConfigurationProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return recognizedConfigurationProperties;
-        }
+        return recognizedConfigurationProperties;
     }
 
 
@@ -561,18 +539,7 @@ public class ConnectorType extends Referenceable
      */
     public List<String> getRecognizedSecuredProperties()
     {
-        if (recognizedSecuredProperties == null)
-        {
-            return null;
-        }
-        else if (recognizedSecuredProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return recognizedSecuredProperties;
-        }
+        return recognizedSecuredProperties;
     }
 
 

@@ -142,18 +142,7 @@ public class SchemaType extends SchemaElement
      */
     public List<DerivedSchemaTypeQueryTarget> getQueries()
     {
-        if (queries == null)
-        {
-            return null;
-        }
-        else if (queries.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(queries);
-        }
+        return queries;
     }
 
 

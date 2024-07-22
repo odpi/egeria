@@ -84,7 +84,7 @@ public class TestElementBase
 
         nullObject.setClassifications(new ArrayList<>());
 
-        assertTrue(nullObject.getClassifications() == null);
+        assertTrue(nullObject.getClassifications() != null);
     }
 
 
