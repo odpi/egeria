@@ -105,9 +105,57 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code><a href="#CATALOG_NAME" class="member-name-link">CATALOG_NAME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The name of the catalog being described.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#EXCLUDE_CATALOG_NAMES" class="member-name-link">EXCLUDE_CATALOG_NAMES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Provide a comma-separated list of catalog names that should not be catalogued.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#EXCLUDE_FUNCTION_NAMES" class="member-name-link">EXCLUDE_FUNCTION_NAMES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Provide a comma-separated list of function names that should not be catalogued.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#EXCLUDE_SCHEMA_NAMES" class="member-name-link">EXCLUDE_SCHEMA_NAMES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Provide a comma-separated list of schema names that should not be catalogued.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#EXCLUDE_TABLE_NAMES" class="member-name-link">EXCLUDE_TABLE_NAMES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Provide a comma-separated list of table names that should not be catalogued.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#EXCLUDE_VOLUME_NAMES" class="member-name-link">EXCLUDE_VOLUME_NAMES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Provide a comma-separated list of volume names that should not be catalogued.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#FRIENDSHIP_GUID" class="member-name-link">FRIENDSHIP_GUID</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Unique identifier of the integration connector that is able to catalog the contents of a UC catalog.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#INCLUDE_CATALOG_NAMES" class="member-name-link">INCLUDE_CATALOG_NAMES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Provide a comma-separated list of catalog names that should be catalogued.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#INCLUDE_FUNCTION_NAMES" class="member-name-link">INCLUDE_FUNCTION_NAMES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Provide a comma-separated list of function names that should be catalogued.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#INCLUDE_SCHEMA_NAMES" class="member-name-link">INCLUDE_SCHEMA_NAMES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Provide a comma-separated list of schema names that should be catalogued.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#INCLUDE_TABLE_NAMES" class="member-name-link">INCLUDE_TABLE_NAMES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Provide a comma-separated list of table names that should be catalogued.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#INCLUDE_VOLUME_NAMES" class="member-name-link">INCLUDE_VOLUME_NAMES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Provide a comma-separated list of volume names that should be catalogued.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SCHEMA_NAME" class="member-name-link">SCHEMA_NAME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The name of a schema within a catalog in Unity Catalog (UC).</div>
 </div>
 </div>
 </section>
@@ -181,6 +229,36 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the name of the request parameter.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getUnityCatalogInsideCatalogConfigurationPropertyTypes()" class="member-name-link">getUnityCatalogInsideCatalogConfigurationPropertyTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve the defined configuration properties for the UC Inside Catalog integration connector.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getUnityCatalogInsideCatalogRecognizedConfigurationProperties()" class="member-name-link">getUnityCatalogInsideCatalogRecognizedConfigurationProperties</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Get recognizedConfigurationProperties for the UC Inside Catalog Integration connector.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getUnityCatalogInsideCatalogSurveyConfigurationPropertyTypes()" class="member-name-link">getUnityCatalogInsideCatalogSurveyConfigurationPropertyTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve the defined configuration properties for the UC Server Survey Service.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getUnityCatalogInsideCatalogSurveyRecognizedConfigurationProperties()" class="member-name-link">getUnityCatalogInsideCatalogSurveyRecognizedConfigurationProperties</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Get recognizedConfigurationProperties for the UC Catalog Survey Service.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getUnityCatalogInsideSchemaSurveyConfigurationPropertyTypes()" class="member-name-link">getUnityCatalogInsideSchemaSurveyConfigurationPropertyTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve the defined configuration properties for the UC Server Survey Service.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getUnityCatalogInsideSchemaSurveyRecognizedConfigurationProperties()" class="member-name-link">getUnityCatalogInsideSchemaSurveyRecognizedConfigurationProperties</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Get recognizedConfigurationProperties for the UC Catalog Survey Service.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getUnityCatalogServerConfigurationPropertyTypes()" class="member-name-link">getUnityCatalogServerConfigurationPropertyTypes</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Retrieve the defined configuration properties for the UC Server integration connector.</div>
@@ -188,7 +266,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getUnityCatalogServerRecognizedConfigurationProperties()" class="member-name-link">getUnityCatalogServerRecognizedConfigurationProperties</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Get recognizedConfigurationProperties for the PostgreSQLServer Integration connector.</div>
+<div class="block">Get recognizedConfigurationProperties for the UC Server Integration connector.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isPlaceholder()" class="member-name-link">isPlaceholder</a>()</code></div>
@@ -236,6 +314,90 @@ the order they are declared.</div>
 <h3>FRIENDSHIP_GUID</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">FRIENDSHIP_GUID</span></div>
 <div class="block">Unique identifier of the integration connector that is able to catalog the contents of a UC catalog.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INCLUDE_CATALOG_NAMES">
+<h3>INCLUDE_CATALOG_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">INCLUDE_CATALOG_NAMES</span></div>
+<div class="block">Provide a comma-separated list of catalog names that should be catalogued.  Other catalogs will be ignored.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EXCLUDE_CATALOG_NAMES">
+<h3>EXCLUDE_CATALOG_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">EXCLUDE_CATALOG_NAMES</span></div>
+<div class="block">Provide a comma-separated list of catalog names that should not be catalogued.  Only catalog not in this list will be catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INCLUDE_SCHEMA_NAMES">
+<h3>INCLUDE_SCHEMA_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">INCLUDE_SCHEMA_NAMES</span></div>
+<div class="block">Provide a comma-separated list of schema names that should be catalogued.  Other schemas will be ignored.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EXCLUDE_SCHEMA_NAMES">
+<h3>EXCLUDE_SCHEMA_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">EXCLUDE_SCHEMA_NAMES</span></div>
+<div class="block">Provide a comma-separated list of schema names that should not be catalogued.  Only schemas not in this list will be catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INCLUDE_TABLE_NAMES">
+<h3>INCLUDE_TABLE_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">INCLUDE_TABLE_NAMES</span></div>
+<div class="block">Provide a comma-separated list of table names that should be catalogued.  Other tables will be ignored.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EXCLUDE_TABLE_NAMES">
+<h3>EXCLUDE_TABLE_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">EXCLUDE_TABLE_NAMES</span></div>
+<div class="block">Provide a comma-separated list of table names that should not be catalogued.  Only tables not in this list will be catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INCLUDE_FUNCTION_NAMES">
+<h3>INCLUDE_FUNCTION_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">INCLUDE_FUNCTION_NAMES</span></div>
+<div class="block">Provide a comma-separated list of function names that should be catalogued.  Other functions will be ignored.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EXCLUDE_FUNCTION_NAMES">
+<h3>EXCLUDE_FUNCTION_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">EXCLUDE_FUNCTION_NAMES</span></div>
+<div class="block">Provide a comma-separated list of function names that should not be catalogued.  Only functions not in this list will be catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INCLUDE_VOLUME_NAMES">
+<h3>INCLUDE_VOLUME_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">INCLUDE_VOLUME_NAMES</span></div>
+<div class="block">Provide a comma-separated list of volume names that should be catalogued.  Other volumes will be ignored.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EXCLUDE_VOLUME_NAMES">
+<h3>EXCLUDE_VOLUME_NAMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">EXCLUDE_VOLUME_NAMES</span></div>
+<div class="block">Provide a comma-separated list of volume names that should not be catalogued.  Only volumes not in this list will be catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CATALOG_NAME">
+<h3>CATALOG_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">CATALOG_NAME</span></div>
+<div class="block">The name of the catalog being described.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SCHEMA_NAME">
+<h3>SCHEMA_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogConfigurationProperty</a></span>&nbsp;<span class="element-name">SCHEMA_NAME</span></div>
+<div class="block">The name of a schema within a catalog in Unity Catalog (UC).</div>
 </section>
 </li>
 </ul>
@@ -374,7 +536,7 @@ not permitted.)</div>
 <section class="detail" id="getUnityCatalogServerRecognizedConfigurationProperties()">
 <h3>getUnityCatalogServerRecognizedConfigurationProperties</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getUnityCatalogServerRecognizedConfigurationProperties</span>()</div>
-<div class="block">Get recognizedConfigurationProperties for the PostgreSQLServer Integration connector.</div>
+<div class="block">Get recognizedConfigurationProperties for the UC Server Integration connector.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of property names</dd>
@@ -386,6 +548,72 @@ not permitted.)</div>
 <h3>getUnityCatalogServerConfigurationPropertyTypes</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getUnityCatalogServerConfigurationPropertyTypes</span>()</div>
 <div class="block">Retrieve the defined configuration properties for the UC Server integration connector.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of configuration property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getUnityCatalogInsideCatalogRecognizedConfigurationProperties()">
+<h3>getUnityCatalogInsideCatalogRecognizedConfigurationProperties</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getUnityCatalogInsideCatalogRecognizedConfigurationProperties</span>()</div>
+<div class="block">Get recognizedConfigurationProperties for the UC Inside Catalog Integration connector.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of property names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getUnityCatalogInsideCatalogConfigurationPropertyTypes()">
+<h3>getUnityCatalogInsideCatalogConfigurationPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getUnityCatalogInsideCatalogConfigurationPropertyTypes</span>()</div>
+<div class="block">Retrieve the defined configuration properties for the UC Inside Catalog integration connector.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of configuration property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getUnityCatalogInsideCatalogSurveyRecognizedConfigurationProperties()">
+<h3>getUnityCatalogInsideCatalogSurveyRecognizedConfigurationProperties</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getUnityCatalogInsideCatalogSurveyRecognizedConfigurationProperties</span>()</div>
+<div class="block">Get recognizedConfigurationProperties for the UC Catalog Survey Service.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of property names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getUnityCatalogInsideCatalogSurveyConfigurationPropertyTypes()">
+<h3>getUnityCatalogInsideCatalogSurveyConfigurationPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getUnityCatalogInsideCatalogSurveyConfigurationPropertyTypes</span>()</div>
+<div class="block">Retrieve the defined configuration properties for the UC Server Survey Service.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of configuration property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getUnityCatalogInsideSchemaSurveyRecognizedConfigurationProperties()">
+<h3>getUnityCatalogInsideSchemaSurveyRecognizedConfigurationProperties</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getUnityCatalogInsideSchemaSurveyRecognizedConfigurationProperties</span>()</div>
+<div class="block">Get recognizedConfigurationProperties for the UC Catalog Survey Service.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of property names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getUnityCatalogInsideSchemaSurveyConfigurationPropertyTypes()">
+<h3>getUnityCatalogInsideSchemaSurveyConfigurationPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getUnityCatalogInsideSchemaSurveyConfigurationPropertyTypes</span>()</div>
+<div class="block">Retrieve the defined configuration properties for the UC Server Survey Service.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of configuration property types</dd>

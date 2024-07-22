@@ -115,9 +115,17 @@ implements <a href="../../auditlog/messagesets/AuditLogMessageSet.html" title="i
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#DISCONNECT_DETECTED" class="member-name-link">DISCONNECT_DETECTED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CREATING_LOG_FILE" class="member-name-link">CREATING_LOG_FILE</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">SAF-CONNECTOR-0003 - The survey action service {0} is creating log file {1}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DISCONNECT_DETECTED" class="member-name-link">DISCONNECT_DETECTED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">SAF-CONNECTOR-0001 - The {0} survey action service has been disconnected - either due to its own actions or a cancel request</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#REUSING_LOG_FILE" class="member-name-link">REUSING_LOG_FILE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">SAF-CONNECTOR-0004 - The survey action service {0} is overriding log file {1}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#WRONG_TYPE_OF_CONNECTOR" class="member-name-link">WRONG_TYPE_OF_CONNECTOR</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
@@ -192,6 +200,20 @@ the order they are declared.</div>
 <section class="detail" id="WRONG_TYPE_OF_CONNECTOR">
 <h3>WRONG_TYPE_OF_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SAFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.ffdc">SAFAuditCode</a></span>&nbsp;<span class="element-name">WRONG_TYPE_OF_CONNECTOR</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="CREATING_LOG_FILE">
+<h3>CREATING_LOG_FILE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SAFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.ffdc">SAFAuditCode</a></span>&nbsp;<span class="element-name">CREATING_LOG_FILE</span></div>
+<div class="block">SAF-CONNECTOR-0003 - The survey action service {0} is creating log file {1}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="REUSING_LOG_FILE">
+<h3>REUSING_LOG_FILE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SAFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.ffdc">SAFAuditCode</a></span>&nbsp;<span class="element-name">REUSING_LOG_FILE</span></div>
+<div class="block">SAF-CONNECTOR-0004 - The survey action service {0} is overriding log file {1}</div>
 </section>
 </li>
 </ul>

@@ -1628,6 +1628,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Save the GUIDs so that the GUIDs of the elements inside the archive are consistent each time the archive runs.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGUID(java.lang.String,java.lang.String)" class="member-name-link">setGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the guid of an element based on its qualified name.</div>
+</div>
 </div>
 </div>
 </div>
@@ -1838,6 +1844,20 @@ loadScripts(document, 'script');</script>
 <dd><code>qualifiedName</code> - qualified name ot look up</dd>
 <dt>Returns:</dt>
 <dd>guid.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setGUID(java.lang.String,java.lang.String)">
+<h3>setGUID</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</span></div>
+<div class="block">Return the guid of an element based on its qualified name.  This is a lookup in the GUID map not the archive.
+ This means if the qualified name is not known, a new GUID is generated.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>qualifiedName</code> - qualified name ot look up</dd>
+<dd><code>guid</code> - fixed unique identifier</dd>
 </dl>
 </section>
 </li>

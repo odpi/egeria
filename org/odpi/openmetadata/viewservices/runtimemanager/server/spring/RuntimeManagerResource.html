@@ -111,65 +111,98 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerPlatformResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerPlatformResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.runtimemanager.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getPlatformByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../serveroperations/rest/SuccessMessageResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">SuccessMessageResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#activateWithStoredConfig(java.lang.String,java.lang.String)" class="member-name-link">activateWithStoredConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Activate the Open Metadata and Governance (OMAG) server using the configuration document stored for this server.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataArchive(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)" class="member-name-link">addOpenMetadataArchive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID,
+ <a href="../../../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;openMetadataArchive)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a new open metadata archive to running repository.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataArchiveFile(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">addOpenMetadataArchiveFile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a new open metadata archive to running repository.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerPlatformResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerPlatformResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.runtimemanager.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getPlatformByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformGUID,
  <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.runtimemanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns details about the platform's catalog entry (asset).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/PlatformReportResponse.html" title="class in org.odpi.openmetadata.viewservices.runtimemanager.rest">PlatformReportResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformReport(java.lang.String,java.lang.String)" class="member-name-link">getPlatformReport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/PlatformReportResponse.html" title="class in org.odpi.openmetadata.viewservices.runtimemanager.rest">PlatformReportResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformReport(java.lang.String,java.lang.String)" class="member-name-link">getPlatformReport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;platformGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns details about the running platform.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerPlatformListResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerPlatformListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformsByDeployedImplType(java.lang.String,int,int,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getPlatformsByDeployedImplType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerPlatformListResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerPlatformListResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformsByDeployedImplType(java.lang.String,int,int,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getPlatformsByDeployedImplType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;getTemplates,
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of platforms with a particular deployed implementation type.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerPlatformListResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerPlatformListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformsByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getPlatformsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerPlatformListResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerPlatformListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlatformsByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getPlatformsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of platforms with a particular name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.runtimemanager.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getServerByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.runtimemanager.rest.EffectiveTimeQueryRequestBody)" class="member-name-link">getServerByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID,
  <a href="../../rest/EffectiveTimeQueryRequestBody.html" title="class in org.odpi.openmetadata.viewservices.runtimemanager.rest">EffectiveTimeQueryRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns details about the server's catalog entry (asset).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/ServerReportResponse.html" title="class in org.odpi.openmetadata.viewservices.runtimemanager.rest">ServerReportResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerReport(java.lang.String,java.lang.String)" class="member-name-link">getServerReport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/ServerReportResponse.html" title="class in org.odpi.openmetadata.viewservices.runtimemanager.rest">ServerReportResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerReport(java.lang.String,java.lang.String)" class="member-name-link">getServerReport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns details about the running server.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerListResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServersByDeployedImplType(java.lang.String,int,int,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getServersByDeployedImplType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerListResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerListResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServersByDeployedImplType(java.lang.String,int,int,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getServersByDeployedImplType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;getTemplates,
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of servers with a particular deployed implementation type.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerListResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServersByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getServersByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerListResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServersByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getServersByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of servers with a particular name.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdownAndUnregisterServer(java.lang.String,java.lang.String)" class="member-name-link">shutdownAndUnregisterServer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Permanently deactivate any active servers and unregister from
+ any cohorts.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdownServer(java.lang.String,java.lang.String)" class="member-name-link">shutdownServer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Temporarily shutdown the named OMAG server.</div>
 </div>
 </div>
 </div>
@@ -308,7 +341,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getServersByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>getServersByName</h3>
-<div class="member-signature"><span class="annotations">@PostMapping("/servers/by-name")
+<div class="member-signature"><span class="annotations">@PostMapping("/software-servers/by-name")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerListResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerListResponse</a></span>&nbsp;<span class="element-name">getServersByName</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestParam
@@ -335,7 +368,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getServersByDeployedImplType(java.lang.String,int,int,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>getServersByDeployedImplType</h3>
-<div class="member-signature"><span class="annotations">@PostMapping("/servers/by-deployed-implementation-type")
+<div class="member-signature"><span class="annotations">@PostMapping("/software-servers/by-deployed-implementation-type")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerListResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerListResponse</a></span>&nbsp;<span class="element-name">getServersByDeployedImplType</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestParam
@@ -365,7 +398,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getServerByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.runtimemanager.rest.EffectiveTimeQueryRequestBody)">
 <h3>getServerByGUID</h3>
-<div class="member-signature"><span class="annotations">@PostMapping("/servers/{serverGUID}")
+<div class="member-signature"><span class="annotations">@PostMapping("/software-servers/{serverGUID}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../accessservices/itinfrastructure/rest/SoftwareServerResponse.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.rest">SoftwareServerResponse</a></span>&nbsp;<span class="element-name">getServerByGUID</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -389,7 +422,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getServerReport(java.lang.String,java.lang.String)">
 <h3>getServerReport</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/servers/{serverGUID}/report")
+<div class="member-signature"><span class="annotations">@GetMapping("/omag-servers/{serverGUID}/instance/report")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/ServerReportResponse.html" title="class in org.odpi.openmetadata.viewservices.runtimemanager.rest">ServerReportResponse</a></span>&nbsp;<span class="element-name">getServerReport</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -398,12 +431,120 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server</dd>
-<dd><code>serverGUID</code> - unique identifier of the platform</dd>
+<dd><code>serverGUID</code> - unique identifier of the server to call</dd>
 <dt>Returns:</dt>
 <dd>a list of platforms
  InvalidParameterException  one of the parameters is null or invalid.
  PropertyServerException    there is a problem retrieving information from the property server(s).
  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="activateWithStoredConfig(java.lang.String,java.lang.String)">
+<h3>activateWithStoredConfig</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/omag-servers/{serverGUID}/instance")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../serveroperations/rest/SuccessMessageResponse.html" title="class in org.odpi.openmetadata.serveroperations.rest">SuccessMessageResponse</a></span>&nbsp;<span class="element-name">activateWithStoredConfig</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID)</span></div>
+<div class="block">Activate the Open Metadata and Governance (OMAG) server using the configuration document stored for this server.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - local server name</dd>
+<dd><code>serverGUID</code> - unique identifier of the server to call</dd>
+<dt>Returns:</dt>
+<dd>void response or
+ OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ OMAGInvalidParameterException the server name is invalid or
+ OMAGConfigurationErrorException there is a problem using the supplied configuration.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="shutdownServer(java.lang.String,java.lang.String)">
+<h3>shutdownServer</h3>
+<div class="member-signature"><span class="annotations">@DeleteMapping(path="/omag-servers/{serverGUID}/instance")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">shutdownServer</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID)</span></div>
+<div class="block">Temporarily shutdown the named OMAG server.  This server can be restarted as a later time.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - local server name</dd>
+<dd><code>serverGUID</code> - unique identifier of the server to call</dd>
+<dt>Returns:</dt>
+<dd>void response or
+ OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ OMAGInvalidParameterException the serverName is invalid.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="shutdownAndUnregisterServer(java.lang.String,java.lang.String)">
+<h3>shutdownAndUnregisterServer</h3>
+<div class="member-signature"><span class="annotations">@DeleteMapping(path="/omag-servers/{serverGUID}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">shutdownAndUnregisterServer</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID)</span></div>
+<div class="block">Permanently deactivate any active servers and unregister from
+ any cohorts.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - local server name</dd>
+<dd><code>serverGUID</code> - unique identifier of the server to call</dd>
+<dt>Returns:</dt>
+<dd>void response or
+ OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ OMAGInvalidParameterException the serverName is invalid.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addOpenMetadataArchiveFile(java.lang.String,java.lang.String,java.lang.String)">
+<h3>addOpenMetadataArchiveFile</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/omag-servers/{serverGUID}/instance/load/open-metadata-archives/file")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addOpenMetadataArchiveFile</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID,
+ @RequestBody
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileName)</span></div>
+<div class="block">Add a new open metadata archive to running repository.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - local server name.</dd>
+<dd><code>serverGUID</code> - unique identifier of the server to call</dd>
+<dd><code>fileName</code> - name of the open metadata archive file.</dd>
+<dt>Returns:</dt>
+<dd>void response or
+ OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ OMAGInvalidParameterException invalid serverName or fileName parameter.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addOpenMetadataArchive(java.lang.String,java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive)">
+<h3>addOpenMetadataArchive</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/omag-servers/{serverGUID}/instance/load/open-metadata-archives/archive-content")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addOpenMetadataArchive</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverGUID,
+ @RequestBody
+ <a href="../../../../repositoryservices/connectors/stores/archivestore/properties/OpenMetadataArchive.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties">OpenMetadataArchive</a>&nbsp;openMetadataArchive)</span></div>
+<div class="block">Add a new open metadata archive to running repository.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - local server name.</dd>
+<dd><code>serverGUID</code> - unique identifier of the server to call</dd>
+<dd><code>openMetadataArchive</code> - openMetadataArchive for the open metadata archive.</dd>
+<dt>Returns:</dt>
+<dd>void response or
+ OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+ OMAGInvalidParameterException invalid serverName or openMetadataArchive parameter.</dd>
 </dl>
 </section>
 </li>

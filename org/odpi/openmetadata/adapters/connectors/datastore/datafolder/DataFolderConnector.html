@@ -15,11 +15,7 @@
 <script type="text/javascript" src="../../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
-<script type="text/javascript">var evenRowColor = "even-row-color";
-var oddRowColor = "odd-row-color";
-var tableTab = "table-tab";
-var activeTableTab = "active-table-tab";
-var pathtoroot = "../../../../../../../";
+<script type="text/javascript">var pathtoroot = "../../../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -53,7 +49,7 @@ loadScripts(document, 'script');</script>
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method-detail">Method</a></li>
+<li>Method</li>
 </ul>
 </div>
 <div class="nav-list-search"><label for="search-input">SEARCH:</label>
@@ -74,7 +70,9 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.Connector</a>
 <div class="inheritance"><a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorBase</a>
+<div class="inheritance"><a href="../basicfile/BasicFolderConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderConnector</a>
 <div class="inheritance">org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderConnector</div>
+</div>
 </div>
 </div>
 </div>
@@ -85,7 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">DataFolderConnector</span>
-<span class="extends-implements">extends <a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a>
+<span class="extends-implements">extends <a href="../basicfile/BasicFolderConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFolderConnector</a>
 implements <a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFileStore</a></span></div>
 <div class="block">DataFolderConnector works with folders to retrieve simple objects.</div>
 </section>
@@ -104,6 +102,9 @@ implements <a href="../basicfile/BasicFileStore.html" title="interface in org.od
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderConnector">Fields inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.datastore.basicfile.<a href="../basicfile/BasicFolderConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFolderConnector</a></h3>
+<code><a href="../basicfile/BasicFolderConnector.html#folderName">folderName</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
 <code><a href="../../../../frameworks/connectors/ConnectorBase.html#connectedAssetProperties">connectedAssetProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#connectionBean">connectionBean</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#connectionProperties">connectionProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#connectorInstanceId">connectorInstanceId</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#secretsStoreConnectorMap">secretsStoreConnectorMap</a></code></div>
@@ -126,66 +127,21 @@ implements <a href="../basicfile/BasicFileStore.html" title="interface in org.od
 <li>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
-<div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
-<div id="method-summary-table.tabpanel" role="tabpanel">
-<div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Method</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnect()" class="member-name-link">disconnect</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Close the file</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCreationDate()" class="member-name-link">getCreationDate</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the creation date for the file.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFile()" class="member-name-link">getFile</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the Java File object that provides access to the file.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileLength()" class="member-name-link">getFileLength</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the number of bytes in the file</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileName()" class="member-name-link">getFileName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the name of the file to read.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastAccessDate()" class="member-name-link">getLastAccessDate</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the last accessed date for the file.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastUpdateDate()" class="member-name-link">getLastUpdateDate</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the last update date for the file.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)" class="member-name-link">initialize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorInstanceId,
- <a href="../../../../frameworks/connectors/properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a>&nbsp;connectionProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Initialize the connector.</div>
-</div>
-</div>
-</div>
-</div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderConnector">Methods inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.datastore.basicfile.<a href="../basicfile/BasicFolderConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFolderConnector</a></h3>
+<code><a href="../basicfile/BasicFolderConnector.html#disconnect()">disconnect</a>, <a href="../basicfile/BasicFolderConnector.html#getCreationDate()">getCreationDate</a>, <a href="../basicfile/BasicFolderConnector.html#getFile()">getFile</a>, <a href="../basicfile/BasicFolderConnector.html#getFile(java.lang.String)">getFile</a>, <a href="../basicfile/BasicFolderConnector.html#getFileLength()">getFileLength</a>, <a href="../basicfile/BasicFolderConnector.html#getFileName()">getFileName</a>, <a href="../basicfile/BasicFolderConnector.html#getLastAccessDate()">getLastAccessDate</a>, <a href="../basicfile/BasicFolderConnector.html#getLastUpdateDate()">getLastUpdateDate</a>, <a href="../basicfile/BasicFolderConnector.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
-<code><a href="../../../../frameworks/connectors/ConnectorBase.html#disconnectConnectors(java.util.List)">disconnectConnectors</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getAssetTypeName(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse,java.lang.String,java.lang.String)">getAssetTypeName</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getNetworkAddresses(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse)">getNetworkAddresses</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeSecretsStoreConnector(java.lang.String,org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector)">initializeSecretsStoreConnector</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#start()">start</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingConfigurationProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwNoAsset(java.lang.String,java.lang.String,java.lang.String)">throwNoAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfRootSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfRootSchema</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#toString()">toString</a></code></div>
+<code><a href="../../../../frameworks/connectors/ConnectorBase.html#disconnectConnectors(java.util.List)">disconnectConnectors</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.util.List)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getAssetTypeName(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse,java.lang.String,java.lang.String)">getAssetTypeName</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getNetworkAddresses(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse)">getNetworkAddresses</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeSecretsStoreConnector(java.lang.String,org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector)">initializeSecretsStoreConnector</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#start()">start</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingConfigurationProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwNoAsset(java.lang.String,java.lang.String,java.lang.String)">throwNoAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfRootSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfRootSchema</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#toString()">toString</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.Connector">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></h3>
 <code><a href="../../../../frameworks/connectors/Connector.html#clearStatisticProperty(java.lang.String,java.lang.String)">clearStatisticProperty</a>, <a href="../../../../frameworks/connectors/Connector.html#clearStatisticTimestamp(java.lang.String,java.lang.String)">clearStatisticTimestamp</a>, <a href="../../../../frameworks/connectors/Connector.html#getConnectorStatistics()">getConnectorStatistics</a>, <a href="../../../../frameworks/connectors/Connector.html#getStatisticCounter(java.lang.String,java.lang.String)">getStatisticCounter</a>, <a href="../../../../frameworks/connectors/Connector.html#getStatisticProperty(java.lang.String,java.lang.String)">getStatisticProperty</a>, <a href="../../../../frameworks/connectors/Connector.html#getStatisticTimestamp(java.lang.String,java.lang.String)">getStatisticTimestamp</a>, <a href="../../../../frameworks/connectors/Connector.html#incrementStatisticCounter(java.lang.String,java.lang.String)">incrementStatisticCounter</a>, <a href="../../../../frameworks/connectors/Connector.html#initializeStatisticCounter(java.lang.String,int,java.lang.String)">initializeStatisticCounter</a>, <a href="../../../../frameworks/connectors/Connector.html#setStatisticProperty(java.lang.String,java.lang.String,java.lang.String)">setStatisticProperty</a>, <a href="../../../../frameworks/connectors/Connector.html#setStatisticTimestamp(java.lang.String,java.util.Date,java.lang.String)">setStatisticTimestamp</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStore">Methods inherited from interface&nbsp;org.odpi.openmetadata.adapters.connectors.datastore.basicfile.<a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFileStore</a></h3>
+<code><a href="../basicfile/BasicFileStore.html#getCreationDate()">getCreationDate</a>, <a href="../basicfile/BasicFileStore.html#getFile()">getFile</a>, <a href="../basicfile/BasicFileStore.html#getFileLength()">getFileLength</a>, <a href="../basicfile/BasicFileStore.html#getFileName()">getFileName</a>, <a href="../basicfile/BasicFileStore.html#getLastAccessDate()">getLastAccessDate</a>, <a href="../basicfile/BasicFileStore.html#getLastUpdateDate()">getLastUpdateDate</a></code></div>
 </section>
 </li>
 </ul>
@@ -201,145 +157,6 @@ implements <a href="../basicfile/BasicFileStore.html" title="interface in org.od
 <section class="detail" id="&lt;init&gt;()">
 <h3>DataFolderConnector</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DataFolderConnector</span>()</div>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<!-- ============ METHOD DETAIL ========== -->
-<li>
-<section class="method-details" id="method-detail">
-<h2>Method Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">
-<h3>initialize</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initialize</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorInstanceId,
- <a href="../../../../frameworks/connectors/properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">ConnectionProperties</a>&nbsp;connectionProperties)</span></div>
-<div class="block">Initialize the connector.</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>connectorInstanceId</code> - - unique id for the connector instance - useful for messages etc</dd>
-<dd><code>connectionProperties</code> - - POJO for the configuration used to create the connector.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getFile()">
-<h3>getFile</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></span>&nbsp;<span class="element-name">getFile</span>()
-             throws <span class="exceptions"><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></span></div>
-<div class="block">Return the Java File object that provides access to the file.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../basicfile/BasicFileStore.html#getFile()">getFile</a></code>&nbsp;in interface&nbsp;<code><a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFileStore</a></code></dd>
-<dt>Returns:</dt>
-<dd>File object</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - problem accessing the file</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getFileName()">
-<h3>getFileName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getFileName</span>()
-                   throws <span class="exceptions"><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></span></div>
-<div class="block">Return the name of the file to read.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../basicfile/BasicFileStore.html#getFileName()">getFileName</a></code>&nbsp;in interface&nbsp;<code><a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFileStore</a></code></dd>
-<dt>Returns:</dt>
-<dd>file name</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - problem accessing the file</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getFileLength()">
-<h3>getFileLength</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getFileLength</span>()
-                   throws <span class="exceptions"><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></span></div>
-<div class="block">Return the number of bytes in the file</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../basicfile/BasicFileStore.html#getFileLength()">getFileLength</a></code>&nbsp;in interface&nbsp;<code><a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFileStore</a></code></dd>
-<dt>Returns:</dt>
-<dd>number</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - unable to locate the file</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getCreationDate()">
-<h3>getCreationDate</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getCreationDate</span>()
-                     throws <span class="exceptions"><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a>,
-<a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></span></div>
-<div class="block">Return the creation date for the file.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../basicfile/BasicFileStore.html#getCreationDate()">getCreationDate</a></code>&nbsp;in interface&nbsp;<code><a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFileStore</a></code></dd>
-<dt>Returns:</dt>
-<dd>Date object</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - problem accessing the file</dd>
-<dd><code><a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></code> - - the file name is null, the file does not exist, or is a directory or
-                             is not readable.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getLastUpdateDate()">
-<h3>getLastUpdateDate</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getLastUpdateDate</span>()
-                       throws <span class="exceptions"><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a>,
-<a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></span></div>
-<div class="block">Return the last update date for the file.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../basicfile/BasicFileStore.html#getLastUpdateDate()">getLastUpdateDate</a></code>&nbsp;in interface&nbsp;<code><a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFileStore</a></code></dd>
-<dt>Returns:</dt>
-<dd>Date object</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - problem accessing the file</dd>
-<dd><code><a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></code> - - the file name is null, the file does not exist, or is a directory or
-                             is not readable.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getLastAccessDate()">
-<h3>getLastAccessDate</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getLastAccessDate</span>()
-                       throws <span class="exceptions"><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a>,
-<a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></span></div>
-<div class="block">Return the last accessed date for the file.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../basicfile/BasicFileStore.html#getLastAccessDate()">getLastAccessDate</a></code>&nbsp;in interface&nbsp;<code><a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFileStore</a></code></dd>
-<dt>Returns:</dt>
-<dd>Date object</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - problem accessing the file</dd>
-<dd><code><a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></code> - - the file name is null, the file does not exist, or is a directory or
-                             is not readable.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="disconnect()">
-<h3>disconnect</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">disconnect</span>()</div>
-<div class="block">Close the file</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ConnectorBase.html#disconnect()">disconnect</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
-</dl>
 </section>
 </li>
 </ul>

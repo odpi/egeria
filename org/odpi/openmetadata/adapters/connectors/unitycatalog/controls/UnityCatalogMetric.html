@@ -106,22 +106,16 @@ implements <a href="../../../../frameworks/surveyaction/measurements/SurveyMetri
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#ACTIVE_TIME" class="member-name-link">ACTIVE_TIME</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NO_OF_CATALOGS" class="member-name-link">NO_OF_CATALOGS</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#DATABASE_SIZE" class="member-name-link">DATABASE_SIZE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NO_OF_FUNCTIONS" class="member-name-link">NO_OF_FUNCTIONS</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#LAST_STATISTICS_RESET" class="member-name-link">LAST_STATISTICS_RESET</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NO_OF_SCHEMAS" class="member-name-link">NO_OF_SCHEMAS</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ROWS_DELETED" class="member-name-link">ROWS_DELETED</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NO_OF_TABLES" class="member-name-link">NO_OF_TABLES</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ROWS_FETCHED" class="member-name-link">ROWS_FETCHED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NO_OF_VOLUMES" class="member-name-link">NO_OF_VOLUMES</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#ROWS_INSERTED" class="member-name-link">ROWS_INSERTED</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#ROWS_UPDATED" class="member-name-link">ROWS_UPDATED</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#SESSION_TIME" class="member-name-link">SESSION_TIME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -160,6 +154,16 @@ implements <a href="../../../../frameworks/surveyaction/measurements/SurveyMetri
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/surveyaction/measurements/SurveyMetric.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.measurements">SurveyMetric</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getCatalogMetrics()" class="member-name-link">getCatalogMetrics</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return the defined catalog metrics as a list</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/surveyaction/measurements/SurveyMetric.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.measurements">SurveyMetric</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getColumnMetrics()" class="member-name-link">getColumnMetrics</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return the defined column metrics as a list</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataType()" class="member-name-link">getDataType</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -175,15 +179,25 @@ implements <a href="../../../../frameworks/surveyaction/measurements/SurveyMetri
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the metric.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/surveyaction/measurements/SurveyMetric.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.measurements">SurveyMetric</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getMetrics()" class="member-name-link">getMetrics</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Return the defined metrics as a list</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPropertyName()" class="member-name-link">getPropertyName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPropertyName()" class="member-name-link">getPropertyName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the property name used to store the measurement.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/surveyaction/measurements/SurveyMetric.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.measurements">SurveyMetric</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSchemaMetrics()" class="member-name-link">getSchemaMetrics</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return the defined schema metrics as a list</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/surveyaction/measurements/SurveyMetric.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.measurements">SurveyMetric</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getServerMetrics()" class="member-name-link">getServerMetrics</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return the defined server metrics as a list</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/surveyaction/measurements/SurveyMetric.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.measurements">SurveyMetric</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getTableMetrics()" class="member-name-link">getTableMetrics</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return the defined table metrics as a list</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -222,51 +236,33 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="DATABASE_SIZE">
-<h3>DATABASE_SIZE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogMetric</a></span>&nbsp;<span class="element-name">DATABASE_SIZE</span></div>
+<section class="detail" id="NO_OF_CATALOGS">
+<h3>NO_OF_CATALOGS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogMetric</a></span>&nbsp;<span class="element-name">NO_OF_CATALOGS</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="ROWS_FETCHED">
-<h3>ROWS_FETCHED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogMetric</a></span>&nbsp;<span class="element-name">ROWS_FETCHED</span></div>
+<section class="detail" id="NO_OF_SCHEMAS">
+<h3>NO_OF_SCHEMAS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogMetric</a></span>&nbsp;<span class="element-name">NO_OF_SCHEMAS</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="ROWS_INSERTED">
-<h3>ROWS_INSERTED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogMetric</a></span>&nbsp;<span class="element-name">ROWS_INSERTED</span></div>
+<section class="detail" id="NO_OF_TABLES">
+<h3>NO_OF_TABLES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogMetric</a></span>&nbsp;<span class="element-name">NO_OF_TABLES</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="ROWS_UPDATED">
-<h3>ROWS_UPDATED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogMetric</a></span>&nbsp;<span class="element-name">ROWS_UPDATED</span></div>
+<section class="detail" id="NO_OF_FUNCTIONS">
+<h3>NO_OF_FUNCTIONS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogMetric</a></span>&nbsp;<span class="element-name">NO_OF_FUNCTIONS</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="ROWS_DELETED">
-<h3>ROWS_DELETED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogMetric</a></span>&nbsp;<span class="element-name">ROWS_DELETED</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="SESSION_TIME">
-<h3>SESSION_TIME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogMetric</a></span>&nbsp;<span class="element-name">SESSION_TIME</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ACTIVE_TIME">
-<h3>ACTIVE_TIME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogMetric</a></span>&nbsp;<span class="element-name">ACTIVE_TIME</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="LAST_STATISTICS_RESET">
-<h3>LAST_STATISTICS_RESET</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogMetric</a></span>&nbsp;<span class="element-name">LAST_STATISTICS_RESET</span></div>
+<section class="detail" id="NO_OF_VOLUMES">
+<h3>NO_OF_VOLUMES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UnityCatalogMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.controls">UnityCatalogMetric</a></span>&nbsp;<span class="element-name">NO_OF_VOLUMES</span></div>
 </section>
 </li>
 </ul>
@@ -393,10 +389,54 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getMetrics()">
-<h3>getMetrics</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/surveyaction/measurements/SurveyMetric.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.measurements">SurveyMetric</a>&gt;</span>&nbsp;<span class="element-name">getMetrics</span>()</div>
-<div class="block">Return the defined metrics as a list</div>
+<section class="detail" id="getServerMetrics()">
+<h3>getServerMetrics</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/surveyaction/measurements/SurveyMetric.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.measurements">SurveyMetric</a>&gt;</span>&nbsp;<span class="element-name">getServerMetrics</span>()</div>
+<div class="block">Return the defined server metrics as a list</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getCatalogMetrics()">
+<h3>getCatalogMetrics</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/surveyaction/measurements/SurveyMetric.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.measurements">SurveyMetric</a>&gt;</span>&nbsp;<span class="element-name">getCatalogMetrics</span>()</div>
+<div class="block">Return the defined catalog metrics as a list</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSchemaMetrics()">
+<h3>getSchemaMetrics</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/surveyaction/measurements/SurveyMetric.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.measurements">SurveyMetric</a>&gt;</span>&nbsp;<span class="element-name">getSchemaMetrics</span>()</div>
+<div class="block">Return the defined schema metrics as a list</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTableMetrics()">
+<h3>getTableMetrics</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/surveyaction/measurements/SurveyMetric.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.measurements">SurveyMetric</a>&gt;</span>&nbsp;<span class="element-name">getTableMetrics</span>()</div>
+<div class="block">Return the defined table metrics as a list</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getColumnMetrics()">
+<h3>getColumnMetrics</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/surveyaction/measurements/SurveyMetric.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.measurements">SurveyMetric</a>&gt;</span>&nbsp;<span class="element-name">getColumnMetrics</span>()</div>
+<div class="block">Return the defined column metrics as a list</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list</dd>

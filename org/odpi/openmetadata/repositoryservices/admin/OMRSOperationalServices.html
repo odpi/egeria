@@ -133,65 +133,72 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add an open metadata archive to the local repository.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnect(boolean)" class="member-name-link">disconnect</a><wbr>(boolean&nbsp;permanent)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addOpenMetadataArchive(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStore,java.lang.String)" class="member-name-link">addOpenMetadataArchive</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../connectors/stores/archivestore/OpenMetadataArchiveStore.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveStore</a>&nbsp;openMetadataArchive,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;archiveSource)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add an open metadata archive to the local repository.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnect(boolean)" class="member-name-link">disconnect</a><wbr>(boolean&nbsp;permanent)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Shutdown the Open Metadata Repository Services.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../auditlog/OMRSAuditLog.html" title="class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLog</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAuditLog(int,org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getAuditLog</a><wbr>(int&nbsp;componentId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../auditlog/OMRSAuditLog.html" title="class in org.odpi.openmetadata.repositoryservices.auditlog">OMRSAuditLog</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAuditLog(int,org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getAuditLog</a><wbr>(int&nbsp;componentId,
  <a href="../../frameworks/auditlog/ComponentDevelopmentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.auditlog">ComponentDevelopmentStatus</a>&nbsp;componentDevelopmentStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;componentName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;componentDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;componentWikiURL)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create an audit log for an external component.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../enterprise/connectormanager/OMRSEnterpriseConnectorManager.html" title="class in org.odpi.openmetadata.repositoryservices.enterprise.connectormanager">OMRSEnterpriseConnectorManager</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnterpriseConnectorManager()" class="member-name-link">getEnterpriseConnectorManager</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../enterprise/connectormanager/OMRSEnterpriseConnectorManager.html" title="class in org.odpi.openmetadata.repositoryservices.enterprise.connectormanager">OMRSEnterpriseConnectorManager</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnterpriseConnectorManager()" class="member-name-link">getEnterpriseConnectorManager</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the enterprise connector manager.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnterpriseOMRSRepositoryConnector(java.lang.String)" class="member-name-link">getEnterpriseOMRSRepositoryConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callingServiceName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnterpriseOMRSRepositoryConnector(java.lang.String)" class="member-name-link">getEnterpriseOMRSRepositoryConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callingServiceName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create repository connector for an access service.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../connectors/omrstopic/OMRSTopicConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.omrstopic">OMRSTopicConnector</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnterpriseOMRSTopicConnector()" class="member-name-link">getEnterpriseOMRSTopicConnector</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../connectors/omrstopic/OMRSTopicConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.omrstopic">OMRSTopicConnector</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnterpriseOMRSTopicConnector()" class="member-name-link">getEnterpriseOMRSTopicConnector</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the Enterprise OMRS Topic Connector.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeAuditLog(org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig,java.lang.String)" class="member-name-link">initializeAuditLog</a><wbr>(<a href="../../adminservices/configuration/properties/RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a>&nbsp;repositoryServicesConfig,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeAuditLog(org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig,java.lang.String)" class="member-name-link">initializeAuditLog</a><wbr>(<a href="../../adminservices/configuration/properties/RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a>&nbsp;repositoryServicesConfig,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverTypeClassification)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Initialize the OMRS component for the Open Metadata Repository Services (OMRS) for a basic server.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeCohortMember(org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig)" class="member-name-link">initializeCohortMember</a><wbr>(<a href="../../adminservices/configuration/properties/RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a>&nbsp;repositoryServicesConfig)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Initialize the OMRS component for the Open Metadata Repository Services (OMRS).</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeGovernanceServer(org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig)" class="member-name-link">initializeGovernanceServer</a><wbr>(<a href="../../adminservices/configuration/properties/RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a>&nbsp;repositoryServicesConfig)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeCohortMember(org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig)" class="member-name-link">initializeCohortMember</a><wbr>(<a href="../../adminservices/configuration/properties/RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a>&nbsp;repositoryServicesConfig)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Initialize the OMRS component for the Open Metadata Repository Services (OMRS).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeViewServer(org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig)" class="member-name-link">initializeViewServer</a><wbr>(<a href="../../adminservices/configuration/properties/RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a>&nbsp;repositoryServicesConfig)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeGovernanceServer(org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig)" class="member-name-link">initializeGovernanceServer</a><wbr>(<a href="../../adminservices/configuration/properties/RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a>&nbsp;repositoryServicesConfig)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Initialize the OMRS component for the Open Metadata Repository Services (OMRS).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSecurityVerifier(org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier)" class="member-name-link">setSecurityVerifier</a><wbr>(<a href="../../metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a>&nbsp;securityVerifier)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeViewServer(org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig)" class="member-name-link">initializeViewServer</a><wbr>(<a href="../../adminservices/configuration/properties/RepositoryServicesConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">RepositoryServicesConfig</a>&nbsp;repositoryServicesConfig)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Initialize the OMRS component for the Open Metadata Repository Services (OMRS).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSecurityVerifier(org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier)" class="member-name-link">setSecurityVerifier</a><wbr>(<a href="../../metadatasecurity/server/OpenMetadataServerSecurityVerifier.html" title="class in org.odpi.openmetadata.metadatasecurity.server">OpenMetadataServerSecurityVerifier</a>&nbsp;securityVerifier)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up a new security verifier (the handler runs with a default verifier until this
  method is called).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startOutboundEvents()" class="member-name-link">startOutboundEvents</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startOutboundEvents()" class="member-name-link">startOutboundEvents</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">The local repository (if configured) has been started while the archives were loaded and the
  cohorts initialized.</div>
 </div>
@@ -395,6 +402,26 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server</dd>
 <dd><code>openMetadataArchiveConnection</code> - connection to the archive</dd>
+<dd><code>archiveSource</code> - descriptive name of the archive source</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the archive resource is not found</dd>
+<dd><code><a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - there is a problem with the archive manager</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addOpenMetadataArchive(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStore,java.lang.String)">
+<h3>addOpenMetadataArchive</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addOpenMetadataArchive</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../connectors/stores/archivestore/OpenMetadataArchiveStore.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore">OpenMetadataArchiveStore</a>&nbsp;openMetadataArchive,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;archiveSource)</span>
+                            throws <span class="exceptions"><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a>,
+<a href="../ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
+<div class="block">Add an open metadata archive to the local repository.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server</dd>
+<dd><code>openMetadataArchive</code> - content the archive</dd>
 <dd><code>archiveSource</code> - descriptive name of the archive source</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/exception/InvalidParameterException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">InvalidParameterException</a></code> - the archive resource is not found</dd>

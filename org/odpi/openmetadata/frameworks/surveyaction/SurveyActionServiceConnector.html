@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../adapters/connectors/surveyaction/surveycsv/CSVSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv">CSVSurveyService</a></code>, <code><a href="../../adapters/connectors/surveyaction/surveyfile/FileSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile">FileSurveyService</a></code>, <code><a href="../../adapters/connectors/surveyaction/surveyfolder/FolderSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder">FolderSurveyService</a></code>, <code><a href="../../adapters/connectors/unitycatalog/survey/OSSUnityCatalogInsideCatalogSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.survey">OSSUnityCatalogInsideCatalogSurveyService</a></code>, <code><a href="../../adapters/connectors/unitycatalog/survey/OSSUnityCatalogServerSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.survey">OSSUnityCatalogServerSurveyService</a></code>, <code><a href="../../adapters/connectors/postgres/survey/PostgresDatabaseSurveyActionService.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresDatabaseSurveyActionService</a></code>, <code><a href="../../adapters/connectors/postgres/survey/PostgresServerSurveyActionService.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresServerSurveyActionService</a></code>, <code><a href="SurveyActionPipelineConnector.html" title="class in org.odpi.openmetadata.frameworks.surveyaction">SurveyActionPipelineConnector</a></code>, <code><a href="../../adapters/connectors/apacheatlas/survey/SurveyApacheAtlasConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.survey">SurveyApacheAtlasConnector</a></code>, <code><a href="../../adapters/connectors/apachekafka/survey/SurveyApacheKafkaServerConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.apachekafka.survey">SurveyApacheKafkaServerConnector</a></code></dd>
+<dd><code><a href="../../adapters/connectors/surveyaction/surveycsv/CSVSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv">CSVSurveyService</a></code>, <code><a href="../../adapters/connectors/surveyaction/surveyfile/FileSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile">FileSurveyService</a></code>, <code><a href="../../adapters/connectors/surveyaction/surveyfolder/FolderSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder">FolderSurveyService</a></code>, <code><a href="../../adapters/connectors/unitycatalog/survey/OSSUnityCatalogServerSurveyBase.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.survey">OSSUnityCatalogServerSurveyBase</a></code>, <code><a href="../../adapters/connectors/postgres/survey/PostgresDatabaseSurveyActionService.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresDatabaseSurveyActionService</a></code>, <code><a href="../../adapters/connectors/postgres/survey/PostgresServerSurveyActionService.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresServerSurveyActionService</a></code>, <code><a href="SurveyActionPipelineConnector.html" title="class in org.odpi.openmetadata.frameworks.surveyaction">SurveyActionPipelineConnector</a></code>, <code><a href="../../adapters/connectors/apacheatlas/survey/SurveyApacheAtlasConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.survey">SurveyApacheAtlasConnector</a></code>, <code><a href="../../adapters/connectors/apachekafka/survey/SurveyApacheKafkaServerConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.apachekafka.survey">SurveyApacheKafkaServerConnector</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">SurveyActionServiceConnector</span>
@@ -120,11 +120,17 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <div class="col-first even-row-color"><code>protected <a href="../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a></code></div>
 <div class="col-second even-row-color"><code><a href="#auditLog" class="member-name-link">auditLog</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#embeddedConnectors" class="member-name-link">embeddedConnectors</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#connector" class="member-name-link">connector</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected static com.fasterxml.jackson.databind.ObjectMapper</code></div>
-<div class="col-second even-row-color"><code><a href="#objectMapper" class="member-name-link">objectMapper</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#embeddedConnectors" class="member-name-link">embeddedConnectors</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected static com.fasterxml.jackson.databind.ObjectMapper</code></div>
+<div class="col-second odd-row-color"><code><a href="#objectMapper" class="member-name-link">objectMapper</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="../governanceaction/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyHelper</a></code></div>
+<div class="col-second even-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#surveyActionServiceName" class="member-name-link">surveyActionServiceName</a></code></div>
@@ -209,6 +215,17 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Log audit message and throw exception to indicate that the asset's connector is wrong.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected &lt;T&gt;&nbsp;<a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#performCheckAssetAnalysisStep(java.lang.Class,java.lang.String)" class="member-name-link">performCheckAssetAnalysisStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;expectedConnectorClass,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expectedAssetType)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">This is the typical first analysis step of a survey action service.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#performCheckAssetAnalysisStep(java.lang.String)" class="member-name-link">performCheckAssetAnalysisStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expectedAssetType)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">This is the typical first analysis step of a survey action service.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -224,33 +241,72 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up details of the asset to analyze and the results of any previous analysis.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpAnnotation(org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation,org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType)" class="member-name-link">setUpAnnotation</a><wbr>(<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">Annotation</a>&nbsp;annotation,
+ <a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.controls">AnnotationType</a>&nbsp;annotationType)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Transfer common properties into an annotation.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the survey action service is completely configured and can begin processing.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwWrongTypeOfAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwWrongTypeOfAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportedAssetType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Log that the survey action service can not process the type of asset it has been passed.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwWrongTypeOfConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwWrongTypeOfConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actualConnectorClass,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwWrongTypeOfConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwWrongTypeOfConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actualConnectorClass,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expectedConnectorClass,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Log audit message and throw exception to indicate that the asset's connector is wrong.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="properties/ResourceProfileLogAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceProfileLogAnnotation</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameCountInventory(org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)" class="member-name-link">writeNameCountInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.controls">AnnotationType</a>&nbsp;annotationType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;nameCounts,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create an inventory in a CSV File.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="properties/ResourceProfileLogAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceProfileLogAnnotation</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameDescriptionInventory(org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)" class="member-name-link">writeNameDescriptionInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.controls">AnnotationType</a>&nbsp;annotationType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;nameDescriptions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create an inventory in a CSV File.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="properties/ResourceProfileLogAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceProfileLogAnnotation</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameListInventory(org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType,java.lang.String,java.util.List,java.lang.String)" class="member-name-link">writeNameListInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.controls">AnnotationType</a>&nbsp;annotationType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;names,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create an inventory in a CSV File.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="properties/ResourceProfileLogAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceProfileLogAnnotation</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writePropertyListInventory(org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType,java.lang.String,java.util.List,java.util.List,java.lang.String)" class="member-name-link">writePropertyListInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.controls">AnnotationType</a>&nbsp;annotationType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;propertyNames,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;propertyList,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create an inventory in a CSV File.</div>
 </div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
-<code><a href="../connectors/ConnectorBase.html#disconnectConnectors(java.util.List)">disconnectConnectors</a>, <a href="../connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map)">getArrayConfigurationProperty</a>, <a href="../connectors/ConnectorBase.html#getAssetTypeName(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse,java.lang.String,java.lang.String)">getAssetTypeName</a>, <a href="../connectors/ConnectorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../connectors/ConnectorBase.html#getNetworkAddresses(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse)">getNetworkAddresses</a>, <a href="../connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../connectors/ConnectorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a>, <a href="../connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../connectors/ConnectorBase.html#initializeSecretsStoreConnector(java.lang.String,org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector)">initializeSecretsStoreConnector</a>, <a href="../connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../connectors/ConnectorBase.html#throwMissingConfigurationProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingConfigurationProperty</a>, <a href="../connectors/ConnectorBase.html#throwMissingResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingResource</a>, <a href="../connectors/ConnectorBase.html#throwNoAsset(java.lang.String,java.lang.String,java.lang.String)">throwNoAsset</a>, <a href="../connectors/ConnectorBase.html#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfAsset</a>, <a href="../connectors/ConnectorBase.html#throwWrongTypeOfResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfResource</a>, <a href="../connectors/ConnectorBase.html#throwWrongTypeOfRootSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfRootSchema</a>, <a href="../connectors/ConnectorBase.html#toString()">toString</a></code></div>
+<code><a href="../connectors/ConnectorBase.html#disconnectConnectors(java.util.List)">disconnectConnectors</a>, <a href="../connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.util.List)">getArrayConfigurationProperty</a>, <a href="../connectors/ConnectorBase.html#getAssetTypeName(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse,java.lang.String,java.lang.String)">getAssetTypeName</a>, <a href="../connectors/ConnectorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../connectors/ConnectorBase.html#getNetworkAddresses(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse)">getNetworkAddresses</a>, <a href="../connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../connectors/ConnectorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a>, <a href="../connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../connectors/ConnectorBase.html#initializeSecretsStoreConnector(java.lang.String,org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector)">initializeSecretsStoreConnector</a>, <a href="../connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../connectors/ConnectorBase.html#throwMissingConfigurationProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingConfigurationProperty</a>, <a href="../connectors/ConnectorBase.html#throwMissingResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingResource</a>, <a href="../connectors/ConnectorBase.html#throwNoAsset(java.lang.String,java.lang.String,java.lang.String)">throwNoAsset</a>, <a href="../connectors/ConnectorBase.html#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfAsset</a>, <a href="../connectors/ConnectorBase.html#throwWrongTypeOfResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfResource</a>, <a href="../connectors/ConnectorBase.html#throwWrongTypeOfRootSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfRootSchema</a>, <a href="../connectors/ConnectorBase.html#toString()">toString</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.Connector">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></h3>
 <code><a href="../connectors/Connector.html#clearStatisticProperty(java.lang.String,java.lang.String)">clearStatisticProperty</a>, <a href="../connectors/Connector.html#clearStatisticTimestamp(java.lang.String,java.lang.String)">clearStatisticTimestamp</a>, <a href="../connectors/Connector.html#getConnectorStatistics()">getConnectorStatistics</a>, <a href="../connectors/Connector.html#getStatisticCounter(java.lang.String,java.lang.String)">getStatisticCounter</a>, <a href="../connectors/Connector.html#getStatisticProperty(java.lang.String,java.lang.String)">getStatisticProperty</a>, <a href="../connectors/Connector.html#getStatisticTimestamp(java.lang.String,java.lang.String)">getStatisticTimestamp</a>, <a href="../connectors/Connector.html#incrementStatisticCounter(java.lang.String,java.lang.String)">incrementStatisticCounter</a>, <a href="../connectors/Connector.html#initializeStatisticCounter(java.lang.String,int,java.lang.String)">initializeStatisticCounter</a>, <a href="../connectors/Connector.html#setStatisticProperty(java.lang.String,java.lang.String,java.lang.String)">setStatisticProperty</a>, <a href="../connectors/Connector.html#setStatisticTimestamp(java.lang.String,java.util.Date,java.lang.String)">setStatisticTimestamp</a></code></div>
@@ -268,6 +324,18 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <section class="field-details" id="field-detail">
 <h2>Field Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="propertyHelper">
+<h3>propertyHelper</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../governanceaction/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyHelper</a></span>&nbsp;<span class="element-name">propertyHelper</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="connector">
+<h3>connector</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">connector</span></div>
+</section>
+</li>
 <li>
 <section class="detail" id="objectMapper">
 <h3>objectMapper</h3>
@@ -387,9 +455,9 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>surveyContext</code> - information about the asset to analyze and the results of analysis of
-                         other survey action service request.  Partial results from other survey action
-                         services run as part of the same survey action service request may also be
-                         stored in the newAnnotations list.</dd>
+                      other survey action service request.  Partial results from other survey action
+                      services run as part of the same survey action service request may also be
+                      stored in the newAnnotations list.</dd>
 </dl>
 </section>
 </li>
@@ -401,6 +469,55 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>surveyActionServiceName</code> - name of the survey action service</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="performCheckAssetAnalysisStep(java.lang.Class,java.lang.String)">
+<h3>performCheckAssetAnalysisStep</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">performCheckAssetAnalysisStep</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;expectedConnectorClass,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expectedAssetType)</span>
+                                               throws <span class="exceptions"><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></span></div>
+<div class="block">This is the typical first analysis step of a survey action service.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - type of connector</dd>
+<dt>Parameters:</dt>
+<dd><code>expectedConnectorClass</code> - the class of the desired connector</dd>
+<dd><code>expectedAssetType</code> - the type of asset that this survey service works on</dd>
+<dt>Returns:</dt>
+<dd>the started connector which is of the correct type</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the connector</dd>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - invalid property</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with repositories</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security problem</dd>
+<dd><code><a href="../connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - problem with connection</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="performCheckAssetAnalysisStep(java.lang.String)">
+<h3>performCheckAssetAnalysisStep</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">performCheckAssetAnalysisStep</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expectedAssetType)</span>
+                                      throws <span class="exceptions"><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">This is the typical first analysis step of a survey action service.
+ It is used by survey action services that do not use the asset connector.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>expectedAssetType</code> - the type of asset that this survey service works on</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem with the connector</dd>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - invalid property</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with repositories</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - security problem</dd>
 </dl>
 </section>
 </li>
@@ -427,6 +544,141 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setUpAnnotation(org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation,org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType)">
+<h3>setUpAnnotation</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUpAnnotation</span><wbr><span class="parameters">(<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">Annotation</a>&nbsp;annotation,
+ <a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.controls">AnnotationType</a>&nbsp;annotationType)</span></div>
+<div class="block">Transfer common properties into an annotation.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>annotation</code> - output annotation</dd>
+<dd><code>annotationType</code> - annotation type definition</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="writePropertyListInventory(org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType,java.lang.String,java.util.List,java.util.List,java.lang.String)">
+<h3>writePropertyListInventory</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="properties/ResourceProfileLogAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceProfileLogAnnotation</a></span>&nbsp;<span class="element-name">writePropertyListInventory</span><wbr><span class="parameters">(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.controls">AnnotationType</a>&nbsp;annotationType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;propertyNames,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;propertyList,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</span>
+                                                           throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a>,
+<a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Create an inventory in a CSV File.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>annotationType</code> - details about the annotation</dd>
+<dd><code>inventoryName</code> - name of the inventory (needs to be unique within the report</dd>
+<dd><code>propertyNames</code> - list of properties names in order they should appear in the file</dd>
+<dd><code>propertyList</code> - list of property maps</dd>
+<dd><code>surveyReportGUID</code> - unique identifier of the report to connect the log file to</dd>
+<dt>Returns:</dt>
+<dd>inventory annotation</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - problem writing file</dd>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - problem creating CSV file asset</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - repository problem creating CSV file asset</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - authorization problem creating CSV file asset</dd>
+<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - survey has been asked to stop</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="writeNameListInventory(org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType,java.lang.String,java.util.List,java.lang.String)">
+<h3>writeNameListInventory</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="properties/ResourceProfileLogAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceProfileLogAnnotation</a></span>&nbsp;<span class="element-name">writeNameListInventory</span><wbr><span class="parameters">(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.controls">AnnotationType</a>&nbsp;annotationType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;names,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</span>
+                                                       throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a>,
+<a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Create an inventory in a CSV File.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>annotationType</code> - details about the annotation</dd>
+<dd><code>inventoryName</code> - name of the inventory (needs to be unique within the report</dd>
+<dd><code>names</code> - list of  names</dd>
+<dd><code>surveyReportGUID</code> - unique identifier of the report to connect the log file to</dd>
+<dt>Returns:</dt>
+<dd>inventory annotation</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - problem writing file</dd>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - problem creating CSV file asset</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - repository problem creating CSV file asset</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - authorization problem creating CSV file asset</dd>
+<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - survey has been asked to stop</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="writeNameCountInventory(org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)">
+<h3>writeNameCountInventory</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="properties/ResourceProfileLogAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceProfileLogAnnotation</a></span>&nbsp;<span class="element-name">writeNameCountInventory</span><wbr><span class="parameters">(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.controls">AnnotationType</a>&nbsp;annotationType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;nameCounts,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</span>
+                                                        throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a>,
+<a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Create an inventory in a CSV File.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>annotationType</code> - details about the annotation</dd>
+<dd><code>inventoryName</code> - name of the inventory (needs to be unique within the report</dd>
+<dd><code>nameCounts</code> - map of  names and how many times they appear</dd>
+<dd><code>surveyReportGUID</code> - unique identifier of the report to connect the log file to</dd>
+<dt>Returns:</dt>
+<dd>inventory annotation</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - problem writing file</dd>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - problem creating CSV file asset</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - repository problem creating CSV file asset</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - authorization problem creating CSV file asset</dd>
+<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - survey has been asked to stop</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="writeNameDescriptionInventory(org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)">
+<h3>writeNameDescriptionInventory</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="properties/ResourceProfileLogAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceProfileLogAnnotation</a></span>&nbsp;<span class="element-name">writeNameDescriptionInventory</span><wbr><span class="parameters">(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.controls">AnnotationType</a>&nbsp;annotationType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;nameDescriptions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</span>
+                                                              throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a>,
+<a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Create an inventory in a CSV File.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>annotationType</code> - details about the annotation</dd>
+<dd><code>inventoryName</code> - name of the inventory (needs to be unique within the report</dd>
+<dd><code>nameDescriptions</code> - map of  names and how many times they appear</dd>
+<dd><code>surveyReportGUID</code> - unique identifier of the report to connect the log file to</dd>
+<dt>Returns:</dt>
+<dd>inventory annotation</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - problem writing file</dd>
+<dd><code><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - problem creating CSV file asset</dd>
+<dd><code><a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - repository problem creating CSV file asset</dd>
+<dd><code><a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - authorization problem creating CSV file asset</dd>
+<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - survey has been asked to stop</dd>
 </dl>
 </section>
 </li>
