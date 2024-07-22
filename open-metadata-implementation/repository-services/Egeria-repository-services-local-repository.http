@@ -22,7 +22,7 @@ GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{use
 
 ###
 
-@guid=04dfb5ad-1a08-4f60-9cf8-f4ac2957e762
+@guid=c857b5a1-e497-4436-ac6b-c2265dcc4892
 
 ###
 # @name Get Relationship

@@ -908,6 +908,8 @@ public class OpenMetadataStore
                                                                                                         PropertyServerException
     {
         return openMetadataClient.createMetadataElementFromTemplate(userId,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
                                                                     metadataElementTypeName,
                                                                     anchorGUID,
                                                                     isOwnAnchor,

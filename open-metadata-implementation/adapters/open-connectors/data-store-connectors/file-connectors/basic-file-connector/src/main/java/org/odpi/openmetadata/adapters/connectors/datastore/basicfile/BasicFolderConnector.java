@@ -248,24 +248,29 @@ public class BasicFolderConnector extends ConnectorBase implements BasicFileStor
         {
             if (folderName == null)
             {
-                this.throwException(BasicFileConnectorErrorCode.FILE_NOT_SPECIFIED, methodName, null, null);
+                this.throwException(BasicFileConnectorErrorCode.FOLDER_NOT_SPECIFIED, methodName, null, null);
+            }
+
+            if (folderName.startsWith("file://"))
+            {
+                folderName = folderName.substring(7);
             }
 
             File  fileStore = new File(folderName);
 
             if (! fileStore.exists())
             {
-                this.throwException(BasicFileConnectorErrorCode.FILE_NOT_FOUND, methodName, folderName, null);
+                this.throwException(BasicFileConnectorErrorCode.FOLDER_NOT_FOUND, methodName, folderName, null);
             }
 
             if (! fileStore.isDirectory())
             {
-                this.throwException(BasicFileConnectorErrorCode.FILE_SPECIFIED, methodName, folderName, null);
+                this.throwException(BasicFileConnectorErrorCode.FILE_NOT_DIRECTORY, methodName, folderName, null);
             }
 
             if (! fileStore.canRead())
             {
-                this.throwException(BasicFileConnectorErrorCode.FILE_NOT_READABLE, methodName, folderName, null);
+                this.throwException(BasicFileConnectorErrorCode.FOLDER_NOT_READABLE, methodName, folderName, null);
             }
 
             return fileStore;
