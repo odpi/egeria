@@ -77,7 +77,7 @@ jobs:
           cp -r ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/opt/coco-pharmaceuticals ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform
       - name: Build and push(egeria) to quay.io and docker.io (tag latest only for main!)
         if: ${{ github.ref == 'refs/heads/main'}}
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: true
           tags: odpi/egeria-platform:${{ env.VERSION }}, odpi/egeria-platform:latest, quay.io/odpi/egeria-platform:${{ env.VERSION }}, quay.io/odpi/egeria-platform:latest
@@ -85,7 +85,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
       - name: Build and push(egeria-platform) to quay.io and docker.io (no tag latest)
         if: ${{ github.ref != 'refs/heads/main'}}
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: true
           tags: odpi/egeria-platform:${{ env.VERSION }}, quay.io/odpi/egeria-platform:${{ env.VERSION }}

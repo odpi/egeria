@@ -74,7 +74,7 @@ jobs:
           cp -r ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/opt/sample-data ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform
           cp -r ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/opt/coco-pharmaceuticals ./open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${{ env.VERSION }}-distribution.tar.gz/assembly/platform
       - name: Build and push(egeria-platform) to quay.io and docker.io
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: true
           tags: odpi/egeria-platform:${{ env.VERSION }}, odpi/egeria-platform:stable, quay.io/odpi/egeria-platform:${{ env.VERSION }}, quay.io/odpi/egeria-platform:stable
