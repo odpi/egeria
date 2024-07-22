@@ -122,40 +122,51 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
 
             if (nextElement != null)
             {
-                FunctionInfo functionInfo = null;
+                /*
+                 * Check that this is a UC Function.
+                 */
+                String deployedImplementationType = propertyHelper.getStringProperty(catalogTargetName,
+                                                                                     OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                                     nextElement.getElement().getElementProperties(),
+                                                                                     methodName);
 
-                String functionName = propertyHelper.getStringProperty(catalogTargetName,
-                                                                     OpenMetadataProperty.NAME.name,
-                                                                     nextElement.getElement().getElementProperties(),
-                                                                     methodName);
-
-                if (context.elementShouldBeCatalogued(functionName, excludeNames, includeNames))
+                if (DeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType().equals(deployedImplementationType))
                 {
-                    try
-                    {
-                        functionInfo = ucConnector.getFunction(functionName);
-                    }
-                    catch (Exception missing)
-                    {
-                        // this is not necessarily an error
-                    }
+                    FunctionInfo functionInfo = null;
 
-                    MemberAction memberAction = MemberAction.NO_ACTION;
-                    if (functionInfo == null)
-                    {
-                        memberAction = nextElement.getMemberAction(null, null);
-                    }
-                    else if (noMismatchInExternalIdentifier(functionInfo.getFunction_id(), nextElement))
-                    {
-                        memberAction = nextElement.getMemberAction(this.getDateFromLong(functionInfo.getCreated_at()),
-                                                                   this.getDateFromLong(functionInfo.getUpdated_at()));
-                    }
+                    String functionName = propertyHelper.getStringProperty(catalogTargetName,
+                                                                           OpenMetadataProperty.NAME.name,
+                                                                           nextElement.getElement().getElementProperties(),
+                                                                           methodName);
 
-                    this.takeAction(context.getAnchorGUID(nextElement.getElement()),
-                                    super.getUCSchemaFomMember(nextElement),
-                                    memberAction,
-                                    nextElement,
-                                    functionInfo);
+                    if (context.elementShouldBeCatalogued(functionName, excludeNames, includeNames))
+                    {
+                        try
+                        {
+                            functionInfo = ucConnector.getFunction(functionName);
+                        }
+                        catch (Exception missing)
+                        {
+                            // this is not necessarily an error
+                        }
+
+                        MemberAction memberAction = MemberAction.NO_ACTION;
+                        if (functionInfo == null)
+                        {
+                            memberAction = nextElement.getMemberAction(null, null);
+                        }
+                        else if (noMismatchInExternalIdentifier(functionInfo.getFunction_id(), nextElement))
+                        {
+                            memberAction = nextElement.getMemberAction(this.getDateFromLong(functionInfo.getCreated_at()),
+                                                                       this.getDateFromLong(functionInfo.getUpdated_at()));
+                        }
+
+                        this.takeAction(context.getAnchorGUID(nextElement.getElement()),
+                                        super.getUCSchemaFomMember(nextElement),
+                                        memberAction,
+                                        nextElement,
+                                        functionInfo);
+                    }
                 }
             }
         }

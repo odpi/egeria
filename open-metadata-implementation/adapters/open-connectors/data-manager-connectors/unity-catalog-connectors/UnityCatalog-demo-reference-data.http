@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ###
 # =====================================================================================================================
-# What do we know about the OSS Unity Catalog
+# What do we know about Unity Catalog
 #
 
 
@@ -46,7 +46,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Server"
+  "filter" : "Unity Catalog Server"
 }
 
 
@@ -58,7 +58,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Catalog"
+  "filter" : "Unity Catalog Catalog"
 }
 
 
@@ -70,7 +70,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Schema"
+  "filter" : "Unity Catalog Schema"
 }
 
 
@@ -82,7 +82,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Volume"
+  "filter" : "Unity Catalog Volume"
 }
 
 
@@ -94,7 +94,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Table"
+  "filter" : "Unity Catalog Table"
 }
 
 
@@ -106,7 +106,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Function"
+  "filter" : "Unity Catalog Function"
 }
 
 ###
@@ -122,7 +122,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Server"
+  "filter" : "Unity Catalog Server"
 }
 
 ###
@@ -137,7 +137,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Catalog"
+  "filter" : "Unity Catalog Catalog"
 }
 
 ###
@@ -152,7 +152,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Schema"
+  "filter" : "Unity Catalog Schema"
 }
 
 ###
@@ -167,7 +167,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Volume"
+  "filter" : "Unity Catalog Volume"
 }
 
 ###
@@ -182,7 +182,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Table"
+  "filter" : "Unity Catalog Table"
 }
 
 ###
@@ -197,7 +197,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Function"
+  "filter" : "Unity Catalog Function"
 }
 
 ###

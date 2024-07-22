@@ -16,7 +16,7 @@ public enum UnityCatalogConfigurationProperty
     /**
      * Unique identifier of the integration connector that is able to catalog the contents of a UC catalog.
      */
-    FRIENDSHIP_GUID ("OSSUnityCatalogFriendshipGUID",
+    FRIENDSHIP_GUID ("UnityCatalogFriendshipGUID",
                      "Unique identifier of the integration connector that is able to catalog the contents of a Unity Catalog (UC) catalog.",
                      "string",
                      "48886e79-a822-45a5-ab37-b5cefade9d8a",

@@ -30,23 +30,23 @@ Content-Type: application/json
 
 ###
 # =====================================================================================================================
-# Create a server asset for the OSS Unity Catalog
+# Create a server asset for Unity Catalog
 #
 
 ###
-# @name getTechnologyTypeTemplates (OSS Unity Catalog Server)
+# @name getTechnologyTypeTemplates (Unity Catalog Server)
 # Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Server"
+  "filter" : "Unity Catalog Server"
 }
 
 
 ###
-# @name createElementFromTemplate (OSS Unity Catalog Server 1)
+# @name createElementFromTemplate (Unity Catalog Server 1)
 # Create a new element from a template.
 # Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
@@ -61,7 +61,7 @@ Content-Type: application/json
     "portNumber" : "8080",
     "serverName" : "Unity Catalog 1",
     "versionIdentifier" : "V1.0",
-    "description" : "First instance of the OSS Unity Catalog (UC) Server.",
+    "description" : "First instance of the Unity Catalog (UC) Server.",
     "serverUserId" : "uc1",
     "versionIdentifier" : "V1.0"
   }
@@ -69,7 +69,7 @@ Content-Type: application/json
 
 ###
 
-@server1GUID=a0fa7331-a926-47a2-8fb0-31e01ba5f08a
+@server1GUID=d3a6b3e1-8371-4a2c-bf2f-4a531ac03e65
 
 
 ###
@@ -80,7 +80,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Server"
+  "filter" : "Unity Catalog Server"
 }
 
 
@@ -140,20 +140,20 @@ Content-Type: application/json
 {
   "catalogTargetName" : "uc1",
   "templateProperties" : {
-    "OSS Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
-    "OSS Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
-    "OSS Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
-    "OSS Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
-    "OSS Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
+    "Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
+    "Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
+    "Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
+    "Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
+    "Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
   },
   "configurationProperties" : {
-    "OSSUnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81"
+    "UnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81"
   }
 }
 
 
 ###
-# @name getCatalogTargets (OSSUnityCatalogServerSynchronizer)
+# @name getCatalogTargets (UnityCatalogServerSynchronizer)
 # Retrieve the details of the metadata elements identified as catalog targets with an integration connector.
 # Further Information: https://egeria-project.org/concepts/integration-connector/
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets?startFrom=0&pageSize=0
@@ -163,19 +163,19 @@ Content-Type: application/json
 
 
 ###
-# @name Refresh Integration Connector (OSSUnityCatalogServerSynchronizer)
+# @name Refresh Integration Connector (UnityCatalogServerSynchronizer)
 # Refreshes all Integration Connectors running in an integration daemon
 POST {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/users/garygeeke/integration-connectors/refresh
 Content-Type: application/json
 
 {
   "class" : "NameRequestBody",
-  "name" : "OSSUnityCatalogServerSynchronizer"
+  "name" : "UnityCatalogServerSynchronizer"
 }
 
 
 ###
-# @name getCatalogTargets (OSSUnityCatalogInsideCatalogSynchronizer)
+# @name getCatalogTargets (UnityCatalogInsideCatalogSynchronizer)
 # Retrieve the details of the metadata elements identified as catalog targets with an integration connector.
 # Further Information: https://egeria-project.org/concepts/integration-connector/
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{friendshipGUID}}/catalog-targets?startFrom=0&pageSize=20
@@ -184,14 +184,14 @@ Content-Type: application/json
 
 
 ###
-# @name Refresh Integration Connector (OSSUnityCatalogInsideCatalogSynchronizer)
+# @name Refresh Integration Connector (UnityCatalogInsideCatalogSynchronizer)
 # Refreshes all Integration Connectors running in an integration daemon
 POST {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/users/garygeeke/integration-connectors/refresh
 Content-Type: application/json
 
 {
   "class" : "NameRequestBody",
-  "name" : "OSSUnityCatalogInsideCatalogSynchronizer"
+  "name" : "UnityCatalogInsideCatalogSynchronizer"
 }
 
 ###
@@ -206,7 +206,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Catalog"
+  "filter" : "Unity Catalog Catalog"
 }
 
 ###
@@ -221,12 +221,12 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Schema"
+  "filter" : "Unity Catalog Schema"
 }
 
 ###
 
-@ucSchemaGUID=c857b5a1-e497-4436-ac6b-c2265dcc4892
+@ucSchemaGUID=405585bd-e07f-4e4f-9f9a-3cade3d2a9c4
 
 ###
 # @name=getAssetGraph (schemas)
@@ -246,12 +246,12 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Volume"
+  "filter" : "Unity Catalog Volume"
 }
 
 ###
 
-@ucVolumeGUID=0df2166f-5aa8-4a9d-b21f-c62b38d9b974
+@ucVolumeGUID=b6a46809-35ad-4324-8699-1621ea20e11c
 
 ###
 # @name=getAssetGraph (volumes)
@@ -293,7 +293,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Table"
+  "filter" : "Unity Catalog Table"
 }
 
 ###
@@ -310,7 +310,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
-# @name createElementFromTemplate (OSS Unity Catalog Server 2)
+# @name createElementFromTemplate (Unity Catalog Server 2)
 # Create a new element from a template.
 # Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
@@ -325,7 +325,7 @@ Content-Type: application/json
     "portNumber" : "8070",
     "serverName" : "Unity Catalog 2",
     "versionIdentifier" : "V1.0",
-    "description" : "Second instance of the OSS Unity Catalog (UC) Server.",
+    "description" : "Second instance of the Unity Catalog (UC) Server.",
     "serverUserId" : "uc2",
     "versionIdentifier" : "V1.0"
   }
@@ -333,7 +333,7 @@ Content-Type: application/json
 
 ###
 
-@server2GUID=233a4e31-f489-47a8-b597-9be6d12cc0f0
+@server2GUID=96180c82-70bd-4bea-9b25-fda179c03fea
 
 ###
 # @name=getAssetGraph (UC Server 2)
@@ -359,14 +359,14 @@ Content-Type: application/json
 {
   "catalogTargetName" : "uc2",
   "templateProperties" : {
-    "OSS Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
-    "OSS Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
-    "OSS Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
-    "OSS Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
-    "OSS Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
+    "Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
+    "Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
+    "Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
+    "Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
+    "Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
   },
   "configurationProperties" : {
-    "OSSUnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81"
+    "UnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81"
   }
 }
 
@@ -398,27 +398,27 @@ Content-Type: application/json
 {
   "catalogTargetName" : "uc2",
   "templateProperties" : {
-    "OSS Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
-    "OSS Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
-    "OSS Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
-    "OSS Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
-    "OSS Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
+    "Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
+    "Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
+    "Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
+    "Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
+    "Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
   },
   "configurationProperties" : {
-    "OSSUnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81",
+    "UnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81",
     "excludeCatalogNames" : "unity"
   }
 }
 
 ###
-# @name Refresh Integration Connector (OSSUnityCatalogServerSynchronizer)
+# @name Refresh Integration Connector (UnityCatalogServerSynchronizer)
 # Refreshes all Integration Connectors running in an integration daemon
 POST {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/users/garygeeke/integration-connectors/refresh
 Content-Type: application/json
 
 {
   "class" : "NameRequestBody",
-  "name" : "OSSUnityCatalogServerSynchronizer"
+  "name" : "UnityCatalogServerSynchronizer"
 }
 
 
@@ -434,14 +434,14 @@ Content-Type: application/json
 {
   "catalogTargetName" : "uc2",
   "templateProperties" : {
-    "OSS Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
-    "OSS Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
-    "OSS Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
-    "OSS Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
-    "OSS Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
+    "Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
+    "Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
+    "Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
+    "Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
+    "Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
   },
   "configurationProperties" : {
-    "OSSUnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81"
+    "UnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81"
   }
 }
 
@@ -454,7 +454,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog Catalog"
+  "filter" : "Unity Catalog Catalog"
 }
 
 

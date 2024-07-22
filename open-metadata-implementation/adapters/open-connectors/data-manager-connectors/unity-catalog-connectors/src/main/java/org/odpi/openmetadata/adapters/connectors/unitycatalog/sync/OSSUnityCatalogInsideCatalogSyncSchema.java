@@ -121,33 +121,44 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
 
             if (nextElement != null)
             {
-                SchemaInfo schemaInfo = null;
+                /*
+                 * Check that this is a UC Schema.
+                 */
+                String deployedImplementationType = propertyHelper.getStringProperty(catalogTargetName,
+                                                                                     OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                                     nextElement.getElement().getElementProperties(),
+                                                                                     methodName);
 
-                String schemaName = propertyHelper.getStringProperty(catalogTargetName,
-                                                                     OpenMetadataProperty.NAME.name,
-                                                                     nextElement.getElement().getElementProperties(),
-                                                                     methodName);
+                if (DeployedImplementationType.OSS_UC_SCHEMA.getDeployedImplementationType().equals(deployedImplementationType))
+                {
+                    SchemaInfo schemaInfo = null;
 
-                try
-                {
-                    schemaInfo = ucConnector.getSchema(schemaName);
-                }
-                catch (Exception missing)
-                {
-                    // this is not necessarily an error
-                }
+                    String schemaName = propertyHelper.getStringProperty(catalogTargetName,
+                                                                         OpenMetadataProperty.NAME.name,
+                                                                         nextElement.getElement().getElementProperties(),
+                                                                         methodName);
 
-                MemberAction memberAction = MemberAction.NO_ACTION;
-                if (schemaInfo == null)
-                {
-                    memberAction = nextElement.getMemberAction(null, null);
-                }
-                else if (noMismatchInExternalIdentifier(schemaInfo.getSchema_id(), nextElement))
-                {
-                    memberAction = nextElement.getMemberAction(this.getDateFromLong(schemaInfo.getCreated_at()), this.getDateFromLong(schemaInfo.getUpdated_at()));
-                }
+                    try
+                    {
+                        schemaInfo = ucConnector.getSchema(schemaName);
+                    }
+                    catch (Exception missing)
+                    {
+                        // this is not necessarily an error
+                    }
 
-                this.takeAction(memberAction, nextElement, schemaInfo);
+                    MemberAction memberAction = MemberAction.NO_ACTION;
+                    if (schemaInfo == null)
+                    {
+                        memberAction = nextElement.getMemberAction(null, null);
+                    }
+                    else if (noMismatchInExternalIdentifier(schemaInfo.getSchema_id(), nextElement))
+                    {
+                        memberAction = nextElement.getMemberAction(this.getDateFromLong(schemaInfo.getCreated_at()), this.getDateFromLong(schemaInfo.getUpdated_at()));
+                    }
+
+                    this.takeAction(memberAction, nextElement, schemaInfo);
+                }
             }
         }
 

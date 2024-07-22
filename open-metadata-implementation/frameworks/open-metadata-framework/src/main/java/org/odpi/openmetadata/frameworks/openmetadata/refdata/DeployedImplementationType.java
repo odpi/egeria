@@ -308,7 +308,7 @@ public enum DeployedImplementationType
     /**
      * A collection of related data files within the Unity Catalog (UC) 'catalog of catalogs'.
      */
-    OSS_UC_VOLUME("OSS Unity Catalog Volume",
+    OSS_UC_VOLUME("Unity Catalog Volume",
               DeployedImplementationType.DATA_FOLDER,
               OpenMetadataType.DATA_FOLDER.typeName,
               null,
@@ -319,7 +319,7 @@ public enum DeployedImplementationType
     /**
      * A function found in Unity Catalog (UC) that is working with data..
      */
-    OSS_UC_FUNCTION("OSS Unity Catalog Function",
+    OSS_UC_FUNCTION("Unity Catalog Function",
                   null,
                   OpenMetadataType.DEPLOYED_API.typeName,
                   null,
@@ -361,7 +361,7 @@ public enum DeployedImplementationType
     /**
      * A relational table within the Unity Catalog (UC) 'catalog of catalogs'.
      */
-    OSS_UC_TABLE("OSS Unity Catalog Table",
+    OSS_UC_TABLE("Unity Catalog Table",
                   DeployedImplementationType.DATA_ASSET,
                   OpenMetadataType.VIRTUAL_RELATIONAL_TABLE.typeName,
                   null,
@@ -393,7 +393,7 @@ public enum DeployedImplementationType
     /**
      * A schema that organizes data assets for an operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.
      */
-    OSS_UC_SCHEMA("OSS Unity Catalog Schema",
+    OSS_UC_SCHEMA("Unity Catalog Schema",
                DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA,
                OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                null,
@@ -491,7 +491,7 @@ public enum DeployedImplementationType
     /**
      * An operational metadata catalog that supports controlled access to data managed through a data platform.
      */
-    OSS_UNITY_CATALOG_SERVER("OSS Unity Catalog Server",
+    OSS_UNITY_CATALOG_SERVER("Unity Catalog Server",
                          DeployedImplementationType.SOFTWARE_SERVER,
                          OpenMetadataType.SOFTWARE_SERVER.typeName,
                          OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
@@ -594,7 +594,7 @@ public enum DeployedImplementationType
     /**
      * An operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.
      */
-    OSS_UC_CATALOG("OSS Unity Catalog Catalog",
+    OSS_UC_CATALOG("Unity Catalog Catalog",
                DeployedImplementationType.ASSET_CATALOG,
                OpenMetadataType.CATALOG.typeName,
                OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
