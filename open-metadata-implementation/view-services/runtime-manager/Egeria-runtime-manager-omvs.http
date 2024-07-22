@@ -128,7 +128,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OSS Unity Catalog (UC) Server"
+  "filter" : "Unity Catalog Server"
 }
 
 

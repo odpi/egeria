@@ -125,40 +125,51 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
 
             if (nextElement != null)
             {
-                VolumeInfo volumeInfo = null;
+                /*
+                 * Check that this is a Volume and not part of a table.
+                 */
+                String deployedImplementationType = propertyHelper.getStringProperty(catalogTargetName,
+                                                                                     OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                                     nextElement.getElement().getElementProperties(),
+                                                                                     methodName);
 
-                String volumeName = propertyHelper.getStringProperty(catalogTargetName,
-                                                                     OpenMetadataProperty.NAME.name,
-                                                                     nextElement.getElement().getElementProperties(),
-                                                                     methodName);
-
-                if (context.elementShouldBeCatalogued(volumeName, excludeNames, includeNames))
+                if (DeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType().equals(deployedImplementationType))
                 {
-                    try
-                    {
-                        volumeInfo = ucConnector.getVolume(volumeName);
-                    }
-                    catch (Exception missing)
-                    {
-                        // this is not necessarily an error
-                    }
+                    VolumeInfo volumeInfo = null;
 
-                    MemberAction memberAction = MemberAction.NO_ACTION;
-                    if (volumeInfo == null)
-                    {
-                        memberAction = nextElement.getMemberAction(null, null);
-                    }
-                    else if (noMismatchInExternalIdentifier(volumeInfo.getVolume_id(), nextElement))
-                    {
-                        memberAction = nextElement.getMemberAction(this.getDateFromLong(volumeInfo.getCreated_at()),
-                                                                   this.getDateFromLong(volumeInfo.getUpdated_at()));
-                    }
+                    String volumeName = propertyHelper.getStringProperty(catalogTargetName,
+                                                                         OpenMetadataProperty.NAME.name,
+                                                                         nextElement.getElement().getElementProperties(),
+                                                                         methodName);
 
-                    this.takeAction(context.getAnchorGUID(nextElement.getElement()),
-                                    super.getUCSchemaFomMember(nextElement),
-                                    memberAction,
-                                    nextElement,
-                                    volumeInfo);
+                    if (context.elementShouldBeCatalogued(volumeName, excludeNames, includeNames))
+                    {
+                        try
+                        {
+                            volumeInfo = ucConnector.getVolume(volumeName);
+                        }
+                        catch (Exception missing)
+                        {
+                            // this is not necessarily an error
+                        }
+
+                        MemberAction memberAction = MemberAction.NO_ACTION;
+                        if (volumeInfo == null)
+                        {
+                            memberAction = nextElement.getMemberAction(null, null);
+                        }
+                        else if (noMismatchInExternalIdentifier(volumeInfo.getVolume_id(), nextElement))
+                        {
+                            memberAction = nextElement.getMemberAction(this.getDateFromLong(volumeInfo.getCreated_at()),
+                                                                       this.getDateFromLong(volumeInfo.getUpdated_at()));
+                        }
+
+                        this.takeAction(context.getAnchorGUID(nextElement.getElement()),
+                                        super.getUCSchemaFomMember(nextElement),
+                                        memberAction,
+                                        nextElement,
+                                        volumeInfo);
+                    }
                 }
             }
         }

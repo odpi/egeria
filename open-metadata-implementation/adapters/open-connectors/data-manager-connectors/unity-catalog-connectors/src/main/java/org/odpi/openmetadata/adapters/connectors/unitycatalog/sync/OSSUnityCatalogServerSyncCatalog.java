@@ -133,63 +133,74 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                     (nextElement.getElement() != null) &&
                     (propertyHelper.isTypeOf(nextElement.getElement(), OpenMetadataType.CATALOG.typeName)))
             {
-                CatalogInfo info = null;
+                /*
+                 * Check that this is a UC Table.
+                 */
+                String deployedImplementationType = propertyHelper.getStringProperty(catalogTargetName,
+                                                                                     OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                                     nextElement.getElement().getElementProperties(),
+                                                                                     methodName);
 
-                String name = propertyHelper.getStringProperty(catalogTargetName,
-                                                               OpenMetadataProperty.NAME.name,
-                                                               nextElement.getElement().getElementProperties(),
-                                                               methodName);
-
-                if (context.elementShouldBeCatalogued(name, excludeNames, includeNames))
+                if (DeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType().equals(deployedImplementationType))
                 {
-                    try
-                    {
-                        info = ucConnector.getCatalog(name);
-                    }
-                    catch (Exception missing)
-                    {
-                        // this is not necessarily an error
-                    }
+                    CatalogInfo info = null;
 
-                    MemberAction memberAction = MemberAction.NO_ACTION;
-                    if (info == null)
-                    {
-                        memberAction = nextElement.getMemberAction(null, null);
-                    }
-                    else if (noMismatchInExternalIdentifier(info.getId(), nextElement))
-                    {
-                        memberAction = nextElement.getMemberAction(this.getDateFromLong(info.getCreated_at()), this.getDateFromLong(info.getUpdated_at()));
-                    }
+                    String name = propertyHelper.getStringProperty(catalogTargetName,
+                                                                   OpenMetadataProperty.NAME.name,
+                                                                   nextElement.getElement().getElementProperties(),
+                                                                   methodName);
 
-                    this.takeAction(memberAction, nextElement, info);
-                }
-                else if (friendshipConnectorGUID != null)
-                {
-                    /*
-                     * Check that there is no catalog target set up for this catalog.
-                     */
-                    int startingFrom = 0;
-                    List<CatalogTarget> catalogTargets = context.getCatalogTargets(friendshipConnectorGUID,
-                                                                                   startingFrom,
-                                                                                   context.getMaxPageSize());
-                    while (catalogTargets != null)
+                    if (context.elementShouldBeCatalogued(name, excludeNames, includeNames))
                     {
-                        for (CatalogTarget catalogTarget : catalogTargets)
+                        try
                         {
-                            if (catalogTarget != null)
-                            {
-                                if (name.equals(catalogTarget.getCatalogTargetName()))
-                                {
-                                    context.removeCatalogTarget(catalogTarget.getRelationshipGUID());
-                                }
-                            }
+                            info = ucConnector.getCatalog(name);
+                        }
+                        catch (Exception missing)
+                        {
+                            // this is not necessarily an error
                         }
 
-                        startingFrom = startingFrom + context.getMaxPageSize();
+                        MemberAction memberAction = MemberAction.NO_ACTION;
+                        if (info == null)
+                        {
+                            memberAction = nextElement.getMemberAction(null, null);
+                        }
+                        else if (noMismatchInExternalIdentifier(info.getId(), nextElement))
+                        {
+                            memberAction = nextElement.getMemberAction(this.getDateFromLong(info.getCreated_at()), this.getDateFromLong(info.getUpdated_at()));
+                        }
 
-                        catalogTargets = context.getCatalogTargets(friendshipConnectorGUID,
-                                                                   startingFrom,
-                                                                   context.getMaxPageSize());
+                        this.takeAction(memberAction, nextElement, info);
+                    }
+                    else if (friendshipConnectorGUID != null)
+                    {
+                        /*
+                         * Check that there is no catalog target set up for this catalog since it should not be catalogued.
+                         */
+                        int startingFrom = 0;
+                        List<CatalogTarget> catalogTargets = context.getCatalogTargets(friendshipConnectorGUID,
+                                                                                       startingFrom,
+                                                                                       context.getMaxPageSize());
+                        while (catalogTargets != null)
+                        {
+                            for (CatalogTarget catalogTarget : catalogTargets)
+                            {
+                                if (catalogTarget != null)
+                                {
+                                    if (name.equals(catalogTarget.getCatalogTargetName()))
+                                    {
+                                        context.removeCatalogTarget(catalogTarget.getRelationshipGUID());
+                                    }
+                                }
+                            }
+
+                            startingFrom = startingFrom + context.getMaxPageSize();
+
+                            catalogTargets = context.getCatalogTargets(friendshipConnectorGUID,
+                                                                       startingFrom,
+                                                                       context.getMaxPageSize());
+                        }
                     }
                 }
             }

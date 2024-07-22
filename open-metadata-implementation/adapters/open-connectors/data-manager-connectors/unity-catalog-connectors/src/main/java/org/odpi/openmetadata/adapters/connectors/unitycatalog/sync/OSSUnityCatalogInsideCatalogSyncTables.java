@@ -126,40 +126,51 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
             if (nextElement != null)
             {
-                TableInfo tableInfo = null;
+                /*
+                 * Check that this is a UC Table.
+                 */
+                String deployedImplementationType = propertyHelper.getStringProperty(catalogTargetName,
+                                                                                     OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                                     nextElement.getElement().getElementProperties(),
+                                                                                     methodName);
 
-                String tableName = propertyHelper.getStringProperty(catalogTargetName,
-                                                                     OpenMetadataProperty.NAME.name,
-                                                                     nextElement.getElement().getElementProperties(),
-                                                                     methodName);
-
-                if (context.elementShouldBeCatalogued(tableName, excludeNames, includeNames))
+                if (DeployedImplementationType.OSS_UC_TABLE.getDeployedImplementationType().equals(deployedImplementationType))
                 {
-                    try
-                    {
-                        tableInfo = ucConnector.getTable(tableName);
-                    }
-                    catch (Exception missing)
-                    {
-                        // this is not necessarily an error
-                    }
+                    TableInfo tableInfo = null;
 
-                    MemberAction memberAction = MemberAction.NO_ACTION;
-                    if (tableInfo == null)
-                    {
-                        memberAction = nextElement.getMemberAction(null, null);
-                    }
-                    else if (noMismatchInExternalIdentifier(tableInfo.getTable_id(), nextElement))
-                    {
-                        memberAction = nextElement.getMemberAction(this.getDateFromLong(tableInfo.getCreated_at()),
-                                                                   this.getDateFromLong(tableInfo.getUpdated_at()));
-                    }
+                    String tableName = propertyHelper.getStringProperty(catalogTargetName,
+                                                                        OpenMetadataProperty.NAME.name,
+                                                                        nextElement.getElement().getElementProperties(),
+                                                                        methodName);
 
-                    this.takeAction(context.getAnchorGUID(nextElement.getElement()),
-                                    super.getUCSchemaFomMember(nextElement),
-                                    memberAction,
-                                    nextElement,
-                                    tableInfo);
+                    if (context.elementShouldBeCatalogued(tableName, excludeNames, includeNames))
+                    {
+                        try
+                        {
+                            tableInfo = ucConnector.getTable(tableName);
+                        }
+                        catch (Exception missing)
+                        {
+                            // this is not necessarily an error
+                        }
+
+                        MemberAction memberAction = MemberAction.NO_ACTION;
+                        if (tableInfo == null)
+                        {
+                            memberAction = nextElement.getMemberAction(null, null);
+                        }
+                        else if (noMismatchInExternalIdentifier(tableInfo.getTable_id(), nextElement))
+                        {
+                            memberAction = nextElement.getMemberAction(this.getDateFromLong(tableInfo.getCreated_at()),
+                                                                       this.getDateFromLong(tableInfo.getUpdated_at()));
+                        }
+
+                        this.takeAction(context.getAnchorGUID(nextElement.getElement()),
+                                        super.getUCSchemaFomMember(nextElement),
+                                        memberAction,
+                                        nextElement,
+                                        tableInfo);
+                    }
                 }
             }
         }

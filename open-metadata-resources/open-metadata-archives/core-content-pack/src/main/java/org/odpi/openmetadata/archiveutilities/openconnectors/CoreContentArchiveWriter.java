@@ -851,19 +851,27 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                                         null,
                                                                         null);
 
+        /*
+         * Add integration connectors to the integration group
+         */
+
         Map<String, Object> configurationProperties = new HashMap<>();
         configurationProperties.put("waitForDirectory", "true");
 
         /*
-         * The sample data cataloguer will catalog all of the files in the sample-data data directory.
+         * The sample data cataloguer will catalog all the files in the sample-data data directory.
          */
-        String sampleDataIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(DataFilesMonitorIntegrationProvider.class.getName(),
-                                                                                     configurationProperties,
-                                                                                     OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":SampleDataFilesMonitorIntegrationConnector",
-                                                                                     "SampleDataFilesMonitorIntegrationConnector",
-                                                                                     "Catalogs files found under the sample-data directory (folder).",
-                                                                                     "sample-data",
-                                                                                     null);
+        String sampleDataIntegrationConnectorQualifiedName = OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":SampleDataFilesMonitorIntegrationConnector";
+        String sampleDataIntegrationConnectorGUID = "cd6479e1-2fe7-4426-b358-8a0cf70be117";
+        archiveHelper.setGUID(sampleDataIntegrationConnectorQualifiedName, sampleDataIntegrationConnectorGUID);
+        String guid = archiveHelper.addIntegrationConnector(DataFilesMonitorIntegrationProvider.class.getName(),
+                                                            configurationProperties,
+                                                            sampleDataIntegrationConnectorQualifiedName,
+                                                            "SampleDataFilesMonitorIntegrationConnector",
+                                                            "Catalogs files found under the sample-data directory (folder).",
+                                                            "sample-data",
+                                                            null);
+        assert(sampleDataIntegrationConnectorGUID.equals(guid));
 
         archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
                                                         "SampleDataCataloguer",
@@ -882,13 +890,17 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
          * The landing area connector expects to be given catalog targets that are folders representing directories inside the landing area directory.
          */
         configurationProperties.put("catalogAllFiles", "true");
-        String landingAreaIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(DataFilesMonitorIntegrationProvider.class.getName(),
-                                                                                           configurationProperties,
-                                                                                          OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":LandingAreaFilesMonitorIntegrationConnector",
-                                                                                          "LandingAreaFilesMonitorIntegrationConnector",
-                                                                                          "Catalogs files found under the landing-area directory (folder) via catalog targets.",
-                                                                                          null,
-                                                                                          null);
+        String landingAreaIntegrationConnectorQualifiedName = OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":LandingAreaFilesMonitorIntegrationConnector";
+        String landingAreaIntegrationConnectorGUID = "1b98cdac-dd0a-4621-93db-99ef5a1098bc";
+        archiveHelper.setGUID(landingAreaIntegrationConnectorQualifiedName, landingAreaIntegrationConnectorGUID);
+        guid = archiveHelper.addIntegrationConnector(DataFilesMonitorIntegrationProvider.class.getName(),
+                                                     configurationProperties,
+                                                     landingAreaIntegrationConnectorQualifiedName,
+                                                     "LandingAreaFilesMonitorIntegrationConnector",
+                                                     "Catalogs files found under the landing-area directory (folder) via catalog targets.",
+                                                     null,
+                                                     null);
+        assert(landingAreaIntegrationConnectorGUID.equals(guid));
 
         archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
                                                         "LandingAreaCataloguer",
@@ -902,14 +914,20 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                         ResourceUse.CATALOG_RESOURCE.getResourceUse(),
                                                         ResourceUse.CATALOG_RESOURCE.getDescription());
 
-
-        String databaseIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(JDBCIntegrationConnectorProvider.class.getName(),
-                                                                                        null,
-                                                                                        OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":JDBCIntegrationConnector",
-                                                                                        "JDBCIntegrationConnector",
-                                                                                        "Catalogs JDBC database schemas, tables and columns.",
-                                                                                        null,
-                                                                                        null);
+        /*
+         * The JDBC integration connector is able to catalog JDBC databases.
+         */
+        String databaseIntegrationConnectorQualifiedName = OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":JDBCIntegrationConnector";
+        String databaseIntegrationConnectorGUID = "70dcd0b7-9f06-48ad-ad44-ae4d7a7762aa";
+        archiveHelper.setGUID(databaseIntegrationConnectorQualifiedName, databaseIntegrationConnectorGUID);
+        guid = archiveHelper.addIntegrationConnector(JDBCIntegrationConnectorProvider.class.getName(),
+                                                     null,
+                                                     databaseIntegrationConnectorQualifiedName,
+                                                     "JDBCIntegrationConnector",
+                                                     "Catalogs JDBC database schemas, tables and columns.",
+                                                     null,
+                                                     null);
+        assert(databaseIntegrationConnectorGUID.equals(guid));
 
         deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getQualifiedName());
         archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
@@ -929,13 +947,20 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                         60,
                                                         databaseIntegrationConnectorGUID);
 
-        String postgresIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(PostgresServerIntegrationProvider.class.getName(),
-                                                                                        null,
-                                                                                        OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":PostgreSQLServerIntegrationConnector",
-                                                                                        "PostgreSQLServerIntegrationConnector",
-                                                                                        "Catalogs PostgreSQL Databases in a PostgreSQL Server.",
-                                                                                        null,
-                                                                                        null);
+        /*
+         * Catalog the contents of a PostgreSQL server.
+         */
+        String postgresIntegrationConnectorQualifiedName = OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":PostgreSQLServerIntegrationConnector";
+        String postgresIntegrationConnectorGUID = "36f69fd0-54ba-4f59-8a44-11ccf2687a34";
+        archiveHelper.setGUID(postgresIntegrationConnectorQualifiedName, postgresIntegrationConnectorGUID);
+        guid = archiveHelper.addIntegrationConnector(PostgresServerIntegrationProvider.class.getName(),
+                                                     null,
+                                                     postgresIntegrationConnectorQualifiedName,
+                                                     "PostgreSQLServerIntegrationConnector",
+                                                     "Catalogs PostgreSQL Databases in a PostgreSQL Server.",
+                                                     null,
+                                                     null);
+        assert(postgresIntegrationConnectorGUID.equals(guid));
         deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName());
         archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
                                                         postgresIntegrationConnectorGUID,
@@ -948,13 +973,20 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                         60,
                                                         postgresIntegrationConnectorGUID);
 
-        String kafkaIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(KafkaTopicIntegrationProvider.class.getName(),
-                                                                                     null,
-                                                                                     OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":KafkaTopicIntegrationConnector",
-                                                                                     "KafkaTopicIntegrationConnector",
-                                                                                     "Catalogs Apache Kafka Topics.",
-                                                                                     null,
-                                                                                     null);
+        /*
+         * Catalog topics managed by an Apache Kafka server.
+         */
+        String kafkaIntegrationConnectorQualifiedName = OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":KafkaTopicIntegrationConnector";
+        String kafkaIntegrationConnectorGUID = "fa1f711c-0b34-4b57-8e6e-16162b132b0c";
+        archiveHelper.setGUID(kafkaIntegrationConnectorQualifiedName, kafkaIntegrationConnectorGUID);
+        guid = archiveHelper.addIntegrationConnector(KafkaTopicIntegrationProvider.class.getName(),
+                                                     null,
+                                                     kafkaIntegrationConnectorQualifiedName,
+                                                     "KafkaTopicIntegrationConnector",
+                                                     "Catalogs Apache Kafka Topics managed by an Apache Kafka server.",
+                                                     null,
+                                                     null);
+        assert(kafkaIntegrationConnectorGUID.equals(guid));
         deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName());
         archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
                                                         kafkaIntegrationConnectorGUID,
@@ -967,13 +999,20 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                         60,
                                                         kafkaIntegrationConnectorGUID);
 
-        String apiIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(OpenAPIMonitorIntegrationProvider.class.getName(),
-                                                                                   null,
-                                                                                   OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":OpenAPIIntegrationConnector",
-                                                                                   "OpenAPIIntegrationConnector",
-                                                                                   "Catalogs REST APIs through the Open API Specification.",
-                                                                                   null,
-                                                                                   null);
+        /*
+         * Catalog Open APIs
+         */
+        String apiIntegrationConnectorQualifiedName = OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":OpenAPIIntegrationConnector";
+        String apiIntegrationConnectorGUID = "b89d9a5a-2ea6-49bc-a4fc-e7df9f3ca93e";
+        archiveHelper.setGUID(apiIntegrationConnectorQualifiedName, apiIntegrationConnectorGUID);
+        guid = archiveHelper.addIntegrationConnector(OpenAPIMonitorIntegrationProvider.class.getName(),
+                                                     null,
+                                                     apiIntegrationConnectorQualifiedName,
+                                                     "OpenAPIIntegrationConnector",
+                                                     "Catalogs REST APIs through the Open API Specification.",
+                                                     null,
+                                                     null);
+        assert(apiIntegrationConnectorGUID.equals(guid));
 
         archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
                                                         "OpenAPICataloguer",
@@ -981,47 +1020,61 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                         null,
                                                         60,
                                                         apiIntegrationConnectorGUID);
-        deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.SOFTWARE_SERVER.getQualifiedName());
+        deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.OMAG_SERVER_PLATFORM.getQualifiedName());
         archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
                                                         apiIntegrationConnectorGUID,
                                                         ResourceUse.CATALOG_RESOURCE.getResourceUse(),
                                                         ResourceUse.CATALOG_RESOURCE.getDescription());
 
-        String ucCatalogIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(OSSUnityCatalogInsideCatalogSyncProvider.class.getName(),
-                                                                                        null,
-                                                                                        OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":OSSUnityCatalogInsideCatalogIntegrationConnector",
-                                                                                        "OSSUnityCatalogInsideCatalogIntegrationConnector",
-                                                                                        "Synchronizes metadata information about the contents of catalogs found in the OSS Unity Catalog 'catalog of catalogs' with the open metadata ecosystem.",
-                                                                                        null,
-                                                                                        null);
+        /*
+         *  Catalog the content of a Unity Catalog (UC) Catalog
+         */
+        String ucCatalogIntegrationConnectorQualifiedName = OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":UnityCatalogInsideCatalogIntegrationConnector";
+        String ucCatalogIntegrationConnectorGUID = "74dde22f-2249-4ea3-af2b-b39e73f79b81";
+        archiveHelper.setGUID(ucCatalogIntegrationConnectorQualifiedName, ucCatalogIntegrationConnectorGUID);
+        guid = archiveHelper.addIntegrationConnector(OSSUnityCatalogInsideCatalogSyncProvider.class.getName(),
+                                                     null,
+                                                     ucCatalogIntegrationConnectorQualifiedName,
+                                                     "UnityCatalogInsideCatalogIntegrationConnector",
+                                                     "Synchronizes metadata information about the contents of catalogs found in the OSS Unity Catalog 'catalog of catalogs' with the open metadata ecosystem.",
+                                                     null,
+                                                     null);
+        assert(ucCatalogIntegrationConnectorGUID.equals(guid));
 
         archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
-                                                        "OSSUnityCatalogInsideCatalogSynchronizer",
+                                                        "UnityCatalogInsideCatalogSynchronizer",
                                                         "ossuccatcatnpa",
                                                         null,
                                                         60,
                                                         ucCatalogIntegrationConnectorGUID);
 
-        deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.OSS_UC_CATALOG.getQualifiedName());
+        deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getQualifiedName());
         archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
                                                         ucCatalogIntegrationConnectorGUID,
                                                         ResourceUse.CATALOG_RESOURCE.getResourceUse(),
                                                         ResourceUse.CATALOG_RESOURCE.getDescription());
 
+        /*
+         * Set up Unity Catalog Server integration connector.
+         */
         Map<String, Object> ucConfigurationProperties = new HashMap<>();
 
         ucConfigurationProperties.put(UnityCatalogConfigurationProperty.FRIENDSHIP_GUID.getName(), ucCatalogIntegrationConnectorGUID);
 
-        String ucServerIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(OSSUnityCatalogServerSyncProvider.class.getName(),
-                                                                                        ucConfigurationProperties,
-                                                                                        OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":OSSUnityCatalogServerIntegrationConnector",
-                                                                                        "OSSUnityCatalogServerIntegrationConnector",
-                                                                                        "Synchronizes metadata about the catalogs found in the OSS Unity Catalog 'catalog of catalogs' with the open metadata ecosystem.",
-                                                                                        null,
-                                                                                        null);
+        String ucServerIntegrationConnectorQualifiedName = OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":UnityCatalogServerIntegrationConnector";
+        String ucServerIntegrationConnectorGUID = "06d068d9-9e08-4e67-8c59-073bbf1013af";
+        archiveHelper.setGUID(ucServerIntegrationConnectorQualifiedName, ucServerIntegrationConnectorGUID);
+        guid = archiveHelper.addIntegrationConnector(OSSUnityCatalogServerSyncProvider.class.getName(),
+                                                     ucConfigurationProperties,
+                                                     ucServerIntegrationConnectorQualifiedName,
+                                                     "UnityCatalogServerIntegrationConnector",
+                                                     "Synchronizes metadata about the catalogs found in the OSS Unity Catalog 'catalog of catalogs' with the open metadata ecosystem.",
+                                                     null,
+                                                     null);
+        assert(ucServerIntegrationConnectorGUID.equals(guid));
 
         archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
-                                                        "OSSUnityCatalogServerSynchronizer",
+                                                        "UnityCatalogServerSynchronizer",
                                                         "ossuccatnpa",
                                                         null,
                                                         60,
