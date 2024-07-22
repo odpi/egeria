@@ -70,7 +70,12 @@ public class MapPropertyValue extends InstancePropertyValue
      */
     public String valueAsString()
     {
-      return mapValuesAsString(mapValues.getInstanceProperties()).toString();
+        if (mapValues != null)
+        {
+            return mapValuesAsString(mapValues.getInstanceProperties()).toString();
+        }
+
+        return null;
     }
 
 
@@ -81,9 +86,13 @@ public class MapPropertyValue extends InstancePropertyValue
      */
     public Object valueAsObject()
     {
-        return mapValuesAsObject(mapValues.getInstanceProperties());
-    }
+        if (mapValues != null)
+        {
+            return mapValuesAsObject(mapValues.getInstanceProperties());
+        }
 
+        return null;
+    }
 
 
     /**
@@ -136,6 +145,7 @@ public class MapPropertyValue extends InstancePropertyValue
         {
             mapValues = new InstanceProperties();
         }
+
         mapValues.setProperty(propertyName, propertyValue);
     }
 
@@ -179,7 +189,7 @@ public class MapPropertyValue extends InstancePropertyValue
         {
             return true;
         }
-        if (! (objectToCompare instanceof MapPropertyValue))
+        if (! (objectToCompare instanceof MapPropertyValue that))
         {
             return false;
         }
@@ -187,8 +197,6 @@ public class MapPropertyValue extends InstancePropertyValue
         {
             return false;
         }
-
-        MapPropertyValue that = (MapPropertyValue) objectToCompare;
 
         return mapValues != null ? mapValues.equals(that.mapValues) : that.mapValues == null;
     }

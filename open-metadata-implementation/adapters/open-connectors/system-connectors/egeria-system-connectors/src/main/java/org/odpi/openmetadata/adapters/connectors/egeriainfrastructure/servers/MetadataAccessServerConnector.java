@@ -7,6 +7,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
 import java.util.List;
@@ -99,5 +101,58 @@ public class MetadataAccessServerConnector extends OMAGServerConnectorBase
                                                                   org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
     {
         return extractor.unregisterFromCohort(cohortName);
+    }
+
+
+    /*
+     * =============================================================
+     * Load archives
+     */
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param fileName name of the open metadata archive file.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void addOpenMetadataArchiveFile(String fileName) throws UserNotAuthorizedException,
+                                                                   InvalidParameterException,
+                                                                   PropertyServerException
+    {
+        extractor.addOpenMetadataArchiveFile(fileName);
+    }
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param connection connection for the open metadata archive.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void addOpenMetadataArchive(Connection connection) throws UserNotAuthorizedException,
+                                                                     InvalidParameterException,
+                                                                     PropertyServerException
+    {
+        extractor.addOpenMetadataArchive(connection);
+    }
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param openMetadataArchive openMetadataArchive for the open metadata archive.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void addOpenMetadataArchiveContent(OpenMetadataArchive openMetadataArchive) throws UserNotAuthorizedException,
+                                                                                              InvalidParameterException,
+                                                                                              PropertyServerException
+    {
+        extractor.addOpenMetadataArchiveContent(openMetadataArchive);
     }
 }

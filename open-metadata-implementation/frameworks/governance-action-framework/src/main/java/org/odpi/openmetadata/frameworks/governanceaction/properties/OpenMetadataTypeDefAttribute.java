@@ -310,18 +310,7 @@ public class OpenMetadataTypeDefAttribute extends OpenMetadataTypeDefElementHead
      */
     public List<ExternalStandardTypeMapping> getExternalStandardMappings()
     {
-        if (externalStandardTypeMappings == null)
-        {
-            return null;
-        }
-        else if (externalStandardTypeMappings.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(externalStandardTypeMappings);
-        }
+        return externalStandardTypeMappings;
     }
 
 

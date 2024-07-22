@@ -23,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ListCatalogsResponse
 {
-    private List<CatalogInfo> catalogs = new ArrayList<>();
-    private String            nextPageToken = null;
+    private List<CatalogInfo> catalogs        = null;
+    private String            next_page_token = null;
 
 
     /**
@@ -62,22 +62,21 @@ public class ListCatalogsResponse
      *
      * @return token
      */
-    public String getNextPageToken()
+    public String getNext_page_token()
     {
-        return nextPageToken;
+        return next_page_token;
     }
 
 
     /**
      * Set up the opaque token to retrieve the next page of results. Absent if there are no more pages. page_token should be set to this value for the next request (for the next page of results).
      *
-     * @param nextPageToken token
+     * @param next_page_token token
      */
-    public void setNextPageToken(String nextPageToken)
+    public void setNext_page_token(String next_page_token)
     {
-        this.nextPageToken = nextPageToken;
+        this.next_page_token = next_page_token;
     }
-
 
     /**
      * Standard toString method.
@@ -89,7 +88,7 @@ public class ListCatalogsResponse
     {
         return "ListCatalogsResponse{" +
                 "catalogs=" + catalogs +
-                ", nextPageToken='" + nextPageToken + '\'' +
+                ", nextPageToken='" + next_page_token + '\'' +
                 '}';
     }
 
@@ -106,7 +105,7 @@ public class ListCatalogsResponse
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         ListCatalogsResponse that = (ListCatalogsResponse) objectToCompare;
-        return Objects.equals(catalogs, that.catalogs) && Objects.equals(nextPageToken, that.nextPageToken);
+        return Objects.equals(catalogs, that.catalogs) && Objects.equals(next_page_token, that.next_page_token);
     }
 
 
@@ -118,6 +117,6 @@ public class ListCatalogsResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(catalogs, nextPageToken);
+        return Objects.hash(catalogs, next_page_token);
     }
 }

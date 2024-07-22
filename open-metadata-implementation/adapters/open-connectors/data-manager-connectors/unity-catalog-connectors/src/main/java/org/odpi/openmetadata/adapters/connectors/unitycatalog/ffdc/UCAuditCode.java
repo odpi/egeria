@@ -70,7 +70,7 @@ public enum UCAuditCode implements AuditLogMessageSet
                                 "Look for errors in the local server's console to understand and correct the source of the error."),
 
     /**
-     * UNITY-CATALOG-CONNECTOR-0006 - The {0} Apache Atlas Survey Action Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}
+     * UNITY-CATALOG-CONNECTOR-0006 - The {0} OSS Unity Catalog Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}
      */
     WRONG_REST_CONNECTOR("UNITY-CATALOG-CONNECTOR-0006",
                          AuditLogRecordSeverityLevel.ERROR,

@@ -58,7 +58,7 @@ public class TestMeaning
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getClassifications() == null);
+        assertTrue(resultObject.getClassifications() != null);
 
 
         assertTrue(resultObject.getName().equals("TestName"));

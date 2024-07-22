@@ -84,7 +84,7 @@ public class TestSchemaAttributeRelationship
 
         nullObject.setLinkProperties(new HashMap<>());
 
-        assertTrue(nullObject.getLinkProperties() == null);
+        assertTrue(nullObject.getLinkProperties() != null);
     }
 
 

@@ -14,6 +14,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronizat
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,7 +23,9 @@ import java.util.Map;
  */
 public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnector implements CatalogTargetIntegrator
 {
-    String defaultFriendshipGUID = null;
+    String       defaultFriendshipGUID  = null;
+    List<String> defaultExcludeCatalogs = new ArrayList<>();
+    List<String> defaultIncludeCatalogs = new ArrayList<>();
 
     /**
      * Indicates that the connector is completely configured and can begin processing.
@@ -38,6 +42,12 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
         if (connectionProperties.getConfigurationProperties() != null)
         {
             defaultFriendshipGUID = this.getFriendshipGUID(connectionProperties.getConfigurationProperties());
+            defaultExcludeCatalogs = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_CATALOG_NAMES.getName(),
+                                                                         connectionProperties.getConfigurationProperties(),
+                                                                         null);
+            defaultIncludeCatalogs = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_CATALOG_NAMES.getName(),
+                                                                         connectionProperties.getConfigurationProperties(),
+                                                                         null);
         }
 
         if (defaultFriendshipGUID != null)
@@ -188,6 +198,14 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
             String ucServerEndpoint = this.getNetworkAddress(assetConnector);
             String friendshipConnectorGUID = getFriendshipGUID(configurationProperties);
 
+            List<String> excludedCatalogs = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.EXCLUDE_CATALOG_NAMES.getName(),
+                                                                                 configurationProperties,
+                                                                                 defaultExcludeCatalogs);
+
+            List<String> includedCatalogs = super.getArrayConfigurationProperty(UnityCatalogConfigurationProperty.INCLUDE_CATALOG_NAMES.getName(),
+                                                                                 configurationProperties,
+                                                                                 defaultIncludeCatalogs);
+
             OSSUnityCatalogServerSyncCatalog syncCatalog = new OSSUnityCatalogServerSyncCatalog(connectorName,
                                                                                                 this.getContext(),
                                                                                                 catalogTargetName,
@@ -198,6 +216,8 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
                                                                                                 ucServerEndpoint,
                                                                                                 templateProperties,
                                                                                                 configurationProperties,
+                                                                                                excludedCatalogs,
+                                                                                                includedCatalogs,
                                                                                                 auditLog);
 
             syncCatalog.refresh();

@@ -9,6 +9,8 @@ import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.ffdc.KafkaSu
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
@@ -48,41 +50,30 @@ public class SurveyApacheKafkaServerConnector extends SurveyActionServiceConnect
 
             surveyContext.getAnnotationStore().setAnalysisStep(AnalysisStep.CHECK_ASSET.getName());
 
-            Connector connectorToAsset  = assetStore.getConnectorToAsset();
+            connector = super.performCheckAssetAnalysisStep(ApacheKafkaAdminConnector.class,
+                                                            DeployedImplementationType.APACHE_KAFKA_SERVER.getAssociatedTypeName());
 
-            if (connectorToAsset instanceof ApacheKafkaAdminConnector kafkaConnector)
-            {
-                kafkaConnector.start();
+            ApacheKafkaAdminConnector kafkaConnector = (ApacheKafkaAdminConnector) connector;
 
-                AnnotationStore   annotationStore   = surveyContext.getAnnotationStore();
+            AnnotationStore   annotationStore   = surveyContext.getAnnotationStore();
 
-                annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
+            annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
-                Set<String> topicNames = kafkaConnector.getTopicList();
-                ResourceProfileAnnotation resourceProfileAnnotation = new ResourceProfileAnnotation();
+            Set<String> topicNames = kafkaConnector.getTopicList();
+            ResourceProfileAnnotation resourceProfileAnnotation = new ResourceProfileAnnotation();
 
-                resourceProfileAnnotation.setAnnotationType(KafkaAnnotationType.TOPIC_LIST.getName());
-                resourceProfileAnnotation.setSummary(KafkaAnnotationType.TOPIC_LIST.getSummary());
-                resourceProfileAnnotation.setExplanation(KafkaAnnotationType.TOPIC_LIST.getExplanation());
+            setUpAnnotation(resourceProfileAnnotation, KafkaAnnotationType.TOPIC_LIST);
 
-                resourceProfileAnnotation.setValueList(new ArrayList<>(topicNames));
+            resourceProfileAnnotation.setValueList(new ArrayList<>(topicNames));
 
-                annotationStore.addAnnotation(resourceProfileAnnotation, surveyContext.getAssetGUID());
-            }
-            else
-            {
-                String connectorToAssetClassName = "null";
+            annotationStore.addAnnotation(resourceProfileAnnotation, surveyContext.getAssetGUID());
 
-                if (connectorToAsset != null)
-                {
-                    connectorToAssetClassName = connectorToAsset.getClass().getName();
-                }
+            annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
 
-                logWrongTypeOfConnector(connectorToAssetClassName,
-                                        ApacheKafkaAdminConnector.class.getName(),
-                                        assetGUID,
-                                        methodName);
-            }
+            super.writeNameListInventory(KafkaAnnotationType.TOPIC_INVENTORY,
+                                         "topicList",
+                                         new ArrayList<>(topicNames),
+                                         surveyContext.getAnnotationStore().getSurveyReportGUID());
         }
         catch (ConnectorCheckedException error)
         {

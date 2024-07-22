@@ -3,6 +3,9 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalColumnMetric;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalSchemaMetric;
+import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalTableMetric;
 import org.odpi.openmetadata.frameworks.surveyaction.measurements.SurveyMetric;
 
 import java.util.ArrayList;
@@ -14,14 +17,11 @@ import java.util.List;
  */
 public enum UnityCatalogMetric implements SurveyMetric
 {
-    DATABASE_SIZE ( "databaseSize", "long", "Database size", "Number of stored bytes in the database."),
-    ROWS_FETCHED ( "rowsFetched", "long", "Rows Fetched", "Number of rows retrieved from any table in the database."),
-    ROWS_INSERTED ( "rowsInserted", "long", "Rows Inserted", "Number of rows inserted from any table in the database."),
-    ROWS_UPDATED ( "rowsUpdated", "long", "Rows Updated", "Number of rows updated from any table in the database."),
-    ROWS_DELETED ( "rowsDeleted", "long", "Rows Deleted", "Number of rows deleted from any table in the database.."),
-    SESSION_TIME ( "totalSessionTime", "double", "Session Time", "The length of time (milliseconds) that the database had at least one open session from an external client."),
-    ACTIVE_TIME ( "totalActiveTime", "double", "Active Time", "The length of time (milliseconds) that the database was being actively queried."),
-    LAST_STATISTICS_RESET ( "lastStatisticsReset", "date", "Last statistics reset", "Last time that the statistics were reset in the database."),
+    NO_OF_CATALOGS ( "numberOfCatalogs", "long", "Number of Catalogs", "Number of catalogs defined in this server."),
+    NO_OF_SCHEMAS ( "numberOfSchemas", "long", "Number of Schemas", "Number of schemas found in the survey target (server or catalog)."),
+    NO_OF_TABLES ( "numberOfTables", "long", "Number of Tables", "Number of tables found in the survey target (server, catalog or schema)."),
+    NO_OF_FUNCTIONS ( "numberOfFunctions", "long", "Number of Functions", "Number of functions found in the survey target (server, catalog or schema)."),
+    NO_OF_VOLUMES ( "numberOfVolumes", "long", "Number of Volumes", "Number of volumes found in the survey target (server, catalog or schema)."),
 
     ;
 
@@ -97,13 +97,68 @@ public enum UnityCatalogMetric implements SurveyMetric
 
 
     /**
-     * Return the defined metrics as a list
+     * Return the defined server metrics as a list
      *
      * @return list
      */
-    public static List<SurveyMetric> getMetrics()
+    public static List<SurveyMetric> getServerMetrics()
     {
         return new ArrayList<>(Arrays.asList(UnityCatalogMetric.values()));
+    }
+
+
+    /**
+     * Return the defined catalog metrics as a list
+     *
+     * @return list
+     */
+    public static List<SurveyMetric> getCatalogMetrics()
+    {
+        List<SurveyMetric> metrics = new ArrayList<>();
+
+        metrics.add(UnityCatalogMetric.NO_OF_SCHEMAS);
+        metrics.add(UnityCatalogMetric.NO_OF_FUNCTIONS);
+        metrics.add(UnityCatalogMetric.NO_OF_TABLES);
+        metrics.add(UnityCatalogMetric.NO_OF_VOLUMES);
+
+        return metrics;    }
+
+
+    /**
+     * Return the defined schema metrics as a list
+     *
+     * @return list
+     */
+    public static List<SurveyMetric> getSchemaMetrics()
+    {
+        List<SurveyMetric> metrics = new ArrayList<>();
+
+        metrics.add(RelationalSchemaMetric.TOTAL_TABLE_SIZE);
+        metrics.add(RelationalSchemaMetric.TABLE_COUNT);
+
+        return metrics;
+    }
+
+
+    /**
+     * Return the defined table metrics as a list
+     *
+     * @return list
+     */
+    public static List<SurveyMetric> getTableMetrics()
+    {
+        return RelationalTableMetric.getMetrics();
+    }
+
+
+    /**
+     * Return the defined column metrics as a list
+     *
+     * @return list
+     */
+    public static List<SurveyMetric> getColumnMetrics()
+    {
+        return RelationalColumnMetric.getMetrics();
     }
 
 
@@ -115,6 +170,6 @@ public enum UnityCatalogMetric implements SurveyMetric
     @Override
     public String toString()
     {
-        return "RelationalDatabaseMetric{" + displayName + "}";
+        return "UnityCatalogMetric{" + displayName + "}";
     }
 }

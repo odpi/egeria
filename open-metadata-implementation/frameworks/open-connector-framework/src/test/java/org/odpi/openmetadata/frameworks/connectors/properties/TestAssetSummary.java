@@ -121,7 +121,7 @@ public class TestAssetSummary
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getResourceName().equals("TestResourceName"));
         assertTrue(resultObject.getResourceDescription().equals("TestDescription"));
-        assertTrue(resultObject.getExtendedProperties() == null);
+        assertTrue(resultObject.getExtendedProperties() != null);
         assertTrue(resultObject.getAdditionalProperties() == null);
     }
 
@@ -208,7 +208,7 @@ public class TestAssetSummary
             iterator.next();
             assertTrue(false);
         }
-        catch (Throwable   exc)
+        catch (Exception   exc)
         {
             assertTrue(true);
         }
@@ -227,7 +227,7 @@ public class TestAssetSummary
 
         assetProperties = testObject.getExtendedProperties();
 
-        assertTrue(assetProperties == null);
+        assertTrue(assetProperties != null);
     }
 
 
@@ -258,7 +258,7 @@ public class TestAssetSummary
         testObject = new AssetSummary(assetBean);
         assetClassifications = testObject.getClassifications();
 
-        assertTrue(assetClassifications == null);
+        assertTrue(assetClassifications != null);
     }
 
 

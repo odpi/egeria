@@ -532,10 +532,10 @@ public class OMAGServerErrorHandler
      * @param methodName    method called.
      * @throws OMAGInvalidParameterException The property is null.
      */
-    void validatePropertyNotNull(Object property,
-                                 String propertyName,
-                                 String serverName,
-                                 String methodName) throws OMAGInvalidParameterException
+    public void validatePropertyNotNull(Object property,
+                                        String propertyName,
+                                        String serverName,
+                                        String methodName) throws OMAGInvalidParameterException
     {
         if (property == null)
         {

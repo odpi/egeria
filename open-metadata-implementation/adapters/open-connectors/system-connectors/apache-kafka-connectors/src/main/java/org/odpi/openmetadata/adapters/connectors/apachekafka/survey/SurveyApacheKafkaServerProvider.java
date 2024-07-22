@@ -76,7 +76,8 @@ public class SurveyApacheKafkaServerProvider extends SurveyActionServiceProvider
         supportedRequestParameters = null;
         supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
                 AnalysisStep.CHECK_ASSET,
-                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES });
+                AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
+                AnalysisStep.PRODUCE_INVENTORY});
 
         supportedActionTargetTypes = new ArrayList<>();
         ActionTargetType actionTargetType = new ActionTargetType();

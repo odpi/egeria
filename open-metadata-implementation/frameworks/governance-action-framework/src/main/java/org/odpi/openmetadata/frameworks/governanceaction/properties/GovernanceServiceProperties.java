@@ -195,18 +195,7 @@ public class GovernanceServiceProperties extends ReferenceableProperties
      */
     public List<String> getZoneMembership()
     {
-        if (zoneMembership == null)
-        {
-            return null;
-        }
-        else if (zoneMembership.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(zoneMembership);
-        }
+        return zoneMembership;
     }
 
 
@@ -272,18 +261,7 @@ public class GovernanceServiceProperties extends ReferenceableProperties
      */
     public Map<String, String> getOtherOriginValues()
     {
-        if (otherOriginValues == null)
-        {
-            return null;
-        }
-        else if (otherOriginValues.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(otherOriginValues);
-        }
+        return otherOriginValues;
     }
 
 

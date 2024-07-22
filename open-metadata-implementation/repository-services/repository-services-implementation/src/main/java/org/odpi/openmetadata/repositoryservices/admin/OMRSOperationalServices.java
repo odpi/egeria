@@ -5,6 +5,8 @@ package org.odpi.openmetadata.repositoryservices.admin;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogDestination;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStore;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventPublisher;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -948,6 +950,39 @@ public class OMRSOperationalServices
         {
             archiveManager.addOpenMetadataArchive(this.getOpenMetadataArchiveStore(openMetadataArchiveConnection),
                                                   archiveSource);
+        }
+        else
+        {
+            throw new InvalidParameterException(OMRSErrorCode.ARCHIVE_MANAGER_NOT_ACTIVE.getMessageDefinition(serverName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                serverNameParameterName);
+        }
+    }
+
+
+
+
+    /**
+     * Add an open metadata archive to the local repository.
+     *
+     * @param serverName name of called server
+     * @param openMetadataArchive content the archive
+     * @param archiveSource descriptive name of the archive source
+     * @throws InvalidParameterException the archive resource is not found
+     * @throws RepositoryErrorException there is a problem with the archive manager
+     */
+    public void addOpenMetadataArchive(String                   serverName,
+                                       OpenMetadataArchiveStore openMetadataArchive,
+                                       String                   archiveSource) throws InvalidParameterException,
+                                                                                      RepositoryErrorException
+    {
+        final String methodName = "addOpenMetadataArchive";
+        final String serverNameParameterName = "serverName";
+
+        if (archiveManager != null)
+        {
+            archiveManager.addOpenMetadataArchive(openMetadataArchive, archiveSource);
         }
         else
         {

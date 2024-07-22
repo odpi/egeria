@@ -3,66 +3,19 @@
 
 package org.odpi.openmetadata.frameworks.surveyaction.controls;
 
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-
 /**
- * The AnnotationType enum describes the annotation types used by a survey action service.  This class is a template for
- * survey writers to copy and fill out.
+ * The AnnotationType interface is implemented by an enum that describes the annotation types produced
+ * by a survey action service.  This interface is a template for survey writers to use to take advantage of
+ * common functions in the SurveyActionService base class.
  */
-public enum AnnotationType
+public interface AnnotationType
 {
-    EXAMPLE_ANNOTATION_TYPE("Example Annotation Type",
-                            AnalysisStep.PROFILE_DATA,
-                            OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                            "This is an example annotation type.",
-                            "This is the explanation of the annotation type's processing.",
-                            "This is the expression used in the annotation type's processing."),
-
-    ;
-
-
-    public final String       name;
-    public final AnalysisStep analysisStep;
-    public final String       openMetadataTypeName;
-    public final String       summary;
-    public final String       explanation;
-    public final String       expression;
-
-
-    /**
-     * Create a specific Enum constant.
-     *
-     * @param name name of the annotation type
-     * @param analysisStep associated analysis step
-     * @param openMetadataTypeName the open metadata type used for this annotation type
-     * @param summary short explanation of the annotation type
-     * @param explanation explanation of the annotation type
-     */
-    AnnotationType(String       name,
-                   AnalysisStep analysisStep,
-                   String       openMetadataTypeName,
-                   String       summary,
-                   String       explanation,
-                   String       expression)
-    {
-        this.name                 = name;
-        this.analysisStep         = analysisStep;
-        this.openMetadataTypeName = openMetadataTypeName;
-        this.summary     = summary;
-        this.explanation = explanation;
-        this.expression  = expression;
-    }
-
-
     /**
      * Return the name of the annotation type.
      *
      * @return string name
      */
-    public String getName()
-    {
-        return name;
-    }
+    String getName();
 
 
     /**
@@ -70,15 +23,7 @@ public enum AnnotationType
      *
      * @return analysis step name
      */
-    public String getAnalysisStep()
-    {
-        if (analysisStep != null)
-        {
-            return analysisStep.getName();
-        }
-
-        return null;
-    }
+    String getAnalysisStep();
 
 
     /**
@@ -86,10 +31,7 @@ public enum AnnotationType
      *
      * @return type name
      */
-    public String getOpenMetadataTypeName()
-    {
-        return openMetadataTypeName;
-    }
+    String getOpenMetadataTypeName();
 
 
     /**
@@ -97,21 +39,15 @@ public enum AnnotationType
      *
      * @return text
      */
-    public String getSummary()
-    {
-        return summary;
-    }
+    String getSummary();
 
 
     /**
-     * Return the description of the annotation type.
+     * Return the description of the processing that produces the annotation type.
      *
      * @return text
      */
-    public String getExplanation()
-    {
-        return explanation;
-    }
+    String getExplanation();
 
 
     /**
@@ -119,41 +55,5 @@ public enum AnnotationType
      *
      * @return string
      */
-    public String getExpression()
-    {
-        return expression;
-    }
-
-
-    /**
-     * Return the description of this annotation type that can be used in a Connector Provider for a
-     * Survey Action Service.
-     *
-     * @return annotationType type
-     */
-    public AnnotationTypeType getAnnotationTypeType()
-    {
-        AnnotationTypeType annotationTypeType = new AnnotationTypeType();
-
-        annotationTypeType.setName(name);
-        annotationTypeType.setOpenMetadataTypeName(openMetadataTypeName);
-        annotationTypeType.setAnalysisStepName(analysisStep.getName());
-        annotationTypeType.setSummary(summary);
-        annotationTypeType.setExplanation(explanation);
-        annotationTypeType.setExpression(expression);
-
-        return annotationTypeType;
-    }
-
-
-    /**
-     * Output of this enum class and main value.
-     *
-     * @return string showing enum value
-     */
-    @Override
-    public String toString()
-    {
-        return "AnnotationType{ name='" + name + "}";
-    }
+     String getExpression();
 }

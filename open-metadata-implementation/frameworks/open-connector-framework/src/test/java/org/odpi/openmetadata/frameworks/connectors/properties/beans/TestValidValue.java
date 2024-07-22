@@ -110,7 +110,7 @@ public class TestValidValue
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getClassifications() == null);
+        assertTrue(resultObject.getClassifications() != null);
 
         assertTrue(resultObject.getDisplayName().equals("TestName"));
         assertTrue(resultObject.getDescription().equals("TestDescription"));
@@ -130,7 +130,7 @@ public class TestValidValue
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getClassifications() == null);
+        assertTrue(resultObject.getClassifications() != null);
 
         assertTrue(resultObject.getDisplayName().equals("TestName"));
         assertTrue(resultObject.getDescription().equals("TestDescription"));
@@ -150,7 +150,7 @@ public class TestValidValue
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getClassifications() == null);
+        assertTrue(resultObject.getClassifications() != null);
 
         assertTrue(resultObject.getDisplayName().equals("TestName"));
         assertTrue(resultObject.getDescription().equals("TestDescription"));

@@ -69,7 +69,15 @@ public class ArrayTypePropertyValue extends PropertyValue
      *
      * @return string value
      */
-    public String valueAsString() { return mapValuesAsString(arrayValues.getPropertyValueMap()).toString(); }
+    public String valueAsString()
+    {
+        if (arrayValues != null)
+        {
+            return mapValuesAsString(arrayValues.getPropertyValueMap()).toString();
+        }
+
+        return null;
+    }
 
 
     /**
@@ -77,8 +85,14 @@ public class ArrayTypePropertyValue extends PropertyValue
      *
      * @return object value
      */
-    public Object valueAsObject() {
-        return mapValuesAsObject(arrayValues.getPropertyValueMap());
+    public Object valueAsObject()
+    {
+        if (arrayValues != null)
+        {
+            return mapValuesAsObject(arrayValues.getPropertyValueMap());
+        }
+
+        return null;
     }
 
 
@@ -87,7 +101,8 @@ public class ArrayTypePropertyValue extends PropertyValue
      *
      * @return int array size
      */
-    public int getArrayCount() {
+    public int getArrayCount()
+    {
         return arrayCount;
     }
 
@@ -97,7 +112,8 @@ public class ArrayTypePropertyValue extends PropertyValue
      *
      * @param arrayCount int array size
      */
-    public void setArrayCount(int arrayCount) {
+    public void setArrayCount(int arrayCount)
+    {
         this.arrayCount = arrayCount;
     }
 

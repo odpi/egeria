@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.archivemanager;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStore;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessorClassificationExtension;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
@@ -32,7 +33,7 @@ import java.util.List;
 public class OMRSArchiveManager
 {
     private String                                  localMetadataCollectionId   = null;
-    private List<OpenMetadataArchiveStoreConnector> openMetadataArchiveStores   = new ArrayList<>();
+    private List<OpenMetadataArchiveStore>          openMetadataArchiveStores   = new ArrayList<>();
     private OMRSRepositoryContentManager            repositoryContentManager    = null;
     private LocalOMRSInstanceEventProcessor         localInstanceEventProcessor = null;
 
@@ -67,13 +68,13 @@ public class OMRSArchiveManager
      */
     public void close()
     {
-        for (OpenMetadataArchiveStoreConnector archiveStore : openMetadataArchiveStores)
+        for (OpenMetadataArchiveStore archiveStore : openMetadataArchiveStores)
         {
-            if (archiveStore != null)
+            if (archiveStore instanceof OpenMetadataArchiveStoreConnector archiveStoreConnector)
             {
                 try
                 {
-                    archiveStore.disconnect();
+                    archiveStoreConnector.disconnect();
                 }
                 catch (Exception error)
                 {
@@ -112,7 +113,7 @@ public class OMRSArchiveManager
         /*
          * Once the open metadata types are in place, the archive stores are processed.
          */
-        for (OpenMetadataArchiveStoreConnector archiveStore : this.openMetadataArchiveStores)
+        for (OpenMetadataArchiveStore archiveStore : this.openMetadataArchiveStores)
         {
             processOpenMetadataArchiveStore(archiveStore, "Startup archive list", repositoryContentManager, instanceProcessor);
         }
@@ -127,8 +128,8 @@ public class OMRSArchiveManager
      * @param archiveSource source of the archive
      * @throws RepositoryErrorException there is a problem accessing the archive
      */
-    public void addOpenMetadataArchive(OpenMetadataArchiveStoreConnector     archiveStore,
-                                       String                                archiveSource) throws RepositoryErrorException
+    public void addOpenMetadataArchive(OpenMetadataArchiveStore archiveStore,
+                                       String                               archiveSource) throws RepositoryErrorException
     {
         this.processOpenMetadataArchiveStore(archiveStore, archiveSource, repositoryContentManager, localInstanceEventProcessor);
         this.openMetadataArchiveStores.add(archiveStore);
@@ -159,7 +160,7 @@ public class OMRSArchiveManager
      * @param instanceProcessor receiver of new instances
      * @throws RepositoryErrorException there is a problem accessing the archive
      */
-    private void processOpenMetadataArchiveStore(OpenMetadataArchiveStoreConnector    archiveStore,
+    private void processOpenMetadataArchiveStore(OpenMetadataArchiveStore             archiveStore,
                                                  String                               archiveSource,
                                                  OMRSTypeDefEventProcessorInterface   typeDefProcessor,
                                                  OMRSInstanceEventProcessorInterface  instanceProcessor) throws RepositoryErrorException

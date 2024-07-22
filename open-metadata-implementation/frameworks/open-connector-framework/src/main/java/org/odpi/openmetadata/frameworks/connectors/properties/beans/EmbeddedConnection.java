@@ -114,18 +114,7 @@ public class EmbeddedConnection extends PropertyBase
      */
     public Map<String, Object> getArguments()
     {
-        if (arguments == null)
-        {
-            return null;
-        }
-        else if (arguments.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(arguments);
-        }
+        return arguments;
     }
 
 

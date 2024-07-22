@@ -67,7 +67,12 @@ public class MapTypePropertyValue extends PropertyValue
      */
     public String valueAsString()
     {
-      return mapValuesAsString(mapValues.getPropertyValueMap()).toString();
+        if (mapValues != null)
+        {
+            return mapValuesAsString(mapValues.getPropertyValueMap()).toString();
+        }
+
+        return null;
     }
 
 
@@ -78,9 +83,13 @@ public class MapTypePropertyValue extends PropertyValue
      */
     public Object valueAsObject()
     {
-        return mapValuesAsObject(mapValues.getPropertyValueMap());
-    }
+        if (mapValues != null)
+        {
+            return mapValuesAsObject(mapValues.getPropertyValueMap());
+        }
 
+        return null;
+    }
 
 
     /**

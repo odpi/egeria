@@ -305,16 +305,6 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
      */
     public Map<String, String> getFixedRequestParameters()
     {
-        if (fixedRequestParameters == null)
-        {
-            return null;
-        }
-
-        if (fixedRequestParameters.isEmpty())
-        {
-            return null;
-        }
-
         return fixedRequestParameters;
     }
 

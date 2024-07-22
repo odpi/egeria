@@ -110,7 +110,7 @@ Content-Type: application/json
 # @name getServersByName
 # Returns the list of servers with a particular name.  The name is specified in the filter.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/servers/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-name?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -123,7 +123,7 @@ Content-Type: application/json
 # Returns the list of servers with a particular deployed implementation type.   The value is specified in the filter.
 # If it is null, or no request body is supplied, all servers are returned.
 
- POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/servers/by-deployed-implementation-type?startFrom=0&pageSize=10
+ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-deployed-implementation-type?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -137,7 +137,7 @@ Content-Type: application/json
 # Returns the list of templates for servers with a particular deployed implementation type.   The value is specified in the filter.
 # If it is null, or no request body is supplied, all server templates are returned.
 
- POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/servers/by-deployed-implementation-type?startFrom=0&pageSize=10&getTemplates=true
+ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/by-deployed-implementation-type?startFrom=0&pageSize=10&getTemplates=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -150,18 +150,70 @@ Content-Type: application/json
 # @name getServerByGUID
 # Returns details about the server's catalog entry (asset).
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/servers/{{serverGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/software-servers/{{serverGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 
 ###
-# @name getServerReport
-# Returns details about the running server.
-
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/servers/{{serverGUID}}/report
+# @name getOMAGServerReport
+# Returns details about the running OMAG server.
+# https://egeria-project.org/concepts/omag-server/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{serverGUID}}/instance/report
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
+# ========================================================================================
+# Activate and deactivate the OMAG Servers
+#
 
+###
+# @name activateWithStoredConfig
+# Activate the Open Metadata and Governance (OMAG) server using the configuration document stored for this server.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{serverGUID}}/instance
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name shutdownServer
+# Temporarily shutdown the named OMAG server.  This server can be restarted as a later time.
+
+DELETE {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{serverGUID}}/instance
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name shutdownAndUnregisterServer
+# Shutdown the named OMAG server.  The server will also be removed from any open metadata repository cohorts it has registered with.
+
+DELETE {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{serverGUID}}/instance
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# ========================================================================================
+# Open Metadata Archives
+
+###
+# @name addOpenMetadataArchiveFile
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{serverGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/CocoComboArchive.omarchive
+
+###
+# @name addOpenMetadataArchiveContent
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{serverGUID}}/instance/load/open-metadata-archives/archive-content
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+}
+###

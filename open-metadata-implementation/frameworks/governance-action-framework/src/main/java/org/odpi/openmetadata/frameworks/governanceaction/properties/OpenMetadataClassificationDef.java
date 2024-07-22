@@ -92,28 +92,7 @@ public class OpenMetadataClassificationDef extends OpenMetadataTypeDef
      */
     public List<OpenMetadataTypeDefLink> getValidEntityDefs()
     {
-        if (validEntityDefs == null)
-        {
-            return null;
-        }
-        else if (validEntityDefs.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            List<OpenMetadataTypeDefLink> resultList = new ArrayList<>();
-
-            for (OpenMetadataTypeDefLink typeDefLink : validEntityDefs)
-            {
-                if (typeDefLink != null)
-                {
-                    resultList.add(new OpenMetadataTypeDefLink(typeDefLink));
-                }
-            }
-
-            return resultList;
-        }
+        return validEntityDefs;
     }
 
 
@@ -124,28 +103,7 @@ public class OpenMetadataClassificationDef extends OpenMetadataTypeDef
      */
     public void setValidEntityDefs(List<OpenMetadataTypeDefLink> validEntityDefs)
     {
-        if (validEntityDefs == null)
-        {
-            this.validEntityDefs = null;
-        }
-        else if (validEntityDefs.isEmpty())
-        {
-            this.validEntityDefs = null;
-        }
-        else
-        {
-            List<OpenMetadataTypeDefLink> resultList = new ArrayList<>();
-
-            for (OpenMetadataTypeDefLink typeDefLink : validEntityDefs)
-            {
-                if (typeDefLink != null)
-                {
-                    resultList.add(new OpenMetadataTypeDefLink(typeDefLink));
-                }
-            }
-
-            this.validEntityDefs = resultList;
-        }
+        this.validEntityDefs = validEntityDefs;
     }
 
 

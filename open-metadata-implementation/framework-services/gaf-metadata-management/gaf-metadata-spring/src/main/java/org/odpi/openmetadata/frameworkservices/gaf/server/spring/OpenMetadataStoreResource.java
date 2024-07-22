@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataAttributeTypeDefCategory;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefCategory;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.TranslationDetail;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;

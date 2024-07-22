@@ -104,18 +104,7 @@ public class ElementHeader extends ElementControlHeader
      */
     public List<ElementClassification> getClassifications()
     {
-        if (classifications == null)
-        {
-            return null;
-        }
-        else if (classifications.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(classifications);
-        }
+        return classifications;
     }
 
 

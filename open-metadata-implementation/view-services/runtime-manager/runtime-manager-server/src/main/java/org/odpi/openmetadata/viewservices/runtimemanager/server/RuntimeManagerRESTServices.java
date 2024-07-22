@@ -13,16 +13,20 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServer
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerPlatformResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerResponse;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformConnector;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.MetadataAccessServerConnector;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.OMAGServerConnectorBase;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
+import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.runtimemanager.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.viewservices.runtimemanager.rest.PlatformReportResponse;
@@ -107,7 +111,6 @@ public class RuntimeManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**
@@ -218,6 +221,7 @@ public class RuntimeManagerRESTServices extends TokenController
         return false;
     }
 
+
     /**
      * Returns details about the platform's catalog entry (asset).
      *
@@ -229,6 +233,7 @@ public class RuntimeManagerRESTServices extends TokenController
      * PropertyServerException    there is a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @SuppressWarnings(value = "unused")
     public SoftwareServerPlatformResponse getPlatformByGUID(String                        serverName,
                                                             String                        platformGUID,
                                                             EffectiveTimeQueryRequestBody requestBody)
@@ -365,7 +370,6 @@ public class RuntimeManagerRESTServices extends TokenController
     }
 
 
-
     /**
      * Returns the list of servers with a particular deployed implementation type.
      *
@@ -460,6 +464,8 @@ public class RuntimeManagerRESTServices extends TokenController
      * PropertyServerException    there is a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
+    @SuppressWarnings(value = "unused")
+
     public SoftwareServerResponse getServerByGUID(String                        serverName,
                                                   String                        serverGUID,
                                                   EffectiveTimeQueryRequestBody requestBody)
@@ -497,7 +503,7 @@ public class RuntimeManagerRESTServices extends TokenController
      * Returns details about the running server.
      *
      * @param serverName  name of called server
-     * @param serverGUID unique identifier of the platform
+     * @param serverGUID unique identifier of the server
      * @return a list of platforms
      * InvalidParameterException  one of the parameters is null or invalid.
      * PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -530,6 +536,305 @@ public class RuntimeManagerRESTServices extends TokenController
                 omagServerConnector.start();
                 response.setElement(omagServerConnector.getServerReport());
                 omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /*
+     * =============================================================
+     * Initialization and shutdown
+     */
+
+    /**
+     * Activate the open metadata and governance services using the stored configuration information.
+     *
+     * @param serverName  local server name
+     * @param serverGUID unique identifier of the server to call
+     * @return success message response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException the server name is invalid or
+     * OMAGConfigurationErrorException there is a problem using the supplied configuration.
+     */
+    public SuccessMessageResponse activateWithStoredConfig(String serverName,
+                                                           String serverGUID)
+    {
+        final String methodName = "activateWithStoredConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        SuccessMessageResponse response = new SuccessMessageResponse();
+        AuditLog              auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof OMAGServerConnectorBase omagServerConnector)
+            {
+                omagServerConnector.start();
+                response.setSuccessMessage(omagServerConnector.activateServer());
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Temporarily deactivate any open metadata and governance services for the requested server.
+     *
+     * @param serverName  local server name
+     * @param serverGUID unique identifier of the server to call
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException the serverName is invalid.
+     */
+    public VoidResponse shutdownServer(String serverName,
+                                       String serverGUID)
+    {
+        final String methodName = "shutdownServer";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof OMAGServerConnectorBase omagServerConnector)
+            {
+                omagServerConnector.start();
+                omagServerConnector.shutdownServer();
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Terminate any running open metadata and governance services, remove the server from any open metadata cohorts.
+     *
+     * @param serverName  local server name
+     * @param serverGUID unique identifier of the server to call
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException the serverName is invalid.
+     */
+    public VoidResponse shutdownAndUnregisterServer(String serverName,
+                                                    String serverGUID)
+    {
+        final String methodName = "shutdownAndUnregisterServer";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof OMAGServerConnectorBase omagServerConnector)
+            {
+                omagServerConnector.start();
+                omagServerConnector.shutdownAndUnregisterServer();
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /*
+     * =============================================================
+     * Services on running instances
+     */
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param serverName  local server name.
+     * @param serverGUID unique identifier of the server to call
+     * @param fileName name of the open metadata archive file.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or fileName parameter.
+     */
+    public VoidResponse addOpenMetadataArchiveFile(String serverName,
+                                                   String serverGUID,
+                                                   String fileName)
+    {
+        final String methodName = "addOpenMetadataArchiveFile";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof MetadataAccessServerConnector omagServerConnector)
+            {
+                omagServerConnector.start();
+                omagServerConnector.addOpenMetadataArchiveFile(fileName);
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(MetadataAccessServerConnector.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param serverName  local server name.
+     * @param serverGUID unique identifier of the server to call
+     * @param openMetadataArchive contents of the open metadata archive file.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or openMetadataArchive parameter.
+     */
+    public VoidResponse addOpenMetadataArchiveContent(String              serverName,
+                                                      String              serverGUID,
+                                                      OpenMetadataArchive openMetadataArchive)
+    {
+        final String methodName = "addOpenMetadataArchive";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof MetadataAccessServerConnector omagServerConnector)
+            {
+                omagServerConnector.start();
+                omagServerConnector.addOpenMetadataArchiveContent(openMetadataArchive);
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(MetadataAccessServerConnector.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
             }
         }
         catch (Exception error)

@@ -354,18 +354,7 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
      */
     public Map<String, String> getOptions()
     {
-        if (options == null)
-        {
-            return null;
-        }
-        else if (options.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(options);
-        }
+        return options;
     }
 
 
@@ -388,25 +377,7 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
      */
     public List<ExternalStandardTypeMapping> getExternalStandardMappings()
     {
-        if (externalStandardTypeMappings == null)
-        {
-            return null;
-        }
-        else if (externalStandardTypeMappings.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            List<ExternalStandardTypeMapping> clonedList = new ArrayList<>();
-
-            for (ExternalStandardTypeMapping existingElement : externalStandardTypeMappings)
-            {
-                clonedList.add(new ExternalStandardTypeMapping(existingElement));
-            }
-
-            return clonedList;
-        }
+        return externalStandardTypeMappings;
     }
 
 
@@ -428,18 +399,7 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
      */
     public List<ElementStatus> getValidElementStatusList()
     {
-        if (validElementStatusList == null)
-        {
-            return null;
-        }
-        else if (validElementStatusList.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(validElementStatusList);
-        }
+        return validElementStatusList;
     }
 
 
@@ -483,25 +443,7 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
      */
     public List<OpenMetadataTypeDefAttribute> getAttributeDefinitions()
     {
-        if (attributeDefinitions == null)
-        {
-            return null;
-        }
-        else if (attributeDefinitions.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            List<OpenMetadataTypeDefAttribute> clonedList = new ArrayList<>();
-
-            for (OpenMetadataTypeDefAttribute existingElement : attributeDefinitions)
-            {
-                clonedList.add(new OpenMetadataTypeDefAttribute(existingElement));
-            }
-
-            return clonedList;
-        }
+        return attributeDefinitions;
     }
 
 

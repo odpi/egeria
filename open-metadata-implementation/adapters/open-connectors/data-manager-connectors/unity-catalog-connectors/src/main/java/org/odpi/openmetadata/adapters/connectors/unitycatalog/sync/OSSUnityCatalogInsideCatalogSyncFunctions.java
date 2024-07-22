@@ -51,6 +51,8 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
      * @param ucServerEndpoint the server endpoint used to constructing the qualified names
      * @param templates templates supplied through the catalog target
      * @param configurationProperties configuration properties supplied through the catalog target
+     * @param excludeNames list of catalogs to ignore (and include all others)
+     * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
      * @param auditLog logging destination
      */
     public OSSUnityCatalogInsideCatalogSyncFunctions(String                           connectorName,
@@ -63,6 +65,8 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                                      String                           ucServerEndpoint,
                                                      Map<String, String>              templates,
                                                      Map<String, Object>              configurationProperties,
+                                                     List<String>                     excludeNames,
+                                                     List<String>                     includeNames,
                                                      AuditLog                         auditLog)
     {
         super(connectorName,
@@ -76,6 +80,8 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
               DeployedImplementationType.OSS_UC_FUNCTION,
               templates,
               configurationProperties,
+              excludeNames,
+              includeNames,
               auditLog);
 
         if (templates != null)
@@ -123,31 +129,34 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                                                      nextElement.getElement().getElementProperties(),
                                                                      methodName);
 
-                try
+                if (context.elementShouldBeCatalogued(functionName, excludeNames, includeNames))
                 {
-                    functionInfo = ucConnector.getFunction(functionName);
-                }
-                catch (Exception missing)
-                {
-                    // this is not necessarily an error
-                }
+                    try
+                    {
+                        functionInfo = ucConnector.getFunction(functionName);
+                    }
+                    catch (Exception missing)
+                    {
+                        // this is not necessarily an error
+                    }
 
-                MemberAction memberAction = MemberAction.NO_ACTION;
-                if (functionInfo == null)
-                {
-                    memberAction = nextElement.getMemberAction(null, null);
-                }
-                else if (noMismatchInExternalIdentifier(functionInfo.getFunction_id(), nextElement))
-                {
-                    memberAction = nextElement.getMemberAction(this.getDateFromLong(functionInfo.getCreated_at()),
-                                                               this.getDateFromLong(functionInfo.getUpdated_at()));
-                }
+                    MemberAction memberAction = MemberAction.NO_ACTION;
+                    if (functionInfo == null)
+                    {
+                        memberAction = nextElement.getMemberAction(null, null);
+                    }
+                    else if (noMismatchInExternalIdentifier(functionInfo.getFunction_id(), nextElement))
+                    {
+                        memberAction = nextElement.getMemberAction(this.getDateFromLong(functionInfo.getCreated_at()),
+                                                                   this.getDateFromLong(functionInfo.getUpdated_at()));
+                    }
 
-                this.takeAction(context.getAnchorGUID(nextElement.getElement()),
-                                super.getUCSchemaFomMember(nextElement),
-                                memberAction,
-                                nextElement,
-                                functionInfo);
+                    this.takeAction(context.getAnchorGUID(nextElement.getElement()),
+                                    super.getUCSchemaFomMember(nextElement),
+                                    memberAction,
+                                    nextElement,
+                                    functionInfo);
+                }
             }
         }
 
@@ -508,17 +517,21 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
     {
         final String methodName = "createSchemaAttributesForUCFunction";
 
+        ElementProperties properties = propertyHelper.addStringProperty(null,
+                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                        super.getQualifiedName(functionInfo.getFull_name()) + "_rootSchemaType");
+
         /*
          * Create the root schema type.
          */
-        openMetadataAccess.createMetadataElementInStore(OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName,
+        openMetadataAccess.createMetadataElementInStore(OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME,
                                                         ElementStatus.ACTIVE,
                                                         null,
                                                         functionGUID,
                                                         false,
                                                         null,
                                                         null,
-                                                        null,
+                                                        properties,
                                                         functionGUID,
                                                         OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
                                                         null,

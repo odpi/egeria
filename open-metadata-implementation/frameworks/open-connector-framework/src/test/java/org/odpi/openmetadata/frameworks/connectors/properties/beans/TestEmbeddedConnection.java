@@ -80,7 +80,7 @@ public class TestEmbeddedConnection
 
         nullObject.setArguments(new HashMap<>());
 
-        assertTrue(nullObject.getArguments() == null);
+        assertTrue(nullObject.getArguments() != null);
     }
 
 

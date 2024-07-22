@@ -15,8 +15,20 @@ import java.util.List;
  */
 public enum UnityCatalogSurveyRequestParameter
 {
+    /**
+     * Property name to control how much profiling the survey action service does.
+     */
     FINAL_ANALYSIS_STEP ("finalAnalysisStep", "Property name to control how much profiling the survey action service does.", "string", "Schema Extraction"),
 
+    CATALOG_NAME (UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(),
+                  UnityCatalogPlaceholderProperty.CATALOG_NAME.getDescription(),
+                  UnityCatalogPlaceholderProperty.CATALOG_NAME.getDataType(),
+                  UnityCatalogPlaceholderProperty.CATALOG_NAME.getExample()),
+
+    SCHEMA_NAME(UnityCatalogPlaceholderProperty.SCHEMA_NAME.getName(),
+                UnityCatalogPlaceholderProperty.SCHEMA_NAME.getDescription(),
+                UnityCatalogPlaceholderProperty.SCHEMA_NAME.getDataType(),
+                UnityCatalogPlaceholderProperty.SCHEMA_NAME.getExample()),
     ;
 
     public final String           name;
@@ -106,6 +118,53 @@ public enum UnityCatalogSurveyRequestParameter
         return requestParameterTypes;
     }
 
+
+    /**
+     * Retrieve the defined request parameters used by the Server Survey Service
+     *
+     * @return list of request parameter types
+     */
+    public static List<RequestParameterType> getServerSurveyRequestParameterTypes()
+    {
+        List<RequestParameterType> requestParameterTypes = new ArrayList<>();
+
+        requestParameterTypes.add(FINAL_ANALYSIS_STEP.getRequestParameterType());
+
+        return requestParameterTypes;
+    }
+
+
+    /**
+     * Retrieve the defined request parameters used by the Inside Catalog Survey Service
+     *
+     * @return list of request parameter types
+     */
+    public static List<RequestParameterType> getInsideCatalogSurveyRequestParameterTypes()
+    {
+        List<RequestParameterType> requestParameterTypes = new ArrayList<>();
+
+        requestParameterTypes.add(FINAL_ANALYSIS_STEP.getRequestParameterType());
+        requestParameterTypes.add(CATALOG_NAME.getRequestParameterType());
+
+        return requestParameterTypes;
+    }
+
+
+    /**
+     * Retrieve the defined request parameters used by the Inside Schema Survey Service
+     *
+     * @return list of request parameter types
+     */
+    public static List<RequestParameterType> getInsideSchemaSurveyRequestParameterTypes()
+    {
+        List<RequestParameterType> requestParameterTypes = new ArrayList<>();
+
+        requestParameterTypes.add(FINAL_ANALYSIS_STEP.getRequestParameterType());
+        requestParameterTypes.add(CATALOG_NAME.getRequestParameterType());
+        requestParameterTypes.add(SCHEMA_NAME.getRequestParameterType());
+
+        return requestParameterTypes;
+    }
 
     /**
      * Return a summary of this enum to use in a service provider.

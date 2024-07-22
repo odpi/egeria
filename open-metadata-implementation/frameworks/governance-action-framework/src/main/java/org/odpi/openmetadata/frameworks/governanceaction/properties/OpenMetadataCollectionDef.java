@@ -146,18 +146,7 @@ public class OpenMetadataCollectionDef extends OpenMetadataAttributeTypeDef
      */
     public List<OpenMetadataPrimitiveDefCategory> getArgumentTypes()
     {
-        if (argumentTypes == null)
-        {
-            return null;
-        }
-        else if (argumentTypes.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(argumentTypes);
-        }
+        return argumentTypes;
     }
 
 

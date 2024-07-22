@@ -5,7 +5,6 @@ package org.odpi.openmetadata.adapters.connectors.postgres.catalog;
 
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode;
-import org.odpi.openmetadata.adapters.connectors.postgres.utilities.PostgresUtils;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -44,6 +43,10 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
 {
     final PropertyHelper propertyHelper = new PropertyHelper();
 
+    List<String> defaultExcludeDatabases = null;
+    List<String> defaultIncludeDatabases = null;
+
+
     /**
      * Indicates that the connector is completely configured and can begin processing.
      *
@@ -53,6 +56,14 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
     public synchronized void start() throws ConnectorCheckedException
     {
         super.start();
+
+        defaultExcludeDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
+                                                                      connectionProperties.getConfigurationProperties(),
+                                                                      null);
+
+        defaultIncludeDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
+                                                                      connectionProperties.getConfigurationProperties(),
+                                                                      null);
     }
 
 
@@ -258,12 +269,14 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
         final String methodName = "catalogDatabases";
 
         List<String> excludedDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getName(),
-                                                                             configurationProperties);
+                                                                             configurationProperties,
+                                                                             defaultExcludeDatabases);
 
         List<String> includedDatabases = super.getArrayConfigurationProperty(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getName(),
-                                                                             configurationProperties);
+                                                                             configurationProperties,
+                                                                             defaultIncludeDatabases);
 
-        String catalogTemplateGUID = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_CATALOG_TEMPLATE_QUALIFIED_NAME.getName(),
+        String catalogTemplateName = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_CATALOG_TEMPLATE_QUALIFIED_NAME.getName(),
                                                                           configurationProperties);
 
         try
@@ -287,12 +300,12 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                 {
                     String databaseName = resultSet.getString("datname");
 
-                    if (PostgresUtils.databaseShouldBeCatalogued(databaseName, excludedDatabases, includedDatabases))
+                    if (getContext().elementShouldBeCatalogued(databaseName, excludedDatabases, includedDatabases))
                     {
                         catalogDatabase(databaseName,
                                         databaseServerGUID,
                                         databaseManagerGUID,
-                                        catalogTemplateGUID,
+                                        catalogTemplateName,
                                         configurationProperties);
                     }
                 }
@@ -323,7 +336,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
      * @param databaseName name of the retrieved database
      * @param databaseServerGUID unique identifier of the entity representing the PostgreSQL Server
      * @param databaseManagerGUID name of the associated database manager
-     * @param catalogTemplateGUID unique identifier of the catalog template to use
+     * @param catalogTemplateName unique identifier of the catalog template to use
      * @param configurationProperties configuration properties
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
@@ -333,7 +346,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
     private   void catalogDatabase(String              databaseName,
                                    String              databaseServerGUID,
                                    String              databaseManagerGUID,
-                                   String              catalogTemplateGUID,
+                                   String              catalogTemplateName,
                                    Map<String, Object> configurationProperties) throws InvalidParameterException,
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException,
@@ -347,7 +360,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                                       OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
                                                                                       OpenMetadataType.SERVER_ASSET_USE_TYPE_OWNS_SYMBOLIC_NAME);
         {
-            if (catalogTemplateGUID != null)
+            if (catalogTemplateName != null)
             {
                 Map<String, String> placeholderProperties = super.getSuppliedPlaceholderProperties(configurationProperties);
 
@@ -358,7 +371,8 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
 
                 placeholderProperties.put(PostgresConfigurationProperty.DATABASE_NAME.getName(), databaseName);
 
-                OpenMetadataElement templateElement = openMetadataAccess.getMetadataElementByGUID(catalogTemplateGUID);
+                OpenMetadataElement templateElement = openMetadataAccess.getMetadataElementByUniqueName(catalogTemplateName,
+                                                                                                        OpenMetadataProperty.QUALIFIED_NAME.name);
 
                 String qualifiedName = propertyHelper.getResolvedStringPropertyFromTemplate(connectorName,
                                                                                             templateElement,
@@ -380,7 +394,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                                                false,
                                                                                                null,
                                                                                                null,
-                                                                                               catalogTemplateGUID,
+                                                                                               catalogTemplateName,
                                                                                                null,
                                                                                                placeholderProperties,
                                                                                                databaseManagerGUID,

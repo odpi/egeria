@@ -25,7 +25,7 @@ public class OSSUnityCatalogInsideCatalogSurveyProvider extends SurveyActionServ
      * Unique identifier for the connector type.
      */
     private static final String connectorTypeGUID = "6cc7c135-eada-440f-97d8-704c8d0a508f";
-    private static final String connectorQualifiedName = "Egeria:SurveyActionService:DataManagerCatalog:UnityCatalog";
+    private static final String connectorQualifiedName = "Egeria:SurveyActionService:DataManagerCatalog:UnityCatalog:InsideCatalog";
     private static final String connectorDisplayName = "OSS Unity Catalog (UC) Inside a Catalog Survey Service";
     private static final String connectorTypeDescription = "Surveys the contents of a catalog found in a Unity Catalog Server.";
     private static final String connectorWikiPage = "https://egeria-project.org/connectors/unity-catalog/catalog-survey-service/";
@@ -74,7 +74,7 @@ public class OSSUnityCatalogInsideCatalogSurveyProvider extends SurveyActionServ
         AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
 
         componentDescription.setComponentId(connectorComponentId);
-        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.IN_DEVELOPMENT);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
         componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorTypeDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
@@ -83,7 +83,7 @@ public class OSSUnityCatalogInsideCatalogSurveyProvider extends SurveyActionServ
 
         super.supportedActionTargetTypes = UnityCatalogTarget.getCatalogActionTargetTypes();
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
-                AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
-        super.producedAnnotationTypes    = UnityCatalogAnnotationType.getAnnotationTypeTypes();
+                AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES, AnalysisStep.PRODUCE_INVENTORY});
+        super.producedAnnotationTypes    = UnityCatalogAnnotationType.getCatalogAnnotationTypeTypes();
     }
 }

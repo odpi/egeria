@@ -4,18 +4,13 @@
 package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourcePhysicalStatusAnnotation;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -35,10 +30,6 @@ import java.util.Map;
  */
 public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConnector
 {
-    private final PropertyHelper propertyHelper = new PropertyHelper();
-
-    private Connector connector = null;
-
     private Map<String, SchemaDetails> schemaDetailsMap = new HashMap<>();
 
 
@@ -57,39 +48,13 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
         try
         {
             AnnotationStore  annotationStore = surveyContext.getAnnotationStore();
-            SurveyAssetStore assetStore      = surveyContext.getAssetStore();
-
-            annotationStore.setAnalysisStep(AnalysisStep.CHECK_ASSET.getName());
-
-            /*
-             * Before performing any real work, check the type of the asset.
-             */
-            AssetUniverse assetUniverse = assetStore.getAssetProperties();
-
-            if (assetUniverse == null)
-            {
-                super.throwNoAsset(assetStore.getAssetGUID(),
-                                   surveyActionServiceName,
-                                   methodName);
-                return;
-            }
-            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.RELATIONAL_DATABASE.typeName))
-            {
-                super.throwWrongTypeOfAsset(assetUniverse.getGUID(),
-                                            assetUniverse.getType().getTypeName(),
-                                            OpenMetadataType.RELATIONAL_DATABASE.typeName,
-                                            methodName);
-                return;
-            }
 
             /*
              * The asset should have a special connector for files.  If the connector is wrong,
              * the cast will fail.
              */
-            connector = assetStore.getConnectorToAsset();
-            JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
-
-            assetConnector.start();
+            connector = super.performCheckAssetAnalysisStep(JDBCResourceConnector.class, OpenMetadataType.RELATIONAL_DATABASE.typeName);
+            JDBCResourceConnector assetConnector = (JDBCResourceConnector) connector;
 
             DataSource jdbcDataSource = assetConnector.getDataSource();
             Connection jdbcConnection = jdbcDataSource.getConnection();
@@ -138,21 +103,7 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
     }
 
 
-    /**
-     * Free up any resources held since the connector is no longer needed.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
-     */
-    @Override
-    public  synchronized void disconnect() throws ConnectorCheckedException
-    {
-        if (connector != null)
-        {
-            connector.disconnect();
-        }
 
-        super.disconnect();
-    }
 
 
     static class SchemaDetails

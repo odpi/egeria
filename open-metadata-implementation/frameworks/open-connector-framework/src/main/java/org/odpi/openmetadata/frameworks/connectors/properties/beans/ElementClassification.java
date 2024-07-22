@@ -102,18 +102,7 @@ public class ElementClassification extends ElementClassificationHeader
      */
     public Map<String, Object> getClassificationProperties()
     {
-        if (classificationProperties == null)
-        {
-            return null;
-        }
-        else if (classificationProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(classificationProperties);
-        }
+        return classificationProperties;
     }
 
 

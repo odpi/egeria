@@ -112,6 +112,7 @@ public class RESTExceptionHandler
         throw error;
     }
 
+
     /**
      * Manage an unexpected exception
      *
@@ -133,6 +134,30 @@ public class RESTExceptionHandler
     }
 
 
+    /**
+     * Manage an unexpected exception
+     *
+     * @param expectedClassName name of expected properties class
+     * @param methodName method that caught the exception
+     * @throws InvalidParameterException exception to report error
+     */
+    public void handleInvalidCallToServer(String expectedClassName,
+                                          String methodName,
+                                          String serverGUID,
+                                          String actualClassName) throws InvalidParameterException
+    {
+        InvalidParameterException error =
+                new InvalidParameterException(OMAGCommonErrorCode.INVALID_CALL_FOR_SERVER.getMessageDefinition(methodName,
+                                                                                                               expectedClassName,
+                                                                                                               serverGUID,
+                                                                                                               actualClassName),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              expectedClassName);
+
+        log.error("Wrong call for this type of server class", error);
+        throw error;
+    }
 
     /**
      * Manage a bad type name

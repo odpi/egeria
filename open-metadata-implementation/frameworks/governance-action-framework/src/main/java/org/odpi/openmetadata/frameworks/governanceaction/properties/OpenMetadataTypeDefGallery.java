@@ -58,18 +58,7 @@ public class OpenMetadataTypeDefGallery extends OpenMetadataTypeDefElementHeader
      */
     public List<OpenMetadataAttributeTypeDef> getAttributeTypeDefs()
     {
-        if (openMetadataAttributeTypeDefs == null)
-        {
-            return null;
-        }
-        else if (openMetadataAttributeTypeDefs.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(openMetadataAttributeTypeDefs);
-        }
+        return openMetadataAttributeTypeDefs;
     }
 
 
@@ -89,20 +78,9 @@ public class OpenMetadataTypeDefGallery extends OpenMetadataTypeDefElementHeader
      *
      * @return list of type definitions
      */
-    public ArrayList<OpenMetadataTypeDef> getTypeDefs()
+    public List<OpenMetadataTypeDef> getTypeDefs()
     {
-        if (openMetadataTypeDefs == null)
-        {
-            return null;
-        }
-        else if (openMetadataTypeDefs.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(openMetadataTypeDefs);
-        }
+        return openMetadataTypeDefs;
     }
 
 

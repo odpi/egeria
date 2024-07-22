@@ -1,0 +1,206 @@
+# Unity catalog enablement demo
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+
+###
+# =====================================================================================================================
+# What do we know about the OSS Unity Catalog
+#
+
+
+###
+# @name findTechnologyTypes
+# Retrieve the list of deployed implementation type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Unity Catalog"
+}
+
+
+###
+# @name getTechnologyTypeDetail
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog Server"
+}
+
+
+###
+# @name getTechnologyTypeDetail
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog Catalog"
+}
+
+
+###
+# @name getTechnologyTypeDetail
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog Schema"
+}
+
+
+###
+# @name getTechnologyTypeDetail
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog Volume"
+}
+
+
+###
+# @name getTechnologyTypeDetail
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog Table"
+}
+
+
+###
+# @name getTechnologyTypeDetail
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog Function"
+}
+
+###
+# =====================================================================================================================
+# Discover the templates
+#
+
+###
+# @name getTechnologyTypeTemplates (UC Server)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog Server"
+}
+
+###
+
+@ucServerTemplateGUID=dcca9788-b30f-4007-b1ac-ec634aff6879
+
+###
+# @name getTechnologyTypeTemplates (UC Catalog)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog Catalog"
+}
+
+###
+
+@ucCatalogTemplateGUID=5ee006aa-a6d6-411b-9b8d-5f720c079cae
+
+###
+# @name getTechnologyTypeTemplates (UC Schema)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog Schema"
+}
+
+###
+
+@ucSchemaTemplateGUID=5bf92b0f-3970-41ea-b0a3-aacfbf6fd92e
+
+###
+# @name getTechnologyTypeTemplates (UC Volume)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog Volume"
+}
+
+###
+
+@ucVolumeTemplateGUID=92d2d2dc-0798-41f0-9512-b10548d312b7
+
+###
+# @name getTechnologyTypeTemplates (UC Table)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog Table"
+}
+
+###
+
+@ucTableTemplateGUID=6cc1e5f5-4c1e-4290-a80e-e06643ffb13d
+
+###
+# @name getTechnologyTypeTemplates (UC Function)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OSS Unity Catalog Function"
+}
+
+###
+
+@ucFunctionTemplateGUID=a490ba65-6104-4213-9be9-524e16fed8aa
+

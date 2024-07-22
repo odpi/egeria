@@ -75,18 +75,7 @@ public class OpenMetadataEnumDef extends OpenMetadataAttributeTypeDef
      */
     public List<OpenMetadataEnumElementDef> getElementDefs()
     {
-        if (elementDefs == null)
-        {
-            return null;
-        }
-        else if (elementDefs.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(elementDefs);
-        }
+        return elementDefs;
     }
 
 

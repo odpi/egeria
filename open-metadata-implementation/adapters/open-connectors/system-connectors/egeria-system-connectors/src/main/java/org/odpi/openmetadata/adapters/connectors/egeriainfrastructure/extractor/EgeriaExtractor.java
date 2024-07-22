@@ -27,9 +27,11 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.propert
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 import org.odpi.openmetadata.repositoryservices.clients.MetadataHighwayServicesClient;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.properties.CohortConnectionStatus;
 import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
+import org.odpi.openmetadata.serveroperations.client.ServerOperationsClient;
 import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerStatus;
 
@@ -52,6 +54,7 @@ public class EgeriaExtractor
     private final IntegrationDaemon                     integrationDaemonClient;
     private final EngineHostClient                      engineHostClient;
     private final MetadataHighwayServicesClient         metadataHighwayServicesClient;
+    private final ServerOperationsClient                serverOperationsClient;
 
 
     /**
@@ -79,6 +82,7 @@ public class EgeriaExtractor
         platformServicesClient        = new PlatformServicesClient(platformName, platformURLRoot);
         platformConfigurationClient   = new OMAGServerPlatformConfigurationClient(clientUserId, platformURLRoot);
         configurationManagementClient = new ConfigurationManagementClient(clientUserId, platformURLRoot);
+        serverOperationsClient        = new ServerOperationsClient(clientUserId, platformURLRoot);
 
         if (serverOfInterest != null)
         {
@@ -465,6 +469,155 @@ public class EgeriaExtractor
         return configurationManagementClient.getOMAGServerConfig(serverOfInterest);
     }
 
+
+    /*
+     * =============================================================
+     * Operational status and control
+     */
+
+    /**
+     * Retrieve the server status
+     *
+     * @return The server status
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ServerStatus getServerStatus() throws InvalidParameterException,
+                                                 UserNotAuthorizedException,
+                                                 PropertyServerException
+    {
+        if (serverOfInterest != null)
+        {
+            return serverOperationsClient.getServerStatus(clientUserId, serverOfInterest);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the configuration used for the current active instance of the server.  Null is returned if
+     * the server instance is not running.
+     *
+     * @return configuration properties used to initialize the server or null if not running
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public OMAGServerConfig getActiveConfiguration() throws UserNotAuthorizedException,
+                                                            InvalidParameterException,
+                                                            PropertyServerException
+    {
+        if (serverOfInterest != null)
+        {
+            return serverOperationsClient.getActiveConfiguration(clientUserId, serverOfInterest);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Return the status of a running server (use platform services to find out if the server is running).
+     *
+     * @return status of the server
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public ServerServicesStatus getActiveServerStatus() throws UserNotAuthorizedException,
+                                                               InvalidParameterException,
+                                                               PropertyServerException
+    {
+        if (serverOfInterest != null)
+        {
+            return serverOperationsClient.getActiveServerStatus(clientUserId, serverOfInterest);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve a list of the active services on a server
+     *
+     * @return List of service names
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<String> getActiveServices() throws InvalidParameterException,
+                                                   UserNotAuthorizedException,
+                                                   PropertyServerException
+    {
+        if (serverOfInterest != null)
+        {
+            return serverOperationsClient.getActiveServices(clientUserId, serverOfInterest);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param fileName name of the open metadata archive file.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void addOpenMetadataArchiveFile(String fileName) throws UserNotAuthorizedException,
+                                                                   InvalidParameterException,
+                                                                   PropertyServerException
+    {
+        if (serverOfInterest != null)
+        {
+            serverOperationsClient.addOpenMetadataArchiveFile(clientUserId, serverOfInterest, fileName);
+        }
+    }
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param connection connection for the open metadata archive.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void addOpenMetadataArchive(Connection connection) throws UserNotAuthorizedException,
+                                                                     InvalidParameterException,
+                                                                     PropertyServerException
+    {
+        if (serverOfInterest != null)
+        {
+            serverOperationsClient.addOpenMetadataArchive(clientUserId, serverOfInterest, connection);
+        }
+    }
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param openMetadataArchive openMetadataArchive for the open metadata archive.
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public void addOpenMetadataArchiveContent(OpenMetadataArchive openMetadataArchive) throws UserNotAuthorizedException,
+                                                                                              InvalidParameterException,
+                                                                                              PropertyServerException
+    {
+        if (serverOfInterest != null)
+        {
+            serverOperationsClient.addOpenMetadataArchiveContent(clientUserId, serverOfInterest, openMetadataArchive);
+        }
+    }
 
 
 

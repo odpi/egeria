@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.Map;
 /**
  * The AtlasAnnotationType enum describes the annotation types used by the Apache Atlas survey action service.
  */
-public enum AtlasAnnotationType
+public enum AtlasAnnotationType implements AnnotationType
 {
     MEASUREMENTS("Apache Atlas Server Metrics",
                  AnalysisStep.MEASURE_RESOURCE,
@@ -160,6 +161,7 @@ public enum AtlasAnnotationType
      *
      * @return string name
      */
+    @Override
     public String getName()
     {
         return name;
@@ -171,6 +173,7 @@ public enum AtlasAnnotationType
      *
      * @return analysis step name
      */
+    @Override
     public String getAnalysisStep()
     {
         return analysisStep.getName();
@@ -182,6 +185,7 @@ public enum AtlasAnnotationType
      *
      * @return type name
      */
+    @Override
     public String getOpenMetadataTypeName()
     {
         return openMetadataTypeName;
@@ -193,6 +197,7 @@ public enum AtlasAnnotationType
      *
      * @return text
      */
+    @Override
     public String getSummary()
     {
         return summary;
@@ -204,9 +209,22 @@ public enum AtlasAnnotationType
      *
      * @return text
      */
+    @Override
     public String getExplanation()
     {
         return explanation;
+    }
+
+
+    /**
+     * Return the expression used in the annotation type processing.
+     *
+     * @return string
+     */
+    @Override
+    public String getExpression()
+    {
+        return null;
     }
 
 

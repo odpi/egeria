@@ -198,6 +198,8 @@ public enum UnityCatalogTarget
 
     /**
      * Return the action targets defined in this enum for a UC Catalog.
+     * It is currently matched to the server asset.  Later enhancements may allow it to also
+     * be connected to the desired data asset.
      *
      * @return list
      */
@@ -205,7 +207,7 @@ public enum UnityCatalogTarget
     {
         List<ActionTargetType> actionTargetTypes = new ArrayList<>();
 
-        actionTargetTypes.add(UNITY_CATALOG_CATALOG_TARGET.getActionTargetType());
+        actionTargetTypes.add(UNITY_CATALOG_SERVER_TARGET.getActionTargetType());
 
         return actionTargetTypes;
     }

@@ -113,18 +113,7 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
      */
     public Map<String, String> getAdditionalProperties()
     {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
+        return additionalProperties;
     }
 
 
@@ -135,18 +124,7 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
      */
     public Map<String, String> getVendorProperties()
     {
-        if (vendorProperties == null)
-        {
-            return null;
-        }
-        else if (vendorProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(vendorProperties);
-        }
+        return vendorProperties;
     }
 
 

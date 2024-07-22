@@ -71,8 +71,14 @@ public class ArrayPropertyValue extends InstancePropertyValue
      *
      * @return string value
      */
-    public String valueAsString() {
-        return mapValuesAsString(arrayValues.getInstanceProperties()).toString();
+    public String valueAsString()
+    {
+        if (arrayValues != null)
+        {
+            return mapValuesAsString(arrayValues.getInstanceProperties()).toString();
+        }
+
+        return null;
     }
 
 
@@ -81,8 +87,14 @@ public class ArrayPropertyValue extends InstancePropertyValue
      *
      * @return object value
      */
-    public Object valueAsObject() {
-        return mapValuesAsObject(arrayValues.getInstanceProperties());
+    public Object valueAsObject()
+    {
+        if (arrayValues != null)
+        {
+            return mapValuesAsObject(arrayValues.getInstanceProperties());
+        }
+
+        return null;
     }
 
 
@@ -91,7 +103,8 @@ public class ArrayPropertyValue extends InstancePropertyValue
      *
      * @return int array size
      */
-    public int getArrayCount() {
+    public int getArrayCount()
+    {
         return arrayCount;
     }
 
@@ -101,7 +114,8 @@ public class ArrayPropertyValue extends InstancePropertyValue
      *
      * @param arrayCount int array size
      */
-    public void setArrayCount(int arrayCount) {
+    public void setArrayCount(int arrayCount)
+    {
         this.arrayCount = arrayCount;
     }
 
@@ -159,7 +173,8 @@ public class ArrayPropertyValue extends InstancePropertyValue
      *
      * @param arrayValues InstanceProperties containing the array elements
      */
-    public void setArrayValues(InstanceProperties arrayValues) {
+    public void setArrayValues(InstanceProperties arrayValues)
+    {
         this.arrayValues = arrayValues;
     }
 
@@ -195,7 +210,7 @@ public class ArrayPropertyValue extends InstancePropertyValue
         {
             return true;
         }
-        if (! (objectToCompare instanceof ArrayPropertyValue))
+        if (! (objectToCompare instanceof ArrayPropertyValue that))
         {
             return false;
         }
@@ -203,8 +218,6 @@ public class ArrayPropertyValue extends InstancePropertyValue
         {
             return false;
         }
-
-        ArrayPropertyValue that = (ArrayPropertyValue) objectToCompare;
 
         if (arrayCount != that.arrayCount)
         {

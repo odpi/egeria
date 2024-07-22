@@ -65,18 +65,7 @@ public class RegisteredGovernanceService extends GovernanceServiceProperties
      */
     public Map<String, RegisteredGovernanceServiceProperties> getRequestTypes()
     {
-        if (requestTypes == null)
-        {
-            return null;
-        }
-        else if (requestTypes.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(requestTypes);
-        }
+        return requestTypes;
     }
 
 

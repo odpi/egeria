@@ -20,6 +20,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
+import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
+import org.odpi.openmetadata.serveroperations.properties.ServerStatus;
+
+import java.util.List;
 
 public abstract class OMAGServerConnectorBase extends ConnectorBase implements AuditLoggingComponent
 {
@@ -254,5 +260,79 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
                                                      PropertyServerException
     {
         extractor.shutdownAndUnregisterServer();
+    }
+
+
+
+    /*
+     * =============================================================
+     * Operational status and control
+     */
+
+    /**
+     * Retrieve the server status
+     *
+     * @return The server status
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ServerStatus getServerStatus() throws InvalidParameterException,
+                                                 UserNotAuthorizedException,
+                                                 PropertyServerException
+    {
+        return extractor.getServerStatus();
+    }
+
+
+    /**
+     * Return the configuration used for the current active instance of the server.  Null is returned if
+     * the server instance is not running.
+     *
+     * @return configuration properties used to initialize the server or null if not running
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public OMAGServerConfig getActiveConfiguration() throws UserNotAuthorizedException,
+                                                            InvalidParameterException,
+                                                            PropertyServerException
+    {
+        return extractor.getActiveConfiguration();
+    }
+
+
+
+    /**
+     * Return the status of a running server (use platform services to find out if the server is running).
+     *
+     * @return status of the server
+     * @throws UserNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws InvalidParameterException invalid parameter.
+     * @throws PropertyServerException unusual state in the platform.
+     */
+    public ServerServicesStatus getActiveServerStatus() throws UserNotAuthorizedException,
+                                                               InvalidParameterException,
+                                                               PropertyServerException
+    {
+        return extractor.getActiveServerStatus();
+    }
+
+
+    /**
+     * Retrieve a list of the active services on a server
+     *
+     * @return List of service names
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<String> getActiveServices() throws InvalidParameterException,
+                                                   UserNotAuthorizedException,
+                                                   PropertyServerException
+    {
+        return extractor.getActiveServices();
     }
 }

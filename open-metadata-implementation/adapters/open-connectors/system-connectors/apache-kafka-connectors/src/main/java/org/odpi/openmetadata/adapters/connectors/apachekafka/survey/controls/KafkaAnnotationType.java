@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.apachekafka.survey.controls;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.Map;
 /**
  * The KafkaAnnotationType enum describes the annotation types used by the Apache Kafka survey action service.
  */
-public enum KafkaAnnotationType
+public enum KafkaAnnotationType implements AnnotationType
 {
     /**
      * List of topics known to the Apache Kafka server.
@@ -27,6 +28,16 @@ public enum KafkaAnnotationType
                       "List of topics known to the Apache Kafka server.",
                       "Topics provide the mechanism to organize events.  They may be explicitly configured, or created dynamically.",
                       null),
+
+    /**
+     * Log file of topics known to the Apache Kafka server.
+     */
+    TOPIC_INVENTORY("Apache Kafka Topic Inventory",
+               AnalysisStep.PRODUCE_INVENTORY,
+               OpenMetadataType.RESOURCE_PROFILE_LOG_ANNOTATION.typeName,
+               "Log file of topics known to the Apache Kafka server.",
+               "Topics provide the mechanism to organize events.  They may be explicitly configured, or created dynamically.",
+               null),
     ;
 
 
@@ -86,6 +97,7 @@ public enum KafkaAnnotationType
      *
      * @return string name
      */
+    @Override
     public String getName()
     {
         return name;
@@ -97,6 +109,7 @@ public enum KafkaAnnotationType
      *
      * @return analysis step name
      */
+    @Override
     public String getAnalysisStep()
     {
         return analysisStep.getName();
@@ -108,6 +121,7 @@ public enum KafkaAnnotationType
      *
      * @return type name
      */
+    @Override
     public String getOpenMetadataTypeName()
     {
         return openMetadataTypeName;
@@ -119,6 +133,7 @@ public enum KafkaAnnotationType
      *
      * @return text
      */
+    @Override
     public String getSummary()
     {
         return summary;
@@ -130,9 +145,21 @@ public enum KafkaAnnotationType
      *
      * @return text
      */
+    @Override
     public String getExplanation()
     {
         return explanation;
+    }
+
+    /**
+     * Return the expression used in the annotation type processing.
+     *
+     * @return string
+     */
+    @Override
+    public String getExpression()
+    {
+        return null;
     }
 
 

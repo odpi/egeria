@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.surveyaction.extractors;
 
-import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.SurveyFileAnnotationType;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.SurveyFileAnnotationType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -18,7 +18,6 @@ import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourcePhysical
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,6 +58,7 @@ public class FileStatsExtractor
         measurementAnnotation.setAnnotationType(SurveyFileAnnotationType.MEASUREMENTS.getName());
         measurementAnnotation.setSummary(SurveyFileAnnotationType.MEASUREMENTS.getSummary());
         measurementAnnotation.setExplanation(SurveyFileAnnotationType.MEASUREMENTS.getExplanation());
+        measurementAnnotation.setExpression(SurveyFileAnnotationType.MEASUREMENTS.getExpression());
         measurementAnnotation.setAnalysisStep(SurveyFileAnnotationType.MEASUREMENTS.getAnalysisStep());
         measurementAnnotation.setCreateTime(fileClassification.getCreationTime());
         measurementAnnotation.setModifiedTime(fileClassification.getLastModifiedTime());

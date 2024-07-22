@@ -17,6 +17,8 @@ public enum AnalysisStep
     SCHEMA_EXTRACTION(  "Schema Extraction", "The survey action service is extracting the schema from the resource."),
     PROFILE_DATA(  "Profile Data", "The survey action service is profiling the data associated with the resource."),
     PROFILING_ASSOCIATED_RESOURCES(  "Profiling Associated Resources", "The survey action service is profiling other resources associated with the surveyed resource."),
+    PRODUCE_INVENTORY("Produce Inventory", "The survey action service is writing an inventory of the contents of the surveyed resource."),
+    PRODUCE_ACTIONS("Produce Exceptions", "The survey action service is writing out information about issues that is discovered during its analysis."),
 
     ;
 

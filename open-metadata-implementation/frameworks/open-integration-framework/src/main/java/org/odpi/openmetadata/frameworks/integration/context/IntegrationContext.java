@@ -191,6 +191,32 @@ public class IntegrationContext
 
 
     /**
+     * Determine whether a particular element should be catalogued.  The include list takes precedent over
+     * the exclude list.
+     *
+     * @param elementName name of the element
+     * @param excludedNames list of names to exclude (null means ignore value)
+     * @param includedNames list of names to include (null means ignore value)
+     * @return flag indicating whether to work with the database
+     */
+    public boolean elementShouldBeCatalogued(String       elementName,
+                                             List<String> excludedNames,
+                                             List<String> includedNames)
+    {
+        if (includedNames != null)
+        {
+            return includedNames.contains(elementName);
+        }
+        else if (excludedNames != null)
+        {
+            return ! excludedNames.contains(elementName);
+        }
+
+        return true;
+    }
+
+
+    /**
      * Add a catalog target to this integration connector.
      *
      * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.

@@ -347,15 +347,6 @@ public class ExternalIdentifierProperties
      */
     public Map<String, String> getMappingProperties()
     {
-        if (mappingProperties == null)
-        {
-            return null;
-        }
-        else if (mappingProperties.isEmpty())
-        {
-            return null;
-        }
-
         return mappingProperties;
     }
 

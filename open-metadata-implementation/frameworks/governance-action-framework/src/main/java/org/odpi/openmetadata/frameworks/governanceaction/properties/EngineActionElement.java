@@ -216,14 +216,6 @@ public class EngineActionElement extends ReferenceableProperties
      */
     public List<String> getMandatoryGuards()
     {
-        if (mandatoryGuards == null)
-        {
-            return null;
-        }
-        else if (mandatoryGuards.isEmpty())
-        {
-            return null;
-        }
         return mandatoryGuards;
     }
 
@@ -246,14 +238,6 @@ public class EngineActionElement extends ReferenceableProperties
      */
     public List<String> getReceivedGuards()
     {
-        if (receivedGuards == null)
-        {
-            return null;
-        }
-        else if (receivedGuards.isEmpty())
-        {
-            return null;
-        }
         return receivedGuards;
     }
 
@@ -474,16 +458,6 @@ public class EngineActionElement extends ReferenceableProperties
      */
     public List<RequestSourceElement> getRequestSourceElements()
     {
-        if (requestSourceElements == null)
-        {
-            return null;
-        }
-
-        if (requestSourceElements.isEmpty())
-        {
-            return null;
-        }
-
         return requestSourceElements;
     }
 
@@ -506,16 +480,6 @@ public class EngineActionElement extends ReferenceableProperties
      */
     public List<ActionTargetElement> getActionTargetElements()
     {
-        if (actionTargetElements == null)
-        {
-            return null;
-        }
-
-        if (actionTargetElements.isEmpty())
-        {
-            return null;
-        }
-
         return actionTargetElements;
     }
 
@@ -647,16 +611,6 @@ public class EngineActionElement extends ReferenceableProperties
      */
     public Map<String, String> getRequestParameters()
     {
-        if (requestParameters == null)
-        {
-            return null;
-        }
-
-        if (requestParameters.isEmpty())
-        {
-            return null;
-        }
-
         return requestParameters;
     }
 
@@ -701,16 +655,6 @@ public class EngineActionElement extends ReferenceableProperties
      */
     public List<String> getCompletionGuards()
     {
-        if (completionGuards == null)
-        {
-            return null;
-        }
-
-        if (completionGuards.isEmpty())
-        {
-            return null;
-        }
-
         return completionGuards;
     }
 

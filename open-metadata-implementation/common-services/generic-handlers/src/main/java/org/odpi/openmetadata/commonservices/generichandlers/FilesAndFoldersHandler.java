@@ -764,12 +764,11 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param methodName calling method
      *
      * @return list of GUIDs from the top level to the leaf of the supplied pathname
-     *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private List<String> createFolderStructureInCatalog(String         userId,
+    public  List<String> createFolderStructureInCatalog(String         userId,
                                                         String         externalSourceGUID,
                                                         String         externalSourceName,
                                                         String         connectToGUID,

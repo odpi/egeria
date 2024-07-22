@@ -1,10 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder;
+package org.odpi.openmetadata.adapters.connectors.surveyaction.controls;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
 import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileDirectoryMetric;
 
@@ -17,52 +18,60 @@ import java.util.Map;
 /**
  * The SurveyFolderAnnotationType enum describes the annotation types used by the folder survey action service.
  */
-public enum SurveyFolderAnnotationType
+public enum SurveyFolderAnnotationType implements AnnotationType
 {
     MEASUREMENTS("Capture File Counts",
                  OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
+                 AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
                  "Count up the number of files and directories under the surveyed directory that have specific characteristics.",
                  "Count the number of directories and files under the starting directory.",
                  FileDirectoryMetric.getMetrics()),
 
     PROFILE_FILE_EXTENSIONS("Profile File Extensions",
                  OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                 "Iterate through files under a directory (folder) and count the occurrences of each file extension.",
+                            AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
+                            "Iterate through files under a directory (folder) and count the occurrences of each file extension.",
                  "The file extension often provides a hint as to the type of file.",
                  null),
 
     PROFILE_FILE_NAMES("Profile File Names to External Log",
                             OpenMetadataType.RESOURCE_PROFILE_LOG_ANNOTATION.typeName,
+                            AnalysisStep.PRODUCE_INVENTORY,
                             "Iterate through files under a directory (folder) and count the occurrences of each file name.",
                             "Some file names indicate a file of special type/use.  This profile information is likely to be large so it is logged to a CSV File.",
                             null),
 
     PROFILE_FILE_TYPES("Profile File Types",
                        OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
+                       AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
                        "Iterate through files under a directory (folder) and count the occurrences of each file type.",
                        "The file type is a category of file that describes its use.  The file types are defined as reference data in Egeria.",
                        null),
 
     PROFILE_ASSET_TYPES("Profile Asset Types",
                        OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                       "Iterate through files under a directory (folder) and count each potential asset type if they were to be catalogued in open metadata.",
+                        AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
+                        "Iterate through files under a directory (folder) and count each potential asset type if they were to be catalogued in open metadata.",
                        "The asset type is an open metadata type.  This annotation identifies the numbers of each type of asset that will be created if the files were catalogued in the open metadata ecosystem.",
                        null),
 
     PROFILE_DEP_IMPL_TYPES("Profile Deployed Implementation Types",
                         OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                        "Iterate through files under a directory (folder) and count each potential deployed implementation type if they were to be catalogued in open metadata.",
+                           AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
+                           "Iterate through files under a directory (folder) and count each potential deployed implementation type if they were to be catalogued in open metadata.",
                         "The deployed implementation type reflects the technology employed within this resource.  The deployed implementation type is defined as reference data in Egeria.",
                         null),
 
     MISSING_REF_DATA("Missing File Reference Data",
                        OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName,
+                       AnalysisStep.PRODUCE_ACTIONS,
                        "List of files that could not be classified using the file reference data.",
                        "The survey service uses reference data to classify the purpose of files based on their file name.  This annotation captures all of the file names that could not be matched to the reference data. If any of these reveal files that are important to your organization then the reference data should be enhanced to include these files.",
                        null),
 
     INACCESSIBLE_FILES("Inaccessible files",
                      OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName,
+                     AnalysisStep.PRODUCE_ACTIONS,
                      "List of files that the survey service was unable to retrieve the basic attributes for.",
                      "The survey service retrieves the basic attributes of a file as part of its profiling effort.  A file I/O error uses reference data to classify the purpose of files based on their file name.  This annotation captures all of the file names that could not be matched to the reference data. If any of these reveal files that are important to your organization then the reference data should be enhanced to include these files.",
                      null),
@@ -70,9 +79,10 @@ public enum SurveyFolderAnnotationType
     ;
 
 
-    public final String             name;
-    public final String             openMetadataTypeName;
-    public final String             summary;
+    public final String                    name;
+    public final String                    openMetadataTypeName;
+    public final AnalysisStep              analysisStep;
+    public final String                    summary;
     public final String                    explanation;
     public final List<FileDirectoryMetric> metrics;
 
@@ -82,18 +92,21 @@ public enum SurveyFolderAnnotationType
      *
      * @param name name of the annotation type
      * @param openMetadataTypeName the open metadata type used for this annotation type
+     * @param analysisStep analysis step where this annotation is produced
      * @param summary short explanation of the annotation type
      * @param explanation explanation of the annotation type
      * @param metrics optional metrics
      */
     SurveyFolderAnnotationType(String              name,
                                String              openMetadataTypeName,
+                               AnalysisStep        analysisStep,
                                String              summary,
                                String              explanation,
                                List<FileDirectoryMetric>  metrics)
     {
         this.name                 = name;
         this.openMetadataTypeName = openMetadataTypeName;
+        this.analysisStep         = analysisStep;
         this.summary              = summary;
         this.explanation          = explanation;
         this.metrics              = metrics;
@@ -122,6 +135,7 @@ public enum SurveyFolderAnnotationType
      *
      * @return string name
      */
+    @Override
     public String getName()
     {
         return name;
@@ -133,6 +147,7 @@ public enum SurveyFolderAnnotationType
      *
      * @return analysis step name
      */
+    @Override
     public String getAnalysisStep()
     {
         return AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName();
@@ -144,6 +159,7 @@ public enum SurveyFolderAnnotationType
      *
      * @return type name
      */
+    @Override
     public String getOpenMetadataTypeName()
     {
         return openMetadataTypeName;
@@ -155,6 +171,7 @@ public enum SurveyFolderAnnotationType
      *
      * @return text
      */
+    @Override
     public String getSummary()
     {
         return summary;
@@ -166,9 +183,22 @@ public enum SurveyFolderAnnotationType
      *
      * @return text
      */
+    @Override
     public String getExplanation()
     {
         return explanation;
+    }
+
+
+    /**
+     * Return the expression used in the annotation type processing.
+     *
+     * @return string
+     */
+    @Override
+    public String getExpression()
+    {
+        return null;
     }
 
 

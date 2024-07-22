@@ -131,7 +131,7 @@ public class TestConnectorTypeProperties
         assertTrue(resultObject.getClassifications() == null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
-        assertTrue(resultObject.getAdditionalProperties() == null);
+        assertTrue(resultObject.getAdditionalProperties() != null);
 
         assertTrue(resultObject.getDisplayName().equals("TestDisplayName"));
         assertTrue(resultObject.getDescription().equals("TestDescription"));
@@ -197,9 +197,9 @@ public class TestConnectorTypeProperties
     {
         ConnectorTypeProperties connectorTypeProperties = getAnotherDifferentObject();
 
-        assertTrue(connectorTypeProperties.getRecognizedAdditionalProperties() == null);
-        assertTrue(connectorTypeProperties.getRecognizedSecuredProperties() == null);
-        assertTrue(connectorTypeProperties.getRecognizedConfigurationProperties() == null);
+        assertTrue(connectorTypeProperties.getRecognizedAdditionalProperties() != null);
+        assertTrue(connectorTypeProperties.getRecognizedSecuredProperties() != null);
+        assertTrue(connectorTypeProperties.getRecognizedConfigurationProperties() != null);
 
     }
 

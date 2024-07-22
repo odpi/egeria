@@ -56,15 +56,6 @@ public class SchemaTypeChoice extends SchemaType
      */
     public List<SchemaType> getSchemaOptions()
     {
-        if (schemaOptions == null)
-        {
-            return null;
-        }
-        else if (schemaOptions.isEmpty())
-        {
-            return null;
-        }
-
         return schemaOptions;
     }
 

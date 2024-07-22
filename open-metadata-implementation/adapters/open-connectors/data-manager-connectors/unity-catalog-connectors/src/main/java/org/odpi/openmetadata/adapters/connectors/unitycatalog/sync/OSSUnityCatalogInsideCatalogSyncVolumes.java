@@ -54,6 +54,8 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
      * @param ucServerEndpoint the server endpoint used to constructing the qualified names
      * @param templates templates supplied through the catalog target
      * @param configurationProperties configuration properties supplied through the catalog target
+     * @param excludeNames list of catalogs to ignore (and include all others)
+     * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
      * @param auditLog logging destination
      */
     public OSSUnityCatalogInsideCatalogSyncVolumes(String                           connectorName,
@@ -66,6 +68,8 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                    String                           ucServerEndpoint,
                                                    Map<String, String>              templates,
                                                    Map<String, Object>              configurationProperties,
+                                                   List<String>                     excludeNames,
+                                                   List<String>                     includeNames,
                                                    AuditLog                         auditLog)
     {
         super(connectorName,
@@ -79,6 +83,8 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
               DeployedImplementationType.OSS_UC_VOLUME,
               templates,
               configurationProperties,
+              excludeNames,
+              includeNames,
               auditLog);
 
         if (templates != null)
@@ -126,31 +132,34 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                                      nextElement.getElement().getElementProperties(),
                                                                      methodName);
 
-                try
+                if (context.elementShouldBeCatalogued(volumeName, excludeNames, includeNames))
                 {
-                    volumeInfo = ucConnector.getVolume(volumeName);
-                }
-                catch (Exception missing)
-                {
-                    // this is not necessarily an error
-                }
+                    try
+                    {
+                        volumeInfo = ucConnector.getVolume(volumeName);
+                    }
+                    catch (Exception missing)
+                    {
+                        // this is not necessarily an error
+                    }
 
-                MemberAction memberAction = MemberAction.NO_ACTION;
-                if (volumeInfo == null)
-                {
-                    memberAction = nextElement.getMemberAction(null, null);
-                }
-                else if (noMismatchInExternalIdentifier(volumeInfo.getVolume_id(), nextElement))
-                {
-                    memberAction = nextElement.getMemberAction(this.getDateFromLong(volumeInfo.getCreated_at()),
-                                                               this.getDateFromLong(volumeInfo.getUpdated_at()));
-                }
+                    MemberAction memberAction = MemberAction.NO_ACTION;
+                    if (volumeInfo == null)
+                    {
+                        memberAction = nextElement.getMemberAction(null, null);
+                    }
+                    else if (noMismatchInExternalIdentifier(volumeInfo.getVolume_id(), nextElement))
+                    {
+                        memberAction = nextElement.getMemberAction(this.getDateFromLong(volumeInfo.getCreated_at()),
+                                                                   this.getDateFromLong(volumeInfo.getUpdated_at()));
+                    }
 
-                this.takeAction(context.getAnchorGUID(nextElement.getElement()),
-                                super.getUCSchemaFomMember(nextElement),
-                                memberAction,
-                                nextElement,
-                                volumeInfo);
+                    this.takeAction(context.getAnchorGUID(nextElement.getElement()),
+                                    super.getUCSchemaFomMember(nextElement),
+                                    memberAction,
+                                    nextElement,
+                                    volumeInfo);
+                }
             }
         }
 

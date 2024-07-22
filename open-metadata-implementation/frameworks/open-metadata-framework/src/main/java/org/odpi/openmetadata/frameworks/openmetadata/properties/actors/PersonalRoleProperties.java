@@ -217,18 +217,7 @@ public class PersonalRoleProperties
      */
     public Map<String, String> getAdditionalProperties()
     {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
+        return additionalProperties;
     }
 
 
@@ -319,18 +308,7 @@ public class PersonalRoleProperties
      */
     public Map<String, Object> getExtendedProperties()
     {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
-        }
+        return extendedProperties;
     }
 
 

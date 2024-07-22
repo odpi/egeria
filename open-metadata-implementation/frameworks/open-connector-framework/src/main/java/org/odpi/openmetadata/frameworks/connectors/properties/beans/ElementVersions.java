@@ -97,18 +97,7 @@ public class ElementVersions
      */
     public List<String> getMaintainedBy()
     {
-        if (maintainedBy == null)
-        {
-            return null;
-        }
-        else if (maintainedBy.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(maintainedBy);
-        }
+        return maintainedBy;
     }
 
 

@@ -32,3 +32,14 @@ Content-Type: application/json
     "fileName" : "week1.csv"
   }
 }
+
+###
+
+@metadataElementGUID=add guid here
+
+###
+# @name deleteMetadataElement
+# Delete a specific metadata element.
+
+POST {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/{{metadataElementGUID}}/delete
+Content-Type: application/json

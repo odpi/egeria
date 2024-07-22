@@ -2,12 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile;
 
+import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.SurveyFileAnnotationType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 
 import java.util.ArrayList;
 
@@ -70,8 +72,9 @@ public class FileSurveyServiceProvider extends SurveyActionServiceProvider
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE.getDeployedImplementationType());
 
         super.supportedActionTargetTypes.add(actionTargetType);
-
-        super.producedAnnotationTypes = SurveyFileAnnotationType.getAnnotationTypeTypes();
+        super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE});
+        super.producedAnnotationTypes = SurveyFileAnnotationType.getFileSurveyAnnotationTypeTypes();
 
         /*
          * Set up the component description used in the connector's audit log messages.

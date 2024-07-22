@@ -231,10 +231,12 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
      *
      * @param propertyName name of property
      * @param configurationProperties configuration properties
+     * @param defaultValue value to use if the property is not specified.
      * @return list of strings or null if not set
      */
     protected List<String> getArrayConfigurationProperty(String              propertyName,
-                                                         Map<String, Object> configurationProperties)
+                                                         Map<String, Object> configurationProperties,
+                                                         List<String>        defaultValue)
     {
         if (configurationProperties != null)
         {
@@ -248,7 +250,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
             }
         }
 
-        return null;
+        return defaultValue;
     }
 
 

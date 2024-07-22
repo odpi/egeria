@@ -8,6 +8,9 @@ dependencies {
     implementation project(':open-metadata-implementation:user-security:token-controller')
     implementation project(':open-metadata-implementation:view-services:runtime-manager:runtime-manager-server')
     implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-api')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    implementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation 'org.springframework:spring-web'
     implementation 'io.swagger.core.v3:swagger-annotations'

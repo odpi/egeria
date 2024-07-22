@@ -275,9 +275,17 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                           "Correct the code in the caller to provide a valid properties object."),
 
     /**
-     * OMAG-COMMON-400-030 - A request by user {0} to method {1} on server {2} had no request body.  Add a request body of type {3}
+     * OMAG-COMMON-400-030 - The {0} operation is only supported by {1} servers and server {2} is a {3}
      */
-    NO_REQUEST_BODY_FOR_CLASS(400, "OMAG-COMMON-400-030",
+    INVALID_CALL_FOR_SERVER(400, "OMAG-COMMON-400-030",
+                              "The {0} operation is only supported by {1} servers and server {2} is a {3}",
+                              "The system is unable to proceed because the server called does not support the request.",
+                              "Correct the code in the caller to call the correct server."),
+
+    /**
+     * OMAG-COMMON-400-031 - A request by user {0} to method {1} on server {2} had no request body.  Add a request body of type {3}
+     */
+    NO_REQUEST_BODY_FOR_CLASS(400, "OMAG-COMMON-400-031",
                     "A request by user {0} to method {1} on server {2} had no request body.  Add a request body of type {3}",
                     "The system is unable to process the request without the request body since it contains key information.  It returns with an exception.",
                     "Update the caller to provide the request body of the recommended type."),

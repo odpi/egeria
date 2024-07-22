@@ -72,17 +72,17 @@ public class TestConnection
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getClassifications() == null);
+        assertTrue(resultObject.getClassifications() != null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
-        assertTrue(resultObject.getAdditionalProperties() == null);
+        assertTrue(resultObject.getAdditionalProperties() != null);
 
         assertTrue(resultObject.getDisplayName().equals("TestDisplayName"));
         assertTrue(resultObject.getDescription().equals("TestDescription"));
         assertTrue(resultObject.getConnectorType().equals(connectorType));
         assertTrue(resultObject.getEndpoint().equals(endpoint));
-        assertTrue(resultObject.getConfigurationProperties() == null);
-        assertTrue(resultObject.getSecuredProperties() == null);
+        assertTrue(resultObject.getConfigurationProperties() != null);
+        assertTrue(resultObject.getSecuredProperties() != null);
     }
 
 
@@ -154,7 +154,7 @@ public class TestConnection
         testObject = new Connection();
         testObject.setConfigurationProperties(propertyMap);
 
-        assertTrue(testObject.getConfigurationProperties() == null);
+        assertTrue(testObject.getConfigurationProperties() != null);
 
         propertyMap.put("propertyName", "propertyValue");
         testObject = new Connection();
@@ -188,7 +188,7 @@ public class TestConnection
         testObject = new Connection();
         testObject.setSecuredProperties(propertyMap);
 
-        assertTrue(testObject.getSecuredProperties() == null);
+        assertTrue(testObject.getSecuredProperties() != null);
 
         propertyMap.put("propertyName", "propertyValue");
         testObject = new Connection();
