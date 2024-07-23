@@ -69,7 +69,7 @@ Content-Type: application/json
 
 ###
 
-@server1GUID=d3a6b3e1-8371-4a2c-bf2f-4a531ac03e65
+@server1GUID=add guid here
 
 
 ###
@@ -333,7 +333,7 @@ Content-Type: application/json
 
 ###
 
-@server2GUID=96180c82-70bd-4bea-9b25-fda179c03fea
+@server2GUID=add guid here
 
 ###
 # @name=getAssetGraph (UC Server 2)

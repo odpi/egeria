@@ -455,7 +455,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
         placeholderProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), ucServerEndpoint);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(), functionInfo.getCatalog_name());
         placeholderProperties.put(UnityCatalogPlaceholderProperty.SCHEMA_NAME.getName(), functionInfo.getSchema_name());
-        placeholderProperties.put(UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(), functionInfo.getFull_name());
+        placeholderProperties.put(UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(), functionInfo.getName());
         placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), functionInfo.getComment());
         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), null);
 
