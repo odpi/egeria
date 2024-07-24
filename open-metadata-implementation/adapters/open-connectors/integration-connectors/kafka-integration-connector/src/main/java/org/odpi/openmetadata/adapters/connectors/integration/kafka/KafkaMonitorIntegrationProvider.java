@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.kafka;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.controls.CatalogTargetType;
@@ -103,5 +104,7 @@ public class KafkaMonitorIntegrationProvider extends IntegrationConnectorProvide
         catalogTargetType.setDeployedImplementationType(DeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType());
 
         super.catalogTargets.add(catalogTargetType);
+
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.APACHE_KAFKA_SERVER});
     }
 }

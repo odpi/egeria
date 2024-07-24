@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfi
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresTarget;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
@@ -84,6 +85,7 @@ public class PostgresServerIntegrationProvider extends IntegrationConnectorProvi
 
         super.setConnectorComponentDescription(componentDescription);
 
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.POSTGRESQL_SERVER});
         super.catalogTargets = PostgresTarget.getPostgresServerCatalogTargetTypes();
         super.supportedConfigurationProperties = PostgresConfigurationProperty.getPostgresServerConfigurationPropertyTypes();
     }

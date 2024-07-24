@@ -7,7 +7,9 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCata
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTarget;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 
@@ -81,7 +83,8 @@ public class OSSUnityCatalogInsideSchemaSurveyProvider extends SurveyActionServi
 
         super.setConnectorComponentDescription(componentDescription);
 
-        super.supportedActionTargetTypes = UnityCatalogTarget.getCatalogActionTargetTypes();
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.OSS_UC_SCHEMA});
+        super.supportedActionTargetTypes = UnityCatalogTarget.getSchemaActionTargetTypes();
         super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
                 AnalysisStep.CHECK_ASSET, AnalysisStep.MEASURE_RESOURCE, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES, AnalysisStep.PRODUCE_INVENTORY});
         super.producedAnnotationTypes    = UnityCatalogAnnotationType.getCatalogAnnotationTypeTypes();

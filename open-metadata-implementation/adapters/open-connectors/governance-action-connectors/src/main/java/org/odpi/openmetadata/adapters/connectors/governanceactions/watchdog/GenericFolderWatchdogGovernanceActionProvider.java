@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 
+import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
@@ -56,6 +57,7 @@ public class GenericFolderWatchdogGovernanceActionProvider extends GovernanceAct
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
 
         super.supportedActionTargetTypes.add(actionTargetType);
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.FILE_FOLDER, DeployedImplementationType.DATA_FOLDER});
 
         producedGuards = GenericWatchdogGuard.getGuardTypes();
 

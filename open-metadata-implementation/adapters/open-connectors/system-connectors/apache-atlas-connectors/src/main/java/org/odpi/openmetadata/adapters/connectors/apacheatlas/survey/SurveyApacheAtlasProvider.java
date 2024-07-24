@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.Atl
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.AtlasRequestParameter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -98,6 +99,8 @@ public class SurveyApacheAtlasProvider extends SurveyActionServiceProvider
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType());
 
         super.supportedActionTargetTypes.add(actionTargetType);
+
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.APACHE_ATLAS_SERVER});
 
 
         /*

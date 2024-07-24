@@ -56,6 +56,7 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatal
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
@@ -3469,15 +3470,17 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
      *
      * @param resourceUse how is this
      * @param provider connector provider
+     * @param governanceServiceDescription description of the underlying service
      * @return governance action description
      */
-    private GovernanceActionDescription getGovernanceActionDescription(ResourceUse                   resourceUse,
-                                                                       GovernanceServiceProviderBase provider,
-                                                                       String                        governanceServiceDescription)
+    private GovernanceActionDescription getGovernanceActionDescription(ResourceUse                      resourceUse,
+                                                                       GovernanceServiceProviderBase    provider,
+                                                                       String                           governanceServiceDescription)
     {
         GovernanceActionDescription governanceActionDescription = new GovernanceActionDescription();
 
         governanceActionDescription.resourceUse                  = resourceUse;
+        governanceActionDescription.supportedTechnologies        = provider.getSupportedTechnologyTypes();
         governanceActionDescription.supportedRequestTypes        = provider.getSupportedRequestTypes();
         governanceActionDescription.supportedRequestParameters   = provider.getSupportedRequestParameters();
         governanceActionDescription.supportedActionTargets       = provider.getSupportedActionTargetTypes();
@@ -3707,17 +3710,18 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
      */
     static class GovernanceActionDescription
     {
-        String                     governanceServiceGUID        = null;
-        String                     governanceServiceDescription = null;
-        List<RequestTypeType>      supportedRequestTypes        = null;
-        List<RequestParameterType> supportedRequestParameters   = null;
-        List<ActionTargetType>     supportedActionTargets       = null;
-        List<AnalysisStepType>     supportedAnalysisSteps       = null;
-        List<AnnotationTypeType>   supportedAnnotationTypes     = null;
-        List<RequestParameterType> producedRequestParameters    = null;
-        List<ActionTargetType>     producedActionTargets        = null;
-        List<GuardType>            producedGuards               = null;
-        ResourceUse                resourceUse                  = null;
+        String                        governanceServiceGUID        = null;
+        String                        governanceServiceDescription = null;
+        List<SupportedTechnologyType> supportedTechnologies        = null;
+        List<RequestTypeType>         supportedRequestTypes        = null;
+        List<RequestParameterType>    supportedRequestParameters   = null;
+        List<ActionTargetType>        supportedActionTargets       = null;
+        List<AnalysisStepType>        supportedAnalysisSteps       = null;
+        List<AnnotationTypeType>      supportedAnnotationTypes     = null;
+        List<RequestParameterType>    producedRequestParameters    = null;
+        List<ActionTargetType>        producedActionTargets        = null;
+        List<GuardType>               producedGuards               = null;
+        ResourceUse                   resourceUse                  = null;
     }
 
 
@@ -3779,37 +3783,40 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                           null,
                                                           governanceEngineGUID);
 
-                for (ActionTargetType actionTargetType : governanceActionDescription.supportedActionTargets)
+                if (governanceActionDescription.supportedTechnologies != null)
                 {
-                    if (actionTargetType != null)
+                    for (SupportedTechnologyType supportedTechnology : governanceActionDescription.supportedTechnologies)
                     {
-                        if (actionTargetType.getTypeName() != null)
+                        if (supportedTechnology != null)
                         {
-                            String openMetadataTypeGUID = openMetadataTypeGUIDs.get(actionTargetType.getTypeName());
-
-                            if (openMetadataTypeGUID != null)
+                            if (supportedTechnology.getDataType() != null)
                             {
-                                archiveHelper.addResourceListRelationshipByGUID(openMetadataTypeGUID,
-                                                                                governanceActionTypeGUID,
-                                                                                governanceActionDescription.resourceUse.getResourceUse(),
-                                                                                governanceActionDescription.governanceServiceDescription,
-                                                                                requestParameters,
-                                                                                false);
+                                String openMetadataTypeGUID = openMetadataTypeGUIDs.get(supportedTechnology.getDataType());
+
+                                if (openMetadataTypeGUID != null)
+                                {
+                                    archiveHelper.addResourceListRelationshipByGUID(openMetadataTypeGUID,
+                                                                                    governanceActionTypeGUID,
+                                                                                    governanceActionDescription.resourceUse.getResourceUse(),
+                                                                                    governanceActionDescription.governanceServiceDescription,
+                                                                                    requestParameters,
+                                                                                    false);
+                                }
                             }
-                        }
 
-                        if (actionTargetType.getDeployedImplementationType() != null)
-                        {
-                            String deployedImplementationTypeGUID = deployedImplementationTypeGUIDs.get(actionTargetType.getDeployedImplementationType());
-
-                            if (deployedImplementationTypeGUID != null)
+                            if (supportedTechnology.getName() != null)
                             {
-                                archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
-                                                                                governanceActionTypeGUID,
-                                                                                governanceActionDescription.resourceUse.getResourceUse(),
-                                                                                governanceActionDescription.governanceServiceDescription,
-                                                                                requestParameters,
-                                                                                false);
+                                String deployedImplementationTypeGUID = deployedImplementationTypeGUIDs.get(supportedTechnology.getName());
+
+                                if (deployedImplementationTypeGUID != null)
+                                {
+                                    archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
+                                                                                    governanceActionTypeGUID,
+                                                                                    governanceActionDescription.resourceUse.getResourceUse(),
+                                                                                    governanceActionDescription.governanceServiceDescription,
+                                                                                    requestParameters,
+                                                                                    false);
+                                }
                             }
                         }
                     }

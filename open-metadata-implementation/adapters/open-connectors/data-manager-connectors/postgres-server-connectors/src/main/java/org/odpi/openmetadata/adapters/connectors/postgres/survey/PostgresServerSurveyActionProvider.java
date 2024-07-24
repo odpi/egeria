@@ -7,7 +7,9 @@ import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresAnnot
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresTarget;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 
@@ -81,9 +83,9 @@ public class PostgresServerSurveyActionProvider extends SurveyActionServiceProvi
 
         super.setConnectorComponentDescription(componentDescription);
 
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.POSTGRESQL_SERVER});
         super.supportedActionTargetTypes = PostgresTarget.getPostgresServerActionTargetTypes();
-        super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
-                AnalysisStep.CHECK_ASSET, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
+        super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {AnalysisStep.CHECK_ASSET, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
         super.producedAnnotationTypes    = PostgresAnnotationType.getPostgresServerAnnotationTypeTypes();
     }
 }
