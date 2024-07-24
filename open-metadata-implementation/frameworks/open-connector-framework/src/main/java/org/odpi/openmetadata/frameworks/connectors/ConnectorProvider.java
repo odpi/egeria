@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors;
 
+import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.controls.TemplateType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -38,6 +39,12 @@ public abstract class ConnectorProvider
      * open metadata elements.
      */
     protected List<TemplateType> supportedTemplateTypes = null;
+
+
+    /**
+     * The list of technology types that this connector supports.
+     */
+    protected List<SupportedTechnologyType> supportedTechnologyTypes = null;
 
 
     /**
@@ -79,6 +86,17 @@ public abstract class ConnectorProvider
     public List<TemplateType> getSupportedTemplateTypes()
     {
         return supportedTemplateTypes;
+    }
+
+
+    /**
+     * Return the list of technology types supported by this connector.
+     *
+     * @return technology types
+     */
+    public List<SupportedTechnologyType> getSupportedTechnologyTypes()
+    {
+        return supportedTechnologyTypes;
     }
 
 

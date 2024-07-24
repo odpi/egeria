@@ -6,6 +6,7 @@ import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.FolderReq
 import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.SurveyFolderAnnotationType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -71,6 +72,7 @@ public class FolderSurveyServiceProvider extends SurveyActionServiceProvider
         actionTargetType.setTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
 
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.FILE_FOLDER, DeployedImplementationType.DATA_FOLDER});
         super.supportedActionTargetTypes.add(actionTargetType);
         super.producedAnnotationTypes = SurveyFolderAnnotationType.getAnnotationTypeTypes();
         super.supportedRequestParameters = FolderRequestParameter.getRequestParameterTypes();

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCata
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTarget;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -80,6 +81,8 @@ public class OSSUnityCatalogInsideCatalogSyncProvider extends IntegrationConnect
 
         super.setConnectorComponentDescription(componentDescription);
 
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.OSS_UC_CATALOG,
+        DeployedImplementationType.OSS_UC_SCHEMA, DeployedImplementationType.OSS_UC_VOLUME, DeployedImplementationType.OSS_UC_TABLE, DeployedImplementationType.OSS_UC_FUNCTION});
         super.catalogTargets = UnityCatalogTarget.getUCCatalogTargetTypes();
         super.supportedConfigurationProperties = UnityCatalogConfigurationProperty.getUnityCatalogInsideCatalogConfigurationPropertyTypes();
     }

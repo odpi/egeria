@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceMeasureAnnotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,11 +53,11 @@ public class OSSUnityCatalogServerSurveyService extends OSSUnityCatalogServerSur
              */
             annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
 
-            Map<String, String> catalogList  = new HashMap<>();
-            Map<String, String> schemaList   = new HashMap<>();
-            Map<String, String> functionList = new HashMap<>();
-            Map<String, String> tableList    = new HashMap<>();
-            Map<String, String> volumeList   = new HashMap<>();
+            Map<String, ResourceProperties> catalogList  = new HashMap<>();
+            Map<String, ResourceProperties> schemaList   = new HashMap<>();
+            Map<String, ResourceProperties> functionList = new HashMap<>();
+            Map<String, ResourceProperties> tableList    = new HashMap<>();
+            Map<String, ResourceProperties> volumeList   = new HashMap<>();
 
             long catalogCount  = 0;
             long schemaCount   = 0;
@@ -72,7 +73,17 @@ public class OSSUnityCatalogServerSurveyService extends OSSUnityCatalogServerSur
                 {
                     if (catalogInfo != null)
                     {
-                        catalogList.put(catalogInfo.getName(), catalogInfo.getComment());
+                        ResourceProperties resourceProperties = new ResourceProperties();
+
+                        resourceProperties.description = catalogInfo.getComment();
+                        resourceProperties.creationDate = new Date(catalogInfo.getCreated_at());
+
+                        if (catalogInfo.getUpdated_at() != 0L)
+                        {
+                            resourceProperties.lastUpdateDate = new Date(catalogInfo.getUpdated_at());
+                        }
+
+                        catalogList.put(catalogInfo.getName(), resourceProperties);
                         catalogCount ++;
 
                         List<SchemaInfo> schemaInfos = ucConnector.listSchemas(catalogInfo.getName());
@@ -83,7 +94,17 @@ public class OSSUnityCatalogServerSurveyService extends OSSUnityCatalogServerSur
                             {
                                 if (schemaInfo != null)
                                 {
-                                    schemaList.put(schemaInfo.getFull_name(), schemaInfo.getComment());
+                                    resourceProperties = new ResourceProperties();
+
+                                    resourceProperties.description = schemaInfo.getComment();
+                                    resourceProperties.creationDate = new Date(schemaInfo.getCreated_at());
+
+                                    if (schemaInfo.getUpdated_at() != 0L)
+                                    {
+                                        resourceProperties.lastUpdateDate = new Date(schemaInfo.getUpdated_at());
+                                    }
+
+                                    schemaList.put(schemaInfo.getFull_name(), resourceProperties);
                                     schemaCount ++;
 
                                     List<VolumeInfo> volumeInfos = ucConnector.listVolumes(catalogInfo.getName(), schemaInfo.getName());
@@ -94,7 +115,17 @@ public class OSSUnityCatalogServerSurveyService extends OSSUnityCatalogServerSur
                                         {
                                             if (volumeInfo != null)
                                             {
-                                                volumeList.put(volumeInfo.getFull_name(), volumeInfo.getComment());
+                                                resourceProperties = new ResourceProperties();
+
+                                                resourceProperties.description = volumeInfo.getComment();
+                                                resourceProperties.creationDate = new Date(volumeInfo.getCreated_at());
+
+                                                if (volumeInfo.getUpdated_at() != 0L)
+                                                {
+                                                    resourceProperties.lastUpdateDate = new Date(volumeInfo.getUpdated_at());
+                                                }
+
+                                                volumeList.put(volumeInfo.getFull_name(), resourceProperties);
                                                 volumeCount ++;
                                             }
                                         }
@@ -108,7 +139,17 @@ public class OSSUnityCatalogServerSurveyService extends OSSUnityCatalogServerSur
                                         {
                                             if (tableInfo != null)
                                             {
-                                                tableList.put(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(), tableInfo.getComment());
+                                                resourceProperties = new ResourceProperties();
+
+                                                resourceProperties.description = tableInfo.getComment();
+                                                resourceProperties.creationDate = new Date(tableInfo.getCreated_at());
+
+                                                if (tableInfo.getUpdated_at() != 0L)
+                                                {
+                                                    resourceProperties.lastUpdateDate = new Date(tableInfo.getUpdated_at());
+                                                }
+
+                                                tableList.put(tableInfo.getCatalog_name() + "." + tableInfo.getSchema_name() + "." + tableInfo.getName(), resourceProperties);
                                                 tableCount ++;
                                             }
                                         }
@@ -122,7 +163,17 @@ public class OSSUnityCatalogServerSurveyService extends OSSUnityCatalogServerSur
                                         {
                                             if (functionInfo != null)
                                             {
-                                                functionList.put(functionInfo.getFull_name(), functionInfo.getComment());
+                                                resourceProperties = new ResourceProperties();
+
+                                                resourceProperties.description = functionInfo.getComment();
+                                                resourceProperties.creationDate = new Date(functionInfo.getCreated_at());
+
+                                                if (functionInfo.getUpdated_at() != 0L)
+                                                {
+                                                    resourceProperties.lastUpdateDate = new Date(functionInfo.getUpdated_at());
+                                                }
+
+                                                functionList.put(functionInfo.getFull_name(), resourceProperties);
                                                 functionCount ++;
                                             }
                                         }
@@ -157,7 +208,7 @@ public class OSSUnityCatalogServerSurveyService extends OSSUnityCatalogServerSur
             resourceMeasureAnnotation.setJsonProperties(this.getJSONProperties(resourceCounts));
             resourceMeasureAnnotation.setResourceProperties(resourceProperties);
 
-            annotationStore.addAnnotation(resourceMeasureAnnotation, surveyContext.getAssetGUID());
+            annotationStore.addAnnotation(resourceMeasureAnnotation, null);
 
             if (! finalAnalysisStep.equals(AnalysisStep.MEASURE_RESOURCE.getName()))
             {
@@ -165,29 +216,29 @@ public class OSSUnityCatalogServerSurveyService extends OSSUnityCatalogServerSur
 
                 ResourceProfileAnnotation resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.CATALOG_LIST, catalogList);
 
-                annotationStore.addAnnotation(resourceProfileAnnotation, surveyContext.getAssetGUID());
+                annotationStore.addAnnotation(resourceProfileAnnotation, null);
 
                 resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.SCHEMA_LIST, schemaList);
 
-                annotationStore.addAnnotation(resourceProfileAnnotation, surveyContext.getAssetGUID());
+                annotationStore.addAnnotation(resourceProfileAnnotation, null);
 
                 resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.FUNCTION_LIST, functionList);
 
-                annotationStore.addAnnotation(resourceProfileAnnotation, surveyContext.getAssetGUID());
+                annotationStore.addAnnotation(resourceProfileAnnotation, null);
 
                 resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.TABLE_LIST, tableList);
 
-                annotationStore.addAnnotation(resourceProfileAnnotation, surveyContext.getAssetGUID());
+                annotationStore.addAnnotation(resourceProfileAnnotation, null);
 
                 resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.VOLUME_LIST, volumeList);
 
-                annotationStore.addAnnotation(resourceProfileAnnotation, surveyContext.getAssetGUID());
+                annotationStore.addAnnotation(resourceProfileAnnotation, null);
 
                 if (! finalAnalysisStep.equals(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName()))
                 {
                     annotationStore.setAnalysisStep(AnalysisStep.PRODUCE_INVENTORY.getName());
 
-                    super.writeInventory("serverResources",
+                    super.writeInventory("unityCatalog-Server-Resources",
                                          catalogList,
                                          schemaList,
                                          functionList,

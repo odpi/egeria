@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.egeria;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.controls.CatalogTargetType;
@@ -105,5 +106,9 @@ public class EgeriaCataloguerIntegrationProvider extends IntegrationConnectorPro
 
         super.catalogTargets = new ArrayList<>();
         super.catalogTargets.add(catalogTargetType);
+
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.OMAG_SERVER_PLATFORM,
+                DeployedImplementationType.OMAG_SERVER, DeployedImplementationType.METADATA_ACCESS_SERVER, DeployedImplementationType.INTEGRATION_DAEMON,
+                DeployedImplementationType.ENGINE_HOST, DeployedImplementationType.VIEW_SERVER});
     }
 }

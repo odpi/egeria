@@ -161,13 +161,13 @@ public class IntegrationContext
     {
         if (openMetadataStoreClient != null)
         {
-            OpenMetadataAccess      openMetadataAccess      = new OpenMetadataAccess(openMetadataStore,
-                                                                                     userId,
-                                                                                     externalSourceGUID,
-                                                                                     externalSourceName,
-                                                                                     originatorGUID,
-                                                                                     integrationReportWriter);
-            MultiLanguageManagement multiLanguageManagement = new MultiLanguageManagement(openMetadataStore, userId);
+            OpenMetadataAccess openMetadataAccess = new OpenMetadataAccess(openMetadataStore,
+                                                                           userId,
+                                                                           externalSourceGUID,
+                                                                           externalSourceName,
+                                                                           originatorGUID,
+                                                                           integrationReportWriter);
+            MultiLanguageManagement    multiLanguageManagement    = new MultiLanguageManagement(openMetadataStore, userId);
             StewardshipAction          stewardshipAction          = new StewardshipAction(openMetadataStore, userId, originatorGUID);
             ValidMetadataValuesContext validMetadataValuesContext = new ValidMetadataValuesContext(openMetadataStore, userId);
 

@@ -22,8 +22,10 @@ import java.util.*;
 
 public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnector
 {
-    private static final String fullNameProperty = "Full Name";
-    private static final String descriptionProperty = "Description";
+    private static final String fullNameProperty                   = "Full Name";
+    private static final String descriptionProperty                = "Description";
+    private static final String creationDateProperty               = "Creation Date";
+    private static final String lastUpdateProperty                 = "Last Update Date";
     private static final String deployedImplementationTypeProperty = "Deployed Implementation Type";
 
 
@@ -70,12 +72,22 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
      * Fill out a name list annotation.
      *
      * @param annotationType type of annotation
-     * @param nameList list of names with descriptions
+     * @param nameProperties list of names with properties
      * @return annotation
      */
-    protected ResourceProfileAnnotation getNameListAnnotation(UnityCatalogAnnotationType annotationType,
-                                                              Map<String, String>        nameList)
+    protected ResourceProfileAnnotation getNameListAnnotation(UnityCatalogAnnotationType      annotationType,
+                                                              Map<String, ResourceProperties> nameProperties)
     {
+        Map<String, String> nameList = new HashMap<>();
+
+        if (nameProperties != null)
+        {
+            for (String name : nameProperties.keySet())
+            {
+                nameList.put(name, nameProperties.get(name).description);
+            }
+        }
+
         ResourceProfileAnnotation resourceProfileAnnotation = new ResourceProfileAnnotation();
 
         setUpAnnotation(resourceProfileAnnotation, annotationType);
@@ -134,7 +146,7 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
 
 
     /**
-     * Return the name of the schema to survey; or throw an exception if there is no catalog name.
+     * Return the name of the schema to survey; or throw an exception if there is no schema name.
      *
      * @return name of the catalog to survey
      * @throws ConnectorCheckedException the catalog name is not specified
@@ -147,21 +159,21 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
 
         if (connectionProperties.getConfigurationProperties() != null)
         {
-            Object catalogNamePropertyObject = connectionProperties.getConfigurationProperties().get(UnityCatalogConfigurationProperty.SCHEMA_NAME.getName());
+            Object schemaNamePropertyObject = connectionProperties.getConfigurationProperties().get(UnityCatalogConfigurationProperty.SCHEMA_NAME.getName());
 
-            if (catalogNamePropertyObject != null)
+            if (schemaNamePropertyObject != null)
             {
-                schemaName = catalogNamePropertyObject.toString();
+                schemaName = schemaNamePropertyObject.toString();
             }
         }
 
         if (surveyContext.getRequestParameters() != null)
         {
-            String catalogNameProperty = surveyContext.getRequestParameters().get(UnityCatalogSurveyRequestParameter.SCHEMA_NAME.getName());
+            String schemaNameProperty = surveyContext.getRequestParameters().get(UnityCatalogSurveyRequestParameter.SCHEMA_NAME.getName());
 
-            if (catalogNameProperty != null)
+            if (schemaNameProperty != null)
             {
-                schemaName = catalogNameProperty;
+                schemaName = schemaNameProperty;
             }
         }
 
@@ -192,18 +204,18 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
      * @throws UserNotAuthorizedException authorization problem creating CSV file asset
      * @throws ConnectorCheckedException survey has been asked to stop
      */
-    protected void writeInventory(String              inventoryName,
-                                  Map<String, String> catalogList,
-                                  Map<String, String> schemaList,
-                                  Map<String, String> functionList,
-                                  Map<String, String> tableList,
-                                  Map<String, String> volumeList) throws ConnectorCheckedException,
-                                                                         InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException,
-                                                                         IOException
+    protected void writeInventory(String                          inventoryName,
+                                  Map<String, ResourceProperties> catalogList,
+                                  Map<String, ResourceProperties> schemaList,
+                                  Map<String, ResourceProperties> functionList,
+                                  Map<String, ResourceProperties> tableList,
+                                  Map<String, ResourceProperties> volumeList) throws ConnectorCheckedException,
+                                                                                     InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     IOException
     {
-        List<String>              propertyNames = Arrays.asList(new String[]{fullNameProperty, descriptionProperty, deployedImplementationTypeProperty});
+        List<String>              propertyNames = Arrays.asList(new String[]{fullNameProperty, descriptionProperty, creationDateProperty, lastUpdateProperty, deployedImplementationTypeProperty});
         List<Map<String, String>> propertyList = new ArrayList<>();
 
         this.addResourcesToPropertyList(DeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(), catalogList, propertyList);
@@ -229,9 +241,9 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
      * @param resourceList details of the resources
      * @param propertyList accumulating list
      */
-    private void addResourcesToPropertyList(String                   deployedImplementationType,
-                                            Map<String, String>      resourceList,
-                                            List<Map<String,String>> propertyList)
+    private void addResourcesToPropertyList(String                          deployedImplementationType,
+                                            Map<String, ResourceProperties> resourceList,
+                                            List<Map<String,String>>        propertyList)
     {
         if (resourceList != null)
         {
@@ -239,15 +251,40 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
             {
                 if (name != null)
                 {
-                    Map<String, String> properties = new HashMap<>();
 
-                    properties.put(fullNameProperty, name);
-                    properties.put(descriptionProperty, resourceList.get(name));
-                    properties.put(deployedImplementationTypeProperty, deployedImplementationType);
+                    ResourceProperties resourceProperties = resourceList.get(name);
+                    if (resourceProperties != null)
+                    {
+                        Map<String, String> properties = new HashMap<>();
 
-                    propertyList.add(properties);
+                        properties.put(fullNameProperty, name);
+                        properties.put(descriptionProperty, resourceProperties.description);
+                        properties.put(creationDateProperty, resourceProperties.creationDate.toString());
+                        if (resourceProperties.lastUpdateDate != null)
+                        {
+                            properties.put(lastUpdateProperty, resourceProperties.lastUpdateDate.toString());
+                        }
+                        else
+                        {
+                            properties.put(lastUpdateProperty, "--");
+                        }
+                        properties.put(deployedImplementationTypeProperty, deployedImplementationType);
+
+                        propertyList.add(properties);
+                    }
                 }
             }
         }
+    }
+
+
+    /**
+     * Information about a UC resource collected for the inventory.
+     */
+    protected static class ResourceProperties
+    {
+        protected String description    = null;
+        protected Date   creationDate   = null;
+        protected Date   lastUpdateDate = null;
     }
 }

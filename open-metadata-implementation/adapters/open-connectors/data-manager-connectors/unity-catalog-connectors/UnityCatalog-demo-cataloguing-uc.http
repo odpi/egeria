@@ -62,14 +62,13 @@ Content-Type: application/json
     "serverName" : "Unity Catalog 1",
     "versionIdentifier" : "V1.0",
     "description" : "First instance of the Unity Catalog (UC) Server.",
-    "serverUserId" : "uc1",
-    "versionIdentifier" : "V1.0"
+    "serverUserId" : "uc1"
   }
 }
 
 ###
 
-@server1GUID=add guid here
+@server1GUID=ea997682-a8fe-4ae9-967b-6fb0252d734f
 
 
 ###
@@ -226,7 +225,7 @@ Content-Type: application/json
 
 ###
 
-@ucSchemaGUID=405585bd-e07f-4e4f-9f9a-3cade3d2a9c4
+@ucSchemaGUID=3d649060-ffab-4bfa-8a7b-6392cd3d99d2
 
 ###
 # @name=getAssetGraph (schemas)
@@ -333,7 +332,7 @@ Content-Type: application/json
 
 ###
 
-@server2GUID=add guid here
+@server2GUID=8e9e3c2d-baf1-4250-9168-7e3941f894ff
 
 ###
 # @name=getAssetGraph (UC Server 2)
@@ -468,3 +467,71 @@ Content-Type: application/json
 
 POST {{baseURL}}/servers/active-metadata-store/open-metadata/framework-services/asset-owner/open-metadata-store/users/peterprofile/metadata-elements/{{catalogGUID}}/delete
 Content-Type: application/json
+
+
+
+###
+# @name createElementFromTemplate (Unity Catalog Server 3)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "{{ucServerTemplateGUID}}",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "hostURL" : "http://egeria.pdr-associates.com",
+    "portNumber" : "7070",
+    "serverName" : "Unity Catalog 3",
+    "versionIdentifier" : "V1.0",
+    "description" : "Third instance of the Unity Catalog (UC) Server.",
+    "serverUserId" : "uc3"
+  }
+}
+
+###
+
+@server3GUID=a29603dc-9163-4091-aa47-9f74ad286f0a
+
+###
+# @name=getAssetGraph (UC Server 3)
+# Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{server2GUID}}/as-graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name addCatalogTarget (UC Server 3)
+# Add a catalog target to the Unity Catalog Server Sync integration connector.
+# Notice that details of all of the templates for different types of UC elements are passed.  These
+# are not used directly by this connector, but passed to the friendship connector
+# (Unity Catalog Inside Catalog Sync integration conenctor) to support its cataloguing.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets/{{server3GUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "catalogTargetName" : "uc3.1",
+  "templateProperties" : {
+    "Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
+    "Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
+    "Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
+    "Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
+    "Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
+  },
+  "configurationProperties" : {
+    "UnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81"
+  }
+}
+
+###
+
+
+###
+
