@@ -109,9 +109,14 @@ loadScripts(document, 'script');</script>
 <div class="block">The list of supported configuration property types that describe how the connector's
  behaviour can be modified.</div>
 </div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/TemplateType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">TemplateType</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#supportedTemplateTypes" class="member-name-link">supportedTemplateTypes</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/SupportedTechnologyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">SupportedTechnologyType</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#supportedTechnologyTypes" class="member-name-link">supportedTechnologyTypes</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">The list of technology types that this connector supports.</div>
+</div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/TemplateType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">TemplateType</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#supportedTemplateTypes" class="member-name-link">supportedTemplateTypes</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The list of supported templates that are used by this connector when it creates new
  open metadata elements.</div>
 </div>
@@ -170,9 +175,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the list of supported configuration property types that describe how the connector's
  behaviour can be modified.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/TemplateType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">TemplateType</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedTemplateTypes()" class="member-name-link">getSupportedTemplateTypes</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/SupportedTechnologyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">SupportedTechnologyType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedTechnologyTypes()" class="member-name-link">getSupportedTechnologyTypes</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of technology types supported by this connector.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/TemplateType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">TemplateType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedTemplateTypes()" class="member-name-link">getSupportedTemplateTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of supported template types that describe the templates used by the connector
  when it is creating new elements.</div>
 </div>
@@ -207,6 +217,13 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/TemplateType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">TemplateType</a>&gt;</span>&nbsp;<span class="element-name">supportedTemplateTypes</span></div>
 <div class="block">The list of supported templates that are used by this connector when it creates new
  open metadata elements.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="supportedTechnologyTypes">
+<h3>supportedTechnologyTypes</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/SupportedTechnologyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">SupportedTechnologyType</a>&gt;</span>&nbsp;<span class="element-name">supportedTechnologyTypes</span></div>
+<div class="block">The list of technology types that this connector supports.</div>
 </section>
 </li>
 </ul>
@@ -276,6 +293,17 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of template types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSupportedTechnologyTypes()">
+<h3>getSupportedTechnologyTypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/SupportedTechnologyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">SupportedTechnologyType</a>&gt;</span>&nbsp;<span class="element-name">getSupportedTechnologyTypes</span>()</div>
+<div class="block">Return the list of technology types supported by this connector.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>technology types</dd>
 </dl>
 </section>
 </li>
