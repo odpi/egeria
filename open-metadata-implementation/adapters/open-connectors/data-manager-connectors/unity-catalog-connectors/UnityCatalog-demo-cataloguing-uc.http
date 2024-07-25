@@ -68,7 +68,7 @@ Content-Type: application/json
 
 ###
 
-@server1GUID=ea997682-a8fe-4ae9-967b-6fb0252d734f
+@server1GUID=add guid here
 
 
 ###
@@ -210,7 +210,7 @@ Content-Type: application/json
 
 ###
 
-@ucCatalogGUID=9b8c275d-d1d7-4e42-9962-21656334b77b
+@ucCatalogGUID=add guid here
 
 ###
 # @name getTechnologyTypeElements (schemas)
@@ -225,7 +225,7 @@ Content-Type: application/json
 
 ###
 
-@ucSchemaGUID=3d649060-ffab-4bfa-8a7b-6392cd3d99d2
+@ucSchemaGUID=add guid here
 
 ###
 # @name=getAssetGraph (schemas)
@@ -250,7 +250,7 @@ Content-Type: application/json
 
 ###
 
-@ucVolumeGUID=b6a46809-35ad-4324-8699-1621ea20e11c
+@ucVolumeGUID=add guid here
 
 ###
 # @name=getAssetGraph (volumes)
@@ -292,12 +292,12 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Unity Catalog Table"
+  "filter" : "Unity Catalog Schema"
 }
 
 ###
 
-@ucTableGUID=b20f88cb-8e5c-4ff2-bead-e193b910bc13
+@ucTableGUID=add guid here
 
 ###
 # @name=getAssetGraph (Tables)
@@ -332,7 +332,7 @@ Content-Type: application/json
 
 ###
 
-@server2GUID=8e9e3c2d-baf1-4250-9168-7e3941f894ff
+@server2GUID=add guid here
 
 ###
 # @name=getAssetGraph (UC Server 2)
@@ -371,7 +371,7 @@ Content-Type: application/json
 
 ###
 
-@catalogTargetRelationshipGUID=d38ec279-d3d7-4820-8795-262f26fb22cd
+@catalogTargetRelationshipGUID=add guid here
 
 ###
 
@@ -459,7 +459,7 @@ Content-Type: application/json
 
 ###
 
-@catalogGUID=eeb1bb8e-11fc-4946-a027-9034bb67f12d
+@catalogGUID=add guid here
 
 ###
 # @name deleteMetadataElement
@@ -482,7 +482,7 @@ Content-Type: application/json
   "templateGUID" : "{{ucServerTemplateGUID}}",
   "isOwnAnchor" : true,
   "placeholderPropertyValues" : {
-    "hostURL" : "http://egeria.pdr-associates.com",
+    "hostURL" : "http://localhost",
     "portNumber" : "7070",
     "serverName" : "Unity Catalog 3",
     "versionIdentifier" : "V1.0",
@@ -517,7 +517,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "catalogTargetName" : "uc3.1",
+  "catalogTargetName" : "uc3",
   "templateProperties" : {
     "Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
     "Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
