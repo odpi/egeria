@@ -67,8 +67,8 @@ Content-Type: application/json
   "elementProperties" : {
     "class" : "CommentProperties",
     "qualifiedName" : "Add unique name here",
-    "text" : "Add comment text here",
-    "commentType" : "GENERAL_COMMENT",
+    "commentText" : "Add comment text here",
+    "commentType" : "STANDARD_COMMENT",
     "additionalProperties" : {
       "propertyName 1" : "property value 1",
       "propertyName 2" : "property value 2"
@@ -90,8 +90,8 @@ Content-Type: application/json
   "elementProperties" : {
     "class" : "CommentProperties",
     "qualifiedName" : "Add unique name here",
-    "text" : "Add comment text here",
-    "commentType" : "GENERAL_COMMENT",
+    "commentText" : "Add comment text here",
+    "commentType" : "STANDARD_COMMENT",
     "additionalProperties" : {
       "propertyName 1" : "property value 1",
       "propertyName 2" : "property value 2"
@@ -209,6 +209,12 @@ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/eleme
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+###
+# @name getAttachedLikes
+# Return the likes attached to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/likes/retrieve?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
 ###
 # =====================================================================================================================
@@ -242,6 +248,13 @@ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/eleme
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+
+###
+# @name getAttachedRatings
+# Return the ratings attached to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/ratings/retrieve?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
 ###
 # =====================================================================================================================
@@ -357,6 +370,14 @@ Content-Type: application/json
 # Return the list of elements that are linked to a specific tag.
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/by-tag/{{tagGUID}}/retrieve?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name getAttachedTags
+# Return the informal tags attached to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/tags/retrieve?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

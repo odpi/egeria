@@ -159,6 +159,65 @@ public class FeedbackManagerRESTServices extends TokenController
 
 
     /**
+     * Return the comments attached to an element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
+     * @return list of ratings or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  UserNotAuthorizedException the user does not have permission to perform this request.
+     */
+    public RatingElementsResponse getAttachedRatings(String                        serverName,
+                                                     String                        elementGUID,
+                                                     int                           startFrom,
+                                                     int                           pageSize,
+                                                     String                        viewServiceURLMarker,
+                                                     String                        accessServiceURLMarker,
+                                                     EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getAttachedRatings";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        RatingElementsResponse response = new RatingElementsResponse();
+        AuditLog               auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getAttachedRatings(userId, elementGUID, startFrom, pageSize, requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElementList(handler.getAttachedRatings(userId, elementGUID, startFrom, pageSize, new Date()));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
      * Adds a "LikeProperties" to the element.
      *
      * @param serverName name of the server instances for this request
@@ -264,6 +323,66 @@ public class FeedbackManagerRESTServices extends TokenController
             else
             {
                 handler.removeLikeFromElement(userId, guid, null);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Return the likes attached to an element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
+     * @return list of likes or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  UserNotAuthorizedException the user does not have permission to perform this request.
+     */
+    public LikeElementsResponse getAttachedLikes(String                        serverName,
+                                                 String                        elementGUID,
+                                                 int                           startFrom,
+                                                 int                           pageSize,
+                                                 String                        viewServiceURLMarker,
+                                                 String                        accessServiceURLMarker,
+                                                 EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getAttachedLikes";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        LikeElementsResponse response = new LikeElementsResponse();
+        AuditLog             auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElementList(handler.getAttachedLikes(userId, elementGUID, startFrom, pageSize, requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElementList(handler.getAttachedLikes(userId, elementGUID, startFrom, pageSize, new Date()));
             }
         }
         catch (Exception error)
@@ -1524,6 +1643,65 @@ public class FeedbackManagerRESTServices extends TokenController
         return response;
     }
 
+
+
+    /**
+     * Return the informal tags attached to an element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param elementGUID    unique identifier for the element that the comments are connected to (maybe a comment too).
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param accessServiceURLMarker optional access service URL marker used to identify which back end service to call
+     * @param requestBody optional effective time
+     * @return list of tags or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  UserNotAuthorizedException the user does not have permission to perform this request.
+     */
+    public InformalTagsResponse getAttachedTags(String                        serverName,
+                                                String                        elementGUID,
+                                                int                           startFrom,
+                                                int                           pageSize,
+                                                String                        viewServiceURLMarker,
+                                                String                        accessServiceURLMarker,
+                                                EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getAttachedTags";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        InformalTagsResponse response = new InformalTagsResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            CollaborationManagerHandler handler = instanceHandler.getCollaborationManagerHandler(userId, serverName, viewServiceURLMarker, accessServiceURLMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setTags(handler.getAttachedTags(userId, elementGUID, startFrom, pageSize, requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setTags(handler.getAttachedTags(userId, elementGUID, startFrom, pageSize, new Date()));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
 
     /* =====================================================================================================================
      * A note log maintains an ordered list of notes.  It can be used to support release note, blogs and similar
