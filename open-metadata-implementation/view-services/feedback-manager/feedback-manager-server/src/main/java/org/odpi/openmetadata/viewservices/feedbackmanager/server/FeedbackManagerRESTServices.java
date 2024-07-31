@@ -6,13 +6,14 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.feedbackmanager.handler.CollaborationManagerHandler;
-import org.odpi.openmetadata.viewservices.feedbackmanager.properties.*;
 import org.odpi.openmetadata.viewservices.feedbackmanager.rest.*;
-import org.odpi.openmetadata.viewservices.feedbackmanager.rest.RelationshipRequestBody;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -990,7 +991,7 @@ public class FeedbackManagerRESTServices extends TokenController
                                                 boolean                 ignoreCase,
                                                 String                  viewServiceURLMarker,
                                                 String                  accessServiceURLMarker,
-                                                FilterRequestBody       requestBody)
+                                                FilterRequestBody requestBody)
     {
         final String methodName = "findComments";
 

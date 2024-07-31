@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -149,29 +151,6 @@ public class TestElementBase
         try
         {
             validateResultObject(objectMapper.readValue(jsonString, ElementBase.class));
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
-
-        /*
-         * Through superclass
-         */
-        PropertyBase propertyBase = getTestObject();
-
-        try
-        {
-            jsonString = objectMapper.writeValueAsString(propertyBase);
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
-
-        try
-        {
-            validateResultObject((ElementBase) objectMapper.readValue(jsonString, PropertyBase.class));
         }
         catch (Throwable  exc)
         {

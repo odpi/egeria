@@ -5,23 +5,10 @@ package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.ConnectionExchangeHandler;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetConnectionProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.EmbeddedConnectionProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ConnectionRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ConnectionResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ConnectionsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ConnectorTypeRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ConnectorTypeResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ConnectorTypesResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.EndpointRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.EndpointResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.EndpointsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.TemplateRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EmbeddedConnectionProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -274,8 +261,8 @@ public class ConnectionExchangeRESTServices
                 ConnectionExchangeHandler handler = instanceHandler.getConnectionExchangeHandler(userId, serverName, methodName);
 
                 handler.setupConnectorType(userId,
-                                           requestBody.getAssetManagerGUID(),
-                                           requestBody.getAssetManagerName(),
+                                           requestBody.getExternalSourceGUID(),
+                                           requestBody.getExternalSourceName(),
                                            assetManagerIsHome,
                                            connectionGUID,
                                            connectorTypeGUID,
@@ -407,8 +394,8 @@ public class ConnectionExchangeRESTServices
                 ConnectionExchangeHandler handler = instanceHandler.getConnectionExchangeHandler(userId, serverName, methodName);
 
                 handler.setupEndpoint(userId,
-                                      requestBody.getAssetManagerGUID(),
-                                      requestBody.getAssetManagerName(),
+                                      requestBody.getExternalSourceGUID(),
+                                      requestBody.getExternalSourceName(),
                                       assetManagerIsHome,
                                       connectionGUID,
                                       endpointGUID,
@@ -541,8 +528,8 @@ public class ConnectionExchangeRESTServices
                 if (requestBody.getProperties() instanceof EmbeddedConnectionProperties)
                 {
                     handler.setupEmbeddedConnection(userId,
-                                                    requestBody.getAssetManagerGUID(),
-                                                    requestBody.getAssetManagerName(),
+                                                    requestBody.getExternalSourceGUID(),
+                                                    requestBody.getExternalSourceName(),
                                                     assetManagerIsHome,
                                                     connectionGUID,
                                                     embeddedConnectionGUID,
@@ -555,8 +542,8 @@ public class ConnectionExchangeRESTServices
                 else
                 {
                     handler.setupEmbeddedConnection(userId,
-                                                    requestBody.getAssetManagerGUID(),
-                                                    requestBody.getAssetManagerName(),
+                                                    requestBody.getExternalSourceGUID(),
+                                                    requestBody.getExternalSourceName(),
                                                     assetManagerIsHome,
                                                     connectionGUID,
                                                     embeddedConnectionGUID,
@@ -690,8 +677,8 @@ public class ConnectionExchangeRESTServices
                 if (requestBody.getProperties() instanceof AssetConnectionProperties)
                 {
                     handler.setupAssetConnection(userId,
-                                                 requestBody.getAssetManagerGUID(),
-                                                 requestBody.getAssetManagerName(),
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
                                                  assetManagerIsHome,
                                                  assetGUID,
                                                  connectionGUID,
@@ -704,8 +691,8 @@ public class ConnectionExchangeRESTServices
                 else
                 {
                     handler.setupAssetConnection(userId,
-                                                 requestBody.getAssetManagerGUID(),
-                                                 requestBody.getAssetManagerName(),
+                                                 requestBody.getExternalSourceGUID(),
+                                                 requestBody.getExternalSourceName(),
                                                  assetManagerIsHome,
                                                  assetGUID,
                                                  connectionGUID,

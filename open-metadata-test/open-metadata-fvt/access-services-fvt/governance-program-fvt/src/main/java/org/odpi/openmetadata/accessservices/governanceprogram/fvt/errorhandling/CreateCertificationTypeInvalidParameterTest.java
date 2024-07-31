@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.fvt.errorhandling;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.client.CertificationManager;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationTypeProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationTypeProperties;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
 /**

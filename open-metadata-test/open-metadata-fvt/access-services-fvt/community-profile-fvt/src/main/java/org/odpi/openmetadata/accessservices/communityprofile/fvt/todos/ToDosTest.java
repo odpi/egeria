@@ -6,16 +6,16 @@ package org.odpi.openmetadata.accessservices.communityprofile.fvt.todos;
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.accessservices.communityprofile.client.ToDoActionManagement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActionTargetElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ToDoElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.NewActionTargetProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ToDoActionTargetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ToDoElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.NewToDoActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -404,9 +404,9 @@ public class ToDosTest
             properties.setDescription(toDoDescription);
             properties.setToDoType(toDoType);
 
-            List<NewActionTargetProperties> actionTargetPropertiesList = new ArrayList<>();
+            List<NewToDoActionTargetProperties> actionTargetPropertiesList = new ArrayList<>();
 
-            NewActionTargetProperties newActionTargetProperties = new NewActionTargetProperties();
+            NewToDoActionTargetProperties newActionTargetProperties = new NewToDoActionTargetProperties();
             newActionTargetProperties.setActionTargetGUID(assetGUID);
             newActionTargetProperties.setActionTargetName(actionTargetName);
 
@@ -869,15 +869,15 @@ public class ToDosTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad number of action targets from Retrieve) =>> ");
             }
 
-            ActionTargetElement actionTarget = retrievedElement.getActionTargets().get(0);
+            ToDoActionTargetElement actionTarget = retrievedElement.getActionTargets().get(0);
 
             if (actionTarget == null)
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Null action target from Retrieve)");
             }
-            if (! assetGUID.equals(actionTarget.getTargetElement().getElementGUID()))
+            if (! assetGUID.equals(actionTarget.getTargetElement().getGUID()))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad action target GUID from Retrieve) =>> " + actionTarget.getTargetElement().getElementGUID());
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad action target GUID from Retrieve) =>> " + actionTarget.getTargetElement().getGUID());
             }
             
             if (! actionTargetName.equals(actionTarget.getRelationshipProperties().getActionTargetName()))

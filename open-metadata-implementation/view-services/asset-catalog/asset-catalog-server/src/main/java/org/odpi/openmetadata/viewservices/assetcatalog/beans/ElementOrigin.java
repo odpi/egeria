@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 
 import java.util.Objects;
 

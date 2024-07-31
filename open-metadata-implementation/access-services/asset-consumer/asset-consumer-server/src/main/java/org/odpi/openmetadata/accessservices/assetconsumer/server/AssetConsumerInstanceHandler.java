@@ -2,10 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataRelationship;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
@@ -75,11 +73,11 @@ class AssetConsumerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    AssetHandler<Asset> getAssetHandler(String userId,
-                                        String serverName,
-                                        String serviceOperationName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    AssetHandler<AssetElement> getAssetHandler(String userId,
+                                               String serverName,
+                                               String serviceOperationName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
 
         AssetConsumerServicesInstance instance = (AssetConsumerServicesInstance)super.getServerServiceInstance(userId,
@@ -106,9 +104,9 @@ class AssetConsumerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    ReferenceableHandler<MetadataElement> getMetadataElementHandler(String userId,
-                                                                    String serverName,
-                                                                    String serviceOperationName) throws InvalidParameterException,
+    ReferenceableHandler<MetadataElementSummary> getMetadataElementHandler(String userId,
+                                                                           String serverName,
+                                                                           String serviceOperationName) throws InvalidParameterException,
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {

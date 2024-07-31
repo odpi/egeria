@@ -4,10 +4,10 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateProperties;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.server.LocationRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 import org.springframework.web.bind.annotation.*;
 
 /**

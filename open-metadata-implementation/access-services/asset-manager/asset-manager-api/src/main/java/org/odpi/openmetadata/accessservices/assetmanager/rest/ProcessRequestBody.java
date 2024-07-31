@@ -6,8 +6,8 @@ package org.odpi.openmetadata.accessservices.assetmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 
 import java.util.Objects;
 

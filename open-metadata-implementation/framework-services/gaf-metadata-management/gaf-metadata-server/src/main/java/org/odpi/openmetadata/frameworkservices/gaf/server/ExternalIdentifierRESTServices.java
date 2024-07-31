@@ -7,13 +7,14 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ElementHeadersResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ExternalIdentifierHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
@@ -695,19 +696,19 @@ public class ExternalIdentifierRESTServices
                                                                                                                                            serverName,
                                                                                                                                            methodName);
 
-                response.setElementList(handler.getElementsForExternalIdentifier(userId,
-                                                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
-                                                                                 externalScopeGUIDParameterName,
-                                                                                 OpenMetadataType.REFERENCEABLE.typeName,
-                                                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
-                                                                                 requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
-                                                                                 instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                                 startFrom,
-                                                                                 pageSize,
-                                                                                 forLineage,
-                                                                                 forDuplicateProcessing,
-                                                                                 requestBody.getEffectiveTime(),
-                                                                                 methodName));
+                response.setElementHeaders(handler.getElementsForExternalIdentifier(userId,
+                                                                                    requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                                                    externalScopeGUIDParameterName,
+                                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                                    requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
+                                                                                    requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
+                                                                                    instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                    startFrom,
+                                                                                    pageSize,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    requestBody.getEffectiveTime(),
+                                                                                    methodName));
             }
             else
             {

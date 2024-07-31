@@ -10,18 +10,12 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Commen
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.InformalTagElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteLogElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagUpdateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.InformalTagUpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteElementResponse;
@@ -35,6 +29,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
 
 import java.util.Date;
 import java.util.List;
@@ -794,8 +789,8 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
     @Override
     public String createInformalTag(String        userId,
                                     TagProperties properties) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
     {
         final String methodName = "createInformalTag";
         final String propertiesParameterName  = "properties";
@@ -915,7 +910,7 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(tagGUID, guidParameter, methodName);
 
-        InformalTagResponse restResult = restClient.callInformalTagGetRESTCall(methodName,
+        InformalTagResponse restResult = restClient.callMyInformalTagGetRESTCall(methodName,
                                                                                urlTemplate,
                                                                                serverName,
                                                                                userId,
@@ -958,13 +953,13 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
         requestBody.setName(tag);
         requestBody.setNameParameterName(nameParameter);
 
-        InformalTagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     requestBody,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     startFrom,
-                                                                                     pageSize);
+        InformalTagsResponse restResult = restClient.callMyInformalTagListPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       requestBody,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startFrom,
+                                                                                       pageSize);
 
         return restResult.getTags();
     }
@@ -1003,13 +998,13 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
         requestBody.setName(tag);
         requestBody.setNameParameterName(nameParameter);
 
-        InformalTagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     requestBody,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     startFrom,
-                                                                                     pageSize);
+        InformalTagsResponse restResult = restClient.callMyInformalTagListPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       requestBody,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startFrom,
+                                                                                       pageSize);
 
         return restResult.getTags();
     }
@@ -1048,13 +1043,13 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
         requestBody.setSearchString(tag);
         requestBody.setSearchStringParameterName(nameParameter);
 
-        InformalTagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     requestBody,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     startFrom,
-                                                                                     pageSize);
+        InformalTagsResponse restResult = restClient.callMyInformalTagListPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       requestBody,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startFrom,
+                                                                                       pageSize);
 
         return restResult.getTags();
     }
@@ -1093,13 +1088,13 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
         requestBody.setSearchString(tag);
         requestBody.setSearchStringParameterName(nameParameter);
 
-        InformalTagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     requestBody,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     startFrom,
-                                                                                     pageSize);
+        InformalTagsResponse restResult = restClient.callMyInformalTagListPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       requestBody,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startFrom,
+                                                                                       pageSize);
 
         return restResult.getTags();
     }
@@ -1451,15 +1446,15 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/note-logs/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        NoteLogElementsResponse restResult = restClient.callNoteLogElementsPostRESTCall(methodName,
-                                                                                        urlTemplate,
-                                                                                        requestBody,
-                                                                                        serverName,
-                                                                                        userId,
-                                                                                        startFrom,
-                                                                                        validatedPageSize,
-                                                                                        forLineage,
-                                                                                        forDuplicateProcessing);
+        NoteLogElementsResponse restResult = restClient.callMyNoteLogElementsPostRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          requestBody,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          startFrom,
+                                                                                          validatedPageSize,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1514,15 +1509,15 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/note-logs/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        NoteLogElementsResponse restResult = restClient.callNoteLogElementsPostRESTCall(methodName,
-                                                                                        urlTemplate,
-                                                                                        requestBody,
-                                                                                        serverName,
-                                                                                        userId,
-                                                                                        startFrom,
-                                                                                        validatedPageSize,
-                                                                                        forLineage,
-                                                                                        forDuplicateProcessing);
+        NoteLogElementsResponse restResult = restClient.callMyNoteLogElementsPostRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          requestBody,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          startFrom,
+                                                                                          validatedPageSize,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1574,16 +1569,16 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/note-logs/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
-        NoteLogElementsResponse restResult = restClient.callNoteLogElementsPostRESTCall(methodName,
-                                                                                        urlTemplate,
-                                                                                        requestBody,
-                                                                                        serverName,
-                                                                                        userId,
-                                                                                        elementGUID,
-                                                                                        startFrom,
-                                                                                        validatedPageSize,
-                                                                                        forLineage,
-                                                                                        forDuplicateProcessing);
+        NoteLogElementsResponse restResult = restClient.callMyNoteLogElementsPostRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          requestBody,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          elementGUID,
+                                                                                          startFrom,
+                                                                                          validatedPageSize,
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1625,16 +1620,16 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/note-logs/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        NoteLogElementResponse restResult = restClient.callNoteLogElementPostRESTCall(methodName,
-                                                                                    urlTemplate,
-                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID,
+        NoteLogElementResponse restResult = restClient.callMyNoteLogElementPostRESTCall(methodName,
+                                                                                        urlTemplate,
+                                                                                        getEffectiveTimeQueryRequestBody(assetManagerGUID,
                                                                                                                           assetManagerName,
                                                                                                                           effectiveTime),
-                                                                                    serverName,
-                                                                                    userId,
-                                                                                    noteLogGUID,
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing);
+                                                                                        serverName,
+                                                                                        userId,
+                                                                                        noteLogGUID,
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -1852,15 +1847,15 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/note-logs/notes/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        NoteElementsResponse restResult = restClient.callNoteElementsPostRESTCall(methodName,
-                                                                                  urlTemplate,
-                                                                                  requestBody,
-                                                                                  serverName,
-                                                                                  userId,
-                                                                                  startFrom,
-                                                                                  validatedPageSize,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing);
+        NoteElementsResponse restResult = restClient.callMyNoteElementsPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    requestBody,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    startFrom,
+                                                                                    validatedPageSize,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1907,16 +1902,16 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/note-logs/{2}/notes/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
-        NoteElementsResponse restResult = restClient.callNoteElementsPostRESTCall(methodName,
-                                                                                  urlTemplate,
-                                                                                  getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                  serverName,
-                                                                                  userId,
-                                                                                  noteLogGUID,
-                                                                                  startFrom,
-                                                                                  validatedPageSize,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing);
+        NoteElementsResponse restResult = restClient.callMyNoteElementsPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    noteLogGUID,
+                                                                                    startFrom,
+                                                                                    validatedPageSize,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1958,16 +1953,16 @@ public class CollaborationExchangeClient extends AssetManagerBaseClient implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/note-logs/notes/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        NoteElementResponse restResult = restClient.callNoteElementPostRESTCall(methodName,
-                                                                                urlTemplate,
-                                                                                getEffectiveTimeQueryRequestBody(assetManagerGUID,
+        NoteElementResponse restResult = restClient.callMyNoteElementPostRESTCall(methodName,
+                                                                                  urlTemplate,
+                                                                                  getEffectiveTimeQueryRequestBody(assetManagerGUID,
                                                                                                                  assetManagerName,
                                                                                                                  effectiveTime),
-                                                                                serverName,
-                                                                                userId,
-                                                                                noteGUID,
-                                                                                forLineage,
-                                                                                forDuplicateProcessing);
+                                                                                  serverName,
+                                                                                  userId,
+                                                                                  noteGUID,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing);
 
         return restResult.getElement();
     }

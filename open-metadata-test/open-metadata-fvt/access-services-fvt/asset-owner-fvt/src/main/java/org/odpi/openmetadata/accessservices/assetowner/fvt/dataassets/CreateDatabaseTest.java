@@ -5,19 +5,18 @@ package org.odpi.openmetadata.accessservices.assetowner.fvt.dataassets;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelationshipElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaAttributeElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelationshipElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SchemaAttributeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -250,7 +249,7 @@ public class CreateDatabaseTest
 
             SchemaTypeProperties attributeType = new SchemaTypeProperties();
             attributeType.setTypeName("PrimitiveSchemaType");
-            databaseColumnTwoProperties.setAttributeType(attributeType);
+            databaseColumnTwoProperties.setSchemaType(attributeType);
 
 
             try
@@ -294,7 +293,7 @@ public class CreateDatabaseTest
             extendedProperties.put("dataType", databaseColumnTwoType);
 
             schemaType.setExtendedProperties(extendedProperties);
-            databaseColumnTwoProperties.setAttributeType(schemaType);
+            databaseColumnTwoProperties.setSchemaType(schemaType);
             client.updateSchemaAttribute(userId, databaseColumnTwoGUID, true, databaseColumnTwoProperties);
 
             afterElement = client.getSchemaAttributeByGUID(userId, databaseColumnTwoGUID);
@@ -307,7 +306,7 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(version changed from " + beforeElement.getElementHeader().getVersions() + " to " + afterElement.getElementHeader().getVersions() + ")");
             }
 
-            Object dataType = afterElement.getSchemaAttributeProperties().getAttributeType().getExtendedProperties().get("dataType");
+            Object dataType = afterElement.getSchemaAttributeProperties().getSchemaType().getExtendedProperties().get("dataType");
             if (! databaseColumnTwoType.equals(dataType))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(data type should be " + databaseColumnTwoType + " rather than " + dataType + "). Returned element: " + afterElement);
@@ -458,7 +457,7 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no DatabaseElement from Retrieve)");
             }
 
-            AssetProperties retrievedDatabase = retrievedElement.getAssetProperties();
+            AssetProperties retrievedDatabase = retrievedElement.getProperties();
 
             if (retrievedDatabase == null)
             {
@@ -473,7 +472,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! databaseDescription.equals(retrievedDatabase.getDescription()))
+            if (! databaseDescription.equals(retrievedDatabase.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -507,7 +506,7 @@ public class CreateDatabaseTest
             }
 
             retrievedElement = databaseList.get(0);
-            retrievedDatabase = retrievedElement.getAssetProperties();
+            retrievedDatabase = retrievedElement.getProperties();
 
             if (! databaseName.equals(retrievedDatabase.getQualifiedName()))
             {
@@ -517,7 +516,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! databaseDescription.equals(retrievedDatabase.getDescription()))
+            if (! databaseDescription.equals(retrievedDatabase.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -569,7 +568,7 @@ public class CreateDatabaseTest
 
             properties.setQualifiedName(databaseName);
             properties.setDisplayName(databaseDisplayName);
-            properties.setDescription(databaseDescription);
+            properties.setResourceDescription(databaseDescription);
 
             properties.setTypeName("Database");
 
@@ -695,7 +694,7 @@ public class CreateDatabaseTest
 
             validateAnchorGUID(activityName, retrievedElement);
 
-            AssetProperties retrievedSchema = retrievedElement.getAssetProperties();
+            AssetProperties retrievedSchema = retrievedElement.getProperties();
 
             if (retrievedSchema == null)
             {
@@ -710,7 +709,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! databaseSchemaDescription.equals(retrievedSchema.getDescription()))
+            if (! databaseSchemaDescription.equals(retrievedSchema.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -734,7 +733,7 @@ public class CreateDatabaseTest
             }
 
             retrievedElement = databaseSchemaList.get(0);
-            retrievedSchema = retrievedElement.getAssetProperties();
+            retrievedSchema = retrievedElement.getProperties();
 
             if (! databaseSchemaName.equals(retrievedSchema.getQualifiedName()))
             {
@@ -744,7 +743,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! databaseSchemaDescription.equals(retrievedSchema.getDescription()))
+            if (! databaseSchemaDescription.equals(retrievedSchema.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -801,7 +800,7 @@ public class CreateDatabaseTest
 
             properties.setQualifiedName(databaseSchemaName);
             properties.setDisplayName(databaseSchemaDisplayName);
-            properties.setDescription(databaseSchemaDescription);
+            properties.setResourceDescription(databaseSchemaDescription);
             properties.setTypeName("DeployedDatabaseSchema");
 
             String databaseSchemaGUID = client.addAssetToCatalog(userId, properties);
@@ -996,7 +995,7 @@ public class CreateDatabaseTest
 
             SchemaTypeProperties attributeType = new SchemaTypeProperties();
             attributeType.setTypeName("RelationalTableType");
-            properties.setAttributeType(attributeType);
+            properties.setSchemaType(attributeType);
 
             String databaseTableGUID = client.addSchemaAttribute(userId, databaseSchemaGUID, databaseSchemaTypeGUID, properties);
 
@@ -1050,7 +1049,7 @@ public class CreateDatabaseTest
 
             SchemaTypeProperties attributeType = new SchemaTypeProperties();
             attributeType.setTypeName("RelationalTableType");
-            properties.setAttributeType(attributeType);
+            properties.setSchemaType(attributeType);
 
             String databaseTableGUID = client.addSchemaAttribute(userId, databaseSchemaGUID, databaseSchemaTypeGUID, properties);
 
@@ -1273,7 +1272,7 @@ public class CreateDatabaseTest
             schemaTypeProperties.setQualifiedName("SchemaType:" + databaseColumnName);
             schemaTypeProperties.setExtendedProperties(extendedProperties);
 
-            properties.setAttributeType(schemaTypeProperties);
+            properties.setSchemaType(schemaTypeProperties);
 
             String databaseColumnGUID = client.addSchemaAttribute(userId, databaseSchemaGUID, databaseTableGUID, properties);
 

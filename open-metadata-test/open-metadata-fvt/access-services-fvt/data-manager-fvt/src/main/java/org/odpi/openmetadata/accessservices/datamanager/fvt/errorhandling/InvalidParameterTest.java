@@ -8,13 +8,11 @@ import org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerCl
 import org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseManagerProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.FileManagerProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.FileSystemProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.*;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;

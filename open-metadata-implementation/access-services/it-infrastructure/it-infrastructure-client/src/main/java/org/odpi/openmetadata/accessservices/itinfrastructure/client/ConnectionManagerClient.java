@@ -4,15 +4,11 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.client;
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.ConnectionsManagerInterface;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetConnectionRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ConnectionRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ConnectionResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ConnectionsResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EmbeddedConnectionRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSourceRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.AssetConnectionRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -34,11 +30,11 @@ public class ConnectionManagerClient implements ConnectionsManagerInterface
     private static final String connectionURLTemplatePrefix    = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}/connections";
     private static final String assetURLTemplatePrefix         = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}/assets";
 
-    private String   serverName;               /* Initialized in constructor */
-    private String   serverPlatformURLRoot;    /* Initialized in constructor */
+    private final String serverName;               /* Initialized in constructor */
+    private final String serverPlatformURLRoot;    /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private ITInfrastructureRESTClient   restClient;               /* Initialized in constructor */
+    private final InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
+    private final ITInfrastructureRESTClient restClient;               /* Initialized in constructor */
 
 
     /**
@@ -363,7 +359,7 @@ public class ConnectionManagerClient implements ConnectionsManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/connector-types/{3}";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -410,7 +406,7 @@ public class ConnectionManagerClient implements ConnectionsManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/connector-types/{3}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -457,7 +453,7 @@ public class ConnectionManagerClient implements ConnectionsManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/endpoints/{3}";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -504,7 +500,7 @@ public class ConnectionManagerClient implements ConnectionsManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/endpoints/{3}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -607,7 +603,7 @@ public class ConnectionManagerClient implements ConnectionsManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/embedded-connections/{3}/delete}";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -704,7 +700,7 @@ public class ConnectionManagerClient implements ConnectionsManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/connections/{3}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -747,7 +743,7 @@ public class ConnectionManagerClient implements ConnectionsManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -806,7 +802,7 @@ public class ConnectionManagerClient implements ConnectionsManagerInterface
                                                                                 startFrom,
                                                                                 validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -855,7 +851,7 @@ public class ConnectionManagerClient implements ConnectionsManagerInterface
                                                                                 startFrom,
                                                                                 validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 

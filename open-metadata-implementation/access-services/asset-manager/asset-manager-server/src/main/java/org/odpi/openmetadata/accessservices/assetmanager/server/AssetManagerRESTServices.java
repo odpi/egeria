@@ -2,14 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
+import org.odpi.openmetadata.commonservices.ffdc.rest.OCFConnectionResponse;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareCapabilityElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.AssetManagerProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementHeadersResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ElementHeadersResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.MetadataCorrelationHeadersResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -17,7 +18,6 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ExternalIdentifierHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -27,7 +27,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -64,16 +64,16 @@ public class AssetManagerRESTServices
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem retrieving the discovery engine definition.
      */
-    public ConnectionResponse getOutTopicConnection(String serverName,
-                                                    String userId,
-                                                    String callerId)
+    public OCFConnectionResponse getOutTopicConnection(String serverName,
+                                                       String userId,
+                                                       String callerId)
     {
         final String methodName = "getOutTopicConnection";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ConnectionResponse response = new ConnectionResponse();
-        AuditLog           auditLog = null;
+        OCFConnectionResponse response = new OCFConnectionResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -146,8 +146,8 @@ public class AssetManagerRESTServices
                                                                                  OpenMetadataType.CATALOG.typeName,
                                                                                  OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
                                                                                  assetManagerProperties.getQualifiedName(),
-                                                                                 assetManagerProperties.getTechnicalName(),
-                                                                                 assetManagerProperties.getTechnicalDescription(),
+                                                                                 assetManagerProperties.getResourceName(),
+                                                                                 assetManagerProperties.getResourceDescription(),
                                                                                  assetManagerProperties.getDeployedImplementationType(),
                                                                                  assetManagerProperties.getVersion(),
                                                                                  assetManagerProperties.getPatchLevel(),
@@ -170,9 +170,9 @@ public class AssetManagerRESTServices
                                                         OpenMetadataType.CATALOG.typeName,
                                                         OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                         assetManagerProperties.getQualifiedName(),
-                                                        assetManagerProperties.getDisplayName(),
-                                                        assetManagerProperties.getSummary(),
-                                                        assetManagerProperties.getDescription(),
+                                                        assetManagerProperties.getResourceName(),
+                                                        assetManagerProperties.getDisplaySummary(),
+                                                        assetManagerProperties.getResourceDescription(),
                                                         assetManagerProperties.getAbbreviation(),
                                                         assetManagerProperties.getUsage(),
                                                         false,
@@ -915,19 +915,19 @@ public class AssetManagerRESTServices
                                                                                                                                            serverName,
                                                                                                                                            methodName);
 
-                response.setElementList(handler.getElementsForExternalIdentifier(userId,
-                                                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
-                                                                                 assetManagerGUIDParameterName,
-                                                                                 OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
-                                                                                 requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
-                                                                                 requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
-                                                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
-                                                                                 startFrom,
-                                                                                 pageSize,
-                                                                                 forLineage,
-                                                                                 forDuplicateProcessing,
-                                                                                 requestBody.getEffectiveTime(),
-                                                                                 methodName));
+                response.setElementHeaders(handler.getElementsForExternalIdentifier(userId,
+                                                                                    requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
+                                                                                    assetManagerGUIDParameterName,
+                                                                                    OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
+                                                                                    requestBody.getMetadataCorrelationProperties().getExternalScopeName(),
+                                                                                    requestBody.getMetadataCorrelationProperties().getExternalIdentifier(),
+                                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                                    startFrom,
+                                                                                    pageSize,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    requestBody.getEffectiveTime(),
+                                                                                    methodName));
             }
             else
             {

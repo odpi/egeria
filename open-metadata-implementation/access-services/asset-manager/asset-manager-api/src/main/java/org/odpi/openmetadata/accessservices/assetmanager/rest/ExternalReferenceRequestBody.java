@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 
 import java.util.Objects;
 
@@ -22,8 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ExternalReferenceRequestBody extends UpdateRequestBody
 {
-    private ExternalReferenceProperties   elementProperties = null;
-    private String                        anchorGUID = null;
+    private ExternalReferenceProperties elementProperties = null;
+    private String                      anchorGUID        = null;
 
 
     /**

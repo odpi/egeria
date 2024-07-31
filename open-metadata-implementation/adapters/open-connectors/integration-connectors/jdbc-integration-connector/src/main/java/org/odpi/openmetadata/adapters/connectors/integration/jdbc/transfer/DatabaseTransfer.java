@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer;
 
 import org.apache.commons.lang3.StringUtils;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Jdbc;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -22,9 +22,9 @@ public class DatabaseTransfer {
     private final Jdbc jdbc;
     private final String databaseManagerName;
     private final String address;
-    private final String catalog;
+    private final String          catalog;
     private final DatabaseElement databaseElement;
-    private final Omas omas;
+    private final Omas            omas;
     private final AuditLog auditLog;
 
     public DatabaseTransfer(Jdbc jdbc,

@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 /**
  * The CommunityProfileOutTopicClientProvider provides a base class for the connector provider supporting
  * CommunityProfileOutTopicClientConnector Connectors.
- *
  * It extends ConnectorProviderBase which does the creation of connector instances.  The subclasses of
  * CommunityProfileOutTopicClientProvider must initialize ConnectorProviderBase with the Java class
  * name of their Connector implementation (by calling super.setConnectorClassName(className)).

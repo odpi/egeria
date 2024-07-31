@@ -2,19 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionFolderProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionMembershipProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.CollectionsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.CollectionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionFolderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -183,8 +180,8 @@ public class CollectionRESTServices
                         handler.addFolderClassificationToCollection(userId,
                                                                     collectionGUID,
                                                                     collectionGUIDParameterName,
-                                                                    properties.getCollectionOrdering().getOrdinal(),
-                                                                    properties.getCollectionOrderingProperty(),
+                                                                    properties.getCollectionOrder().getOrdinal(),
+                                                                    properties.getOrderByPropertyName(),
                                                                     false,
                                                                     false,
                                                                     false,
@@ -565,18 +562,18 @@ public class CollectionRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public CollectionListResponse findCollections(String                  serverName,
-                                                  String                  userId,
-                                                  SearchStringRequestBody requestBody,
-                                                  int                     startFrom,
-                                                  int                     pageSize)
+    public CollectionsResponse findCollections(String                  serverName,
+                                               String                  userId,
+                                               SearchStringRequestBody requestBody,
+                                               int                     startFrom,
+                                               int                     pageSize)
     {
         final String methodName = "findCollections";
         final String searchStringParameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        CollectionListResponse response = new CollectionListResponse();
+        CollectionsResponse response = new CollectionsResponse();
         AuditLog          auditLog = null;
 
         try
@@ -630,7 +627,7 @@ public class CollectionRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public CollectionListResponse getCollectionsByName(String          serverName,
+    public CollectionsResponse getCollectionsByName(String          serverName,
                                                        String          userId,
                                                        NameRequestBody requestBody,
                                                        int             startFrom,
@@ -641,7 +638,7 @@ public class CollectionRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        CollectionListResponse response = new CollectionListResponse();
+        CollectionsResponse response = new CollectionsResponse();
         AuditLog          auditLog = null;
 
         try
@@ -695,7 +692,7 @@ public class CollectionRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public CollectionMemberListResponse getCollectionMembers(String          serverName,
+    public CollectionMembersResponse getCollectionMembers(String          serverName,
                                                              String          userId,
                                                              String          collectionGUID,
                                                              int             startFrom,
@@ -706,7 +703,7 @@ public class CollectionRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        CollectionMemberListResponse response = new CollectionMemberListResponse();
+        CollectionMembersResponse response = new CollectionMembersResponse();
         AuditLog                     auditLog = null;
 
         try
@@ -759,7 +756,7 @@ public class CollectionRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public CollectionListResponse getCollections(String          serverName,
+    public CollectionsResponse getCollections(String          serverName,
                                                  String          userId,
                                                  String          parentGUID,
                                                  int             startFrom,
@@ -770,7 +767,7 @@ public class CollectionRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        CollectionListResponse response = new CollectionListResponse();
+        CollectionsResponse response = new CollectionsResponse();
         AuditLog          auditLog = null;
 
         try

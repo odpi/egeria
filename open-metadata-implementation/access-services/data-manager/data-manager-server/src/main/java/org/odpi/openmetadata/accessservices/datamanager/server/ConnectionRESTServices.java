@@ -3,13 +3,9 @@
 
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ConnectorTypeProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ConnectionProperties;
-import org.odpi.openmetadata.accessservices.datamanager.rest.*;
+
+import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -25,6 +21,12 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -316,7 +318,7 @@ public class ConnectionRESTServices
                                            String                    userId,
                                            String                    connectionGUID,
                                            String                    connectorTypeGUID,
-                                           MetadataSourceRequestBody requestBody)
+                                           ExternalSourceRequestBody requestBody)
     {
         final String methodName                     = "setupConnectorType";
         final String connectionGUIDParameterName    = "connectionGUID";
@@ -383,7 +385,7 @@ public class ConnectionRESTServices
                                            String                    userId,
                                            String                    connectionGUID,
                                            String                    connectorTypeGUID,
-                                           MetadataSourceRequestBody requestBody)
+                                           ExternalSourceRequestBody requestBody)
     {
         final String methodName                     = "clearConnectorType";
         final String connectionGUIDParameterName    = "connectionGUID";
@@ -448,7 +450,7 @@ public class ConnectionRESTServices
                                       String                    userId,
                                       String                    connectionGUID,
                                       String                    endpointGUID,
-                                      MetadataSourceRequestBody requestBody)
+                                      ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "setupEndpoint";
         final String connectionGUIDParameterName = "connectionGUID";
@@ -515,7 +517,7 @@ public class ConnectionRESTServices
                                       String                    userId,
                                       String                    connectionGUID,
                                       String                    endpointGUID,
-                                      MetadataSourceRequestBody requestBody)
+                                      ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "clearEndpoint";
         final String connectionGUIDParameterName = "connectionGUID";
@@ -651,7 +653,7 @@ public class ConnectionRESTServices
                                                 String                    userId,
                                                 String                    connectionGUID,
                                                 String                    embeddedConnectionGUID,
-                                                MetadataSourceRequestBody requestBody)
+                                                ExternalSourceRequestBody requestBody)
     {
         final String methodName                          = "clearEmbeddedConnection";
         final String connectionGUIDParameterName         = "connectionGUID";
@@ -785,7 +787,7 @@ public class ConnectionRESTServices
                                              String                    userId,
                                              String                    assetGUID,
                                              String                    connectionGUID,
-                                             MetadataSourceRequestBody requestBody)
+                                             ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "clearAssetConnection";
         final String connectionGUIDParameterName = "connectionGUID";
@@ -849,7 +851,7 @@ public class ConnectionRESTServices
     public VoidResponse removeConnection(String                    serverName,
                                          String                    userId,
                                          String                    connectionGUID,
-                                         MetadataSourceRequestBody requestBody)
+                                         ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removeConnection";
         final String connectionGUIDParameterName = "connectionGUID";
@@ -940,7 +942,7 @@ public class ConnectionRESTServices
                                                                               new Date(),
                                                                               methodName);
 
-                response.setElementList(setUpVendorProperties(userId, connections, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, connections, handler, methodName));
             }
             else
             {
@@ -1005,7 +1007,7 @@ public class ConnectionRESTServices
                                                                                    new Date(),
                                                                                    methodName);
 
-                response.setElementList(setUpVendorProperties(userId, connections, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, connections, handler, methodName));
             }
             else
             {
@@ -1115,8 +1117,8 @@ public class ConnectionRESTServices
                                                              requestBody.getExternalSourceName(),
                                                              null,
                                                              requestBody.getQualifiedName(),
-                                                             requestBody.getDisplayName(),
-                                                             requestBody.getDescription(),
+                                                             requestBody.getName(),
+                                                             requestBody.getResourceDescription(),
                                                              requestBody.getAddress(),
                                                              requestBody.getProtocol(),
                                                              requestBody.getEncryptionMethod(),
@@ -1256,8 +1258,8 @@ public class ConnectionRESTServices
                                        endpointGUID,
                                        endpointGUIDParameterName,
                                        requestBody.getQualifiedName(),
-                                       requestBody.getDisplayName(),
-                                       requestBody.getDescription(),
+                                       requestBody.getName(),
+                                       requestBody.getResourceDescription(),
                                        requestBody.getAddress(),
                                        requestBody.getProtocol(),
                                        requestBody.getEncryptionMethod(),
@@ -1315,7 +1317,7 @@ public class ConnectionRESTServices
     public VoidResponse removeEndpoint(String                    serverName,
                                        String                    userId,
                                        String                    endpointGUID,
-                                       MetadataSourceRequestBody requestBody)
+                                       ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removeEndpoint";
         final String endpointGUIDParameterName = "endpointGUID";
@@ -1406,7 +1408,7 @@ public class ConnectionRESTServices
                                                                        new Date(),
                                                                        methodName);
 
-                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
             }
             else
             {
@@ -1472,7 +1474,7 @@ public class ConnectionRESTServices
                                                                             new Date(),
                                                                             methodName);
 
-                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
             }
             else
             {
@@ -1595,7 +1597,7 @@ public class ConnectionRESTServices
                                                                                  new Date(),
                                                                                  methodName);
 
-                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
             }
             else
             {
@@ -1660,7 +1662,7 @@ public class ConnectionRESTServices
                                                                                       new Date(),
                                                                                       methodName);
 
-                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
             }
             else
             {

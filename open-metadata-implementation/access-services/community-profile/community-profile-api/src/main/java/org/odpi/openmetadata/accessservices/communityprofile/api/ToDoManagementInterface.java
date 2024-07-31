@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.properties.NewActionTargetProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ToDoElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ActionTargetProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.NewToDoActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ToDoElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -38,7 +38,7 @@ public interface ToDoManagementInterface
                       String                          originatorGUID,
                       String                          actionSponsorGUID,
                       String                          assignToActorGUID,
-                      List<NewActionTargetProperties> newActionTargetProperties,
+                      List<NewToDoActionTargetProperties> newActionTargetProperties,
                       ToDoProperties                  properties) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException;
@@ -79,9 +79,9 @@ public interface ToDoManagementInterface
     void updateActionTargetProperties(String                 userId,
                                       String                 actionTargetGUID,
                                       boolean                isMergeUpdate,
-                                      ActionTargetProperties actionTargetProperties) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException;
+                                      ToDoActionTargetProperties actionTargetProperties) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException;
 
 
     /**

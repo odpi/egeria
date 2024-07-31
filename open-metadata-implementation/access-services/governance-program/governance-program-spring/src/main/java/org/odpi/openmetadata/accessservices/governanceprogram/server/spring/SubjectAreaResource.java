@@ -4,18 +4,8 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ElementStubListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.SubjectAreaDefinitionResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.SubjectAreaListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.SubjectAreaResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.SubjectAreaRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -285,11 +275,11 @@ public class SubjectAreaResource
      */
     @GetMapping(path = "/subject-areas/for-domain")
 
-    public SubjectAreaListResponse getSubjectAreasForDomain(@PathVariable String serverName,
-                                                            @PathVariable String userId,
-                                                            @RequestParam int    domainIdentifier,
-                                                            @RequestParam int    startFrom,
-                                                            @RequestParam int    pageSize)
+    public SubjectAreasResponse getSubjectAreasForDomain(@PathVariable String serverName,
+                                                         @PathVariable String userId,
+                                                         @RequestParam int    domainIdentifier,
+                                                         @RequestParam int    startFrom,
+                                                         @RequestParam int    pageSize)
     {
         return restAPI.getSubjectAreasForDomain(serverName, userId, domainIdentifier, startFrom, pageSize);
     }
@@ -381,11 +371,11 @@ public class SubjectAreaResource
      */
     @GetMapping(path = "/subject-areas/{subjectAreaName}/members")
 
-    public ElementStubListResponse getMembersOfSubjectArea(@PathVariable String serverName,
-                                                           @PathVariable String userId,
-                                                           @PathVariable String subjectAreaName,
-                                                           @RequestParam int    startFrom,
-                                                           @RequestParam int    pageSize)
+    public ElementStubsResponse getMembersOfSubjectArea(@PathVariable String serverName,
+                                                        @PathVariable String userId,
+                                                        @PathVariable String subjectAreaName,
+                                                        @RequestParam int    startFrom,
+                                                        @RequestParam int    pageSize)
     {
         return restAPI.getMembersOfSubjectArea(serverName, userId, subjectAreaName, startFrom, pageSize);
     }

@@ -5,12 +5,7 @@ package org.odpi.openmetadata.viewservices.runtimemanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerPlatformListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerPlatformResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.viewservices.runtimemanager.rest.EffectiveTimeQueryRequestBody;
@@ -61,10 +56,10 @@ public class RuntimeManagerResource
             externalDocs = @ExternalDocumentation(description = "Software Server Platforms",
                     url = "https://egeria-project.org/types/0/0037-Software-Server-Platforms/"))
 
-    public SoftwareServerPlatformListResponse getPlatformsByName(@PathVariable String serverName,
-                                                                 @RequestParam int startFrom,
-                                                                 @RequestParam int pageSize,
-                                                                 @RequestBody (required = false)
+    public SoftwareServerPlatformsResponse getPlatformsByName(@PathVariable String serverName,
+                                                              @RequestParam int startFrom,
+                                                              @RequestParam int pageSize,
+                                                              @RequestBody (required = false)
                                                                      FilterRequestBody requestBody)
     {
         return restAPI.getPlatformsByName(serverName, startFrom, pageSize, requestBody);
@@ -91,11 +86,11 @@ public class RuntimeManagerResource
             externalDocs = @ExternalDocumentation(description = "Software Server Platforms",
                     url = "https://egeria-project.org/types/0/0037-Software-Server-Platforms/"))
 
-    public SoftwareServerPlatformListResponse getPlatformsByDeployedImplType(@PathVariable String serverName,
-                                                                             @RequestParam int startFrom,
-                                                                             @RequestParam int pageSize,
-                                                                             @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
-                                                                             @RequestBody (required = false)
+    public SoftwareServerPlatformsResponse getPlatformsByDeployedImplType(@PathVariable String serverName,
+                                                                          @RequestParam int startFrom,
+                                                                          @RequestParam int pageSize,
+                                                                          @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
+                                                                          @RequestBody (required = false)
                                                                                  FilterRequestBody requestBody)
     {
         return restAPI.getPlatformsByDeployedImplType(serverName, startFrom, pageSize, getTemplates, requestBody);
@@ -172,10 +167,10 @@ public class RuntimeManagerResource
             externalDocs = @ExternalDocumentation(description = "Software Servers",
                     url = "https://egeria-project.org/types/0/0040-Software-Servers/"))
 
-    public SoftwareServerListResponse getServersByName(@PathVariable String serverName,
-                                                       @RequestParam int startFrom,
-                                                       @RequestParam int pageSize,
-                                                       @RequestBody(required = false)
+    public SoftwareServersResponse getServersByName(@PathVariable String serverName,
+                                                    @RequestParam int startFrom,
+                                                    @RequestParam int pageSize,
+                                                    @RequestBody(required = false)
                                                            FilterRequestBody requestBody)
     {
         return restAPI.getServersByName(serverName, startFrom, pageSize, requestBody);
@@ -202,11 +197,11 @@ public class RuntimeManagerResource
             externalDocs = @ExternalDocumentation(description = "Software Servers",
                     url = "https://egeria-project.org/types/0/0040-Software-Servers/"))
 
-    public SoftwareServerListResponse getServersByDeployedImplType(@PathVariable String serverName,
-                                                                   @RequestParam int startFrom,
-                                                                   @RequestParam int pageSize,
-                                                                   @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
-                                                                   @RequestBody FilterRequestBody requestBody)
+    public SoftwareServersResponse getServersByDeployedImplType(@PathVariable String serverName,
+                                                                @RequestParam int startFrom,
+                                                                @RequestParam int pageSize,
+                                                                @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
+                                                                @RequestBody FilterRequestBody requestBody)
     {
         return restAPI.getServersByDeployedImplType(serverName, startFrom, pageSize, getTemplates, requestBody);
     }

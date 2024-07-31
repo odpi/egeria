@@ -2,27 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.api.management;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalGlossaryLinkElement;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalGlossaryLinkElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ArchiveProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.CanonicalVocabularyProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.EditingGlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalGlossaryElementLinkProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalGlossaryLinkProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermCategorization;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermContextDefinition;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.StagingGlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.TaxonomyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ActivityDescriptionProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

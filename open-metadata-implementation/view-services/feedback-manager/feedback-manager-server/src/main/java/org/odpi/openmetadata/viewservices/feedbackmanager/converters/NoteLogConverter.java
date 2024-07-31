@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadata
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements.NoteLogElement;
-import org.odpi.openmetadata.viewservices.feedbackmanager.properties.NoteLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLogProperties;
 
 import java.lang.reflect.InvocationTargetException;
 

@@ -283,7 +283,7 @@ public class LineageWarehouseOperationalServices
     /**
      * Call the initialize() and start() method for all applicable connectors used by the Open Lineage Services.
      *
-     * @throws OMAGConfigurationErrorException
+     * @throws OMAGConfigurationErrorException config error
      */
     private void initializeAndStartConnectors() throws OMAGConfigurationErrorException, InvalidParameterException {
         initializeGraphConnectorDB(

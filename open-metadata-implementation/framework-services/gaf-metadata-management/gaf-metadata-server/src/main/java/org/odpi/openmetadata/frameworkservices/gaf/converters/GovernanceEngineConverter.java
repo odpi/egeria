@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.gaf.converters;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineProperties;
@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
  * GovernanceEnginePropertiesConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  * EntityDetail object into a GovernanceEngineProperties bean.
  */
-public class GovernanceEngineConverter<B> extends OCFConverter<B>
+public class GovernanceEngineConverter<B> extends OMFConverter<B>
 {
     /**
      * Constructor

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -22,7 +22,7 @@ import java.lang.reflect.InvocationTargetException;
  * RelatedAssetConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  * EntityDetail object into a Referenceable bean.
  */
-public class RelatedAssetConverter<B> extends OCFConverter<B>
+public class RelatedAssetConverter<B> extends OMFConverter<B>
 {
     /**
      * Constructor

@@ -3,16 +3,12 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.MetadataSourceElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.MetadataSourceResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataSourceElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataSourceProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -53,16 +49,16 @@ public class CommunityProfileRESTServices
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem retrieving the discovery engine definition.
      */
-    public ConnectionResponse getOutTopicConnection(String serverName,
-                                                    String userId,
-                                                    String callerId)
+    public OCFConnectionResponse getOutTopicConnection(String serverName,
+                                                       String userId,
+                                                       String callerId)
     {
         final String methodName = "getOutTopicConnection";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ConnectionResponse response = new ConnectionResponse();
-        AuditLog           auditLog = null;
+        OCFConnectionResponse response = new OCFConnectionResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -221,8 +217,8 @@ public class CommunityProfileRESTServices
      *  PropertyServerException    problem accessing the property server
      */
     public MetadataSourceResponse getMetadataSource(String serverName,
-                                                   String userId,
-                                                   String metadataSourceGUID)
+                                                    String userId,
+                                                    String metadataSourceGUID)
     {
         final String methodName                       = "getMetadataSource";
         final String metadataSourceGUIDParameterName  = "metadataSourceGUID";

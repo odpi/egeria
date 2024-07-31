@@ -12,6 +12,7 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
+    compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     runtimeOnly 'ch.qos.logback:logback-classic'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

@@ -3,11 +3,26 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.RelatedAssetConverter;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.APIOperationConverter;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.AssetConverter;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.CommentConverter;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.ConnectorTypeConverter;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.EndpointConverter;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.ExternalReferenceConverter;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.InformalTagConverter;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.LikeConverter;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.LocationConverter;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.MeaningConverter;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.RatingConverter;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.ReferenceableConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.*;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.SchemaAttributeConverter;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters.SchemaTypeConverter;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc.OMAGOCFErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
@@ -112,7 +127,7 @@ public class OCFMetadataServicesInstance extends OMASServiceInstance
                                                                    publishZones,
                                                                    auditLog);
 
-            this.connectionHandler = new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
+            this.connectionHandler = new ConnectionHandler<>(new OCFConnectionConverter<>(repositoryHelper, serviceName, serverName),
                                                              Connection.class,
                                                              serviceName,
                                                              serverName,

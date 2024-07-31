@@ -4,18 +4,18 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.ExternalReferencesInterface;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ExternalReferenceElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ExternalReferenceLinkProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ExternalReferenceProperties;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ExternalReferenceListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ExternalReferenceResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ExternalReferenceResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ExternalReferencesResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalReferenceElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 
 import java.util.List;
 
@@ -290,7 +290,7 @@ public class ExternalReferenceManager extends AssetOwnerBaseClient implements Ex
         invalidParameterHandler.validateGUID(externalReferenceGUID, guidParameterName, methodName);
 
         ExternalReferenceResponse restResult = restClient.callExternalReferenceGetRESTCall(methodName,
-                                                                                            urlTemplate,
+                                                                                           urlTemplate,
                                                                                            serverName,
                                                                                            userId,
                                                                                            externalReferenceGUID);
@@ -335,13 +335,13 @@ public class ExternalReferenceManager extends AssetOwnerBaseClient implements Ex
         requestBody.setSearchString(resourceId);
         requestBody.setSearchStringParameterName(resourceIdParameterName);
 
-        ExternalReferenceListResponse restResult = restClient.callExternalReferenceListPostRESTCall(methodName,
-                                                                                                    urlTemplate,
-                                                                                                    requestBody,
-                                                                                                    serverName,
-                                                                                                    userId,
-                                                                                                    startFrom,
-                                                                                                    queryPageSize);
+        ExternalReferencesResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
+                                                                                              urlTemplate,
+                                                                                              requestBody,
+                                                                                              serverName,
+                                                                                              userId,
+                                                                                              startFrom,
+                                                                                              queryPageSize);
 
         return restResult.getElements();
     }
@@ -382,13 +382,13 @@ public class ExternalReferenceManager extends AssetOwnerBaseClient implements Ex
         requestBody.setName(url);
         requestBody.setNameParameterName(urlParameterName);
 
-        ExternalReferenceListResponse restResult = restClient.callExternalReferenceListPostRESTCall(methodName,
-                                                                                                   urlTemplate,
-                                                                                                   requestBody,
-                                                                                                   serverName,
-                                                                                                   userId,
-                                                                                                   startFrom,
-                                                                                                   queryPageSize);
+        ExternalReferencesResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
+                                                                                              urlTemplate,
+                                                                                              requestBody,
+                                                                                              serverName,
+                                                                                              userId,
+                                                                                              startFrom,
+                                                                                              queryPageSize);
 
         return restResult.getElements();
     }
@@ -426,13 +426,13 @@ public class ExternalReferenceManager extends AssetOwnerBaseClient implements Ex
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        ExternalReferenceListResponse restResult = restClient.callExternalReferenceListGetRESTCall(methodName,
-                                                                                                   urlTemplate,
-                                                                                                   serverName,
-                                                                                                   userId,
-                                                                                                   attachedToGUID,
-                                                                                                   startFrom,
-                                                                                                   queryPageSize);
+        ExternalReferencesResponse restResult = restClient.callExternalReferencesGetRESTCall(methodName,
+                                                                                             urlTemplate,
+                                                                                             serverName,
+                                                                                             userId,
+                                                                                             attachedToGUID,
+                                                                                             startFrom,
+                                                                                             queryPageSize);
 
         return restResult.getElements();
     }

@@ -4,13 +4,10 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.client;
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.ConnectorTypeManagerInterface;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ConnectorTypeRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ConnectorTypeResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ConnectorTypesResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -30,11 +27,11 @@ public class ConnectorTypeManagerClient implements ConnectorTypeManagerInterface
 {
     private static final String connectorTypeURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}/connector-types";
 
-    private String   serverName;               /* Initialized in constructor */
-    private String   serverPlatformURLRoot;    /* Initialized in constructor */
+    private final String serverName;               /* Initialized in constructor */
+    private final String serverPlatformURLRoot;    /* Initialized in constructor */
 
-    private InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
-    private ITInfrastructureRESTClient restClient;               /* Initialized in constructor */
+    private final InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
+    private final ITInfrastructureRESTClient restClient;               /* Initialized in constructor */
 
 
     /**
@@ -356,7 +353,7 @@ public class ConnectorTypeManagerClient implements ConnectorTypeManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectorTypeURLTemplatePrefix + "/{2}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -415,7 +412,7 @@ public class ConnectorTypeManagerClient implements ConnectorTypeManagerInterface
                                                                                       startFrom,
                                                                                       validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -465,7 +462,7 @@ public class ConnectorTypeManagerClient implements ConnectorTypeManagerInterface
                                                                                       startFrom,
                                                                                       validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 

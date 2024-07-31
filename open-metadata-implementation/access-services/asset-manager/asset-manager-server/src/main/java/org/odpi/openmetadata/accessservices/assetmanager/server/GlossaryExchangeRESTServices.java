@@ -4,18 +4,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchangeHandler;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ActivityDescriptionProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.CanonicalVocabularyProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.EditingGlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermCategorization;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermContextDefinition;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.StagingGlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.TaxonomyProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -24,6 +14,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -1579,8 +1570,8 @@ public class GlossaryExchangeRESTServices
                 if (requestBody.getProperties() != null)
                 {
                     handler.setupCategoryParent(userId,
-                                                requestBody.getAssetManagerGUID(),
-                                                requestBody.getAssetManagerName(),
+                                                requestBody.getExternalSourceGUID(),
+                                                requestBody.getExternalSourceName(),
                                                 glossaryParentCategoryGUID,
                                                 glossaryChildCategoryGUID,
                                                 requestBody.getProperties().getEffectiveFrom(),
@@ -1593,8 +1584,8 @@ public class GlossaryExchangeRESTServices
                 else
                 {
                     handler.setupCategoryParent(userId,
-                                                requestBody.getAssetManagerGUID(),
-                                                requestBody.getAssetManagerName(),
+                                                requestBody.getExternalSourceGUID(),
+                                                requestBody.getExternalSourceName(),
                                                 glossaryParentCategoryGUID,
                                                 glossaryChildCategoryGUID,
                                                 null,
@@ -2797,8 +2788,8 @@ public class GlossaryExchangeRESTServices
                 if (requestBody.getProperties() instanceof GlossaryTermCategorization properties)
                 {
                     handler.setupTermCategory(userId,
-                                              requestBody.getAssetManagerGUID(),
-                                              requestBody.getAssetManagerName(),
+                                              requestBody.getExternalSourceGUID(),
+                                              requestBody.getExternalSourceName(),
                                               glossaryCategoryGUID,
                                               glossaryTermGUID,
                                               properties,
@@ -2810,8 +2801,8 @@ public class GlossaryExchangeRESTServices
                 else
                 {
                     handler.setupTermCategory(userId,
-                                              requestBody.getAssetManagerGUID(),
-                                              requestBody.getAssetManagerName(),
+                                              requestBody.getExternalSourceGUID(),
+                                              requestBody.getExternalSourceName(),
                                               glossaryCategoryGUID,
                                               glossaryTermGUID,
                                               null,
@@ -2999,8 +2990,8 @@ public class GlossaryExchangeRESTServices
                 if (requestBody.getProperties() instanceof GlossaryTermRelationship properties)
                 {
                     handler.setupTermRelationship(userId,
-                                                  requestBody.getAssetManagerGUID(),
-                                                  requestBody.getAssetManagerName(),
+                                                  requestBody.getExternalSourceGUID(),
+                                                  requestBody.getExternalSourceName(),
                                                   glossaryTermOneGUID,
                                                   relationshipTypeName,
                                                   glossaryTermTwoGUID,
@@ -3013,8 +3004,8 @@ public class GlossaryExchangeRESTServices
                 else
                 {
                     handler.setupTermRelationship(userId,
-                                                  requestBody.getAssetManagerGUID(),
-                                                  requestBody.getAssetManagerName(),
+                                                  requestBody.getExternalSourceGUID(),
+                                                  requestBody.getExternalSourceName(),
                                                   glossaryTermOneGUID,
                                                   relationshipTypeName,
                                                   glossaryTermTwoGUID,
@@ -3095,8 +3086,8 @@ public class GlossaryExchangeRESTServices
                     GlossaryExchangeHandler handler = instanceHandler.getGlossaryExchangeHandler(userId, serverName, methodName);
 
                     handler.updateTermRelationship(userId,
-                                                   requestBody.getAssetManagerGUID(),
-                                                   requestBody.getAssetManagerName(),
+                                                   requestBody.getExternalSourceGUID(),
+                                                   requestBody.getExternalSourceName(),
                                                    glossaryTermOneGUID,
                                                    relationshipTypeName,
                                                    glossaryTermTwoGUID,

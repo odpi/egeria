@@ -5,10 +5,10 @@ package org.odpi.openmetadata.reports.validvalues;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.ReferenceDataManager;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;

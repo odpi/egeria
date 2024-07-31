@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ConnectionRequestBody carries the parameters for created a new asset.
+ * OCFConnectionRequestBody carries the parameters for created a new asset.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -108,7 +108,7 @@ public class ConnectionRequestBody extends OCFOMASAPIRequestBody
     @Override
     public String toString()
     {
-        return "ConnectionRequestBody{" +
+        return "OCFConnectionRequestBody{" +
                 "shortDescription='" + shortDescription + '\'' +
                 ", connection=" + connection +
                 '}';

@@ -4,12 +4,12 @@
 package org.odpi.openmetadata.accessservices.securitymanager.outtopic;
 
 import org.odpi.openmetadata.accessservices.securitymanager.connectors.outtopic.SecurityManagerOutTopicServerConnector;
-import org.odpi.openmetadata.accessservices.securitymanager.converters.ElementHeaderConverter;
 import org.odpi.openmetadata.accessservices.securitymanager.events.SecurityManagerEventType;
 import org.odpi.openmetadata.accessservices.securitymanager.events.SecurityManagerOutTopicEvent;
 import org.odpi.openmetadata.accessservices.securitymanager.ffdc.SecurityManagerAuditCode;
+import org.odpi.openmetadata.commonservices.generichandlers.ElementHeaderConverter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;

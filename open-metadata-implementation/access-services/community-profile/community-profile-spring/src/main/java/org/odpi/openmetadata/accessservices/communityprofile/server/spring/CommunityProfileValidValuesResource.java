@@ -4,17 +4,8 @@ package org.odpi.openmetadata.accessservices.communityprofile.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ValidValueListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ValidValueResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.server.ValidValuesRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -297,7 +288,7 @@ public class CommunityProfileValidValuesResource
      */
     @PostMapping(path = "/valid-values/by-search-string")
 
-    public ValidValueListResponse findValidValues(@PathVariable String                  serverName,
+    public ValidValuesResponse findValidValues(@PathVariable String                  serverName,
                                                   @PathVariable String                  userId,
                                                   @RequestParam int                     startFrom,
                                                   @RequestParam int                     pageSize,
@@ -324,7 +315,7 @@ public class CommunityProfileValidValuesResource
      */
     @PostMapping(path = "/valid-values/by-name")
 
-    public ValidValueListResponse getValidValuesByName(@PathVariable String          serverName,
+    public ValidValuesResponse getValidValuesByName(@PathVariable String          serverName,
                                                        @PathVariable String          userId,
                                                        @RequestParam int             startFrom,
                                                        @RequestParam int             pageSize,
@@ -351,7 +342,7 @@ public class CommunityProfileValidValuesResource
      */
     @GetMapping(path = "/valid-values/members/{validValueSetGUID}")
 
-    public ValidValueListResponse getValidValueSetMembers(@PathVariable String serverName,
+    public ValidValuesResponse getValidValueSetMembers(@PathVariable String serverName,
                                                           @PathVariable String userId,
                                                           @PathVariable String validValueSetGUID,
                                                           @RequestParam int    startFrom,
@@ -378,7 +369,7 @@ public class CommunityProfileValidValuesResource
      */
     @GetMapping(path = "/valid-values/sets/{validValueGUID}")
 
-    public ValidValueListResponse getSetsForValidValue(@PathVariable String serverName,
+    public ValidValuesResponse getSetsForValidValue(@PathVariable String serverName,
                                                        @PathVariable String userId,
                                                        @PathVariable String validValueGUID,
                                                        @RequestParam int    startFrom,
@@ -428,11 +419,11 @@ public class CommunityProfileValidValuesResource
      */
     @GetMapping(path = "/valid-values/{validValueGUID}/consumers")
 
-    public RelatedElementListResponse getConsumersOfValidValue(@PathVariable String serverName,
-                                                               @PathVariable String userId,
-                                                               @PathVariable String validValueGUID,
-                                                               @RequestParam int    startFrom,
-                                                               @RequestParam int    pageSize)
+    public RelatedElementsResponse getConsumersOfValidValue(@PathVariable String serverName,
+                                                            @PathVariable String userId,
+                                                            @PathVariable String validValueGUID,
+                                                            @RequestParam int    startFrom,
+                                                            @RequestParam int    pageSize)
     {
         return restAPI.getConsumersOfValidValue(serverName, userId, validValueGUID, startFrom, pageSize);
     }
@@ -454,11 +445,11 @@ public class CommunityProfileValidValuesResource
      */
     @GetMapping(path = "/valid-values/by-reference-value-tags/{elementGUID}")
 
-    public ValidValueListResponse getReferenceValues(@PathVariable String serverName,
-                                                     @PathVariable String userId,
-                                                     @PathVariable String elementGUID,
-                                                     @RequestParam int    startFrom,
-                                                     @RequestParam int    pageSize)
+    public ValidValuesResponse getReferenceValues(@PathVariable String serverName,
+                                                  @PathVariable String userId,
+                                                  @PathVariable String elementGUID,
+                                                  @RequestParam int    startFrom,
+                                                  @RequestParam int    pageSize)
     {
         return restAPI.getReferenceValues(serverName, userId, elementGUID, startFrom, pageSize);
     }
@@ -481,11 +472,11 @@ public class CommunityProfileValidValuesResource
      */
     @GetMapping(path = "/valid-values/{validValueGUID}/by-reference-value-tag-assignees")
 
-    public RelatedElementListResponse getAssigneesOfReferenceValue(@PathVariable String serverName,
-                                                                   @PathVariable String userId,
-                                                                   @PathVariable String validValueGUID,
-                                                                   @RequestParam int    startFrom,
-                                                                   @RequestParam int    pageSize)
+    public RelatedElementsResponse getAssigneesOfReferenceValue(@PathVariable String serverName,
+                                                                @PathVariable String userId,
+                                                                @PathVariable String validValueGUID,
+                                                                @RequestParam int    startFrom,
+                                                                @RequestParam int    pageSize)
     {
         return restAPI.getAssigneesOfReferenceValue(serverName, userId, validValueGUID, startFrom, pageSize);
     }
@@ -507,10 +498,10 @@ public class CommunityProfileValidValuesResource
      */
     @GetMapping(path = "/valid-values")
 
-    public ValidValueListResponse getAllValidValues(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @RequestParam int    startFrom,
-                                                    @RequestParam int    pageSize)
+    public ValidValuesResponse getAllValidValues(@PathVariable String serverName,
+                                                 @PathVariable String userId,
+                                                 @RequestParam int    startFrom,
+                                                 @RequestParam int    pageSize)
     {
         return restAPI.getAllValidValues(serverName, userId, startFrom, pageSize);
     }

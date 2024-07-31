@@ -2,18 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.api;
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ControlFlowElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataFlowElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.LineageMappingElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessCallElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ControlFlowProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataFlowProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessCallProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ControlFlowProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataFlowProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageMappingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ProcessCallProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

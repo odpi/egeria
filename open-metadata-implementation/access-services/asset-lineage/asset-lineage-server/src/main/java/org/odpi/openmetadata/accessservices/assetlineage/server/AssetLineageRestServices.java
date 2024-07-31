@@ -16,7 +16,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineagePublishSum
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipsContext;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.OCFConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -347,13 +347,13 @@ public class AssetLineageRestServices {
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem retrieving the discovery engine definition.
      */
-    public ConnectionResponse getOutTopicConnection(String serverName,
-                                                    String userId,
-                                                    String callerId)
+    public OCFConnectionResponse getOutTopicConnection(String serverName,
+                                                       String userId,
+                                                       String callerId)
     {
-        final String methodName = "getOutTopicConnection";
-        ConnectionResponse response = new ConnectionResponse();
-        AuditLog           auditLog = null;
+        final String          methodName = "getOutTopicConnection";
+        OCFConnectionResponse response   = new OCFConnectionResponse();
+        AuditLog              auditLog   = null;
 
         try
         {

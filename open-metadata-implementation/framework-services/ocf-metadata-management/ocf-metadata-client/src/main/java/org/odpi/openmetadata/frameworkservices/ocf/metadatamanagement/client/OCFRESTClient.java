@@ -227,7 +227,7 @@ public class OCFRESTClient extends FFDCRESTClient
      * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return ConnectionResponse
+     * @return OCFConnectionResponse
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.

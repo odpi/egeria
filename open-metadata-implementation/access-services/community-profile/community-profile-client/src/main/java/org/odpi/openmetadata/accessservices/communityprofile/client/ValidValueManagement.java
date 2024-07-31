@@ -4,21 +4,16 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.ValidValueManagementInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ValidValueElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ReferenceValueAssignmentProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ValidValueAssignmentProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ValidValueMembershipProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ValidValueProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ValidValueListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ValidValueResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ReferenceValueAssignmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueAssignmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueProperties;
 
 import java.util.List;
 
@@ -485,15 +480,15 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        ValidValueListResponse restResult = restClient.callValidValueListPostRESTCall(methodName,
-                                                                                      urlTemplate,
-                                                                                      requestBody,
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      startFrom,
-                                                                                      validatedPageSize);
+        ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                serverName,
+                                                                                userId,
+                                                                                startFrom,
+                                                                                validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -534,15 +529,15 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        ValidValueListResponse restResult = restClient.callValidValueListPostRESTCall(methodName,
-                                                                                      urlTemplate,
-                                                                                      requestBody,
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      startFrom,
-                                                                                      validatedPageSize);
+        ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                serverName,
+                                                                                userId,
+                                                                                startFrom,
+                                                                                validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -573,14 +568,14 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
 
         final String urlTemplate = serverPlatformURLRoot + validValueURLTemplatePrefix + "?startFrom={2}&pageSize={3}";
 
-        ValidValueListResponse restResult = restClient.callValidValueListGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     startFrom,
-                                                                                     validatedPageSize);
+        ValidValuesResponse restResult = restClient.callValidValuesGetRESTCall(methodName,
+                                                                               urlTemplate,
+                                                                               serverName,
+                                                                               userId,
+                                                                               startFrom,
+                                                                               validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -614,15 +609,15 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
 
         final String urlTemplate = serverPlatformURLRoot + validValueURLTemplatePrefix + "/members/{2}?startFrom={3}&pageSize={4}";
 
-        ValidValueListResponse restResult = restClient.callValidValueListGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     validValueSetGUID,
-                                                                                     startFrom,
-                                                                                     validatedPageSize);
+        ValidValuesResponse restResult = restClient.callValidValuesGetRESTCall(methodName,
+                                                                               urlTemplate,
+                                                                               serverName,
+                                                                               userId,
+                                                                               validValueSetGUID,
+                                                                               startFrom,
+                                                                               validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -655,7 +650,7 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
 
         final String urlTemplate = serverPlatformURLRoot + validValueURLTemplatePrefix + "/sets/{2}?startFrom={3}&pageSize={4}";
 
-        ValidValueListResponse restResult = restClient.callValidValueListGetRESTCall(methodName,
+        ValidValuesResponse restResult = restClient.callValidValuesGetRESTCall(methodName,
                                                                                      urlTemplate,
                                                                                      serverName,
                                                                                      userId,
@@ -663,7 +658,7 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
                                                                                      startFrom,
                                                                                      validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -735,15 +730,15 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
 
         final String urlTemplate = serverPlatformURLRoot + validValueURLTemplatePrefix + "/{2}/consumers?startFrom={3}&pageSize={4}";
 
-        RelatedElementListResponse restResult = restClient.callRelatedElementListGetRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             validValueGUID,
-                                                                                             startFrom,
-                                                                                             validatedPageSize);
+        RelatedElementsResponse restResult = restClient.callRelatedElementsGetRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          validValueGUID,
+                                                                                          startFrom,
+                                                                                          validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -776,14 +771,14 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
 
         final String urlTemplate = serverPlatformURLRoot + validValueURLTemplatePrefix + "/by-reference-value-tags/{2}?startFrom={3}&pageSize={4}";
 
-        ValidValueListResponse restResult = restClient.callValidValueListGetRESTCall(methodName,
+        ValidValuesResponse restResult = restClient.callValidValuesGetRESTCall(methodName,
                                                                                      urlTemplate,
                                                                                      serverName,
                                                                                      userId,
                                                                                      startFrom,
                                                                                      validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -819,15 +814,15 @@ public class ValidValueManagement extends CommunityProfileBaseClient implements 
 
         final String urlTemplate = serverPlatformURLRoot + validValueURLTemplatePrefix + "/{2}/by-reference-value-tag-assignees?startFrom={3}&pageSize={4}";
 
-        RelatedElementListResponse restResult = restClient.callRelatedElementListGetRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             validValueGUID,
-                                                                                             startFrom,
-                                                                                             validatedPageSize);
+        RelatedElementsResponse restResult = restClient.callRelatedElementsGetRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          validValueGUID,
+                                                                                          startFrom,
+                                                                                          validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 

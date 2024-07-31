@@ -3,13 +3,13 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceMetricElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionMetricProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceExpectationsProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsDataSetProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMetricProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceResultsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceMetricElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionMetricProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceExpectationsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMeasurementsDataSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMeasurementsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMetricProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceResultsProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

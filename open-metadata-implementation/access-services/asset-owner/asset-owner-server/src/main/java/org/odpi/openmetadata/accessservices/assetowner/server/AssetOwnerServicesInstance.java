@@ -3,28 +3,19 @@
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
 
-import org.odpi.openmetadata.accessservices.assetowner.converters.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
+import org.odpi.openmetadata.commonservices.generichandlers.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerErrorCode;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.CertificationHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ExternalReferenceHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.LicenseHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.AnnotationHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.SurveyReportHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.SurveyReport;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -60,7 +51,7 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
     private final ExternalReferenceHandler<ExternalReferenceElement> externalReferenceHandler;
     private final CertificationHandler<CertificationTypeElement>     certificationTypeHandler;
     private final LicenseHandler<LicenseTypeElement>                 licenseTypeHandler;
-    private final ReferenceableHandler<RelatedElement>                     relatedElementHandler;
+    private final ReferenceableHandler<RelatedElement> relatedElementHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.

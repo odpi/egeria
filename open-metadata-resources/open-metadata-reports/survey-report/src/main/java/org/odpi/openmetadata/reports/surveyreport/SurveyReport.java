@@ -5,7 +5,7 @@ package org.odpi.openmetadata.reports.surveyreport;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -526,14 +526,14 @@ public class SurveyReport
 
                 outputReport.printReportLine(detailIndentLevel, "Unique identifier", assetGUID);
                 outputReport.printReportLine(detailIndentLevel, "Type", asset.getElementHeader().getType().getTypeName());
-                if ((asset.getAssetProperties().getExtendedProperties() != null) && (asset.getAssetProperties().getExtendedProperties().get(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name) != null))
+                if ((asset.getProperties().getExtendedProperties() != null) && (asset.getProperties().getExtendedProperties().get(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name) != null))
                 {
                     outputReport.printReportLine(detailIndentLevel, "Deployed Implementation Type",
-                                                 asset.getAssetProperties().getExtendedProperties().get(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name).toString());
+                                                 asset.getProperties().getExtendedProperties().get(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name).toString());
                 }
-                outputReport.printReportLine(detailIndentLevel, "Qualified Name", asset.getAssetProperties().getQualifiedName());
-                outputReport.printReportLine(detailIndentLevel, "Display Name", asset.getAssetProperties().getName());
-                outputReport.printReportLine(detailIndentLevel, "Description", asset.getAssetProperties().getDescription());
+                outputReport.printReportLine(detailIndentLevel, "Qualified Name", asset.getProperties().getQualifiedName());
+                outputReport.printReportLine(detailIndentLevel, "Display Name", asset.getProperties().getName());
+                outputReport.printReportLine(detailIndentLevel, "Description", asset.getProperties().getResourceDescription());
 
                 outputReport.printReportSubheading(detailIndentLevel, "Survey report summaries");
 

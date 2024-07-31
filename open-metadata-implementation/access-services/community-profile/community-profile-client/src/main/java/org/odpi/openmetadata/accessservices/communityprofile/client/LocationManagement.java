@@ -4,18 +4,18 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.LocationManagementInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.LocationElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AdjacentLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.LocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.NestedLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileLocationProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.LocationsResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LocationElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AdjacentLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AssetLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.NestedLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.ProfileLocationProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.DigitalLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.FixedLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.LocationListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.LocationResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.SecureLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.DigitalLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.LocationResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.SecureLocationProperties;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -750,13 +750,13 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(parameterName);
 
-        LocationListResponse restResult = restClient.callLocationsPostRESTCall(methodName,
-                                                                               urlTemplate,
-                                                                               requestBody,
-                                                                               serverName,
-                                                                               userId,
-                                                                               startFrom,
-                                                                               validatedPageSize);
+        LocationsResponse restResult = restClient.callLocationsPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
         return restResult.getElements();
     }
@@ -799,13 +799,13 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameter);
 
-        LocationListResponse restResult = restClient.callLocationsPostRESTCall(methodName,
-                                                                               urlTemplate,
-                                                                               requestBody,
-                                                                               serverName,
-                                                                               userId,
-                                                                               startFrom,
-                                                                               validatedPageSize);
+        LocationsResponse restResult = restClient.callLocationsPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
         return restResult.getElements();
     }
@@ -843,13 +843,13 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
 
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/has-peer-locations?startFrom={3}&pageSize={4}";
 
-        LocationListResponse restResult = restClient.callLocationsGetRESTCall(methodName,
-                                                                              urlTemplate,
-                                                                              serverName,
-                                                                              userId,
-                                                                              locationGUID,
-                                                                              startFrom,
-                                                                              validatedPageSize);
+        LocationsResponse restResult = restClient.callLocationsGetRESTCall(methodName,
+                                                                           urlTemplate,
+                                                                           serverName,
+                                                                           userId,
+                                                                           locationGUID,
+                                                                           startFrom,
+                                                                           validatedPageSize);
 
         return restResult.getElements();
     }
@@ -886,13 +886,13 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
 
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/has-nested-locations?startFrom={3}&pageSize={4}";
 
-        LocationListResponse restResult = restClient.callLocationsGetRESTCall(methodName,
-                                                                              urlTemplate,
-                                                                              serverName,
-                                                                              userId,
-                                                                              locationGUID,
-                                                                              startFrom,
-                                                                              validatedPageSize);
+        LocationsResponse restResult = restClient.callLocationsGetRESTCall(methodName,
+                                                                           urlTemplate,
+                                                                           serverName,
+                                                                           userId,
+                                                                           locationGUID,
+                                                                           startFrom,
+                                                                           validatedPageSize);
 
         return restResult.getElements();
     }
@@ -929,13 +929,13 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
 
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/{2}/has-grouping-locations?startFrom={3}&pageSize={4}";
 
-        LocationListResponse restResult = restClient.callLocationsGetRESTCall(methodName,
-                                                                              urlTemplate,
-                                                                              serverName,
-                                                                              userId,
-                                                                              locationGUID,
-                                                                              startFrom,
-                                                                              validatedPageSize);
+        LocationsResponse restResult = restClient.callLocationsGetRESTCall(methodName,
+                                                                           urlTemplate,
+                                                                           serverName,
+                                                                           userId,
+                                                                           locationGUID,
+                                                                           startFrom,
+                                                                           validatedPageSize);
 
         return restResult.getElements();
     }
@@ -972,13 +972,13 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
 
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/by-actor-profile/{2}?startFrom={3}&pageSize={4}";
 
-        LocationListResponse restResult = restClient.callLocationsGetRESTCall(methodName,
-                                                                              urlTemplate,
-                                                                              serverName,
-                                                                              userId,
-                                                                              actorProfileGUID,
-                                                                              startFrom,
-                                                                              validatedPageSize);
+        LocationsResponse restResult = restClient.callLocationsGetRESTCall(methodName,
+                                                                           urlTemplate,
+                                                                           serverName,
+                                                                           userId,
+                                                                           actorProfileGUID,
+                                                                           startFrom,
+                                                                           validatedPageSize);
 
         return restResult.getElements();
     }
@@ -1016,13 +1016,13 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
 
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations/by-asset/{2}?startFrom={3}&pageSize={4}";
 
-        LocationListResponse restResult = restClient.callLocationsGetRESTCall(methodName,
-                                                                              urlTemplate,
-                                                                              serverName,
-                                                                              userId,
-                                                                              assetGUID,
-                                                                              startFrom,
-                                                                              validatedPageSize);
+        LocationsResponse restResult = restClient.callLocationsGetRESTCall(methodName,
+                                                                           urlTemplate,
+                                                                           serverName,
+                                                                           userId,
+                                                                           assetGUID,
+                                                                           startFrom,
+                                                                           validatedPageSize);
 
         return restResult.getElements();
     }
@@ -1056,12 +1056,12 @@ public class LocationManagement extends CommunityProfileBaseClient implements Lo
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/locations?startFrom={2}&pageSize={3}";
 
 
-        LocationListResponse restResult = restClient.callLocationsGetRESTCall(methodName,
-                                                                              urlTemplate,
-                                                                              serverName,
-                                                                              userId,
-                                                                              startFrom,
-                                                                              validatedPageSize);
+        LocationsResponse restResult = restClient.callLocationsGetRESTCall(methodName,
+                                                                           urlTemplate,
+                                                                           serverName,
+                                                                           userId,
+                                                                           startFrom,
+                                                                           validatedPageSize);
 
         return restResult.getElements();
     }

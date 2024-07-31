@@ -6,9 +6,9 @@ package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 
 
 import java.util.List;
@@ -23,10 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ReferenceableElement implements MetadataElement
+public class ReferenceableElement implements CorrelatedMetadataElement
 {
     private ElementHeader                   elementHeader = null;
-    private List<MetadataCorrelationHeader> correlationHeaders    = null;
+    private List<MetadataCorrelationHeader> correlationHeaders      = null;
     private ReferenceableProperties         referenceableProperties = null;
 
 

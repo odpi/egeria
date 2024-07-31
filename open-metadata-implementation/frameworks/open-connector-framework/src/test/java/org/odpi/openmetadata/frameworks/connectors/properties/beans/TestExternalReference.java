@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -241,7 +243,7 @@ public class TestExternalReference
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getTestObject();
+        ElementBase  propertyBase = getTestObject();
 
         try
         {
@@ -254,7 +256,7 @@ public class TestExternalReference
 
         try
         {
-            validateResultObject((ExternalReference) objectMapper.readValue(jsonString, PropertyBase.class));
+            validateResultObject((ExternalReference) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.APIOperation;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -19,7 +19,7 @@ import java.lang.reflect.InvocationTargetException;
  * EventTypeConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
  * EntityDetail object into a bean that inherits from EventTypeElement.  It is working with a ComplexSchemaType.
  */
-public class APIOperationConverter<B> extends OCFConverter<B>
+public class APIOperationConverter<B> extends OMFConverter<B>
 {
     /**
      * Constructor

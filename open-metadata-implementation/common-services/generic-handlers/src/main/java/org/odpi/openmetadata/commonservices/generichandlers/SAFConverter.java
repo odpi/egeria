@@ -21,7 +21,7 @@ import java.util.Map;
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing a Data Manager bean.
  */
-public abstract class SAFConverter<B> extends OCFConverter<B>
+public abstract class SAFConverter<B> extends OMFConverter<B>
 {
     /**
      * Constructor

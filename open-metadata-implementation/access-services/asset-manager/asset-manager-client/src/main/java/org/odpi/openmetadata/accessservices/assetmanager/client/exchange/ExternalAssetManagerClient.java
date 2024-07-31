@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.client.exchange;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.exchange.ExternalAssetManagerInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.AssetManagerProperties;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;

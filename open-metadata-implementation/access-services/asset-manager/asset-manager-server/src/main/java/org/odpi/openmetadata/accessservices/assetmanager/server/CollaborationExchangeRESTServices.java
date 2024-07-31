@@ -7,17 +7,11 @@ import org.odpi.openmetadata.accessservices.assetmanager.handlers.NoteLogExchang
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.InformalTagElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.LikeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RatingElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagUpdateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteElementResponse;
@@ -25,18 +19,14 @@ import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteElementsRespon
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteLogElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteLogElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.InformalTagHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.LikeHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.RatingHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -570,8 +560,8 @@ public class CollaborationExchangeRESTServices
                 if (requestBody.getProperties() instanceof FeedbackProperties feedbackProperties)
                 {
                     handler.setupAcceptedAnswer(userId,
-                                                requestBody.getAssetManagerGUID(),
-                                                requestBody.getAssetManagerName(),
+                                                requestBody.getExternalSourceGUID(),
+                                                requestBody.getExternalSourceName(),
                                                 questionCommentGUID,
                                                 answerCommentGUID,
                                                 feedbackProperties.getIsPublic(),

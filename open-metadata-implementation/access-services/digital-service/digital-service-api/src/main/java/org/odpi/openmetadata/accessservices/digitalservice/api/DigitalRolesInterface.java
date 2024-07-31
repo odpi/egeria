@@ -4,12 +4,12 @@ package org.odpi.openmetadata.accessservices.digitalservice.api;
 
 
 
-import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.AgreementRoleAppointee;
-import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.PersonRoleAppointee;
-import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.PersonRoleHistory;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.AgreementRoleProperties;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.PersonRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AgreementRoleAppointee;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleAppointee;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleHistory;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementRoleProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

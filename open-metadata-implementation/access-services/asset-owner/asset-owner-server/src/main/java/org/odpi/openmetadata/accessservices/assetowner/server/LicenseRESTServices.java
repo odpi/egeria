@@ -2,21 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.LicenseTypeElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.LicenseProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.LicenseTypeProperties;
-import org.odpi.openmetadata.accessservices.assetowner.rest.LicenseTypeListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.LicenseTypeResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LicenseTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.LicenseHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -62,8 +57,8 @@ public class LicenseRESTServices
      *  UserNotAuthorizedException security access problem
      */
     public LicenseTypeResponse getLicenseTypeByGUID(String serverName,
-                                                                String userId,
-                                                                String licenseTypeGUID)
+                                                    String userId,
+                                                    String licenseTypeGUID)
     {
         final String methodName = "getLicenseTypeByGUID";
         final String guidParameterName = "licenseTypeGUID";
@@ -167,19 +162,19 @@ public class LicenseRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public LicenseTypeListResponse getLicenseTypesByTitle(String                  serverName,
-                                                                      String                  userId,
-                                                                      int                     startFrom,
-                                                                      int                     pageSize,
-                                                                      SearchStringRequestBody requestBody)
+    public LicenseTypesResponse getLicenseTypesByTitle(String                  serverName,
+                                                       String                  userId,
+                                                       int                     startFrom,
+                                                       int                     pageSize,
+                                                       SearchStringRequestBody requestBody)
     {
         final String methodName = "getLicenseTypesByTitle";
         final String titleParameterName = "title";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        LicenseTypeListResponse response = new LicenseTypeListResponse();
-        AuditLog                      auditLog = null;
+        LicenseTypesResponse response = new LicenseTypesResponse();
+        AuditLog             auditLog = null;
 
         try
         {
@@ -229,18 +224,18 @@ public class LicenseRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public LicenseTypeListResponse getLicenseTypeByDomainId(String serverName,
-                                                                        String userId,
-                                                                        int    domainIdentifier,
-                                                                        int    startFrom,
-                                                                        int    pageSize)
+    public LicenseTypesResponse getLicenseTypeByDomainId(String serverName,
+                                                         String userId,
+                                                         int    domainIdentifier,
+                                                         int    startFrom,
+                                                         int    pageSize)
     {
         final String methodName = "getLicenseTypeByDomainId";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        LicenseTypeListResponse response = new LicenseTypeListResponse();
-        AuditLog                      auditLog = null;
+        LicenseTypesResponse response = new LicenseTypesResponse();
+        AuditLog             auditLog = null;
 
         try
         {
@@ -516,41 +511,41 @@ public class LicenseRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public RelatedElementListResponse getLicensedElements(String serverName,
-                                                           String userId,
-                                                           String licenseTypeGUID,
-                                                           int    startFrom,
-                                                           int    pageSize)
+    public RelatedElementsResponse getLicensedElements(String serverName,
+                                                       String userId,
+                                                       String licenseTypeGUID,
+                                                       int    startFrom,
+                                                       int    pageSize)
     {
         final String methodName = "getLicensedElements";
         final String guidParameter = "licenseTypeGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getAttachedElements(userId,
-                                                                licenseTypeGUID,
-                                                                guidParameter,
-                                                                OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
-                                                                OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
-                                                                OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
-                                                                OpenMetadataType.REFERENCEABLE.typeName,
-                                                                null,
-                                                                null,
-                                                                1,
-                                                                false,
-                                                                false,
-                                                                startFrom,
-                                                                pageSize,
-                                                                new Date(),
-                                                                methodName));
+            response.setElements(handler.getAttachedElements(userId,
+                                                             licenseTypeGUID,
+                                                             guidParameter,
+                                                             OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+                                                             OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
+                                                             OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
+                                                             OpenMetadataType.REFERENCEABLE.typeName,
+                                                             null,
+                                                             null,
+                                                             1,
+                                                             false,
+                                                             false,
+                                                             startFrom,
+                                                             pageSize,
+                                                             new Date(),
+                                                             methodName));
         }
         catch (Exception error)
         {
@@ -576,41 +571,41 @@ public class LicenseRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public RelatedElementListResponse getLicenses(String serverName,
-                                                        String userId,
-                                                        String elementGUID,
-                                                        int    startFrom,
-                                                        int    pageSize)
+    public RelatedElementsResponse getLicenses(String serverName,
+                                               String userId,
+                                               String elementGUID,
+                                               int    startFrom,
+                                               int    pageSize)
     {
         final String methodName = "getLicences";
         final String guidParameterName = "elementGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getAttachedElements(userId,
-                                                                elementGUID,
-                                                                guidParameterName,
-                                                                OpenMetadataType.REFERENCEABLE.typeName,
-                                                                OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
-                                                                OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
-                                                                OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
-                                                                null,
-                                                                null,
-                                                                2,
-                                                                false,
-                                                                false,
-                                                                startFrom,
-                                                                pageSize,
-                                                                new Date(),
-                                                                methodName));
+            response.setElements(handler.getAttachedElements(userId,
+                                                             elementGUID,
+                                                             guidParameterName,
+                                                             OpenMetadataType.REFERENCEABLE.typeName,
+                                                             OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
+                                                             OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
+                                                             OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+                                                             null,
+                                                             null,
+                                                             2,
+                                                             false,
+                                                             false,
+                                                             startFrom,
+                                                             pageSize,
+                                                             new Date(),
+                                                             methodName));
         }
         catch (Exception error)
         {

@@ -5,8 +5,8 @@ package org.odpi.openmetadata.adapters.connectors.apacheatlas.integration;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener;
 import org.odpi.openmetadata.accessservices.assetmanager.events.AssetManagerOutTopicEvent;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueElement;
 
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationAuditCode;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationErrorCode;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules.*;
@@ -28,7 +28,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDef;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataTypeDefGallery;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;

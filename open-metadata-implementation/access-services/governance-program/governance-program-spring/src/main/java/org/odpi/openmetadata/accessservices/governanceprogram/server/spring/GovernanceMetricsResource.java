@@ -5,16 +5,8 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceMetricListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceMetricResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceMetricsRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -408,11 +400,11 @@ public class GovernanceMetricsResource
      */
     @PostMapping(path = "/governance-metrics/by-search-string")
 
-    public GovernanceMetricListResponse findGovernanceMetrics(@PathVariable String                  serverName,
-                                                              @PathVariable String                  userId,
-                                                              @RequestParam int                     startFrom,
-                                                              @RequestParam int                     pageSize,
-                                                              @RequestBody  SearchStringRequestBody requestBody)
+    public GovernanceMetricsResponse findGovernanceMetrics(@PathVariable String                  serverName,
+                                                           @PathVariable String                  userId,
+                                                           @RequestParam int                     startFrom,
+                                                           @RequestParam int                     pageSize,
+                                                           @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findGovernanceMetrics(serverName, userId, startFrom, pageSize, requestBody);
     }

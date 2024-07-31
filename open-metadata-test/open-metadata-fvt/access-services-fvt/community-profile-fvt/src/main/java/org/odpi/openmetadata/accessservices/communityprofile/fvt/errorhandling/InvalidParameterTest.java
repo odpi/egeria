@@ -7,11 +7,11 @@ import org.odpi.openmetadata.accessservices.communityprofile.client.CommunityMan
 import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
 
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -461,7 +461,7 @@ public class InvalidParameterTest
 
         try
         {
-            client.createActorProfile(userId, null, null,  new ActorProfileProperties(), null);
+            client.createActorProfile(userId, null, null, new ActorProfileProperties(), null);
 
             throw new FVTUnexpectedCondition(testCaseName, activityName);
         }

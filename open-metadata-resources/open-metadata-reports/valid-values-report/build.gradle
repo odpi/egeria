@@ -17,7 +17,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     compileOnly project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-api')
     compileOnly project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-client')
-    implementation project(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-api')
+    compileOnly project(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-api')
     implementation project(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-client')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     runtimeOnly project(':open-metadata-implementation:user-security:token-manager')

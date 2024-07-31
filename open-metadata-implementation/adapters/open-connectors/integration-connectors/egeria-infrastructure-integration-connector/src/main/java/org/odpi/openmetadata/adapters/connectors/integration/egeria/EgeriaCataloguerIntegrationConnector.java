@@ -6,18 +6,18 @@ package org.odpi.openmetadata.adapters.connectors.integration.egeria;
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.ITInfrastructureEventListener;
 import org.odpi.openmetadata.accessservices.itinfrastructure.events.ITInfrastructureOutTopicEvent;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerPlatformElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataAssetProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessStatus;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DeploymentElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerPlatformElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.ServerAssetUseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareCapabilityProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerPlatformProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerPlatformProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerProperties;
 import org.odpi.openmetadata.adminservices.client.ConfigurationManagementClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
@@ -749,7 +749,7 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
 
         processProperties.setQualifiedName(serverName + ":" + serviceName + ":" + connectorName);
         processProperties.setName(connectorName);
-        processProperties.setDescription(connectorDescription);
+        processProperties.setResourceDescription(connectorDescription);
         processProperties.setImplementationLanguage("Java");
 
         String              connectorProviderClassName = connectorConnection.getConnectorType().getConnectorProviderClassName();
@@ -832,7 +832,7 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
 
         softwareServerProperties.setQualifiedName(this.getServerQualifiedName(serverConfig.getLocalServerId(), serverConfig.getLocalServerName()));
         softwareServerProperties.setName(serverConfig.getLocalServerName());
-        softwareServerProperties.setDescription(serverConfig.getLocalServerDescription());
+        softwareServerProperties.setResourceDescription(serverConfig.getLocalServerDescription());
         softwareServerProperties.setSoftwareServerSource("Egeria");
         softwareServerProperties.setSoftwareServerVersion(serverConfig.getVersionId());
         softwareServerProperties.setSoftwareServerUserId(serverConfig.getLocalServerUserId());
@@ -900,8 +900,8 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
         }
 
         properties.setQualifiedName(serverName + ":" + serviceFullName);
-        properties.setDisplayName(serviceFullName);
-        properties.setDescription(serviceDescription);
+        properties.setResourceName(serviceFullName);
+        properties.setResourceDescription(serviceDescription);
 
         Map<String, String> additionalProperties = new HashMap<>();
 

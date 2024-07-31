@@ -5,6 +5,7 @@
 
 
 dependencies {
+    implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-server')
     implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-api')

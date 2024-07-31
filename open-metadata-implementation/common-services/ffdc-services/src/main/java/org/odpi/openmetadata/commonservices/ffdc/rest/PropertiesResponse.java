@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
@@ -94,19 +93,8 @@ public class PropertiesResponse extends FFDCResponseBase
     {
         return "PropertiesResponse{" +
                 "properties=" + properties +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "} " + super.toString();
     }
-
 
     /**
      * Return comparison result based on the content of the properties.
@@ -121,7 +109,7 @@ public class PropertiesResponse extends FFDCResponseBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof PropertiesResponse))
+        if (!(objectToCompare instanceof PropertiesResponse that))
         {
             return false;
         }
@@ -129,7 +117,6 @@ public class PropertiesResponse extends FFDCResponseBase
         {
             return false;
         }
-        PropertiesResponse that = (PropertiesResponse) objectToCompare;
         return Objects.equals(getProperties(), that.getProperties());
     }
 

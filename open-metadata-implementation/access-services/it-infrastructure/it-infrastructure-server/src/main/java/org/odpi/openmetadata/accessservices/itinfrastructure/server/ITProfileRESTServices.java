@@ -3,26 +3,14 @@
 package org.odpi.openmetadata.accessservices.itinfrastructure.server;
 
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ContactMethodElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ContactMethodRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSourceRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UserIdentityListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UserIdentityRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UserIdentityResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -296,7 +284,7 @@ public class ITProfileRESTServices
     public VoidResponse deleteITProfile(String                    serverName,
                                         String                    userId,
                                         String                    itProfileGUID,
-                                        MetadataSourceRequestBody requestBody)
+                                        ExternalSourceRequestBody requestBody)
     {
         final String methodName        = "deleteITProfile";
         final String guidParameterName = "itProfileGUID";
@@ -429,7 +417,7 @@ public class ITProfileRESTServices
     public VoidResponse deleteContactMethod(String                    serverName,
                                             String                    userId,
                                             String                    contactMethodGUID,
-                                            MetadataSourceRequestBody requestBody)
+                                            ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "deleteContactMethod";
         final String guidParameterName           = "contactMethodGUID";
@@ -601,19 +589,19 @@ public class ITProfileRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public ITProfileListResponse getITProfileByName(String          serverName,
-                                                    String          userId,
-                                                    int             startFrom,
-                                                    int             pageSize,
-                                                    NameRequestBody requestBody)
+    public ITProfilesResponse getITProfileByName(String          serverName,
+                                                 String          userId,
+                                                 int             startFrom,
+                                                 int             pageSize,
+                                                 NameRequestBody requestBody)
     {
         final String methodName         = "getITProfileByName";
         final String nameParameterName  = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ITProfileListResponse response = new ITProfileListResponse();
-        AuditLog                 auditLog = null;
+        ITProfilesResponse response = new ITProfilesResponse();
+        AuditLog           auditLog = null;
 
         try
         {
@@ -657,19 +645,19 @@ public class ITProfileRESTServices
      *   PropertyServerException the server is not available.
      *   UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public ITProfileListResponse findITProfile(String                  serverName,
-                                               String                  userId,
-                                               int                     startFrom,
-                                               int                     pageSize,
-                                               SearchStringRequestBody requestBody)
+    public ITProfilesResponse findITProfile(String                  serverName,
+                                            String                  userId,
+                                            int                     startFrom,
+                                            int                     pageSize,
+                                            SearchStringRequestBody requestBody)
     {
         final String methodName                 = "findITProfile";
         final String searchStringParameterName  = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ITProfileListResponse response = new ITProfileListResponse();
-        AuditLog                 auditLog = null;
+        ITProfilesResponse response = new ITProfilesResponse();
+        AuditLog           auditLog = null;
 
         try
         {
@@ -846,7 +834,7 @@ public class ITProfileRESTServices
     public VoidResponse deleteUserIdentity(String                    serverName,
                                            String                    userId,
                                            String                    userIdentityGUID,
-                                           MetadataSourceRequestBody requestBody)
+                                           ExternalSourceRequestBody requestBody)
     {
         final String methodName        = "deleteUserIdentity";
         final String guidParameterName = "userIdentityGUID";
@@ -907,7 +895,7 @@ public class ITProfileRESTServices
                                               String                    userId,
                                               String                    userIdentityGUID,
                                               String                    profileGUID,
-                                              MetadataSourceRequestBody requestBody)
+                                              ExternalSourceRequestBody requestBody)
     {
         final String methodName                    = "addIdentityToProfile";
         final String userIdentityGUIDParameterName = "userIdentityGUID";
@@ -975,7 +963,7 @@ public class ITProfileRESTServices
                                                   String                    userId,
                                                   String                    userIdentityGUID,
                                                   String                    profileGUID,
-                                                  MetadataSourceRequestBody requestBody)
+                                                  ExternalSourceRequestBody requestBody)
     {
         final String methodName                    = "removeIdentityFromProfile";
         final String userIdentityGUIDParameterName = "userIdentityGUID";
@@ -1035,19 +1023,19 @@ public class ITProfileRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public UserIdentityListResponse findUserIdentities(String                  serverName,
-                                                       String                  userId,
-                                                       int                     startFrom,
-                                                       int                     pageSize,
-                                                       SearchStringRequestBody requestBody)
+    public UserIdentitiesResponse findUserIdentities(String                  serverName,
+                                                     String                  userId,
+                                                     int                     startFrom,
+                                                     int                     pageSize,
+                                                     SearchStringRequestBody requestBody)
     {
         final String methodName                 = "findUserIdentities";
         final String searchStringParameterName  = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        UserIdentityListResponse response = new UserIdentityListResponse();
-        AuditLog                 auditLog = null;
+        UserIdentitiesResponse response = new UserIdentitiesResponse();
+        AuditLog               auditLog = null;
 
         try
         {
@@ -1100,19 +1088,19 @@ public class ITProfileRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public UserIdentityListResponse getUserIdentitiesByName(String          serverName,
-                                                            String          userId,
-                                                            int             startFrom,
-                                                            int             pageSize,
-                                                            NameRequestBody requestBody)
+    public UserIdentitiesResponse getUserIdentitiesByName(String          serverName,
+                                                          String          userId,
+                                                          int             startFrom,
+                                                          int             pageSize,
+                                                          NameRequestBody requestBody)
     {
         final String methodName         = "getUserIdentitiesByName";
         final String nameParameterName  = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        UserIdentityListResponse response = new UserIdentityListResponse();
-        AuditLog                 auditLog = null;
+        UserIdentitiesResponse response = new UserIdentitiesResponse();
+        AuditLog               auditLog = null;
 
         try
         {

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.FindProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
 
 import java.util.Objects;
 
@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FindByPropertiesRequestBody extends EffectiveTimeQueryRequestBody
 {
-    private FindProperties properties        = null;
+    private FindProperties properties = null;
 
 
     /**

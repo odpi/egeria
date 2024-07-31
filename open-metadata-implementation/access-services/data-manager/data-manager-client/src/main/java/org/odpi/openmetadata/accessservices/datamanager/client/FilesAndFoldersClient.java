@@ -5,15 +5,17 @@ package org.odpi.openmetadata.accessservices.datamanager.client;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.FilesAndFoldersInterface;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DataFileElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
-import org.odpi.openmetadata.accessservices.datamanager.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
+import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataFileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.*;
 
 import java.util.List;
 
@@ -164,7 +166,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
 
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
         requestBody.setExternalSourceName(fileManagerCapabilityName);
-        requestBody.setFullPath(pathName);
+        requestBody.setPathName(pathName);
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
                                                                           urlTemplate,
@@ -209,7 +211,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/folders/{3}/attach";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
         requestBody.setExternalSourceName(fileManagerCapabilityName);
 
@@ -255,7 +257,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/folders/{3}/detach";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
         requestBody.setExternalSourceName(fileManagerCapabilityName);
 
@@ -540,7 +542,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
 
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
         requestBody.setExternalSourceName(fileManagerCapabilityName);
-        requestBody.setFullPath(fullPathname);
+        requestBody.setPathName(fullPathname);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -793,7 +795,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
 
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
         requestBody.setExternalSourceName(fileManagerCapabilityName);
-        requestBody.setFullPath(fullPathname);
+        requestBody.setPathName(fullPathname);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -837,7 +839,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/folders/{4}/data-files/{5}/attach";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
         requestBody.setExternalSourceName(fileManagerCapabilityName);
 
@@ -885,7 +887,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/folders/{4}/data-files/{5}/detach";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
         requestBody.setExternalSourceName(fileManagerCapabilityName);
 
@@ -932,7 +934,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/folders/{4}/data-files/{5}/move-to";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
         requestBody.setExternalSourceName(fileManagerCapabilityName);
 
@@ -979,7 +981,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/folders/{4}/data-folders/{5}/move-to";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
         requestBody.setExternalSourceGUID(fileManagerCapabilityGUID);
         requestBody.setExternalSourceName(fileManagerCapabilityName);
 
@@ -1057,7 +1059,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
 
         PathNameRequestBody requestBody = new PathNameRequestBody();
 
-        requestBody.setFullPath(pathName);
+        requestBody.setPathName(pathName);
 
         FileFolderResponse restResult = restClient.callFileFolderPostRESTCall(methodName,
                                                                               urlTemplate,
@@ -1108,7 +1110,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
                                                                              startFrom,
                                                                              validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1152,7 +1154,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
                                                                                startFrom,
                                                                                validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1195,7 +1197,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
                                                                            startFrom,
                                                                            validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1239,7 +1241,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
                                                                            startFrom,
                                                                            validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1307,7 +1309,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
 
         PathNameRequestBody requestBody = new PathNameRequestBody();
         
-        requestBody.setFullPath(pathName);
+        requestBody.setPathName(pathName);
 
         DataFileResponse restResult = restClient.callDataFilePostRESTCall(methodName,
                                                                           urlTemplate,
@@ -1354,7 +1356,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
 
         PathNameRequestBody requestBody = new PathNameRequestBody();
 
-        requestBody.setFullPath(pathName);
+        requestBody.setPathName(pathName);
 
         DataFilesResponse restResult = restClient.callDataFilesPostRESTCall(methodName,
                                                                             urlTemplate,
@@ -1365,7 +1367,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
                                                                             startFrom,
                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1403,7 +1405,7 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
 
         PathNameRequestBody requestBody = new PathNameRequestBody();
 
-        requestBody.setFullPath(pathName);
+        requestBody.setPathName(pathName);
 
         DataFilesResponse restResult = restClient.callDataFilesPostRESTCall(methodName,
                                                                             urlTemplate,
@@ -1414,6 +1416,6 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
                                                                             startFrom,
                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 }

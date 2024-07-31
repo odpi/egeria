@@ -3,16 +3,15 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
 
-import org.odpi.openmetadata.accessservices.governanceprogram.converters.ElementStubConverter;
 import org.odpi.openmetadata.accessservices.governanceprogram.handlers.AppointmentHandler;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.*;
+
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 
 /**
  * GovernanceProgramInstanceHandler retrieves information from the instance map for the

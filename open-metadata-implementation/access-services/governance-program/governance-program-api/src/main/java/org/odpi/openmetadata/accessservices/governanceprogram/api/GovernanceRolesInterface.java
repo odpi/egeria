@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleAppointee;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleHistory;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceRoleAppointee;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceRoleHistory;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceRoleProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

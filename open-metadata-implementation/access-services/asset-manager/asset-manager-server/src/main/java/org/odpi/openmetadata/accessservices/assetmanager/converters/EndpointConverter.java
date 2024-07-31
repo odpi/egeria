@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.EndpointProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -56,9 +56,8 @@ public class EndpointConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof EndpointElement)
+            if (returnBean instanceof EndpointElement bean)
             {
-                EndpointElement    bean               = (EndpointElement) returnBean;
                 EndpointProperties endpointProperties = new EndpointProperties();
 
                 if (entity != null)
@@ -72,8 +71,8 @@ public class EndpointConverter<B> extends AssetManagerOMASConverter<B>
 
                     endpointProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     endpointProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    endpointProperties.setTechnicalName(this.removeName(instanceProperties));
-                    endpointProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
+                    endpointProperties.setName(this.removeName(instanceProperties));
+                    endpointProperties.setResourceDescription(this.removeDescription(instanceProperties));
                     endpointProperties.setAddress(this.removeNetworkAddress(instanceProperties));
                     endpointProperties.setProtocol(this.removeProtocol(instanceProperties));
                     endpointProperties.setEncryptionMethod(this.removeEncryptionMethod(instanceProperties));

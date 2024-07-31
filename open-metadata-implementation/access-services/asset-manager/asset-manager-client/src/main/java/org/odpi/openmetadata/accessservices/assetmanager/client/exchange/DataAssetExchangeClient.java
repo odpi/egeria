@@ -6,17 +6,23 @@ package org.odpi.openmetadata.accessservices.assetmanager.client.exchange;
 import org.odpi.openmetadata.accessservices.assetmanager.api.exchange.DataAssetExchangeInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelationshipElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.TemplateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipElementResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipElementsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelationshipElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 
 import java.util.Date;
 import java.util.List;
@@ -601,8 +607,8 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
 
         RelationshipRequestBody requestBody = new RelationshipRequestBody();
 
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setExternalSourceGUID(assetManagerGUID);
+        requestBody.setExternalSourceName(assetManagerName);
         requestBody.setProperties(relationshipProperties);
         requestBody.setEffectiveTime(effectiveTime);
 
@@ -724,8 +730,8 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
         invalidParameterHandler.validateName(relationshipTypeName, typeNameParameterName, methodName);
 
         RelationshipRequestBody requestBody = new RelationshipRequestBody();
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setExternalSourceGUID(assetManagerGUID);
+        requestBody.setExternalSourceName(assetManagerName);
         requestBody.setProperties(relationshipProperties);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/relationships/{2}/{3}/update?isMergeUpdate={4}&forLineage={5}&forDuplicateProcessing={6}";
@@ -850,7 +856,7 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                                            forLineage,
                                                                                            forDuplicateProcessing);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -910,7 +916,7 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
                                                                                            forLineage,
                                                                                            forDuplicateProcessing);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -963,15 +969,15 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        DataAssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     requestBody,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     startFrom,
-                                                                                     validatedPageSize,
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing);
+        DataAssetElementsResponse restResult = restClient.callMyDataAssetsPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       requestBody,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startFrom,
+                                                                                       validatedPageSize,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1014,15 +1020,15 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/scan?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        DataAssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     startFrom,
-                                                                                     validatedPageSize,
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing);
+        DataAssetElementsResponse restResult = restClient.callMyDataAssetsPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startFrom,
+                                                                                       validatedPageSize,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1078,15 +1084,15 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        DataAssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     requestBody,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     startFrom,
-                                                                                     validatedPageSize,
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing);
+        DataAssetElementsResponse restResult = restClient.callMyDataAssetsPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       requestBody,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startFrom,
+                                                                                       validatedPageSize,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1131,15 +1137,15 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/by-asset-manager?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        DataAssetElementsResponse restResult = restClient.callDataAssetsPostRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     startFrom,
-                                                                                     validatedPageSize,
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing);
+        DataAssetElementsResponse restResult = restClient.callMyDataAssetsPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startFrom,
+                                                                                       validatedPageSize,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1181,14 +1187,14 @@ public class DataAssetExchangeClient extends SchemaExchangeClientBase implements
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-assets/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        DataAssetElementResponse restResult = restClient.callDataAssetPostRESTCall(methodName,
-                                                                                   urlTemplate,
-                                                                                   getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                   serverName,
-                                                                                   userId,
-                                                                                   openMetadataGUID,
-                                                                                   forLineage,
-                                                                                   forDuplicateProcessing);
+        DataAssetElementResponse restResult = restClient.callMyDataAssetPostRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     openMetadataGUID,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing);
 
         return restResult.getElement();
     }

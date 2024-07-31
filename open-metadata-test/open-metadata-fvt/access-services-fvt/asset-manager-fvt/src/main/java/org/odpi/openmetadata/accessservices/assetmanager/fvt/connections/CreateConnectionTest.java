@@ -9,14 +9,14 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManage
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ConnectorTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectorTypeProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.AssetManagerProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
@@ -169,7 +169,7 @@ public class CreateConnectionTest
              */
             activityName = "updateNonExistentConnectorType";
 
-            String                    connectorTypeTwoGUID       = "Blah Blah";
+            String                  connectorTypeTwoGUID    = "Blah Blah";
             ConnectorTypeProperties connectorTypeProperties = new ConnectorTypeProperties();
             connectorTypeProperties.setQualifiedName(connectorTypeTwoName);
             connectorTypeProperties.setDisplayName(connectorTypeDisplayName); // Note wrong value
@@ -288,8 +288,8 @@ public class CreateConnectionTest
 
             AssetManagerProperties properties = new AssetManagerProperties();
             properties.setQualifiedName(assetManagerName);
-            properties.setDisplayName(assetManagerDisplayName);
-            properties.setDescription(assetManagerDescription);
+            properties.setResourceName(assetManagerDisplayName);
+            properties.setResourceDescription(assetManagerDescription);
             properties.setDeployedImplementationType(assetManagerTypeDescription);
             properties.setVersion(assetManagerVersion);
 
@@ -625,11 +625,11 @@ public class CreateConnectionTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve) =>>" + retrievedEndpoint);
             }
-            if (! endpointTechnicalName.equals(retrievedEndpoint.getTechnicalName()))
+            if (! endpointTechnicalName.equals(retrievedEndpoint.getName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad technicalName from Retrieve) =>>" + retrievedEndpoint);
             }
-            if (! endpointTechnicalDescription.equals(retrievedEndpoint.getTechnicalDescription()))
+            if (! endpointTechnicalDescription.equals(retrievedEndpoint.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad technicalDescription from Retrieve) =>>" + retrievedEndpoint);
             }
@@ -637,7 +637,7 @@ public class CreateConnectionTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve) =>>" + retrievedEndpoint);
             }
-            if (! endpointDescription.equals(retrievedEndpoint.getDescription()))
+            if (! endpointDescription.equals(retrievedEndpoint.getDisplayDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve) =>>" + retrievedEndpoint);
             }
@@ -670,7 +670,7 @@ public class CreateConnectionTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName) =>>" + retrievedEndpoint);
             }
-            if (! endpointDescription.equals(retrievedEndpoint.getDescription()))
+            if (! endpointDescription.equals(retrievedEndpoint.getDisplayDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName) =>>" + retrievedEndpoint);
             }
@@ -761,10 +761,10 @@ public class CreateConnectionTest
             EndpointProperties properties = new EndpointProperties();
 
             properties.setQualifiedName(endpointName);
-            properties.setTechnicalName(endpointTechnicalName);
-            properties.setTechnicalDescription(endpointTechnicalDescription);
+            properties.setName(endpointTechnicalName);
+            properties.setResourceDescription(endpointTechnicalDescription);
             properties.setDisplayName(endpointDisplayName);
-            properties.setDescription(endpointDescription);
+            properties.setDisplayDescription(endpointDescription);
             properties.setEffectiveFrom(effectiveFrom);
             properties.setEffectiveTo(effectiveTo);
 

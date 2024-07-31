@@ -4,18 +4,19 @@
 package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
 
 
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 
 import java.util.List;
 import java.util.Objects;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
 
 /**
  * GovernanceDefinitionElement is the superclass used to return the common properties of a governance definition stored in the
  * open metadata repositories.
  */
-public class GovernanceDefinitionElement implements MetadataElement
+public class GovernanceDefinitionElement implements CorrelatedMetadataElement
 {
     private ElementHeader                   elementHeader      = null;
     private List<MetadataCorrelationHeader> correlationHeaders = null;

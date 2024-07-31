@@ -4,16 +4,14 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.client;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.api.ManageLocations;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LocationElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 
 import java.util.List;
 
@@ -714,7 +712,7 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
                                                                             startFrom,
                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -763,7 +761,7 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
                                                                             startFrom,
                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 

@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 
 import java.util.Objects;
@@ -13,8 +11,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * MetadataSourceProperties describe the properties for a capability that is supplying profile
- * information to the Community Profile OMAS.  This entity is stored as a SoftwareCapability and
+ * MetadataSourceProperties describe the properties for a capability that is supplying external metadata source
+ * information to the open metadata ecosystem.  This entity is stored as a SoftwareCapability and
  * its GUID and qualifiedName is passed as the externalSourceGUID and externalSourceName on the profile
  * management requests.
  */
@@ -24,9 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class MetadataSourceProperties extends ReferenceableProperties
 {
     private String displayName     = null;
-    private String description     = null;
-    private String typeDescription = null;
-    private String version         = null;
+    private String description                = null;
+    private String deployedImplementationType = null;
+    private String version                    = null;
     private String patchLevel      = null;
     private String source          = null;
 
@@ -52,9 +50,9 @@ public class MetadataSourceProperties extends ReferenceableProperties
         if (template != null)
         {
             displayName = template.getDisplayName();
-            description = template.getDescription();
-            typeDescription = template.getTypeDescription();
-            version = template.getVersion();
+            description                = template.getDescription();
+            deployedImplementationType = template.getDeployedImplementationType();
+            version                    = template.getVersion();
             patchLevel = template.getPatchLevel();
             source = template.getSource();
         }
@@ -110,20 +108,20 @@ public class MetadataSourceProperties extends ReferenceableProperties
      *
      * @return string description
      */
-    public String getTypeDescription()
+    public String getDeployedImplementationType()
     {
-        return typeDescription;
+        return deployedImplementationType;
     }
 
 
     /**
      * Set up the description of the type of capability this is.
      *
-     * @param typeDescription string
+     * @param deployedImplementationType string
      */
-    public void setTypeDescription(String typeDescription)
+    public void setDeployedImplementationType(String deployedImplementationType)
     {
-        this.typeDescription = typeDescription;
+        this.deployedImplementationType = deployedImplementationType;
     }
 
 
@@ -202,20 +200,13 @@ public class MetadataSourceProperties extends ReferenceableProperties
     public String toString()
     {
         return "MetadataSourceProperties{" +
-                       "displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", typeDescription='" + typeDescription + '\'' +
-                       ", version='" + version + '\'' +
-                       ", patchLevel='" + patchLevel + '\'' +
-                       ", source='" + source + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", deployedImplementationType='" + deployedImplementationType + '\'' +
+                ", version='" + version + '\'' +
+                ", patchLevel='" + patchLevel + '\'' +
+                ", source='" + source + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -243,7 +234,7 @@ public class MetadataSourceProperties extends ReferenceableProperties
         MetadataSourceProperties that = (MetadataSourceProperties) objectToCompare;
         return Objects.equals(getDisplayName(), that.getDisplayName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getTypeDescription(), that.getTypeDescription()) &&
+                Objects.equals(getDeployedImplementationType(), that.getDeployedImplementationType()) &&
                 Objects.equals(getVersion(), that.getVersion()) &&
                 Objects.equals(getPatchLevel(), that.getPatchLevel()) &&
                 Objects.equals(getSource(), that.getSource());
@@ -258,7 +249,7 @@ public class MetadataSourceProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getTypeDescription(), getVersion(),
+        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getDeployedImplementationType(), getVersion(),
                             getPatchLevel(), getSource());
     }
 }

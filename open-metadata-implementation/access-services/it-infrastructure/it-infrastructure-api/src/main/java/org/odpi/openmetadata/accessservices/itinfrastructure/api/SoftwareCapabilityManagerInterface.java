@@ -2,13 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.api;
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ServerAssetUseElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.CapabilityDeploymentProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedAssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ServerAssetUseElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareCapabilityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.CapabilityDeploymentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.ServerAssetUseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareCapabilityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

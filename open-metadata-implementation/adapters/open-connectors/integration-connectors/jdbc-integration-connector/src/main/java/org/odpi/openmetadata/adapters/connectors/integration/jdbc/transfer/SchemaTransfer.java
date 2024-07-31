@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseSchemaElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseSchemaElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseSchemaProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcSchema;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Jdbc;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas;

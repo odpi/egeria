@@ -3,24 +3,21 @@
 package org.odpi.openmetadata.accessservices.datamanager.api;
 
 
-
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ConnectionProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ConnectorTypeProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * ManageConnections provides methods to define connections and their supporting objects
- *
  * The interface supports the following types of objects
  *
  * <ul>

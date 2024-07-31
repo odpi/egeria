@@ -3,15 +3,13 @@
 
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaDefinition;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaClassificationProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SubjectAreaDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaProperties;
 
 import java.util.List;
 
@@ -200,8 +198,8 @@ public interface SubjectAreasInterface
     void addSubjectAreaMemberClassification(String                              userId,
                                             String                              elementGUID,
                                             SubjectAreaClassificationProperties properties) throws InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException;
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException;
 
 
     /**

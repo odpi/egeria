@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutbou
 import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEventType;
 import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 
 /**
  * DataManagerOutTopicPublisher is responsible for sending events on the Data Manager OMAS's out topic.

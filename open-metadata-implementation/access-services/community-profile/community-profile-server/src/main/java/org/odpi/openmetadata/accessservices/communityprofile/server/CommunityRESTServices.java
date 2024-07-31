@@ -2,25 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CommunityElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityMembershipProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityMembershipType;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.CommunityListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.CommunityResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelationshipRequestBody;
+
 import org.odpi.openmetadata.accessservices.communityprofile.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ReferenceableRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CommunityMembershipType;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.CommunityHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -82,10 +76,8 @@ public class CommunityRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof CommunityProperties)
+                if (requestBody.getProperties() instanceof CommunityProperties properties)
                 {
-                    CommunityProperties properties = (CommunityProperties)requestBody.getProperties();
-
                     String communityGUID = handler.createCommunity(userId,
                                                                    requestBody.getExternalSourceGUID(),
                                                                    requestBody.getExternalSourceName(),
@@ -233,10 +225,8 @@ public class CommunityRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof CommunityProperties)
+                if (requestBody.getProperties() instanceof CommunityProperties properties)
                 {
-                    CommunityProperties properties = (CommunityProperties) requestBody.getProperties();
-
                     handler.updateCommunity(userId,
                                             requestBody.getExternalSourceGUID(),
                                             requestBody.getExternalSourceName(),
@@ -329,10 +319,8 @@ public class CommunityRESTServices
             {
                 int ordinal = CommunityMembershipType.CONTRIBUTOR.getOrdinal();
 
-                if (requestBody.getProperties() instanceof CommunityMembershipProperties)
+                if (requestBody.getProperties() instanceof CommunityMembershipProperties properties)
                 {
-                    CommunityMembershipProperties properties = (CommunityMembershipProperties) requestBody.getProperties();
-
                     if (properties.getMembershipType() != null)
                     {
                         ordinal = properties.getMembershipType().getOrdinal();
@@ -531,7 +519,7 @@ public class CommunityRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public CommunityListResponse findCommunities(String                  serverName,
+    public CommunitiesResponse findCommunities(String                  serverName,
                                                String                  userId,
                                                SearchStringRequestBody requestBody,
                                                int                     startFrom,
@@ -542,8 +530,8 @@ public class CommunityRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        CommunityListResponse response = new CommunityListResponse();
-        AuditLog          auditLog = null;
+        CommunitiesResponse response = new CommunitiesResponse();
+        AuditLog            auditLog = null;
 
         try
         {
@@ -596,19 +584,19 @@ public class CommunityRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public CommunityListResponse getCommunitiesByName(String          serverName,
-                                                      String          userId,
-                                                      NameRequestBody requestBody,
-                                                      int             startFrom,
-                                                      int             pageSize)
+    public CommunitiesResponse getCommunitiesByName(String          serverName,
+                                                    String          userId,
+                                                    NameRequestBody requestBody,
+                                                    int             startFrom,
+                                                    int             pageSize)
     {
         final String methodName = "getCommunitiesByName";
         final String nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        CommunityListResponse response = new CommunityListResponse();
-        AuditLog          auditLog = null;
+        CommunitiesResponse response = new CommunitiesResponse();
+        AuditLog            auditLog = null;
 
         try
         {
@@ -662,19 +650,19 @@ public class CommunityRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public PersonRoleListResponse getRolesForCommunity(String          serverName,
-                                                       String          userId,
-                                                       String          communityGUID,
-                                                       int             startFrom,
-                                                       int             pageSize)
+    public PersonRolesResponse getRolesForCommunity(String          serverName,
+                                                    String          userId,
+                                                    String          communityGUID,
+                                                    int             startFrom,
+                                                    int             pageSize)
     {
         final String methodName         = "getRolesForCommunity";
         final String guidParameterName  = "communityGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRoleListResponse response = new PersonRoleListResponse();
-        AuditLog               auditLog = null;
+        PersonRolesResponse response = new PersonRolesResponse();
+        AuditLog            auditLog = null;
 
         try
         {
@@ -716,17 +704,17 @@ public class CommunityRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public CommunityListResponse getCommunities(String          serverName,
-                                                String          userId,
-                                                int             startFrom,
-                                                int             pageSize)
+    public CommunitiesResponse getCommunities(String          serverName,
+                                              String          userId,
+                                              int             startFrom,
+                                              int             pageSize)
     {
         final String methodName = "getCommunities";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        CommunityListResponse response = new CommunityListResponse();
-        AuditLog          auditLog = null;
+        CommunitiesResponse response = new CommunitiesResponse();
+        AuditLog            auditLog = null;
 
         try
         {

@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementOrigin;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;

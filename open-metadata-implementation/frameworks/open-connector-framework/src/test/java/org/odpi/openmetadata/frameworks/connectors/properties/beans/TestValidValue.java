@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -354,7 +356,7 @@ public class TestValidValue
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getTestObject();
+        ElementBase  propertyBase = getTestObject();
 
         try
         {
@@ -367,7 +369,7 @@ public class TestValidValue
 
         try
         {
-            validateResultObject((ValidValue) objectMapper.readValue(jsonString, PropertyBase.class));
+            validateResultObject((ValidValue) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {
@@ -478,7 +480,7 @@ public class TestValidValue
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getSetTestObject();
+        ElementBase  propertyBase = getSetTestObject();
 
         try
         {
@@ -491,7 +493,7 @@ public class TestValidValue
 
         try
         {
-            validateSetResultObject((ValidValueSet) objectMapper.readValue(jsonString, PropertyBase.class));
+            validateSetResultObject((ValidValueSet) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {
@@ -579,7 +581,7 @@ public class TestValidValue
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getDefinitionTestObject();
+        ElementBase  propertyBase = getDefinitionTestObject();
 
         try
         {
@@ -592,7 +594,7 @@ public class TestValidValue
 
         try
         {
-            validateDefinitionResultObject((ValidValueDefinition) objectMapper.readValue(jsonString, PropertyBase.class));
+            validateDefinitionResultObject((ValidValueDefinition) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

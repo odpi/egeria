@@ -2,16 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules;
 
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataStoreProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.OwnerProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStoreProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.OwnerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationAuditCode;
@@ -30,9 +28,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorContext;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CollaborationExchangeService;
 import org.odpi.openmetadata.integrationservices.catalog.connector.DataAssetExchangeService;
@@ -301,7 +301,7 @@ public abstract class AtlasIntegrationModuleBase
      * @return string guid
      * @throws InvalidParameterException retrieved element is null
      */
-    protected String getAtlasGUID(MetadataElement metadataElement) throws InvalidParameterException
+    protected String getAtlasGUID(CorrelatedMetadataElement metadataElement) throws InvalidParameterException
     {
         MetadataCorrelationHeader myMetadataCorrelationHeader = myContext.getMetadataCorrelationHeader(metadataElement);
 
@@ -328,7 +328,7 @@ public abstract class AtlasIntegrationModuleBase
      */
     protected boolean egeriaUpdateRequired(String          egeriaGUID,
                                            String          egeriaTypeName,
-                                           MetadataElement egeriaMetadataElement,
+                                           CorrelatedMetadataElement egeriaMetadataElement,
                                            AtlasEntity     atlasEntity) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
@@ -405,7 +405,7 @@ public abstract class AtlasIntegrationModuleBase
      */
     protected boolean atlasUpdateRequired(String          egeriaGUID,
                                           String          egeriaTypeName,
-                                          MetadataElement egeriaMetadataElement,
+                                          CorrelatedMetadataElement egeriaMetadataElement,
                                           AtlasEntity     atlasEntity) throws InvalidParameterException,
                                                                               PropertyServerException
     {
@@ -631,7 +631,7 @@ public abstract class AtlasIntegrationModuleBase
      * @throws UserNotAuthorizedException security problem
      * @throws PropertyServerException problem connecting with Egeria
      */
-    protected void ensureAtlasExternalIdentifier(MetadataElement egeriaElement,
+    protected void ensureAtlasExternalIdentifier(CorrelatedMetadataElement egeriaElement,
                                                  String          egeriaDisplayName,
                                                  AtlasEntity     atlasEntity,
                                                  String          atlasGUID,
@@ -1201,10 +1201,11 @@ public abstract class AtlasIntegrationModuleBase
             dataAssetProperties.setTypeName(egeriaTypeName);
             dataAssetProperties.setDeployedImplementationType(atlasEntity.getTypeName());
             dataAssetProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + ":" + atlasEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
-            dataAssetProperties.setTechnicalName(getAtlasStringProperty(attributes, atlasNamePropertyName));
-            dataAssetProperties.setTechnicalDescription(getAtlasStringProperty(attributes, atlasDescriptionPropertyName));
+            dataAssetProperties.setName(getAtlasStringProperty(attributes, atlasNamePropertyName));
+            dataAssetProperties.setResourceName(getAtlasStringProperty(attributes, atlasNamePropertyName));
+            dataAssetProperties.setResourceDescription(getAtlasStringProperty(attributes, atlasDescriptionPropertyName));
             dataAssetProperties.setDisplayName(getAtlasStringProperty(attributes, atlasDisplayNamePropertyName));
-            dataAssetProperties.setDescription(getAtlasStringProperty(attributes, atlasUserDescriptionPropertyName));
+            dataAssetProperties.setDisplayDescription(getAtlasStringProperty(attributes, atlasUserDescriptionPropertyName));
 
             return dataAssetProperties;
         }
@@ -1232,10 +1233,11 @@ public abstract class AtlasIntegrationModuleBase
         dataAssetProperties.setTypeName(egeriaTypeName);
         dataAssetProperties.setDeployedImplementationType(atlasFSPathEntity.getTypeName());
         dataAssetProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + ":" + atlasFSPathEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
-        dataAssetProperties.setTechnicalName(getAtlasStringProperty(attributes, atlasNamePropertyName));
-        dataAssetProperties.setTechnicalDescription(getAtlasStringProperty(attributes, atlasDescriptionPropertyName));
+        dataAssetProperties.setName(getAtlasStringProperty(attributes, atlasNamePropertyName));
+        dataAssetProperties.setResourceName(getAtlasStringProperty(attributes, atlasNamePropertyName));
+        dataAssetProperties.setResourceDescription(getAtlasStringProperty(attributes, atlasDescriptionPropertyName));
         dataAssetProperties.setDisplayName(getAtlasStringProperty(attributes, atlasDisplayNamePropertyName));
-        dataAssetProperties.setDescription(getAtlasStringProperty(attributes, atlasUserDescriptionPropertyName));
+        dataAssetProperties.setDisplayDescription(getAtlasStringProperty(attributes, atlasUserDescriptionPropertyName));
 
 
         Map<String, String> additionalProperties = addRemainingPropertiesToAdditionalProperties(atlasFSPathEntity.getAttributes(),
@@ -1266,10 +1268,11 @@ public abstract class AtlasIntegrationModuleBase
             processProperties.setTypeName(egeriaTypeName);
             processProperties.setDeployedImplementationType(atlasEntity.getTypeName());
             processProperties.setQualifiedName(myContext.getMetadataSourceQualifiedName() + ":" + atlasEntity.getTypeName() + ":" + getAtlasStringProperty(attributes, atlasQualifiedNamePropertyName));
-            processProperties.setTechnicalName(getAtlasStringProperty(attributes, atlasNamePropertyName));
-            processProperties.setTechnicalDescription(getAtlasStringProperty(attributes, atlasDescriptionPropertyName));
+            processProperties.setName(getAtlasStringProperty(attributes, atlasNamePropertyName));
+            processProperties.setResourceName(getAtlasStringProperty(attributes, atlasNamePropertyName));
+            processProperties.setResourceDescription(getAtlasStringProperty(attributes, atlasDescriptionPropertyName));
             processProperties.setDisplayName(getAtlasStringProperty(attributes, atlasDisplayNamePropertyName));
-            processProperties.setDescription(getAtlasStringProperty(attributes, atlasUserDescriptionPropertyName));
+            processProperties.setDisplayDescription(getAtlasStringProperty(attributes, atlasUserDescriptionPropertyName));
 
             return processProperties;
         }

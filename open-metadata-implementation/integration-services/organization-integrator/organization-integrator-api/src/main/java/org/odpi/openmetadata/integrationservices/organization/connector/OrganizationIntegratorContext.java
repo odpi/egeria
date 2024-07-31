@@ -8,31 +8,20 @@ import org.odpi.openmetadata.accessservices.communityprofile.client.CommunityPro
 import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.client.SecurityGroupManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.client.UserIdentityManagement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleAppointee;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.SecurityGroupElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AppointmentProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRoleProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.SecurityGroupProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -536,10 +525,10 @@ public class OrganizationIntegratorContext extends IntegrationContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<PersonRoleAppointee> getAppointees(String personRoleGUID,
-                                                   Date   effectiveTime,
-                                                   int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
+    public List<Appointee> getAppointees(String personRoleGUID,
+                                         Date   effectiveTime,
+                                         int    startFrom,
+                                         int    pageSize) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {

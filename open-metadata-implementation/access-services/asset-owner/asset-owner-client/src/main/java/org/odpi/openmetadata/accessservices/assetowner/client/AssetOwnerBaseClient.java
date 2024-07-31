@@ -5,25 +5,18 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.RelatedElementsManagementInterface;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ClassificationProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.StakeholderProperties;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ElementStubListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ReferenceableProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.RelationshipProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ResourceListProperties;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.StakeholderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 
 import java.util.List;
@@ -36,7 +29,6 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
     protected final AssetOwnerRESTClient restClient;               /* Initialized in constructor */
 
     protected static final String  serviceURLName = "asset-owner";
-    protected static final String  defaultAssetType = "Asset";
     final protected String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}";
 
     private static final String elementsURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/related-elements";
@@ -716,15 +708,15 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
 
-        RelatedElementListResponse restResult = restClient.callRelatedElementListGetRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             startingElementGUID,
-                                                                                             Integer.toString(startFrom),
-                                                                                             Integer.toString(pageSize));
+        RelatedElementsResponse restResult = restClient.callRelatedElementsGetRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startingElementGUID,
+                                                                                       Integer.toString(startFrom),
+                                                                                       Integer.toString(pageSize));
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -757,13 +749,13 @@ public class AssetOwnerBaseClient extends ConnectedAssetClientBase implements Re
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
-        ElementStubListResponse restResult = restClient.callElementStubListGetRESTCall(methodName,
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       name,
-                                                                                       Integer.toString(startFrom),
-                                                                                       Integer.toString(pageSize));
+        ElementStubsResponse restResult = restClient.callElementStubsGetRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 name,
+                                                                                 Integer.toString(startFrom),
+                                                                                 Integer.toString(pageSize));
 
         return restResult.getElements();
     }

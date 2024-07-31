@@ -8,15 +8,11 @@ import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerGloss
 import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerLoggingInterface;
 import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerTaggingInterface;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.rest.AssetConsumerRESTClient;
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.InformalTagElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.MeaningElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetGraph;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetSearchMatches;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MeaningElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetSearchMatches;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -25,8 +21,11 @@ import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformalTagElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.TagRequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -285,13 +284,13 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
-    public List<Asset> getAssetsByMetadataCollectionId(String   userId,
-                                                       String   metadataCollectionId,
-                                                       String   typeName,
-                                                       int      startFrom,
-                                                       int      pageSize) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
+    public List<AssetElement> getAssetsByMetadataCollectionId(String   userId,
+                                                              String   metadataCollectionId,
+                                                              String   typeName,
+                                                              int      startFrom,
+                                                              int      pageSize) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
         final String methodName = "getAssetsByMetadataCollectionId";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-metadata-collection-id/{2}?startFrom={3}&pageSize={4}";
@@ -921,11 +920,11 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameter, methodName);
 
-        GlossaryTermResponse restResult = restClient.callGlossaryTermGetRESTCall(methodName,
-                                                                                 urlTemplate,
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 guid);
+        MeaningResponse restResult = restClient.callGlossaryTermGetRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            serverName,
+                                                                            userId,
+                                                                            guid);
 
          return restResult.getMeaning();
     }
@@ -964,15 +963,15 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         requestBody.setName(term);
         requestBody.setNameParameterName(nameParameter);
 
-        GlossaryTermListResponse restResult = restClient.callGlossaryTermListPostRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          startFrom,
-                                                                                          pageSize);
+        MeaningsResponse restResult = restClient.callGlossaryTermListPostRESTCall(methodName,
+                                                                                  urlTemplate,
+                                                                                  requestBody,
+                                                                                  serverName,
+                                                                                  userId,
+                                                                                  startFrom,
+                                                                                  pageSize);
 
-        return restResult.getMeanings();
+        return restResult.getElements();
     }
 
 
@@ -1009,15 +1008,15 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         requestBody.setSearchString(term);
         requestBody.setSearchStringParameterName(nameParameter);
 
-        GlossaryTermListResponse restResult = restClient.callGlossaryTermListPostRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          startFrom,
-                                                                                          pageSize);
+        MeaningsResponse restResult = restClient.callGlossaryTermListPostRESTCall(methodName,
+                                                                                  urlTemplate,
+                                                                                  requestBody,
+                                                                                  serverName,
+                                                                                  userId,
+                                                                                  startFrom,
+                                                                                  pageSize);
 
-        return restResult.getMeanings();
+        return restResult.getElements();
     }
 
 
@@ -1153,7 +1152,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        TagRequestBody  tagRequestBody = new TagRequestBody();
+        InformalTagProperties tagRequestBody = new InformalTagProperties();
         tagRequestBody.setIsPrivateTag(! isPublic);
         tagRequestBody.setName(tagName);
         tagRequestBody.setDescription(tagDescription);
@@ -1320,13 +1319,13 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameter, methodName);
 
-        TagResponse restResult = restClient.callInformalTagGetRESTCall(methodName,
-                                                                       urlTemplate,
-                                                                       serverName,
-                                                                       userId,
-                                                                       guid);
+        InformalTagResponse restResult = restClient.callInformalTagGetRESTCall(methodName,
+                                                                               urlTemplate,
+                                                                               serverName,
+                                                                               userId,
+                                                                               guid);
 
-        return restResult.getTag();
+        return restResult.getElement();
     }
 
 
@@ -1363,15 +1362,15 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         requestBody.setName(tag);
         requestBody.setNameParameterName(nameParameter);
 
-        TagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             requestBody,
-                                                                             serverName,
-                                                                             userId,
-                                                                             startFrom,
-                                                                             pageSize);
+        InformalTagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     requestBody,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     startFrom,
+                                                                                     pageSize);
 
-        return restResult.getTags();
+        return restResult.getElements();
     }
 
 
@@ -1408,15 +1407,15 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         requestBody.setName(tag);
         requestBody.setNameParameterName(nameParameter);
 
-        TagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             requestBody,
-                                                                             serverName,
-                                                                             userId,
-                                                                             startFrom,
-                                                                             pageSize);
+        InformalTagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     requestBody,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     startFrom,
+                                                                                     pageSize);
 
-        return restResult.getTags();
+        return restResult.getElements();
     }
 
 
@@ -1453,15 +1452,15 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         requestBody.setSearchString(tag);
         requestBody.setSearchStringParameterName(nameParameter);
 
-        TagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             requestBody,
-                                                                             serverName,
-                                                                             userId,
-                                                                             startFrom,
-                                                                             pageSize);
+        InformalTagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     requestBody,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     startFrom,
+                                                                                     pageSize);
 
-        return restResult.getTags();
+        return restResult.getElements();
     }
 
 
@@ -1498,15 +1497,15 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         requestBody.setSearchString(tag);
         requestBody.setSearchStringParameterName(nameParameter);
 
-        TagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
-                                                                             urlTemplate,
-                                                                             requestBody,
-                                                                             serverName,
-                                                                             userId,
-                                                                             startFrom,
-                                                                             pageSize);
+        InformalTagsResponse restResult = restClient.callInformalTagListPostRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     requestBody,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     startFrom,
+                                                                                     pageSize);
 
-        return restResult.getTags();
+        return restResult.getElements();
     }
 
 

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 
 import java.util.Objects;
 
@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * ConnectionRequestBody describes the request body used to create/update connection properties.
+ * OCFConnectionRequestBody describes the request body used to create/update connection properties.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -80,7 +80,7 @@ public class ConnectionRequestBody extends UpdateRequestBody
     @Override
     public String toString()
     {
-        return "ConnectionRequestBody{" +
+        return "OCFConnectionRequestBody{" +
                        "elementProperties=" + elementProperties +
                        ", metadataCorrelationProperties=" + getMetadataCorrelationProperties() +
                        ", effectiveTime=" + getEffectiveTime() +

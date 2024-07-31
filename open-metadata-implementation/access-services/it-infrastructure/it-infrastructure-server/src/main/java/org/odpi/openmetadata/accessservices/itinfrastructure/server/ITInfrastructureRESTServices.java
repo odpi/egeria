@@ -3,28 +3,27 @@
 package org.odpi.openmetadata.accessservices.itinfrastructure.server;
 
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ElementStubConverter;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ServerAssetUseElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectionProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectorTypeProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.EndpointProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
+
+import org.odpi.openmetadata.commonservices.generichandlers.ElementStubConverter;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.EmbeddedConnectionRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.EndpointResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.EndpointsResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.ServerAssetUseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareCapabilityProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
@@ -36,7 +35,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -85,16 +84,16 @@ public class ITInfrastructureRESTServices
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem retrieving the discovery engine definition.
      */
-    public org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse getOutTopicConnection(String serverName,
-                                                                                                   String userId,
-                                                                                                   String callerId)
+    public OCFConnectionResponse getOutTopicConnection(String serverName,
+                                                       String userId,
+                                                       String callerId)
     {
         final String methodName = "getOutTopicConnection";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse
-                response = new org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse();
+        OCFConnectionResponse
+                response = new OCFConnectionResponse();
         AuditLog auditLog = null;
 
         try
@@ -390,7 +389,7 @@ public class ITInfrastructureRESTServices
                                            String                    userId,
                                            String                    connectionGUID,
                                            String                    connectorTypeGUID,
-                                           MetadataSourceRequestBody requestBody)
+                                           ExternalSourceRequestBody requestBody)
     {
         final String methodName                     = "setupConnectorType";
         final String connectionGUIDParameterName    = "connectionGUID";
@@ -457,7 +456,7 @@ public class ITInfrastructureRESTServices
                                            String                    userId,
                                            String                    connectionGUID,
                                            String                    connectorTypeGUID,
-                                           MetadataSourceRequestBody requestBody)
+                                           ExternalSourceRequestBody requestBody)
     {
         final String methodName                     = "clearConnectorType";
         final String connectionGUIDParameterName    = "connectionGUID";
@@ -522,7 +521,7 @@ public class ITInfrastructureRESTServices
                                       String                    userId,
                                       String                    connectionGUID,
                                       String                    endpointGUID,
-                                      MetadataSourceRequestBody requestBody)
+                                      ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "setupEndpoint";
         final String connectionGUIDParameterName = "connectionGUID";
@@ -589,7 +588,7 @@ public class ITInfrastructureRESTServices
                                       String                    userId,
                                       String                    connectionGUID,
                                       String                    endpointGUID,
-                                      MetadataSourceRequestBody requestBody)
+                                      ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "clearEndpoint";
         final String connectionGUIDParameterName = "connectionGUID";
@@ -725,7 +724,7 @@ public class ITInfrastructureRESTServices
                                                 String                    userId,
                                                 String                    connectionGUID,
                                                 String                    embeddedConnectionGUID,
-                                                MetadataSourceRequestBody requestBody)
+                                                ExternalSourceRequestBody requestBody)
     {
         final String methodName                          = "clearEmbeddedConnection";
         final String connectionGUIDParameterName         = "connectionGUID";
@@ -859,7 +858,7 @@ public class ITInfrastructureRESTServices
                                              String                    userId,
                                              String                    assetGUID,
                                              String                    connectionGUID,
-                                             MetadataSourceRequestBody requestBody)
+                                             ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "clearAssetConnection";
         final String connectionGUIDParameterName = "connectionGUID";
@@ -923,7 +922,7 @@ public class ITInfrastructureRESTServices
     public VoidResponse removeConnection(String                    serverName,
                                          String                    userId,
                                          String                    connectionGUID,
-                                         MetadataSourceRequestBody requestBody)
+                                         ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removeConnection";
         final String connectionGUIDParameterName = "connectionGUID";
@@ -1014,7 +1013,7 @@ public class ITInfrastructureRESTServices
                                                                               new Date(),
                                                                               methodName);
 
-                response.setElementList(setUpVendorProperties(userId, connections, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, connections, handler, methodName));
             }
             else
             {
@@ -1059,7 +1058,7 @@ public class ITInfrastructureRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ConnectionsResponse response = new ConnectionsResponse();
-        AuditLog          auditLog = null;
+        AuditLog            auditLog = null;
 
         try
         {
@@ -1079,7 +1078,7 @@ public class ITInfrastructureRESTServices
                                                                                    new Date(),
                                                                                    methodName);
 
-                response.setElementList(setUpVendorProperties(userId, connections, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, connections, handler, methodName));
             }
             else
             {
@@ -1414,7 +1413,7 @@ public class ITInfrastructureRESTServices
     public VoidResponse removeConnectorType(String                    serverName,
                                             String                    userId,
                                             String                    connectorTypeGUID,
-                                            MetadataSourceRequestBody requestBody)
+                                            ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removeConnectorType";
         final String connectorTypeGUIDParameterName = "connectorTypeGUID";
@@ -1506,7 +1505,7 @@ public class ITInfrastructureRESTServices
                                                                                  new Date(),
                                                                                  methodName);
 
-                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
             }
             else
             {
@@ -1571,7 +1570,7 @@ public class ITInfrastructureRESTServices
                                                                                       new Date(),
                                                                                       methodName);
 
-                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
             }
             else
             {
@@ -1684,8 +1683,8 @@ public class ITInfrastructureRESTServices
                                                              requestBody.getExternalSourceName(),
                                                              infrastructureGUID,
                                                              requestBody.getQualifiedName(),
-                                                             requestBody.getDisplayName(),
-                                                             requestBody.getDescription(),
+                                                             requestBody.getName(),
+                                                             requestBody.getResourceDescription(),
                                                              requestBody.getAddress(),
                                                              requestBody.getProtocol(),
                                                              requestBody.getEncryptionMethod(),
@@ -1874,8 +1873,8 @@ public class ITInfrastructureRESTServices
                                        endpointGUID,
                                        endpointGUIDParameterName,
                                        requestBody.getQualifiedName(),
-                                       requestBody.getDisplayName(),
-                                       requestBody.getDescription(),
+                                       requestBody.getName(),
+                                       requestBody.getResourceDescription(),
                                        requestBody.getAddress(),
                                        requestBody.getProtocol(),
                                        requestBody.getEncryptionMethod(),
@@ -1933,7 +1932,7 @@ public class ITInfrastructureRESTServices
     public VoidResponse removeEndpoint(String                    serverName,
                                        String                    userId,
                                        String                    endpointGUID,
-                                       MetadataSourceRequestBody requestBody)
+                                       ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removeEndpoint";
         final String endpointGUIDParameterName = "endpointGUID";
@@ -2025,7 +2024,7 @@ public class ITInfrastructureRESTServices
                                                                         new Date(),
                                                                         methodName);
 
-                response.setElementList(setUpVendorProperties(userId, endpoints, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, endpoints, handler, methodName));
             }
         }
         catch (Exception error)
@@ -2084,7 +2083,7 @@ public class ITInfrastructureRESTServices
                                                                              false,
                                                                              new Date(),
                                                                              methodName);
-                response.setElementList(setUpVendorProperties(userId, endpoints, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, endpoints, handler, methodName));
             }
         }
         catch (Exception error)
@@ -2145,7 +2144,7 @@ public class ITInfrastructureRESTServices
                                                                                        new Date(),
                                                                                        methodName);
 
-                response.setElementList(setUpVendorProperties(userId, endpoints, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, endpoints, handler, methodName));
             }
         }
         catch (Exception error)
@@ -2209,7 +2208,7 @@ public class ITInfrastructureRESTServices
                                                                           new Date(),
                                                                           methodName);
 
-            response.setElementList(setUpVendorProperties(userId, endpoints, handler, methodName));
+            response.setElements(setUpVendorProperties(userId, endpoints, handler, methodName));
         }
         catch (Exception error)
         {
@@ -2546,8 +2545,8 @@ public class ITInfrastructureRESTServices
                                                                       requestBody.getTypeName(),
                                                                       requestBody.getClassificationName(),
                                                                       requestBody.getQualifiedName(),
-                                                                      requestBody.getDisplayName(),
-                                                                      requestBody.getDescription(),
+                                                                      requestBody.getResourceName(),
+                                                                      requestBody.getResourceDescription(),
                                                                       requestBody.getDeployedImplementationType(),
                                                                       requestBody.getVersion(),
                                                                       requestBody.getPatchLevel(),
@@ -2570,8 +2569,8 @@ public class ITInfrastructureRESTServices
                                                                       requestBody.getTypeName(),
                                                                       requestBody.getClassificationName(),
                                                                       requestBody.getQualifiedName(),
-                                                                      requestBody.getDisplayName(),
-                                                                      requestBody.getDescription(),
+                                                                      requestBody.getResourceName(),
+                                                                      requestBody.getResourceDescription(),
                                                                       requestBody.getDeployedImplementationType(),
                                                                       requestBody.getVersion(),
                                                                       requestBody.getPatchLevel(),
@@ -2734,8 +2733,8 @@ public class ITInfrastructureRESTServices
                                                capabilityGUID,
                                                elementGUIDParameterName,
                                                requestBody.getQualifiedName(),
-                                               requestBody.getDisplayName(),
-                                               requestBody.getDescription(),
+                                               requestBody.getResourceName(),
+                                               requestBody.getResourceDescription(),
                                                requestBody.getDeployedImplementationType(),
                                                requestBody.getVersion(),
                                                requestBody.getPatchLevel(),
@@ -2794,7 +2793,7 @@ public class ITInfrastructureRESTServices
     public VoidResponse removeSoftwareCapability(String                    serverName,
                                                        String                    userId,
                                                        String                    capabilityGUID,
-                                                       MetadataSourceRequestBody requestBody)
+                                                       ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removeSoftwareCapability";
         final String elementGUIDParameterName    = "capabilityGUID";
@@ -2857,19 +2856,19 @@ public class ITInfrastructureRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SoftwareCapabilityListResponse findSoftwareCapabilities(String                  serverName,
-                                                                   String                  userId,
-                                                                   int                     startFrom,
-                                                                   int                     pageSize,
-                                                                   SearchStringRequestBody requestBody)
+    public SoftwareCapabilitiesResponse findSoftwareCapabilities(String                  serverName,
+                                                                 String                  userId,
+                                                                 int                     startFrom,
+                                                                 int                     pageSize,
+                                                                 SearchStringRequestBody requestBody)
     {
         final String methodName                = "findSoftwareCapabilities";
         final String searchStringParameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        SoftwareCapabilityListResponse response = new SoftwareCapabilityListResponse();
-        AuditLog                       auditLog = null;
+        SoftwareCapabilitiesResponse response = new SoftwareCapabilitiesResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
@@ -2892,7 +2891,7 @@ public class ITInfrastructureRESTServices
                                                                                  new Date(),
                                                                                  methodName);
 
-                response.setElementList(setUpVendorProperties(userId, capabilities, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, capabilities, handler, methodName));
             }
         }
         catch (Exception error)
@@ -2920,19 +2919,19 @@ public class ITInfrastructureRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SoftwareCapabilityListResponse getSoftwareCapabilitiesByName(String          serverName,
-                                                                        String          userId,
-                                                                        int             startFrom,
-                                                                        int             pageSize,
-                                                                        NameRequestBody requestBody)
+    public SoftwareCapabilitiesResponse getSoftwareCapabilitiesByName(String          serverName,
+                                                                      String          userId,
+                                                                      int             startFrom,
+                                                                      int             pageSize,
+                                                                      NameRequestBody requestBody)
     {
         final String methodName        = "getSoftwareCapabilitiesByName";
         final String nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        SoftwareCapabilityListResponse response = new SoftwareCapabilityListResponse();
-        AuditLog                       auditLog = null;
+        SoftwareCapabilitiesResponse response = new SoftwareCapabilitiesResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
@@ -2965,7 +2964,7 @@ public class ITInfrastructureRESTServices
                                                                                        new Date(),
                                                                                        methodName);
 
-                response.setElementList(setUpVendorProperties(userId, capabilities, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, capabilities, handler, methodName));
             }
         }
         catch (Exception error)
@@ -3374,7 +3373,7 @@ public class ITInfrastructureRESTServices
     public VoidResponse removeServerAssetUse(String                    serverName,
                                              String                    userId,
                                              String                    serverAssetUseGUID,
-                                             MetadataSourceRequestBody requestBody)
+                                             ExternalSourceRequestBody requestBody)
     {
         final String methodName               = "removeServerAssetUse";
         final String elementGUIDParameterName = "serverAssetUseGUID";
@@ -3428,20 +3427,20 @@ public class ITInfrastructureRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ServerAssetUseListResponse getServerAssetUsesForCapability(String             serverName,
-                                                                      String             userId,
-                                                                      String             capabilityGUID,
-                                                                      int                startFrom,
-                                                                      int                pageSize,
-                                                                      UseTypeRequestBody requestBody)
+    public ServerAssetUsesResponse getServerAssetUsesForCapability(String             serverName,
+                                                                   String             userId,
+                                                                   String             capabilityGUID,
+                                                                   int                startFrom,
+                                                                   int                pageSize,
+                                                                   UseTypeRequestBody requestBody)
     {
         final String methodName               = "getServerAssetUsesForCapability";
         final String elementGUIDParameterName = "capabilityGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ServerAssetUseListResponse response = new ServerAssetUseListResponse();
-        AuditLog     auditLog = null;
+        ServerAssetUsesResponse response = new ServerAssetUsesResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -3501,20 +3500,20 @@ public class ITInfrastructureRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ServerAssetUseListResponse getCapabilityUsesForAsset(String             serverName,
-                                                                String             userId,
-                                                                String             assetGUID,
-                                                                int                startFrom,
-                                                                int                pageSize,
-                                                                UseTypeRequestBody requestBody)
+    public ServerAssetUsesResponse getCapabilityUsesForAsset(String             serverName,
+                                                             String             userId,
+                                                             String             assetGUID,
+                                                             int                startFrom,
+                                                             int                pageSize,
+                                                             UseTypeRequestBody requestBody)
     {
         final String methodName               = "getCapabilityUsesForAsset";
         final String elementGUIDParameterName = "assetGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ServerAssetUseListResponse response = new ServerAssetUseListResponse();
-        AuditLog     auditLog = null;
+        ServerAssetUsesResponse response = new ServerAssetUsesResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -3575,21 +3574,21 @@ public class ITInfrastructureRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ServerAssetUseListResponse getServerAssetUsesForElements(String                   serverName,
-                                                                    String                   userId,
-                                                                    String                   capabilityGUID,
-                                                                    String                   assetGUID,
-                                                                    int                      startFrom,
-                                                                    int                      pageSize,
-                                                                    EffectiveTimeRequestBody requestBody)
+    public ServerAssetUsesResponse getServerAssetUsesForElements(String                   serverName,
+                                                                 String                   userId,
+                                                                 String                   capabilityGUID,
+                                                                 String                   assetGUID,
+                                                                 int                      startFrom,
+                                                                 int                      pageSize,
+                                                                 EffectiveTimeRequestBody requestBody)
     {
         final String methodName                  = "getServerAssetUsesForElements";
         final String capabilityGUIDParameterName = "capabilityGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ServerAssetUseListResponse response = new ServerAssetUseListResponse();
-        AuditLog     auditLog = null;
+        ServerAssetUsesResponse response = new ServerAssetUsesResponse();
+        AuditLog                auditLog = null;
 
         try
         {

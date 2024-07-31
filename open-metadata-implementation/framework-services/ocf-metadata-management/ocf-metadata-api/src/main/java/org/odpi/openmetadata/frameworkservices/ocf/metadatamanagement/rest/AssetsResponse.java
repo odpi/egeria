@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetsResponse extends PagedResponse
 {
-    private List<Asset> assets   = null;
+    private List<AssetElement> assets = null;
 
 
     /**
@@ -57,27 +58,9 @@ public class AssetsResponse extends PagedResponse
      *
      * @return list of assets
      */
-    public List<Asset> getAssets()
+    public List<AssetElement> getAssets()
     {
-        if (assets == null)
-        {
-            return null;
-        }
-        else if (assets.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            List<Asset>  clonedList = new ArrayList<>();
-
-            for (Asset  existingElement : assets)
-            {
-                clonedList.add(new Asset(existingElement));
-            }
-
-            return clonedList;
-        }
+        return assets;
     }
 
 
@@ -86,7 +69,7 @@ public class AssetsResponse extends PagedResponse
      *
      * @param assets list
      */
-    public void setAssets(List<Asset> assets)
+    public void setAssets(List<AssetElement> assets)
     {
         this.assets = assets;
     }

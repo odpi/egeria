@@ -4,17 +4,17 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.CertificationManagementInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.CertificationTypeElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.CertificationTypeProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.CertificationTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.CertificationTypesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelatedElementsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 
 import java.util.List;
 
@@ -240,10 +240,10 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
         invalidParameterHandler.validateGUID(certificationTypeGUID, guidParameterName, methodName);
 
         CertificationTypeResponse restResult = restClient.callCertificationTypeGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     certificationTypeGUID);
+                                                                                           urlTemplate,
+                                                                                           serverName,
+                                                                                           userId,
+                                                                                           certificationTypeGUID);
 
         return restResult.getElement();
     }
@@ -321,13 +321,13 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
         requestBody.setSearchString(title);
         requestBody.setSearchStringParameterName(titleParameterName);
 
-        CertificationTypeListResponse restResult = restClient.callCertificationTypeListPostRESTCall(methodName,
-                                                                                                    urlTemplate,
-                                                                                                    requestBody,
-                                                                                                    serverName,
-                                                                                                    userId,
-                                                                                                    startFrom,
-                                                                                                    queryPageSize);
+        CertificationTypesResponse restResult = restClient.callCertificationTypeListPostRESTCall(methodName,
+                                                                                                 urlTemplate,
+                                                                                                 requestBody,
+                                                                                                 serverName,
+                                                                                                 userId,
+                                                                                                 startFrom,
+                                                                                                 queryPageSize);
 
         return restResult.getElements();
     }
@@ -362,13 +362,13 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
         invalidParameterHandler.validateUserId(userId, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        CertificationTypeListResponse restResult = restClient.callCertificationTypeListGetRESTCall(methodName,
-                                                                                                   urlTemplate,
-                                                                                                   serverName,
-                                                                                                   userId,
-                                                                                                   domainIdentifier,
-                                                                                                   startFrom,
-                                                                                                   queryPageSize);
+        CertificationTypesResponse restResult = restClient.callCertificationTypeListGetRESTCall(methodName,
+                                                                                                urlTemplate,
+                                                                                                serverName,
+                                                                                                userId,
+                                                                                                domainIdentifier,
+                                                                                                startFrom,
+                                                                                                queryPageSize);
 
         return restResult.getElements();
     }
@@ -545,14 +545,14 @@ public class CertificationManager extends GovernanceProgramBaseClient implements
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        RelatedElementListResponse restResult = restClient.callRelatedElementListGetRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             elementGUID,
-                                                                                             startFrom,
-                                                                                             queryPageSize);
+        RelatedElementsResponse restResult = restClient.callRelatedElementsGetRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       elementGUID,
+                                                                                       startFrom,
+                                                                                       queryPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 }

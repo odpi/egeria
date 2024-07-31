@@ -2,24 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datamanager.client;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ClassificationProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ReferenceableProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.RelationshipProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.datamanager.rest.ClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.datamanager.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 
 import java.util.List;
 
@@ -776,15 +771,15 @@ public class DataManagerBaseClient
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
 
-        RelatedElementListResponse restResult = restClient.callRelatedElementListGetRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             startingElementGUID,
-                                                                                             Integer.toString(startFrom),
-                                                                                             Integer.toString(pageSize));
+        RelatedElementsResponse restResult = restClient.callRelatedElementsGetRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          startingElementGUID,
+                                                                                          Integer.toString(startFrom),
+                                                                                          Integer.toString(pageSize));
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 

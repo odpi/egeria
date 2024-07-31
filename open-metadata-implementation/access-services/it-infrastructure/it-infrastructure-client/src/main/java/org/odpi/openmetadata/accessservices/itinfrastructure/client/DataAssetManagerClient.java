@@ -4,10 +4,10 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.client;
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.DataAssetManagerInterface;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataAssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataAssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataAssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;

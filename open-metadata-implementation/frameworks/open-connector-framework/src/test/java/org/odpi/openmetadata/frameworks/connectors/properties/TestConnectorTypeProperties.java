@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -15,9 +17,9 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestConnectorTypeProperties
 {
-    private ElementType                 type                              = new ElementType();
-    private List<ElementClassification> classifications                   = new ArrayList<>();
-    private Map<String, String>         additionalProperties              = new HashMap<>();
+    private ElementType                 type                 = new ElementType();
+    private List<ElementClassification> classifications      = new ArrayList<>();
+    private Map<String, String>         additionalProperties = new HashMap<>();
     private List<String>                recognizedAdditionalProperties    = new ArrayList<>();
     private List<String>                recognizedSecuredProperties       = new ArrayList<>();
     private List<String>                recognizedConfigurationProperties = new ArrayList<>();

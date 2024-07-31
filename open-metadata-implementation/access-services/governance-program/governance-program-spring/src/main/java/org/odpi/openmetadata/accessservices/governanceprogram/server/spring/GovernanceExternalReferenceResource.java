@@ -5,17 +5,8 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalReferenceListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalReferenceResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.ExternalReferenceRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -213,11 +204,11 @@ public class GovernanceExternalReferenceResource
      */
     @PostMapping(path = "/external-references/by-resource-id")
 
-    public ExternalReferenceListResponse findExternalReferencesById(@PathVariable String                  serverName,
-                                                                    @PathVariable String                  userId,
-                                                                    @RequestParam int                     startFrom,
-                                                                    @RequestParam int                     pageSize,
-                                                                    @RequestBody  SearchStringRequestBody requestBody)
+    public ExternalReferencesResponse findExternalReferencesById(@PathVariable String                  serverName,
+                                                                 @PathVariable String                  userId,
+                                                                 @RequestParam int                     startFrom,
+                                                                 @RequestParam int                     pageSize,
+                                                                 @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findExternalReferencesById(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -239,11 +230,11 @@ public class GovernanceExternalReferenceResource
      */
     @PostMapping(path = "/external-references/by-url")
 
-    public ExternalReferenceListResponse getExternalReferencesByURL(@PathVariable String          serverName,
-                                                                    @PathVariable String          userId,
-                                                                    @RequestParam int             startFrom,
-                                                                    @RequestParam int             pageSize,
-                                                                    @RequestBody  NameRequestBody requestBody)
+    public ExternalReferencesResponse getExternalReferencesByURL(@PathVariable String          serverName,
+                                                                 @PathVariable String          userId,
+                                                                 @RequestParam int             startFrom,
+                                                                 @RequestParam int             pageSize,
+                                                                 @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getExternalReferencesByURL(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -265,11 +256,11 @@ public class GovernanceExternalReferenceResource
      */
     @GetMapping(path = "/elements/{attachedToGUID}/external-references")
 
-    public ExternalReferenceListResponse retrieveAttachedExternalReferences(@PathVariable String serverName,
-                                                                            @PathVariable String userId,
-                                                                            @PathVariable String attachedToGUID,
-                                                                            @RequestParam int    startFrom,
-                                                                            @RequestParam int    pageSize)
+    public ExternalReferencesResponse retrieveAttachedExternalReferences(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @PathVariable String attachedToGUID,
+                                                                         @RequestParam int    startFrom,
+                                                                         @RequestParam int    pageSize)
     {
         return restAPI.retrieveAttachedExternalReferences(serverName, userId, attachedToGUID, startFrom, pageSize);
     }
@@ -291,11 +282,11 @@ public class GovernanceExternalReferenceResource
      */
     @GetMapping(path = "/elements/external-references/{externalReferenceGUID}")
 
-    public RelatedElementListResponse getElementsForExternalReference(@PathVariable String serverName,
-                                                                      @PathVariable String userId,
-                                                                      @PathVariable String externalReferenceGUID,
-                                                                      @RequestParam int    startFrom,
-                                                                      @RequestParam int    pageSize)
+    public RelatedElementsResponse getElementsForExternalReference(@PathVariable String serverName,
+                                                                   @PathVariable String userId,
+                                                                   @PathVariable String externalReferenceGUID,
+                                                                   @RequestParam int    startFrom,
+                                                                   @RequestParam int    pageSize)
     {
         return restAPI.getElementsForExternalReference(serverName, userId, externalReferenceGUID, startFrom, pageSize);
     }

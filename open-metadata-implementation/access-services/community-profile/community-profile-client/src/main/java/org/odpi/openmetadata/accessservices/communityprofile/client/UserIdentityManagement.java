@@ -6,16 +6,17 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.UserIdentityManagementInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.UserIdentitiesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.UserIdentityResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ProfileIdentityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
 
 import java.util.List;
 
@@ -393,13 +394,13 @@ public class UserIdentityManagement extends CommunityProfileBaseClient implement
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        UserIdentityListResponse restResult = restClient.callUserIdentityListPostRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          Integer.toString(startFrom),
-                                                                                          Integer.toString(pageSize));
+        UserIdentitiesResponse restResult = restClient.callUserIdentitiesPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      Integer.toString(startFrom),
+                                                                                      Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -443,13 +444,13 @@ public class UserIdentityManagement extends CommunityProfileBaseClient implement
         requestBody.setNamePropertyName(namePropertyName);
         requestBody.setNameParameterName(nameParameterName);
 
-        UserIdentityListResponse restResult = restClient.callUserIdentityListPostRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          Integer.toString(startFrom),
-                                                                                          Integer.toString(pageSize));
+        UserIdentitiesResponse restResult = restClient.callUserIdentitiesPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      Integer.toString(startFrom),
+                                                                                      Integer.toString(pageSize));
 
         return restResult.getElements();
     }

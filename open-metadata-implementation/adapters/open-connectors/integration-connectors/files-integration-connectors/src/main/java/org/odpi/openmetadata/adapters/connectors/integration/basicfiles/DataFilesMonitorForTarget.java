@@ -3,9 +3,9 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DataFileElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DataFileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataFileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

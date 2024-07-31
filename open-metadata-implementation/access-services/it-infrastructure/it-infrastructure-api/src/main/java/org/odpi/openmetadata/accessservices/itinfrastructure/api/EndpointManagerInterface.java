@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.api;
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

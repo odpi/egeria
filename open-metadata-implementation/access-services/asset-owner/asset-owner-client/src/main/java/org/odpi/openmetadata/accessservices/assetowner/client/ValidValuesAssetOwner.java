@@ -4,8 +4,7 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingValidValues;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ValidValueElement;
-import org.odpi.openmetadata.accessservices.assetowner.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -20,7 +19,6 @@ import java.util.Map;
  * ValidValuesAssetOwner provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
  * the same attributes and so inherit from ValidValue where all the attributes are defined.
- *
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
  */
@@ -515,7 +513,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                                                                 startFrom,
                                                                                 pageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -565,7 +563,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                                                                 startFrom,
                                                                                 pageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -606,7 +604,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                                                                validValueSetGUID,
                                                                                Integer.toString(startFrom),
                                                                                Integer.toString(pageSize));
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -647,6 +645,6 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                                                                validValueGUID,
                                                                                Integer.toString(startFrom),
                                                                                Integer.toString(pageSize));
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 }

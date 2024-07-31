@@ -3,18 +3,22 @@
 package org.odpi.openmetadata.accessservices.digitalservice.client;
 
 import org.odpi.openmetadata.accessservices.digitalservice.api.CollectionsInterface;
-import org.odpi.openmetadata.accessservices.digitalservice.client.converters.CollectionConverter;
-import org.odpi.openmetadata.accessservices.digitalservice.client.converters.CollectionMemberConverter;
-import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.CollectionElement;
-import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.CollectionMember;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.converters.CollectionConverter;
+import org.odpi.openmetadata.frameworks.governanceaction.converters.CollectionMemberConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CollectionMemberStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OrderBy;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionMember;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionFolderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
@@ -38,7 +42,7 @@ import java.util.Map;
  */
 public class CollectionsClient extends DigitalServiceBaseClient implements CollectionsInterface
 {
-    final private CollectionConverter<CollectionElement>      collectionConverter;
+    final private CollectionConverter<CollectionElement> collectionConverter;
     final private Class<CollectionElement>                    collectionBeanClass       = CollectionElement.class;
     final private CollectionMemberConverter<CollectionMember> collectionMemberConverter;
 
@@ -504,15 +508,20 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         {
             initialClassifications = new HashMap<>();
 
-            ElementProperties classificationProperties = propertyHelper.addStringProperty(null,
-                                                                                          OpenMetadataProperty.ORDER_BY_PROPERTY_NAME.name,
-                                                                                          properties.getOrderByPropertyName());
-            if (properties.getCollectionOrder() != null)
+            ElementProperties classificationProperties = null;
+
+            if (properties instanceof CollectionFolderProperties collectionFolderProperties)
             {
-                classificationProperties = propertyHelper.addEnumProperty(classificationProperties,
-                                                                          OpenMetadataProperty.COLLECTION_ORDER.name,
-                                                                          OrderBy.getOpenTypeName(),
-                                                                          properties.getCollectionOrder().getName());
+                classificationProperties = propertyHelper.addStringProperty(null,
+                                                                            OpenMetadataProperty.ORDER_BY_PROPERTY_NAME.name,
+                                                                            collectionFolderProperties.getOrderByPropertyName());
+                if (collectionFolderProperties.getCollectionOrder() != null)
+                {
+                    classificationProperties = propertyHelper.addEnumProperty(classificationProperties,
+                                                                              OpenMetadataProperty.COLLECTION_ORDER.name,
+                                                                              OrderBy.getOpenTypeName(),
+                                                                              collectionFolderProperties.getCollectionOrder().getName());
+                }
             }
 
             initialClassifications.put(OpenMetadataType.FOLDER.typeName, classificationProperties);

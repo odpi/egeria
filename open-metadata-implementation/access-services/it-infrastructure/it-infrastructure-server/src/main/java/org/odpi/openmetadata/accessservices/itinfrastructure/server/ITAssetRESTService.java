@@ -2,25 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.server;
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ControlFlowElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataFlowElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.LineageMappingElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.PortElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessCallElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.*;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ProcessHandler;
@@ -29,7 +17,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -118,7 +106,7 @@ public class ITAssetRESTService
                                                                 requestBody.getQualifiedName(),
                                                                 requestBody.getName(),
                                                                 requestBody.getVersionIdentifier(),
-                                                                requestBody.getDescription(),
+                                                                requestBody.getResourceDescription(),
                                                                 requestBody.getDeployedImplementationType(),
                                                                 requestBody.getAdditionalProperties(),
                                                                 typeName,
@@ -159,7 +147,7 @@ public class ITAssetRESTService
                                                                 requestBody.getQualifiedName(),
                                                                 requestBody.getName(),
                                                                 requestBody.getVersionIdentifier(),
-                                                                requestBody.getDescription(),
+                                                                requestBody.getResourceDescription(),
                                                                 requestBody.getDeployedImplementationType(),
                                                                 requestBody.getAdditionalProperties(),
                                                                 typeName,
@@ -410,8 +398,9 @@ public class ITAssetRESTService
                                     elementGUIDParameterName,
                                     requestBody.getQualifiedName(),
                                     requestBody.getName(),
+                                    requestBody.getResourceName(),
                                     requestBody.getVersionIdentifier(),
-                                    requestBody.getDescription(),
+                                    requestBody.getResourceDescription(),
                                     requestBody.getDeployedImplementationType(),
                                     requestBody.getAdditionalProperties(),
                                     typeName,
@@ -697,7 +686,7 @@ public class ITAssetRESTService
                                           String                                 relationshipTypeName,
                                           String                                 relatedAssetTypeName,
                                           String                                 relatedAssetGUID,
-                                          EffectiveTimeMetadataSourceRequestBody requestBody)
+                                          EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName                    = "clearRelatedAsset";
         final String assetGUIDParameterName        = "assetGUID";
@@ -927,7 +916,7 @@ public class ITAssetRESTService
                                             String                                 assetTypeName,
                                             String                                 assetGUID,
                                             String                                 classificationName,
-                                            EffectiveTimeMetadataSourceRequestBody requestBody)
+                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName                  = "clearClassification";
         final String elementGUIDParameterName    = "assetGUID";
@@ -1088,7 +1077,7 @@ public class ITAssetRESTService
     public VoidResponse removeAsset(String                    serverName,
                                     String                    userId,
                                     String                    assetGUID,
-                                    MetadataSourceRequestBody requestBody)
+                                    ExternalSourceRequestBody requestBody)
     {
         final String methodName = "removeAsset";
         final String elementGUIDParameterName  = "assetGUID";
@@ -1152,20 +1141,20 @@ public class ITAssetRESTService
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public AssetListResponse findAssets(String                  serverName,
-                                        String                  userId,
-                                        String                  assetTypeName,
-                                        int                     startFrom,
-                                        int                     pageSize,
-                                        SearchStringRequestBody requestBody)
+    public AssetElementsResponse findAssets(String                  serverName,
+                                            String                  userId,
+                                            String                  assetTypeName,
+                                            int                     startFrom,
+                                            int                     pageSize,
+                                            SearchStringRequestBody requestBody)
     {
         final String methodName                = "findAssets";
         final String searchStringParameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AssetListResponse response = new AssetListResponse();
-        AuditLog          auditLog = null;
+        AssetElementsResponse response = new AssetElementsResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -1196,7 +1185,7 @@ public class ITAssetRESTService
                                                                    methodName);
 
                     setUpVendorProperties(userId, assets, handler, methodName);
-                    response.setElementList(assets);
+                    response.setElements(assets);
                 }
             }
             else
@@ -1231,20 +1220,20 @@ public class ITAssetRESTService
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public AssetListResponse getAssetsByName(String          serverName,
-                                             String          userId,
-                                             String          assetTypeName,
-                                             int             startFrom,
-                                             int             pageSize,
-                                             NameRequestBody requestBody)
+    public AssetElementsResponse getAssetsByName(String          serverName,
+                                                 String          userId,
+                                                 String          assetTypeName,
+                                                 int             startFrom,
+                                                 int             pageSize,
+                                                 NameRequestBody requestBody)
     {
         final String methodName        = "getAssetsByName";
         final String nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AssetListResponse response = new AssetListResponse();
-        AuditLog          auditLog = null;
+        AssetElementsResponse response = new AssetElementsResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -1275,7 +1264,7 @@ public class ITAssetRESTService
                                                                         methodName);
 
                     setUpVendorProperties(userId, assets, handler, methodName);
-                    response.setElementList(assets);
+                    response.setElements(assets);
                 }
             }
             else
@@ -1311,20 +1300,20 @@ public class ITAssetRESTService
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public AssetListResponse getAssetsByDeployedImplementationType(String          serverName,
-                                                                   String          userId,
-                                                                   String          assetTypeName,
-                                                                   int             startFrom,
-                                                                   int             pageSize,
-                                                                   NameRequestBody requestBody)
+    public AssetElementsResponse getAssetsByDeployedImplementationType(String          serverName,
+                                                                       String          userId,
+                                                                       String          assetTypeName,
+                                                                       int             startFrom,
+                                                                       int             pageSize,
+                                                                       NameRequestBody requestBody)
     {
         final String methodName        = "getAssetsByDeployedImplementationType";
         final String nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AssetListResponse response = new AssetListResponse();
-        AuditLog          auditLog = null;
+        AssetElementsResponse response = new AssetElementsResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -1372,7 +1361,7 @@ public class ITAssetRESTService
                 }
 
                 setUpVendorProperties(userId, assets, handler, methodName);
-                response.setElementList(assets);
+                response.setElements(assets);
             }
         }
         catch (Exception error)
@@ -1404,22 +1393,22 @@ public class ITAssetRESTService
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @SuppressWarnings(value = "unused")
-    public AssetListResponse getAssetsForInfrastructureManager(String                   serverName,
-                                                               String                   userId,
-                                                               String                   infrastructureManagerGUID,
-                                                               String                   infrastructureManagerName,
-                                                               String                   assetTypeName,
-                                                               int                      startFrom,
-                                                               int                      pageSize,
-                                                               EffectiveTimeRequestBody requestBody)
+    public AssetElementsResponse getAssetsForInfrastructureManager(String                   serverName,
+                                                                   String                   userId,
+                                                                   String                   infrastructureManagerGUID,
+                                                                   String                   infrastructureManagerName,
+                                                                   String                   assetTypeName,
+                                                                   int                      startFrom,
+                                                                   int                      pageSize,
+                                                                   EffectiveTimeRequestBody requestBody)
     {
         final String methodName = "getAssetsForInfrastructureManager";
         final String infrastructureManagerGUIDParameterName = "infrastructureManagerGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AssetListResponse response = new AssetListResponse();
-        AuditLog          auditLog = null;
+        AssetElementsResponse response = new AssetElementsResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -1456,7 +1445,7 @@ public class ITAssetRESTService
                                                                             methodName);
 
                     setUpVendorProperties(userId, assets, handler, methodName);
-                    response.setElementList(assets);
+                    response.setElements(assets);
                 }
             }
             else
@@ -1489,19 +1478,19 @@ public class ITAssetRESTService
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public AssetResponse getAssetByGUID(String                   serverName,
-                                        String                   userId,
-                                        String                   assetTypeName,
-                                        String                   guid,
-                                        EffectiveTimeRequestBody requestBody)
+    public AssetElementResponse getAssetByGUID(String                   serverName,
+                                               String                   userId,
+                                               String                   assetTypeName,
+                                               String                   guid,
+                                               EffectiveTimeRequestBody requestBody)
     {
         final String methodName = "getAssetByGUID";
         final String guidParameterName = "guid";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AssetResponse response = new AssetResponse();
-        AuditLog         auditLog = null;
+        AssetElementResponse response = new AssetElementResponse();
+        AuditLog             auditLog = null;
 
         try
         {
@@ -1568,16 +1557,16 @@ public class ITAssetRESTService
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public AssetRelationshipListResponse getAssetRelationships(String                   serverName,
-                                                               String                   userId,
-                                                               String                   assetTypeName,
-                                                               String                   assetGUID,
-                                                               String                   relationshipTypeName,
-                                                               String                   relatedAssetTypeName,
-                                                               int                      startingEnd,
-                                                               int                      startFrom,
-                                                               int                      pageSize,
-                                                               EffectiveTimeRequestBody requestBody)
+    public AssetRelationshipsResponse getAssetRelationships(String                   serverName,
+                                                            String                   userId,
+                                                            String                   assetTypeName,
+                                                            String                   assetGUID,
+                                                            String                   relationshipTypeName,
+                                                            String                   relatedAssetTypeName,
+                                                            int                      startingEnd,
+                                                            int                      startFrom,
+                                                            int                      pageSize,
+                                                            EffectiveTimeRequestBody requestBody)
     {
         // todo
         return null;
@@ -1604,24 +1593,24 @@ public class ITAssetRESTService
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedAssetListResponse getRelatedAssets(String                   serverName,
-                                                     String                   userId,
-                                                     String                   assetTypeName,
-                                                     String                   assetGUID,
-                                                     String                   relationshipTypeName,
-                                                     String                   relatedAssetTypeName,
-                                                     int                      startingEnd,
-                                                     int                      startFrom,
-                                                     int                      pageSize,
-                                                     EffectiveTimeRequestBody requestBody)
+    public RelatedAssetsResponse getRelatedAssets(String                   serverName,
+                                                  String                   userId,
+                                                  String                   assetTypeName,
+                                                  String                   assetGUID,
+                                                  String                   relationshipTypeName,
+                                                  String                   relatedAssetTypeName,
+                                                  int                      startingEnd,
+                                                  int                      startFrom,
+                                                  int                      pageSize,
+                                                  EffectiveTimeRequestBody requestBody)
     {
         final String methodName = "getRelatedAssets";
         final String guidParameterName = "assetGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedAssetListResponse response = new RelatedAssetListResponse();
-        AuditLog                 auditLog = null;
+        RelatedAssetsResponse response = new RelatedAssetsResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -1676,7 +1665,7 @@ public class ITAssetRESTService
                     }
                 }
 
-                response.setElementList(assets);
+                response.setElements(assets);
             }
             else
             {
@@ -2081,7 +2070,7 @@ public class ITAssetRESTService
     public VoidResponse clearDataFlow(String                                 serverName,
                                       String                                 userId,
                                       String                                 dataFlowGUID,
-                                      EffectiveTimeMetadataSourceRequestBody requestBody)
+                                      EffectiveTimeQueryRequestBody requestBody)
     {
         final String dataFlowGUIDParameterName = "dataFlowGUID";
         final String methodName = "clearDataFlow";
@@ -2181,27 +2170,27 @@ public class ITAssetRESTService
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getDataFlowConsumers(userId,
-                                                                     dataSupplierGUID,
-                                                                     dataSupplierGUIDParameterName,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     false,
-                                                                     false,
-                                                                     requestBody.getEffectiveTime(),
-                                                                     methodName));
+                response.setElements(handler.getDataFlowConsumers(userId,
+                                                                  dataSupplierGUID,
+                                                                  dataSupplierGUIDParameterName,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  false,
+                                                                  false,
+                                                                  requestBody.getEffectiveTime(),
+                                                                  methodName));
             }
             else
             {
-                response.setElementList(handler.getDataFlowConsumers(userId,
-                                                                     dataSupplierGUID,
-                                                                     dataSupplierGUIDParameterName,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     false,
-                                                                     false,
-                                                                     new Date(),
-                                                                     methodName));
+                response.setElements(handler.getDataFlowConsumers(userId,
+                                                                  dataSupplierGUID,
+                                                                  dataSupplierGUIDParameterName,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
+                                                                  methodName));
             }
         }
         catch (Exception error)
@@ -2258,27 +2247,27 @@ public class ITAssetRESTService
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getDataFlowSuppliers(userId,
-                                                                     dataConsumerGUID,
-                                                                     dataConsumerGUIDParameterName,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     false,
-                                                                     false,
-                                                                     requestBody.getEffectiveTime(),
-                                                                     methodName));
+                response.setElements(handler.getDataFlowSuppliers(userId,
+                                                                  dataConsumerGUID,
+                                                                  dataConsumerGUIDParameterName,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  false,
+                                                                  false,
+                                                                  requestBody.getEffectiveTime(),
+                                                                  methodName));
             }
             else
             {
-                response.setElementList(handler.getDataFlowSuppliers(userId,
-                                                                     dataConsumerGUID,
-                                                                     dataConsumerGUIDParameterName,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     false,
-                                                                     false,
-                                                                     new Date(),
-                                                                     methodName));
+                response.setElements(handler.getDataFlowSuppliers(userId,
+                                                                  dataConsumerGUID,
+                                                                  dataConsumerGUIDParameterName,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  false,
+                                                                  false,
+                                                                  new Date(),
+                                                                  methodName));
             }
         }
         catch (Exception error)
@@ -2579,7 +2568,7 @@ public class ITAssetRESTService
     public VoidResponse clearControlFlow(String                                 serverName,
                                          String                                 userId,
                                          String                                 controlFlowGUID,
-                                         EffectiveTimeMetadataSourceRequestBody requestBody)
+                                         EffectiveTimeQueryRequestBody requestBody)
     {
         final String controlFlowGUIDParameterName = "controlFlowGUID";
         final String methodName = "clearControlFlow";
@@ -2679,27 +2668,27 @@ public class ITAssetRESTService
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getControlFlowNextSteps(userId,
-                                                                        currentStepGUID,
-                                                                        currentStepGUIDParameterName,
-                                                                        startFrom,
-                                                                        pageSize,
-                                                                        false,
-                                                                        false,
-                                                                        requestBody.getEffectiveTime(),
-                                                                        methodName));
+                response.setElements(handler.getControlFlowNextSteps(userId,
+                                                                     currentStepGUID,
+                                                                     currentStepGUIDParameterName,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     false,
+                                                                     false,
+                                                                     requestBody.getEffectiveTime(),
+                                                                     methodName));
             }
             else
             {
-                response.setElementList(handler.getControlFlowNextSteps(userId,
-                                                                        currentStepGUID,
-                                                                        currentStepGUIDParameterName,
-                                                                        startFrom,
-                                                                        pageSize,
-                                                                        false,
-                                                                        false,
-                                                                        new Date(),
-                                                                        methodName));
+                response.setElements(handler.getControlFlowNextSteps(userId,
+                                                                     currentStepGUID,
+                                                                     currentStepGUIDParameterName,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     false,
+                                                                     false,
+                                                                     new Date(),
+                                                                     methodName));
             }
         }
         catch (Exception error)
@@ -2756,27 +2745,27 @@ public class ITAssetRESTService
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getControlFlowPreviousSteps(userId,
-                                                                            currentStepGUID,
-                                                                            currentStepGUIDParameterName,
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            false,
-                                                                            false,
-                                                                            requestBody.getEffectiveTime(),
-                                                                            methodName));
+                response.setElements(handler.getControlFlowPreviousSteps(userId,
+                                                                         currentStepGUID,
+                                                                         currentStepGUIDParameterName,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         false,
+                                                                         false,
+                                                                         requestBody.getEffectiveTime(),
+                                                                         methodName));
             }
             else
             {
-                response.setElementList(handler.getControlFlowPreviousSteps(userId,
-                                                                            currentStepGUID,
-                                                                            currentStepGUIDParameterName,
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            false,
-                                                                            false,
-                                                                            new Date(),
-                                                                            methodName));
+                response.setElements(handler.getControlFlowPreviousSteps(userId,
+                                                                         currentStepGUID,
+                                                                         currentStepGUIDParameterName,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         false,
+                                                                         false,
+                                                                         new Date(),
+                                                                         methodName));
             }
         }
         catch (Exception error)
@@ -3077,7 +3066,7 @@ public class ITAssetRESTService
     public VoidResponse clearProcessCall(String                                 serverName,
                                          String                                 userId,
                                          String                                 processCallGUID,
-                                         EffectiveTimeMetadataSourceRequestBody requestBody)
+                                         EffectiveTimeQueryRequestBody requestBody)
     {
         final String processCallGUIDParameterName = "processCallGUID";
         final String methodName = "clearProcessCall";
@@ -3177,27 +3166,27 @@ public class ITAssetRESTService
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getProcessCalled(userId,
-                                                                 callerGUID,
-                                                                 callerGUIDParameterName,
-                                                                 startFrom,
-                                                                 pageSize,
-                                                                 false,
-                                                                 false,
-                                                                 requestBody.getEffectiveTime(),
-                                                                 methodName));
+                response.setElements(handler.getProcessCalled(userId,
+                                                              callerGUID,
+                                                              callerGUIDParameterName,
+                                                              startFrom,
+                                                              pageSize,
+                                                              false,
+                                                              false,
+                                                              requestBody.getEffectiveTime(),
+                                                              methodName));
             }
             else
             {
-                response.setElementList(handler.getProcessCalled(userId,
-                                                                 callerGUID,
-                                                                 callerGUIDParameterName,
-                                                                 startFrom,
-                                                                 pageSize,
-                                                                 false,
-                                                                 false,
-                                                                 new Date(),
-                                                                 methodName));
+                response.setElements(handler.getProcessCalled(userId,
+                                                              callerGUID,
+                                                              callerGUIDParameterName,
+                                                              startFrom,
+                                                              pageSize,
+                                                              false,
+                                                              false,
+                                                              new Date(),
+                                                              methodName));
             }
         }
         catch (Exception error)
@@ -3254,27 +3243,27 @@ public class ITAssetRESTService
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getProcessCallers(userId,
-                                                                  calledGUID,
-                                                                  callerGUIDParameterName,
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  false,
-                                                                  false,
-                                                                  requestBody.getEffectiveTime(),
-                                                                  methodName));
+                response.setElements(handler.getProcessCallers(userId,
+                                                               calledGUID,
+                                                               callerGUIDParameterName,
+                                                               startFrom,
+                                                               pageSize,
+                                                               false,
+                                                               false,
+                                                               requestBody.getEffectiveTime(),
+                                                               methodName));
             }
             else
             {
-                response.setElementList(handler.getProcessCallers(userId,
-                                                                  calledGUID,
-                                                                  callerGUIDParameterName,
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  false,
-                                                                  false,
-                                                                  new Date(),
-                                                                  methodName));
+                response.setElements(handler.getProcessCallers(userId,
+                                                               calledGUID,
+                                                               callerGUIDParameterName,
+                                                               startFrom,
+                                                               pageSize,
+                                                               false,
+                                                               false,
+                                                               new Date(),
+                                                               methodName));
             }
         }
         catch (Exception error)
@@ -3488,7 +3477,7 @@ public class ITAssetRESTService
     public VoidResponse clearLineageMapping(String                                 serverName,
                                             String                                 userId,
                                             String                                 lineageMappingGUID,
-                                            EffectiveTimeMetadataSourceRequestBody requestBody)
+                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String lineageMappingGUIDParameterName      = "lineageMappingGUID";
         final String methodName = "clearLineageMapping";
@@ -3584,27 +3573,27 @@ public class ITAssetRESTService
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getDestinationLineageMappings(userId,
-                                                                              sourceElementGUID,
-                                                                              sourceElementGUIDParameterName,
-                                                                              startFrom,
-                                                                              pageSize,
-                                                                              false,
-                                                                              false,
-                                                                              requestBody.getEffectiveTime(),
-                                                                              methodName));
+                response.setElements(handler.getDestinationLineageMappings(userId,
+                                                                           sourceElementGUID,
+                                                                           sourceElementGUIDParameterName,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           false,
+                                                                           false,
+                                                                           requestBody.getEffectiveTime(),
+                                                                           methodName));
             }
             else
             {
-                response.setElementList(handler.getDestinationLineageMappings(userId,
-                                                                              sourceElementGUID,
-                                                                              sourceElementGUIDParameterName,
-                                                                              startFrom,
-                                                                              pageSize,
-                                                                              false,
-                                                                              false,
-                                                                              new Date(),
-                                                                              methodName));
+                response.setElements(handler.getDestinationLineageMappings(userId,
+                                                                           sourceElementGUID,
+                                                                           sourceElementGUIDParameterName,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           false,
+                                                                           false,
+                                                                           new Date(),
+                                                                           methodName));
             }
         }
         catch (Exception error)
@@ -3661,27 +3650,27 @@ public class ITAssetRESTService
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getSourceLineageMappings(userId,
-                                                                         destinationElementGUID,
-                                                                         destinationElementGUIDParameterName,
-                                                                         startFrom,
-                                                                         pageSize,
-                                                                         false,
-                                                                         false,
-                                                                         requestBody.getEffectiveTime(),
-                                                                         methodName));
+                response.setElements(handler.getSourceLineageMappings(userId,
+                                                                      destinationElementGUID,
+                                                                      destinationElementGUIDParameterName,
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      false,
+                                                                      false,
+                                                                      requestBody.getEffectiveTime(),
+                                                                      methodName));
             }
             else
             {
-                response.setElementList(handler.getSourceLineageMappings(userId,
-                                                                         destinationElementGUID,
-                                                                         destinationElementGUIDParameterName,
-                                                                         startFrom,
-                                                                         pageSize,
-                                                                         false,
-                                                                         false,
-                                                                         new Date(),
-                                                                         methodName));
+                response.setElements(handler.getSourceLineageMappings(userId,
+                                                                      destinationElementGUID,
+                                                                      destinationElementGUIDParameterName,
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      false,
+                                                                      false,
+                                                                      new Date(),
+                                                                      methodName));
             }
         }
         catch (Exception error)

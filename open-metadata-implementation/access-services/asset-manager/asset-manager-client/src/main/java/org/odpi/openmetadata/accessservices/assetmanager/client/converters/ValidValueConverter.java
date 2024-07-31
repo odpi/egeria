@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.accessservices.assetmanager.client.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueProperties;
 
 import java.lang.reflect.InvocationTargetException;
 

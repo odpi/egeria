@@ -5,34 +5,16 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.OrganizationManagementInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleAppointee;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AppointmentProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRoleProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ActorProfileListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ActorProfileRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ActorProfileResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.AppointmentRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ContactMethodRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.EffectiveDatesRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleAppointeeListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.TeamPlayerRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.Appointee;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleAppointee;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 
 import java.util.Date;
 import java.util.List;
@@ -567,13 +549,13 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
         requestBody.setNamePropertyName(namePropertyName);
         requestBody.setNameParameterName(nameParameterName);
 
-        ActorProfileListResponse restResult = restClient.callActorProfileListPostRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          Integer.toString(startFrom),
-                                                                                          Integer.toString(pageSize));
+        ActorProfilesResponse restResult = restClient.callActorProfilesPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    requestBody,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    Integer.toString(startFrom),
+                                                                                    Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -605,12 +587,12 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles?startFrom={2}&pageSize={3}";
 
-        ActorProfileListResponse restResult = restClient.callActorProfileListGetRESTCall(methodName,
-                                                                                         urlTemplate,
-                                                                                         serverName,
-                                                                                         userId,
-                                                                                         Integer.toString(startFrom),
-                                                                                         Integer.toString(pageSize));
+        ActorProfilesResponse restResult = restClient.callActorProfilesGetRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   Integer.toString(startFrom),
+                                                                                   Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -647,13 +629,13 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/profiles/by-location/{2}?startFrom={3}&pageSize={4}";
 
 
-        ActorProfileListResponse restResult = restClient.callActorProfileListGetRESTCall(methodName,
-                                                                                         urlTemplate,
-                                                                                         serverName,
-                                                                                         userId,
-                                                                                         locationGUID,
-                                                                                         Integer.toString(startFrom),
-                                                                                         Integer.toString(pageSize));
+        ActorProfilesResponse restResult = restClient.callActorProfilesGetRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   locationGUID,
+                                                                                   Integer.toString(startFrom),
+                                                                                   Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -694,13 +676,13 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        ActorProfileListResponse restResult = restClient.callActorProfileListPostRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          Integer.toString(startFrom),
-                                                                                          Integer.toString(pageSize));
+        ActorProfilesResponse restResult = restClient.callActorProfilesPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    requestBody,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    Integer.toString(startFrom),
+                                                                                    Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -898,13 +880,13 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<PersonRoleAppointee> getAppointees(String userId,
-                                                   String personRoleGUID,
-                                                   Date   effectiveTime,
-                                                   int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public List<Appointee> getAppointees(String userId,
+                                         String personRoleGUID,
+                                         Date   effectiveTime,
+                                         int    startFrom,
+                                         int    pageSize) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         final String methodName                  = "getAppointees";
         final String personRoleGUIDParameterName = "personRoleGUID";
@@ -918,14 +900,14 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
 
         requestBody.setEffectiveTime(effectiveTime);
 
-        PersonRoleAppointeeListResponse restResult = restClient.callPersonRoleAppointeeListPostRESTCall(methodName,
-                                                                                                        urlTemplate,
-                                                                                                        requestBody,
-                                                                                                        serverName,
-                                                                                                        userId,
-                                                                                                        personRoleGUID,
-                                                                                                        Integer.toString(startFrom),
-                                                                                                        Integer.toString(pageSize));
+        AppointeesResponse restResult = restClient.callAppointeesPostRESTCall(methodName,
+                                                                              urlTemplate,
+                                                                              requestBody,
+                                                                              serverName,
+                                                                              userId,
+                                                                              personRoleGUID,
+                                                                              Integer.toString(startFrom),
+                                                                              Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -1177,13 +1159,13 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
         requestBody.setNamePropertyName(namePropertyName);
         requestBody.setNameParameterName(nameParameterName);
 
-        PersonRoleListResponse restResult = restClient.callPersonRoleListPostRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          Integer.toString(startFrom),
-                                                                                          Integer.toString(pageSize));
+        PersonRolesResponse restResult = restClient.callPersonRolesPostRESTCall(methodName,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                serverName,
+                                                                                userId,
+                                                                                Integer.toString(startFrom),
+                                                                                Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -1219,13 +1201,13 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/by-team/{2}/leadership?startFrom={3}&pageSize={4}";
 
-        PersonRoleListResponse restResult = restClient.callPersonRoleListGetRESTCall(methodName,
-                                                                                      urlTemplate,
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      teamGUID,
-                                                                                      Integer.toString(startFrom),
-                                                                                      Integer.toString(pageSize));
+        PersonRolesResponse restResult = restClient.callPersonRolesGetRESTCall(methodName,
+                                                                               urlTemplate,
+                                                                               serverName,
+                                                                               userId,
+                                                                               teamGUID,
+                                                                               Integer.toString(startFrom),
+                                                                               Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -1261,13 +1243,13 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/by-team/{2}/membership?startFrom={3}&pageSize={4}";
 
-        PersonRoleListResponse restResult = restClient.callPersonRoleListGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     teamGUID,
-                                                                                     Integer.toString(startFrom),
-                                                                                     Integer.toString(pageSize));
+        PersonRolesResponse restResult = restClient.callPersonRolesGetRESTCall(methodName,
+                                                                               urlTemplate,
+                                                                               serverName,
+                                                                               userId,
+                                                                               teamGUID,
+                                                                               Integer.toString(startFrom),
+                                                                               Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -1309,13 +1291,13 @@ public class OrganizationManagement extends CommunityProfileBaseClient implement
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        PersonRoleListResponse restResult = restClient.callPersonRoleListPostRESTCall(methodName,
-                                                                                      urlTemplate,
-                                                                                      requestBody,
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      Integer.toString(startFrom),
-                                                                                      Integer.toString(pageSize));
+        PersonRolesResponse restResult = restClient.callPersonRolesPostRESTCall(methodName,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                serverName,
+                                                                                userId,
+                                                                                Integer.toString(startFrom),
+                                                                                Integer.toString(pageSize));
 
         return restResult.getElements();
     }

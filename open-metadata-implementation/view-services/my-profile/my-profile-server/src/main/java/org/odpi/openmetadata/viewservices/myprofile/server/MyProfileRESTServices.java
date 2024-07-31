@@ -5,22 +5,20 @@ package org.odpi.openmetadata.viewservices.myprofile.server;
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.client.ToDoActionManagement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
-import org.odpi.openmetadata.viewservices.myprofile.metadataelements.PersonalProfileUniverse;
-import org.odpi.openmetadata.viewservices.myprofile.properties.PersonalProfileProperties;
-import org.odpi.openmetadata.viewservices.myprofile.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonalProfileUniverse;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonalProfileProperties;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -81,10 +79,10 @@ public class MyProfileRESTServices extends TokenController
 
             if (actorProfileElement != null)
             {
-                PersonalProfileUniverse personalProfileUniverse = new PersonalProfileUniverse();
-                PersonalProfileProperties profileProperties = new PersonalProfileProperties();
-                ActorProfileProperties actorProfileProperties = actorProfileElement.getProfileProperties();
-                Map<String, Object> extendedProperties = actorProfileProperties.getExtendedProperties();
+                PersonalProfileUniverse   personalProfileUniverse = new PersonalProfileUniverse();
+                PersonalProfileProperties profileProperties      = new PersonalProfileProperties();
+                ActorProfileProperties    actorProfileProperties = actorProfileElement.getProfileProperties();
+                Map<String, Object>       extendedProperties     = actorProfileProperties.getExtendedProperties();
 
                 profileProperties.setQualifiedName(actorProfileProperties.getQualifiedName());
                 profileProperties.setKnownName(actorProfileProperties.getKnownName());
@@ -264,7 +262,7 @@ public class MyProfileRESTServices extends TokenController
     public VoidResponse updateActionTargetProperties(String                 serverName,
                                                      String                 actionTargetGUID,
                                                      boolean                isMergeUpdate,
-                                                     ActionTargetProperties actionTargetProperties)
+                                                     ToDoActionTargetProperties actionTargetProperties)
     {
         final String methodName = "updateActionTargetProperties";
 
@@ -419,7 +417,7 @@ public class MyProfileRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
 
-            response.setToDoElement(handler.getToDo(userId, toDoGUID));
+            response.setElement(handler.getToDo(userId, toDoGUID));
         }
         catch (Exception error)
         {
@@ -446,18 +444,18 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public ToDoListResponse getActionsForActionTarget(String                serverName,
-                                                      String                elementGUID,
-                                                      int                   startFrom,
-                                                      int                   pageSize,
-                                                      ToDoStatusRequestBody requestBody)
+    public ToDosResponse getActionsForActionTarget(String                serverName,
+                                                   String                elementGUID,
+                                                   int                   startFrom,
+                                                   int                   pageSize,
+                                                   ToDoStatusRequestBody requestBody)
     {
         final String methodName = "getActionsForActionTarget";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ToDoListResponse response = new ToDoListResponse();
-        AuditLog         auditLog = null;
+        ToDosResponse response = new ToDosResponse();
+        AuditLog      auditLog = null;
 
         try
         {
@@ -470,19 +468,19 @@ public class MyProfileRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setToDoElements(handler.getActionsForActionTarget(userId,
-                                                                           elementGUID,
-                                                                           requestBody.getToDoStatus(),
-                                                                           startFrom,
-                                                                           pageSize));
+                response.setElements(handler.getActionsForActionTarget(userId,
+                                                                       elementGUID,
+                                                                       requestBody.getToDoStatus(),
+                                                                       startFrom,
+                                                                       pageSize));
             }
             else
             {
-                response.setToDoElements(handler.getActionsForActionTarget(userId,
-                                                                           elementGUID,
-                                                                           null,
-                                                                           startFrom,
-                                                                           pageSize));
+                response.setElements(handler.getActionsForActionTarget(userId,
+                                                                       elementGUID,
+                                                                       null,
+                                                                       startFrom,
+                                                                       pageSize));
             }
         }
         catch (Exception error)
@@ -510,18 +508,18 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public ToDoListResponse getActionsForSponsor(String                serverName,
-                                                 String                elementGUID,
-                                                 int                   startFrom,
-                                                 int                   pageSize,
-                                                 ToDoStatusRequestBody requestBody)
+    public ToDosResponse getActionsForSponsor(String                serverName,
+                                              String                elementGUID,
+                                              int                   startFrom,
+                                              int                   pageSize,
+                                              ToDoStatusRequestBody requestBody)
     {
         final String methodName = "getActionsForSponsor";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ToDoListResponse response = new ToDoListResponse();
-        AuditLog         auditLog = null;
+        ToDosResponse response = new ToDosResponse();
+        AuditLog      auditLog = null;
 
         try
         {
@@ -534,19 +532,19 @@ public class MyProfileRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setToDoElements(handler.getActionsForSponsor(userId,
-                                                                      elementGUID,
-                                                                      requestBody.getToDoStatus(),
-                                                                      startFrom,
-                                                                      pageSize));
+                response.setElements(handler.getActionsForSponsor(userId,
+                                                                  elementGUID,
+                                                                  requestBody.getToDoStatus(),
+                                                                  startFrom,
+                                                                  pageSize));
             }
             else
             {
-                response.setToDoElements(handler.getActionsForSponsor(userId,
-                                                                      elementGUID,
-                                                                      null,
-                                                                      startFrom,
-                                                                      pageSize));
+                response.setElements(handler.getActionsForSponsor(userId,
+                                                                  elementGUID,
+                                                                  null,
+                                                                  startFrom,
+                                                                  pageSize));
             }
         }
         catch (Exception error)
@@ -574,18 +572,18 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public ToDoListResponse getAssignedActions(String                serverName,
-                                               String                actorGUID,
-                                               int                   startFrom,
-                                               int                   pageSize,
-                                               ToDoStatusRequestBody requestBody)
+    public ToDosResponse getAssignedActions(String                serverName,
+                                            String                actorGUID,
+                                            int                   startFrom,
+                                            int                   pageSize,
+                                            ToDoStatusRequestBody requestBody)
     {
         final String methodName = "getAssignedActions";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ToDoListResponse response = new ToDoListResponse();
-        AuditLog         auditLog = null;
+        ToDosResponse response = new ToDosResponse();
+        AuditLog      auditLog = null;
 
         try
         {
@@ -598,19 +596,19 @@ public class MyProfileRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setToDoElements(handler.getAssignedActions(userId,
-                                                                    actorGUID,
-                                                                    requestBody.getToDoStatus(),
-                                                                    startFrom,
-                                                                    pageSize));
+                response.setElements(handler.getAssignedActions(userId,
+                                                                actorGUID,
+                                                                requestBody.getToDoStatus(),
+                                                                startFrom,
+                                                                pageSize));
             }
             else
             {
-                response.setToDoElements(handler.getAssignedActions(userId,
-                                                                    actorGUID,
-                                                                    null,
-                                                                    startFrom,
-                                                                    pageSize));
+                response.setElements(handler.getAssignedActions(userId,
+                                                                actorGUID,
+                                                                null,
+                                                                startFrom,
+                                                                pageSize));
             }
         }
         catch (Exception error)
@@ -640,20 +638,20 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public ToDoListResponse findToDos(String                 serverName,
-                                      int                    startFrom,
-                                      int                    pageSize,
-                                      boolean                startsWith,
-                                      boolean                endsWith,
-                                      boolean                ignoreCase,
-                                      ToDoStatusSearchString requestBody)
+    public ToDosResponse findToDos(String                 serverName,
+                                   int                    startFrom,
+                                   int                    pageSize,
+                                   boolean                startsWith,
+                                   boolean                endsWith,
+                                   boolean                ignoreCase,
+                                   ToDoStatusSearchString requestBody)
     {
         final String methodName = "findToDos";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ToDoListResponse response = new ToDoListResponse();
-        AuditLog         auditLog = null;
+        ToDosResponse response = new ToDosResponse();
+        AuditLog      auditLog = null;
 
         try
         {
@@ -666,11 +664,11 @@ public class MyProfileRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setToDoElements(handler.findToDos(userId,
-                                                           instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
-                                                           requestBody.getToDoStatus(),
-                                                           startFrom,
-                                                           pageSize));
+                response.setElements(handler.findToDos(userId,
+                                                       instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
+                                                       requestBody.getToDoStatus(),
+                                                       startFrom,
+                                                       pageSize));
             }
             else
             {
@@ -702,18 +700,18 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public ToDoListResponse getToDosByType(String                serverName,
-                                           String                toDoType,
-                                           int                   startFrom,
-                                           int                   pageSize,
-                                           ToDoStatusRequestBody requestBody)
+    public ToDosResponse getToDosByType(String                serverName,
+                                        String                toDoType,
+                                        int                   startFrom,
+                                        int                   pageSize,
+                                        ToDoStatusRequestBody requestBody)
     {
         final String methodName = "getToDosByType";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ToDoListResponse response = new ToDoListResponse();
-        AuditLog         auditLog = null;
+        ToDosResponse response = new ToDosResponse();
+        AuditLog      auditLog = null;
 
         try
         {
@@ -726,19 +724,19 @@ public class MyProfileRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setToDoElements(handler.getToDosByType(userId,
-                                                                toDoType,
-                                                                requestBody.getToDoStatus(),
-                                                                startFrom,
-                                                                pageSize));
+                response.setElements(handler.getToDosByType(userId,
+                                                            toDoType,
+                                                            requestBody.getToDoStatus(),
+                                                            startFrom,
+                                                            pageSize));
             }
             else
             {
-                response.setToDoElements(handler.getToDosByType(userId,
-                                                                toDoType,
-                                                               null,
-                                                                startFrom,
-                                                                pageSize));
+                response.setElements(handler.getToDosByType(userId,
+                                                            toDoType,
+                                                            null,
+                                                            startFrom,
+                                                            pageSize));
             }
         }
         catch (Exception error)

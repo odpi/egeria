@@ -4,7 +4,6 @@ package org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.module
 
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueElement;
-
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationConnector;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationAuditCode;

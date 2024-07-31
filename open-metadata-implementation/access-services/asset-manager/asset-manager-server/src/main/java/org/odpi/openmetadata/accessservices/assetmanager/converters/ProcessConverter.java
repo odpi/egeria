@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ProcessElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -72,9 +72,10 @@ public class ProcessConverter<B> extends AssetManagerOMASConverter<B>
 
                     processProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     processProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    processProperties.setTechnicalName(this.removeName(instanceProperties));
+                    processProperties.setName(this.removeName(instanceProperties));
+                    processProperties.setResourceName(this.removeResourceName(instanceProperties));
                     processProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
-                    processProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
+                    processProperties.setResourceDescription(this.removeDescription(instanceProperties));
 
                     processProperties.setFormula(this.removeFormula(instanceProperties));
                     processProperties.setFormulaType(this.removeFormulaType(instanceProperties));

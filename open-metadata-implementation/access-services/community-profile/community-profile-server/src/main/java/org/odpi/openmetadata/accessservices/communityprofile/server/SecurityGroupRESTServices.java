@@ -3,17 +3,11 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.SecurityGroupElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.SecurityGroupProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ElementStubsResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.SecurityGroupResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.SecurityGroupsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SecurityGroupElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -294,18 +288,18 @@ public class SecurityGroupRESTServices
             GovernanceDefinitionHandler<SecurityGroupElement> handler = instanceHandler.getSecurityGroupHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElementList(handler.getGovernanceDefinitionsByStringParameter(userId,
-                                                                                      OpenMetadataType.SECURITY_GROUP_TYPE_GUID,
-                                                                                      OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
-                                                                                      distinguishedName,
-                                                                                      distinguishedNameParameterName,
-                                                                                      OpenMetadataType.DISTINGUISHED_NAME_PROPERTY_NAME,
-                                                                                      startFrom,
-                                                                                      pageSize,
-                                                                                      false,
-                                                                                      false,
-                                                                                      new Date(),
-                                                                                      methodName));
+            response.setElements(handler.getGovernanceDefinitionsByStringParameter(userId,
+                                                                                   OpenMetadataType.SECURITY_GROUP_TYPE_GUID,
+                                                                                   OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
+                                                                                   distinguishedName,
+                                                                                   distinguishedNameParameterName,
+                                                                                   OpenMetadataType.DISTINGUISHED_NAME_PROPERTY_NAME,
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   false,
+                                                                                   false,
+                                                                                   new Date(),
+                                                                                   methodName));
         }
         catch (Exception error)
         {
@@ -380,16 +374,16 @@ public class SecurityGroupRESTServices
                 GovernanceDefinitionHandler<SecurityGroupElement> handler = instanceHandler.getSecurityGroupHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                response.setElementList(handler.findGovernanceDefinitions(userId,
-                                                                          OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
-                                                                          requestBody.getSearchString(),
-                                                                          searchStringParameterName,
-                                                                          startFrom,
-                                                                          pageSize,
-                                                                          false,
-                                                                          false,
-                                                                          new Date(),
-                                                                          methodName));
+                response.setElements(handler.findGovernanceDefinitions(userId,
+                                                                       OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
+                                                                       requestBody.getSearchString(),
+                                                                       searchStringParameterName,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       false,
+                                                                       false,
+                                                                       new Date(),
+                                                                       methodName));
             }
             else
             {

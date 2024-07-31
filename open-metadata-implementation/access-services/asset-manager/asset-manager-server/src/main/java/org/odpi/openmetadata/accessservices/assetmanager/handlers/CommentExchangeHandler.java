@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 
-import org.odpi.openmetadata.accessservices.assetmanager.converters.CommentConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
+import org.odpi.openmetadata.commonservices.generichandlers.CommentConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CommentElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.CommentHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.CommentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -117,7 +117,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
     {
         if (results != null)
         {
-            for (MetadataElement comment : results)
+            for (CorrelatedMetadataElement comment : results)
             {
                 if ((comment != null) && (comment.getElementHeader() != null) && (comment.getElementHeader().getGUID() != null))
                 {

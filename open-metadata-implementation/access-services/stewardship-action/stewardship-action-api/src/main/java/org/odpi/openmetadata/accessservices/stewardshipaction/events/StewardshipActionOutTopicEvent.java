@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.stewardshipaction.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 
 import java.util.Date;
 import java.util.Map;
@@ -22,17 +22,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class StewardshipActionOutTopicEvent
 {
-    private long                       eventVersionId    = 1L;
-    private StewardshipActionEventType eventType         = null;
-    private Date                       eventTime         = null;
-    private ElementHeader              elementHeader     = null;
-    private Map<String, Object>        elementProperties = null;
-
-    private ElementHeader          previousElementHeader     = null;
-    private Map<String, Object>    previousElementProperties = null;
-
-    private String                 classificationName               = null;
-    private Map<String, Object>    previousClassificationProperties = null;
+    private long                       eventVersionId                   = 1L;
+    private StewardshipActionEventType eventType                        = null;
+    private Date                       eventTime                        = null;
+    private ElementHeader              elementHeader                    = null;
+    private Map<String, Object>        elementProperties                = null;
+    private ElementHeader              previousElementHeader            = null;
+    private Map<String, Object>        previousElementProperties        = null;
+    private String                     classificationName               = null;
+    private Map<String, Object>        previousClassificationProperties = null;
 
 
 

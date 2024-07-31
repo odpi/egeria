@@ -12,6 +12,9 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandler;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelationshipElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -19,7 +22,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -254,9 +257,10 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                                                 this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
                                                                 this.getExternalSourceName(correlationProperties, assetManagerIsHome),
                                                                 assetProperties.getQualifiedName(),
-                                                                assetProperties.getTechnicalName(),
+                                                                assetProperties.getName(),
+                                                                assetProperties.getResourceName(),
                                                                 assetProperties.getVersionIdentifier(),
-                                                                assetProperties.getTechnicalDescription(),
+                                                                assetProperties.getResourceDescription(),
                                                                 assetProperties.getDeployedImplementationType(),
                                                                 assetProperties.getAdditionalProperties(),
                                                                 typeName,
@@ -496,9 +500,10 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
                                  assetGUID,
                                  assetGUIDParameterName,
                                  assetProperties.getQualifiedName(),
-                                 assetProperties.getTechnicalName(),
+                                 assetProperties.getName(),
+                                 assetProperties.getResourceName(),
                                  assetProperties.getVersionIdentifier(),
-                                 assetProperties.getTechnicalDescription(),
+                                 assetProperties.getResourceDescription(),
                                  assetProperties.getDeployedImplementationType(),
                                  assetProperties.getAdditionalProperties(),
                                  OpenMetadataType.ASSET.typeGUID,

@@ -3,11 +3,12 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.samples.zonecreate;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceZoneManager;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
+
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceZoneElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceZoneProperties;
 import org.odpi.openmetadata.http.HttpHelper;
 
 import java.util.List;

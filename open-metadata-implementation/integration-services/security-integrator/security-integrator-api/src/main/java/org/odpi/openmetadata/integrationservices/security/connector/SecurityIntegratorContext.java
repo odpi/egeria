@@ -6,25 +6,20 @@ package org.odpi.openmetadata.integrationservices.security.connector;
 import org.odpi.openmetadata.accessservices.securitymanager.api.SecurityManagerEventListener;
 import org.odpi.openmetadata.accessservices.securitymanager.client.SecurityManagerClient;
 import org.odpi.openmetadata.accessservices.securitymanager.client.SecurityManagerEventClient;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleAppointee;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SecurityGroupElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityGroupProperties;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -504,12 +499,12 @@ public class SecurityIntegratorContext extends IntegrationContext
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<PersonRoleAppointee> getAppointees(String personRoleGUID,
-                                                   Date   effectiveTime,
-                                                   int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public List<Appointee> getAppointees(String personRoleGUID,
+                                         Date   effectiveTime,
+                                         int    startFrom,
+                                         int    pageSize) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         return securityManagerClient.getAppointees(userId, personRoleGUID, effectiveTime, startFrom, pageSize);
     }

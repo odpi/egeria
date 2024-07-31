@@ -197,7 +197,8 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerGUID unique identifier of software capability representing the DBMS
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param qualifiedName unique name for this database
-     * @param name the stored name property for the database
+     * @param name the short name property for the database
+     * @param resourceName the long name of the database
      * @param versionIdentifier the stored version property for the database
      * @param description the stored description property associated with the database
      * @param pathName the fully qualified physical location of the database
@@ -233,6 +234,7 @@ public class RelationalDataHandler<DATABASE,
                                  String               databaseManagerName,
                                  String               qualifiedName,
                                  String               name,
+                                 String               resourceName,
                                  String               versionIdentifier,
                                  String               description,
                                  String               pathName,
@@ -303,6 +305,7 @@ public class RelationalDataHandler<DATABASE,
                                                                       databaseManagerName,
                                                                       qualifiedName,
                                                                       name,
+                                                                      resourceName,
                                                                       versionIdentifier,
                                                                       description,
                                                                       deployedImplementationType,
@@ -461,7 +464,8 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to update
      * @param qualifiedName unique name for this database
-     * @param technicalName the stored name property for the database
+     * @param name the short name property for the database
+     * @param resourceName the long name of the database
      * @param versionIdentifier the stored version identifier for  the database
      * @param description the stored description property associated with the database
      * @param pathName the fully qualified physical location of the database
@@ -496,7 +500,8 @@ public class RelationalDataHandler<DATABASE,
                                String               databaseManagerName,
                                String               databaseGUID,
                                String               qualifiedName,
-                               String               technicalName,
+                               String               name,
+                               String               resourceName,
                                String               versionIdentifier,
                                String               description,
                                String               pathName,
@@ -541,12 +546,6 @@ public class RelationalDataHandler<DATABASE,
             assetTypeName = typeName;
         }
 
-        String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
-                                                                      OpenMetadataType.DATABASE.typeName,
-                                                                      serviceName,
-                                                                      methodName,
-                                                                      repositoryHelper);
-
         Map<String, Object> assetExtendedProperties = new HashMap<>();
         if (extendedProperties != null)
         {
@@ -567,12 +566,12 @@ public class RelationalDataHandler<DATABASE,
                                     databaseGUID,
                                     elementGUIDParameterName,
                                     qualifiedName,
-                                    technicalName,
+                                    name,
+                                    resourceName,
                                     versionIdentifier,
                                     description,
                                     deployedImplementationType,
                                     additionalProperties,
-                                    assetTypeId,
                                     assetTypeName,
                                     assetExtendedProperties,
                                     effectiveFrom,
@@ -916,7 +915,6 @@ public class RelationalDataHandler<DATABASE,
      * @param methodName calling method
      *
      * @return list of matching metadata elements
-     *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -1057,7 +1055,8 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseGUID unique identifier of the database where the schema is located
      * @param qualifiedName unique name for this database schema
-     * @param technicalName the stored name property for the database schema
+     * @param name the short name property for the database schema
+     * @param resourceName the long name of the database schema
      * @param versionIdentifier versionIdentifier property
      * @param technicalDescription the stored description property associated with the database schema
      * @param deployedImplementationType technology type
@@ -1083,7 +1082,8 @@ public class RelationalDataHandler<DATABASE,
                                        String               databaseManagerName,
                                        String               databaseGUID,
                                        String               qualifiedName,
-                                       String               technicalName,
+                                       String               name,
+                                       String               resourceName,
                                        String               versionIdentifier,
                                        String               technicalDescription,
                                        String               deployedImplementationType,
@@ -1135,7 +1135,8 @@ public class RelationalDataHandler<DATABASE,
                                                                                   databaseManagerGUID,
                                                                                   databaseManagerName,
                                                                                   qualifiedName,
-                                                                                  technicalName,
+                                                                                  name,
+                                                                                  resourceName,
                                                                                   versionIdentifier,
                                                                                   technicalDescription,
                                                                                   deployedImplementationType,
@@ -1297,7 +1298,8 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseManagerName unique name of software capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to update
      * @param qualifiedName unique name for the database schema
-     * @param technicalName the stored name property for the database schema
+     * @param name the short name property for the database schema
+     * @param resourceName the long name of the database schema
      * @param versionIdentifier the stored versionIdentifier property for the database schema
      * @param description the stored description property associated with the database schema
      * @param deployedImplementationType technology type
@@ -1322,7 +1324,8 @@ public class RelationalDataHandler<DATABASE,
                                      String              databaseManagerName,
                                      String              databaseSchemaGUID,
                                      String              qualifiedName,
-                                     String              technicalName,
+                                     String              name,
+                                     String              resourceName,
                                      String              versionIdentifier,
                                      String              description,
                                      String              deployedImplementationType,
@@ -1357,24 +1360,18 @@ public class RelationalDataHandler<DATABASE,
             assetTypeName = typeName;
         }
 
-        String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
-                                                                      OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
-                                                                      serviceName,
-                                                                      methodName,
-                                                                      repositoryHelper);
-
         databaseSchemaHandler.updateAsset(userId,
                                           databaseManagerGUID,
                                           databaseManagerName,
                                           databaseSchemaGUID,
                                           elementGUIDParameterName,
                                           qualifiedName,
-                                          technicalName,
+                                          name,
+                                          resourceName,
                                           versionIdentifier,
                                           description,
                                           deployedImplementationType,
                                           additionalProperties,
-                                          assetTypeId,
                                           assetTypeName,
                                           extendedProperties,
                                           effectiveFrom,

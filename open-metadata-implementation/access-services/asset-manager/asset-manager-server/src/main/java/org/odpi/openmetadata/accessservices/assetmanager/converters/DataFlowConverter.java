@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataFlowElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFlowProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataFlowElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataFlowProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -57,9 +57,8 @@ public class DataFlowConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof DataFlowElement)
+            if (returnBean instanceof DataFlowElement bean)
             {
-                DataFlowElement    bean               = (DataFlowElement) returnBean;
                 DataFlowProperties dataFlowProperties = new DataFlowProperties();
 
                 if (relationship != null)

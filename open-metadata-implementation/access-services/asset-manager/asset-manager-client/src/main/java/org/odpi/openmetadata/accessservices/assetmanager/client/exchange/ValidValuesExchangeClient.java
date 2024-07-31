@@ -9,20 +9,15 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.converters.Refer
 import org.odpi.openmetadata.accessservices.assetmanager.client.converters.ValidValueConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.client.converters.ValidValueMemberConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ReferenceValueAssignmentDefinitionElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ReferenceValueAssignmentItemElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueMember;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceValueAssignmentProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueMembershipProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
@@ -45,12 +40,12 @@ import java.util.List;
  */
 public class ValidValuesExchangeClient extends ExchangeClientBase implements ValidValuesExchangeInterface
 {
-    final private ValidValueConverter<ValidValueElement>      validValueConverter;
-    final private Class<ValidValueElement>                    validValueBeanClass = ValidValueElement.class;
-    final private ValidValueMemberConverter<ValidValueMember> validValueMemberConverter;
-    final private Class<ValidValueMember>                     validValueMemberClass = ValidValueMember.class;
-    final private ReferenceValueAssignmentItemConverter<ReferenceValueAssignmentItemElement> referenceValueAssignmentItemConverter;
-    final private Class<ReferenceValueAssignmentItemElement>                                 referenceValueAssignmentItemBeanClass = ReferenceValueAssignmentItemElement.class;
+    final private ValidValueConverter<ValidValueElement>                                                 validValueConverter;
+    final private Class<ValidValueElement>                                                               validValueBeanClass                         = ValidValueElement.class;
+    final private ValidValueMemberConverter<ValidValueMember>                                            validValueMemberConverter;
+    final private Class<ValidValueMember>                                                                validValueMemberClass                       = ValidValueMember.class;
+    final private ReferenceValueAssignmentItemConverter<ReferenceValueAssignmentItemElement>             referenceValueAssignmentItemConverter;
+    final private Class<ReferenceValueAssignmentItemElement>                                             referenceValueAssignmentItemBeanClass       = ReferenceValueAssignmentItemElement.class;
     final private ReferenceValueAssignmentDefinitionConverter<ReferenceValueAssignmentDefinitionElement> referenceValueAssignmentDefinitionConverter;
     final private Class<ReferenceValueAssignmentDefinitionElement>                                       referenceValueAssignmentDefinitionBeanClass = ReferenceValueAssignmentDefinitionElement.class;
 

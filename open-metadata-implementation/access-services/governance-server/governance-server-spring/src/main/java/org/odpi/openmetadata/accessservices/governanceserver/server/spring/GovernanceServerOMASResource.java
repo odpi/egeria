@@ -44,9 +44,9 @@ public class GovernanceServerOMASResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/out-topic/"))
 
-    public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String callerId)
+    public OCFConnectionResponse getOutTopicConnection(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String callerId)
     {
         return restAPI.getOutTopicConnection(serverName, userId, callerId);
     }

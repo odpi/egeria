@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalservice.properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalServiceProperties;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertFalse;

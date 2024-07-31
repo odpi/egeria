@@ -5,43 +5,38 @@ package org.odpi.openmetadata.accessservices.assetmanager.client;
 import org.odpi.openmetadata.accessservices.assetmanager.api.ExternalIdentifierManagerInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.FindProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetManagerIdentifiersRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ClassificationRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementHeadersResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementStubsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.FindByPropertiesRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.MetadataCorrelationHeadersResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ReferenceableUpdateRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.RelatedElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.TemplateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -490,8 +485,8 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         if (assetManagerGUID != null)
         {
-            requestBody.setAssetManagerGUID(assetManagerGUID);
-            requestBody.setAssetManagerName(assetManagerName);
+            requestBody.setExternalSourceGUID(assetManagerGUID);
+            requestBody.setExternalSourceName(assetManagerName);
         }
 
         requestBody.setEffectiveTime(effectiveTime);
@@ -885,7 +880,7 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                                       startFrom,
                                                                                       validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElementHeaders();
     }
 
 
@@ -921,13 +916,13 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/asset-managers/elements/{2}/{3}/correlation-headers";
 
-        MetadataCorrelationHeadersResponse restResult = restClient.callCorrelationHeadersPostRESTCall(methodName,
-                                                                                                      urlTemplate,
-                                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, null),
-                                                                                                      serverName,
-                                                                                                      userId,
-                                                                                                      openMetadataElementTypeName,
-                                                                                                      openMetadataElementGUID);
+        MetadataCorrelationHeadersResponse restResult = restClient.callMyCorrelationHeadersPostRESTCall(methodName,
+                                                                                                        urlTemplate,
+                                                                                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, null),
+                                                                                                        serverName,
+                                                                                                        userId,
+                                                                                                        openMetadataElementTypeName,
+                                                                                                        openMetadataElementGUID);
 
         return restResult.getElementList();
     }
@@ -1794,8 +1789,8 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         RelationshipRequestBody requestBody = new RelationshipRequestBody();
 
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setExternalSourceGUID(assetManagerGUID);
+        requestBody.setExternalSourceName(assetManagerName);
         requestBody.setProperties(properties);
         requestBody.setEffectiveTime(effectiveTime);
 
@@ -1861,8 +1856,8 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
 
         RelationshipRequestBody requestBody = new RelationshipRequestBody();
 
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setExternalSourceGUID(assetManagerGUID);
+        requestBody.setExternalSourceName(assetManagerName);
         requestBody.setProperties(properties);
         requestBody.setEffectiveTime(effectiveTime);
 
@@ -2046,7 +2041,7 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                                         forLineage,
                                                                                         forDuplicateProcessing);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -2106,7 +2101,7 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
                                                                                   forLineage,
                                                                                   forDuplicateProcessing);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 

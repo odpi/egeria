@@ -2,16 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.AssignmentScopeProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.ResourceListProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.StakeholderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StakeholderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 
 import java.util.List;
 

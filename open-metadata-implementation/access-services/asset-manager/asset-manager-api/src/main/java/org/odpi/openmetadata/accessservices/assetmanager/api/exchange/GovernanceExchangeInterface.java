@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.accessservices.assetmanager.api.exchange;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
 
 /**
  * The GovernanceExchangeInterface enables the exchange of governance definitions between an external asset manager and open metadata.

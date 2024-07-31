@@ -20,7 +20,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.NewGovernanceActionProcessRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateGovernanceActionProcessRequestBody;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;

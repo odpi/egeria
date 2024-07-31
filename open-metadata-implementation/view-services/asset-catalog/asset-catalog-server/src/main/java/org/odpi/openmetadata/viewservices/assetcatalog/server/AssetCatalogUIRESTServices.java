@@ -9,8 +9,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
@@ -671,7 +671,7 @@ public class AssetCatalogUIRESTServices extends TokenController
      * @param openMetadataElementOrigin retrieved origin
      * @return reformatted origin
      */
-    private ElementOrigin getElementOrigin(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin openMetadataElementOrigin)
+    private ElementOrigin getElementOrigin(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementOrigin openMetadataElementOrigin)
     {
         if (openMetadataElementOrigin != null)
         {

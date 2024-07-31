@@ -3,17 +3,12 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.api;
 
 
-
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ConnectionProperties;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ConnectorTypeProperties;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.EndpointProperties;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 
 import java.util.List;
 import java.util.Map;

@@ -5,9 +5,13 @@ package org.odpi.openmetadata.accessservices.assetmanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.server.DataAssetExchangeRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -313,7 +317,7 @@ public class DataAssetExchangeResource
                                                       boolean                      forLineage,
                                               @RequestParam (required = false, defaultValue = "false")
                                                       boolean                      forDuplicateProcessing,
-                                              @RequestBody  RelationshipRequestBody requestBody)
+                                              @RequestBody RelationshipRequestBody requestBody)
     {
         return restAPI.setupRelatedDataAsset(serverName, userId, assetManagerIsHome, relationshipTypeName, fromAssetGUID, toAssetGUID, forLineage, forDuplicateProcessing, requestBody);
     }

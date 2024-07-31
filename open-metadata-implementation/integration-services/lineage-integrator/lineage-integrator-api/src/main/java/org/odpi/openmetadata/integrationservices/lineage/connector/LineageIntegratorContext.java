@@ -9,23 +9,33 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.OpenGovernanceCl
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAssetExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.GovernanceExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.LineageExchangeClient;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.PortElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ProcessElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaAttributeElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.*;
 import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
 
 import java.util.Date;
@@ -1604,7 +1614,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createProcess(boolean           assetManagerIsHome,
-                                ProcessStatus     processStatus,
+                                ProcessStatus processStatus,
                                 ProcessProperties processProperties) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException

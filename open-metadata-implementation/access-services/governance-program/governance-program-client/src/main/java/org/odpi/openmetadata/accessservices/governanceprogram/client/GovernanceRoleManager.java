@@ -4,17 +4,9 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceRolesInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleAppointee;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleHistory;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.AppointmentRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceRoleAppointeeListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceRoleHistoryResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceRoleListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceRoleResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -318,11 +310,11 @@ public class GovernanceRoleManager extends GovernanceProgramBaseClient implement
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(roleId, appointmentIdParameterName, methodName);
 
-        GovernanceRoleListResponse restResult = restClient.callGovernanceRoleListGetRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             roleId);
+        GovernanceRolesResponse restResult = restClient.callGovernanceRoleListGetRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          roleId);
 
         return restResult.getElements();
     }
@@ -358,13 +350,13 @@ public class GovernanceRoleManager extends GovernanceProgramBaseClient implement
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        GovernanceRoleListResponse restResult = restClient.callGovernanceRoleListGetRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             domainIdentifier,
-                                                                                             startFrom,
-                                                                                             queryPageSize);
+        GovernanceRolesResponse restResult = restClient.callGovernanceRoleListGetRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          domainIdentifier,
+                                                                                          startFrom,
+                                                                                          queryPageSize);
 
         return restResult.getElements();
     }
@@ -405,13 +397,13 @@ public class GovernanceRoleManager extends GovernanceProgramBaseClient implement
         requestBody.setSearchString(title);
         requestBody.setSearchStringParameterName(titleParameterName);
 
-        GovernanceRoleListResponse restResult = restClient.callGovernanceRoleListPostRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             requestBody,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             startFrom,
-                                                                                             queryPageSize);
+        GovernanceRolesResponse restResult = restClient.callGovernanceRoleListPostRESTCall(methodName,
+                                                                                           urlTemplate,
+                                                                                           requestBody,
+                                                                                           serverName,
+                                                                                           userId,
+                                                                                           startFrom,
+                                                                                           queryPageSize);
 
         return restResult.getElements();
     }
@@ -447,13 +439,13 @@ public class GovernanceRoleManager extends GovernanceProgramBaseClient implement
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        GovernanceRoleAppointeeListResponse restResult = restClient.callGovernanceRoleAppointeeListGetRESTCall(methodName,
-                                                                                                               urlTemplate,
-                                                                                                               serverName,
-                                                                                                               userId,
-                                                                                                               domainIdentifier,
-                                                                                                               startFrom,
-                                                                                                               queryPageSize);
+        GovernanceRoleAppointeesResponse restResult = restClient.callGovernanceRoleAppointeeListGetRESTCall(methodName,
+                                                                                                            urlTemplate,
+                                                                                                            serverName,
+                                                                                                            userId,
+                                                                                                            domainIdentifier,
+                                                                                                            startFrom,
+                                                                                                            queryPageSize);
 
         return restResult.getElements();
     }
@@ -481,7 +473,7 @@ public class GovernanceRoleManager extends GovernanceProgramBaseClient implement
                                                                   UserNotAuthorizedException
     {
         final String methodName = "appointGovernanceRole";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-roles/{2}/appoint";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-roles/{2}/appoint/{3}";
 
         final String governanceRoleGUIDParameterName = "governanceRoleGUID";
         final String profileGUIDParameterName = "profileGUID";
@@ -490,16 +482,16 @@ public class GovernanceRoleManager extends GovernanceProgramBaseClient implement
         invalidParameterHandler.validateGUID(governanceRoleGUID, governanceRoleGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(profileGUID, profileGUIDParameterName, methodName);
 
-        AppointmentRequestBody  requestBody = new AppointmentRequestBody();
-        requestBody.setProfileGUID(profileGUID);
-        requestBody.setEffectiveDate(startDate);
+        AppointmentRequestBody requestBody = new AppointmentRequestBody();
+        requestBody.setEffectiveTime(startDate);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
-                                                                  governanceRoleGUID);
+                                                                  governanceRoleGUID,
+                                                                  profileGUID);
 
         return restResult.getGUID();
     }
@@ -528,7 +520,7 @@ public class GovernanceRoleManager extends GovernanceProgramBaseClient implement
                                                               UserNotAuthorizedException
     {
         final String methodName = "relieveGovernanceRole";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-roles/{2}/relieve/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-roles/{2}/relieve/{3}/{4}";
 
         final String governanceRoleGUIDParameterName = "governanceRoleGUID";
         final String profileGUIDParameterName = "profileGUID";
@@ -538,8 +530,7 @@ public class GovernanceRoleManager extends GovernanceProgramBaseClient implement
         invalidParameterHandler.validateGUID(profileGUID, profileGUIDParameterName, methodName);
 
         AppointmentRequestBody  requestBody = new AppointmentRequestBody();
-        requestBody.setProfileGUID(profileGUID);
-        requestBody.setEffectiveDate(endDate);
+        requestBody.setEffectiveTime(endDate);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -547,6 +538,7 @@ public class GovernanceRoleManager extends GovernanceProgramBaseClient implement
                                         serverName,
                                         userId,
                                         governanceRoleGUID,
-                                        appointmentGUID);
+                                        appointmentGUID,
+                                        profileGUID);
     }
 }

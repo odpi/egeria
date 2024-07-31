@@ -2,16 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.server;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ConnectionProperties;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.EndpointProperties;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ConnectorTypeProperties;
+
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.ConnectionResponse;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.ConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -20,6 +12,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -901,7 +895,7 @@ public class ConnectionRESTServices
                                                                               false,
                                                                               new Date(),
                                                                               methodName);
-                response.setElementList(connections);
+                response.setElements(connections);
             }
         }
         catch (Exception error)
@@ -960,7 +954,7 @@ public class ConnectionRESTServices
                                                                                    false,
                                                                                    new Date(),
                                                                                    methodName);
-                response.setElementList(connections);
+                response.setElements(connections);
             }
         }
         catch (Exception error)
@@ -1066,7 +1060,7 @@ public class ConnectionRESTServices
                                                              null,
                                                              null,
                                                              endpointProperties.getQualifiedName(),
-                                                             endpointProperties.getResourceName(),
+                                                             endpointProperties.getName(),
                                                              endpointProperties.getResourceDescription(),
                                                              endpointProperties.getAddress(),
                                                              endpointProperties.getProtocol(),
@@ -1197,7 +1191,7 @@ public class ConnectionRESTServices
                                        endpointGUID,
                                        guidParameter,
                                        endpointProperties.getQualifiedName(),
-                                       endpointProperties.getResourceName(),
+                                       endpointProperties.getName(),
                                        endpointProperties.getResourceDescription(),
                                        endpointProperties.getAddress(),
                                        endpointProperties.getProtocol(),
@@ -1327,7 +1321,7 @@ public class ConnectionRESTServices
                                                                         false,
                                                                         new Date(),
                                                                         methodName);
-                response.setElementList(endpoints);
+                response.setElements(endpoints);
             }
         }
         catch (Exception error)
@@ -1386,7 +1380,7 @@ public class ConnectionRESTServices
                                                                              false,
                                                                              new Date(),
                                                                              methodName);
-                response.setElementList(endpoints);
+                response.setElements(endpoints);
             }
         }
         catch (Exception error)
@@ -1771,7 +1765,7 @@ public class ConnectionRESTServices
                                                                                        false,
                                                                                        new Date(),
                                                                                        methodName);
-                response.setElementList(connectorTypes);
+                response.setElements(connectorTypes);
             }
         }
         catch (Exception error)
@@ -1830,7 +1824,7 @@ public class ConnectionRESTServices
                                                                                             false,
                                                                                             new Date(),
                                                                                             methodName);
-                response.setElementList(connectorTypes);
+                response.setElements(connectorTypes);
             }
         }
         catch (Exception error)

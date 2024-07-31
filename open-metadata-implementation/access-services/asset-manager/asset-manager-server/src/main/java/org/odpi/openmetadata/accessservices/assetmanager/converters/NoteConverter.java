@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.FeedbackTargetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FeedbackTargetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -60,9 +60,8 @@ public class NoteConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof NoteElement)
+            if (returnBean instanceof NoteElement bean)
             {
-                NoteElement bean = (NoteElement) returnBean;
                 NoteProperties properties = new NoteProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));

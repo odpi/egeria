@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.securitymanager.outtopic;
 
 import org.odpi.openmetadata.accessservices.securitymanager.events.SecurityManagerEventType;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

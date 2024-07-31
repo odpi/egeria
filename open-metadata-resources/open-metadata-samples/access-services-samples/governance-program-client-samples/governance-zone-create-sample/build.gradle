@@ -9,9 +9,10 @@ plugins {
 }
 
 dependencies {
+    implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:access-services:governance-program:governance-program-client')
-    implementation project(':open-metadata-implementation:access-services:governance-program:governance-program-api')
+    compileOnly project(':open-metadata-implementation:access-services:governance-program:governance-program-api')
     runtimeOnly 'ch.qos.logback:logback-classic'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

@@ -2,21 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.CertificationTypeElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.CertificationProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.CertificationTypeProperties;
-import org.odpi.openmetadata.accessservices.assetowner.rest.CertificationTypeListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.CertificationTypeResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelationshipRequestBody;
+
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CertificationTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.CertificationHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -168,19 +164,19 @@ public class CertificationRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public CertificationTypeListResponse getCertificationTypesByTitle(String                  serverName,
-                                                                      String                  userId,
-                                                                      int                     startFrom,
-                                                                      int                     pageSize,
-                                                                      SearchStringRequestBody requestBody)
+    public CertificationTypesResponse getCertificationTypesByTitle(String                  serverName,
+                                                                   String                  userId,
+                                                                   int                     startFrom,
+                                                                   int                     pageSize,
+                                                                   SearchStringRequestBody requestBody)
     {
         final String methodName = "getCertificationTypesByTitle";
         final String titleParameterName = "title";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        CertificationTypeListResponse response = new CertificationTypeListResponse();
-        AuditLog                      auditLog = null;
+        CertificationTypesResponse response = new CertificationTypesResponse();
+        AuditLog                   auditLog = null;
 
         try
         {
@@ -230,18 +226,18 @@ public class CertificationRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public CertificationTypeListResponse getCertificationTypeByDomainId(String serverName,
-                                                                        String userId,
-                                                                        int    domainIdentifier,
-                                                                        int    startFrom,
-                                                                        int    pageSize)
+    public CertificationTypesResponse getCertificationTypeByDomainId(String serverName,
+                                                                     String userId,
+                                                                     int    domainIdentifier,
+                                                                     int    startFrom,
+                                                                     int    pageSize)
     {
         final String methodName = "getCertificationTypeByDomainId";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        CertificationTypeListResponse response = new CertificationTypeListResponse();
-        AuditLog                      auditLog = null;
+        CertificationTypesResponse response = new CertificationTypesResponse();
+        AuditLog                   auditLog = null;
 
         try
         {
@@ -517,41 +513,41 @@ public class CertificationRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public RelatedElementListResponse getCertifiedElements(String serverName,
-                                                           String userId,
-                                                           String certificationTypeGUID,
-                                                           int    startFrom,
-                                                           int    pageSize)
+    public RelatedElementsResponse getCertifiedElements(String serverName,
+                                                        String userId,
+                                                        String certificationTypeGUID,
+                                                        int    startFrom,
+                                                        int    pageSize)
     {
         final String methodName = "getCertifiedElements";
         final String guidParameter = "certificationTypeGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getAttachedElements(userId,
-                                                                certificationTypeGUID,
-                                                                guidParameter,
-                                                                OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
-                                                                OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
-                                                                OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
-                                                                OpenMetadataType.REFERENCEABLE.typeName,
-                                                                null,
-                                                                null,
-                                                                1,
-                                                                false,
-                                                                false,
-                                                                startFrom,
-                                                                pageSize,
-                                                                new Date(),
-                                                                methodName));
+            response.setElements(handler.getAttachedElements(userId,
+                                                             certificationTypeGUID,
+                                                             guidParameter,
+                                                             OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                                                             OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
+                                                             OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                             OpenMetadataType.REFERENCEABLE.typeName,
+                                                             null,
+                                                             null,
+                                                             1,
+                                                             false,
+                                                             false,
+                                                             startFrom,
+                                                             pageSize,
+                                                             new Date(),
+                                                             methodName));
         }
         catch (Exception error)
         {
@@ -577,41 +573,41 @@ public class CertificationRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public RelatedElementListResponse getCertifications(String serverName,
-                                                        String userId,
-                                                        String elementGUID,
-                                                        int    startFrom,
-                                                        int    pageSize)
+    public RelatedElementsResponse getCertifications(String serverName,
+                                                     String userId,
+                                                     String elementGUID,
+                                                     int    startFrom,
+                                                     int    pageSize)
     {
         final String methodName = "getLicences";
         final String guidParameterName = "elementGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getAttachedElements(userId,
-                                                                elementGUID,
-                                                                guidParameterName,
-                                                                OpenMetadataType.REFERENCEABLE.typeName,
-                                                                OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
-                                                                OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
-                                                                OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
-                                                                null,
-                                                                null,
-                                                                2,
-                                                                false,
-                                                                false,
-                                                                startFrom,
-                                                                pageSize,
-                                                                new Date(),
-                                                                methodName));
+            response.setElements(handler.getAttachedElements(userId,
+                                                             elementGUID,
+                                                             guidParameterName,
+                                                             OpenMetadataType.REFERENCEABLE.typeName,
+                                                             OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
+                                                             OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                             OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                                                             null,
+                                                             null,
+                                                             2,
+                                                             false,
+                                                             false,
+                                                             startFrom,
+                                                             pageSize,
+                                                             new Date(),
+                                                             methodName));
         }
         catch (Exception error)
         {

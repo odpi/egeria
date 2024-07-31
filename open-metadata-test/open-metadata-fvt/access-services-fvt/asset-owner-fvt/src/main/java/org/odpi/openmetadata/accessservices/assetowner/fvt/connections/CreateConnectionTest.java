@@ -5,16 +5,13 @@ package org.odpi.openmetadata.accessservices.assetowner.fvt.connections;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ConnectionProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ConnectorTypeProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -447,7 +444,7 @@ public class CreateConnectionTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve) =>>" + retrievedEndpoint);
             }
-            if (! endpointDescription.equals(retrievedEndpoint.getDescription()))
+            if (! endpointDescription.equals(retrievedEndpoint.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve) =>>" + retrievedEndpoint);
             }
@@ -480,7 +477,7 @@ public class CreateConnectionTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName) =>>" + retrievedEndpoint);
             }
-            if (! endpointDescription.equals(retrievedEndpoint.getDescription()))
+            if (! endpointDescription.equals(retrievedEndpoint.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName) =>>" + retrievedEndpoint);
             }
@@ -559,7 +556,7 @@ public class CreateConnectionTest
 
             properties.setQualifiedName(endpointName);
             properties.setName(endpointDisplayName);
-            properties.setDescription(endpointDescription);
+            properties.setResourceDescription(endpointDescription);
 
             String endpointGUID = client.createEndpoint(userId, properties);
 

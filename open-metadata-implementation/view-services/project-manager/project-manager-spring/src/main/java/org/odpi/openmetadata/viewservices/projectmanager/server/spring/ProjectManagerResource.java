@@ -5,13 +5,10 @@ package org.odpi.openmetadata.viewservices.projectmanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
-import org.odpi.openmetadata.viewservices.projectmanager.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ProjectMembersResponse;
 import org.odpi.openmetadata.viewservices.projectmanager.server.ProjectManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,13 +62,13 @@ public class ProjectManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/project"))
 
-    public ProjectListResponse getLinkedProjects(@PathVariable String            serverName,
-                                                 @PathVariable String            parentGUID,
-                                                 @RequestParam(required = false, defaultValue = "0")
-                                                               int               startFrom,
-                                                 @RequestParam(required = false, defaultValue = "0")
-                                                               int               pageSize,
-                                                 @RequestBody(required = false)
+    public ProjectsResponse getLinkedProjects(@PathVariable String            serverName,
+                                              @PathVariable String            parentGUID,
+                                              @RequestParam(required = false, defaultValue = "0")
+                                                            int               startFrom,
+                                              @RequestParam(required = false, defaultValue = "0")
+                                                            int               pageSize,
+                                              @RequestBody(required = false)
                                                                FilterRequestBody requestBody)
     {
         return restAPI.getLinkedProjects(serverName, parentGUID, startFrom, pageSize, requestBody);
@@ -97,7 +94,7 @@ public class ProjectManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/project"))
 
-    public ProjectListResponse getClassifiedProjects(@PathVariable String            serverName,
+    public ProjectsResponse getClassifiedProjects(@PathVariable String            serverName,
                                                      @RequestParam(required = false, defaultValue = "0")
                                                      int               startFrom,
                                                      @RequestParam(required = false, defaultValue = "0")
@@ -131,13 +128,13 @@ public class ProjectManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/project"))
 
-    public ProjectMemberListResponse getProjectTeam(@PathVariable String            serverName,
-                                                    @PathVariable String            projectGUID,
-                                                    @RequestParam(required = false, defaultValue = "0")
+    public ProjectMembersResponse getProjectTeam(@PathVariable String            serverName,
+                                                 @PathVariable String            projectGUID,
+                                                 @RequestParam(required = false, defaultValue = "0")
                                                                   int               startFrom,
-                                                    @RequestParam(required = false, defaultValue = "0")
+                                                 @RequestParam(required = false, defaultValue = "0")
                                                                   int               pageSize,
-                                                    @RequestBody(required = false)  FilterRequestBody requestBody)
+                                                 @RequestBody(required = false)  FilterRequestBody requestBody)
     {
         return restAPI.getProjectTeam(serverName, projectGUID, startFrom, pageSize, requestBody);
     }
@@ -165,7 +162,7 @@ public class ProjectManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/project"))
 
-    public ProjectListResponse findProjects(@PathVariable String            serverName,
+    public    ProjectsResponse findProjects(@PathVariable String            serverName,
                                             @RequestParam (required = false, defaultValue = "false")
                                                           boolean           startsWith,
                                             @RequestParam (required = false, defaultValue = "false")
@@ -202,7 +199,7 @@ public class ProjectManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/project"))
 
-    public ProjectListResponse getProjectsByName(@PathVariable String            serverName,
+    public    ProjectsResponse getProjectsByName(@PathVariable String            serverName,
                                                  @RequestParam(required = false, defaultValue = "0")
                                                                int               startFrom,
                                                  @RequestParam(required = false, defaultValue = "0")
@@ -565,10 +562,10 @@ public class ProjectManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/resource"))
 
-    public RelatedElementListResponse getResourceList(@PathVariable String serverName,
-                                                      @PathVariable String elementGUID,
-                                                      @RequestParam int   startFrom,
-                                                      @RequestParam int   pageSize)
+    public RelatedElementsResponse getResourceList(@PathVariable String serverName,
+                                                   @PathVariable String elementGUID,
+                                                   @RequestParam int   startFrom,
+                                                   @RequestParam int   pageSize)
     {
         return restAPI.getResourceList(serverName, elementGUID, startFrom, pageSize);
     }
@@ -594,10 +591,10 @@ public class ProjectManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/resource"))
 
-    public RelatedElementListResponse getSupportedByResource(@PathVariable String serverName,
-                                                             @PathVariable String resourceGUID,
-                                                             @RequestParam int   startFrom,
-                                                             @RequestParam int   pageSize)
+    public RelatedElementsResponse getSupportedByResource(@PathVariable String serverName,
+                                                          @PathVariable String resourceGUID,
+                                                          @RequestParam int   startFrom,
+                                                          @RequestParam int   pageSize)
     {
         return restAPI.getSupportedByResource(serverName, resourceGUID, startFrom, pageSize);
     }

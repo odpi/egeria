@@ -5,12 +5,12 @@ package org.odpi.openmetadata.accessservices.stewardshipaction.outtopic;
 
 
 import org.odpi.openmetadata.accessservices.stewardshipaction.connectors.outtopic.StewardshipActionOutTopicServerConnector;
-import org.odpi.openmetadata.accessservices.stewardshipaction.converters.ElementHeaderConverter;
 import org.odpi.openmetadata.accessservices.stewardshipaction.events.StewardshipActionEventType;
 import org.odpi.openmetadata.accessservices.stewardshipaction.events.StewardshipActionOutTopicEvent;
 import org.odpi.openmetadata.accessservices.stewardshipaction.ffdc.StewardshipActionAuditCode;
+import org.odpi.openmetadata.commonservices.generichandlers.ElementHeaderConverter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.converters;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
@@ -20,7 +20,7 @@ import java.lang.reflect.InvocationTargetException;
  * CatalogTargetConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS) Relationship object into a
  * CatalogTarget bean.
  */
-public class CatalogTargetConverter<B> extends OCFConverter<B>
+public class CatalogTargetConverter<B> extends OMFConverter<B>
 {
     /**
      * Constructor captures the repository content needed to create the endpoint object.

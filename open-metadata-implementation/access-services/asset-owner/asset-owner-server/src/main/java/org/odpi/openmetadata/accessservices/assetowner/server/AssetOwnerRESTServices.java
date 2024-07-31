@@ -3,10 +3,11 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.converters.ElementHeaderConverter;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.*;
-import org.odpi.openmetadata.accessservices.assetowner.properties.*;
-import org.odpi.openmetadata.accessservices.assetowner.rest.*;
+import org.odpi.openmetadata.commonservices.generichandlers.ElementHeaderConverter;
+import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.assetowner.rest.TemplateRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -19,8 +20,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.SupplementaryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataContentForDataSetProperties;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -195,7 +202,7 @@ public class AssetOwnerRESTServices
                                                                    requestBody.getQualifiedName(),
                                                                    requestBody.getName(),
                                                                    requestBody.getVersionIdentifier(),
-                                                                   requestBody.getDescription(),
+                                                                   requestBody.getResourceDescription(),
                                                                    requestBody.getDeployedImplementationType(),
                                                                    requestBody.getAdditionalProperties(),
                                                                    assetTypeName,
@@ -352,8 +359,9 @@ public class AssetOwnerRESTServices
                                     assetGUIDParameterName,
                                     requestBody.getQualifiedName(),
                                     requestBody.getName(),
+                                    requestBody.getResourceName(),
                                     requestBody.getVersionIdentifier(),
-                                    requestBody.getDescription(),
+                                    requestBody.getResourceDescription(),
                                     requestBody.getDeployedImplementationType(),
                                     requestBody.getAdditionalProperties(),
                                     requestBody.getTypeName(),
@@ -908,7 +916,7 @@ public class AssetOwnerRESTServices
                     relationshipElements.add(getRelationshipElement(relationship, handler.getRepositoryHelper(), serverName, methodName));
                 }
 
-                response.setElementList(relationshipElements);
+                response.setElements(relationshipElements);
             }
         }
         catch (Exception error)
@@ -1019,7 +1027,7 @@ public class AssetOwnerRESTServices
                     relationshipElements.add(getRelationshipElement(relationship, handler.getRepositoryHelper(), serverName, methodName));
                 }
 
-                response.setElementList(relationshipElements);
+                response.setElements(relationshipElements);
             }
         }
         catch (Exception error)
@@ -1451,9 +1459,9 @@ public class AssetOwnerRESTServices
                                                   methodName);
             }
 
-            if (schemaAttribute.getAttributeType() != null)
+            if (schemaAttribute.getSchemaType() != null)
             {
-                SchemaTypeProperties schemaTypeProperties = schemaAttribute.getAttributeType();
+                SchemaTypeProperties schemaTypeProperties = schemaAttribute.getSchemaType();
                 SchemaTypeBuilder attributeSchemaTypeBuilder = new SchemaTypeBuilder(schemaTypeProperties.getQualifiedName(),
                                                                                      schemaTypeProperties.getDisplayName(),
                                                                                      schemaTypeProperties.getDescription(),
@@ -2363,15 +2371,15 @@ public class AssetOwnerRESTServices
             {
                 SchemaTypeHandler<SchemaTypeElement> handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.findSchemaTypes(userId,
-                                                               null,
-                                                               requestBody.getSearchString(),
-                                                               startFrom,
-                                                               pageSize,
-                                                               false,
-                                                               false,
-                                                               requestBody.getEffectiveTime(),
-                                                               methodName));
+                response.setElements(handler.findSchemaTypes(userId,
+                                                             null,
+                                                             requestBody.getSearchString(),
+                                                             startFrom,
+                                                             pageSize,
+                                                             false,
+                                                             false,
+                                                             requestBody.getEffectiveTime(),
+                                                             methodName));
             }
             else
             {
@@ -2484,15 +2492,15 @@ public class AssetOwnerRESTServices
             {
                 SchemaTypeHandler<SchemaTypeElement> handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.getSchemaTypeByName(userId,
-                                                                    null,
-                                                                    requestBody.getName(),
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    false,
-                                                                    false,
-                                                                    null,
-                                                                    methodName));
+                response.setElements(handler.getSchemaTypeByName(userId,
+                                                                 null,
+                                                                 requestBody.getName(),
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 false,
+                                                                 false,
+                                                                 null,
+                                                                 methodName));
             }
             else
             {
@@ -3098,9 +3106,9 @@ public class AssetOwnerRESTServices
                                                                                    instanceHandler.getServiceName(),
                                                                                    serverName);
 
-        if (schemaAttributeProperties.getAttributeType() != null)
+        if (schemaAttributeProperties.getSchemaType() != null)
         {
-            SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(schemaAttributeProperties.getAttributeType(),
+            SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(schemaAttributeProperties.getSchemaType(),
                                                                             repositoryHelper,
                                                                             instanceHandler.getServiceName(),
                                                                             serverName,
@@ -3348,19 +3356,19 @@ public class AssetOwnerRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributeElementsResponse findSchemaAttributes(String                  serverName,
-                                                                String                  userId,
-                                                                int                     startFrom,
-                                                                int                     pageSize,
-                                                                SearchStringRequestBody requestBody)
+    public SchemaAttributesResponse findSchemaAttributes(String                  serverName,
+                                                         String                  userId,
+                                                         int                     startFrom,
+                                                         int                     pageSize,
+                                                         SearchStringRequestBody requestBody)
     {
         final String methodName = "findSchemaAttributes";
         final String searchStringParameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        SchemaAttributeElementsResponse response = new SchemaAttributeElementsResponse();
-        AuditLog                        auditLog = null;
+        SchemaAttributesResponse response = new SchemaAttributesResponse();
+        AuditLog                 auditLog = null;
 
         try
         {
@@ -3370,19 +3378,19 @@ public class AssetOwnerRESTServices
             {
                 SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.findSchemaAttributes(userId,
-                                                                     requestBody.getSearchString(),
-                                                                     searchStringParameterName,
-                                                                     OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
-                                                                     OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
-                                                                     null,
-                                                                     null,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     false,
-                                                                     false,
-                                                                     null,
-                                                                     methodName));
+                response.setElements(handler.findSchemaAttributes(userId,
+                                                                  requestBody.getSearchString(),
+                                                                  searchStringParameterName,
+                                                                  OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+                                                                  OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
+                                                                  null,
+                                                                  null,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  false,
+                                                                  false,
+                                                                  null,
+                                                                  methodName));
             }
             else
             {
@@ -3415,20 +3423,20 @@ public class AssetOwnerRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributeElementsResponse getNestedAttributes(String                        serverName,
-                                                               String                        userId,
-                                                               String                        schemaTypeGUID,
-                                                               int                           startFrom,
-                                                               int                           pageSize,
-                                                               EffectiveTimeQueryRequestBody requestBody)
+    public SchemaAttributesResponse getNestedAttributes(String                        serverName,
+                                                        String                        userId,
+                                                        String                        schemaTypeGUID,
+                                                        int                           startFrom,
+                                                        int                           pageSize,
+                                                        EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getNestedAttributes";
         final String elementGUIDParameterName    = "schemaAttributeGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        SchemaAttributeElementsResponse response = new SchemaAttributeElementsResponse();
-        AuditLog                        auditLog = null;
+        SchemaAttributesResponse response = new SchemaAttributesResponse();
+        AuditLog                 auditLog = null;
 
         try
         {
@@ -3438,16 +3446,16 @@ public class AssetOwnerRESTServices
             {
                 SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.getAttachedSchemaAttributes(userId,
-                                                                            schemaTypeGUID,
-                                                                            elementGUIDParameterName,
-                                                                            OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            false,
-                                                                            false,
-                                                                            null,
-                                                                            methodName));
+                response.setElements(handler.getAttachedSchemaAttributes(userId,
+                                                                         schemaTypeGUID,
+                                                                         elementGUIDParameterName,
+                                                                         OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         false,
+                                                                         false,
+                                                                         null,
+                                                                         methodName));
             }
             else
             {
@@ -3480,18 +3488,18 @@ public class AssetOwnerRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributeElementsResponse getSchemaAttributesByName(String          serverName,
-                                                                     String          userId,
-                                                                     int             startFrom,
-                                                                     int             pageSize,
-                                                                     NameRequestBody requestBody)
+    public SchemaAttributesResponse getSchemaAttributesByName(String          serverName,
+                                                              String          userId,
+                                                              int             startFrom,
+                                                              int             pageSize,
+                                                              NameRequestBody requestBody)
     {
         final String methodName = "getSchemaAttributesByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        SchemaAttributeElementsResponse response = new SchemaAttributeElementsResponse();
-        AuditLog                        auditLog = null;
+        SchemaAttributesResponse response = new SchemaAttributesResponse();
+        AuditLog                 auditLog = null;
 
         try
         {
@@ -3501,18 +3509,18 @@ public class AssetOwnerRESTServices
             {
                 SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.getSchemaAttributesByName(userId,
-                                                                          OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
-                                                                          OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
-                                                                          requestBody.getName(),
-                                                                          null,
-                                                                          null,
-                                                                          startFrom,
-                                                                          pageSize,
-                                                                          false,
-                                                                          false,
-                                                                          null,
-                                                                          methodName));
+                response.setElements(handler.getSchemaAttributesByName(userId,
+                                                                       OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+                                                                       OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
+                                                                       requestBody.getName(),
+                                                                       null,
+                                                                       null,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       false,
+                                                                       false,
+                                                                       null,
+                                                                       methodName));
             }
             else
             {
@@ -3543,18 +3551,18 @@ public class AssetOwnerRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributeElementResponse getSchemaAttributeByGUID(String                        serverName,
-                                                                   String                        userId,
-                                                                   String                        schemaAttributeGUID,
-                                                                   EffectiveTimeQueryRequestBody requestBody)
+    public SchemaAttributeResponse getSchemaAttributeByGUID(String                        serverName,
+                                                            String                        userId,
+                                                            String                        schemaAttributeGUID,
+                                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getSchemaAttributeByGUID";
         final String guidParameterName = "schemaAttributeGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        SchemaAttributeElementResponse response = new SchemaAttributeElementResponse();
-        AuditLog                       auditLog = null;
+        SchemaAttributeResponse response = new SchemaAttributeResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -3606,10 +3614,10 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse addConnectionToAsset(String                serverName,
-                                             String                userId,
-                                             String                assetGUID,
-                                             ConnectionRequestBody requestBody)
+    public VoidResponse addConnectionToAsset(String                   serverName,
+                                             String                   userId,
+                                             String                   assetGUID,
+                                             OCFConnectionRequestBody requestBody)
     {
         final String   methodName = "addConnectionToAsset";
         final String   assetGUIDParameterName = "assetGUID";
@@ -4714,8 +4722,7 @@ public class AssetOwnerRESTServices
                                                                     methodName);
 
                 addSupplementaryProperties(assets, handler, methodName);
-                response.setAssets(assets);
-                response.setStartingFromElement(startFrom);
+                response.setElements(assets);
             }
             else
             {
@@ -4780,10 +4787,7 @@ public class AssetOwnerRESTServices
                                                                methodName);
 
                 addSupplementaryProperties(assets, handler, methodName);
-                response.setAssets(assets);
-                response.setStartingFromElement(startFrom);
-
-                response.setStartingFromElement(startFrom);
+                response.setElements(assets);
             }
             else
             {
@@ -4841,14 +4845,14 @@ public class AssetOwnerRESTServices
             {
                 getSupplementaryProperties(assetGUID,
                                            assetGUIDParameter,
-                                           asset.getAssetProperties(),
+                                           asset.getProperties(),
                                            handler,
                                            handler.getRepositoryHelper(),
                                            handler.getServiceName(),
                                            methodName);
             }
 
-            response.setAsset(asset);
+            response.setElement(asset);
         }
         catch (Exception error)
         {
@@ -4874,18 +4878,18 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public SurveyReportListResponse getSurveyReports(String  serverName,
-                                                     String  userId,
-                                                     String  assetGUID,
-                                                     int     startingFrom,
-                                                     int     maxPageSize)
+    public SurveyReportsResponse getSurveyReports(String  serverName,
+                                                  String  userId,
+                                                  String  assetGUID,
+                                                  int     startingFrom,
+                                                  int     maxPageSize)
     {
         final String   methodName = "getSurveyReports";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        SurveyReportListResponse response = new SurveyReportListResponse();
-        AuditLog                 auditLog = null;
+        SurveyReportsResponse response = new SurveyReportsResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -4926,19 +4930,19 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public AnnotationListResponse getSurveyReportAnnotations(String            serverName,
-                                                             String            userId,
-                                                             String            surveyReportGUID,
-                                                             int               startingFrom,
-                                                             int               maximumResults,
-                                                             StatusRequestBody requestBody)
+    public AnnotationsResponse getSurveyReportAnnotations(String            serverName,
+                                                          String            userId,
+                                                          String            surveyReportGUID,
+                                                          int               startingFrom,
+                                                          int               maximumResults,
+                                                          AnnotationStatusRequestBody requestBody)
     {
         final String   methodName = "getDiscoveryReportAnnotations";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AnnotationListResponse response = new AnnotationListResponse();
-        AuditLog               auditLog = null;
+        AnnotationsResponse response = new AnnotationsResponse();
+        AuditLog            auditLog = null;
 
         try
         {
@@ -4953,12 +4957,12 @@ public class AssetOwnerRESTServices
                 {
                     annotationStatus = requestBody.getAnnotationStatus().getOrdinal();
                 }
-                response.setAnnotations(handler.getSurveyReportAnnotations(userId,
-                                                                           surveyReportGUID,
-                                                                           annotationStatus,
-                                                                           startingFrom,
-                                                                           maximumResults,
-                                                                           methodName));
+                response.setElements(handler.getSurveyReportAnnotations(userId,
+                                                                        surveyReportGUID,
+                                                                        annotationStatus,
+                                                                        startingFrom,
+                                                                        maximumResults,
+                                                                        methodName));
             }
             else
             {
@@ -4991,19 +4995,19 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public AnnotationListResponse  getExtendedAnnotations(String            serverName,
-                                                          String            userId,
-                                                          String            annotationGUID,
-                                                          int               startingFrom,
-                                                          int               maximumResults,
-                                                          StatusRequestBody requestBody)
+    public AnnotationsResponse getExtendedAnnotations(String            serverName,
+                                                      String            userId,
+                                                      String            annotationGUID,
+                                                      int               startingFrom,
+                                                      int               maximumResults,
+                                                      AnnotationStatusRequestBody requestBody)
     {
         final String   methodName = "getExtendedAnnotations";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        AnnotationListResponse response = new AnnotationListResponse();
-        AuditLog               auditLog = null;
+        AnnotationsResponse response = new AnnotationsResponse();
+        AuditLog            auditLog = null;
 
         AnnotationStatus annotationStatus = AnnotationStatus.UNKNOWN_STATUS;
         if (requestBody != null)
@@ -5016,12 +5020,12 @@ public class AssetOwnerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
-            response.setAnnotations(handler.getExtendedAnnotations(userId,
-                                                                   annotationGUID,
-                                                                   annotationStatus.getOrdinal(),
-                                                                   startingFrom,
-                                                                   maximumResults,
-                                                                   methodName));
+            response.setElements(handler.getExtendedAnnotations(userId,
+                                                                annotationGUID,
+                                                                annotationStatus.getOrdinal(),
+                                                                startingFrom,
+                                                                maximumResults,
+                                                                methodName));
         }
         catch (Exception error)
         {
@@ -5252,7 +5256,7 @@ public class AssetOwnerRESTServices
                                          String                     elementTypeName,
                                          String                     elementDomainName,
                                          String                     elementQualifiedName,
-                                         SupplementaryProperties    supplementaryProperties,
+                                         SupplementaryProperties supplementaryProperties,
                                          boolean                    isMergeUpdate,
                                          Date                       effectiveTime,
                                          AssetHandler<AssetElement> assetHandler,
@@ -5326,7 +5330,7 @@ public class AssetOwnerRESTServices
             {
                 getSupplementaryProperties(element.getElementHeader().getGUID(),
                                            elementGUIDParameterName,
-                                           element.getAssetProperties(),
+                                           element.getProperties(),
                                            assetHandler,
                                            assetHandler.getRepositoryHelper(),
                                            assetHandler.getServiceName(),

@@ -5,14 +5,9 @@ package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetowner.rest.CertificationTypeListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.CertificationTypeResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelationshipRequestBody;
+
 import org.odpi.openmetadata.accessservices.assetowner.server.CertificationRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -111,11 +106,11 @@ public class AssetCertificationsResource
      */
     @PostMapping (path = "/certification-types/by-title")
 
-    public CertificationTypeListResponse getCertificationTypesByTitle(@PathVariable String                  serverName,
-                                                                      @PathVariable String                  userId,
-                                                                      @RequestParam int                     startFrom,
-                                                                      @RequestParam int                     pageSize,
-                                                                      @RequestBody  SearchStringRequestBody requestBody)
+    public CertificationTypesResponse getCertificationTypesByTitle(@PathVariable String                  serverName,
+                                                                   @PathVariable String                  userId,
+                                                                   @RequestParam int                     startFrom,
+                                                                   @RequestParam int                     pageSize,
+                                                                   @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.getCertificationTypesByTitle(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -137,11 +132,11 @@ public class AssetCertificationsResource
      */
     @GetMapping (path = "/certification-types/by-domain/{domainIdentifier}")
 
-    public CertificationTypeListResponse getCertificationTypeByDomainId(@PathVariable String serverName,
-                                                                        @PathVariable String userId,
-                                                                        @PathVariable int    domainIdentifier,
-                                                                        @RequestParam int    startFrom,
-                                                                        @RequestParam int    pageSize)
+    public CertificationTypesResponse getCertificationTypeByDomainId(@PathVariable String serverName,
+                                                                     @PathVariable String userId,
+                                                                     @PathVariable int    domainIdentifier,
+                                                                     @RequestParam int    startFrom,
+                                                                     @RequestParam int    pageSize)
     {
         return restAPI.getCertificationTypeByDomainId(serverName, userId, domainIdentifier, startFrom, pageSize);
     }
@@ -245,11 +240,11 @@ public class AssetCertificationsResource
      */
     @GetMapping (path = "/elements/certifications/{certificationGUID}")
 
-    public RelatedElementListResponse getCertifiedElements(@PathVariable String serverName,
-                                                           @PathVariable String userId,
-                                                           @PathVariable String certificationGUID,
-                                                           @RequestParam int    startFrom,
-                                                           @RequestParam int    pageSize)
+    public RelatedElementsResponse getCertifiedElements(@PathVariable String serverName,
+                                                        @PathVariable String userId,
+                                                        @PathVariable String certificationGUID,
+                                                        @RequestParam int    startFrom,
+                                                        @RequestParam int    pageSize)
     {
         return restAPI.getCertifiedElements(serverName, userId, certificationGUID, startFrom, pageSize);
     }
@@ -271,11 +266,11 @@ public class AssetCertificationsResource
      */
     @GetMapping (path = "/elements/{elementGUID}/certifications")
 
-    public RelatedElementListResponse getCertifications(@PathVariable String serverName,
-                                                       @PathVariable String userId,
-                                                       @PathVariable String elementGUID,
-                                                       @RequestParam int    startFrom,
-                                                       @RequestParam int    pageSize)
+    public RelatedElementsResponse getCertifications(@PathVariable String serverName,
+                                                     @PathVariable String userId,
+                                                     @PathVariable String elementGUID,
+                                                     @RequestParam int    startFrom,
+                                                     @RequestParam int    pageSize)
     {
         return restAPI.getCertifications(serverName, userId, elementGUID, startFrom, pageSize);
     }

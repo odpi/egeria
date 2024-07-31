@@ -4,13 +4,13 @@ package org.odpi.openmetadata.accessservices.digitalservice.server;
 
 
 import org.odpi.openmetadata.accessservices.digitalservice.handlers.DigitalServiceEntityHandler;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceProperties;
-import org.odpi.openmetadata.accessservices.digitalservice.rest.ReferenceableRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ReferenceableRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalServiceProperties;
 import org.slf4j.LoggerFactory;
 
 
@@ -21,11 +21,11 @@ import org.slf4j.LoggerFactory;
  */
 public class DigitalServiceRESTServices
 {
-    private static DigitalServiceInstanceHandler instanceHandler = new DigitalServiceInstanceHandler();
+    private static final DigitalServiceInstanceHandler instanceHandler = new DigitalServiceInstanceHandler();
 
-    private static       RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(DigitalServiceRESTServices.class),
+    private static final RESTCallLogger       restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(DigitalServiceRESTServices.class),
                                                                                         instanceHandler.getServiceName());
-    private              RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+    private final        RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
 
 

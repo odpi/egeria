@@ -5,11 +5,11 @@ package org.odpi.openmetadata.accessservices.assetconsumer.fvt;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.rest.AssetConsumerRESTClient;
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.InformalTagElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.InformalTagProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformalTagElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -200,7 +200,7 @@ public class InformalTagLifecycleTest
             }
 
             activityName = testCaseName + "::getByGUIDAfterCreate" + tagTypeName;
-            InformalTagElement    retrievedElement = client.getTag(userId, tagGUID);
+            InformalTagElement retrievedElement = client.getTag(userId, tagGUID);
 
             this.validateTag(retrievedElement, userId, tagName, tagDescription, isPrivate, activityName, tagTypeName);
 
@@ -318,7 +318,7 @@ public class InformalTagLifecycleTest
                              String             activityName,
                              String             tagTypeName) throws FVTUnexpectedCondition
     {
-        InformalTagProperties retrievedTag = retrievedElement.getInformalTagProperties();
+        InformalTagProperties retrievedTag = retrievedElement.getProperties();
 
         if (retrievedTag == null)
         {

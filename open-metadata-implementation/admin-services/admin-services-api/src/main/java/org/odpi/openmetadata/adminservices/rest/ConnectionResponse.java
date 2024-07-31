@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * ConnectionResponse is the response structure used on the Asset Consumer OMAS REST API calls that returns a
+ * OCFConnectionResponse is the response structure used on the Asset Consumer OMAS REST API calls that returns a
  * Connection object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -88,7 +88,7 @@ public class ConnectionResponse extends AdminServicesAPIResponse
     @Override
     public String toString()
     {
-        return "ConnectionResponse{" +
+        return "OCFConnectionResponse{" +
                 "connection=" + connection +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +

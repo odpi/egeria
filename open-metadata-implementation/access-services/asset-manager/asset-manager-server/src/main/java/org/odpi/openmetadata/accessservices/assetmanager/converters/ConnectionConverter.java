@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.EmbeddedConnection;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EmbeddedConnection;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ConnectionConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
+ * OCFConnectionConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
  * EntityDetail and Relationship objects into a Connection bean (or a VirtualConnection bean).
  */
 public class ConnectionConverter<B> extends AssetManagerOMASConverter<B>
@@ -66,9 +66,8 @@ public class ConnectionConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ConnectionElement)
+            if (returnBean instanceof ConnectionElement bean)
             {
-                ConnectionElement    bean                 = (ConnectionElement) returnBean;
                 ConnectionProperties connectionProperties = new ConnectionProperties();
 
                 if (primaryEntity != null)

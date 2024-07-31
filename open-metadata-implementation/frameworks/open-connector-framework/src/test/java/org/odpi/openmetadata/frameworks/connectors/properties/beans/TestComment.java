@@ -4,6 +4,8 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -227,7 +229,7 @@ public class TestComment
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getTestObject();
+        ElementBase  propertyBase = getTestObject();
 
         try
         {
@@ -240,7 +242,7 @@ public class TestComment
 
         try
         {
-            validateResultObject((Comment) objectMapper.readValue(jsonString, PropertyBase.class));
+            validateResultObject((Comment) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

@@ -5,16 +5,16 @@ package org.odpi.openmetadata.viewservices.assetcatalog.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.AssetGraphResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.AssetSearchMatchesListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.AssetGraphResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.AssetSearchMatchesListResponse;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
@@ -851,7 +851,7 @@ public class AssetCatalogRESTServices extends TokenController
      * @param openMetadataElementOrigin retrieved origin
      * @return reformatted origin
      */
-    private ElementOrigin getElementOrigin(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin openMetadataElementOrigin)
+    private ElementOrigin getElementOrigin(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementOrigin openMetadataElementOrigin)
     {
         if (openMetadataElementOrigin != null)
         {

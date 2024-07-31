@@ -8,7 +8,6 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCo
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -240,7 +239,7 @@ public class PlatformServicesClient
         final String methodName  = "getPlatformSecurityConnection";
         final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/security/connection";
 
-        ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName, urlTemplate, userId);
+        OCFConnectionResponse restResult = restClient.callOCFConnectionGetRESTCall(methodName, urlTemplate, userId);
 
         return restResult.getConnection();
     }
@@ -272,7 +271,7 @@ public class PlatformServicesClient
 
         final String urlTemplate = platformRootURL + retrieveURLTemplatePrefix + "/connector-types/{1}";
 
-        ConnectorTypeResponse restResult = restClient.callConnectorTypeGetRESTCall(methodName, urlTemplate, userId, connectorProviderClassName);
+        OCFConnectorTypeResponse restResult = restClient.callOCFConnectorTypeGetRESTCall(methodName, urlTemplate, userId, connectorProviderClassName);
 
         return restResult.getConnectorType();
     }

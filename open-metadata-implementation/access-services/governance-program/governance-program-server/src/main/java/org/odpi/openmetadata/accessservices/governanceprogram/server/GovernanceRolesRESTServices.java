@@ -3,14 +3,12 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.handlers.AppointmentHandler;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceRoleProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -741,17 +739,17 @@ public class GovernanceRolesRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GovernanceRoleListResponse getGovernanceRoleByRoleId(String     serverName,
-                                                                String     userId,
-                                                                String     roleId)
+    public GovernanceRolesResponse getGovernanceRoleByRoleId(String     serverName,
+                                                             String     userId,
+                                                             String     roleId)
     {
         final String methodName = "getGovernanceRoleByRoleId";
         final String governanceRoleGUIDParameterName = "governanceRoleGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceRoleListResponse response = new GovernanceRoleListResponse();
-        AuditLog               auditLog = null;
+        GovernanceRolesResponse response = new GovernanceRolesResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -790,18 +788,18 @@ public class GovernanceRolesRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GovernanceRoleListResponse getGovernanceRolesByDomainId(String serverName,
-                                                                   String userId,
-                                                                   int    domainIdentifier,
-                                                                   int    startFrom,
-                                                                   int    pageSize)
+    public GovernanceRolesResponse getGovernanceRolesByDomainId(String serverName,
+                                                                String userId,
+                                                                int    domainIdentifier,
+                                                                int    startFrom,
+                                                                int    pageSize)
     {
         final String methodName = "getGovernanceRolesByDomainId";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceRoleListResponse response = new GovernanceRoleListResponse();
-        AuditLog                   auditLog = null;
+        GovernanceRolesResponse response = new GovernanceRolesResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -841,19 +839,19 @@ public class GovernanceRolesRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GovernanceRoleListResponse getGovernanceRolesByTitle(String serverName,
-                                                                String userId,
-                                                                String title,
-                                                                int    startFrom,
-                                                                int    pageSize)
+    public GovernanceRolesResponse getGovernanceRolesByTitle(String serverName,
+                                                             String userId,
+                                                             String title,
+                                                             int    startFrom,
+                                                             int    pageSize)
     {
         final String methodName = "getGovernanceRolesByTitle";
         final String titleParameterName = "title";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceRoleListResponse response = new GovernanceRoleListResponse();
-        AuditLog                   auditLog = null;
+        GovernanceRolesResponse response = new GovernanceRolesResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -893,18 +891,18 @@ public class GovernanceRolesRESTServices
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GovernanceRoleAppointeeListResponse getCurrentGovernanceRoleAppointments(String serverName,
-                                                                                    String userId,
-                                                                                    int    domainIdentifier,
-                                                                                    int    startFrom,
-                                                                                    int    pageSize)
+    public GovernanceRoleAppointeesResponse getCurrentGovernanceRoleAppointments(String serverName,
+                                                                                 String userId,
+                                                                                 int    domainIdentifier,
+                                                                                 int    startFrom,
+                                                                                 int    pageSize)
     {
         final String        methodName = "getActiveGovernanceRoles";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceRoleAppointeeListResponse response = new GovernanceRoleAppointeeListResponse();
-        AuditLog                            auditLog = null;
+        GovernanceRoleAppointeesResponse response = new GovernanceRoleAppointeesResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -934,6 +932,7 @@ public class GovernanceRolesRESTServices
      * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param governanceRoleGUID unique identifier (guid) of the governance role.
+     * @param profileGUID unique identifier of the actor profile
      * @param requestBody unique identifier for the profile
      * @return unique identifier (guid) of the appointment relationship or
      * UnrecognizedGUIDException the unique identifier of the governance role or profile is either null or invalid or
@@ -943,6 +942,7 @@ public class GovernanceRolesRESTServices
     public GUIDResponse appointGovernanceRole(String                  serverName,
                                               String                  userId,
                                               String                  governanceRoleGUID,
+                                              String                  profileGUID,
                                               AppointmentRequestBody  requestBody)
     {
         final String methodName = "appointGovernanceRole";
@@ -965,12 +965,12 @@ public class GovernanceRolesRESTServices
                 String appointmentGUID = handler.appointPersonToRole(userId,
                                                                      null,
                                                                      null,
-                                                                     requestBody.getProfileGUID(),
+                                                                     profileGUID,
                                                                      profileGUIDParameterName,
                                                                      governanceRoleGUID,
                                                                      governanceRoleGUIDParameterName,
                                                                      true,
-                                                                     requestBody.getEffectiveDate(),
+                                                                     requestBody.getEffectiveTime(),
                                                                      null,
                                                                      false,
                                                                      false,
@@ -1000,6 +1000,7 @@ public class GovernanceRolesRESTServices
      * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param governanceRoleGUID unique identifier (guid) of the governance role.
+     * @param profileGUID unique identifier of the actor profile
      * @param requestBody unique identifier for the profile.
      * @param appointmentGUID unique identifier (guid) of the appointment relationship
      * @return void response or
@@ -1012,6 +1013,7 @@ public class GovernanceRolesRESTServices
                                               String                  userId,
                                               String                  governanceRoleGUID,
                                               String                  appointmentGUID,
+                                              String                  profileGUID,
                                               AppointmentRequestBody  requestBody)
     {
         final String methodName = "relieveGovernanceRole";
@@ -1034,13 +1036,13 @@ public class GovernanceRolesRESTServices
                 handler.relievePersonFromRole(userId,
                                               null,
                                               null,
-                                              requestBody.getProfileGUID(),
+                                              profileGUID,
                                               profileGUIDParameterName,
                                               governanceRoleGUID,
                                               governanceRoleGUIDParameterName,
                                               appointmentGUID,
                                               appointmentGUIDParameterName,
-                                              requestBody.getEffectiveDate(),
+                                              requestBody.getEffectiveTime(),
                                               null,
                                               methodName);
             }

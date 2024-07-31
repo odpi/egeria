@@ -3,17 +3,13 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FileElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FileSystemElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FolderElement;
-import org.odpi.openmetadata.accessservices.assetowner.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileSystemElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FolderElement;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -158,7 +154,7 @@ public class FileSystemRESTServices
                                                                          null,
                                                                          null,
                                                                          anchorGUID,
-                                                                         requestBody.getFullPath(),
+                                                                         requestBody.getPathName(),
                                                                          null,
                                                                          null,
                                                                          false,
@@ -217,7 +213,7 @@ public class FileSystemRESTServices
                                                                          null,
                                                                          null,
                                                                          null,
-                                                                         requestBody.getFullPath(),
+                                                                         requestBody.getPathName(),
                                                                          null,
                                                                          null,
                                                                          false,
@@ -403,6 +399,7 @@ public class FileSystemRESTServices
                                                                     null,
                                                                     null,
                                                                     requestBody.getName(),
+                                                                    requestBody.getResourceName(),
                                                                     null,
                                                                     requestBody.getDescription(),
                                                                     DeployedImplementationType.DATA_FILE.getDeployedImplementationType(),
@@ -471,6 +468,7 @@ public class FileSystemRESTServices
                                                                       null,
                                                                       requestBody.getFullPath(),
                                                                       requestBody.getName(),
+                                                                      requestBody.getResourceName(),
                                                                       null,
                                                                       requestBody.getDescription(),
                                                                       DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType(),
@@ -790,7 +788,7 @@ public class FileSystemRESTServices
                                                                               new Date(),
                                                                               methodName);
 
-            response.setFileSystem(fileSystemElement);
+            response.setElement(fileSystemElement);
         }
         catch (Exception error)
         {
@@ -835,13 +833,13 @@ public class FileSystemRESTServices
                     FolderElement,
                     FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
-            response.setFileSystem(new FileSystemElement(handler.getFileSystemByUniqueName(userId,
-                                                                                           uniqueName,
-                                                                                           uniqueNameParameterName,
-                                                                                           false,
-                                                                                           false,
-                                                                                           new Date(),
-                                                                                           methodName)));
+            response.setElement(new FileSystemElement(handler.getFileSystemByUniqueName(userId,
+                                                                                        uniqueName,
+                                                                                        uniqueNameParameterName,
+                                                                                        false,
+                                                                                        false,
+                                                                                        new Date(),
+                                                                                        methodName)));
         }
         catch (Exception error)
         {
@@ -938,12 +936,12 @@ public class FileSystemRESTServices
                     FolderElement,
                     FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
-            response.setFolder(new FolderElement(handler.getFolderByGUID(userId,
-                                                                         folderGUID,
-                                                                         false,
-                                                                         false,
-                                                                         new Date(),
-                                                                         methodName)));
+            response.setElement(new FolderElement(handler.getFolderByGUID(userId,
+                                                                          folderGUID,
+                                                                          false,
+                                                                          false,
+                                                                          new Date(),
+                                                                          methodName)));
         }
         catch (Exception error)
         {
@@ -989,12 +987,12 @@ public class FileSystemRESTServices
                         FolderElement,
                         FileElement> handler = instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
-                response.setFolder(new FolderElement(handler.getFolderByPathName(userId,
-                                                                                 requestBody.getFullPath(),
-                                                                                 false,
-                                                                                 false,
-                                                                                 new Date(),
-                                                                                 methodName)));
+                response.setElement(new FolderElement(handler.getFolderByPathName(userId,
+                                                                                  requestBody.getPathName(),
+                                                                                  false,
+                                                                                  false,
+                                                                                  new Date(),
+                                                                                  methodName)));
             }
         }
         catch (Exception error)
@@ -1165,6 +1163,7 @@ public class FileSystemRESTServices
                                                                null,
                                                                null,
                                                                requestBody.getName(),
+                                                               requestBody.getResourceName(),
                                                                requestBody.getVersionIdentifier(),
                                                                requestBody.getDescription(),
                                                                DeployedImplementationType.AVRO_FILE.getDeployedImplementationType(),
@@ -1231,6 +1230,7 @@ public class FileSystemRESTServices
                                                               null,
                                                               null,
                                                               requestBody.getName(),
+                                                              requestBody.getResourceName(),
                                                               requestBody.getVersionIdentifier(),
                                                               requestBody.getDescription(),
                                                               DeployedImplementationType.CSV_FILE.getDeployedImplementationType(),

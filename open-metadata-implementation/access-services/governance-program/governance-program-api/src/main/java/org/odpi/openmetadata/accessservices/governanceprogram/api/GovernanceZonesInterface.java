@@ -3,15 +3,14 @@
 
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneDefinition;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceZoneDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceZoneElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceZoneProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The GovernanceZonesInterface is used by the governance team to define the zones where the assets

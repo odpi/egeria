@@ -9,17 +9,18 @@ plugins {
 }
 
 dependencies {
+    implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-api')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-client')
     implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-client')
     compileOnly project(':open-metadata-implementation:access-services:asset-owner:asset-owner-api')
-    implementation project(':open-metadata-implementation:access-services:community-profile:community-profile-api')
+    compileOnly project(':open-metadata-implementation:access-services:community-profile:community-profile-api')
     implementation project(':open-metadata-implementation:access-services:community-profile:community-profile-client')
     implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-client')
     implementation project(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-client')
-    implementation project(':open-metadata-implementation:access-services:governance-program:governance-program-api')
+    compileOnly project(':open-metadata-implementation:access-services:governance-program:governance-program-api')
     implementation project(':open-metadata-implementation:access-services:governance-program:governance-program-client')
     implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-client')
     compileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')

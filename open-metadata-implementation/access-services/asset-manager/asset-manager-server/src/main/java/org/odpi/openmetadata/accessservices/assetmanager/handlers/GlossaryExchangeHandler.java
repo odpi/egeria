@@ -5,34 +5,23 @@ package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryCategoryConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.GlossaryTermConverter;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalGlossaryLinkElement;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalGlossaryLinkElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ArchiveProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.CanonicalVocabularyProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.EditingGlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalGlossaryElementLinkProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalGlossaryLinkProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermCategorization;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermContextDefinition;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.StagingGlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.TaxonomyProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GlossaryCategoryHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GlossaryHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GlossaryTermHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -175,7 +164,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
     {
         if (results != null)
         {
-            for (MetadataElement glossary : results)
+            for (CorrelatedMetadataElement glossary : results)
             {
                 if ((glossary != null) && (glossary.getElementHeader() != null) && (glossary.getElementHeader().getGUID() != null))
                 {
@@ -224,7 +213,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
     {
         if (results != null)
         {
-            for (MetadataElement glossaryCategory : results)
+            for (CorrelatedMetadataElement glossaryCategory : results)
             {
                 if ((glossaryCategory != null) && (glossaryCategory.getElementHeader() != null) && (glossaryCategory.getElementHeader().getGUID() != null))
                 {
@@ -275,7 +264,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
     {
         if (results != null)
         {
-            for (MetadataElement glossaryTerm : results)
+            for (CorrelatedMetadataElement glossaryTerm : results)
             {
                 if ((glossaryTerm != null) && (glossaryTerm.getElementHeader() != null) && (glossaryTerm.getElementHeader().getGUID() != null))
                 {
@@ -2323,33 +2312,17 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
     {
         if (status != null)
         {
-            switch (status)
+            return switch (status)
             {
-                case DRAFT:
-                    return InstanceStatus.DRAFT;
-
-                case PREPARED:
-                    return InstanceStatus.PREPARED;
-
-                case PROPOSED:
-                    return InstanceStatus.PROPOSED;
-
-                case APPROVED:
-                    return InstanceStatus.APPROVED;
-
-                case REJECTED:
-                    return InstanceStatus.REJECTED;
-
-               case ACTIVE:
-                    return InstanceStatus.ACTIVE;
-
-                case DEPRECATED:
-                    return InstanceStatus.DEPRECATED;
-
-                case OTHER:
-                    return InstanceStatus.OTHER;
-
-            }
+                case DRAFT -> InstanceStatus.DRAFT;
+                case PREPARED -> InstanceStatus.PREPARED;
+                case PROPOSED -> InstanceStatus.PROPOSED;
+                case APPROVED -> InstanceStatus.APPROVED;
+                case REJECTED -> InstanceStatus.REJECTED;
+                case ACTIVE -> InstanceStatus.ACTIVE;
+                case DEPRECATED -> InstanceStatus.DEPRECATED;
+                case OTHER -> InstanceStatus.OTHER;
+            };
         }
 
         return null;

@@ -5,9 +5,6 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementsResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.rest.StatusRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.*;
@@ -47,9 +44,9 @@ public class GovernanceEngineOMASResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/out-topic/"))
 
-    public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String callerId)
+    public OCFConnectionResponse getOutTopicConnection(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String callerId)
     {
         return restAPI.getOutTopicConnection(serverName, userId, callerId);
     }

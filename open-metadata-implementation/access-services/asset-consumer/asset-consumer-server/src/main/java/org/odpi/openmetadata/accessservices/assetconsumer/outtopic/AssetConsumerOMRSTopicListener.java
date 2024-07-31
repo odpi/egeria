@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.events.AssetConsumerEv
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -30,7 +31,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
     private static final Logger log = LoggerFactory.getLogger(AssetConsumerOMRSTopicListener.class);
 
     private final AssetConsumerOutTopicPublisher         eventPublisher;
-    private final AssetHandler<Asset>                    assetHandler;
+    private final AssetHandler<AssetElement>             assetHandler;
     private final String                                 localServerUserId;
     private final List<String>                           supportedZones;
     private final OMRSRepositoryHelper                   repositoryHelper;
@@ -48,7 +49,7 @@ public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
     public AssetConsumerOMRSTopicListener(String                                 serviceName,
                                           String                                 localServerUserId,
                                           AssetConsumerOutTopicPublisher         eventPublisher,
-                                          AssetHandler<Asset>                    assetHandler,
+                                          AssetHandler<AssetElement>             assetHandler,
                                           List<String>                           supportedZones,
                                           AuditLog                               auditLog)
     {

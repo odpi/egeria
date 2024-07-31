@@ -6,12 +6,12 @@ package org.odpi.openmetadata.accessservices.communityprofile.fvt.profiles;
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AppointmentProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRoleProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AppointmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;

@@ -3,20 +3,17 @@
 
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.datamanager.properties.*;
-import org.odpi.openmetadata.accessservices.datamanager.rest.*;
+import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.*;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -91,8 +88,9 @@ public class DatabaseManagerRESTServices
                                                                  requestBody.getExternalSourceName(),
                                                                  databaseProperties.getQualifiedName(),
                                                                  databaseProperties.getName(),
+                                                                 databaseProperties.getResourceName(),
                                                                  databaseProperties.getVersionIdentifier(),
-                                                                 databaseProperties.getDescription(),
+                                                                 databaseProperties.getResourceDescription(),
                                                                  databaseProperties.getPathName(),
                                                                  databaseProperties.getCreateTime(),
                                                                  databaseProperties.getModifiedTime(),
@@ -255,8 +253,9 @@ public class DatabaseManagerRESTServices
                                            databaseGUID,
                                            databaseProperties.getQualifiedName(),
                                            databaseProperties.getName(),
+                                           databaseProperties.getResourceName(),
                                            databaseProperties.getVersionIdentifier(),
-                                           databaseProperties.getDescription(),
+                                           databaseProperties.getResourceDescription(),
                                            databaseProperties.getPathName(),
                                            databaseProperties.getCreateTime(),
                                            databaseProperties.getModifiedTime(),
@@ -537,7 +536,7 @@ public class DatabaseManagerRESTServices
                                                                              new Date(),
                                                                              methodName);
 
-                response.setElementList(databaseAssets);
+                response.setElements(databaseAssets);
             }
             else
             {
@@ -605,7 +604,7 @@ public class DatabaseManagerRESTServices
                                                                                   new Date(),
                                                                                   methodName);
 
-                response.setElementList(databaseAssets);
+                response.setElements(databaseAssets);
             }
             else
             {
@@ -673,7 +672,7 @@ public class DatabaseManagerRESTServices
                                                                                           new Date(),
                                                                                           methodName);
 
-            response.setElementList(databaseAssets);
+            response.setElements(databaseAssets);
         }
         catch (Exception error)
         {
@@ -788,8 +787,9 @@ public class DatabaseManagerRESTServices
                                                                              requestBody.getParentGUID(),
                                                                              databaseSchemaProperties.getQualifiedName(),
                                                                              databaseSchemaProperties.getName(),
+                                                                             databaseSchemaProperties.getResourceName(),
                                                                              databaseSchemaProperties.getVersionIdentifier(),
-                                                                             databaseSchemaProperties.getDescription(),
+                                                                             databaseSchemaProperties.getResourceDescription(),
                                                                              databaseSchemaProperties.getDeployedImplementationType(),
                                                                              databaseSchemaProperties.getAdditionalProperties(),
                                                                              databaseSchemaProperties.getTypeName(),
@@ -943,8 +943,9 @@ public class DatabaseManagerRESTServices
                                                  databaseSchemaGUID,
                                                  databaseSchemaProperties.getQualifiedName(),
                                                  databaseSchemaProperties.getName(),
+                                                 databaseSchemaProperties.getResourceName(),
                                                  databaseSchemaProperties.getVersionIdentifier(),
-                                                 databaseSchemaProperties.getDescription(),
+                                                 databaseSchemaProperties.getResourceDescription(),
                                                  databaseSchemaProperties.getDeployedImplementationType(),
                                                  databaseSchemaProperties.getAdditionalProperties(),
                                                  databaseSchemaProperties.getTypeName(),
@@ -1215,7 +1216,7 @@ public class DatabaseManagerRESTServices
                                                                                                new Date(),
                                                                                                methodName);
 
-                response.setElementList(databaseSchemaAssets);
+                response.setElements(databaseSchemaAssets);
             }
             else
             {
@@ -1280,7 +1281,7 @@ public class DatabaseManagerRESTServices
                                                                                              new Date(),
                                                                                              methodName);
 
-            response.setElementList(databaseSchemaAssets);
+            response.setElements(databaseSchemaAssets);
         }
         catch (Exception error)
         {
@@ -1343,7 +1344,7 @@ public class DatabaseManagerRESTServices
                                                                                                     new Date(),
                                                                                                     methodName);
 
-                response.setElementList(databaseSchemaAssets);
+                response.setElements(databaseSchemaAssets);
             }
             else
             {
@@ -2009,7 +2010,7 @@ public class DatabaseManagerRESTServices
                                                                                                 new Date(),
                                                                                                 methodName);
 
-                response.setElementList(databaseTableAttributes);
+                response.setElements(databaseTableAttributes);
             }
             else
             {
@@ -2076,7 +2077,7 @@ public class DatabaseManagerRESTServices
                                                                                                    new Date(),
                                                                                                    methodName);
 
-            response.setElementList(databaseTableAttributes);
+            response.setElements(databaseTableAttributes);
         }
         catch (Exception error)
         {
@@ -2139,7 +2140,7 @@ public class DatabaseManagerRESTServices
                                                                                                      new Date(),
                                                                                                      methodName);
 
-                response.setElementList(databaseTableAttributes);
+                response.setElements(databaseTableAttributes);
             }
             else
             {
@@ -2654,7 +2655,7 @@ public class DatabaseManagerRESTServices
                                                                                              new Date(),
                                                                                              methodName);
 
-                response.setElementList(databaseViewAttributes);
+                response.setElements(databaseViewAttributes);
             }
             else
             {
@@ -2721,7 +2722,7 @@ public class DatabaseManagerRESTServices
                                                                                                 new Date(),
                                                                                                 methodName);
 
-            response.setElementList(databaseViewAttributes);
+            response.setElements(databaseViewAttributes);
         }
         catch (Exception error)
         {
@@ -2786,7 +2787,7 @@ public class DatabaseManagerRESTServices
                                                                                                   new Date(),
                                                                                                   methodName);
 
-                response.setElementList(databaseViewAttributes);
+                response.setElements(databaseViewAttributes);
             }
             else
             {
@@ -3314,7 +3315,7 @@ public class DatabaseManagerRESTServices
                                                                                                    new Date(),
                                                                                                    methodName);
 
-                response.setElementList(databaseColumnAttributes);
+                response.setElements(databaseColumnAttributes);
             }
             else
             {
@@ -3379,7 +3380,7 @@ public class DatabaseManagerRESTServices
                                                                                                       new Date(),
                                                                                                       methodName);
 
-            response.setElementList(databaseColumnAttributes);
+            response.setElements(databaseColumnAttributes);
         }
         catch (Exception error)
         {
@@ -3442,7 +3443,7 @@ public class DatabaseManagerRESTServices
                                                                                                         new Date(),
                                                                                                         methodName);
 
-                response.setElementList(databaseColumnAttributes);
+                response.setElements(databaseColumnAttributes);
             }
             else
             {

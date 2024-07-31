@@ -5,10 +5,15 @@ package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 
 import org.odpi.openmetadata.accessservices.assetmanager.converters.*;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.PortElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ProcessElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ProcessHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -200,7 +205,7 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
     {
         if ((results != null) && (assetManagerGUID != null))
         {
-            for (MetadataElement element : results)
+            for (CorrelatedMetadataElement element : results)
             {
                 if ((element != null) && (element.getElementHeader() != null) && (element.getElementHeader().getGUID() != null))
                 {
@@ -300,9 +305,10 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                                           this.getExternalSourceGUID(correlationProperties, assetManagerIsHome),
                                                           this.getExternalSourceName(correlationProperties, assetManagerIsHome),
                                                           processProperties.getQualifiedName(),
-                                                          processProperties.getTechnicalName(),
+                                                          processProperties.getName(),
+                                                          processProperties.getResourceName(),
                                                           processProperties.getVersionIdentifier(),
-                                                          processProperties.getTechnicalDescription(),
+                                                          processProperties.getResourceDescription(),
                                                           processProperties.getDeployedImplementationType(),
                                                           processProperties.getFormula(),
                                                           processProperties.getFormulaType(),
@@ -479,9 +485,10 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
                                      processGUIDParameterName,
                                      isMergeUpdate,
                                      processProperties.getQualifiedName(),
-                                     processProperties.getTechnicalName(),
+                                     processProperties.getName(),
+                                     processProperties.getResourceName(),
                                      processProperties.getVersionIdentifier(),
-                                     processProperties.getTechnicalDescription(),
+                                     processProperties.getResourceDescription(),
                                      processProperties.getDeployedImplementationType(),
                                      processProperties.getFormula(),
                                      processProperties.getImplementationLanguage(),

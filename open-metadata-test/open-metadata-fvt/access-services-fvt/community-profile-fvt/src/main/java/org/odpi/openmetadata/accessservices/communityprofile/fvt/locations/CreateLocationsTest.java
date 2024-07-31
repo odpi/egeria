@@ -6,10 +6,10 @@ package org.odpi.openmetadata.accessservices.communityprofile.fvt.locations;
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.LocationManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.LocationElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.FixedLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.LocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.NestedLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LocationElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.NestedLocationProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;

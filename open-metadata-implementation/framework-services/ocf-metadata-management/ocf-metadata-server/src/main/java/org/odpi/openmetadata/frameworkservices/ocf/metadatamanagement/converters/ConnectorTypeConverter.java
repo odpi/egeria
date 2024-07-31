@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
  * ConnectorTypeConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
  * EntityDetail object into an ConnectorType bean.
  */
-public class ConnectorTypeConverter<B> extends OCFConverter<B>
+public class ConnectorTypeConverter<B> extends OMFConverter<B>
 {
     /**
      * Constructor

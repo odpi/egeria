@@ -4,27 +4,22 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.RelatedElementsManagementInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AssignmentScopeProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ClassificationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ReferenceableProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.RelationshipProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ResourceListProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.StakeholderProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.TemplateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StakeholderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 
 import java.util.List;
 
@@ -734,15 +729,15 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
 
-        RelatedElementListResponse restResult = restClient.callRelatedElementListGetRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             startingElementGUID,
-                                                                                             Integer.toString(startFrom),
-                                                                                             Integer.toString(pageSize));
+        RelatedElementsResponse restResult = restClient.callRelatedElementsGetRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startingElementGUID,
+                                                                                       Integer.toString(startFrom),
+                                                                                       Integer.toString(pageSize));
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 

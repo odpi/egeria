@@ -7,8 +7,14 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetowner.properties.*;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
+import org.odpi.openmetadata.accessservices.assetowner.rest.TemplateRequestBody;
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentProperties;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -1053,11 +1059,11 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/schema-attributes/by-search-string")
 
-    public SchemaAttributeElementsResponse findSchemaAttributes(@PathVariable String                  serverName,
-                                                                @PathVariable String                  userId,
-                                                                @RequestParam int                     startFrom,
-                                                                @RequestParam int                     pageSize,
-                                                                @RequestBody  SearchStringRequestBody requestBody)
+    public SchemaAttributesResponse findSchemaAttributes(@PathVariable String                  serverName,
+                                                         @PathVariable String                  userId,
+                                                         @RequestParam int                     startFrom,
+                                                         @RequestParam int                     pageSize,
+                                                         @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findSchemaAttributes(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -1080,12 +1086,12 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/schema-elements/{parentSchemaElementGUID}/schema-attributes/retrieve")
 
-    public SchemaAttributeElementsResponse getNestedAttributes(@PathVariable String                        serverName,
-                                                               @PathVariable String                        userId,
-                                                               @PathVariable String                        parentSchemaElementGUID,
-                                                               @RequestParam int                           startFrom,
-                                                               @RequestParam int                           pageSize,
-                                                               @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    public SchemaAttributesResponse getNestedAttributes(@PathVariable String                        serverName,
+                                                        @PathVariable String                        userId,
+                                                        @PathVariable String                        parentSchemaElementGUID,
+                                                        @RequestParam int                           startFrom,
+                                                        @RequestParam int                           pageSize,
+                                                        @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getNestedAttributes(serverName, userId, parentSchemaElementGUID, startFrom, pageSize, requestBody);
     }
@@ -1108,11 +1114,11 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/schema-attributes/by-name")
 
-    public SchemaAttributeElementsResponse getSchemaAttributesByName(@PathVariable String          serverName,
-                                                                     @PathVariable String          userId,
-                                                                     @RequestParam int             startFrom,
-                                                                     @RequestParam int             pageSize,
-                                                                     @RequestBody  NameRequestBody requestBody)
+    public SchemaAttributesResponse getSchemaAttributesByName(@PathVariable String          serverName,
+                                                              @PathVariable String          userId,
+                                                              @RequestParam int             startFrom,
+                                                              @RequestParam int             pageSize,
+                                                              @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getSchemaAttributesByName(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -1133,10 +1139,10 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}/retrieve")
 
-    public SchemaAttributeElementResponse getSchemaAttributeByGUID(@PathVariable String                        serverName,
-                                                                   @PathVariable String                        userId,
-                                                                   @PathVariable String                        schemaAttributeGUID,
-                                                                   @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    public SchemaAttributeResponse getSchemaAttributeByGUID(@PathVariable String                        serverName,
+                                                            @PathVariable String                        userId,
+                                                            @PathVariable String                        schemaAttributeGUID,
+                                                            @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getSchemaAttributeByGUID(serverName, userId, schemaAttributeGUID, requestBody);
     }
@@ -1161,7 +1167,7 @@ public class AssetOwnerResource
     public VoidResponse addConnectionToAsset(@PathVariable String                serverName,
                                              @PathVariable String                userId,
                                              @PathVariable String                assetGUID,
-                                             @RequestBody  ConnectionRequestBody requestBody)
+                                             @RequestBody OCFConnectionRequestBody requestBody)
     {
         return restAPI.addConnectionToAsset(serverName, userId, assetGUID, requestBody);
     }
@@ -1686,11 +1692,11 @@ public class AssetOwnerResource
      */
     @GetMapping(path = "/assets/{assetGUID}/discovery-analysis-reports")
 
-    public SurveyReportListResponse getDiscoveryAnalysisReports(@PathVariable String  serverName,
-                                                                @PathVariable String  userId,
-                                                                @PathVariable String  assetGUID,
-                                                                @RequestParam int     startingFrom,
-                                                                @RequestParam int     maximumResults)
+    public SurveyReportsResponse getDiscoveryAnalysisReports(@PathVariable String  serverName,
+                                                             @PathVariable String  userId,
+                                                             @PathVariable String  assetGUID,
+                                                             @RequestParam int     startingFrom,
+                                                             @RequestParam int     maximumResults)
     {
         return restAPI.getSurveyReports(serverName,
                                         userId,
@@ -1718,12 +1724,12 @@ public class AssetOwnerResource
      */
     @GetMapping(path = "/discovery-analysis-reports/{discoveryReportGUID}/annotations")
 
-    public AnnotationListResponse getDiscoveryReportAnnotations(@PathVariable String            serverName,
-                                                                @PathVariable String            userId,
-                                                                @PathVariable String            discoveryReportGUID,
-                                                                @RequestParam int               startingFrom,
-                                                                @RequestParam int               maximumResults,
-                                                                @RequestBody  StatusRequestBody requestBody)
+    public AnnotationsResponse getDiscoveryReportAnnotations(@PathVariable String            serverName,
+                                                             @PathVariable String            userId,
+                                                             @PathVariable String            discoveryReportGUID,
+                                                             @RequestParam int               startingFrom,
+                                                             @RequestParam int               maximumResults,
+                                                             @RequestBody AnnotationStatusRequestBody requestBody)
     {
         return restAPI.getSurveyReportAnnotations(serverName,
                                                   userId,
@@ -1752,12 +1758,12 @@ public class AssetOwnerResource
      */
     @GetMapping(path = "/annotations/{annotationGUID}/annotations")
 
-    public AnnotationListResponse  getExtendedAnnotations(@PathVariable String            serverName,
-                                                          @PathVariable String            userId,
-                                                          @PathVariable String            annotationGUID,
-                                                          @RequestParam int               startingFrom,
-                                                          @RequestParam int               maximumResults,
-                                                          @RequestBody  StatusRequestBody requestBody)
+    public AnnotationsResponse getExtendedAnnotations(@PathVariable String            serverName,
+                                                      @PathVariable String            userId,
+                                                      @PathVariable String            annotationGUID,
+                                                      @RequestParam int               startingFrom,
+                                                      @RequestParam int               maximumResults,
+                                                      @RequestBody AnnotationStatusRequestBody requestBody)
     {
         return restAPI.getExtendedAnnotations(serverName,
                                               userId,

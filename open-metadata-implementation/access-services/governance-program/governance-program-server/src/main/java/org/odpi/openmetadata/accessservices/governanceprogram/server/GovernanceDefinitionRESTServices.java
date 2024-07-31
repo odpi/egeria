@@ -2,21 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.PeerDefinitionProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.SupportingDefinitionProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceStatusRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
+
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PeerDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -28,11 +25,9 @@ import java.util.Date;
 /**
  * GovernanceDefinitionManager is the java client for managing the definitions for the governance drivers, policies and controls
  * that define the motivation, goals and implementation approach for the governance program.
- *
  * Governance drivers document of the business strategy and regulations that provide the motivation behind the governance program. They feed
  * into the governance program's policymaking phase ensuring the governance program is focused on activity that delivers value to the organization.
  * A governance driver could be a governance strategy statement, a business imperative, a regulation or a regulation's article.
- *
  * Governance policies define the goals and best practices for the governance program.  There are three types of governance policies:
  * <ul>
  *     <li>
@@ -48,7 +43,6 @@ import java.util.Date;
  * Within the definition of each governance policy is a description of what the policy is trying to achieve
  * along with the implications to the organization's operation when they adopt this.
  * These implications help to estimate the cost of the policy's implementation and the activities that need to happen.
- *
  * The governance definitions that define how the governance program is to be implemented.
  * There are two types of governance definitions:
  * <ul>
@@ -343,23 +337,14 @@ public class GovernanceDefinitionRESTServices
     {
         if (governanceDefinitionStatus != null)
         {
-            switch(governanceDefinitionStatus)
+            return switch (governanceDefinitionStatus)
             {
-                case DRAFT:
-                    return InstanceStatus.DRAFT;
-
-                case ACTIVE:
-                    return InstanceStatus.ACTIVE;
-
-                case PROPOSED:
-                    return InstanceStatus.PROPOSED;
-
-                case DEPRECATED:
-                    return InstanceStatus.DEPRECATED;
-
-                case OTHER:
-                    return InstanceStatus.OTHER;
-            }
+                case DRAFT -> InstanceStatus.DRAFT;
+                case ACTIVE -> InstanceStatus.ACTIVE;
+                case PROPOSED -> InstanceStatus.PROPOSED;
+                case DEPRECATED -> InstanceStatus.DEPRECATED;
+                case OTHER -> InstanceStatus.OTHER;
+            };
         }
 
         return null;
@@ -459,10 +444,8 @@ public class GovernanceDefinitionRESTServices
 
                 GovernanceDefinitionHandler<GovernanceDefinitionElement> handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
 
-                if (requestBody.getProperties() instanceof PeerDefinitionProperties)
+                if (requestBody.getProperties() instanceof PeerDefinitionProperties properties)
                 {
-                    PeerDefinitionProperties properties = (PeerDefinitionProperties)requestBody.getProperties();
-
                     handler.setupPeerRelationship(userId,
                                                   definitionOneGUID,
                                                   definitionOneGUIDParameterName,
@@ -627,10 +610,8 @@ public class GovernanceDefinitionRESTServices
 
                 GovernanceDefinitionHandler<GovernanceDefinitionElement> handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
 
-                if (requestBody.getProperties() instanceof SupportingDefinitionProperties)
+                if (requestBody.getProperties() instanceof SupportingDefinitionProperties properties)
                 {
-                    SupportingDefinitionProperties properties = (SupportingDefinitionProperties)requestBody.getProperties();
-
                     handler.setupDelegationRelationship(userId,
                                                         definitionGUID,
                                                         definitionOneGUIDParameterName,

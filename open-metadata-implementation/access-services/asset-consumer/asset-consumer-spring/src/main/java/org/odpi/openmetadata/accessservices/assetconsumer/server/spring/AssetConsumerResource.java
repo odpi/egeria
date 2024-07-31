@@ -5,11 +5,11 @@ package org.odpi.openmetadata.accessservices.assetconsumer.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.CommentRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.RatingRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.CommentRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RatingRequestBody;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,9 +57,9 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Out Topics",
                                                    url="https://egeria-project.org/concepts/out-topic/"))
 
-    public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String callerId)
+    public OCFConnectionResponse getOutTopicConnection(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String callerId)
     {
         return restAPI.getOutTopicConnection(serverName, userId, callerId);
     }
@@ -301,9 +301,9 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public GUIDResponse createTag(@PathVariable String         serverName,
-                                  @PathVariable String         userId,
-                                  @RequestBody  TagRequestBody requestBody)
+    public GUIDResponse createTag(@PathVariable String                 serverName,
+                                  @PathVariable String                 userId,
+                                  @RequestBody  InformalTagProperties  requestBody)
     {
         return restAPI.createTag(serverName, userId, requestBody);
     }
@@ -616,11 +616,11 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Glossaries",
                                                    url="https://egeria-project.org/practices/common-data-definitions/anatomy-of-a-glossary/"))
 
-    public GlossaryTermListResponse getMeaningByName(@PathVariable String          serverName,
-                                                     @PathVariable String          userId,
-                                                     @RequestParam int             startFrom,
-                                                     @RequestParam int             pageSize,
-                                                     @RequestBody  NameRequestBody requestBody)
+    public MeaningsResponse getMeaningByName(@PathVariable String          serverName,
+                                             @PathVariable String          userId,
+                                             @RequestParam int             startFrom,
+                                             @RequestParam int             pageSize,
+                                             @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getMeaningByName(serverName, userId, requestBody, startFrom, pageSize);
     }
@@ -646,11 +646,11 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Glossaries",
                                                    url="https://egeria-project.org/practices/common-data-definitions/anatomy-of-a-glossary/"))
 
-    public GlossaryTermListResponse findMeanings(@PathVariable String                  serverName,
-                                                 @PathVariable String                  userId,
-                                                 @RequestParam int                     startFrom,
-                                                 @RequestParam int                     pageSize,
-                                                 @RequestBody  SearchStringRequestBody requestBody)
+    public MeaningsResponse findMeanings(@PathVariable String                  serverName,
+                                         @PathVariable String                  userId,
+                                         @RequestParam int                     startFrom,
+                                         @RequestParam int                     pageSize,
+                                         @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findMeanings(serverName, userId, requestBody, startFrom, pageSize);
     }
@@ -675,9 +675,9 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Glossaries",
                                                    url="https://egeria-project.org/practices/common-data-definitions/anatomy-of-a-glossary/"))
 
-    public GlossaryTermResponse getMeaning(@PathVariable String   serverName,
-                                           @PathVariable String   userId,
-                                           @PathVariable String   termGUID)
+    public MeaningResponse getMeaning(@PathVariable String   serverName,
+                                      @PathVariable String   userId,
+                                      @PathVariable String   termGUID)
     {
         return restAPI.getMeaning(serverName, userId, termGUID);
     }
@@ -702,9 +702,9 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public TagResponse getTag(@PathVariable String   serverName,
-                              @PathVariable String   userId,
-                              @PathVariable String   tagGUID)
+    public InformalTagResponse getTag(@PathVariable String   serverName,
+                                      @PathVariable String   userId,
+                                      @PathVariable String   tagGUID)
     {
         return restAPI.getTag(serverName, userId, tagGUID);
     }
@@ -730,11 +730,11 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public TagsResponse getTagsByName(@PathVariable String          serverName,
-                                      @PathVariable String          userId,
-                                      @RequestParam int             startFrom,
-                                      @RequestParam int             pageSize,
-                                      @RequestBody  NameRequestBody requestBody)
+    public InformalTagsResponse getTagsByName(@PathVariable String          serverName,
+                                              @PathVariable String          userId,
+                                              @RequestParam int             startFrom,
+                                              @RequestParam int             pageSize,
+                                              @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getTagsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
@@ -760,11 +760,11 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public TagsResponse getMyTagsByName(@PathVariable String          serverName,
-                                        @PathVariable String          userId,
-                                        @RequestParam int             startFrom,
-                                        @RequestParam int             pageSize,
-                                        @RequestBody  NameRequestBody requestBody)
+    public InformalTagsResponse getMyTagsByName(@PathVariable String          serverName,
+                                                @PathVariable String          userId,
+                                                @RequestParam int             startFrom,
+                                                @RequestParam int             pageSize,
+                                                @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getMyTagsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
@@ -790,11 +790,11 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public TagsResponse findTags(@PathVariable String                  serverName,
-                                 @PathVariable String                  userId,
-                                 @RequestParam int                     startFrom,
-                                 @RequestParam int                     pageSize,
-                                 @RequestBody  SearchStringRequestBody requestBody)
+    public InformalTagsResponse findTags(@PathVariable String                  serverName,
+                                         @PathVariable String                  userId,
+                                         @RequestParam int                     startFrom,
+                                         @RequestParam int                     pageSize,
+                                         @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findTags(serverName, userId, requestBody, startFrom, pageSize);
     }
@@ -820,11 +820,11 @@ public class AssetConsumerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public TagsResponse findMyTags(@PathVariable String                  serverName,
-                                   @PathVariable String                  userId,
-                                   @RequestParam int                     startFrom,
-                                   @RequestParam int                     pageSize,
-                                   @RequestBody  SearchStringRequestBody requestBody)
+    public InformalTagsResponse findMyTags(@PathVariable String                  serverName,
+                                           @PathVariable String                  userId,
+                                           @RequestParam int                     startFrom,
+                                           @RequestParam int                     pageSize,
+                                           @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findMyTags(serverName, userId, requestBody, startFrom, pageSize);
     }

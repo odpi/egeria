@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActi
 import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementsResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.StatusRequestBody;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;

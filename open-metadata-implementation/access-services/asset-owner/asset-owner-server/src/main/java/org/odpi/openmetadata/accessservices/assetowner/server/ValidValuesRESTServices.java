@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ValidValueElement;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValueResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesRequestBody;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ValidValueResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ValidValuesRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ValidValuesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -522,16 +522,16 @@ public class ValidValuesRESTServices
             {
                 ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.getValidValueByName(userId,
-                                                                    validValueName,
-                                                                    nameParameterName,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    false,
-                                                                    false,
-                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
-                                                                    new Date(),
-                                                                    methodName));
+                response.setElements(handler.getValidValueByName(userId,
+                                                                 validValueName,
+                                                                 nameParameterName,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 false,
+                                                                 false,
+                                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                 new Date(),
+                                                                 methodName));
             }
         }
         catch (Exception error)
@@ -581,16 +581,16 @@ public class ValidValuesRESTServices
             {
                 ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.findValidValues(userId,
-                                                                requestBody.getFilter(),
-                                                                searchStringParameterName,
-                                                                startFrom,
-                                                                pageSize,
-                                                                false,
-                                                                false,
-                                                                instanceHandler.getSupportedZones(userId, serverName, methodName),
-                                                                requestBody.getEffectiveTime(),
-                                                                methodName));
+                response.setElements(handler.findValidValues(userId,
+                                                             requestBody.getFilter(),
+                                                             searchStringParameterName,
+                                                             startFrom,
+                                                             pageSize,
+                                                             false,
+                                                             false,
+                                                             instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                             requestBody.getEffectiveTime(),
+                                                             methodName));
             }
         }
         catch (Exception error)
@@ -637,16 +637,16 @@ public class ValidValuesRESTServices
 
             ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getValidValueSetMembers(userId,
-                                                                    validValueSetGUID,
-                                                                    validValueGUIDParameter,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    false,
-                                                                    false,
-                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
-                                                                    new Date(),
-                                                                    methodName));
+            response.setElements(handler.getValidValueSetMembers(userId,
+                                                                 validValueSetGUID,
+                                                                 validValueGUIDParameter,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 false,
+                                                                 false,
+                                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                 new Date(),
+                                                                 methodName));
         }
         catch (Exception error)
         {
@@ -692,16 +692,16 @@ public class ValidValuesRESTServices
 
             ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getSetsForValidValue(userId,
-                                                                 validValueGUID,
-                                                                 validValueGUIDParameter,
-                                                                 startFrom,
-                                                                 pageSize,
-                                                                 false,
-                                                                 false,
-                                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
-                                                                 new Date(),
-                                                                 methodName));
+            response.setElements(handler.getSetsForValidValue(userId,
+                                                              validValueGUID,
+                                                              validValueGUIDParameter,
+                                                              startFrom,
+                                                              pageSize,
+                                                              false,
+                                                              false,
+                                                              instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                              new Date(),
+                                                              methodName));
         }
         catch (Exception error)
         {

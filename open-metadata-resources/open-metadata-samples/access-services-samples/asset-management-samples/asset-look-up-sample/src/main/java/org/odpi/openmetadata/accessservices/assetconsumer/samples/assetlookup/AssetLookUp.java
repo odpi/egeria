@@ -3,12 +3,12 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.samples.assetlookup;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.MeaningElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MeaningElement;
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Certification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ExternalIdentifier;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ExternalReference;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.InformalTag;

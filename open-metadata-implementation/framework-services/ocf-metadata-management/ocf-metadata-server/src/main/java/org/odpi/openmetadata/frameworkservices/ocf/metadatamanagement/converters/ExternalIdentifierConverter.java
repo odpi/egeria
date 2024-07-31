@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ExternalIdentifier;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
@@ -20,7 +20,7 @@ import java.lang.reflect.InvocationTargetException;
  * ExternalIdentifierConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  * EntityDetail object into a Referenceable bean.
  */
-public class ExternalIdentifierConverter<B> extends OCFConverter<B>
+public class ExternalIdentifierConverter<B> extends OMFConverter<B>
 {
     /**
      * Constructor
@@ -119,35 +119,5 @@ public class ExternalIdentifierConverter<B> extends OCFConverter<B>
                         String       methodName) throws PropertyServerException
     {
         return this.getNewBean(beanClass, entity, methodName);
-    }
-
-
-    /**
-     * Extract and delete the keyPattern property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return KeyPattern enum
-     */
-    KeyPattern removeKeyPattern(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "removeKeyPattern";
-
-        if (instanceProperties != null)
-        {
-            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataProperty.KEY_PATTERN.name,
-                                                                     instanceProperties,
-                                                                     methodName);
-
-            for (KeyPattern keyPattern : KeyPattern.values())
-            {
-                if (keyPattern.getOrdinal() == ordinal)
-                {
-                    return keyPattern;
-                }
-            }
-        }
-
-        return KeyPattern.LOCAL_KEY;
     }
 }

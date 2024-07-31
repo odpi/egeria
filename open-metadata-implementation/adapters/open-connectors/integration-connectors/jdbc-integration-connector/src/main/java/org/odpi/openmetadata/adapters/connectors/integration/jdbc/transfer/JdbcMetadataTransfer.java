@@ -3,17 +3,14 @@
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer;
 
 import org.apache.commons.lang3.StringUtils;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseSchemaElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseViewElement;
+
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization.TransferCustomizations;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcForeignKey;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcPrimaryKey;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Jdbc;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
 
 import java.util.List;
@@ -41,9 +38,9 @@ public class JdbcMetadataTransfer
     private static final String COLUMNS = "columns";
     private final Jdbc jdbc;
     private final Omas omas;
-    private final String databaseManagerName;
-    private DatabaseElement databaseElement;
-    private final String address;
+    private final String          databaseManagerName;
+    private       DatabaseElement databaseElement;
+    private final String          address;
     private final String catalog;
     private final TransferCustomizations transferCustomizations;
 

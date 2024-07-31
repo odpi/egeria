@@ -3,10 +3,10 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
 import java.io.File;

@@ -6,34 +6,29 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-
 /**
- * ConnectorTypeResponse is the response structure used on REST API calls that return a
- * ConnectorType object as a response.
+ * ConnectorReportResponse is a response object for passing back a single connector type object.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectorTypeResponse extends FFDCResponseBase
 {
-    private ConnectorType connectorType = null;
+    private ConnectorTypeElement element = null;
+
 
     /**
      * Default constructor
      */
     public ConnectorTypeResponse()
     {
-        super();
     }
 
 
@@ -48,45 +43,30 @@ public class ConnectorTypeResponse extends FFDCResponseBase
 
         if (template != null)
         {
-            this.connectorType = template.getConnectorType();
+            element = template.getElement();
         }
     }
 
 
     /**
-     * Copy/clone constructor
+     * Return the metadata element.
      *
-     * @param template object to copy
+     * @return result object
      */
-    public ConnectorTypeResponse(ConnectorType template)
+    public ConnectorTypeElement getElement()
     {
-        super(null);
-
-        if (template != null)
-        {
-            this.connectorType = template;
-        }
-    }
-
-    /**
-     * Return the ConnectorType object.
-     *
-     * @return connectorType
-     */
-    public ConnectorType getConnectorType()
-    {
-        return connectorType;
+        return element;
     }
 
 
     /**
-     * Set up the ConnectorType object.
+     * Set up the metadata element to return.
      *
-     * @param connectorType - connectorType object
+     * @param element result object
      */
-    public void setConnectorType(ConnectorType connectorType)
+    public void setElement(ConnectorTypeElement element)
     {
-        this.connectorType = connectorType;
+        this.element = element;
     }
 
 
@@ -99,18 +79,8 @@ public class ConnectorTypeResponse extends FFDCResponseBase
     public String toString()
     {
         return "ConnectorTypeResponse{" +
-                       "connectorType=" + connectorType +
-                       ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                       ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                       ", actionDescription='" + getActionDescription() + '\'' +
-                       ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                       ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                       ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                       ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                       ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                       ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                       ", exceptionProperties=" + getExceptionProperties() +
-                       '}';
+                "element=" + element +
+                "} " + super.toString();
     }
 
 
@@ -127,18 +97,16 @@ public class ConnectorTypeResponse extends FFDCResponseBase
         {
             return true;
         }
-        if (! (objectToCompare instanceof ConnectorTypeResponse))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        if (! super.equals(objectToCompare))
+        if (!super.equals(objectToCompare))
         {
             return false;
         }
-
-        ConnectorTypeResponse response = (ConnectorTypeResponse) objectToCompare;
-
-        return connectorType != null ? connectorType.equals(response.connectorType) : response.connectorType == null;
+        ConnectorTypeResponse that = (ConnectorTypeResponse) objectToCompare;
+        return Objects.equals(element, that.element);
     }
 
 
@@ -150,6 +118,6 @@ public class ConnectorTypeResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), connectorType);
+        return Objects.hash(super.hashCode(), element);
     }
 }

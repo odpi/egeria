@@ -4,10 +4,13 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.server.ReferenceDataRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ReferenceValueAssignmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueAssignmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValuesImplProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValuesMappingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueProperties;
 import org.springframework.web.bind.annotation.*;
 
 

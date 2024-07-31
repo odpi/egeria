@@ -2,23 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.InformalTagElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.MeaningElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetGraph;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetSearchMatches;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataRelationship;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetSearchMatches;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
@@ -68,16 +64,16 @@ public class AssetConsumerRESTServices
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem retrieving the discovery engine definition.
      */
-    public ConnectionResponse getOutTopicConnection(String serverName,
-                                                    String userId,
-                                                    String callerId)
+    public OCFConnectionResponse getOutTopicConnection(String serverName,
+                                                       String userId,
+                                                       String callerId)
     {
         final String        methodName = "getOutTopicConnection";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ConnectionResponse response = new ConnectionResponse();
-        AuditLog           auditLog = null;
+        OCFConnectionResponse response = new OCFConnectionResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -128,7 +124,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<Asset> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -181,17 +177,17 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<Asset>                        assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
-            ReferenceableHandler<MetadataElement>      metadataElementHandler      = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
-            ReferenceableHandler<MetadataRelationship> metadataRelationshipHandler = instanceHandler.getMetadataRelationshipHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement>                   assetHandler           = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            ReferenceableHandler<MetadataElementSummary> metadataElementHandler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<MetadataRelationship>   metadataRelationshipHandler = instanceHandler.getMetadataRelationshipHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            Asset asset = assetHandler.getBeanFromRepository(userId,
-                                                             assetGUID,
-                                                             parameterName,
-                                                             OpenMetadataType.ASSET.typeName,
-                                                             methodName);
+            AssetElement asset = assetHandler.getBeanFromRepository(userId,
+                                                                    assetGUID,
+                                                                    parameterName,
+                                                                    OpenMetadataType.ASSET.typeName,
+                                                                    methodName);
 
             if (asset != null)
             {
@@ -200,7 +196,7 @@ public class AssetConsumerRESTServices
                 Map<String, Relationship> receivedRelationships = new HashMap<>();
 
                 List<Relationship>  relationships = metadataRelationshipHandler.getAllAttachmentLinks(userId,
-                                                                                                      asset.getGUID(),
+                                                                                                      asset.getElementHeader().getGUID(),
                                                                                                       parameterName,
                                                                                                       OpenMetadataType.ASSET.typeName,
                                                                                                       false,
@@ -227,7 +223,7 @@ public class AssetConsumerRESTServices
                 PrimitivePropertyValue        primitivePropertyValue   = new PrimitivePropertyValue();
 
                 primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-                primitivePropertyValue.setPrimitiveValue(asset.getGUID());
+                primitivePropertyValue.setPrimitiveValue(asset.getElementHeader().getGUID());
                 primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
                 primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
 
@@ -244,22 +240,22 @@ public class AssetConsumerRESTServices
                 searchClassifications.setMatchCriteria(MatchCriteria.ALL);
                 searchClassifications.setConditions(classificationConditions);
 
-                List<MetadataElement> anchoredElements = metadataElementHandler.findBeans(userId,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                searchClassifications,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                false,
-                                                                                false,
-                                                                                startFrom,
-                                                                                pageSize,
-                                                                                assetHandler.getSupportedZones(),
-                                                                                new Date(),
-                                                                                methodName);
+                List<MetadataElementSummary> anchoredElements = metadataElementHandler.findBeans(userId,
+                                                                                                 null,
+                                                                                                 null,
+                                                                                                 null,
+                                                                                                 null,
+                                                                                                 searchClassifications,
+                                                                                                 null,
+                                                                                                 null,
+                                                                                                 null,
+                                                                                                 false,
+                                                                                                 false,
+                                                                                                 startFrom,
+                                                                                                 pageSize,
+                                                                                                 assetHandler.getSupportedZones(),
+                                                                                                 new Date(),
+                                                                                                 methodName);
 
                 assetGraph.setAnchoredElements(anchoredElements);
 
@@ -267,7 +263,7 @@ public class AssetConsumerRESTServices
                 {
                     final String anchoredElementParameterName = "anchoredElement.getGUID";
 
-                    for (MetadataElement metadataElement : anchoredElements)
+                    for (MetadataElementSummary metadataElement : anchoredElements)
                     {
                         if (metadataElement != null)
                         {
@@ -357,8 +353,8 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<Asset>                   assetHandler           = instanceHandler.getAssetHandler(userId, serverName, methodName);
-            ReferenceableHandler<MetadataElement> metadataElementHandler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement>                   assetHandler           = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            ReferenceableHandler<MetadataElementSummary> metadataElementHandler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -503,28 +499,28 @@ public class AssetConsumerRESTServices
 
                     List<AssetSearchMatches> assetSearchMatchesList = new ArrayList<>();
 
-                    final String parameterName = "assetGUID";
-                    OpenMetadataAPIGenericConverter<MetadataElement> converter = metadataElementHandler.getConverter();
+                    final String                                            parameterName = "assetGUID";
+                    OpenMetadataAPIGenericConverter<MetadataElementSummary> converter     = metadataElementHandler.getConverter();
 
                     for (String assetGUID : organizedEntities.keySet())
                     {
-                        Asset asset = assetHandler.getBeanFromRepository(userId,
-                                                                         assetGUID,
-                                                                         parameterName,
-                                                                         OpenMetadataType.ASSET.typeName,
-                                                                         methodName);
+                        AssetElement asset = assetHandler.getBeanFromRepository(userId,
+                                                                                assetGUID,
+                                                                                parameterName,
+                                                                                OpenMetadataType.ASSET.typeName,
+                                                                                methodName);
 
                         if (asset != null)
                         {
                             AssetSearchMatches         assetSearchMatches = new AssetSearchMatches(asset);
-                            Map<String, EntityDetail>  assetEntityMap     = organizedEntities.get(assetGUID);
-                            List<MetadataElement>      anchoredElements   = new ArrayList<>();
+                            Map<String, EntityDetail>    assetEntityMap   = organizedEntities.get(assetGUID);
+                            List<MetadataElementSummary> anchoredElements = new ArrayList<>();
 
                             for (EntityDetail anchoredEntity : assetEntityMap.values())
                             {
-                                MetadataElement metadataElement = converter.getNewBean(MetadataElement.class,
-                                                                                       anchoredEntity,
-                                                                                       methodName);
+                                MetadataElementSummary metadataElement = converter.getNewBean(MetadataElementSummary.class,
+                                                                                              anchoredEntity,
+                                                                                              methodName);
 
                                 anchoredElements.add(metadataElement);
                             }
@@ -584,7 +580,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<Asset> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -645,7 +641,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<Asset> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -710,7 +706,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<Asset> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1288,17 +1284,17 @@ public class AssetConsumerRESTServices
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public GlossaryTermResponse getMeaning(String   serverName,
-                                           String   userId,
-                                           String   guid)
+    public MeaningResponse getMeaning(String   serverName,
+                                      String   userId,
+                                      String   guid)
     {
         final String guidParameterName = "guid";
         final String methodName        = "getMeaning";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GlossaryTermResponse response = new GlossaryTermResponse();
-        AuditLog             auditLog = null;
+        MeaningResponse response = new MeaningResponse();
+        AuditLog        auditLog = null;
 
         try
         {
@@ -1337,18 +1333,18 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GlossaryTermListResponse getMeaningByName(String          serverName,
-                                                     String          userId,
-                                                     NameRequestBody requestBody,
-                                                     int             startFrom,
-                                                     int             pageSize)
+    public MeaningsResponse getMeaningByName(String          serverName,
+                                             String          userId,
+                                             NameRequestBody requestBody,
+                                             int             startFrom,
+                                             int             pageSize)
     {
         final String methodName = "getMeaningByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GlossaryTermListResponse response = new GlossaryTermListResponse();
-        AuditLog                 auditLog = null;
+        MeaningsResponse response = new MeaningsResponse();
+        AuditLog         auditLog = null;
 
         try
         {
@@ -1360,7 +1356,7 @@ public class AssetConsumerRESTServices
             {
                 List<InstanceStatus> limitStatuses = new ArrayList<>();
                 limitStatuses.add(InstanceStatus.ACTIVE);
-                response.setMeanings(glossaryTermHandler.getTermsByName(userId,
+                response.setElements(glossaryTermHandler.getTermsByName(userId,
                                                                         null,
                                                                         requestBody.getName(),
                                                                         limitStatuses,
@@ -1369,9 +1365,7 @@ public class AssetConsumerRESTServices
                                                                         false,
                                                                         false,
                                                                         new Date(),
-                                                                        methodName));
-                response.setStartingFromElement(startFrom);
-            }
+                                                                        methodName));}
             else
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
@@ -1401,18 +1395,18 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GlossaryTermListResponse findMeanings(String                  serverName,
-                                                 String                  userId,
-                                                 SearchStringRequestBody requestBody,
-                                                 int                     startFrom,
-                                                 int                     pageSize)
+    public MeaningsResponse findMeanings(String                  serverName,
+                                         String                  userId,
+                                         SearchStringRequestBody requestBody,
+                                         int                     startFrom,
+                                         int                     pageSize)
     {
         final String methodName = "findMeanings";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GlossaryTermListResponse response = new GlossaryTermListResponse();
-        AuditLog                 auditLog = null;
+        MeaningsResponse response = new MeaningsResponse();
+        AuditLog         auditLog = null;
 
         try
         {
@@ -1424,7 +1418,7 @@ public class AssetConsumerRESTServices
             {
                 List<InstanceStatus> limitStatuses = new ArrayList<>();
                 limitStatuses.add(InstanceStatus.ACTIVE);
-                response.setMeanings(glossaryTermHandler.findTerms(userId,
+                response.setElements(glossaryTermHandler.findTerms(userId,
                                                                    null,
                                                                    requestBody.getSearchString(),
                                                                    limitStatuses,
@@ -1434,7 +1428,6 @@ public class AssetConsumerRESTServices
                                                                    false,
                                                                    new Date(),
                                                                    methodName));
-                response.setStartingFromElement(startFrom);
             }
             else
             {
@@ -1482,7 +1475,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<Asset> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1642,9 +1635,9 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse createTag(String         serverName,
-                                  String         userId,
-                                  TagRequestBody requestBody)
+    public GUIDResponse createTag(String                serverName,
+                                  String                userId,
+                                  InformalTagProperties requestBody)
     {
         final String   methodName = "createTag";
 
@@ -1811,30 +1804,30 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public TagResponse getTag(String serverName,
-                              String userId,
-                              String guid)
+    public InformalTagResponse getTag(String serverName,
+                                      String userId,
+                                      String guid)
     {
         final String methodName = "getTag";
         final String guidParameterName = "guid";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        TagResponse  response = new TagResponse();
-        AuditLog     auditLog = null;
+        InformalTagResponse response = new InformalTagResponse();
+        AuditLog            auditLog = null;
 
         try
         {
             InformalTagHandler<InformalTagElement>  handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setTag(handler.getTag(userId,
-                                           guid,
-                                           guidParameterName,
-                                           false,
-                                           false,
-                                           new Date(),
-                                           methodName));
+            response.setElement(handler.getTag(userId,
+                                               guid,
+                                               guidParameterName,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName));
         }
         catch (Exception error)
         {
@@ -1860,19 +1853,19 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public TagsResponse getTagsByName(String          serverName,
-                                      String          userId,
-                                      NameRequestBody requestBody,
-                                      int             startFrom,
-                                      int             pageSize)
+    public InformalTagsResponse getTagsByName(String          serverName,
+                                              String          userId,
+                                              NameRequestBody requestBody,
+                                              int             startFrom,
+                                              int             pageSize)
     {
         final String methodName = "getTagsByName";
         final String nameParameterName = "tagName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        TagsResponse response = new TagsResponse();
-        AuditLog     auditLog = null;
+        InformalTagsResponse response = new InformalTagsResponse();
+        AuditLog             auditLog = null;
 
         try
         {
@@ -1882,16 +1875,15 @@ public class AssetConsumerRESTServices
 
             if (requestBody != null)
             {
-                response.setTags(handler.getTagsByName(userId,
-                                                       requestBody.getName(),
-                                                       nameParameterName,
-                                                       startFrom,
-                                                       pageSize,
-                                                       false,
-                                                       false,
-                                                       new Date(),
-                                                       methodName));
-                response.setStartingFromElement(startFrom);
+                response.setElements(handler.getTagsByName(userId,
+                                                           requestBody.getName(),
+                                                           nameParameterName,
+                                                           startFrom,
+                                                           pageSize,
+                                                           false,
+                                                           false,
+                                                           new Date(),
+                                                           methodName));
             }
             else
             {
@@ -1922,19 +1914,19 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public TagsResponse getMyTagsByName(String          serverName,
-                                        String          userId,
-                                        NameRequestBody requestBody,
-                                        int             startFrom,
-                                        int             pageSize)
+    public InformalTagsResponse getMyTagsByName(String          serverName,
+                                                String          userId,
+                                                NameRequestBody requestBody,
+                                                int             startFrom,
+                                                int             pageSize)
     {
         final String methodName = "getMyTagsByName";
         final String nameParameterName = "tagName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        TagsResponse response = new TagsResponse();
-        AuditLog     auditLog = null;
+        InformalTagsResponse response = new InformalTagsResponse();
+        AuditLog             auditLog = null;
 
         try
         {
@@ -1944,16 +1936,15 @@ public class AssetConsumerRESTServices
 
             if (requestBody != null)
             {
-                response.setTags(handler.getMyTagsByName(userId,
-                                                         requestBody.getName(),
-                                                         nameParameterName,
-                                                         startFrom,
-                                                         pageSize,
-                                                         false,
-                                                         false,
-                                                         new Date(),
-                                                         methodName));
-                response.setStartingFromElement(startFrom);
+                response.setElements(handler.getMyTagsByName(userId,
+                                                             requestBody.getName(),
+                                                             nameParameterName,
+                                                             startFrom,
+                                                             pageSize,
+                                                             false,
+                                                             false,
+                                                             new Date(),
+                                                             methodName));
             }
             else
             {
@@ -1984,19 +1975,19 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public TagsResponse findTags(String                  serverName,
-                                 String                  userId,
-                                 SearchStringRequestBody requestBody,
-                                 int                     startFrom,
-                                 int                     pageSize)
+    public InformalTagsResponse findTags(String                  serverName,
+                                         String                  userId,
+                                         SearchStringRequestBody requestBody,
+                                         int                     startFrom,
+                                         int                     pageSize)
     {
         final String methodName = "findTags";
         final String nameParameterName = "tagName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        TagsResponse response = new TagsResponse();
-        AuditLog     auditLog = null;
+        InformalTagsResponse response = new InformalTagsResponse();
+        AuditLog             auditLog = null;
 
         try
         {
@@ -2006,16 +1997,15 @@ public class AssetConsumerRESTServices
 
             if (requestBody != null)
             {
-                response.setTags(handler.findTags(userId,
-                                                  requestBody.getSearchString(),
-                                                  nameParameterName,
-                                                  startFrom,
-                                                  pageSize,
-                                                  false,
-                                                  false,
-                                                  new Date(),
-                                                  methodName));
-                response.setStartingFromElement(startFrom);
+                response.setElements(handler.findTags(userId,
+                                                      requestBody.getSearchString(),
+                                                      nameParameterName,
+                                                      startFrom,
+                                                      pageSize,
+                                                      false,
+                                                      false,
+                                                      new Date(),
+                                                      methodName));
             }
             else
             {
@@ -2046,19 +2036,19 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public TagsResponse findMyTags(String                  serverName,
-                                   String                  userId,
-                                   SearchStringRequestBody requestBody,
-                                   int                     startFrom,
-                                   int                     pageSize)
+    public InformalTagsResponse findMyTags(String                  serverName,
+                                           String                  userId,
+                                           SearchStringRequestBody requestBody,
+                                           int                     startFrom,
+                                           int                     pageSize)
     {
         final String methodName = "findMyTags";
         final String nameParameterName = "tagName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        TagsResponse response = new TagsResponse();
-        AuditLog     auditLog = null;
+        InformalTagsResponse response = new InformalTagsResponse();
+        AuditLog             auditLog = null;
 
         try
         {
@@ -2068,16 +2058,15 @@ public class AssetConsumerRESTServices
 
             if (requestBody != null)
             {
-                response.setTags(handler.findMyTags(userId,
-                                                    requestBody.getSearchString(),
-                                                    nameParameterName,
-                                                    startFrom,
-                                                    pageSize,
-                                                    false,
-                                                    false,
-                                                    new Date(),
-                                                    methodName));
-                response.setStartingFromElement(startFrom);
+                response.setElements(handler.findMyTags(userId,
+                                                        requestBody.getSearchString(),
+                                                        nameParameterName,
+                                                        startFrom,
+                                                        pageSize,
+                                                        false,
+                                                        false,
+                                                        new Date(),
+                                                        methodName));
             }
             else
             {
@@ -2382,7 +2371,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<Asset>   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement>   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUIDs(handler.getAssetGUIDsByTag(userId,

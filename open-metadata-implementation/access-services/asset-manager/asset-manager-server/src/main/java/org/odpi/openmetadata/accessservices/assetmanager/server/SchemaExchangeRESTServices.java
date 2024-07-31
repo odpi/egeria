@@ -5,11 +5,22 @@ package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.SchemaExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.CalculatedValueClassificationRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaAttributeElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaAttributeElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaAttributeRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaTypeElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaTypeElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaTypeRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 import org.slf4j.LoggerFactory;
@@ -254,7 +265,7 @@ public class SchemaExchangeRESTServices
                                               boolean                       assetManagerIsHome,
                                               boolean                       forLineage,
                                               boolean                       forDuplicateProcessing,
-                                              RelationshipRequestBody requestBody)
+                                              RelationshipRequestBody       requestBody)
     {
         final String methodName = "setupSchemaTypeParent";
 
@@ -274,8 +285,8 @@ public class SchemaExchangeRESTServices
                 if (requestBody.getProperties() != null)
                 {
                     handler.setupSchemaTypeParent(userId,
-                                                  requestBody.getAssetManagerGUID(),
-                                                  requestBody.getAssetManagerName(),
+                                                  requestBody.getExternalSourceGUID(),
+                                                  requestBody.getExternalSourceName(),
                                                   assetManagerIsHome,
                                                   schemaTypeGUID,
                                                   parentElementGUID,
@@ -290,8 +301,8 @@ public class SchemaExchangeRESTServices
                 else
                 {
                     handler.setupSchemaTypeParent(userId,
-                                                  requestBody.getAssetManagerGUID(),
-                                                  requestBody.getAssetManagerName(),
+                                                  requestBody.getExternalSourceGUID(),
+                                                  requestBody.getExternalSourceName(),
                                                   assetManagerIsHome,
                                                   schemaTypeGUID,
                                                   parentElementGUID,
@@ -435,8 +446,8 @@ public class SchemaExchangeRESTServices
                 if (requestBody.getProperties() != null)
                 {
                     handler.setupSchemaElementRelationship(userId,
-                                                           requestBody.getAssetManagerGUID(),
-                                                           requestBody.getAssetManagerName(),
+                                                           requestBody.getExternalSourceGUID(),
+                                                           requestBody.getExternalSourceName(),
                                                            assetManagerIsHome,
                                                            endOneGUID,
                                                            endTwoGUID,
@@ -452,8 +463,8 @@ public class SchemaExchangeRESTServices
                 else
                 {
                     handler.setupSchemaElementRelationship(userId,
-                                                           requestBody.getAssetManagerGUID(),
-                                                           requestBody.getAssetManagerName(),
+                                                           requestBody.getExternalSourceGUID(),
+                                                           requestBody.getExternalSourceName(),
                                                            assetManagerIsHome,
                                                            endOneGUID,
                                                            endTwoGUID,
@@ -1299,8 +1310,8 @@ public class SchemaExchangeRESTServices
                 SchemaExchangeHandler handler = instanceHandler.getSchemaExchangeHandler(userId, serverName, methodName);
 
                 handler.setupColumnAsPrimaryKey(userId,
-                                                requestBody.getAssetManagerGUID(),
-                                                requestBody.getAssetManagerName(),
+                                                requestBody.getExternalSourceGUID(),
+                                                requestBody.getExternalSourceName(),
                                                 assetManagerIsHome,
                                                 schemaAttributeGUID,
                                                 requestBody.getPrimaryKeyProperties().getName(),

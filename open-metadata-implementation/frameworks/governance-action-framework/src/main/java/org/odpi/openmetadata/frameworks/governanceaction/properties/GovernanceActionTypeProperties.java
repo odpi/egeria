@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 
 import java.util.List;
 import java.util.Map;

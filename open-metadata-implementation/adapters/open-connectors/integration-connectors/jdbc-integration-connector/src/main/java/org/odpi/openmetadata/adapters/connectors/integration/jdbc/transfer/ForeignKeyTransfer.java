@@ -2,9 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseForeignKeyProperties;
+
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseColumnElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseForeignKeyProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcForeignKey;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -20,7 +21,7 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 public class ForeignKeyTransfer implements Consumer<JdbcForeignKey> {
 
     private final Omas omas;
-    private final AuditLog auditLog;
+    private final AuditLog        auditLog;
     private final DatabaseElement database;
 
     public ForeignKeyTransfer(Omas omas, AuditLog auditLog, DatabaseElement database) {

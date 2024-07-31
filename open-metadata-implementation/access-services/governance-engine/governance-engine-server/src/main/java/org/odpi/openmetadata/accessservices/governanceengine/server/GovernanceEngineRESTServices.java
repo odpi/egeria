@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.OCFConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
@@ -55,16 +55,16 @@ public class GovernanceEngineRESTServices
      *   UserNotAuthorizedException user not authorized to issue this request or
      *   PropertyServerException problem retrieving the governance engine definition.
      */
-    public ConnectionResponse getOutTopicConnection(String serverName,
-                                                    String userId,
-                                                    String callerId)
+    public OCFConnectionResponse getOutTopicConnection(String serverName,
+                                                       String userId,
+                                                       String callerId)
     {
         final String        methodName = "getOutTopicConnection";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ConnectionResponse response = new ConnectionResponse();
-        AuditLog           auditLog = null;
+        OCFConnectionResponse response = new OCFConnectionResponse();
+        AuditLog              auditLog = null;
 
         try
         {

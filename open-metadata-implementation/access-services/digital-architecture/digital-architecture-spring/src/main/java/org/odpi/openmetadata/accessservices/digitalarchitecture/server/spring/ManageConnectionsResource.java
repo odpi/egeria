@@ -4,10 +4,8 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.ConnectionResponse;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.server.ConnectionRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.*;
@@ -58,7 +56,7 @@ public class ManageConnectionsResource
 
     public GUIDResponse createConnection(@PathVariable String               serverName,
                                          @PathVariable String               userId,
-                                         @RequestBody  ConnectionProperties requestBody)
+                                         @RequestBody ConnectionProperties requestBody)
     {
         return restAPI.createConnection(serverName, userId, requestBody);
     }
@@ -82,7 +80,7 @@ public class ManageConnectionsResource
     public GUIDResponse createConnectionFromTemplate(@PathVariable String             serverName,
                                                      @PathVariable String             userId,
                                                      @PathVariable String             templateGUID,
-                                                     @RequestBody  TemplateProperties templateProperties)
+                                                     @RequestBody TemplateProperties templateProperties)
     {
         return restAPI.createConnectionFromTemplate(serverName, userId, templateGUID, templateProperties);
     }
@@ -290,7 +288,7 @@ public class ManageConnectionsResource
                                              @PathVariable String            userId,
                                              @PathVariable String            assetGUID,
                                              @PathVariable String            connectionGUID,
-                                             @PathVariable StringRequestBody requestBody)
+                                             @RequestBody  StringRequestBody requestBody)
     {
         return restAPI.setupAssetConnection(serverName, userId, assetGUID, connectionGUID, requestBody);
     }
@@ -432,7 +430,7 @@ public class ManageConnectionsResource
 
 
     /**
-     * Create a new metadata element to represent a endpoint. Classifications can be added later to define the
+     * Create a new metadata element to represent an endpoint. Classifications can be added later to define the
      * type of endpoint.
      *
      * @param serverName name of calling server
@@ -454,7 +452,7 @@ public class ManageConnectionsResource
 
 
     /**
-     * Create a new metadata element to represent a endpoint using an existing metadata element as a template.
+     * Create a new metadata element to represent an endpoint using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new endpoint.
      *
      * @param serverName name of calling server

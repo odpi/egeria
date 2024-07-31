@@ -17,9 +17,10 @@ import java.util.Map;
  */
 public class AssetBuilder extends ReferenceableBuilder
 {
-    private String technicalName        = null;
-    private String versionIdentifier    = null;
-    private String technicalDescription = null;
+    private String name                       = null;
+    private String resourceName               = null;
+    private String versionIdentifier          = null;
+    private String technicalDescription       = null;
     private String deployedImplementationType = null;
 
 
@@ -69,7 +70,8 @@ public class AssetBuilder extends ReferenceableBuilder
      * Constructor supporting all entity properties. (Classifications are added separately.)
      *
      * @param qualifiedName unique name
-     * @param technicalName new value for the name
+     * @param name new value for the name
+     * @param resourceName the full name from the resource
      * @param versionIdentifier new value for the versionIdentifier
      * @param technicalDescription new description for the asset
      * @param deployedImplementationType technology type
@@ -82,7 +84,8 @@ public class AssetBuilder extends ReferenceableBuilder
      * @param serverName name of local server
      */
     protected AssetBuilder(String               qualifiedName,
-                           String               technicalName,
+                           String               name,
+                           String               resourceName,
                            String               versionIdentifier,
                            String               technicalDescription,
                            String               deployedImplementationType,
@@ -103,9 +106,10 @@ public class AssetBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
-        this.technicalName = technicalName;
-        this.versionIdentifier = versionIdentifier;
-        this.technicalDescription = technicalDescription;
+        this.name                       = name;
+        this.resourceName               = resourceName;
+        this.versionIdentifier          = versionIdentifier;
+        this.technicalDescription       = technicalDescription;
         this.deployedImplementationType = deployedImplementationType;
     }
 
@@ -114,7 +118,8 @@ public class AssetBuilder extends ReferenceableBuilder
      * Constructor supporting all entity properties. (Classifications are added separately.)
      *
      * @param qualifiedName unique name
-     * @param technicalName new value for the name
+     * @param name new value for the name
+     * @param resourceName the full name from the resource
      * @param versionIdentifier new value for the versionIdentifier
      * @param technicalDescription new description for the asset
      * @param deployedImplementationType technology type
@@ -128,7 +133,8 @@ public class AssetBuilder extends ReferenceableBuilder
      * @param serverName name of local server
      */
     protected AssetBuilder(String               qualifiedName,
-                           String               technicalName,
+                           String               name,
+                           String               resourceName,
                            String               versionIdentifier,
                            String               technicalDescription,
                            String               deployedImplementationType,
@@ -151,9 +157,10 @@ public class AssetBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
-        this.technicalName = technicalName;
-        this.versionIdentifier = versionIdentifier;
-        this.technicalDescription = technicalDescription;
+        this.name                       = name;
+        this.resourceName               = resourceName;
+        this.versionIdentifier          = versionIdentifier;
+        this.technicalDescription       = technicalDescription;
         this.deployedImplementationType = deployedImplementationType;
     }
 
@@ -441,7 +448,12 @@ public class AssetBuilder extends ReferenceableBuilder
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataProperty.NAME.name,
-                                                                  technicalName,
+                                                                  name,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.RESOURCE_NAME.name,
+                                                                  resourceName,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,

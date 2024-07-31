@@ -4,6 +4,11 @@ package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 import org.odpi.openmetadata.accessservices.assetmanager.connectors.outtopic.AssetManagerOutTopicClientProvider;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.*;
+import org.odpi.openmetadata.accessservices.assetmanager.converters.AssetConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.converters.ElementHeaderConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.converters.ElementStubConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.converters.GovernanceDefinitionConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.converters.RelatedElementConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.CommentExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.ConnectionExchangeHandler;
@@ -22,8 +27,9 @@ import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInsta
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -36,9 +42,9 @@ public class AssetManagerServicesInstance extends OMASServiceInstance
 {
     private static final AccessServiceDescription myDescription = AccessServiceDescription.ASSET_MANAGER_OMAS;
 
-    private final ReferenceableHandler<ElementStub>                                   elementStubHandler;
-    private final ReferenceableHandler<RelatedElement>                                relatedElementHandler;
-    private final AssetHandler<AssetElement>                                          assetHandler;
+    private final ReferenceableHandler<ElementStub>    elementStubHandler;
+    private final ReferenceableHandler<RelatedElement> relatedElementHandler;
+    private final AssetHandler<AssetElement>           assetHandler;
     private final SoftwareCapabilityHandler<SoftwareCapabilityElement>                assetManagerHandler;
     private final ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
     private final ConnectionExchangeHandler                                           connectionExchangeHandler;

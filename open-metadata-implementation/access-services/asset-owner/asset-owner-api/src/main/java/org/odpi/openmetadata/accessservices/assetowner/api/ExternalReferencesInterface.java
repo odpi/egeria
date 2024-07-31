@@ -3,13 +3,13 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ExternalReferenceElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ExternalReferenceLinkProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ExternalReferenceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalReferenceElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 
 import java.util.List;
 

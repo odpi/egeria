@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ProcessCallElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessCallProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProcessCallElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ProcessCallProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -57,9 +57,8 @@ public class ProcessCallConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ProcessCallElement)
+            if (returnBean instanceof ProcessCallElement bean)
             {
-                ProcessCallElement    bean                  = (ProcessCallElement) returnBean;
                 ProcessCallProperties processCallProperties = new ProcessCallProperties();
 
                 if (relationship != null)

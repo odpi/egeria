@@ -3,12 +3,12 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.api;
 
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.CollectionElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.CollectionMember;
+
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OrderBy;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 
 import java.util.List;
 import java.util.Map;

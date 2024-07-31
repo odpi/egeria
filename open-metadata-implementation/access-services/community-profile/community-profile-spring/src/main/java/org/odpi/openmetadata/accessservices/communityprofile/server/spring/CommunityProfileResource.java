@@ -4,13 +4,10 @@ package org.odpi.openmetadata.accessservices.communityprofile.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.MetadataSourceResponse;
+
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataSourceProperties;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -42,9 +39,9 @@ public class CommunityProfileResource
      */
     @GetMapping(path = "/topics/out-topic-connection/{callerId}")
 
-    public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String callerId)
+    public OCFConnectionResponse getOutTopicConnection(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String callerId)
     {
         return restAPI.getOutTopicConnection(serverName, userId, callerId);
     }

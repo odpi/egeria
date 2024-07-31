@@ -7,39 +7,33 @@ import org.odpi.openmetadata.accessservices.assetmanager.handlers.DataAssetExcha
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareCapabilityElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetOriginProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.FindAssetOriginProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.FindNameProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceClassificationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.LevelIdentifierProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.OwnerProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.RetentionClassificationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SecurityTagsProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SemanticAssignmentProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SubjectAreaMemberProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ElementStubsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelatedElementsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindNameProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ClassificationRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementStubsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.FindByPropertiesRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceDefinitionsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.RelatedElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.slf4j.LoggerFactory;
 
 
@@ -249,12 +243,12 @@ public class StewardshipExchangeRESTServices
      *      UserNotAuthorizedException security access problem
      */
     public ElementStubsResponse getDataFieldClassifiedElements(String                      serverName,
-                                                                String                      userId,
-                                                                int                         startFrom,
-                                                                int                         pageSize,
-                                                                boolean                     forLineage,
-                                                                boolean                     forDuplicateProcessing,
-                                                                FindByPropertiesRequestBody requestBody)
+                                                               String                      userId,
+                                                               int                         startFrom,
+                                                               int                         pageSize,
+                                                               boolean                     forLineage,
+                                                               boolean                     forDuplicateProcessing,
+                                                               FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getConfidenceClassifiedElements";
 
@@ -272,29 +266,29 @@ public class StewardshipExchangeRESTServices
             {
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
-                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
-                                                                                          properties.getReturnSpecificLevel(),
-                                                                                          properties.getLevelIdentifier(),
-                                                                                          startFrom,
-                                                                                          pageSize,
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing,
-                                                                                          requestBody.getEffectiveTime(),
-                                                                                          methodName));
+                    response.setElements(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                       OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
+                                                                                       properties.getReturnSpecificLevel(),
+                                                                                       properties.getLevelIdentifier(),
+                                                                                       startFrom,
+                                                                                       pageSize,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       requestBody.getEffectiveTime(),
+                                                                                       methodName));
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
-                                                                                          false,
-                                                                                          0,
-                                                                                          startFrom,
-                                                                                          pageSize,
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing,
-                                                                                          requestBody.getEffectiveTime(),
-                                                                                          methodName));
+                    response.setElements(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                       OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
+                                                                                       false,
+                                                                                       0,
+                                                                                       startFrom,
+                                                                                       pageSize,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       requestBody.getEffectiveTime(),
+                                                                                       methodName));
                 }
                 else
                 {
@@ -303,16 +297,16 @@ public class StewardshipExchangeRESTServices
             }
             else
             {
-                response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                      OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
-                                                                                      false,
-                                                                                      0,
-                                                                                      startFrom,
-                                                                                      pageSize,
-                                                                                      forLineage,
-                                                                                      forDuplicateProcessing,
-                                                                                      null,
-                                                                                      methodName));
+                response.setElements(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                   OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
+                                                                                   false,
+                                                                                   0,
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   null,
+                                                                                   methodName));
             }
         }
         catch (Exception error)
@@ -574,29 +568,29 @@ public class StewardshipExchangeRESTServices
             {
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
-                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
-                                                                                          properties.getReturnSpecificLevel(),
-                                                                                          properties.getLevelIdentifier(),
-                                                                                          startFrom,
-                                                                                          pageSize,
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing,
-                                                                                          requestBody.getEffectiveTime(),
-                                                                                          methodName));
+                    response.setElements(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                       OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
+                                                                                       properties.getReturnSpecificLevel(),
+                                                                                       properties.getLevelIdentifier(),
+                                                                                       startFrom,
+                                                                                       pageSize,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       requestBody.getEffectiveTime(),
+                                                                                       methodName));
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
-                                                                                          false,
-                                                                                          0,
-                                                                                          startFrom,
-                                                                                          pageSize,
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing,
-                                                                                          requestBody.getEffectiveTime(),
-                                                                                          methodName));
+                    response.setElements(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                       OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
+                                                                                       false,
+                                                                                       0,
+                                                                                       startFrom,
+                                                                                       pageSize,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       requestBody.getEffectiveTime(),
+                                                                                       methodName));
                 }
                 else
                 {
@@ -605,16 +599,16 @@ public class StewardshipExchangeRESTServices
             }
             else
             {
-                response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                      OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
-                                                                                      false,
-                                                                                      0,
-                                                                                      startFrom,
-                                                                                      pageSize,
-                                                                                      forLineage,
-                                                                                      forDuplicateProcessing,
-                                                                                      null,
-                                                                                      methodName));
+                response.setElements(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                   OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
+                                                                                   false,
+                                                                                   0,
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   null,
+                                                                                   methodName));
             }
         }
         catch (Exception error)
@@ -875,29 +869,29 @@ public class StewardshipExchangeRESTServices
             {
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
-                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
-                                                                                          properties.getReturnSpecificLevel(),
-                                                                                          properties.getLevelIdentifier(),
-                                                                                          startFrom,
-                                                                                          pageSize,
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing,
-                                                                                          requestBody.getEffectiveTime(),
-                                                                                          methodName));
+                    response.setElements(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                       OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
+                                                                                       properties.getReturnSpecificLevel(),
+                                                                                       properties.getLevelIdentifier(),
+                                                                                       startFrom,
+                                                                                       pageSize,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       requestBody.getEffectiveTime(),
+                                                                                       methodName));
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
-                                                                                          false,
-                                                                                          0,
-                                                                                          startFrom,
-                                                                                          pageSize,
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing,
-                                                                                          requestBody.getEffectiveTime(),
-                                                                                          methodName));
+                    response.setElements(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                       OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
+                                                                                       false,
+                                                                                       0,
+                                                                                       startFrom,
+                                                                                       pageSize,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       requestBody.getEffectiveTime(),
+                                                                                       methodName));
                 }
                 else
                 {
@@ -906,16 +900,16 @@ public class StewardshipExchangeRESTServices
             }
             else
             {
-                response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                      OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
-                                                                                      false,
-                                                                                      0,
-                                                                                      startFrom,
-                                                                                      pageSize,
-                                                                                      forLineage,
-                                                                                      forDuplicateProcessing,
-                                                                                      null,
-                                                                                      methodName));
+                response.setElements(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                   OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
+                                                                                   false,
+                                                                                   0,
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   null,
+                                                                                   methodName));
             }
         }
         catch (Exception error)
@@ -1178,29 +1172,29 @@ public class StewardshipExchangeRESTServices
             {
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
-                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
-                                                                                          properties.getReturnSpecificLevel(),
-                                                                                          properties.getLevelIdentifier(),
-                                                                                          startFrom,
-                                                                                          pageSize,
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing,
-                                                                                          requestBody.getEffectiveTime(),
-                                                                                          methodName));
+                    response.setElements(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                       OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
+                                                                                       properties.getReturnSpecificLevel(),
+                                                                                       properties.getLevelIdentifier(),
+                                                                                       startFrom,
+                                                                                       pageSize,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       requestBody.getEffectiveTime(),
+                                                                                       methodName));
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
-                                                                                          false,
-                                                                                          0,
-                                                                                          startFrom,
-                                                                                          pageSize,
-                                                                                          forLineage,
-                                                                                          forDuplicateProcessing,
-                                                                                          requestBody.getEffectiveTime(),
-                                                                                          methodName));
+                    response.setElements(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                       OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
+                                                                                       false,
+                                                                                       0,
+                                                                                       startFrom,
+                                                                                       pageSize,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing,
+                                                                                       requestBody.getEffectiveTime(),
+                                                                                       methodName));
                 }
                 else
                 {
@@ -1209,16 +1203,16 @@ public class StewardshipExchangeRESTServices
             }
             else
             {
-                response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                      OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
-                                                                                      false,
-                                                                                      0,
-                                                                                      startFrom,
-                                                                                      pageSize,
-                                                                                      forLineage,
-                                                                                      forDuplicateProcessing,
-                                                                                      null,
-                                                                                      methodName));
+                response.setElements(handler.getGovernanceActionClassifiedElements(userId,
+                                                                                   OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
+                                                                                   false,
+                                                                                   0,
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   null,
+                                                                                   methodName));
             }
         }
         catch (Exception error)
@@ -1476,27 +1470,27 @@ public class StewardshipExchangeRESTServices
             {
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
-                    response.setElementList(handler.getRetentionClassifiedElements(userId,
-                                                                                   properties.getReturnSpecificLevel(),
-                                                                                   properties.getLevelIdentifier(),
-                                                                                   startFrom,
-                                                                                   pageSize,
-                                                                                   forLineage,
-                                                                                   forDuplicateProcessing,
-                                                                                   requestBody.getEffectiveTime(),
-                                                                                   methodName));
+                    response.setElements(handler.getRetentionClassifiedElements(userId,
+                                                                                properties.getReturnSpecificLevel(),
+                                                                                properties.getLevelIdentifier(),
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                requestBody.getEffectiveTime(),
+                                                                                methodName));
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    response.setElementList(handler.getRetentionClassifiedElements(userId,
-                                                                                   false,
-                                                                                   0,
-                                                                                   startFrom,
-                                                                                   pageSize,
-                                                                                   forLineage,
-                                                                                   forDuplicateProcessing,
-                                                                                   requestBody.getEffectiveTime(),
-                                                                                   methodName));
+                    response.setElements(handler.getRetentionClassifiedElements(userId,
+                                                                                false,
+                                                                                0,
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                requestBody.getEffectiveTime(),
+                                                                                methodName));
                 }
                 else
                 {
@@ -1505,15 +1499,15 @@ public class StewardshipExchangeRESTServices
             }
             else
             {
-                response.setElementList(handler.getRetentionClassifiedElements(userId,
-                                                                               false,
-                                                                               0,
-                                                                               startFrom,
-                                                                               pageSize,
-                                                                               forLineage,
-                                                                               forDuplicateProcessing,
-                                                                               null,
-                                                                               methodName));
+                response.setElements(handler.getRetentionClassifiedElements(userId,
+                                                                            false,
+                                                                            0,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            null,
+                                                                            methodName));
             }
         }
         catch (Exception error)
@@ -1705,23 +1699,23 @@ public class StewardshipExchangeRESTServices
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getSecurityTagsClassifiedElements(userId,
-                                                                                  startFrom,
-                                                                                  pageSize,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing,
-                                                                                  requestBody.getEffectiveTime(),
-                                                                                  methodName));
+                response.setElements(handler.getSecurityTagsClassifiedElements(userId,
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
+                                                                               requestBody.getEffectiveTime(),
+                                                                               methodName));
             }
             else
             {
-                response.setElementList(handler.getSecurityTagsClassifiedElements(userId,
-                                                                                  startFrom,
-                                                                                  pageSize,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing,
-                                                                                  null,
-                                                                                  methodName));
+                response.setElements(handler.getSecurityTagsClassifiedElements(userId,
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing,
+                                                                               null,
+                                                                               methodName));
             }
         }
         catch (Exception error)
@@ -1914,25 +1908,25 @@ public class StewardshipExchangeRESTServices
             {
                 if (requestBody.getProperties() instanceof FindNameProperties properties)
                 {
-                    response.setElementList(handler.getOwnersElements(userId,
-                                                                      properties.getName(),
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing,
-                                                                      requestBody.getEffectiveTime(),
-                                                                      methodName));
+                    response.setElements(handler.getOwnersElements(userId,
+                                                                   properties.getName(),
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   requestBody.getEffectiveTime(),
+                                                                   methodName));
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    response.setElementList(handler.getOwnersElements(userId,
-                                                                      null,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing,
-                                                                      requestBody.getEffectiveTime(),
-                                                                      methodName));
+                    response.setElements(handler.getOwnersElements(userId,
+                                                                   null,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   requestBody.getEffectiveTime(),
+                                                                   methodName));
                 }
                 else
                 {
@@ -1941,14 +1935,14 @@ public class StewardshipExchangeRESTServices
             }
             else
             {
-                response.setElementList(handler.getOwnersElements(userId,
-                                                                  null,
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  null,
-                                                                  methodName));
+                response.setElements(handler.getOwnersElements(userId,
+                                                               null,
+                                                               startFrom,
+                                                               pageSize,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               null,
+                                                               methodName));
             }
         }
         catch (Exception error)
@@ -2234,7 +2228,7 @@ public class StewardshipExchangeRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof SubjectAreaMemberProperties properties)
+                if (requestBody.getProperties() instanceof SubjectAreaClassificationProperties properties)
                 {
                     SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getAssetManagerHandler(userId, serverName, methodName);
 
@@ -2273,7 +2267,7 @@ public class StewardshipExchangeRESTServices
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaMemberProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaClassificationProperties.class.getName(), methodName);
                 }
             }
             else
@@ -2416,25 +2410,25 @@ public class StewardshipExchangeRESTServices
             {
                 if (requestBody.getProperties() instanceof FindNameProperties properties)
                 {
-                    response.setElementList(handler.getSubjectAreaMembers(userId,
-                                                                          properties.getName(),
-                                                                          startFrom,
-                                                                          pageSize,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
-                                                                          requestBody.getEffectiveTime(),
-                                                                          methodName));
+                    response.setElements(handler.getSubjectAreaMembers(userId,
+                                                                       properties.getName(),
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       requestBody.getEffectiveTime(),
+                                                                       methodName));
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    response.setElementList(handler.getSubjectAreaMembers(userId,
-                                                                          null,
-                                                                          startFrom,
-                                                                          pageSize,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
-                                                                          requestBody.getEffectiveTime(),
-                                                                          methodName));
+                    response.setElements(handler.getSubjectAreaMembers(userId,
+                                                                       null,
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing,
+                                                                       requestBody.getEffectiveTime(),
+                                                                       methodName));
                 }
                 else
                 {
@@ -2443,14 +2437,14 @@ public class StewardshipExchangeRESTServices
             }
             else
             {
-                response.setElementList(handler.getSubjectAreaMembers(userId,
-                                                                      null,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing,
-                                                                      null,
-                                                                      methodName));
+                response.setElements(handler.getSubjectAreaMembers(userId,
+                                                                   null,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   null,
+                                                                   methodName));
             }
         }
         catch (Exception error)
@@ -2515,8 +2509,8 @@ public class StewardshipExchangeRESTServices
                     }
 
                     handler.saveSemanticAssignment(userId,
-                                                   requestBody.getAssetManagerGUID(),
-                                                   requestBody.getAssetManagerName(),
+                                                   requestBody.getExternalSourceGUID(),
+                                                   requestBody.getExternalSourceName(),
                                                    elementGUID,
                                                    elementGUIDParameterName,
                                                    glossaryTermGUID,
@@ -2749,29 +2743,29 @@ public class StewardshipExchangeRESTServices
 
             if (requestBody == null)
             {
-                response.setElementList(handler.getSemanticAssignments(userId,
-                                                                       glossaryTermGUID,
-                                                                       elementGUIDParameterName,
-                                                                       OpenMetadataType.REFERENCEABLE.typeName,
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       forLineage,
-                                                                       forDuplicateProcessing,
-                                                                       null,
-                                                                       methodName));
+                response.setElements(handler.getSemanticAssignments(userId,
+                                                                    glossaryTermGUID,
+                                                                    elementGUIDParameterName,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    null,
+                                                                    methodName));
             }
             else
             {
-                response.setElementList(handler.getSemanticAssignments(userId,
-                                                                       glossaryTermGUID,
-                                                                       elementGUIDParameterName,
-                                                                       OpenMetadataType.REFERENCEABLE.typeName,
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       forLineage,
-                                                                       forDuplicateProcessing,
-                                                                       requestBody.getEffectiveTime(),
-                                                                       methodName));
+                response.setElements(handler.getSemanticAssignments(userId,
+                                                                    glossaryTermGUID,
+                                                                    elementGUIDParameterName,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    requestBody.getEffectiveTime(),
+                                                                    methodName));
             }
         }
         catch (Exception error)
@@ -2829,8 +2823,8 @@ public class StewardshipExchangeRESTServices
                 {
 
                     handler.addGovernedBy(userId,
-                                          requestBody.getAssetManagerGUID(),
-                                          requestBody.getAssetManagerName(),
+                                          requestBody.getExternalSourceGUID(),
+                                          requestBody.getExternalSourceName(),
                                           definitionGUID,
                                           definitionGUIDParameterName,
                                           elementGUID,
@@ -2845,8 +2839,8 @@ public class StewardshipExchangeRESTServices
                 else
                 {
                     handler.addGovernedBy(userId,
-                                          requestBody.getAssetManagerGUID(),
-                                          requestBody.getAssetManagerName(),
+                                          requestBody.getExternalSourceGUID(),
+                                          requestBody.getExternalSourceName(),
                                           definitionGUID,
                                           definitionGUIDParameterName,
                                           elementGUID,
@@ -3005,29 +2999,29 @@ public class StewardshipExchangeRESTServices
 
             if (requestBody == null)
             {
-                response.setElementList(handler.getGovernedElements(userId,
-                                                                    governanceDefinitionGUID,
-                                                                    elementGUIDParameterName,
-                                                                    OpenMetadataType.REFERENCEABLE.typeName,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    forLineage,
-                                                                    forDuplicateProcessing,
-                                                                    null,
-                                                                    methodName));
+                response.setElements(handler.getGovernedElements(userId,
+                                                                 governanceDefinitionGUID,
+                                                                 elementGUIDParameterName,
+                                                                 OpenMetadataType.REFERENCEABLE.typeName,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 null,
+                                                                 methodName));
             }
             else
             {
-                response.setElementList(handler.getGovernedElements(userId,
-                                                                    governanceDefinitionGUID,
-                                                                    elementGUIDParameterName,
-                                                                    OpenMetadataType.REFERENCEABLE.typeName,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    forLineage,
-                                                                    forDuplicateProcessing,
-                                                                    requestBody.getEffectiveTime(),
-                                                                    methodName));
+                response.setElements(handler.getGovernedElements(userId,
+                                                                 governanceDefinitionGUID,
+                                                                 elementGUIDParameterName,
+                                                                 OpenMetadataType.REFERENCEABLE.typeName,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 requestBody.getEffectiveTime(),
+                                                                 methodName));
             }
         }
         catch (Exception error)
@@ -3160,31 +3154,31 @@ public class StewardshipExchangeRESTServices
 
             if (requestBody == null)
             {
-                response.setElementList(handler.getSourceElements(userId,
-                                                                  elementGUID,
-                                                                  elementGUIDParameterName,
-                                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  null,
-                                                                  methodName));
+                response.setElements(handler.getSourceElements(userId,
+                                                               elementGUID,
+                                                               elementGUIDParameterName,
+                                                               OpenMetadataType.REFERENCEABLE.typeName,
+                                                               OpenMetadataType.REFERENCEABLE.typeName,
+                                                               startFrom,
+                                                               pageSize,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               null,
+                                                               methodName));
             }
             else
             {
-                response.setElementList(handler.getSourceElements(userId,
-                                                                  elementGUID,
-                                                                  elementGUIDParameterName,
-                                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  requestBody.getEffectiveTime(),
-                                                                  methodName));
+                response.setElements(handler.getSourceElements(userId,
+                                                               elementGUID,
+                                                               elementGUIDParameterName,
+                                                               OpenMetadataType.REFERENCEABLE.typeName,
+                                                               OpenMetadataType.REFERENCEABLE.typeName,
+                                                               startFrom,
+                                                               pageSize,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               requestBody.getEffectiveTime(),
+                                                               methodName));
             }
         }
         catch (Exception error)
@@ -3239,31 +3233,31 @@ public class StewardshipExchangeRESTServices
 
             if (requestBody == null)
             {
-                response.setElementList(handler.getElementsSourceFrom(userId,
-                                                                      elementGUID,
-                                                                      elementGUIDParameterName,
-                                                                      OpenMetadataType.REFERENCEABLE.typeName,
-                                                                      OpenMetadataType.REFERENCEABLE.typeName,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing,
-                                                                      null,
-                                                                      methodName));
+                response.setElements(handler.getElementsSourceFrom(userId,
+                                                                   elementGUID,
+                                                                   elementGUIDParameterName,
+                                                                   OpenMetadataType.REFERENCEABLE.typeName,
+                                                                   OpenMetadataType.REFERENCEABLE.typeName,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   null,
+                                                                   methodName));
             }
             else
             {
-                response.setElementList(handler.getElementsSourceFrom(userId,
-                                                                      elementGUID,
-                                                                      elementGUIDParameterName,
-                                                                      OpenMetadataType.REFERENCEABLE.typeName,
-                                                                      OpenMetadataType.REFERENCEABLE.typeName,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing,
-                                                                      requestBody.getEffectiveTime(),
-                                                                      methodName));
+                response.setElements(handler.getElementsSourceFrom(userId,
+                                                                   elementGUID,
+                                                                   elementGUIDParameterName,
+                                                                   OpenMetadataType.REFERENCEABLE.typeName,
+                                                                   OpenMetadataType.REFERENCEABLE.typeName,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   requestBody.getEffectiveTime(),
+                                                                   methodName));
             }
         }
         catch (Exception error)

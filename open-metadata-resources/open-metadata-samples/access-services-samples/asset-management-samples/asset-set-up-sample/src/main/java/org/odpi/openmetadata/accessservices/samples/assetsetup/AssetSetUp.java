@@ -10,16 +10,16 @@ import org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerCl
 import org.odpi.openmetadata.accessservices.datamanager.client.ExternalReferenceManagerClient;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.ConnectionManager;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.LocationManager;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.ReferenceDataManager;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceZoneManager;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceZoneProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.CapabilityManagerClient;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 

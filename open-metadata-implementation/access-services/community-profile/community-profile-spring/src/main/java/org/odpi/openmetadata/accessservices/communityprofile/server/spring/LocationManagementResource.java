@@ -4,18 +4,9 @@ package org.odpi.openmetadata.accessservices.communityprofile.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.LocationListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.LocationResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.accessservices.communityprofile.server.LocationRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -87,7 +78,7 @@ public class LocationManagementResource
     public GUIDResponse createLocationFromTemplate(@PathVariable String              serverName,
                                                    @PathVariable String              userId,
                                                    @PathVariable String              templateGUID,
-                                                   @RequestBody  TemplateRequestBody templateProperties)
+                                                   @RequestBody TemplateRequestBody templateProperties)
     {
         return restAPI.createLocationFromTemplate(serverName, userId, templateGUID, templateProperties);
     }
@@ -521,11 +512,11 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/by-search-string")
 
-    public LocationListResponse findLocations(@PathVariable String                  serverName,
-                                              @PathVariable String                  userId,
-                                              @RequestParam int                     startFrom,
-                                              @RequestParam int                     pageSize,
-                                              @RequestBody  SearchStringRequestBody requestBody)
+    public LocationsResponse findLocations(@PathVariable String                  serverName,
+                                           @PathVariable String                  userId,
+                                           @RequestParam int                     startFrom,
+                                           @RequestParam int                     pageSize,
+                                           @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findLocations(serverName, userId, requestBody, startFrom, pageSize);
     }
@@ -548,11 +539,11 @@ public class LocationManagementResource
      */
     @PostMapping(path = "/locations/by-name")
 
-    public LocationListResponse getLocationsByName(@PathVariable String          serverName,
-                                                   @PathVariable String          userId,
-                                                   @RequestParam int             startFrom,
-                                                   @RequestParam int             pageSize,
-                                                   @RequestBody  NameRequestBody requestBody)
+    public LocationsResponse getLocationsByName(@PathVariable String          serverName,
+                                                @PathVariable String          userId,
+                                                @RequestParam int             startFrom,
+                                                @RequestParam int             pageSize,
+                                                @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getLocationsByName(serverName, userId, requestBody, startFrom, pageSize);
     }
@@ -574,11 +565,11 @@ public class LocationManagementResource
      */
     @GetMapping(path = "/locations/{locationGUID}/has-peer-locations")
 
-    public LocationListResponse getAdjacentLocations(@PathVariable String serverName,
-                                                     @PathVariable String userId,
-                                                     @PathVariable String locationGUID,
-                                                     @RequestParam int    startFrom,
-                                                     @RequestParam int    pageSize)
+    public LocationsResponse getAdjacentLocations(@PathVariable String serverName,
+                                                  @PathVariable String userId,
+                                                  @PathVariable String locationGUID,
+                                                  @RequestParam int    startFrom,
+                                                  @RequestParam int    pageSize)
     {
         return restAPI.getAdjacentLocations(serverName, userId, locationGUID, startFrom, pageSize);
     }
@@ -600,11 +591,11 @@ public class LocationManagementResource
      */
     @GetMapping(path = "/locations/{locationGUID}/has-nested-locations")
 
-    public LocationListResponse getNestedLocations(@PathVariable String serverName,
-                                                   @PathVariable String userId,
-                                                   @PathVariable String locationGUID,
-                                                   @RequestParam int    startFrom,
-                                                   @RequestParam int    pageSize)
+    public LocationsResponse getNestedLocations(@PathVariable String serverName,
+                                                @PathVariable String userId,
+                                                @PathVariable String locationGUID,
+                                                @RequestParam int    startFrom,
+                                                @RequestParam int    pageSize)
     {
         return restAPI.getNestedLocations(serverName, userId, locationGUID, startFrom, pageSize);
     }
@@ -626,11 +617,11 @@ public class LocationManagementResource
      */
     @GetMapping(path = "/locations/{locationGUID}/has-grouping-locations")
 
-    public LocationListResponse getGroupingLocations(@PathVariable String serverName,
-                                                     @PathVariable String userId,
-                                                     @PathVariable String locationGUID,
-                                                     @RequestParam int    startFrom,
-                                                     @RequestParam int    pageSize)
+    public LocationsResponse getGroupingLocations(@PathVariable String serverName,
+                                                  @PathVariable String userId,
+                                                  @PathVariable String locationGUID,
+                                                  @RequestParam int    startFrom,
+                                                  @RequestParam int    pageSize)
     {
         return restAPI.getGroupingLocations(serverName, userId, locationGUID, startFrom, pageSize);
     }
@@ -652,11 +643,11 @@ public class LocationManagementResource
      */
     @GetMapping(path = "/locations/by-actor-profile/{actorProfileGUID}")
 
-    public LocationListResponse getLocationsByProfile(@PathVariable String serverName,
-                                                      @PathVariable String userId,
-                                                      @PathVariable String actorProfileGUID,
-                                                      @RequestParam int    startFrom,
-                                                      @RequestParam int    pageSize)
+    public LocationsResponse getLocationsByProfile(@PathVariable String serverName,
+                                                   @PathVariable String userId,
+                                                   @PathVariable String actorProfileGUID,
+                                                   @RequestParam int    startFrom,
+                                                   @RequestParam int    pageSize)
     {
         return restAPI.getLocationsByProfile(serverName, userId, actorProfileGUID, startFrom, pageSize);
     }
@@ -678,11 +669,11 @@ public class LocationManagementResource
      */
     @GetMapping(path = "/locations/by-asset/{assetGUID}")
 
-    public LocationListResponse getKnownLocationsForAsset(@PathVariable String serverName,
-                                                          @PathVariable String userId,
-                                                          @PathVariable String assetGUID,
-                                                          @RequestParam int    startFrom,
-                                                          @RequestParam int    pageSize)
+    public LocationsResponse getKnownLocationsForAsset(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String assetGUID,
+                                                       @RequestParam int    startFrom,
+                                                       @RequestParam int    pageSize)
     {
         return restAPI.getKnownLocationsForAsset(serverName, userId, assetGUID, startFrom, pageSize);
     }
@@ -704,10 +695,10 @@ public class LocationManagementResource
      */
     @GetMapping(path = "/locations")
 
-    public LocationListResponse getLocations(@PathVariable String          serverName,
-                                             @PathVariable String          userId,
-                                             @RequestParam int             startFrom,
-                                             @RequestParam int             pageSize)
+    public LocationsResponse getLocations(@PathVariable String          serverName,
+                                          @PathVariable String          userId,
+                                          @RequestParam int             startFrom,
+                                          @RequestParam int             pageSize)
     {
         return restAPI.getLocations(serverName, userId, startFrom, pageSize);
     }

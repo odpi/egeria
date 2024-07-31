@@ -5,15 +5,12 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.*;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.*;
-import org.odpi.openmetadata.accessservices.assetowner.properties.*;
-import org.odpi.openmetadata.accessservices.assetowner.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
+import org.odpi.openmetadata.accessservices.assetowner.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelationshipElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
@@ -23,9 +20,20 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.RetentionClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionFolderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindAssetOriginProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldQueryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.SurveyReport;
@@ -274,7 +282,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
         assetProperties.setTypeName(typeName);
         assetProperties.setQualifiedName(qualifiedName);
         assetProperties.setName(name);
-        assetProperties.setDescription(description);
+        assetProperties.setResourceDescription(description);
         assetProperties.setAdditionalProperties(additionalProperties);
         assetProperties.setExtendedProperties(extendedProperties);
 
@@ -642,7 +650,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                                            startFrom,
                                                                                            pageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -690,7 +698,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                                            startFrom,
                                                                                            pageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
     
 
@@ -713,7 +721,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
     @Override
     public String   addCombinedSchemaToAsset(String                          userId,
                                              String                          assetGUID,
-                                             SchemaTypeProperties            schemaType,
+                                             SchemaTypeProperties schemaType,
                                              List<SchemaAttributeProperties> schemaAttributes) throws InvalidParameterException,
                                                                                                       UserNotAuthorizedException,
                                                                                                       PropertyServerException
@@ -1352,7 +1360,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                                        startFrom,
                                                                                        validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1442,7 +1450,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                                        startFrom,
                                                                                        validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1862,7 +1870,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/by-search-string?startFrom={2}&pageSize={3}";
 
-        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+        SchemaAttributesResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
                                                                                                  urlTemplate,
                                                                                                  requestBody,
                                                                                                  serverName,
@@ -1870,7 +1878,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                                                  startFrom,
                                                                                                  validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1905,16 +1913,16 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/schema-attributes/retrieve?startFrom={3}&pageSize={4}";
 
-        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
-                                                                                                 urlTemplate,
-                                                                                                 new EffectiveTimeQueryRequestBody(),
-                                                                                                 serverName,
-                                                                                                 userId,
-                                                                                                 parentSchemaElementGUID,
-                                                                                                 startFrom,
-                                                                                                 validatedPageSize);
+        SchemaAttributesResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          new EffectiveTimeQueryRequestBody(),
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          parentSchemaElementGUID,
+                                                                                          startFrom,
+                                                                                          validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1956,15 +1964,15 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/by-name?startFrom={2}&pageSize={3}";
 
-        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
-                                                                                                 urlTemplate,
-                                                                                                 requestBody,
-                                                                                                 serverName,
-                                                                                                 userId,
-                                                                                                 startFrom,
-                                                                                                 validatedPageSize);
+        SchemaAttributesResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          requestBody,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          startFrom,
+                                                                                          validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1994,7 +2002,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}/retrieve";
 
-        SchemaAttributeElementResponse restResult = restClient.callSchemaAttributePostRESTCall(methodName,
+        SchemaAttributeResponse restResult = restClient.callSchemaAttributePostRESTCall(methodName,
                                                                                                urlTemplate,
                                                                                                new EffectiveTimeQueryRequestBody(),
                                                                                                serverName,
@@ -2033,7 +2041,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
-        ConnectionRequestBody requestBody = new ConnectionRequestBody();
+        OCFConnectionRequestBody requestBody = new OCFConnectionRequestBody();
 
         requestBody.setShortDescription(assetSummary);
         requestBody.setConnection(connection);
@@ -3320,7 +3328,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                                 startFrom,
                                                                                 validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -3358,7 +3366,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                                startFrom,
                                                                                validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -3407,7 +3415,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                                 startFrom,
                                                                                 validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -3437,11 +3445,11 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connections/{2}";
 
-        ConnectionResponse restResult = restClient.callMyConnectionGetRESTCall(methodName,
-                                                                               urlTemplate,
-                                                                               serverName,
-                                                                               userId,
-                                                                               connectionGUID);
+        ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
+                                                                             urlTemplate,
+                                                                             serverName,
+                                                                             userId,
+                                                                             connectionGUID);
         return restResult.getElement();
     }
 
@@ -3650,7 +3658,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                             startFrom,
                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -3699,7 +3707,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                             startFrom,
                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -3784,7 +3792,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                                       startFrom,
                                                                                       validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -3833,7 +3841,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                                       startFrom,
                                                                                       validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -3863,11 +3871,11 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/connector-types/{2}";
 
-        ConnectorTypeResponse restResult = restClient.callMyConnectorTypeGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     connectorTypeGUID);
+        ConnectorTypeResponse restResult = restClient.callConnectorTypeGetRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   connectorTypeGUID);
         return restResult.getElement();
     }
 
@@ -3921,7 +3929,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                                     startFrom,
                                                                                     pageSize);
 
-        return restResult.getAssets();
+        return restResult.getElements();
     }
 
 
@@ -3968,7 +3976,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                                     startFrom,
                                                                                     pageSize);
 
-        return restResult.getAssets();
+        return restResult.getElements();
     }
 
 
@@ -4002,7 +4010,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                                  userId,
                                                                                  assetGUID);
 
-        return restResult.getAsset();
+        return restResult.getElement();
     }
 
 
@@ -4078,13 +4086,13 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
-        SurveyReportListResponse restResult = restClient.callSurveyReportListGetRESTCall(methodName,
-                                                                                         urlTemplate,
-                                                                                         serverName,
-                                                                                         userId,
-                                                                                         assetGUID,
-                                                                                         Integer.toString(startingFrom),
-                                                                                         Integer.toString(maximumResults));
+        SurveyReportsResponse restResult = restClient.callSurveyReportListGetRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      assetGUID,
+                                                                                      Integer.toString(startingFrom),
+                                                                                      Integer.toString(maximumResults));
 
         return restResult.getSurveyReports();
     }
@@ -4179,20 +4187,20 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
         invalidParameterHandler.validateGUID(surveyReportGUID, discoveryReportGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
-        StatusRequestBody requestBody = new StatusRequestBody();
+        AnnotationStatusRequestBody requestBody = new AnnotationStatusRequestBody();
 
         requestBody.setAnnotationStatus(annotationStatus);
 
-        AnnotationListResponse restResult = restClient.callAnnotationListPostRESTCall(methodName,
-                                                                                      urlTemplate,
-                                                                                      requestBody,
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      surveyReportGUID,
-                                                                                      Integer.toString(startingFrom),
-                                                                                      Integer.toString(maximumResults));
+        AnnotationsResponse restResult = restClient.callAnnotationListPostRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   requestBody,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   surveyReportGUID,
+                                                                                   Integer.toString(startingFrom),
+                                                                                   Integer.toString(maximumResults));
 
-        return restResult.getAnnotations();
+        return restResult.getElements();
     }
 
 
@@ -4229,20 +4237,20 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
-        StatusRequestBody requestBody = new StatusRequestBody();
+        AnnotationStatusRequestBody requestBody = new AnnotationStatusRequestBody();
 
         requestBody.setAnnotationStatus(annotationStatus);
 
-        AnnotationListResponse restResult = restClient.callAnnotationListPostRESTCall(methodName,
-                                                                                      urlTemplate,
-                                                                                      requestBody,
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      annotationGUID,
-                                                                                      Integer.toString(startingFrom),
-                                                                                      Integer.toString(maximumResults));
+        AnnotationsResponse restResult = restClient.callAnnotationListPostRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   requestBody,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   annotationGUID,
+                                                                                   Integer.toString(startingFrom),
+                                                                                   Integer.toString(maximumResults));
 
-         return restResult.getAnnotations();
+         return restResult.getElements();
     }
 
     /**
@@ -4459,7 +4467,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
      */
     @Override
     public List<RelatedElement> getSemanticAssignees(String userId, String glossaryTermGUID, int startFrom, int pageSize, Date effectiveTime,
-     boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
+                                                     boolean forLineage, boolean forDuplicateProcessing) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException
     {
         return null;
     }

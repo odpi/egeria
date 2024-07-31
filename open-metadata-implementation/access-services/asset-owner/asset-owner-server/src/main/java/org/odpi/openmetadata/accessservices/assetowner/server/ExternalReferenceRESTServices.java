@@ -2,26 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ExternalReferenceElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ExternalReferenceLinkProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ExternalReferenceProperties;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ExternalReferenceListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ExternalReferenceResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalReferenceElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ExternalReferenceHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -63,9 +54,9 @@ public class ExternalReferenceRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public GUIDResponse createExternalReference(String                      serverName,
-                                                String                      userId,
-                                                ReferenceableRequestBody    requestBody)
+    public GUIDResponse createExternalReference(String                   serverName,
+                                                String                   userId,
+                                                ReferenceableRequestBody requestBody)
     {
         final String methodName = "createExternalReference";
 
@@ -531,19 +522,19 @@ public class ExternalReferenceRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public ExternalReferenceListResponse findExternalReferencesById(String                  serverName,
-                                                                    String                  userId,
-                                                                    int                     startFrom,
-                                                                    int                     pageSize,
-                                                                    SearchStringRequestBody requestBody)
+    public ExternalReferencesResponse findExternalReferencesById(String                  serverName,
+                                                                 String                  userId,
+                                                                 int                     startFrom,
+                                                                 int                     pageSize,
+                                                                 SearchStringRequestBody requestBody)
     {
         final String methodName = "findExternalReferencesById";
         final String resourceIdParameterName = "resourceId";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ExternalReferenceListResponse response = new ExternalReferenceListResponse();
-        AuditLog                       auditLog = null;
+        ExternalReferencesResponse response = new ExternalReferencesResponse();
+        AuditLog                   auditLog = null;
 
         try
         {
@@ -594,19 +585,19 @@ public class ExternalReferenceRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public ExternalReferenceListResponse getExternalReferencesByURL(String          serverName,
-                                                                    String          userId,
-                                                                    int             startFrom,
-                                                                    int             pageSize,
-                                                                    NameRequestBody requestBody)
+    public ExternalReferencesResponse getExternalReferencesByURL(String          serverName,
+                                                                 String          userId,
+                                                                 int             startFrom,
+                                                                 int             pageSize,
+                                                                 NameRequestBody requestBody)
     {
         final String methodName = "getExternalReferencesByURL";
         final String urlParameterName = "resourceId";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ExternalReferenceListResponse response = new ExternalReferenceListResponse();
-        AuditLog                      auditLog = null;
+        ExternalReferencesResponse response = new ExternalReferencesResponse();
+        AuditLog                   auditLog = null;
 
         try
         {
@@ -654,19 +645,19 @@ public class ExternalReferenceRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public ExternalReferenceListResponse retrieveAttachedExternalReferences(String serverName,
-                                                                            String userId,
-                                                                            String attachedToGUID,
-                                                                            int    startFrom,
-                                                                            int    pageSize)
+    public ExternalReferencesResponse retrieveAttachedExternalReferences(String serverName,
+                                                                         String userId,
+                                                                         String attachedToGUID,
+                                                                         int    startFrom,
+                                                                         int    pageSize)
     {
         final String methodName = "retrieveAttachedExternalReferences";
         final String guidParameterName = "attachedToGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ExternalReferenceListResponse response = new ExternalReferenceListResponse();
-        AuditLog                      auditLog = null;
+        ExternalReferencesResponse response = new ExternalReferencesResponse();
+        AuditLog                   auditLog = null;
 
         try
         {
@@ -714,41 +705,41 @@ public class ExternalReferenceRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public RelatedElementListResponse getElementsForExternalReference(String serverName,
-                                                                      String userId,
-                                                                      String externalReferenceGUID,
-                                                                      int    startFrom,
-                                                                      int    pageSize)
+    public RelatedElementsResponse getElementsForExternalReference(String serverName,
+                                                                   String userId,
+                                                                   String externalReferenceGUID,
+                                                                   int    startFrom,
+                                                                   int    pageSize)
     {
         final String methodName = "getElementsForExternalReference";
         final String guidParameter = "externalReferenceGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getAttachedElements(userId,
-                                                                externalReferenceGUID,
-                                                                guidParameter,
-                                                                OpenMetadataType.EXTERNAL_REFERENCE.typeName,
-                                                                OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeGUID,
-                                                                OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
-                                                                OpenMetadataType.REFERENCEABLE.typeName,
-                                                                null,
-                                                                null,
-                                                                1,
-                                                                false,
-                                                                false,
-                                                                startFrom,
-                                                                pageSize,
-                                                                new Date(),
-                                                                methodName));
+            response.setElements(handler.getAttachedElements(userId,
+                                                             externalReferenceGUID,
+                                                             guidParameter,
+                                                             OpenMetadataType.EXTERNAL_REFERENCE.typeName,
+                                                             OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeGUID,
+                                                             OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
+                                                             OpenMetadataType.REFERENCEABLE.typeName,
+                                                             null,
+                                                             null,
+                                                             1,
+                                                             false,
+                                                             false,
+                                                             startFrom,
+                                                             pageSize,
+                                                             new Date(),
+                                                             methodName));
         }
         catch (Exception error)
         {

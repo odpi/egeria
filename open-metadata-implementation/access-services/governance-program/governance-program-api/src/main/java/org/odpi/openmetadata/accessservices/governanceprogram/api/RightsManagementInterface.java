@@ -2,15 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LicenseElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LicenseTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseTypeProperties;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public interface RightsManagementInterface
      * @throws UserNotAuthorizedException security access problem
      */
     String createLicenseType(String                     userId,
-                             LicenseTypeProperties      properties,
+                             LicenseTypeProperties properties,
                              GovernanceDefinitionStatus initialStatus) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException;

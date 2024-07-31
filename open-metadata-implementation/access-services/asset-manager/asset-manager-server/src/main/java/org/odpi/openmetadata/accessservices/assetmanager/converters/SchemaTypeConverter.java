@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaTypeElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DerivedSchemaTypeQueryTargetProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DerivedSchemaTypeQueryTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;

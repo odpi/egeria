@@ -5,9 +5,9 @@ package org.odpi.openmetadata.accessservices.assetowner.fvt.assets;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -176,7 +176,7 @@ public class CreateAssetTest
             properties.setTypeName("Asset");
             properties.setQualifiedName(assetQualifiedName);
             properties.setName(assetResourceName);
-            properties.setDescription(assetResourceDescription);
+            properties.setResourceDescription(assetResourceDescription);
             properties.setAdditionalProperties(additionalProperties);
 
             String assetGUID = client.addAssetToCatalog(userId, properties);
@@ -231,7 +231,7 @@ public class CreateAssetTest
             properties.setTypeName("Asset");
             properties.setQualifiedName(assetQualifiedName);
             properties.setName(assetResourceName + " - 2");
-            properties.setDescription(assetResourceDescription + " - 2");
+            properties.setResourceDescription(assetResourceDescription + " - 2");
             properties.setDisplayName(assetDisplayName + " - 2");
             properties.setDisplaySummary(assetDisplaySummary + " - 2");
             properties.setDisplayDescription(assetDisplayDescription + " - 2");
@@ -292,7 +292,7 @@ public class CreateAssetTest
             properties.setQualifiedName(assetFullQualifiedName);
             properties.setName(assetResourceName);
             properties.setVersionIdentifier(assetVersionIdentifier);
-            properties.setDescription(assetResourceDescription);
+            properties.setResourceDescription(assetResourceDescription);
             properties.setDisplayName(assetDisplayName);
             properties.setDisplaySummary(assetDisplaySummary);
             properties.setDisplayDescription(assetDisplayDescription);
@@ -352,7 +352,7 @@ public class CreateAssetTest
             }
 
             AssetElement    retrievedElement    = client.getAssetSummary(userId, assetGUID);
-            AssetProperties retrievedAsset = retrievedElement.getAssetProperties();
+            AssetProperties retrievedAsset = retrievedElement.getProperties();
 
             if (retrievedAsset == null)
             {
@@ -378,7 +378,7 @@ public class CreateAssetTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad versionIdentifier from Retrieve)");
             }
-            if (! description.equals(retrievedAsset.getDescription()))
+            if (! description.equals(retrievedAsset.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -419,7 +419,7 @@ public class CreateAssetTest
             }
 
             retrievedElement = assetList.get(0);
-            retrievedAsset = retrievedElement.getAssetProperties();
+            retrievedAsset = retrievedElement.getProperties();
 
             if (! qualifiedName.equals(retrievedAsset.getQualifiedName()))
             {
@@ -440,7 +440,7 @@ public class CreateAssetTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad versionIdentifier from RetrieveByName)");
             }
-            if (! description.equals(retrievedAsset.getDescription()))
+            if (! description.equals(retrievedAsset.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -497,7 +497,7 @@ public class CreateAssetTest
             }
 
             AssetElement    retrievedElement    = client.getAssetSummary(userId, assetGUID);
-            AssetProperties retrievedAsset = retrievedElement.getAssetProperties();
+            AssetProperties retrievedAsset = retrievedElement.getProperties();
 
             if (retrievedAsset == null)
             {
@@ -523,7 +523,7 @@ public class CreateAssetTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad versionIdentifier from Retrieve)");
             }
-            if (! description.equals(retrievedAsset.getDescription()))
+            if (! description.equals(retrievedAsset.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -584,7 +584,7 @@ public class CreateAssetTest
             }
 
             retrievedElement = assetList.get(0);
-            retrievedAsset = retrievedElement.getAssetProperties();
+            retrievedAsset = retrievedElement.getProperties();
 
             if (! qualifiedName.equals(retrievedAsset.getQualifiedName()))
             {
@@ -605,7 +605,7 @@ public class CreateAssetTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad versionIdentifier from RetrieveByName)");
             }
-            if (! description.equals(retrievedAsset.getDescription()))
+            if (! description.equals(retrievedAsset.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }

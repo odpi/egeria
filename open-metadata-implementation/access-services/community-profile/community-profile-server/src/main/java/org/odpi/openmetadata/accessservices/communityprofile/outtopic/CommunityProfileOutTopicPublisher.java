@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopic
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileAuditCode;
 import org.odpi.openmetadata.accessservices.communityprofile.events.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 
 
 /**

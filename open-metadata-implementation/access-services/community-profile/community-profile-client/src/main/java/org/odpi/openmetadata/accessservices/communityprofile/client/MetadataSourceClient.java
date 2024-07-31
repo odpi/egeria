@@ -6,9 +6,9 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.MetadataSourceInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.MetadataSourceElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.MetadataSourceResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataSourceElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataSourceProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

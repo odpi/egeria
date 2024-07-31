@@ -5,12 +5,10 @@ package org.odpi.openmetadata.viewservices.automatedcuration.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ReferenceableElement;
-import org.odpi.openmetadata.accessservices.assetowner.rest.AssetOwnerOMASAPIResponse;
-import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeSummary;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ReferenceableElement;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TechnologyTypeElementListResponse extends AssetOwnerOMASAPIResponse
+public class TechnologyTypeElementListResponse extends FFDCResponseBase
 {
     private List<ReferenceableElement> elements = null;
 
@@ -81,16 +79,6 @@ public class TechnologyTypeElementListResponse extends AssetOwnerOMASAPIResponse
     {
         return "TechnologyTypeElementListResponse{" +
                 "elements=" + elements +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "} " + super.toString();
     }
 }

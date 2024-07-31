@@ -3,22 +3,17 @@
 
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DataContainerProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.QueryProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ReportProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.FormProperties;
-import org.odpi.openmetadata.accessservices.datamanager.rest.*;
+import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataContainerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.QueryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.ReportProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.FormProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.DisplayDataContainerHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -106,8 +101,9 @@ public class DisplayApplicationRESTServices
                                                                   handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                                   requestBody.getQualifiedName(),
                                                                   requestBody.getName(),
+                                                                  requestBody.getResourceName(),
                                                                   requestBody.getVersionIdentifier(),
-                                                                  requestBody.getDescription(),
+                                                                  requestBody.getResourceDescription(),
                                                                   requestBody.getDeployedImplementationType(),
                                                                   requestBody.getAdditionalProperties(),
                                                                   typeName,
@@ -305,8 +301,9 @@ public class DisplayApplicationRESTServices
                                     formGUIDParameterName,
                                     requestBody.getQualifiedName(),
                                     requestBody.getName(),
+                                    requestBody.getResourceName(),
                                     requestBody.getVersionIdentifier(),
-                                    requestBody.getDescription(),
+                                    requestBody.getResourceDescription(),
                                     requestBody.getDeployedImplementationType(),
                                     requestBody.getAdditionalProperties(),
                                     typeName,
@@ -553,7 +550,7 @@ public class DisplayApplicationRESTServices
                                                                   new Date(),
                                                                   methodName);
 
-                response.setElementList(setUpFormVendorProperties(userId, formAssets, handler, methodName));
+                response.setElements(setUpFormVendorProperties(userId, formAssets, handler, methodName));
             }
             else
             {
@@ -620,7 +617,7 @@ public class DisplayApplicationRESTServices
                                                                        new Date(),
                                                                        methodName);
 
-                response.setElementList(setUpFormVendorProperties(userId, formAssets, handler, methodName));
+                response.setElements(setUpFormVendorProperties(userId, formAssets, handler, methodName));
             }
             else
             {
@@ -692,7 +689,7 @@ public class DisplayApplicationRESTServices
                                                                        new Date(),
                                                                        methodName);
 
-            response.setElementList(setUpFormVendorProperties(userId, formAssets, handler, methodName));
+            response.setElements(setUpFormVendorProperties(userId, formAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -846,8 +843,9 @@ public class DisplayApplicationRESTServices
                                                                     handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                                     requestBody.getQualifiedName(),
                                                                     requestBody.getName(),
+                                                                    requestBody.getResourceName(),
                                                                     requestBody.getVersionIdentifier(),
-                                                                    requestBody.getDescription(),
+                                                                    requestBody.getResourceDescription(),
                                                                     requestBody.getDeployedImplementationType(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     typeName,
@@ -1103,8 +1101,9 @@ public class DisplayApplicationRESTServices
                                     reportGUIDParameterName,
                                     requestBody.getQualifiedName(),
                                     requestBody.getName(),
+                                    requestBody.getResourceName(),
                                     requestBody.getVersionIdentifier(),
-                                    requestBody.getDescription(),
+                                    requestBody.getResourceDescription(),
                                     requestBody.getDeployedImplementationType(),
                                     requestBody.getAdditionalProperties(),
                                     typeName,
@@ -1351,7 +1350,7 @@ public class DisplayApplicationRESTServices
                                                                       new Date(),
                                                                       methodName);
 
-                response.setElementList(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
+                response.setElements(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
             }
             else
             {
@@ -1418,7 +1417,7 @@ public class DisplayApplicationRESTServices
                                                                            new Date(),
                                                                            methodName);
 
-                response.setElementList(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
+                response.setElements(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
             }
             else
             {
@@ -1490,7 +1489,7 @@ public class DisplayApplicationRESTServices
                                                                            new Date(),
                                                                            methodName);
 
-            response.setElementList(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
+            response.setElements(setUpReportVendorProperties(userId, reportAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1602,8 +1601,9 @@ public class DisplayApplicationRESTServices
                                                                    handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                                    requestBody.getQualifiedName(),
                                                                    requestBody.getName(),
+                                                                   requestBody.getResourceName(),
                                                                    requestBody.getVersionIdentifier(),
-                                                                   requestBody.getDescription(),
+                                                                   requestBody.getResourceDescription(),
                                                                    requestBody.getDeployedImplementationType(),
                                                                    requestBody.getAdditionalProperties(),
                                                                    typeName,
@@ -1817,8 +1817,9 @@ public class DisplayApplicationRESTServices
                                     queryGUIDParameterName,
                                     requestBody.getQualifiedName(),
                                     requestBody.getName(),
+                                    requestBody.getResourceName(),
                                     requestBody.getVersionIdentifier(),
-                                    requestBody.getDescription(),
+                                    requestBody.getResourceDescription(),
                                     requestBody.getDeployedImplementationType(),
                                     requestBody.getAdditionalProperties(),
                                     typeName,
@@ -2062,7 +2063,7 @@ public class DisplayApplicationRESTServices
                                                                     new Date(),
                                                                     methodName);
 
-                response.setElementList(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
+                response.setElements(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
             }
             else
             {
@@ -2129,7 +2130,7 @@ public class DisplayApplicationRESTServices
                                                                          new Date(),
                                                                          methodName);
 
-                response.setElementList(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
+                response.setElements(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
             }
             else
             {
@@ -2201,7 +2202,7 @@ public class DisplayApplicationRESTServices
                                                                          new Date(),
                                                                          methodName);
 
-            response.setElementList(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
+            response.setElements(setUpQueryVendorProperties(userId, queryAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -2657,7 +2658,7 @@ public class DisplayApplicationRESTServices
                                                                                  new Date(),
                                                                                  methodName);
 
-                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
             }
             else
             {
@@ -2721,7 +2722,7 @@ public class DisplayApplicationRESTServices
                                                                                  new Date(),
                                                                                  methodName);
 
-            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+            response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -2781,7 +2782,7 @@ public class DisplayApplicationRESTServices
                                                                                       new Date(),
                                                                                       methodName);
 
-                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
             }
             else
             {

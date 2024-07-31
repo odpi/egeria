@@ -2,20 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.projectmanagement.server;
 
-import org.odpi.openmetadata.accessservices.projectmanagement.converters.ActorProfileConverter;
-import org.odpi.openmetadata.accessservices.projectmanagement.converters.PersonRoleConverter;
-import org.odpi.openmetadata.accessservices.projectmanagement.converters.ProjectConverter;
-import org.odpi.openmetadata.accessservices.projectmanagement.converters.RelatedElementConverter;
 import org.odpi.openmetadata.accessservices.projectmanagement.ffdc.ProjectManagementErrorCode;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.RelatedElement;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ProjectHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

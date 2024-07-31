@@ -7,12 +7,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
 import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutboundEvent;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIOperationElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.APIOperationProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.APIProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIOperationElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc.OpenAPIIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc.OpenAPIIntegrationConnectorErrorCode;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.properties.OpenAPIOperation;
@@ -24,7 +24,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.integrationservices.api.connector.APIIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.api.connector.APIIntegratorContext;
 
@@ -510,7 +509,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
             if (openAPISpecification.getInfo() != null)
             {
                 properties.setDisplayName(openAPISpecification.getInfo().getTitle());
-                properties.setDescription(openAPISpecification.getInfo().getDescription());
+                properties.setResourceDescription(openAPISpecification.getInfo().getDescription());
             }
 
             endpointGUID = myContext.createEndpoint(properties);
@@ -567,7 +566,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
 
                 properties.setQualifiedName(apiQualifiedName);
                 properties.setName(tag.getName());
-                properties.setDescription(tag.getDescription());
+                properties.setDisplayDescription(tag.getDescription());
 
                 apiGUID = myContext.createAPI(endpointGUID, properties);
             }

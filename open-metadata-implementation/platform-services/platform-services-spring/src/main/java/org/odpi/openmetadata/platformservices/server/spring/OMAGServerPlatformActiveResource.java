@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.OCFConnectorTypeResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
@@ -263,13 +263,13 @@ public class OMAGServerPlatformActiveResource
                         @ApiResponse(responseCode = "200",description="Connector type",
                                      content = @Content(
                                              mediaType ="application/json",
-                                             schema = @Schema(implementation=ConnectorTypeResponse.class)
+                                             schema = @Schema(implementation= OCFConnectorTypeResponse.class)
                                      )
 
                         )
                 })
-    public ConnectorTypeResponse getConnectorType(@Parameter(description="calling user")                         @PathVariable String userId,
-                                                  @Parameter(description="name of the connector provider class") @PathVariable String connectorProviderClassName)
+    public OCFConnectorTypeResponse getConnectorType(@Parameter(description="calling user")                         @PathVariable String userId,
+                                                     @Parameter(description="name of the connector provider class") @PathVariable String connectorProviderClassName)
     {
         return platformAPI.getConnectorType(userId, connectorProviderClassName);
     }

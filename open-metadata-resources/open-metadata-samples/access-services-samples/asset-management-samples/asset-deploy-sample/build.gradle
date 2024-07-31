@@ -9,9 +9,10 @@ plugins {
 }
 
 dependencies {
-    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-client')
-    implementation project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-api')
+    compileOnly project(':open-metadata-implementation:access-services:it-infrastructure:it-infrastructure-api')
     implementation project(':open-metadata-implementation:platform-services:platform-services-client')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')

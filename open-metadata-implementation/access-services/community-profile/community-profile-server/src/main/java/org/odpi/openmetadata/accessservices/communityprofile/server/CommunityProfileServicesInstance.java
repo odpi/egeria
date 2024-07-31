@@ -3,9 +3,15 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 import org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopic.CommunityProfileOutTopicClientProvider;
-import org.odpi.openmetadata.accessservices.communityprofile.converters.*;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataSourceElement;
+import org.odpi.openmetadata.commonservices.generichandlers.CommentConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.InformalTagConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.LikeConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.LocationConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.RatingConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.RelatedElementConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
@@ -25,11 +31,11 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 {
     private final static AccessServiceDescription myDescription = AccessServiceDescription.COMMUNITY_PROFILE_OMAS;
 
-    private final ReferenceableHandler<RelatedElement>                   relatedElementHandler;
-    private final SoftwareCapabilityHandler<MetadataSourceElement>       metadataSourceHandler;
-    private final UserIdentityHandler<UserIdentityElement>               userIdentityHandler;
-    private final ActorProfileHandler<ActorProfileElement>               actorProfileHandler;
-    private final PersonRoleHandler<PersonRoleElement>                   personRoleHandler;
+    private final ReferenceableHandler<RelatedElement>             relatedElementHandler;
+    private final SoftwareCapabilityHandler<MetadataSourceElement> metadataSourceHandler;
+    private final UserIdentityHandler<UserIdentityElement>         userIdentityHandler;
+    private final ActorProfileHandler<ActorProfileElement> actorProfileHandler;
+    private final PersonRoleHandler<PersonRoleElement>     personRoleHandler;
     private final CollectionHandler<CollectionElement>                   collectionHandler;
     private final CommunityHandler<CommunityElement>                     communityHandler;
     private final ContributionRecordHandler<ContributionRecordElement>   contributionRecordHandler;
@@ -89,7 +95,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
 
         if (repositoryHandler != null)
         {
-            this.relatedElementHandler = new ReferenceableHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName,serverName),
+            this.relatedElementHandler = new ReferenceableHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName, serverName),
                                                                     RelatedElement.class,
                                                                     serviceName,
                                                                     serverName,
@@ -132,7 +138,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
                                                                  publishZones,
                                                                  auditLog);
 
-            this.personRoleHandler = new PersonRoleHandler<>(new PersonRoleConverter<>(repositoryHelper, serviceName,serverName),
+            this.personRoleHandler = new PersonRoleHandler<>(new PersonRoleConverter<>(repositoryHelper, serviceName, serverName),
                                                              PersonRoleElement.class,
                                                              serviceName,
                                                              serverName,
@@ -160,7 +166,7 @@ public class CommunityProfileServicesInstance extends OMASServiceInstance
                                                              publishZones,
                                                              auditLog);
 
-            this.communityHandler = new CommunityHandler<>(new CommunityConverter<>(repositoryHelper, serviceName,serverName),
+            this.communityHandler = new CommunityHandler<>(new CommunityConverter<>(repositoryHelper, serviceName, serverName),
                                                            CommunityElement.class,
                                                            serviceName,
                                                            serverName,

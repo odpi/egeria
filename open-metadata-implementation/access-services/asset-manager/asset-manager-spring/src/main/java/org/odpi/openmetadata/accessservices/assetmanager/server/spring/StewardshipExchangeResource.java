@@ -7,13 +7,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ClassificationRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementStubsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.FindByPropertiesRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceDefinitionsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.RelatedElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.server.StewardshipExchangeRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ElementStubsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelatedElementsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -138,7 +138,7 @@ public class StewardshipExchangeResource
                                                                              boolean                     forLineage,
                                                                @RequestParam(required = false, defaultValue = "false")
                                                                              boolean                     forDuplicateProcessing,
-                                                                @RequestBody(required = false)
+                                                               @RequestBody(required = false)
                                                                              FindByPropertiesRequestBody requestBody)
     {
         return restAPI.getDataFieldClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);

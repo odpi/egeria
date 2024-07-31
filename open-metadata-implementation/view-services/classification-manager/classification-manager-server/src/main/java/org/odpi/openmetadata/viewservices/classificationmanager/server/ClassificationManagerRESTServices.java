@@ -3,20 +3,18 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.classificationmanager.server;
 
-import org.odpi.openmetadata.accessservices.assetmanager.client.management.CollaborationManagementClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.StewardshipManagementClient;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.classificationmanager.rest.ClassificationRequestBody;
 import org.odpi.openmetadata.viewservices.classificationmanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.viewservices.classificationmanager.rest.ReferenceableUpdateRequestBody;
 import org.odpi.openmetadata.viewservices.classificationmanager.rest.RelationshipRequestBody;
 import org.slf4j.LoggerFactory;
 
@@ -879,7 +877,7 @@ public class ClassificationManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof SubjectAreaMemberProperties properties)
+                if (requestBody.getProperties() instanceof SubjectAreaClassificationProperties properties)
                 {
                     StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
 
@@ -892,7 +890,7 @@ public class ClassificationManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaMemberProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaClassificationProperties.class.getName(), methodName);
                 }
             }
             else

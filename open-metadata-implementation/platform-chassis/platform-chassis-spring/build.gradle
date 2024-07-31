@@ -26,6 +26,7 @@ dependencies {
     implementation 'org.springframework:spring-beans'
     implementation 'org.springframework:spring-core'
     implementation 'org.springframework:spring-context'
+    compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:server-operations:server-operations-server')

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
 
 import java.util.Objects;
 

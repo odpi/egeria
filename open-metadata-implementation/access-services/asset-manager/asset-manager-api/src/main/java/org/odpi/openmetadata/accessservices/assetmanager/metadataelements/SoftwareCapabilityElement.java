@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SoftwareCapabilitiesProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 
 import java.util.List;
@@ -14,7 +13,8 @@ import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 
 /**
  * SoftwareCapabilityElement contains the properties and header for a software capability entity retrieved from the metadata
@@ -23,11 +23,11 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SoftwareCapabilityElement implements MetadataElement
+public class SoftwareCapabilityElement implements CorrelatedMetadataElement
 {
     private ElementHeader                   elementHeader                  = null;
     private List<MetadataCorrelationHeader> correlationHeaders             = null;
-    private SoftwareCapabilitiesProperties  softwareCapabilitiesProperties = null;
+    private SoftwareCapabilityProperties    softwareCapabilitiesProperties = null;
 
 
     /**
@@ -89,15 +89,6 @@ public class SoftwareCapabilityElement implements MetadataElement
     @Override
     public List<MetadataCorrelationHeader> getCorrelationHeaders()
     {
-        if (correlationHeaders == null)
-        {
-            return null;
-        }
-        else if (correlationHeaders.isEmpty())
-        {
-            return null;
-        }
-
         return correlationHeaders;
     }
 
@@ -121,7 +112,7 @@ public class SoftwareCapabilityElement implements MetadataElement
      *
      * @return properties bean
      */
-    public SoftwareCapabilitiesProperties getSoftwareCapabilitiesProperties()
+    public SoftwareCapabilityProperties getSoftwareCapabilitiesProperties()
     {
         return softwareCapabilitiesProperties;
     }
@@ -132,7 +123,7 @@ public class SoftwareCapabilityElement implements MetadataElement
      *
      * @param softwareCapabilitiesProperties properties bean
      */
-    public void setSoftwareCapabilitiesProperties(SoftwareCapabilitiesProperties softwareCapabilitiesProperties)
+    public void setSoftwareCapabilitiesProperties(SoftwareCapabilityProperties softwareCapabilitiesProperties)
     {
         this.softwareCapabilitiesProperties = softwareCapabilitiesProperties;
     }

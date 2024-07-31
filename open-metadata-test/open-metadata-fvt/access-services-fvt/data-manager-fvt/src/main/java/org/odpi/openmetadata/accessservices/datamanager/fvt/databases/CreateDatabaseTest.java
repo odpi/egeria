@@ -6,11 +6,14 @@ package org.odpi.openmetadata.accessservices.datamanager.fvt.databases;
 import org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.datamanager.properties.*;
+import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.*;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -216,7 +219,7 @@ public class CreateDatabaseTest
              */
             activityName = "updateNonExistentColumn";
 
-            String databaseColumnTwoGUID = "Blah Blah";
+            String                   databaseColumnTwoGUID       = "Blah Blah";
             DatabaseColumnProperties databaseColumnTwoProperties = new DatabaseColumnProperties();
             databaseColumnTwoProperties.setQualifiedName(databaseColumnTwoName);
             databaseColumnTwoProperties.setDisplayName(databaseColumnDisplayName); // Note wrong value
@@ -273,6 +276,7 @@ public class CreateDatabaseTest
 
             if (! databaseColumnTwoType.equals(afterElement.getDatabaseColumnProperties().getDataType()))
             {
+                System.out.println("AfterElement: " + afterElement);
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(data type should be " + databaseColumnTwoType + " rather than " + afterElement.getDatabaseColumnProperties().getDataType() + ")");
             }
 
@@ -415,8 +419,8 @@ public class CreateDatabaseTest
 
             DatabaseManagerProperties properties = new DatabaseManagerProperties();
             properties.setQualifiedName(databaseManagerName);
-            properties.setDisplayName(databaseManagerDisplayName);
-            properties.setDescription(databaseManagerDescription);
+            properties.setResourceName(databaseManagerDisplayName);
+            properties.setResourceDescription(databaseManagerDescription);
             properties.setDeployedImplementationType(databaseManagerTypeDescription);
             properties.setVersion(databaseManagerVersion);
 
@@ -537,7 +541,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! description.equals(retrievedDatabase.getDescription()))
+            if (! description.equals(retrievedDatabase.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -578,7 +582,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! description.equals(retrievedDatabase.getDescription()))
+            if (! description.equals(retrievedDatabase.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -618,7 +622,6 @@ public class CreateDatabaseTest
      * @return GUID of database
      * @throws FVTUnexpectedCondition the test case failed
      */
-    @SuppressWarnings(value = "deprecation")
     private String getDatabase(DatabaseManagerClient client,
                                String                databaseManagerGUID,
                                String                userId) throws FVTUnexpectedCondition
@@ -631,7 +634,7 @@ public class CreateDatabaseTest
 
             properties.setQualifiedName(databaseName);
             properties.setName(databaseDisplayName); // check deprecated method still works
-            properties.setDescription(databaseDescription);
+            properties.setResourceDescription(databaseDescription);
             properties.setDeployedImplementationType(databaseType);
             properties.setDatabaseVersion(databaseVersion);
 
@@ -831,7 +834,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! databaseSchemaDescription.equals(retrievedSchema.getDescription()))
+            if (! databaseSchemaDescription.equals(retrievedSchema.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -865,7 +868,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! databaseSchemaDescription.equals(retrievedSchema.getDescription()))
+            if (! databaseSchemaDescription.equals(retrievedSchema.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -921,7 +924,7 @@ public class CreateDatabaseTest
 
             properties.setQualifiedName(databaseSchemaName);
             properties.setName(databaseSchemaDisplayName);
-            properties.setDescription(databaseSchemaDescription);
+            properties.setResourceDescription(databaseSchemaDescription);
 
             String databaseSchemaGUID = client.createDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseGUID, properties);
 

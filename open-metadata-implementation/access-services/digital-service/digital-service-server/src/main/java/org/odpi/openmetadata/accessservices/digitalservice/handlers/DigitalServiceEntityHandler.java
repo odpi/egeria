@@ -4,13 +4,13 @@ package org.odpi.openmetadata.accessservices.digitalservice.handlers;
 
 import org.odpi.openmetadata.accessservices.digitalservice.builders.DigitalServiceBuilder;
 import org.odpi.openmetadata.accessservices.digitalservice.mappers.DigitalServiceMapper;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalServiceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -48,8 +48,8 @@ public class DigitalServiceEntityHandler
      * @throws InvalidParameterException  the invalid parameter exception
      * @throws UserNotAuthorizedException  user not authorized
      */
-    public String createDigitalServiceEntity(String userId,
-                                             String serverName,
+    public String createDigitalServiceEntity(String                   userId,
+                                             String                   serverName,
                                              DigitalServiceProperties digitalServiceProperties) throws PropertyServerException,
                                                                                                        UserNotAuthorizedException,
                                                                                                        InvalidParameterException

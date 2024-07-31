@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.gaf.converters;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
+import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementOrigin;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
@@ -41,7 +41,7 @@ import java.util.Map;
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing a Governance Engine bean.
  */
-abstract public class OpenMetadataStoreConverter<B> extends OCFConverter<B>
+abstract public class OpenMetadataStoreConverter<B> extends OMFConverter<B>
 {
     private static final Logger log = LoggerFactory.getLogger(OpenMetadataStoreConverter.class);
 

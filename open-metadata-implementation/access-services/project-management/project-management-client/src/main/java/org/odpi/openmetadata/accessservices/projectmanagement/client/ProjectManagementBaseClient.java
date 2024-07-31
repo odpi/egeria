@@ -4,7 +4,8 @@ package org.odpi.openmetadata.accessservices.projectmanagement.client;
 
 import org.odpi.openmetadata.accessservices.projectmanagement.api.RelatedElementsInterface;
 import org.odpi.openmetadata.accessservices.projectmanagement.client.rest.ProjectManagementRESTClient;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.RelatedElement;
+import org.odpi.openmetadata.accessservices.projectmanagement.rest.TemplateRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
@@ -12,14 +13,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StakeholderProperties;
 import org.odpi.openmetadata.accessservices.projectmanagement.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.ClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.TemplateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -579,13 +574,13 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
 
-        RelatedElementListResponse restResult = restClient.callRelatedElementListGetRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             startingElementGUID,
-                                                                                             Integer.toString(startFrom),
-                                                                                             Integer.toString(pageSize));
+        RelatedElementsResponse restResult = restClient.callRelatedElementsGetRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startingElementGUID,
+                                                                                       Integer.toString(startFrom),
+                                                                                       Integer.toString(pageSize));
 
         return restResult.getElements();
     }

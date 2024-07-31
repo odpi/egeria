@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters;
 
 
-import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.InformalTag;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -17,7 +17,7 @@ import java.lang.reflect.InvocationTargetException;
  * InformalTagConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  * EntityDetail object into an InformalTag bean.
  */
-public class InformalTagConverter<B> extends OCFConverter<B>
+public class InformalTagConverter<B> extends OMFConverter<B>
 {
     /**
      * Constructor

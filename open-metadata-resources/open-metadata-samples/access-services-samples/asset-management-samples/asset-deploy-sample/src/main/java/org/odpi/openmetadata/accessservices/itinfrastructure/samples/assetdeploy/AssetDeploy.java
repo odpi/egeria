@@ -6,11 +6,12 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.samples.assetdeplo
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.EndpointManagerClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.PlatformManagerClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.ServerManagerClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerPlatformElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.EndpointProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerPlatformProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerProperties;
+
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerPlatformElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerPlatformProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;

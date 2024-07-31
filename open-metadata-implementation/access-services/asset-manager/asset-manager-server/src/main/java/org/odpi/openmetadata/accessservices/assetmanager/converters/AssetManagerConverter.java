@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareCapabilityElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.AssetManagerProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -68,8 +68,8 @@ public class AssetManagerConverter<B> extends AssetManagerOMASConverter<B>
 
                     assetManagerProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     assetManagerProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    assetManagerProperties.setTechnicalName(this.removeName(instanceProperties));
-                    assetManagerProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
+                    assetManagerProperties.setResourceName(this.removeName(instanceProperties));
+                    assetManagerProperties.setResourceDescription(this.removeDescription(instanceProperties));
                     assetManagerProperties.setDeployedImplementationType(this.removeCapabilityType(instanceProperties));
                     assetManagerProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     assetManagerProperties.setPatchLevel(this.removePatchLevel(instanceProperties));

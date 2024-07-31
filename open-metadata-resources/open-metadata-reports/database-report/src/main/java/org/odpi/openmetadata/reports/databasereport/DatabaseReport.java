@@ -5,15 +5,11 @@ package org.odpi.openmetadata.reports.databasereport;
 
 import org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseSchemaElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseManagerProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties;
+
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.DatabaseManagerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.*;
 import org.odpi.openmetadata.reports.EgeriaReport;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
@@ -140,7 +136,7 @@ public class DatabaseReport
             do
             {
                 startFrom = startFrom + pageSize;
-// dw - I changed the search string below to .* rather than *
+
                 List<DatabaseElement> databases = databaseManagerClient.findDatabases(clientUserId, ".*", startFrom, pageSize);
 
                 if (databases != null)
@@ -227,7 +223,7 @@ public class DatabaseReport
             System.out.print("| " + databaseElement.getElementHeader().getGUID());
             System.out.print(" | " + databaseElement.getDatabaseProperties().getQualifiedName());
             System.out.print(" | " + databaseElement.getDatabaseProperties().getName());
-            System.out.print(" | " + databaseElement.getDatabaseProperties().getDescription());
+            System.out.print(" | " + databaseElement.getDatabaseProperties().getResourceDescription());
             System.out.println(" |");
         }
     }
@@ -254,7 +250,7 @@ public class DatabaseReport
                                        databaseElement.getElementHeader().getGUID(),
                                        databaseElement.getDatabaseProperties().getQualifiedName(),
                                        databaseElement.getDatabaseProperties().getName(),
-                                       databaseElement.getDatabaseProperties().getDescription());
+                                       databaseElement.getDatabaseProperties().getResourceDescription());
 
             /*
              * The database may have its tables organized in schemas or directly listed under the database.
@@ -294,7 +290,7 @@ public class DatabaseReport
                                                databaseSchemaElement.getElementHeader().getGUID(),
                                                databaseSchemaElement.getDatabaseSchemaProperties().getQualifiedName(),
                                                databaseSchemaElement.getDatabaseSchemaProperties().getName(),
-                                               databaseSchemaElement.getDatabaseSchemaProperties().getDescription());
+                                               databaseSchemaElement.getDatabaseSchemaProperties().getResourceDescription());
 
                     displayTables(report, indentLevel + 1, databaseSchemaElement.getElementHeader().getGUID());
                 }
@@ -491,7 +487,7 @@ public class DatabaseReport
 
                     databaseSchemaProperties.setQualifiedName(databaseName + "." + schemaName);
                     databaseSchemaProperties.setName(schemaName);
-                    databaseSchemaProperties.setDescription("Database schema definition called " + schemaName + " with " + numberOfTables + " tables.");
+                    databaseSchemaProperties.setResourceDescription("Database schema definition called " + schemaName + " with " + numberOfTables + " tables.");
 
                     String databaseSchemaGUID = databaseManagerClient.createDatabaseSchema(clientUserId,
                                                                                            databaseManagerGUID,

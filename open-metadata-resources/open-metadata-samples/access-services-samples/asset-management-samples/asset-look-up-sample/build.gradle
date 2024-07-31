@@ -10,7 +10,7 @@ plugins {
 
 dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
-    implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-api')
+    compileOnly project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-api')
     compileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
     compileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
     implementation project(':open-metadata-implementation:platform-services:platform-services-client')

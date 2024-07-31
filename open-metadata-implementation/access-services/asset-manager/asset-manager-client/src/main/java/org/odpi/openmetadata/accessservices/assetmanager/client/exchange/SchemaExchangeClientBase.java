@@ -9,14 +9,18 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Schema
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ElementHeaderResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.PrimaryKeyClassificationRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 
 import java.util.Date;
 import java.util.List;
@@ -743,7 +747,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        SchemaTypeElementsResponse restResult = restClient.callSchemaTypesPostRESTCall(methodName,
+        SchemaTypeElementsResponse restResult = restClient.callMySchemaTypesPostRESTCall(methodName,
                                                                                        urlTemplate,
                                                                                        requestBody,
                                                                                        serverName,
@@ -795,7 +799,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/parents/{2}/{3}/schema-types/retrieve?forLineage={4}&forDuplicateProcessing={5}";
 
-        SchemaTypeElementResponse restResult = restClient.callSchemaTypePostRESTCall(methodName,
+        SchemaTypeElementResponse restResult = restClient.callMySchemaTypePostRESTCall(methodName,
                                                                                      urlTemplate,
                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                      serverName,
@@ -859,7 +863,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        SchemaTypeElementsResponse restResult = restClient.callSchemaTypesPostRESTCall(methodName,
+        SchemaTypeElementsResponse restResult = restClient.callMySchemaTypesPostRESTCall(methodName,
                                                                                        urlTemplate,
                                                                                        requestBody,
                                                                                        serverName,
@@ -909,7 +913,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-types/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        SchemaTypeElementResponse restResult = restClient.callSchemaTypePostRESTCall(methodName,
+        SchemaTypeElementResponse restResult = restClient.callMySchemaTypePostRESTCall(methodName,
                                                                                      urlTemplate,
                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                      serverName,
@@ -1336,8 +1340,8 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
         primaryKeyProperties.setKeyPattern(primaryKeyPattern);
 
         requestBody.setPrimaryKeyProperties(primaryKeyProperties);
-        requestBody.setAssetManagerGUID(assetManagerGUID);
-        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setExternalSourceGUID(assetManagerGUID);
+        requestBody.setExternalSourceName(assetManagerName);
         requestBody.setEffectiveTime(effectiveTime);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}/is-primary-key?assetManagerIsHome={3}&forLineage={4}&forDuplicateProcessing={5}";
@@ -1664,7 +1668,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+        SchemaAttributeElementsResponse restResult = restClient.callMySchemaAttributesPostRESTCall(methodName,
                                                                                                  urlTemplate,
                                                                                                  requestBody,
                                                                                                  serverName,
@@ -1719,7 +1723,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/schema-attributes/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
-        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+        SchemaAttributeElementsResponse restResult = restClient.callMySchemaAttributesPostRESTCall(methodName,
                                                                                                  urlTemplate,
                                                                                                  getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                                  serverName,
@@ -1784,7 +1788,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+        SchemaAttributeElementsResponse restResult = restClient.callMySchemaAttributesPostRESTCall(methodName,
                                                                                                  urlTemplate,
                                                                                                  requestBody,
                                                                                                  serverName,
@@ -1834,7 +1838,7 @@ public class SchemaExchangeClientBase extends ExchangeClientBase implements Sche
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        SchemaAttributeElementResponse restResult = restClient.callSchemaAttributePostRESTCall(methodName,
+        SchemaAttributeElementResponse restResult = restClient.callMySchemaAttributePostRESTCall(methodName,
                                                                                                urlTemplate,
                                                                                                getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
                                                                                                serverName,

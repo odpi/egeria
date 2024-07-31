@@ -6,9 +6,9 @@ package org.odpi.openmetadata.accessservices.datamanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
+import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
 import org.odpi.openmetadata.accessservices.datamanager.server.FilesRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -56,7 +56,7 @@ public class FilesResource
     public GUIDListResponse createFolderStructureInCatalog(@PathVariable String              serverName,
                                                            @PathVariable String              userId,
                                                            @PathVariable String              parentGUID,
-                                                           @RequestBody  PathNameRequestBody requestBody)
+                                                           @RequestBody PathNameRequestBody requestBody)
     {
         return restAPI.createFolderStructureInCatalog(serverName, userId, parentGUID, requestBody);
     }
@@ -82,7 +82,7 @@ public class FilesResource
                                                  @PathVariable                  String                    userId,
                                                  @PathVariable                  String                    fileSystemGUID,
                                                  @PathVariable                  String                    folderGUID,
-                                                 @RequestBody(required = false) MetadataSourceRequestBody requestBody)
+                                                 @RequestBody(required = false) ExternalSourceRequestBody requestBody)
     {
         return restAPI.attachFolderToFileSystem(serverName, userId, fileSystemGUID, folderGUID, requestBody);
     }

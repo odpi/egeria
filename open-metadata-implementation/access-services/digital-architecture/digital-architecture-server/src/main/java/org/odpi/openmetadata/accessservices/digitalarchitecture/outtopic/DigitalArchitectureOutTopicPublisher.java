@@ -4,12 +4,12 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.outtopic;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.connectors.outtopic.DigitalArchitectureOutTopicServerConnector;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.converters.ElementHeaderConverter;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.events.DigitalArchitectureEventType;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.events.DigitalArchitectureOutTopicEvent;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.ffdc.DigitalArchitectureAuditCode;
+import org.odpi.openmetadata.commonservices.generichandlers.ElementHeaderConverter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;

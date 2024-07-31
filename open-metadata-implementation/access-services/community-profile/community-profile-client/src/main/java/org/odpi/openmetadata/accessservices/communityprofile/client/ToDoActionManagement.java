@@ -4,18 +4,18 @@
 package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.ToDoManagementInterface;
-import org.odpi.openmetadata.accessservices.communityprofile.client.converters.ToDoConverter;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ToDoElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ActionTargetProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.NewActionTargetProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ToDoElement;
+import org.odpi.openmetadata.frameworks.governanceaction.converters.ToDoConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.NewToDoActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.ToDoProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
@@ -147,7 +147,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                              String                          originatorGUID,
                              String                          actionSponsorGUID,
                              String                          assignToActorGUID,
-                             List<NewActionTargetProperties> newActionTargetProperties,
+                             List<NewToDoActionTargetProperties> newActionTargetProperties,
                              ToDoProperties                  properties) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
@@ -224,7 +224,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
 
             if (newActionTargetProperties != null)
             {
-                for (NewActionTargetProperties newActionTarget : newActionTargetProperties)
+                for (NewToDoActionTargetProperties newActionTarget : newActionTargetProperties)
                 {
                     if (newActionTarget != null)
                     {
@@ -310,9 +310,9 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
     public void updateActionTargetProperties(String                 userId,
                                              String                 actionTargetGUID,
                                              boolean                isMergeUpdate,
-                                             ActionTargetProperties actionTargetProperties) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
+                                             ToDoActionTargetProperties actionTargetProperties) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
     {
         final String methodName = "updateActionTargetProperties";
         final String propertiesName = "actionTargetProperties";
@@ -878,7 +878,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
      * @param actionTargetProperties supplied to do properties
      * @return element properties
      */
-    private ElementProperties getActionTargetProperties(ActionTargetProperties actionTargetProperties)
+    private ElementProperties getActionTargetProperties(ToDoActionTargetProperties actionTargetProperties)
     {
         if (actionTargetProperties != null)
         {

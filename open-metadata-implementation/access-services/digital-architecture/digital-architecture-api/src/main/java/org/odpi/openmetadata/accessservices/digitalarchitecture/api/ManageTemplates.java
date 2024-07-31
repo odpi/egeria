@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.api;
 
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.TemplateElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateClassificationProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

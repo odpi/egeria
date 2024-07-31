@@ -5,34 +5,22 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.client;
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.DeploymentManagementInterface;
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.ServerPurposeManagerInterface;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetRelationshipElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DeploymentProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetExtensionsRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetRelationshipListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.AssetResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveTimeMetadataSourceRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ElementStatusRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSourceRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.RelatedAssetListResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetRelationshipElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DeploymentElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedAssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.DeploymentProperties;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.AssetRelationshipsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -303,7 +291,7 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
 
         final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/from-template/{2}?infrastructureManagerIsHome={3}";
 
-        TemplateRequestBody requestBody = new TemplateRequestBody(templateProperties);
+        TemplateRequestBody requestBody = new TemplateRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -585,7 +573,7 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
 
         final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/" + assetTypeName + "/{2}/" + relationshipTypeName + "/" + relatedAssetTypeName + "/{3}/delete";
 
-        EffectiveTimeMetadataSourceRequestBody requestBody = new EffectiveTimeMetadataSourceRequestBody();
+        org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeQueryRequestBody requestBody = new org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeQueryRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -758,7 +746,7 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
 
         final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/" + assetTypeName + "/{2}/declassify/" + classificationName;
 
-        EffectiveTimeMetadataSourceRequestBody requestBody = new EffectiveTimeMetadataSourceRequestBody();
+        EffectiveTimeQueryRequestBody requestBody = new EffectiveTimeQueryRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -871,7 +859,7 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
 
         final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/{2}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -927,15 +915,15 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
-                                                                            urlTemplate,
-                                                                            requestBody,
-                                                                            serverName,
-                                                                            userId,
-                                                                            startFrom,
-                                                                            validatedPageSize);
+        AssetElementsResponse restResult = restClient.callAssetElementsPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    requestBody,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    startFrom,
+                                                                                    validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -981,15 +969,15 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
-                                                                            urlTemplate,
-                                                                            requestBody,
-                                                                            serverName,
-                                                                            userId,
-                                                                            startFrom,
-                                                                            validatedPageSize);
+        AssetElementsResponse restResult = restClient.callAssetElementsPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    requestBody,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    startFrom,
+                                                                                    validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1035,15 +1023,15 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
-                                                                            urlTemplate,
-                                                                            requestBody,
-                                                                            serverName,
-                                                                            userId,
-                                                                            startFrom,
-                                                                            validatedPageSize);
+        AssetElementsResponse restResult = restClient.callAssetElementsPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    requestBody,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    startFrom,
+                                                                                    validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1091,17 +1079,17 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
 
         requestBody.setEffectiveTime(effectiveTime);
 
-        AssetListResponse restResult = restClient.callAssetListPostRESTCall(methodName,
-                                                                            urlTemplate,
-                                                                            requestBody,
-                                                                            serverName,
-                                                                            userId,
-                                                                            infrastructureManagerGUID,
-                                                                            infrastructureManagerName,
-                                                                            startFrom,
-                                                                            validatedPageSize);
+        AssetElementsResponse restResult = restClient.callAssetElementsPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    requestBody,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    infrastructureManagerGUID,
+                                                                                    infrastructureManagerName,
+                                                                                    startFrom,
+                                                                                    validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1138,7 +1126,7 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
 
         final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/" + assetTypeName + "/{2}";
 
-        AssetResponse restResult = restClient.callAssetPostRESTCall(methodName,
+        AssetElementResponse restResult = restClient.callAssetPostRESTCall(methodName,
                                                                     urlTemplate,
                                                                     requestBody,
                                                                     serverName,
@@ -1192,17 +1180,17 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
 
         requestBody.setEffectiveTime(effectiveTime);
 
-        AssetRelationshipListResponse restResult = restClient.callAssetRelationshipListPostRESTCall(methodName,
-                                                                                                    urlTemplate,
-                                                                                                    requestBody,
-                                                                                                    serverName,
-                                                                                                    userId,
-                                                                                                    assetGUID,
-                                                                                                    startingEnd,
-                                                                                                    startFrom,
-                                                                                                    validatedPageSize);
+        AssetRelationshipsResponse restResult = restClient.callAssetRelationshipsPostRESTCall(methodName,
+                                                                                              urlTemplate,
+                                                                                              requestBody,
+                                                                                              serverName,
+                                                                                              userId,
+                                                                                              assetGUID,
+                                                                                              startingEnd,
+                                                                                              startFrom,
+                                                                                              validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1248,17 +1236,17 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
 
         requestBody.setEffectiveTime(effectiveTime);
 
-        RelatedAssetListResponse restResult = restClient.callRelatedAssetListPostRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          assetGUID,
-                                                                                          startingEnd,
-                                                                                          startFrom,
-                                                                                          validatedPageSize);
+        RelatedAssetsResponse restResult = restClient.callRelatedAssetsPostRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       requestBody,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       assetGUID,
+                                                                                       startingEnd,
+                                                                                       startFrom,
+                                                                                       validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
