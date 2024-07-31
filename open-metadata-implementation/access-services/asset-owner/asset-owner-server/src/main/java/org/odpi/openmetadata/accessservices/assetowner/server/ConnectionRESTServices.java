@@ -2,32 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ConnectionProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.EndpointProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
 import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ConnectionsResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.EndpointsResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ConnectorTypesResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ConnectionResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.EndpointResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ConnectorTypeResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.EmbeddedConnectionRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -909,7 +897,7 @@ public class ConnectionRESTServices
                                                                               false,
                                                                               new Date(),
                                                                               methodName);
-                response.setElementList(connections);
+                response.setElements(connections);
             }
             else
             {
@@ -972,7 +960,7 @@ public class ConnectionRESTServices
                                                                                    false,
                                                                                    new Date(),
                                                                                    methodName);
-                response.setElementList(connections);
+                response.setElements(connections);
             }
             else
             {
@@ -1083,7 +1071,7 @@ public class ConnectionRESTServices
                                                              null,
                                                              endpointProperties.getQualifiedName(),
                                                              endpointProperties.getName(),
-                                                             endpointProperties.getDescription(),
+                                                             endpointProperties.getResourceDescription(),
                                                              endpointProperties.getAddress(),
                                                              endpointProperties.getProtocol(),
                                                              endpointProperties.getEncryptionMethod(),
@@ -1214,7 +1202,7 @@ public class ConnectionRESTServices
                                        guidParameter,
                                        endpointProperties.getQualifiedName(),
                                        endpointProperties.getName(),
-                                       endpointProperties.getDescription(),
+                                       endpointProperties.getResourceDescription(),
                                        endpointProperties.getAddress(),
                                        endpointProperties.getProtocol(),
                                        endpointProperties.getEncryptionMethod(),
@@ -1343,7 +1331,7 @@ public class ConnectionRESTServices
                                                                         false,
                                                                         new Date(),
                                                                         methodName);
-                response.setElementList(endpoints);
+                response.setElements(endpoints);
             }
             else
             {
@@ -1406,7 +1394,7 @@ public class ConnectionRESTServices
                                                                              false,
                                                                              new Date(),
                                                                              methodName);
-                response.setElementList(endpoints);
+                response.setElements(endpoints);
             }
             else
             {
@@ -1527,7 +1515,7 @@ public class ConnectionRESTServices
                                                                                        false,
                                                                                        new Date(),
                                                                                        methodName);
-                response.setElementList(connectorTypes);
+                response.setElements(connectorTypes);
             }
             else
             {
@@ -1590,7 +1578,7 @@ public class ConnectionRESTServices
                                                                                             false,
                                                                                             new Date(),
                                                                                             methodName);
-                response.setElementList(connectorTypes);
+                response.setElements(connectorTypes);
             }
             else
             {

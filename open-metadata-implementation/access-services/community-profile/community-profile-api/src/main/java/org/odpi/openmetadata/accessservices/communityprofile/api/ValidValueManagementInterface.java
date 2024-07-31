@@ -2,15 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ValidValueElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ReferenceValueAssignmentProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ValidValueAssignmentProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ValidValueMembershipProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ValidValueProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ReferenceValueAssignmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueAssignmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -87,8 +87,8 @@ public interface ValidValueManagementInterface
                                String                         validValueSetGUID,
                                ValidValueMembershipProperties properties,
                                String                         validValueMemberGUID) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                          PropertyServerException;
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
 
 
     /**

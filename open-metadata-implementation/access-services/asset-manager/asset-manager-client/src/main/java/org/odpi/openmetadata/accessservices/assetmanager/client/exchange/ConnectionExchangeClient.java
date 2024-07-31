@@ -16,6 +16,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EmbeddedConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -838,15 +844,15 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/connections/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        ConnectionsResponse restResult = restClient.callConnectionsPostRESTCall(methodName,
-                                                                                urlTemplate,
-                                                                                getSearchStringRequestBody(assetManagerGUID, assetManagerName, searchString, effectiveTime, methodName),
-                                                                                serverName,
-                                                                                userId,
-                                                                                startFrom,
-                                                                                validatedPageSize,
-                                                                                forLineage,
-                                                                                forDuplicateProcessing);
+        ConnectionsResponse restResult = restClient.callMyConnectionsPostRESTCall(methodName,
+                                                                                  urlTemplate,
+                                                                                  getSearchStringRequestBody(assetManagerGUID, assetManagerName, searchString, effectiveTime, methodName),
+                                                                                  serverName,
+                                                                                  userId,
+                                                                                  startFrom,
+                                                                                  validatedPageSize,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -894,15 +900,15 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/connections/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        ConnectionsResponse restResult = restClient.callConnectionsPostRESTCall(methodName,
-                                                                                urlTemplate,
-                                                                                getNameRequestBody(assetManagerGUID, assetManagerName, name, effectiveTime, methodName),
-                                                                                serverName,
-                                                                                userId,
-                                                                                startFrom,
-                                                                                validatedPageSize,
-                                                                                forLineage,
-                                                                                forDuplicateProcessing);
+        ConnectionsResponse restResult = restClient.callMyConnectionsPostRESTCall(methodName,
+                                                                                  urlTemplate,
+                                                                                  getNameRequestBody(assetManagerGUID, assetManagerName, name, effectiveTime, methodName),
+                                                                                  serverName,
+                                                                                  userId,
+                                                                                  startFrom,
+                                                                                  validatedPageSize,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -947,15 +953,15 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/connections/by-asset-manager?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        ConnectionsResponse restResult = restClient.callConnectionsPostRESTCall(methodName,
-                                                                                urlTemplate,
-                                                                                getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                serverName,
-                                                                                userId,
-                                                                                startFrom,
-                                                                                validatedPageSize,
-                                                                                forLineage,
-                                                                                forDuplicateProcessing);
+        ConnectionsResponse restResult = restClient.callMyConnectionsPostRESTCall(methodName,
+                                                                                  urlTemplate,
+                                                                                  getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                  serverName,
+                                                                                  userId,
+                                                                                  startFrom,
+                                                                                  validatedPageSize,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -997,14 +1003,14 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/connections/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        ConnectionResponse restResult = restClient.callConnectionPostRESTCall(methodName,
-                                                                              urlTemplate,
-                                                                              getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                              serverName,
-                                                                              userId,
-                                                                              connectionGUID,
-                                                                              forLineage,
-                                                                              forDuplicateProcessing);
+        ConnectionResponse restResult = restClient.callMyConnectionPostRESTCall(methodName,
+                                                                                urlTemplate,
+                                                                                getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                serverName,
+                                                                                userId,
+                                                                                connectionGUID,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -1279,15 +1285,15 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/endpoints/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
-                                                                            urlTemplate,
-                                                                            getSearchStringRequestBody(assetManagerGUID, assetManagerName, searchString, effectiveTime, methodName),
-                                                                            serverName,
-                                                                            userId,
-                                                                            startFrom,
-                                                                            validatedPageSize,
-                                                                            forLineage,
-                                                                            forDuplicateProcessing);
+        EndpointsResponse restResult = restClient.callMyEndpointsPostRESTCall(methodName,
+                                                                              urlTemplate,
+                                                                              getSearchStringRequestBody(assetManagerGUID, assetManagerName, searchString, effectiveTime, methodName),
+                                                                              serverName,
+                                                                              userId,
+                                                                              startFrom,
+                                                                              validatedPageSize,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1334,15 +1340,15 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/endpoints/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
-                                                                            urlTemplate,
-                                                                            getNameRequestBody(assetManagerGUID, assetManagerName, name, effectiveTime, methodName),
-                                                                            serverName,
-                                                                            userId,
-                                                                            startFrom,
-                                                                            validatedPageSize,
-                                                                            forLineage,
-                                                                            forDuplicateProcessing);
+        EndpointsResponse restResult = restClient.callMyEndpointsPostRESTCall(methodName,
+                                                                              urlTemplate,
+                                                                              getNameRequestBody(assetManagerGUID, assetManagerName, name, effectiveTime, methodName),
+                                                                              serverName,
+                                                                              userId,
+                                                                              startFrom,
+                                                                              validatedPageSize,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1387,15 +1393,15 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/endpoints/by-asset-manager?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
-                                                                            urlTemplate,
-                                                                            getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                            serverName,
-                                                                            userId,
-                                                                            startFrom,
-                                                                            validatedPageSize,
-                                                                            forLineage,
-                                                                            forDuplicateProcessing);
+        EndpointsResponse restResult = restClient.callMyEndpointsPostRESTCall(methodName,
+                                                                              urlTemplate,
+                                                                              getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                              serverName,
+                                                                              userId,
+                                                                              startFrom,
+                                                                              validatedPageSize,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1437,14 +1443,14 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/endpoints/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        EndpointResponse restResult = restClient.callEndpointPostRESTCall(methodName,
-                                                                          urlTemplate,
-                                                                          getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                          serverName,
-                                                                          userId,
-                                                                          endpointGUID,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing);
+        EndpointResponse restResult = restClient.callMyEndpointPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                            serverName,
+                                                                            userId,
+                                                                            endpointGUID,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -1719,15 +1725,15 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/connector-types/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        ConnectorTypesResponse restResult = restClient.callConnectorTypesPostRESTCall(methodName,
-                                                                                      urlTemplate,
-                                                                                      getSearchStringRequestBody(assetManagerGUID, assetManagerName, searchString, effectiveTime, methodName),
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      startFrom,
-                                                                                      validatedPageSize,
-                                                                                      forLineage,
-                                                                                      forDuplicateProcessing);
+        ConnectorTypesResponse restResult = restClient.callMyConnectorTypesPostRESTCall(methodName,
+                                                                                        urlTemplate,
+                                                                                        getSearchStringRequestBody(assetManagerGUID, assetManagerName, searchString, effectiveTime, methodName),
+                                                                                        serverName,
+                                                                                        userId,
+                                                                                        startFrom,
+                                                                                        validatedPageSize,
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1774,15 +1780,15 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/connector-types/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        ConnectorTypesResponse restResult = restClient.callConnectorTypesPostRESTCall(methodName,
-                                                                                      urlTemplate,
-                                                                                      getNameRequestBody(assetManagerGUID, assetManagerName, name,  effectiveTime, methodName),
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      startFrom,
-                                                                                      validatedPageSize,
-                                                                                      forLineage,
-                                                                                      forDuplicateProcessing);
+        ConnectorTypesResponse restResult = restClient.callMyConnectorTypesPostRESTCall(methodName,
+                                                                                        urlTemplate,
+                                                                                        getNameRequestBody(assetManagerGUID, assetManagerName, name,  effectiveTime, methodName),
+                                                                                        serverName,
+                                                                                        userId,
+                                                                                        startFrom,
+                                                                                        validatedPageSize,
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1827,15 +1833,15 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/connector-types/by-asset-manager?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        ConnectorTypesResponse restResult = restClient.callConnectorTypesPostRESTCall(methodName,
-                                                                                      urlTemplate,
-                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      startFrom,
-                                                                                      validatedPageSize,
-                                                                                      forLineage,
-                                                                                      forDuplicateProcessing);
+        ConnectorTypesResponse restResult = restClient.callMyConnectorTypesPostRESTCall(methodName,
+                                                                                        urlTemplate,
+                                                                                        getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                        serverName,
+                                                                                        userId,
+                                                                                        startFrom,
+                                                                                        validatedPageSize,
+                                                                                        forLineage,
+                                                                                        forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1877,14 +1883,14 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/connector-types/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        ConnectorTypeResponse restResult = restClient.callConnectorTypePostRESTCall(methodName,
-                                                                                    urlTemplate,
-                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                    serverName,
-                                                                                    userId,
-                                                                                    openMetadataGUID,
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing);
+        ConnectorTypeResponse restResult = restClient.callMyConnectorTypePostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      openMetadataGUID,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing);
 
         return restResult.getElement();
     }

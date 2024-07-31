@@ -3,12 +3,11 @@
 package org.odpi.openmetadata.frameworks.governanceaction.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
@@ -520,6 +519,44 @@ public abstract class OpenMetadataConverterBase<B>
     }
 
 
+
+    /**
+     * Extract the properties from the element.
+     *
+     * @param beanClass name of the class to create
+     * @param element from the repository
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public MetadataElementSummary getElementSummary(Class<B>            beanClass,
+                                                    OpenMetadataElement element,
+                                                    String              methodName) throws PropertyServerException
+    {
+        if (element != null)
+        {
+            MetadataElementSummary elementHeader = new MetadataElementSummary(element);
+
+            elementHeader.setGUID(element.getElementGUID());
+            elementHeader.setClassifications(this.getElementClassifications(element.getClassifications()));
+
+            if (element.getElementProperties() != null)
+            {
+                elementHeader.setProperties(element.getElementProperties().getPropertiesAsStrings());
+            }
+
+            return elementHeader;
+        }
+        else
+        {
+            this.handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
+        }
+
+        return null;
+    }
+
+
     /**
      * Extract the properties from the element.
      *
@@ -643,6 +680,129 @@ public abstract class OpenMetadataConverterBase<B>
     }
 
 
+
+
+    /**
+     * Using the supplied instances, return a new instance of a relatedElement bean. This is used for beans that
+     * contain a combination of the properties from an entity and that of a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param element entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public RelatedElement getRelatedElement(Class<B>                beanClass,
+                                            OpenMetadataElement     element,
+                                            OpenMetadataRelationship relationship,
+                                            String                  methodName) throws PropertyServerException
+    {
+        RelatedElement  relatedElement = new RelatedElement();
+
+        relatedElement.setRelationshipHeader(this.getMetadataElementHeader(beanClass, relationship, relationship.getRelationshipGUID(), null, methodName));
+
+        if (relationship != null)
+        {
+            ElementProperties instanceProperties = new ElementProperties(relationship.getRelationshipProperties());
+
+            RelationshipProperties relationshipProperties = new RelationshipProperties();
+
+            relationshipProperties.setEffectiveFrom(relationship.getEffectiveFromTime());
+            relationshipProperties.setEffectiveTo(relationship.getEffectiveToTime());
+            relationshipProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+            relatedElement.setRelationshipProperties(relationshipProperties);
+        }
+        else
+        {
+            handleMissingMetadataInstance(beanClass.getName(), OpenMetadataRelationship.class.getName(), methodName);
+        }
+
+        if (element != null)
+        {
+            ElementStub elementStub = this.getElementStub(beanClass, element, methodName);
+
+            relatedElement.setRelatedElement(elementStub);
+        }
+        else
+        {
+            handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
+        }
+
+        return relatedElement;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of a relatedElement bean. This is used for beans that
+     * contain a combination of the properties from an entity and that of a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param relatedMetadataElement results containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public RelatedElement getRelatedElement(Class<B>               beanClass,
+                                            RelatedMetadataElement relatedMetadataElement,
+                                            String                 methodName) throws PropertyServerException
+    {
+        RelatedElement  relatedElement = new RelatedElement();
+
+        relatedElement.setRelationshipHeader(this.getMetadataElementHeader(beanClass, relatedMetadataElement, relatedMetadataElement.getRelationshipGUID(), null, methodName));
+
+        if (relatedMetadataElement != null)
+        {
+            ElementProperties instanceProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
+
+            RelationshipProperties relationshipProperties = new RelationshipProperties();
+
+            relationshipProperties.setEffectiveFrom(relatedMetadataElement.getEffectiveFromTime());
+            relationshipProperties.setEffectiveTo(relatedMetadataElement.getEffectiveToTime());
+            relationshipProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+            relatedElement.setRelationshipProperties(relationshipProperties);
+        }
+        else
+        {
+            handleMissingMetadataInstance(beanClass.getName(), OpenMetadataRelationship.class.getName(), methodName);
+        }
+
+        return relatedElement;
+    }
+
+
+
+
+    /**
+     * Extract and delete the ToDoStatus property from the supplied element properties.
+     *
+     * @param elementProperties properties from entity
+     * @return KeyPattern enum
+     */
+    protected ToDoStatus removeToDoStatus(ElementProperties elementProperties)
+    {
+        final String methodName = "removeToDoStatus";
+
+        if (elementProperties != null)
+        {
+            String retrievedProperty = propertyHelper.removeEnumProperty(serviceName,
+                                                                         OpenMetadataProperty.TO_DO_STATUS.name,
+                                                                         elementProperties,
+                                                                         methodName);
+
+            for (ToDoStatus status : ToDoStatus.values())
+            {
+                if (status.getName().equals(retrievedProperty))
+                {
+                    return status;
+                }
+            }
+        }
+
+        return null;
+    }
 
 
     /**

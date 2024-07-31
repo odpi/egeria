@@ -3,31 +3,10 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 import org.odpi.openmetadata.accessservices.communityprofile.converters.CommunityProfileOMASConverter;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContactMethodElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleAppointee;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AppointmentProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ActorProfileListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ActorProfileRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ActorProfileResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.AppointmentRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ContactMethodRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.EffectiveDatesRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleAppointeeListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.TeamPlayerRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContributionRecordHandler;
@@ -39,7 +18,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -705,19 +684,19 @@ public class OrganizationRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public ActorProfileListResponse getActorProfilesByName(String          serverName,
-                                                           String          userId,
-                                                           int             startFrom,
-                                                           int             pageSize,
-                                                           NameRequestBody requestBody)
+    public ActorProfilesResponse getActorProfilesByName(String          serverName,
+                                                        String          userId,
+                                                        int             startFrom,
+                                                        int             pageSize,
+                                                        NameRequestBody requestBody)
     {
         final String methodName         = "getActorProfileByName";
         final String nameParameterName  = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ActorProfileListResponse response = new ActorProfileListResponse();
-        AuditLog                 auditLog = null;
+        ActorProfilesResponse response = new ActorProfilesResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -760,17 +739,17 @@ public class OrganizationRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public ActorProfileListResponse getActorProfiles(String          serverName,
-                                                     String          userId,
-                                                     int             startFrom,
-                                                     int             pageSize)
+    public ActorProfilesResponse getActorProfiles(String          serverName,
+                                                  String          userId,
+                                                  int             startFrom,
+                                                  int             pageSize)
     {
         final String methodName         = "getActorProfiles";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ActorProfileListResponse response = new ActorProfileListResponse();
-        AuditLog                 auditLog = null;
+        ActorProfilesResponse response = new ActorProfilesResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -812,19 +791,19 @@ public class OrganizationRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public ActorProfileListResponse getActorProfilesByLocation(String          serverName,
-                                                               String          userId,
-                                                               String          locationGUID,
-                                                               int             startFrom,
-                                                               int             pageSize)
+    public ActorProfilesResponse getActorProfilesByLocation(String          serverName,
+                                                            String          userId,
+                                                            String          locationGUID,
+                                                            int             startFrom,
+                                                            int             pageSize)
     {
         final String methodName         = "getActorProfilesByLocation";
         final String guidParameterName  = "locationGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ActorProfileListResponse response = new ActorProfileListResponse();
-        AuditLog                 auditLog = null;
+        ActorProfilesResponse response = new ActorProfilesResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -867,19 +846,19 @@ public class OrganizationRESTServices
      *   PropertyServerException the server is not available.
      *   UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public ActorProfileListResponse findActorProfiles(String                  serverName,
-                                                      String                  userId,
-                                                      int                     startFrom,
-                                                      int                     pageSize,
-                                                      SearchStringRequestBody requestBody)
+    public ActorProfilesResponse findActorProfiles(String                  serverName,
+                                                   String                  userId,
+                                                   int                     startFrom,
+                                                   int                     pageSize,
+                                                   SearchStringRequestBody requestBody)
     {
         final String methodName                 = "findActorProfiles";
         final String searchStringParameterName  = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ActorProfileListResponse response = new ActorProfileListResponse();
-        AuditLog                 auditLog = null;
+        ActorProfilesResponse response = new ActorProfilesResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -1214,20 +1193,20 @@ public class OrganizationRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public PersonRoleAppointeeListResponse getAppointees(String                   serverName,
-                                                         String                   userId,
-                                                         String                   personRoleGUID,
-                                                         int                      startFrom,
-                                                         int                      pageSize,
-                                                         EffectiveTimeRequestBody requestBody)
+    public AppointeesResponse getAppointees(String                   serverName,
+                                            String                   userId,
+                                            String                   personRoleGUID,
+                                            int                      startFrom,
+                                            int                      pageSize,
+                                            EffectiveTimeRequestBody requestBody)
     {
         final String methodName                  = "getAppointees";
         final String personRoleGUIDParameterName = "personRoleGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRoleAppointeeListResponse response = new PersonRoleAppointeeListResponse();
-        AuditLog                        auditLog = null;
+        AppointeesResponse response = new AppointeesResponse();
+        AuditLog           auditLog = null;
 
         try
         {
@@ -1256,11 +1235,11 @@ public class OrganizationRESTServices
                                                                                              methodName);
                 if (appointmentRelationships != null)
                 {
-                    List<PersonRoleAppointee> appointees = new ArrayList<>();
+                    List<Appointee>           appointees = new ArrayList<>();
                     OMRSRepositoryHelper      repositoryHelper = roleHandler.getRepositoryHelper();
                     String                    serviceName = roleHandler.getServiceName();
-                    CommunityProfileOMASConverter<PersonRoleAppointee> converter = new CommunityProfileOMASConverter<>(repositoryHelper, serviceName, serverName);
-                    RepositoryErrorHandler                             errorHandler = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName, auditLog);
+                    CommunityProfileOMASConverter<Appointee> converter = new CommunityProfileOMASConverter<>(repositoryHelper, serviceName, serverName);
+                    RepositoryErrorHandler                   errorHandler = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName, auditLog);
 
                     for (Relationship relationship : appointmentRelationships)
                     {
@@ -1268,14 +1247,14 @@ public class OrganizationRESTServices
                         {
                             if (requestBody.getEffectiveTime() == null)
                             {
-                                PersonRoleAppointee appointee = getAppointeeFromRelationship(userId,
-                                                                                             relationship,
-                                                                                             profileHandler,
-                                                                                             converter,
-                                                                                             repositoryHelper,
-                                                                                             serviceName,
-                                                                                             errorHandler,
-                                                                                             methodName);
+                                Appointee appointee = getAppointeeFromRelationship(userId,
+                                                                                   relationship,
+                                                                                   profileHandler,
+                                                                                   converter,
+                                                                                   repositoryHelper,
+                                                                                   serviceName,
+                                                                                   errorHandler,
+                                                                                   methodName);
 
                                 appointees.add(appointee);
                             }
@@ -1290,14 +1269,14 @@ public class OrganizationRESTServices
                                 if (((properties.getEffectiveFromTime() == null) || properties.getEffectiveFromTime().before(effectiveTime)) &&
                                             ((properties.getEffectiveToTime() == null) || properties.getEffectiveToTime().after(effectiveTime)))
                                 {
-                                    PersonRoleAppointee appointee = getAppointeeFromRelationship(userId,
-                                                                                                 relationship,
-                                                                                                 profileHandler,
-                                                                                                 converter,
-                                                                                                 repositoryHelper,
-                                                                                                 serviceName,
-                                                                                                 errorHandler,
-                                                                                                 methodName);
+                                    Appointee appointee = getAppointeeFromRelationship(userId,
+                                                                                       relationship,
+                                                                                       profileHandler,
+                                                                                       converter,
+                                                                                       repositoryHelper,
+                                                                                       serviceName,
+                                                                                       errorHandler,
+                                                                                       methodName);
 
                                     appointees.add(appointee);
                                 }
@@ -1345,41 +1324,38 @@ public class OrganizationRESTServices
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    private PersonRoleAppointee getAppointeeFromRelationship(String                                             userId,
-                                                             Relationship                                       relationship,
-                                                             ActorProfileHandler<ActorProfileElement>           profileHandler,
-                                                             CommunityProfileOMASConverter<PersonRoleAppointee> converter,
-                                                             OMRSRepositoryHelper                               repositoryHelper,
-                                                             String                                             serviceName,
-                                                             RepositoryErrorHandler                             errorHandler,
-                                                             String                                             methodName) throws InvalidParameterException,
-                                                                                                                                   PropertyServerException,
-                                                                                                                                   UserNotAuthorizedException
+    private Appointee getAppointeeFromRelationship(String                                             userId,
+                                                   Relationship                                       relationship,
+                                                   ActorProfileHandler<ActorProfileElement>           profileHandler,
+                                                   CommunityProfileOMASConverter<Appointee>           converter,
+                                                   OMRSRepositoryHelper                               repositoryHelper,
+                                                   String                                             serviceName,
+                                                   RepositoryErrorHandler                             errorHandler,
+                                                   String                                             methodName) throws InvalidParameterException,
+                                                                                                                         PropertyServerException,
+                                                                                                                         UserNotAuthorizedException
     {
         final String profileGUIDParameterName = "profileGUID";
 
         if ((relationship != null) && (relationship.getProperties() != null) && (relationship.getEntityOneProxy() != null) && (relationship.getEntityTwoProxy() != null))
         {
-            PersonRoleAppointee appointee = new PersonRoleAppointee();
+            Appointee appointee = new Appointee();
 
             InstanceProperties properties = relationship.getProperties();
 
-            ElementHeader elementHeader = converter.getMetadataElementHeader(PersonRoleAppointee.class,
+            ElementHeader elementHeader = converter.getMetadataElementHeader(Appointee.class,
                                                                              relationship,
                                                                              null,
                                                                              methodName);
 
             appointee.setElementHeader(elementHeader);
+            appointee.setStartDate(properties.getEffectiveFromTime());
+            appointee.setEndDate(properties.getEffectiveToTime());
+            appointee.setIsPublic(repositoryHelper.getBooleanProperty(serviceName,
+                                                                      OpenMetadataProperty.IS_PUBLIC.name,
+                                                                      relationship.getProperties(),
+                                                                      methodName));
 
-            AppointmentProperties appointmentProperties = new AppointmentProperties();
-            appointmentProperties.setEffectiveFrom(properties.getEffectiveFromTime());
-            appointmentProperties.setEffectiveTo(properties.getEffectiveToTime());
-            appointmentProperties.setIsPublic(repositoryHelper.getBooleanProperty(serviceName,
-                                                                                  OpenMetadataProperty.IS_PUBLIC.name,
-                                                                                  relationship.getProperties(),
-                                                                                  methodName));
-
-            appointee.setProperties(appointmentProperties);
 
             ActorProfileElement profile = profileHandler.getActorProfileByGUID(userId,
                                                                                relationship.getEntityOneProxy().getGUID(),
@@ -1778,19 +1754,19 @@ public class OrganizationRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public PersonRoleListResponse getPersonRoleByName(String          serverName,
-                                                      String          userId,
-                                                      int             startFrom,
-                                                      int             pageSize,
-                                                      NameRequestBody requestBody)
+    public PersonRolesResponse getPersonRoleByName(String          serverName,
+                                                   String          userId,
+                                                   int             startFrom,
+                                                   int             pageSize,
+                                                   NameRequestBody requestBody)
     {
         final String methodName         = "getPersonRoleByName";
         final String nameParameterName  = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRoleListResponse response = new PersonRoleListResponse();
-        AuditLog               auditLog = null;
+        PersonRolesResponse response = new PersonRolesResponse();
+        AuditLog            auditLog = null;
 
         try
         {
@@ -1832,19 +1808,19 @@ public class OrganizationRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public PersonRoleListResponse getLeadershipRolesForTeam(String          serverName,
-                                                            String          userId,
-                                                            String          teamGUID,
-                                                            int             startFrom,
-                                                            int             pageSize)
+    public PersonRolesResponse getLeadershipRolesForTeam(String          serverName,
+                                                         String          userId,
+                                                         String          teamGUID,
+                                                         int             startFrom,
+                                                         int             pageSize)
     {
         final String methodName         = "getLeadershipRolesForTeam";
         final String guidParameterName  = "teamGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRoleListResponse response = new PersonRoleListResponse();
-        AuditLog               auditLog = null;
+        PersonRolesResponse response = new PersonRolesResponse();
+        AuditLog            auditLog = null;
 
         try
         {
@@ -1887,19 +1863,19 @@ public class OrganizationRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public PersonRoleListResponse getMembershipRolesForTeam(String          serverName,
-                                                            String          userId,
-                                                            String          teamGUID,
-                                                            int             startFrom,
-                                                            int             pageSize)
+    public PersonRolesResponse getMembershipRolesForTeam(String          serverName,
+                                                         String          userId,
+                                                         String          teamGUID,
+                                                         int             startFrom,
+                                                         int             pageSize)
     {
         final String methodName         = "getMembershipRolesForTeam";
         final String guidParameterName  = "teamGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRoleListResponse response = new PersonRoleListResponse();
-        AuditLog               auditLog = null;
+        PersonRolesResponse response = new PersonRolesResponse();
+        AuditLog            auditLog = null;
 
         try
         {
@@ -1942,19 +1918,19 @@ public class OrganizationRESTServices
      *   PropertyServerException the server is not available.
      *   UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public PersonRoleListResponse findPersonRoles(String                  serverName,
-                                                  String                  userId,
-                                                  int                     startFrom,
-                                                  int                     pageSize,
-                                                  SearchStringRequestBody requestBody)
+    public PersonRolesResponse findPersonRoles(String                  serverName,
+                                               String                  userId,
+                                               int                     startFrom,
+                                               int                     pageSize,
+                                               SearchStringRequestBody requestBody)
     {
         final String methodName                 = "findPersonRoles";
         final String searchStringParameterName  = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRoleListResponse response = new PersonRoleListResponse();
-        AuditLog               auditLog = null;
+        PersonRolesResponse response = new PersonRolesResponse();
+        AuditLog            auditLog = null;
 
         try
         {

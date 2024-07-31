@@ -5,9 +5,20 @@ package org.odpi.openmetadata.accessservices.assetmanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.CalculatedValueClassificationRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaAttributeElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaAttributeElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaAttributeRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaTypeElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaTypeElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SchemaTypeRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.server.SchemaExchangeRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -161,7 +172,7 @@ public class SchemaExchangeResource
                                                             boolean                       forLineage,
                                               @RequestParam (required = false, defaultValue = "false")
                                                             boolean                       forDuplicateProcessing,
-                                              @RequestBody  RelationshipRequestBody       requestBody)
+                                              @RequestBody RelationshipRequestBody requestBody)
     {
         return restAPI.setupSchemaTypeParent(serverName, userId, parentElementGUID, parentElementTypeName, schemaTypeGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }
@@ -652,7 +663,7 @@ public class SchemaExchangeResource
                                                         boolean                      forLineage,
                                                 @RequestParam (required = false, defaultValue = "false")
                                                         boolean                      forDuplicateProcessing,
-                                                @RequestBody  PrimaryKeyClassificationRequestBody requestBody)
+                                                @RequestBody PrimaryKeyClassificationRequestBody requestBody)
     {
         return restAPI.setupColumnAsPrimaryKey(serverName, userId, schemaAttributeGUID, assetManagerIsHome, forLineage, forDuplicateProcessing, requestBody);
     }

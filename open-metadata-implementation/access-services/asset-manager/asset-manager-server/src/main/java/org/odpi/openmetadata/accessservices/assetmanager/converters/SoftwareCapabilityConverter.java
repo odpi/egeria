@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SoftwareCapabilityElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SoftwareCapabilitiesProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -58,7 +58,7 @@ public class SoftwareCapabilityConverter<B> extends AssetManagerOMASConverter<B>
 
             if (returnBean instanceof SoftwareCapabilityElement bean)
             {
-                SoftwareCapabilitiesProperties softwareCapabilitiesProperties = new SoftwareCapabilitiesProperties();
+                SoftwareCapabilityProperties softwareCapabilitiesProperties = new SoftwareCapabilityProperties();
 
                 if (entity != null)
                 {
@@ -68,8 +68,8 @@ public class SoftwareCapabilityConverter<B> extends AssetManagerOMASConverter<B>
 
                     softwareCapabilitiesProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     softwareCapabilitiesProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    softwareCapabilitiesProperties.setTechnicalName(this.removeName(instanceProperties));
-                    softwareCapabilitiesProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
+                    softwareCapabilitiesProperties.setResourceName(this.removeName(instanceProperties));
+                    softwareCapabilitiesProperties.setResourceDescription(this.removeDescription(instanceProperties));
                     softwareCapabilitiesProperties.setDeployedImplementationType(this.removeCapabilityType(instanceProperties));
                     softwareCapabilitiesProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     softwareCapabilitiesProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
@@ -86,7 +86,7 @@ public class SoftwareCapabilityConverter<B> extends AssetManagerOMASConverter<B>
                 }
                 else
                 {
-                    handleMissingMetadataInstance(SoftwareCapabilitiesProperties.class.getName(),
+                    handleMissingMetadataInstance(SoftwareCapabilityProperties.class.getName(),
                                                   TypeDefCategory.ENTITY_DEF,
                                                   methodName);
                 }

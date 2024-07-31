@@ -4,18 +4,16 @@ package org.odpi.openmetadata.adapters.adminservices.configurationstore.file;
 
 import org.junit.jupiter.api.Test;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SecurityTags;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestFileBasedServerConfigStoreConnector {
+public class TestFileBasedServerConfigStoreConnector
+{
     @Test
-    void testGetConfigsPathName() {
+    void testGetConfigsPathName()
+    {
 
         FileBasedServerConfigStoreConnector connector = new FileBasedServerConfigStoreConnector();
         String templateString = "src/test/resources/test1/data/servers/{0}/config/{0}.config";
@@ -58,18 +56,24 @@ public class TestFileBasedServerConfigStoreConnector {
         assertEquals(1, fileNames.size());
 
         // check for invalid templates
-        try {
+        try
+        {
             templateString = "src/test/resources/test10/data/{0}/{0}/{0}.config";
             connector.getFileNames(templateString, "testMethod");
             assertFalse(true, "Expected an error");
-        } catch (OCFRuntimeException e) {
+        }
+        catch (OCFRuntimeException e)
+        {
 
         }
-        try {
+        try
+        {
             templateString = "src/test/resources/test10/data/test/my.config";
             connector.getFileNames(templateString, "testMethod");
             assertFalse(true, "Expected an error");
-        } catch (OCFRuntimeException e) {
+        }
+        catch (OCFRuntimeException e)
+        {
 
         }
 

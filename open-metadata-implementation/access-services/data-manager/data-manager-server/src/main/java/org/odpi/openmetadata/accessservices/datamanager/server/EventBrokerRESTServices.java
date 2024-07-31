@@ -3,20 +3,15 @@
 
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.datamanager.properties.EventTypeProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.TopicProperties;
-import org.odpi.openmetadata.accessservices.datamanager.rest.*;
+import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.EventTypeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -130,8 +125,9 @@ public class EventBrokerRESTServices
                                                                 requestBody.getExternalSourceName(),
                                                                 requestBody.getQualifiedName(),
                                                                 requestBody.getName(),
+                                                                requestBody.getResourceName(),
                                                                 requestBody.getVersionIdentifier(),
-                                                                requestBody.getDescription(),
+                                                                requestBody.getResourceDescription(),
                                                                 requestBody.getDeployedImplementationType(),
                                                                 requestBody.getAdditionalProperties(),
                                                                 typeName,
@@ -171,8 +167,9 @@ public class EventBrokerRESTServices
                                                                 null,
                                                                 requestBody.getQualifiedName(),
                                                                 requestBody.getName(),
+                                                                requestBody.getResourceName(),
                                                                 requestBody.getVersionIdentifier(),
-                                                                requestBody.getDescription(),
+                                                                requestBody.getResourceDescription(),
                                                                 requestBody.getDeployedImplementationType(),
                                                                 requestBody.getAdditionalProperties(),
                                                                 typeName,
@@ -407,8 +404,9 @@ public class EventBrokerRESTServices
                                     topicGUIDParameterName,
                                     requestBody.getQualifiedName(),
                                     requestBody.getName(),
+                                    requestBody.getResourceName(),
                                     requestBody.getVersionIdentifier(),
-                                    requestBody.getDescription(),
+                                    requestBody.getResourceDescription(),
                                     requestBody.getDeployedImplementationType(),
                                     requestBody.getAdditionalProperties(),
                                     typeName,
@@ -659,7 +657,7 @@ public class EventBrokerRESTServices
                                                                     new Date(),
                                                                     methodName);
 
-                response.setElementList(setUpVendorProperties(userId, topicAssets, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, topicAssets, handler, methodName));
             }
             else
             {
@@ -726,7 +724,7 @@ public class EventBrokerRESTServices
                                                                          new Date(),
                                                                          methodName);
 
-                response.setElementList(setUpVendorProperties(userId, topicAssets, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, topicAssets, handler, methodName));
             }
             else
             {
@@ -798,7 +796,7 @@ public class EventBrokerRESTServices
                                                                          new Date(),
                                                                          methodName);
 
-            response.setElementList(setUpVendorProperties(userId, topicAssets, handler, methodName));
+            response.setElements(setUpVendorProperties(userId, topicAssets, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1214,7 +1212,7 @@ public class EventBrokerRESTServices
                                                                            methodName);
 
                 setUpVendorProperties(userId, eventTypes, handler, methodName);
-                response.setElementList(eventTypes);
+                response.setElements(eventTypes);
             }
             else
             {
@@ -1278,7 +1276,7 @@ public class EventBrokerRESTServices
                                                                                  methodName);
 
             setUpVendorProperties(userId, eventTypes, handler, methodName);
-            response.setElementList(eventTypes);
+            response.setElements(eventTypes);
         }
         catch (Exception error)
         {
@@ -1336,7 +1334,7 @@ public class EventBrokerRESTServices
                                                                               methodName);
 
             setUpVendorProperties(userId, eventTypes, handler, methodName);
-            response.setElementList(eventTypes);
+            response.setElements(eventTypes);
         }
         catch (Exception error)
         {
@@ -1397,7 +1395,7 @@ public class EventBrokerRESTServices
                                                                                 methodName);
 
                 setUpVendorProperties(userId, eventTypes, handler, methodName);
-                response.setElementList(eventTypes);
+                response.setElements(eventTypes);
             }
             else
             {

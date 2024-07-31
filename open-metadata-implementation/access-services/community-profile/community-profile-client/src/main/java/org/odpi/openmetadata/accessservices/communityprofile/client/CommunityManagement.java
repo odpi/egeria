@@ -4,20 +4,16 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.CommunityManagementInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CommunityElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityMembershipProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CommunityProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.CommunityResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.CommunityListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CommunityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 
 import java.util.List;
 
@@ -369,13 +365,13 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        CommunityListResponse restResult = restClient.callCommunityListPostRESTCall(methodName,
-                                                                                    urlTemplate,
-                                                                                    requestBody,
-                                                                                    serverName,
-                                                                                    userId,
-                                                                                    startFrom,
-                                                                                    validatedPageSize);
+        CommunitiesResponse restResult = restClient.callCommunitiesPostRESTCall(methodName,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                serverName,
+                                                                                userId,
+                                                                                startFrom,
+                                                                                validatedPageSize);
 
         return restResult.getElements();
     }
@@ -418,13 +414,13 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        CommunityListResponse restResult = restClient.callCommunityListPostRESTCall(methodName,
-                                                                                    urlTemplate,
-                                                                                    requestBody,
-                                                                                    serverName,
-                                                                                    userId,
-                                                                                    startFrom,
-                                                                                    validatedPageSize);
+        CommunitiesResponse restResult = restClient.callCommunitiesPostRESTCall(methodName,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                serverName,
+                                                                                userId,
+                                                                                startFrom,
+                                                                                validatedPageSize);
 
         return restResult.getElements();
     }
@@ -457,12 +453,12 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
 
         final String urlTemplate = serverPlatformURLRoot + communityURLTemplatePrefix + "?startFrom={2}&pageSize={3}";
 
-        CommunityListResponse restResult = restClient.callCommunityListGetRESTCall(methodName,
-                                                                                    urlTemplate,
-                                                                                    serverName,
-                                                                                    userId,
-                                                                                    startFrom,
-                                                                                    validatedPageSize);
+        CommunitiesResponse restResult = restClient.callCommunitiesGetRESTCall(methodName,
+                                                                               urlTemplate,
+                                                                               serverName,
+                                                                               userId,
+                                                                               startFrom,
+                                                                               validatedPageSize);
 
         return restResult.getElements();
     }
@@ -499,13 +495,13 @@ public class CommunityManagement extends CommunityProfileBaseClient implements C
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/person-roles/by-community/{2}?startFrom={3}&pageSize={4}";
 
-        PersonRoleListResponse restResult = restClient.callPersonRoleListGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     communityGUID,
-                                                                                     Integer.toString(startFrom),
-                                                                                     Integer.toString(pageSize));
+        PersonRolesResponse restResult = restClient.callPersonRolesGetRESTCall(methodName,
+                                                                               urlTemplate,
+                                                                               serverName,
+                                                                               userId,
+                                                                               communityGUID,
+                                                                               Integer.toString(startFrom),
+                                                                               Integer.toString(pageSize));
 
         return restResult.getElements();
     }

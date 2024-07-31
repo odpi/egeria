@@ -2,29 +2,21 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.LocationElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AdjacentLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.LocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.NestedLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.DigitalLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.FixedLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.LocationListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.LocationResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.SecureLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelationshipRequestBody;
+
 import org.odpi.openmetadata.accessservices.communityprofile.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LocationElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AdjacentLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AssetLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.NestedLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.ProfileLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.DigitalLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.SecureLocationProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.LocationHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -300,9 +292,8 @@ public class LocationRESTServices
             {
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-                if (requestBody.getProperties() instanceof FixedLocationProperties)
+                if (requestBody.getProperties() instanceof FixedLocationProperties properties)
                 {
-                    FixedLocationProperties properties = (FixedLocationProperties) requestBody.getProperties();
 
                     handler.addFixedLocationClassification(userId,
                                                            requestBody.getExternalSourceGUID(),
@@ -1425,19 +1416,19 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public LocationListResponse findLocations(String                  serverName,
-                                              String                  userId,
-                                              SearchStringRequestBody requestBody,
-                                              int                     startFrom,
-                                              int                     pageSize)
+    public LocationsResponse findLocations(String                  serverName,
+                                           String                  userId,
+                                           SearchStringRequestBody requestBody,
+                                           int                     startFrom,
+                                           int                     pageSize)
     {
         final String methodName = "findLocations";
         final String parameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        LocationListResponse response = new LocationListResponse();
-        AuditLog             auditLog = null;
+        LocationsResponse response = new LocationsResponse();
+        AuditLog          auditLog = null;
 
         try
         {
@@ -1488,19 +1479,19 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public LocationListResponse getLocationsByName(String          serverName,
-                                                   String          userId,
-                                                   NameRequestBody requestBody,
-                                                   int             startFrom,
-                                                   int             pageSize)
+    public LocationsResponse getLocationsByName(String          serverName,
+                                                String          userId,
+                                                NameRequestBody requestBody,
+                                                int             startFrom,
+                                                int             pageSize)
     {
         final String methodName = "getLocationsByName";
         final String parameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        LocationListResponse response = new LocationListResponse();
-        AuditLog             auditLog = null;
+        LocationsResponse response = new LocationsResponse();
+        AuditLog          auditLog = null;
 
         try
         {
@@ -1550,19 +1541,19 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public LocationListResponse getAdjacentLocations(String serverName,
-                                                     String userId,
-                                                     String locationGUID,
-                                                     int    startFrom,
-                                                     int    pageSize)
+    public LocationsResponse getAdjacentLocations(String serverName,
+                                                  String userId,
+                                                  String locationGUID,
+                                                  int    startFrom,
+                                                  int    pageSize)
     {
         final String methodName = "getAdjacentLocations";
         final String parameterName = "locationGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        LocationListResponse response = new LocationListResponse();
-        AuditLog             auditLog = null;
+        LocationsResponse response = new LocationsResponse();
+        AuditLog          auditLog = null;
 
         try
         {
@@ -1607,19 +1598,19 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public LocationListResponse getNestedLocations(String serverName,
-                                                   String userId,
-                                                   String locationGUID,
-                                                   int    startFrom,
-                                                   int    pageSize)
+    public LocationsResponse getNestedLocations(String serverName,
+                                                String userId,
+                                                String locationGUID,
+                                                int    startFrom,
+                                                int    pageSize)
     {
         final String methodName = "getNestedLocations";
         final String parameterName = "locationGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        LocationListResponse response = new LocationListResponse();
-        AuditLog             auditLog = null;
+        LocationsResponse response = new LocationsResponse();
+        AuditLog          auditLog = null;
 
         try
         {
@@ -1664,19 +1655,19 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public LocationListResponse getGroupingLocations(String serverName,
-                                                     String userId,
-                                                     String locationGUID,
-                                                     int    startFrom,
-                                                     int    pageSize)
+    public LocationsResponse getGroupingLocations(String serverName,
+                                                  String userId,
+                                                  String locationGUID,
+                                                  int    startFrom,
+                                                  int    pageSize)
     {
         final String methodName = "getGroupingLocations";
         final String parameterName = "locationGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        LocationListResponse response = new LocationListResponse();
-        AuditLog             auditLog = null;
+        LocationsResponse response = new LocationsResponse();
+        AuditLog          auditLog = null;
 
         try
         {
@@ -1720,19 +1711,19 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public LocationListResponse getLocationsByProfile(String serverName,
-                                                      String userId,
-                                                      String actorProfileGUID,
-                                                      int    startFrom,
-                                                      int    pageSize)
+    public LocationsResponse getLocationsByProfile(String serverName,
+                                                   String userId,
+                                                   String actorProfileGUID,
+                                                   int    startFrom,
+                                                   int    pageSize)
     {
         final String methodName = "getLocationsByProfile";
         final String parameterName = "actorProfileGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        LocationListResponse response = new LocationListResponse();
-        AuditLog             auditLog = null;
+        LocationsResponse response = new LocationsResponse();
+        AuditLog          auditLog = null;
 
         try
         {
@@ -1776,19 +1767,19 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public LocationListResponse getKnownLocationsForAsset(String serverName,
-                                                          String userId,
-                                                          String assetGUID,
-                                                          int    startFrom,
-                                                          int    pageSize)
+    public LocationsResponse getKnownLocationsForAsset(String serverName,
+                                                       String userId,
+                                                       String assetGUID,
+                                                       int    startFrom,
+                                                       int    pageSize)
     {
         final String methodName = "getKnownLocationsForAsset";
         final String parameterName = "assetGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        LocationListResponse response = new LocationListResponse();
-        AuditLog             auditLog = null;
+        LocationsResponse response = new LocationsResponse();
+        AuditLog          auditLog = null;
 
         try
         {
@@ -1831,17 +1822,17 @@ public class LocationRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public LocationListResponse getLocations(String          serverName,
-                                             String          userId,
-                                             int             startFrom,
-                                             int             pageSize)
+    public LocationsResponse getLocations(String          serverName,
+                                          String          userId,
+                                          int             startFrom,
+                                          int             pageSize)
     {
         final String methodName = "getLocations";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        LocationListResponse response = new LocationListResponse();
-        AuditLog             auditLog = null;
+        LocationsResponse response = new LocationsResponse();
+        AuditLog          auditLog = null;
 
         try
         {

@@ -6,13 +6,13 @@ package org.odpi.openmetadata.accessservices.datamanager.fvt.events;
 import org.odpi.openmetadata.accessservices.datamanager.client.EventBrokerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaAttributeElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.TopicElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.EventTypeElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.EventBrokerProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaAttributeProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.TopicProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.EventTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EventTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SchemaAttributeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.TopicElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.EventBrokerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -259,8 +259,8 @@ public class CreateEventsTest
 
             EventBrokerProperties properties = new EventBrokerProperties();
             properties.setQualifiedName(eventBrokerName);
-            properties.setDisplayName(eventBrokerDisplayName);
-            properties.setDescription(eventBrokerDescription);
+            properties.setResourceName(eventBrokerDisplayName);
+            properties.setResourceDescription(eventBrokerDescription);
             properties.setDeployedImplementationType(eventBrokerTypeDescription);
             properties.setVersion(eventBrokerVersion);
 
@@ -375,7 +375,7 @@ public class CreateEventsTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! topicDescription.equals(retrievedTopic.getDescription()))
+            if (! topicDescription.equals(retrievedTopic.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -412,7 +412,7 @@ public class CreateEventsTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! topicDescription.equals(retrievedTopic.getDescription()))
+            if (! topicDescription.equals(retrievedTopic.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -460,7 +460,7 @@ public class CreateEventsTest
 
             properties.setQualifiedName(topicName);
             properties.setName(topicDisplayName);
-            properties.setDescription(topicDescription);
+            properties.setResourceDescription(topicDescription);
             properties.setTopicType(topicType);
 
             String topicGUID = client.createTopic(userId, eventBrokerGUID, eventBrokerName, true, properties);
@@ -710,7 +710,7 @@ public class CreateEventsTest
 
 
     /**
-     * Check a top-level scheam attribute is gone.
+     * Check a top-level schema attribute is gone.
      *
      * @param client interface to Data Manager OMAS
      * @param schemaAttributeGUID unique id of the top-level attribute to test
@@ -801,7 +801,7 @@ public class CreateEventsTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no SchemaAttributeElement from Retrieve)");
             }
 
-            SchemaAttributeProperties retrievedTable  = retrievedElement.getProperties();
+            SchemaAttributeProperties retrievedTable = retrievedElement.getSchemaAttributeProperties();
 
             if (retrievedTable == null)
             {
@@ -839,7 +839,7 @@ public class CreateEventsTest
             }
 
             retrievedElement = schemaAttributeList.get(0);
-            retrievedTable = retrievedElement.getProperties();
+            retrievedTable = retrievedElement.getSchemaAttributeProperties();
 
             if (! schemaAttributeName.equals(retrievedTable.getQualifiedName()))
             {
@@ -1023,7 +1023,7 @@ public class CreateEventsTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no SchemaAttributeElement from Retrieve)");
             }
             
-            SchemaAttributeProperties retrievedAttribute  = retrievedElement.getProperties();
+            SchemaAttributeProperties retrievedAttribute  = retrievedElement.getSchemaAttributeProperties();
 
             if (retrievedAttribute == null)
             {
@@ -1061,7 +1061,7 @@ public class CreateEventsTest
             }
 
             retrievedElement = schemaAttributeList.get(0);
-            retrievedAttribute = retrievedElement.getProperties();
+            retrievedAttribute = retrievedElement.getSchemaAttributeProperties();
 
             if (! nestedSchemaAttributeName.equals(retrievedAttribute.getQualifiedName()))
             {
@@ -1094,7 +1094,7 @@ public class CreateEventsTest
             }
 
             retrievedElement = schemaAttributeList.get(0);
-            retrievedAttribute = retrievedElement.getProperties();
+            retrievedAttribute = retrievedElement.getSchemaAttributeProperties();
 
             if (! nestedSchemaAttributeName.equals(retrievedAttribute.getQualifiedName()))
             {

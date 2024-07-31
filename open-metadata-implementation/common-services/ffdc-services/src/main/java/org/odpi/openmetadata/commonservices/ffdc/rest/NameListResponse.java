@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,18 +58,7 @@ public class NameListResponse extends FFDCResponseBase
      */
     public List<String> getNames()
     {
-        if (names == null)
-        {
-            return null;
-        }
-        else if (names.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return names;
-        }
+        return names;
     }
 
 
@@ -95,17 +83,7 @@ public class NameListResponse extends FFDCResponseBase
     {
         return "NameListResponse{" +
                 "names=" + names +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -122,7 +100,7 @@ public class NameListResponse extends FFDCResponseBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof NameListResponse))
+        if (!(objectToCompare instanceof NameListResponse that))
         {
             return false;
         }
@@ -130,7 +108,6 @@ public class NameListResponse extends FFDCResponseBase
         {
             return false;
         }
-        NameListResponse that = (NameListResponse) objectToCompare;
         return Objects.equals(names, that.names);
     }
 

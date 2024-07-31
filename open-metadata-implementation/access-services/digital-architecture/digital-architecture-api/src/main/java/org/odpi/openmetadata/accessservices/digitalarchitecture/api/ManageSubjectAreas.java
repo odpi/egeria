@@ -2,12 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.api;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.SubjectAreaElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.SubjectAreaClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SubjectAreaElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaClassificationProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 
 import java.util.List;
 

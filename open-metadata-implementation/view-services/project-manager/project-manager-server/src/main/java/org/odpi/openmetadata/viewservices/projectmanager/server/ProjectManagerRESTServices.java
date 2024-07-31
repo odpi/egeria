@@ -4,9 +4,6 @@
 package org.odpi.openmetadata.viewservices.projectmanager.server;
 
 import org.odpi.openmetadata.accessservices.projectmanagement.client.ProjectManagement;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -17,7 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.Project
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.tokencontroller.TokenController;
-import org.odpi.openmetadata.viewservices.projectmanager.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ProjectMembersResponse;
 import org.slf4j.LoggerFactory;
 
 
@@ -61,18 +58,18 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectListResponse getLinkedProjects(String            serverName,
-                                                 String            parentGUID,
-                                                 int               startFrom,
-                                                 int               pageSize,
-                                                 FilterRequestBody requestBody)
+    public ProjectsResponse getLinkedProjects(String            serverName,
+                                              String            parentGUID,
+                                              int               startFrom,
+                                              int               pageSize,
+                                              FilterRequestBody requestBody)
     {
         final String methodName = "getLinkedProjects";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ProjectListResponse response = new ProjectListResponse();
-        AuditLog            auditLog = null;
+        ProjectsResponse response = new ProjectsResponse();
+        AuditLog         auditLog = null;
 
         try
         {
@@ -117,17 +114,17 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectMemberListResponse getProjectTeam(String            serverName,
-                                                    String            projectGUID,
-                                                    int               startFrom,
-                                                    int               pageSize,
-                                                    FilterRequestBody requestBody)
+    public ProjectMembersResponse getProjectTeam(String            serverName,
+                                                 String            projectGUID,
+                                                 int               startFrom,
+                                                 int               pageSize,
+                                                 FilterRequestBody requestBody)
     {
         final String methodName = "getProjectTeam";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ProjectMemberListResponse response = new ProjectMemberListResponse();
+        ProjectMembersResponse response = new ProjectMembersResponse();
         AuditLog                  auditLog = null;
 
         try
@@ -172,7 +169,7 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectListResponse getClassifiedProjects(String            serverName,
+    public ProjectsResponse getClassifiedProjects(String            serverName,
                                                      int               startFrom,
                                                      int               pageSize,
                                                      FilterRequestBody requestBody)
@@ -181,7 +178,7 @@ public class ProjectManagerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ProjectListResponse response = new ProjectListResponse();
+        ProjectsResponse response = new ProjectsResponse();
         AuditLog            auditLog = null;
 
         try
@@ -229,7 +226,7 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectListResponse findProjects(String            serverName,
+    public ProjectsResponse findProjects(String            serverName,
                                             boolean           startsWith,
                                             boolean           endsWith,
                                             boolean           ignoreCase,
@@ -241,7 +238,7 @@ public class ProjectManagerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ProjectListResponse response = new ProjectListResponse();
+        ProjectsResponse response = new ProjectsResponse();
         AuditLog            auditLog = null;
 
         try
@@ -292,7 +289,7 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ProjectListResponse getProjectsByName(String            serverName,
+    public ProjectsResponse getProjectsByName(String            serverName,
                                                  int               startFrom,
                                                  int               pageSize,
                                                  FilterRequestBody requestBody)
@@ -301,7 +298,7 @@ public class ProjectManagerRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ProjectListResponse response = new ProjectListResponse();
+        ProjectsResponse response = new ProjectsResponse();
         AuditLog            auditLog = null;
 
         try
@@ -1028,17 +1025,17 @@ public class ProjectManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedElementListResponse getResourceList(String serverName,
-                                                      String elementGUID,
-                                                      int   startFrom,
-                                                      int   pageSize)
+    public RelatedElementsResponse getResourceList(String serverName,
+                                                   String elementGUID,
+                                                   int   startFrom,
+                                                   int   pageSize)
     {
         final String methodName = "getResourceList";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog            auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -1075,17 +1072,17 @@ public class ProjectManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedElementListResponse getSupportedByResource(String serverName,
-                                                             String resourceGUID,
-                                                             int   startFrom,
-                                                             int   pageSize)
+    public RelatedElementsResponse getSupportedByResource(String serverName,
+                                                          String resourceGUID,
+                                                          int   startFrom,
+                                                          int   pageSize)
     {
         final String methodName = "getSupportedByResource";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog            auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {

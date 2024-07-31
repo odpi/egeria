@@ -2,9 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.server;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -12,6 +9,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceDataHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -591,7 +590,7 @@ public class ReferenceDataRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler<ReferenceDataAssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.classifyAssetAsReferenceData(userId,
                                                  assetGUID,
@@ -704,7 +703,7 @@ public class ReferenceDataRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler<ReferenceDataAssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             handler.declassifyAssetAsReferenceData(userId,
                                                    assetGUID,
@@ -1257,7 +1256,7 @@ public class ReferenceDataRESTServices
                                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                                    new Date(),
                                                                                    methodName);
-                response.setElementList(validValues);
+                response.setElements(validValues);
             }
         }
         catch (Exception error)
@@ -1324,7 +1323,7 @@ public class ReferenceDataRESTServices
                                                                                instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                                new Date(),
                                                                                methodName);
-                response.setElementList(validValues);
+                response.setElements(validValues);
             }
         }
         catch (Exception error)
@@ -1388,7 +1387,7 @@ public class ReferenceDataRESTServices
                                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                                    new Date(),
                                                                                    methodName);
-            response.setElementList(validValues);
+            response.setElements(validValues);
         }
         catch (Exception error)
         {
@@ -1451,7 +1450,7 @@ public class ReferenceDataRESTServices
                                                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                                 new Date(),
                                                                                 methodName);
-            response.setElementList(validValues);
+            response.setElements(validValues);
         }
         catch (Exception error)
         {
@@ -1517,7 +1516,7 @@ public class ReferenceDataRESTServices
                                                                                                                        new Date(),
                                                                                                                        methodName);
 
-            response.setElementList(validValueConsumers);
+            response.setElements(validValueConsumers);
         }
         catch (Exception error)
         {
@@ -1581,7 +1580,7 @@ public class ReferenceDataRESTServices
                                                                                                                                       new Date(),
                                                                                                                                       methodName);
 
-            response.setElementList(validValueAssignmentDefinitions);
+            response.setElements(validValueAssignmentDefinitions);
         }
         catch (Exception error)
         {
@@ -1645,7 +1644,7 @@ public class ReferenceDataRESTServices
                                                                                                                                  new Date(),
                                                                                                                                   methodName);
 
-            response.setElementList(validValueImplAssetElements);
+            response.setElements(validValueImplAssetElements);
         }
         catch (Exception error)
         {
@@ -1710,7 +1709,7 @@ public class ReferenceDataRESTServices
                                                                                new Date(),
                                                                                methodName);
 
-            response.setElementList(definitions);
+            response.setElements(definitions);
 
         }
         catch (Exception error)
@@ -1775,7 +1774,7 @@ public class ReferenceDataRESTServices
                                                                                                 new Date(),
                                                                                                 methodName);
 
-            response.setElementList(validValuesMappings);
+            response.setElements(validValuesMappings);
 
         }
         catch (Exception error)
@@ -1879,7 +1878,7 @@ public class ReferenceDataRESTServices
 
                 if (! elements.isEmpty())
                 {
-                    response.setElementList(elements);
+                    response.setElements(elements);
                 }
             }
         }
@@ -1947,7 +1946,7 @@ public class ReferenceDataRESTServices
                                                                                                               new Date(),
                                                                                                               methodName);
 
-            response.setElementList(assignedItems);
+            response.setElements(assignedItems);
 
         }
         catch (Exception error)
@@ -2011,7 +2010,7 @@ public class ReferenceDataRESTServices
                                                                                                                               new Date(),
                                                                                                                               methodName);
 
-            response.setElementList(referenceValueAssignments);
+            response.setElements(referenceValueAssignments);
 
         }
         catch (Exception error)

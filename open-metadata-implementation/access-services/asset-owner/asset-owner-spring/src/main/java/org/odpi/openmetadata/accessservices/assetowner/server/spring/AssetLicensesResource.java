@@ -5,14 +5,8 @@ package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetowner.rest.LicenseTypeListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.LicenseTypeResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.assetowner.server.LicenseRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -111,11 +105,11 @@ public class AssetLicensesResource
      */
     @PostMapping (path = "/license-types/by-title")
 
-    public LicenseTypeListResponse getLicenseTypesByTitle(@PathVariable String                  serverName,
-                                                          @PathVariable String                  userId,
-                                                          @RequestParam int                     startFrom,
-                                                          @RequestParam int                     pageSize,
-                                                          @RequestBody  SearchStringRequestBody requestBody)
+    public LicenseTypesResponse getLicenseTypesByTitle(@PathVariable String                  serverName,
+                                                       @PathVariable String                  userId,
+                                                       @RequestParam int                     startFrom,
+                                                       @RequestParam int                     pageSize,
+                                                       @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.getLicenseTypesByTitle(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -137,11 +131,11 @@ public class AssetLicensesResource
      */
     @GetMapping (path = "/license-types/by-domain/{domainIdentifier}")
 
-    public LicenseTypeListResponse getLicenseTypeByDomainId(@PathVariable String serverName,
-                                                            @PathVariable String userId,
-                                                            @PathVariable int    domainIdentifier,
-                                                            @RequestParam int    startFrom,
-                                                            @RequestParam int    pageSize)
+    public LicenseTypesResponse getLicenseTypeByDomainId(@PathVariable String serverName,
+                                                         @PathVariable String userId,
+                                                         @PathVariable int    domainIdentifier,
+                                                         @RequestParam int    startFrom,
+                                                         @RequestParam int    pageSize)
     {
         return restAPI.getLicenseTypeByDomainId(serverName, userId, domainIdentifier, startFrom, pageSize);
     }
@@ -245,11 +239,11 @@ public class AssetLicensesResource
      */
     @GetMapping (path = "/elements/licenses/{licenseGUID}")
 
-    public RelatedElementListResponse getCertifiedElements(@PathVariable String serverName,
-                                                           @PathVariable String userId,
-                                                           @PathVariable String licenseGUID,
-                                                           @RequestParam int    startFrom,
-                                                           @RequestParam int    pageSize)
+    public RelatedElementsResponse getCertifiedElements(@PathVariable String serverName,
+                                                        @PathVariable String userId,
+                                                        @PathVariable String licenseGUID,
+                                                        @RequestParam int    startFrom,
+                                                        @RequestParam int    pageSize)
     {
         return restAPI.getLicensedElements(serverName, userId, licenseGUID, startFrom, pageSize);
     }
@@ -271,11 +265,11 @@ public class AssetLicensesResource
      */
     @GetMapping (path = "/elements/{elementGUID}/licenses")
 
-    public RelatedElementListResponse getLicenses(@PathVariable String serverName,
-                                                  @PathVariable String userId,
-                                                  @PathVariable String elementGUID,
-                                                  @RequestParam int    startFrom,
-                                                  @RequestParam int    pageSize)
+    public RelatedElementsResponse getLicenses(@PathVariable String serverName,
+                                               @PathVariable String userId,
+                                               @PathVariable String elementGUID,
+                                               @RequestParam int    startFrom,
+                                               @RequestParam int    pageSize)
     {
         return restAPI.getLicenses(serverName, userId, elementGUID, startFrom, pageSize);
     }

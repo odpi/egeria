@@ -2,12 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ProfileIdentityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
 
 import java.util.List;
 

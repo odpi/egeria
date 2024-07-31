@@ -5,16 +5,14 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.SubjectAreasInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaDefinition;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaClassificationProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 
 import java.util.List;
 
@@ -376,15 +374,15 @@ public class SubjectAreaManager extends GovernanceProgramBaseClient implements S
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        SubjectAreaListResponse restResult = restClient.callSubjectAreaListGetRESTCall(methodName,
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       domainIdentifier,
-                                                                                       startFrom,
-                                                                                       queryPageSize);
+        SubjectAreasResponse restResult = restClient.callSubjectAreaListGetRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    domainIdentifier,
+                                                                                    startFrom,
+                                                                                    queryPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 

@@ -4,20 +4,15 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.RightsManagementInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.LicenseTypeElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.LicenseListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.LicenseTypeListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.LicenseTypeResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseTypeProperties;
 
 import java.util.List;
 
@@ -348,7 +343,7 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
         requestBody.setSearchString(title);
         requestBody.setSearchStringParameterName(titleParameterName);
 
-        LicenseTypeListResponse restResult = restClient.callLicenseTypeListPostRESTCall(methodName,
+        LicenseTypesResponse restResult =    restClient.callLicenseTypeListPostRESTCall(methodName,
                                                                                         urlTemplate,
                                                                                         requestBody,
                                                                                         serverName,
@@ -389,13 +384,13 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        LicenseTypeListResponse restResult = restClient.callLicenseTypeListGetRESTCall(methodName,
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       domainIdentifier,
-                                                                                       startFrom,
-                                                                                       queryPageSize);
+        LicenseTypesResponse    restResult = restClient.callLicenseTypesGetRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    domainIdentifier,
+                                                                                    startFrom,
+                                                                                    queryPageSize);
 
         return restResult.getElements();
     }
@@ -461,9 +456,9 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
     public void updateLicense(String            userId,
                               String            licenseGUID,
                               boolean           isMergeUpdate,
-                              LicenseProperties properties)  throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+                              LicenseProperties properties) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         final String methodName = "updateLicense";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/licenses/{2}/update?isMergeUpdate={3}";
@@ -572,13 +567,13 @@ public class RightsManager extends GovernanceProgramBaseClient implements Rights
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        LicenseListResponse restResult = restClient.callLicenseListGetRESTCall(methodName,
-                                                                               urlTemplate,
-                                                                               serverName,
-                                                                               userId,
-                                                                               elementGUID,
-                                                                               startFrom,
-                                                                               queryPageSize);
+        LicensesResponse restResult = restClient.callLicensesGetRESTCall(methodName,
+                                                                         urlTemplate,
+                                                                         serverName,
+                                                                         userId,
+                                                                         elementGUID,
+                                                                         startFrom,
+                                                                         queryPageSize);
 
         return restResult.getElements();
     }

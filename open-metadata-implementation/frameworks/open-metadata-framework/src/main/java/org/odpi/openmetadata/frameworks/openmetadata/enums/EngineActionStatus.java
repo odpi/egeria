@@ -83,12 +83,12 @@ public enum EngineActionStatus implements OpenMetadataEnum
     private static final String ENUM_DESCRIPTION_GUID = "eb7bba16-b2a0-4e7d-b249-f0be30a50171";
     private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0463_ENGINE_ACTIONS;
 
-    private final String descriptionGUID;
 
-    private final int            ordinal;
-    private final String         name;
-    private final String         description;
-    private final boolean        isDefault;
+    private final int     ordinal;
+    private final String  name;
+    private final String  description;
+    private final String  descriptionGUID;
+    private final boolean isDefault;
 
 
     /**

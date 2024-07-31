@@ -2,21 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.server;
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ContactMethodElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ControlFlowElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataFlowElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.LineageMappingElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.PortElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessCallElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;

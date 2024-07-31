@@ -11,13 +11,13 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Glossa
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.AssetManagerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
 
@@ -168,8 +168,8 @@ public class AssetManagerTestBase
                 AssetManagerProperties properties = new AssetManagerProperties();
 
                 properties.setQualifiedName(assetManagerName);
-                properties.setDisplayName(assetManagerName + assetManagerDisplayName);
-                properties.setDescription(assetManagerName + assetManagerDescription);
+                properties.setResourceName(assetManagerName + assetManagerDisplayName);
+                properties.setResourceDescription(assetManagerName + assetManagerDescription);
                 properties.setDeployedImplementationType(assetManagerName + assetManagerTypeDescription);
                 properties.setVersion(assetManagerName + assetManagerVersion);
 

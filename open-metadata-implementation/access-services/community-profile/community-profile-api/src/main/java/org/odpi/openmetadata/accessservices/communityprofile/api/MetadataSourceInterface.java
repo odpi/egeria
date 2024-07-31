@@ -3,8 +3,8 @@
 
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.MetadataSourceElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataSourceElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataSourceProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,18 +58,7 @@ public class GUIDListResponse extends FFDCResponseBase
      */
     public List<String> getGUIDs()
     {
-        if (guids == null)
-        {
-            return null;
-        }
-        else if (guids.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return guids;
-        }
+        return guids;
     }
 
 
@@ -94,20 +82,9 @@ public class GUIDListResponse extends FFDCResponseBase
     public String toString()
     {
         return "GUIDListResponse{" +
-                "GUIDs=" + getGUIDs() +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "guids=" + guids +
+                "} " + super.toString();
     }
-
 
     /**
      * Return comparison result based on the content of the properties.
@@ -122,7 +99,7 @@ public class GUIDListResponse extends FFDCResponseBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof GUIDListResponse))
+        if (!(objectToCompare instanceof GUIDListResponse that))
         {
             return false;
         }
@@ -130,7 +107,6 @@ public class GUIDListResponse extends FFDCResponseBase
         {
             return false;
         }
-        GUIDListResponse that = (GUIDListResponse) objectToCompare;
         return Objects.equals(guids, that.guids);
     }
 

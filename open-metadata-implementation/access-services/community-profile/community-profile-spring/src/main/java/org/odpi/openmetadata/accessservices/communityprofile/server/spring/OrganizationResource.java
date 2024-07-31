@@ -4,25 +4,9 @@ package org.odpi.openmetadata.accessservices.communityprofile.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ActorProfileListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ActorProfileRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ActorProfileResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.AppointmentRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ContactMethodRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.EffectiveDatesRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleAppointeeListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 
-import org.odpi.openmetadata.accessservices.communityprofile.rest.TeamPlayerRequestBody;
 import org.odpi.openmetadata.accessservices.communityprofile.server.OrganizationRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -301,10 +285,10 @@ public class OrganizationResource
      */
     @GetMapping(path = "/profiles")
 
-    public ActorProfileListResponse getActorProfiles(@PathVariable String serverName,
-                                                     @PathVariable String userId,
-                                                     @RequestParam int    startFrom,
-                                                     @RequestParam int    pageSize)
+    public ActorProfilesResponse getActorProfiles(@PathVariable String serverName,
+                                                  @PathVariable String userId,
+                                                  @RequestParam int    startFrom,
+                                                  @RequestParam int    pageSize)
     {
         return restAPI.getActorProfiles(serverName, userId, startFrom, pageSize);
     }
@@ -327,11 +311,11 @@ public class OrganizationResource
      */
     @GetMapping(path = "/profiles/locations/{locationGUID}")
 
-    public ActorProfileListResponse getActorProfilesByLocation(@PathVariable String serverName,
-                                                               @PathVariable String userId,
-                                                               @PathVariable String locationGUID,
-                                                               @RequestParam int    startFrom,
-                                                               @RequestParam int    pageSize)
+    public ActorProfilesResponse getActorProfilesByLocation(@PathVariable String serverName,
+                                                            @PathVariable String userId,
+                                                            @PathVariable String locationGUID,
+                                                            @RequestParam int    startFrom,
+                                                            @RequestParam int    pageSize)
     {
         return restAPI.getActorProfilesByLocation(serverName, userId, locationGUID, startFrom, pageSize);
     }
@@ -354,11 +338,11 @@ public class OrganizationResource
      */
     @PostMapping(path = "/profiles/by-name")
 
-    public ActorProfileListResponse getActorProfilesByName(@PathVariable String          serverName,
-                                                           @PathVariable String          userId,
-                                                           @RequestParam int             startFrom,
-                                                           @RequestParam int             pageSize,
-                                                           @RequestBody  NameRequestBody requestBody)
+    public ActorProfilesResponse getActorProfilesByName(@PathVariable String          serverName,
+                                                        @PathVariable String          userId,
+                                                        @RequestParam int             startFrom,
+                                                        @RequestParam int             pageSize,
+                                                        @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getActorProfilesByName(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -381,11 +365,11 @@ public class OrganizationResource
      */
     @PostMapping(path = "/profiles/by-search-string")
 
-    public ActorProfileListResponse findActorProfile(@PathVariable String                  serverName,
-                                                     @PathVariable String                  userId,
-                                                     @RequestParam int                     startFrom,
-                                                     @RequestParam int                     pageSize,
-                                                     @RequestBody  SearchStringRequestBody requestBody)
+    public ActorProfilesResponse findActorProfile(@PathVariable String                  serverName,
+                                                  @PathVariable String                  userId,
+                                                  @RequestParam int                     startFrom,
+                                                  @RequestParam int                     pageSize,
+                                                  @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findActorProfiles(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -510,12 +494,12 @@ public class OrganizationResource
      */
     @PostMapping(path = "/person-roles/{personRoleGUID}/appointees")
 
-    public PersonRoleAppointeeListResponse getAppointees(@PathVariable String                   serverName,
-                                                         @PathVariable String                   userId,
-                                                         @PathVariable String                   personRoleGUID,
-                                                         @RequestParam int                      startFrom,
-                                                         @RequestParam int                      pageSize,
-                                                         @RequestBody  EffectiveTimeRequestBody requestBody)
+    public AppointeesResponse getAppointees(@PathVariable String                   serverName,
+                                            @PathVariable String                   userId,
+                                            @PathVariable String                   personRoleGUID,
+                                            @RequestParam int                      startFrom,
+                                            @RequestParam int                      pageSize,
+                                            @RequestBody  EffectiveTimeRequestBody requestBody)
     {
         return restAPI.getAppointees(serverName, userId, personRoleGUID, startFrom, pageSize, requestBody);
     }
@@ -667,11 +651,11 @@ public class OrganizationResource
      */
     @PostMapping(path = "/person-roles/by-name")
 
-    public PersonRoleListResponse getPersonRoleByName(@PathVariable String          serverName,
-                                                      @PathVariable String          userId,
-                                                      @RequestParam int             startFrom,
-                                                      @RequestParam int             pageSize,
-                                                      @RequestBody  NameRequestBody requestBody)
+    public PersonRolesResponse getPersonRoleByName(@PathVariable String          serverName,
+                                                   @PathVariable String          userId,
+                                                   @RequestParam int             startFrom,
+                                                   @RequestParam int             pageSize,
+                                                   @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getPersonRoleByName(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -695,11 +679,11 @@ public class OrganizationResource
      */
     @GetMapping(path = "/person-roles/by-team/{teamGUID}/leadership")
 
-    public PersonRoleListResponse getLeadershipRolesForTeam(@PathVariable String serverName,
-                                                            @PathVariable String userId,
-                                                            @PathVariable String teamGUID,
-                                                            @RequestParam int    startFrom,
-                                                            @RequestParam int    pageSize)
+    public PersonRolesResponse getLeadershipRolesForTeam(@PathVariable String serverName,
+                                                         @PathVariable String userId,
+                                                         @PathVariable String teamGUID,
+                                                         @RequestParam int    startFrom,
+                                                         @RequestParam int    pageSize)
     {
         return restAPI.getLeadershipRolesForTeam(serverName, userId, teamGUID, startFrom, pageSize);
     }
@@ -722,11 +706,11 @@ public class OrganizationResource
      */
     @GetMapping(path = "/person-roles/by-team/{teamGUID}/membership")
 
-    public PersonRoleListResponse getMembershipRolesForTeam(@PathVariable String serverName,
-                                                            @PathVariable String userId,
-                                                            @PathVariable String teamGUID,
-                                                            @RequestParam int    startFrom,
-                                                            @RequestParam int    pageSize)
+    public PersonRolesResponse getMembershipRolesForTeam(@PathVariable String serverName,
+                                                         @PathVariable String userId,
+                                                         @PathVariable String teamGUID,
+                                                         @RequestParam int    startFrom,
+                                                         @RequestParam int    pageSize)
     {
         return restAPI.getMembershipRolesForTeam(serverName, userId, teamGUID, startFrom, pageSize);
     }
@@ -748,11 +732,11 @@ public class OrganizationResource
      */
     @PostMapping(path = "/person-roles/by-search-string")
 
-    public PersonRoleListResponse findPersonRole(@PathVariable String                  serverName,
-                                                 @PathVariable String                  userId,
-                                                 @RequestParam int                     startFrom,
-                                                 @RequestParam int                     pageSize,
-                                                 @RequestBody  SearchStringRequestBody requestBody)
+    public PersonRolesResponse findPersonRole(@PathVariable String                  serverName,
+                                              @PathVariable String                  userId,
+                                              @RequestParam int                     startFrom,
+                                              @RequestParam int                     pageSize,
+                                              @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findPersonRoles(serverName, userId, startFrom, pageSize, requestBody);
     }

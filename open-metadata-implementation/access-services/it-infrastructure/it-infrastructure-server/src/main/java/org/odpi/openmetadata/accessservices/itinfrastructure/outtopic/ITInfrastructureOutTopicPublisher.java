@@ -4,12 +4,12 @@
 package org.odpi.openmetadata.accessservices.itinfrastructure.outtopic;
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.connectors.outtopic.ITInfrastructureOutTopicServerConnector;
-import org.odpi.openmetadata.accessservices.itinfrastructure.converters.ElementHeaderConverter;
 import org.odpi.openmetadata.accessservices.itinfrastructure.events.ITInfrastructureEventType;
 import org.odpi.openmetadata.accessservices.itinfrastructure.events.ITInfrastructureOutTopicEvent;
 import org.odpi.openmetadata.accessservices.itinfrastructure.ffdc.ITInfrastructureAuditCode;
+import org.odpi.openmetadata.commonservices.generichandlers.ElementHeaderConverter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -22,9 +22,9 @@ public class ITInfrastructureOutTopicPublisher
 {
     private final ITInfrastructureOutTopicServerConnector outTopicServerConnector;
     private final AuditLog                                outTopicAuditLog;
-    private final String                                  outTopicName;
-    private final ElementHeaderConverter<ElementHeader>   headerConverter;
-    private final OMRSRepositoryHelper                    repositoryHelper;
+    private final String                                outTopicName;
+    private final ElementHeaderConverter<ElementHeader> headerConverter;
+    private final OMRSRepositoryHelper                  repositoryHelper;
 
     private final String actionDescription = "Out topic configuration refresh event publishing";
 

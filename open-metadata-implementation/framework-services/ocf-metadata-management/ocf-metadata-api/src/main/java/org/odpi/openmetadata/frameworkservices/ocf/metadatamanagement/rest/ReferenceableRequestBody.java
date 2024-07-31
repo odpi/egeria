@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
 
 import java.util.*;

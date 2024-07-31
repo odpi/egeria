@@ -4,13 +4,16 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.*;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.server.ITInfrastructureRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.EmbeddedConnectionRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.EndpointResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.EndpointsResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class ITInfrastructureResource
 {
-    private ITInfrastructureRESTServices restAPI = new ITInfrastructureRESTServices();
+    private final ITInfrastructureRESTServices restAPI = new ITInfrastructureRESTServices();
 
     /**
      * Default constructor
@@ -57,9 +60,9 @@ public class ITInfrastructureResource
      */
     @GetMapping(path = "/topics/out-topic-connection/{callerId}")
 
-    public org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
-                                                                                                   @PathVariable String userId,
-                                                                                                   @PathVariable String callerId)
+    public OCFConnectionResponse getOutTopicConnection(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String callerId)
     {
         return restAPI.getOutTopicConnection(serverName, userId, callerId);
     }
@@ -159,7 +162,7 @@ public class ITInfrastructureResource
                                            @PathVariable String                    userId,
                                            @PathVariable String                    connectionGUID,
                                            @PathVariable String                    connectorTypeGUID,
-                                           @RequestBody  MetadataSourceRequestBody requestBody)
+                                           @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.setupConnectorType(serverName, userId, connectionGUID, connectorTypeGUID, requestBody);
     }
@@ -185,7 +188,7 @@ public class ITInfrastructureResource
                                            @PathVariable String                    userId,
                                            @PathVariable String                    connectionGUID,
                                            @PathVariable String                    connectorTypeGUID,
-                                           @RequestBody  MetadataSourceRequestBody requestBody)
+                                           @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.clearConnectorType(serverName, userId, connectionGUID, connectorTypeGUID, requestBody);
     }
@@ -211,7 +214,7 @@ public class ITInfrastructureResource
                                       @PathVariable String                    userId,
                                       @PathVariable String                    connectionGUID,
                                       @PathVariable String                    endpointGUID,
-                                      @RequestBody  MetadataSourceRequestBody requestBody)
+                                      @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.setupEndpoint(serverName, userId, connectionGUID, endpointGUID, requestBody);
     }
@@ -237,7 +240,7 @@ public class ITInfrastructureResource
                                       @PathVariable String                    userId,
                                       @PathVariable String                    connectionGUID,
                                       @PathVariable String                    endpointGUID,
-                                      @RequestBody  MetadataSourceRequestBody requestBody)
+                                      @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.clearEndpoint(serverName, userId, connectionGUID, endpointGUID, requestBody);
     }
@@ -289,7 +292,7 @@ public class ITInfrastructureResource
                                                 @PathVariable String                    userId,
                                                 @PathVariable String                    connectionGUID,
                                                 @PathVariable String                    embeddedConnectionGUID,
-                                                @RequestBody  MetadataSourceRequestBody requestBody)
+                                                @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.clearEmbeddedConnection(serverName, userId, connectionGUID, embeddedConnectionGUID, requestBody);
     }
@@ -341,7 +344,7 @@ public class ITInfrastructureResource
                                              @PathVariable String                    userId,
                                              @PathVariable String                    assetGUID,
                                              @PathVariable String                    connectionGUID,
-                                             @RequestBody  MetadataSourceRequestBody requestBody)
+                                             @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.clearAssetConnection(serverName, userId, assetGUID, connectionGUID, requestBody);
     }
@@ -366,7 +369,7 @@ public class ITInfrastructureResource
     public VoidResponse removeConnection(@PathVariable String                    serverName,
                                          @PathVariable String                    userId,
                                          @PathVariable String                    connectionGUID,
-                                         @RequestBody  MetadataSourceRequestBody requestBody)
+                                         @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeConnection(serverName, userId, connectionGUID, requestBody);
     }
@@ -391,7 +394,7 @@ public class ITInfrastructureResource
 
     public ConnectionsResponse findConnections(@PathVariable String                  serverName,
                                                @PathVariable String                  userId,
-                                               @RequestBody SearchStringRequestBody requestBody,
+                                               @RequestBody  SearchStringRequestBody requestBody,
                                                @RequestParam int                     startFrom,
                                                @RequestParam int                     pageSize)
     {
@@ -538,7 +541,7 @@ public class ITInfrastructureResource
     public VoidResponse removeConnectorType(@PathVariable String                    serverName,
                                             @PathVariable String                    userId,
                                             @PathVariable String                    connectorTypeGUID,
-                                            @RequestBody  MetadataSourceRequestBody requestBody)
+                                            @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeConnectorType(serverName, userId, connectorTypeGUID, requestBody);
     }
@@ -771,7 +774,7 @@ public class ITInfrastructureResource
     public VoidResponse removeEndpoint(@PathVariable String                    serverName,
                                        @PathVariable String                    userId,
                                        @PathVariable String                    endpointGUID,
-                                       @RequestBody  MetadataSourceRequestBody requestBody)
+                                       @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeEndpoint(serverName, userId, endpointGUID, requestBody);
     }
@@ -1009,7 +1012,7 @@ public class ITInfrastructureResource
     public VoidResponse removeSoftwareCapability(@PathVariable String                    serverName,
                                                  @PathVariable String                    userId,
                                                  @PathVariable String                    capabilityGUID,
-                                                 @RequestBody  MetadataSourceRequestBody requestBody)
+                                                 @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeSoftwareCapability(serverName, userId, capabilityGUID, requestBody);
     }
@@ -1032,11 +1035,11 @@ public class ITInfrastructureResource
      */
     @PostMapping(path = "/software-capabilities/by-search-string")
 
-    public SoftwareCapabilityListResponse findSoftwareCapabilities(@PathVariable String                  serverName,
-                                                                   @PathVariable String                  userId,
-                                                                   @RequestParam int                     startFrom,
-                                                                   @RequestParam int                     pageSize,
-                                                                   @RequestBody  SearchStringRequestBody requestBody)
+    public SoftwareCapabilitiesResponse findSoftwareCapabilities(@PathVariable String                  serverName,
+                                                                 @PathVariable String                  userId,
+                                                                 @RequestParam int                     startFrom,
+                                                                 @RequestParam int                     pageSize,
+                                                                 @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findSoftwareCapabilities(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -1059,11 +1062,11 @@ public class ITInfrastructureResource
      */
     @PostMapping(path = "/software-capabilities/by-name")
 
-    public SoftwareCapabilityListResponse getSoftwareCapabilitiesByName(@PathVariable String          serverName,
-                                                                        @PathVariable String          userId,
-                                                                        @RequestParam int             startFrom,
-                                                                        @RequestParam int             pageSize,
-                                                                        @RequestBody  NameRequestBody requestBody)
+    public SoftwareCapabilitiesResponse getSoftwareCapabilitiesByName(@PathVariable String          serverName,
+                                                                      @PathVariable String          userId,
+                                                                      @RequestParam int             startFrom,
+                                                                      @RequestParam int             pageSize,
+                                                                      @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getSoftwareCapabilitiesByName(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -1167,7 +1170,7 @@ public class ITInfrastructureResource
     public VoidResponse removeServerAssetUse(@PathVariable String                    serverName,
                                              @PathVariable String                    userId,
                                              @PathVariable String                    serverAssetUseGUID,
-                                             @RequestBody  MetadataSourceRequestBody requestBody)
+                                             @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeServerAssetUse(serverName, userId, serverAssetUseGUID, requestBody);
     }
@@ -1190,12 +1193,12 @@ public class ITInfrastructureResource
      */
     @PostMapping(path = "/server-asset-uses/software-capabilities/{capabilityGUID}")
 
-    public ServerAssetUseListResponse getServerAssetUsesForCapability(@PathVariable String             serverName,
-                                                                      @PathVariable String             userId,
-                                                                      @PathVariable String             capabilityGUID,
-                                                                      @RequestParam int                startFrom,
-                                                                      @RequestParam int                pageSize,
-                                                                      @RequestBody  UseTypeRequestBody requestBody)
+    public ServerAssetUsesResponse getServerAssetUsesForCapability(@PathVariable String             serverName,
+                                                                   @PathVariable String             userId,
+                                                                   @PathVariable String             capabilityGUID,
+                                                                   @RequestParam int                startFrom,
+                                                                   @RequestParam int                pageSize,
+                                                                   @RequestBody  UseTypeRequestBody requestBody)
     {
         return restAPI.getServerAssetUsesForCapability(serverName, userId, capabilityGUID, startFrom, pageSize, requestBody);
     }
@@ -1218,12 +1221,12 @@ public class ITInfrastructureResource
      */
     @PostMapping(path = "/server-asset-uses/assets/{assetGUID}")
 
-    public ServerAssetUseListResponse getCapabilityUsesForAsset(@PathVariable String             serverName,
-                                                                @PathVariable String             userId,
-                                                                @PathVariable String             assetGUID,
-                                                                @RequestParam int                startFrom,
-                                                                @RequestParam int                pageSize,
-                                                                @RequestBody  UseTypeRequestBody requestBody)
+    public ServerAssetUsesResponse getCapabilityUsesForAsset(@PathVariable String             serverName,
+                                                             @PathVariable String             userId,
+                                                             @PathVariable String             assetGUID,
+                                                             @RequestParam int                startFrom,
+                                                             @RequestParam int                pageSize,
+                                                             @RequestBody  UseTypeRequestBody requestBody)
     {
         return restAPI.getCapabilityUsesForAsset(serverName, userId, assetGUID, startFrom, pageSize, requestBody);
     }
@@ -1247,13 +1250,13 @@ public class ITInfrastructureResource
      */
     @PostMapping(path = "/server-asset-uses/software-capabilities/{capabilityGUID}/assets/{assetGUID}/by-elements")
 
-    public ServerAssetUseListResponse getServerAssetUsesForElements(@PathVariable String                   serverName,
-                                                                    @PathVariable String                   userId,
-                                                                    @PathVariable String                   capabilityGUID,
-                                                                    @PathVariable String                   assetGUID,
-                                                                    @RequestParam int                      startFrom,
-                                                                    @RequestParam int                      pageSize,
-                                                                    @RequestBody  EffectiveTimeRequestBody requestBody)
+    public ServerAssetUsesResponse getServerAssetUsesForElements(@PathVariable String                   serverName,
+                                                                 @PathVariable String                   userId,
+                                                                 @PathVariable String                   capabilityGUID,
+                                                                 @PathVariable String                   assetGUID,
+                                                                 @RequestParam int                      startFrom,
+                                                                 @RequestParam int                      pageSize,
+                                                                 @RequestBody  EffectiveTimeRequestBody requestBody)
     {
         return restAPI.getServerAssetUsesForElements(serverName, userId, capabilityGUID, assetGUID, startFrom, pageSize, requestBody);
     }

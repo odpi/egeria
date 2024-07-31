@@ -5,29 +5,18 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.client;
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.SoftwareCapabilityManagerInterface;
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.SoftwareServerCapabilityManagerInterface;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ServerAssetUseElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerCapabilityElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.CapabilityDeploymentProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedAssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ServerAssetUseElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareCapabilityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerCapabilityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.CapabilityDeploymentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.ServerAssetUseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareCapabilityProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareServerCapabilityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareServerCapabilityProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSourceRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ServerAssetUseListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ServerAssetUseRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ServerAssetUseResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareCapabilityRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareCapabilityListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareCapabilityResponse;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UseTypeRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -734,7 +723,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
 
         final String urlTemplate = serverPlatformURLRoot + capabilityURLTemplatePrefix + "/{2}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -788,7 +777,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        SoftwareCapabilityListResponse restResult = restClient.callSoftwareServerCapabilityListPostRESTCall(methodName,
+        SoftwareCapabilitiesResponse restResult = restClient.callSoftwareServerCapabilitiesPostRESTCall(methodName,
                                                                                                             urlTemplate,
                                                                                                             requestBody,
                                                                                                             serverName,
@@ -796,7 +785,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
                                                                                                             startFrom,
                                                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -840,7 +829,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        SoftwareCapabilityListResponse restResult = restClient.callSoftwareServerCapabilityListPostRESTCall(methodName,
+        SoftwareCapabilitiesResponse restResult = restClient.callSoftwareServerCapabilitiesPostRESTCall(methodName,
                                                                                                             urlTemplate,
                                                                                                             requestBody,
                                                                                                             serverName,
@@ -848,7 +837,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
                                                                                                             startFrom,
                                                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -918,7 +907,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
 
         requestBody.setEffectiveTime(effectiveTime);
 
-        SoftwareCapabilityListResponse restResult = restClient.callSoftwareServerCapabilityListPostRESTCall(methodName,
+        SoftwareCapabilitiesResponse restResult = restClient.callSoftwareServerCapabilitiesPostRESTCall(methodName,
                                                                             urlTemplate,
                                                                             requestBody,
                                                                             serverName,
@@ -927,7 +916,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
                                                                             startFrom,
                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -974,7 +963,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
 
         requestBody.setEffectiveTime(effectiveTime);
 
-        SoftwareCapabilityListResponse restResult = restClient.callSoftwareServerCapabilityListPostRESTCall(methodName,
+        SoftwareCapabilitiesResponse restResult = restClient.callSoftwareServerCapabilitiesPostRESTCall(methodName,
                                                                             urlTemplate,
                                                                             requestBody,
                                                                             serverName,
@@ -984,7 +973,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
                                                                             startFrom,
                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
 
     }
 
@@ -1163,7 +1152,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
 
         final String urlTemplate = serverPlatformURLRoot + assetUsesURLTemplatePrefix + "/{2}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -1216,7 +1205,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
         requestBody.setEffectiveTime(effectiveTime);
         requestBody.setUseType(useType);
 
-        ServerAssetUseListResponse restResult = restClient.callServerAssetUseListPostRESTCall(methodName,
+        ServerAssetUsesResponse restResult = restClient.callServerAssetUseListPostRESTCall(methodName,
                                                                              urlTemplate,
                                                                              requestBody,
                                                                              serverName,
@@ -1269,7 +1258,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
         requestBody.setEffectiveTime(effectiveTime);
         requestBody.setUseType(useType);
 
-        ServerAssetUseListResponse restResult = restClient.callServerAssetUseListPostRESTCall(methodName,
+        ServerAssetUsesResponse restResult = restClient.callServerAssetUseListPostRESTCall(methodName,
                                                                                               urlTemplate,
                                                                                               requestBody,
                                                                                               serverName,
@@ -1323,7 +1312,7 @@ public class CapabilityManagerClient extends ITInfrastructureClientBase implemen
 
         requestBody.setEffectiveTime(effectiveTime);
 
-        ServerAssetUseListResponse restResult = restClient.callServerAssetUseListPostRESTCall(methodName,
+        ServerAssetUsesResponse restResult = restClient.callServerAssetUseListPostRESTCall(methodName,
                                                                                               urlTemplate,
                                                                                               requestBody,
                                                                                               serverName,

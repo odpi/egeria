@@ -6,11 +6,11 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.fvt.locations;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.LocationManager;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.LocationElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.LocationProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LocationElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -176,7 +176,7 @@ public class CreateLocationsTest
             client.setLocationAsFixedPhysical(userId, siteGUID, null, null, null, "GMT");
 
             LocationElement    retrievedElement = client.getLocationByGUID(userId, siteGUID);
-            LocationProperties retrievedSite     = retrievedElement.getLocationProperties();
+            LocationProperties retrievedSite    = retrievedElement.getLocationProperties();
 
             if (retrievedSite == null)
             {

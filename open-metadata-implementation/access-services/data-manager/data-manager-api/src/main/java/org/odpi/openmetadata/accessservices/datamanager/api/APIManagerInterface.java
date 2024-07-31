@@ -1,14 +1,18 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datamanager.api;
-
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIOperationElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIParameterListElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.*;
+;
+import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIOperationElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIParameterListElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.APIParameterListType;
 
 import java.util.List;
 
@@ -485,7 +489,7 @@ public interface APIManagerInterface
                                   String                     apiManagerGUID,
                                   String                     apiManagerName,
                                   String                     apiOperationGUID,
-                                  APIParameterListType       parameterListType,
+                                  APIParameterListType parameterListType,
                                   APIParameterListProperties properties) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException;

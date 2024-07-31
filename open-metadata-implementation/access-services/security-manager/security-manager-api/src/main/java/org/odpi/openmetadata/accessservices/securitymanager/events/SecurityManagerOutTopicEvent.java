@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.securitymanager.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 
 import java.util.Date;
 import java.util.Map;
@@ -25,17 +25,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class SecurityManagerOutTopicEvent
 {
-    private long                     eventVersionId     = 1L;
-    private SecurityManagerEventType eventType          = null;
-    private Date                     eventTime          = null;
-    private ElementHeader            elementHeader      = null;
-    private Map<String, Object>      elementProperties  = null;
+    private long                     eventVersionId    = 1L;
+    private SecurityManagerEventType eventType         = null;
+    private Date                     eventTime         = null;
+    private ElementHeader            elementHeader     = null;
+    private Map<String, Object>      elementProperties = null;
 
-    private ElementHeader            previousElementHeader     = null;
-    private Map<String, Object>      previousElementProperties = null;
+    private ElementHeader       previousElementHeader     = null;
+    private Map<String, Object> previousElementProperties = null;
 
-    private String                   classificationName               = null;
-    private Map<String, Object>      previousClassificationProperties = null;
+    private String              classificationName               = null;
+    private Map<String, Object> previousClassificationProperties = null;
 
 
 

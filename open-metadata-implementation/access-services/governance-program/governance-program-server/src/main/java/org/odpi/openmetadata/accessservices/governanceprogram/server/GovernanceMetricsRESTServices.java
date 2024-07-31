@@ -2,20 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceMetricElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionMetricProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceExpectationsProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsDataSetProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMetricProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceResultsProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceMetricListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceMetricResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceMetricElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionMetricProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceExpectationsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMeasurementsDataSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMeasurementsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMetricProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceResultsProperties;
+
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -79,13 +75,11 @@ public class GovernanceMetricsRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceMetricProperties)
+                if (requestBody.getProperties() instanceof GovernanceMetricProperties properties)
                 {
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
                     GovernanceMetricHandler<GovernanceMetricElement> handler = instanceHandler.getGovernanceMetricHandler(userId, serverName, methodName);
-
-                    GovernanceMetricProperties properties = (GovernanceMetricProperties) requestBody.getProperties();
 
                     String setGUID = handler.createGovernanceMetric(userId,
                                                                     requestBody.getExternalSourceGUID(),
@@ -158,13 +152,11 @@ public class GovernanceMetricsRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceMetricProperties)
+                if (requestBody.getProperties() instanceof GovernanceMetricProperties properties)
                 {
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
                     GovernanceMetricHandler<GovernanceMetricElement> handler = instanceHandler.getGovernanceMetricHandler(userId, serverName, methodName);
-
-                    GovernanceMetricProperties properties = (GovernanceMetricProperties) requestBody.getProperties();
 
                     handler.updateGovernanceMetric(userId,
                                                    requestBody.getExternalSourceGUID(),
@@ -297,10 +289,8 @@ public class GovernanceMetricsRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceDefinitionMetricProperties)
+                if (requestBody.getProperties() instanceof GovernanceDefinitionMetricProperties properties)
                 {
-                    GovernanceDefinitionMetricProperties properties = (GovernanceDefinitionMetricProperties)requestBody.getProperties();
-
                     handler.addGovernanceDefinitionMetric(userId,
                                                           requestBody.getExternalSourceGUID(),
                                                           requestBody.getExternalSourceName(),
@@ -475,10 +465,8 @@ public class GovernanceMetricsRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceResultsProperties)
+                if (requestBody.getProperties() instanceof GovernanceResultsProperties properties)
                 {
-                    GovernanceResultsProperties properties = (GovernanceResultsProperties)requestBody.getProperties();
-
                     handler.addGovernanceResults(userId,
                                                    requestBody.getExternalSourceGUID(),
                                                    requestBody.getExternalSourceName(),
@@ -651,10 +639,8 @@ public class GovernanceMetricsRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceMeasurementsDataSetProperties)
+                if (requestBody.getProperties() instanceof GovernanceMeasurementsDataSetProperties properties)
                 {
-                    GovernanceMeasurementsDataSetProperties properties = (GovernanceMeasurementsDataSetProperties)requestBody.getProperties();
-
                     handler.addGovernanceMeasurementsDataSetClassification(userId,
                                                                            requestBody.getExternalSourceGUID(),
                                                                            requestBody.getExternalSourceName(),
@@ -790,10 +776,8 @@ public class GovernanceMetricsRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceExpectationsProperties)
+                if (requestBody.getProperties() instanceof GovernanceExpectationsProperties properties)
                 {
-                    GovernanceExpectationsProperties properties = (GovernanceExpectationsProperties)requestBody.getProperties();
-
                     handler.addGovernanceExpectationsClassification(userId,
                                                                     requestBody.getExternalSourceGUID(),
                                                                     requestBody.getExternalSourceName(),
@@ -931,10 +915,8 @@ public class GovernanceMetricsRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceMeasurementsProperties)
+                if (requestBody.getProperties() instanceof GovernanceMeasurementsProperties properties)
                 {
-                    GovernanceMeasurementsProperties properties = (GovernanceMeasurementsProperties)requestBody.getProperties();
-
                     handler.addGovernanceMeasurementsClassification(userId,
                                                                     requestBody.getExternalSourceGUID(),
                                                                     requestBody.getExternalSourceName(),
@@ -1100,19 +1082,19 @@ public class GovernanceMetricsRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public GovernanceMetricListResponse findGovernanceMetrics(String                  serverName,
-                                                              String                  userId,
-                                                              int                     startFrom,
-                                                              int                     pageSize,
-                                                              SearchStringRequestBody requestBody)
+    public GovernanceMetricsResponse findGovernanceMetrics(String                  serverName,
+                                                           String                  userId,
+                                                           int                     startFrom,
+                                                           int                     pageSize,
+                                                           SearchStringRequestBody requestBody)
     {
         final String methodName = "findGovernanceMetrics";
         final String searchStringParameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceMetricListResponse response = new GovernanceMetricListResponse();
-        AuditLog                     auditLog = null;
+        GovernanceMetricsResponse response = new GovernanceMetricsResponse();
+        AuditLog                  auditLog = null;
 
         try
         {

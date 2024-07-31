@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.governanceserver.ffdc.GovernanceServ
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.OCFConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
@@ -46,16 +46,16 @@ public class GovernanceServerRESTServices
      *   UserNotAuthorizedException user not authorized to issue this request or
      *   PropertyServerException problem retrieving the Governance Server definition.
      */
-    public ConnectionResponse getOutTopicConnection(String serverName,
-                                                    String userId,
-                                                    String callerId)
+    public OCFConnectionResponse getOutTopicConnection(String serverName,
+                                                       String userId,
+                                                       String callerId)
     {
         final String        methodName = "getOutTopicConnection";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ConnectionResponse response = new ConnectionResponse();
-        AuditLog           auditLog = null;
+        OCFConnectionResponse response = new OCFConnectionResponse();
+        AuditLog              auditLog = null;
 
         try
         {

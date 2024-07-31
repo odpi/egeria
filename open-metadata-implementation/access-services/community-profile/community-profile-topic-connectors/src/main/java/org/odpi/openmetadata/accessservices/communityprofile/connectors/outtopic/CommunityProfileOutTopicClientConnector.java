@@ -23,7 +23,7 @@ public class CommunityProfileOutTopicClientConnector extends OpenMetadataTopicLi
 {
     private static final Logger log = LoggerFactory.getLogger(CommunityProfileOutTopicClientConnector.class);
 
-    private List<CommunityProfileEventListener> internalEventListeners = new ArrayList<>();
+    private final List<CommunityProfileEventListener> internalEventListeners = new ArrayList<>();
 
 
     /**

@@ -3,16 +3,18 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
 
-import org.odpi.openmetadata.accessservices.governanceprogram.converters.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.GovernanceProgramErrorCode;
 import org.odpi.openmetadata.accessservices.governanceprogram.handlers.AppointmentHandler;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.generichandlers.CertificationTypeConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.ExternalReferenceConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.LicenseTypeConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.RelatedElementConverter;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -110,7 +112,7 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
                                                                     publishZones,
                                                                     auditLog);
 
-            this.relatedAssetHandler = new AssetHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName,serverName),
+            this.relatedAssetHandler = new AssetHandler<>(new RelatedElementConverter<>(repositoryHelper, serviceName, serverName),
                                                           RelatedElement.class,
                                                           serviceName,
                                                           serverName,

@@ -5,6 +5,8 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaUsage;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -22,7 +24,7 @@ public class TestRelatedMediaReference
 {
     private ElementType                 type                 = new ElementType();
     private List<ElementClassification> classifications      = new ArrayList<>();
-    private Map<String, String> additionalProperties = new HashMap<>();
+    private Map<String, String>         additionalProperties = new HashMap<>();
     private List<MediaUsage>    mediaUsage           = new ArrayList<>();
 
 
@@ -262,7 +264,7 @@ public class TestRelatedMediaReference
         /*
          * Through superclass
          */
-        PropertyBase  propertyBase = getTestObject();
+        ElementBase  propertyBase = getTestObject();
 
         try
         {
@@ -275,7 +277,7 @@ public class TestRelatedMediaReference
 
         try
         {
-            validateResultObject((RelatedMediaReference) objectMapper.readValue(jsonString, PropertyBase.class));
+            validateResultObject((RelatedMediaReference) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

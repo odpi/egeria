@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.CollectionElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.CollectionMember;
-import org.odpi.openmetadata.accessservices.assetowner.properties.CollectionFolderProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.CollectionMembershipProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.CollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionMember;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionFolderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

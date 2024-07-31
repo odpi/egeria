@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceLinkElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -78,9 +78,8 @@ public class ExternalReferenceLinkConverter<B> extends AssetManagerOMASConverter
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ExternalReferenceLinkElement)
+            if (returnBean instanceof ExternalReferenceLinkElement bean)
             {
-                ExternalReferenceLinkElement    bean                        = (ExternalReferenceLinkElement) returnBean;
                 ExternalReferenceProperties     externalReferenceProperties = new ExternalReferenceProperties();
                 ExternalReferenceLinkProperties linkProperties              = new ExternalReferenceLinkProperties();
 
@@ -96,8 +95,8 @@ public class ExternalReferenceLinkConverter<B> extends AssetManagerOMASConverter
                     externalReferenceProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     externalReferenceProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     externalReferenceProperties.setDisplayName(this.removeDisplayName(instanceProperties));
-                    externalReferenceProperties.setDescription(this.removeDescription(instanceProperties));
-                    externalReferenceProperties.setUrl(this.removeURL(instanceProperties));
+                    externalReferenceProperties.setResourceDescription(this.removeDescription(instanceProperties));
+                    externalReferenceProperties.setResourceDescription(this.removeURL(instanceProperties));
                     externalReferenceProperties.setVersion(this.removeReferenceVersion(instanceProperties));
                     externalReferenceProperties.setOrganization(this.removeOwningOrganization(instanceProperties));
 

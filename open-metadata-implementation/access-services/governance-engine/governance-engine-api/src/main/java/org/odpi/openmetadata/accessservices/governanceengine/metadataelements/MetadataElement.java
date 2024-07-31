@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.accessservices.governanceengine.metadataelements;
 
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 
 /**
  * MetadataElement is the common interface for all metadata elements.  It adds the header information that is stored with the properties.

@@ -4,28 +4,16 @@
 package org.odpi.openmetadata.accessservices.itinfrastructure.client;
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ITProfileProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ContactMethodProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProfileIdentityProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.UserIdentityProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveDatesRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveTimeMetadataSourceRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ContactMethodRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSourceRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ProfileIdentityRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ITProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContactMethodProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ProfileIdentityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.ITProfileManagerInterface;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ProfileIdentityRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UserIdentityListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UserIdentityRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UserIdentityResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -302,7 +290,7 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/{2}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
@@ -388,7 +376,7 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/profiles/contact-methods/{2}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
@@ -522,7 +510,7 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/assets/{2}/profiles/{3}/unlink";
 
-        EffectiveTimeMetadataSourceRequestBody requestBody = new EffectiveTimeMetadataSourceRequestBody();
+        EffectiveTimeQueryRequestBody requestBody = new EffectiveTimeQueryRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
@@ -546,9 +534,9 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
      */
     @Override
     public ITProfileElement getITProfileByGUID(String userId,
-                                                     String itProfileGUID) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+                                               String itProfileGUID) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
         final String methodName        = "getITProfileByGUID";
         final String guidParameterName = "itProfileGUID";
@@ -641,13 +629,13 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
         requestBody.setNamePropertyName(namePropertyName);
         requestBody.setNameParameterName(nameParameterName);
 
-        ITProfileListResponse restResult = restClient.callITProfileListPostRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          Integer.toString(startFrom),
-                                                                                          Integer.toString(pageSize));
+        ITProfilesResponse restResult = restClient.callITProfileListPostRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 requestBody,
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 Integer.toString(startFrom),
+                                                                                 Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -688,13 +676,13 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        ITProfileListResponse restResult = restClient.callITProfileListPostRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          Integer.toString(startFrom),
-                                                                                          Integer.toString(pageSize));
+        ITProfilesResponse restResult = restClient.callITProfileListPostRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 requestBody,
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 Integer.toString(startFrom),
+                                                                                 Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -828,7 +816,7 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
@@ -961,7 +949,7 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/profiles/{3}/unlink";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
@@ -1006,13 +994,13 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        UserIdentityListResponse restResult = restClient.callUserIdentityListPostRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          Integer.toString(startFrom),
-                                                                                          Integer.toString(pageSize));
+        UserIdentitiesResponse restResult = restClient.callUserIdentityListPostRESTCall(methodName,
+                                                                                        urlTemplate,
+                                                                                        requestBody,
+                                                                                        serverName,
+                                                                                        userId,
+                                                                                        Integer.toString(startFrom),
+                                                                                        Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -1056,13 +1044,13 @@ public class ITProfileManagerClient implements ITProfileManagerInterface
         requestBody.setNamePropertyName(namePropertyName);
         requestBody.setNameParameterName(nameParameterName);
 
-        UserIdentityListResponse restResult = restClient.callUserIdentityListPostRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          Integer.toString(startFrom),
-                                                                                          Integer.toString(pageSize));
+        UserIdentitiesResponse restResult = restClient.callUserIdentityListPostRESTCall(methodName,
+                                                                                        urlTemplate,
+                                                                                        requestBody,
+                                                                                        serverName,
+                                                                                        userId,
+                                                                                        Integer.toString(startFrom),
+                                                                                        Integer.toString(pageSize));
 
         return restResult.getElements();
     }

@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements.RatingElement;
-import org.odpi.openmetadata.viewservices.feedbackmanager.properties.RatingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
 
 import java.lang.reflect.InvocationTargetException;
 

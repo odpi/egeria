@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.automatedcuration.converters;
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ReferenceableElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ReferenceableElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;

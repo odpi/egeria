@@ -4,18 +4,12 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.client;
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.EndpointManagerInterface;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.EndpointProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EndpointRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EndpointResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EndpointsResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -30,11 +24,11 @@ public class EndpointManagerClient implements EndpointManagerInterface
 {
     private static final String endpointURLTemplatePrefix      = "/servers/{0}/open-metadata/access-services/it-infrastructure/users/{1}/endpoints";
 
-    private String   serverName;               /* Initialized in constructor */
-    private String   serverPlatformURLRoot;    /* Initialized in constructor */
+    private final String serverName;               /* Initialized in constructor */
+    private final String serverPlatformURLRoot;    /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private ITInfrastructureRESTClient   restClient;               /* Initialized in constructor */
+    private final InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
+    private final ITInfrastructureRESTClient restClient;               /* Initialized in constructor */
 
 
     /**
@@ -396,7 +390,7 @@ public class EndpointManagerClient implements EndpointManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/{2}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
@@ -454,7 +448,7 @@ public class EndpointManagerClient implements EndpointManagerInterface
                                                                             startFrom,
                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -503,7 +497,7 @@ public class EndpointManagerClient implements EndpointManagerInterface
                                                                             startFrom,
                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -552,7 +546,7 @@ public class EndpointManagerClient implements EndpointManagerInterface
                                                                             startFrom,
                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -595,7 +589,7 @@ public class EndpointManagerClient implements EndpointManagerInterface
                                                                            startFrom,
                                                                            validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 

@@ -3,14 +3,15 @@
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionMember;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionFolderProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionMembershipProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionProperties;
+
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionMember;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionFolderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 
 import java.util.List;
 

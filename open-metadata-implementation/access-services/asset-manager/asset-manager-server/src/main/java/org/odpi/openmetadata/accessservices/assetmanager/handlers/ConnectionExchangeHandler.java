@@ -8,19 +8,19 @@ import org.odpi.openmetadata.accessservices.assetmanager.converters.ConnectorTyp
 import org.odpi.openmetadata.accessservices.assetmanager.converters.EndpointConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetConnectionProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectorTypeProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.EmbeddedConnectionProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.EndpointProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EmbeddedConnectionProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TemplateProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -174,7 +174,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
     {
         if (results != null)
         {
-            for (MetadataElement element : results)
+            for (CorrelatedMetadataElement element : results)
             {
                 if ((element != null) && (element.getElementHeader() != null) && (element.getElementHeader().getGUID() != null))
                 {
@@ -223,7 +223,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
     {
         if ((results != null) && (assetManagerGUID != null))
         {
-            for (MetadataElement element : results)
+            for (CorrelatedMetadataElement element : results)
             {
                 if ((element != null) && (element.getElementHeader() != null) && (element.getElementHeader().getGUID() != null))
                 {
@@ -1388,8 +1388,8 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                                              this.getExternalSourceName(correlationProperties, assetManagerIsHome),
                                                              null,
                                                              endpointProperties.getQualifiedName(),
-                                                             endpointProperties.getTechnicalName(),
-                                                             endpointProperties.getTechnicalDescription(),
+                                                             endpointProperties.getName(),
+                                                             endpointProperties.getResourceDescription(),
                                                              endpointProperties.getAddress(),
                                                              endpointProperties.getProtocol(),
                                                              endpointProperties.getEncryptionMethod(),
@@ -1539,8 +1539,8 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                        endpointGUID,
                                        endpointGUIDParameterName,
                                        endpointProperties.getQualifiedName(),
-                                       endpointProperties.getTechnicalName(),
-                                       endpointProperties.getTechnicalDescription(),
+                                       endpointProperties.getName(),
+                                       endpointProperties.getResourceDescription(),
                                        endpointProperties.getAddress(),
                                        endpointProperties.getProtocol(),
                                        endpointProperties.getEncryptionMethod(),

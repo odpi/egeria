@@ -3,10 +3,7 @@
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
 import org.odpi.openmetadata.accessservices.datamanager.connectors.outtopic.DataManagerOutTopicClientProvider;
-import org.odpi.openmetadata.accessservices.datamanager.converters.*;
-import org.odpi.openmetadata.accessservices.datamanager.converters.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerErrorCode;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
@@ -14,7 +11,7 @@ import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInsta
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -35,9 +32,9 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                         DatabaseTableElement,
                                         DatabaseViewElement,
                                         DatabaseColumnElement,
-                                        SchemaTypeElement>             relationalDataHandler;
+            SchemaTypeElement>                                         relationalDataHandler;
     private final FilesAndFoldersHandler<FileSystemElement,
-                                         FileFolderElement,
+            FileFolderElement,
                                          DataFileElement>              filesAndFoldersHandler;
 
     private final AssetHandler<TopicElement>                                       topicHandler;

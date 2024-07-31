@@ -9,6 +9,7 @@ dependencies {
     implementation project(':open-metadata-implementation:view-services:my-profile:my-profile-server')
     implementation project(':open-metadata-implementation:access-services:community-profile:community-profile-api')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation 'org.springframework:spring-web'
     implementation 'io.swagger.core.v3:swagger-annotations'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

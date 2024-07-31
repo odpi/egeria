@@ -6,7 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements.LikeElement;
-import org.odpi.openmetadata.viewservices.feedbackmanager.properties.LikeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
 
 import java.lang.reflect.InvocationTargetException;
 

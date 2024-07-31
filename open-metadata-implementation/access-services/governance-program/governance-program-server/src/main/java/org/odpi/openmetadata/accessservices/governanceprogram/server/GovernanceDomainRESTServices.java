@@ -3,24 +3,14 @@
 
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDomainElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDomainSetElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainSetProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDomainListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDomainResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDomainSetListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDomainSetResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDomainElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDomainSetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDomainProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDomainSetProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
 import org.odpi.openmetadata.commonservices.generichandlers.CollectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDomainHandler;
@@ -289,19 +279,19 @@ public class GovernanceDomainRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceDomainSetListResponse findGovernanceDomainSets(String                  serverName,
-                                                                    String                  userId,
-                                                                    int                     startFrom,
-                                                                    int                     pageSize,
-                                                                    SearchStringRequestBody requestBody)
+    public GovernanceDomainSetsResponse findGovernanceDomainSets(String                  serverName,
+                                                                 String                  userId,
+                                                                 int                     startFrom,
+                                                                 int                     pageSize,
+                                                                 SearchStringRequestBody requestBody)
     {
         final String methodName = "findGovernanceDomainSets";
         final String searchStringParameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceDomainSetListResponse response = new GovernanceDomainSetListResponse();
-        AuditLog                        auditLog = null;
+        GovernanceDomainSetsResponse response = new GovernanceDomainSetsResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
@@ -354,19 +344,19 @@ public class GovernanceDomainRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceDomainSetListResponse getGovernanceDomainSetsByName(String          serverName,
-                                                                         String          userId,
-                                                                         int             startFrom,
-                                                                         int             pageSize,
-                                                                         NameRequestBody requestBody)
+    public GovernanceDomainSetsResponse getGovernanceDomainSetsByName(String          serverName,
+                                                                      String          userId,
+                                                                      int             startFrom,
+                                                                      int             pageSize,
+                                                                      NameRequestBody requestBody)
     {
         final String methodName = "getGovernanceDomainSetsByName";
         final String nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceDomainSetListResponse response = new GovernanceDomainSetListResponse();
-        AuditLog                        auditLog = null;
+        GovernanceDomainSetsResponse response = new GovernanceDomainSetsResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
@@ -847,17 +837,17 @@ public class GovernanceDomainRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceDomainListResponse getGovernanceDomains(String serverName,
-                                                             String userId,
-                                                             int    startFrom,
-                                                             int    pageSize)
+    public GovernanceDomainsResponse getGovernanceDomains(String serverName,
+                                                          String userId,
+                                                          int    startFrom,
+                                                          int    pageSize)
     {
         final String methodName = "getGovernanceDomains";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceDomainListResponse response = new GovernanceDomainListResponse();
-        AuditLog                     auditLog = null;
+        GovernanceDomainsResponse response = new GovernanceDomainsResponse();
+        AuditLog                  auditLog = null;
 
         try
         {
@@ -903,19 +893,19 @@ public class GovernanceDomainRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceDomainListResponse findGovernanceDomains(String                  serverName,
-                                                              String                  userId,
-                                                              int                     startFrom,
-                                                              int                     pageSize,
-                                                              SearchStringRequestBody requestBody)
+    public GovernanceDomainsResponse findGovernanceDomains(String                  serverName,
+                                                           String                  userId,
+                                                           int                     startFrom,
+                                                           int                     pageSize,
+                                                           SearchStringRequestBody requestBody)
     {
         final String methodName = "findGovernanceDomains";
         final String searchStringParameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceDomainListResponse response = new GovernanceDomainListResponse();
-        AuditLog                     auditLog = null;
+        GovernanceDomainsResponse response = new GovernanceDomainsResponse();
+        AuditLog                  auditLog = null;
 
         try
         {
@@ -962,19 +952,19 @@ public class GovernanceDomainRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceDomainSetListResponse getSetsForGovernanceDomain(String serverName,
-                                                                      String userId,
-                                                                      String governanceDomainGUID,
-                                                                      int    startFrom,
-                                                                      int    pageSize)
+    public GovernanceDomainSetsResponse getSetsForGovernanceDomain(String serverName,
+                                                                   String userId,
+                                                                   String governanceDomainGUID,
+                                                                   int    startFrom,
+                                                                   int    pageSize)
     {
         final String methodName = "getSetsForGovernanceDomain";
 
         final String guidParameterName = "governanceDomainGUID";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceDomainSetListResponse response = new GovernanceDomainSetListResponse();
-        AuditLog                        auditLog = null;
+        GovernanceDomainSetsResponse response = new GovernanceDomainSetsResponse();
+        AuditLog                     auditLog = null;
 
         try
         {
@@ -1091,19 +1081,19 @@ public class GovernanceDomainRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceDomainListResponse getGovernanceDomainsByName(String          serverName,
-                                                                   String          userId,
-                                                                   int             startFrom,
-                                                                   int             pageSize,
-                                                                   NameRequestBody requestBody)
+    public GovernanceDomainsResponse getGovernanceDomainsByName(String          serverName,
+                                                                String          userId,
+                                                                int             startFrom,
+                                                                int             pageSize,
+                                                                NameRequestBody requestBody)
     {
         final String methodName = "getGovernanceDomainsByName";
         final String nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceDomainListResponse response = new GovernanceDomainListResponse();
-        AuditLog                     auditLog = null;
+        GovernanceDomainsResponse response = new GovernanceDomainsResponse();
+        AuditLog                  auditLog = null;
 
         try
         {

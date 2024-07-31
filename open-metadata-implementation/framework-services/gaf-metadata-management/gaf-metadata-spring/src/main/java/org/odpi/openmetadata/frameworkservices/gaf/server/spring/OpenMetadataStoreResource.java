@@ -836,7 +836,7 @@ public class OpenMetadataStoreResource
     public GUIDResponse createMetadataElementInStore(@PathVariable String                        serverName,
                                                      @PathVariable String                        serviceURLMarker,
                                                      @PathVariable String                        userId,
-                                                     @RequestBody  NewMetadataElementRequestBody requestBody)
+                                                     @RequestBody NewOpenMetadataElementRequestBody requestBody)
     {
         return restAPI.createMetadataElementInStore(serverName, serviceURLMarker, userId, requestBody);
     }

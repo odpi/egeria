@@ -7,19 +7,11 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.OpenMetadataStor
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.CollaborationManagementClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.GlossaryManagementClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.management.StewardshipManagementClient;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldQueryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.FindNameProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.LevelIdentifierProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementStubsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryCategoryElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryCategoryElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementResponse;
@@ -34,17 +26,15 @@ import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteElementRespons
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteLogElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.NoteLogElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.RelatedElementsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindNameProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LevelIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldQueryProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.OpenMetadataElementResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.EffectiveTimeQueryRequestBody;
@@ -3511,7 +3501,7 @@ public class GlossaryBrowserRESTServices extends TokenController
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         ElementStubsResponse response = new ElementStubsResponse();
-        AuditLog     auditLog = null;
+        AuditLog             auditLog = null;
 
         try
         {
@@ -3526,23 +3516,23 @@ public class GlossaryBrowserRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof DataFieldQueryProperties properties)
                 {
-                    response.setElementList(handler.getDataFieldClassifiedElements(userId,
-                                                                                    properties,
-                                                                                    startFrom,
-                                                                                    pageSize,
-                                                                                    requestBody.getEffectiveTime(),
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing));
+                    response.setElements(handler.getDataFieldClassifiedElements(userId,
+                                                                                properties,
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                requestBody.getEffectiveTime(),
+                                                                                forLineage,
+                                                                                forDuplicateProcessing));
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    response.setElementList(handler.getDataFieldClassifiedElements(userId,
-                                                                                    null,
-                                                                                    startFrom,
-                                                                                    pageSize,
-                                                                                    requestBody.getEffectiveTime(),
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing));
+                    response.setElements(handler.getDataFieldClassifiedElements(userId,
+                                                                                null,
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                requestBody.getEffectiveTime(),
+                                                                                forLineage,
+                                                                                forDuplicateProcessing));
                 }
                 else
                 {
@@ -3551,7 +3541,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             }
             else
             {
-                response.setElementList(handler.getDataFieldClassifiedElements(userId,
+                response.setElements(handler.getDataFieldClassifiedElements(userId,
                                                                                null,
                                                                                 startFrom,
                                                                                 pageSize,
@@ -3612,7 +3602,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
-                    response.setElementList(handler.getConfidenceClassifiedElements(userId,
+                    response.setElements(handler.getConfidenceClassifiedElements(userId,
                                                                                     properties.getReturnSpecificLevel(),
                                                                                     properties.getLevelIdentifier(),
                                                                                     startFrom,
@@ -3623,7 +3613,7 @@ public class GlossaryBrowserRESTServices extends TokenController
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    response.setElementList(handler.getConfidenceClassifiedElements(userId,
+                    response.setElements(handler.getConfidenceClassifiedElements(userId,
                                                                                     false,
                                                                                     0,
                                                                                     startFrom,
@@ -3639,7 +3629,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             }
             else
             {
-                response.setElementList(handler.getConfidenceClassifiedElements(userId,
+                response.setElements(handler.getConfidenceClassifiedElements(userId,
                                                                                 false,
                                                                                 0,
                                                                                 startFrom,
@@ -3701,7 +3691,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
-                    response.setElementList(handler.getCriticalityClassifiedElements(userId,
+                    response.setElements(handler.getCriticalityClassifiedElements(userId,
                                                                                      properties.getReturnSpecificLevel(),
                                                                                      properties.getLevelIdentifier(),
                                                                                      startFrom,
@@ -3712,7 +3702,7 @@ public class GlossaryBrowserRESTServices extends TokenController
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    response.setElementList(handler.getCriticalityClassifiedElements(userId,
+                    response.setElements(handler.getCriticalityClassifiedElements(userId,
                                                                                      false,
                                                                                      0,
                                                                                      startFrom,
@@ -3728,7 +3718,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             }
             else
             {
-                response.setElementList(handler.getCriticalityClassifiedElements(userId,
+                response.setElements(handler.getCriticalityClassifiedElements(userId,
                                                                                  false,
                                                                                  0,
                                                                                  startFrom,
@@ -3790,7 +3780,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
-                    response.setElementList(handler.getConfidentialityClassifiedElements(userId,
+                    response.setElements(handler.getConfidentialityClassifiedElements(userId,
                                                                                          properties.getReturnSpecificLevel(),
                                                                                          properties.getLevelIdentifier(),
                                                                                          startFrom,
@@ -3801,7 +3791,7 @@ public class GlossaryBrowserRESTServices extends TokenController
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    response.setElementList(handler.getConfidentialityClassifiedElements(userId,
+                    response.setElements(handler.getConfidentialityClassifiedElements(userId,
                                                                                          false,
                                                                                          0,
                                                                                          startFrom,
@@ -3817,7 +3807,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             }
             else
             {
-                response.setElementList(handler.getConfidentialityClassifiedElements(userId,
+                response.setElements(handler.getConfidentialityClassifiedElements(userId,
                                                                                      false,
                                                                                      0,
                                                                                      startFrom,
@@ -3879,7 +3869,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
-                    response.setElementList(handler.getRetentionClassifiedElements(userId,
+                    response.setElements(handler.getRetentionClassifiedElements(userId,
                                                                                    properties.getReturnSpecificLevel(),
                                                                                    properties.getLevelIdentifier(),
                                                                                    startFrom,
@@ -3890,7 +3880,7 @@ public class GlossaryBrowserRESTServices extends TokenController
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    response.setElementList(handler.getRetentionClassifiedElements(userId,
+                    response.setElements(handler.getRetentionClassifiedElements(userId,
                                                                                    false,
                                                                                    0,
                                                                                    startFrom,
@@ -3906,7 +3896,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             }
             else
             {
-                response.setElementList(handler.getRetentionClassifiedElements(userId,
+                response.setElements(handler.getRetentionClassifiedElements(userId,
                                                                                false,
                                                                                0,
                                                                                startFrom,
@@ -3966,7 +3956,7 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getSecurityTaggedElements(userId,
+                response.setElements(handler.getSecurityTaggedElements(userId,
                                                                           startFrom,
                                                                           pageSize,
                                                                           requestBody.getEffectiveTime(),
@@ -3975,7 +3965,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             }
             else
             {
-                response.setElementList(handler.getSecurityTaggedElements(userId,
+                response.setElements(handler.getSecurityTaggedElements(userId,
                                                                           startFrom,
                                                                           pageSize,
                                                                           null,
@@ -4035,7 +4025,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof FindNameProperties properties)
                 {
-                    response.setElementList(handler.getOwnersElements(userId,
+                    response.setElements(handler.getOwnersElements(userId,
                                                                       properties.getName(),
                                                                       startFrom,
                                                                       pageSize,
@@ -4045,7 +4035,7 @@ public class GlossaryBrowserRESTServices extends TokenController
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    response.setElementList(handler.getOwnersElements(userId,
+                    response.setElements(handler.getOwnersElements(userId,
                                                                       null,
                                                                       startFrom,
                                                                       pageSize,
@@ -4060,7 +4050,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             }
             else
             {
-                response.setElementList(handler.getOwnersElements(userId,
+                response.setElements(handler.getOwnersElements(userId,
                                                                   null,
                                                                   startFrom,
                                                                   pageSize,
@@ -4121,7 +4111,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof FindNameProperties properties)
                 {
-                    response.setElementList(handler.getMembersOfSubjectArea(userId,
+                    response.setElements(handler.getMembersOfSubjectArea(userId,
                                                                             properties.getName(),
                                                                             startFrom,
                                                                             pageSize,
@@ -4131,7 +4121,7 @@ public class GlossaryBrowserRESTServices extends TokenController
                 }
                 else if (requestBody.getProperties() == null)
                 {
-                    response.setElementList(handler.getMembersOfSubjectArea(userId,
+                    response.setElements(handler.getMembersOfSubjectArea(userId,
                                                                             null,
                                                                             startFrom,
                                                                             pageSize,
@@ -4146,7 +4136,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             }
             else
             {
-                response.setElementList(handler.getMembersOfSubjectArea(userId,
+                response.setElements(handler.getMembersOfSubjectArea(userId,
                                                                         null,
                                                                         startFrom,
                                                                         pageSize,
@@ -4278,7 +4268,7 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                response.setElementList(handler.getSemanticAssignees(userId,
+                response.setElements(handler.getSemanticAssignees(userId,
                                                                      glossaryTermGUID,
                                                                      startFrom,
                                                                      pageSize,
@@ -4288,7 +4278,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             }
             else
             {
-                response.setElementList(handler.getSemanticAssignees(userId,
+                response.setElements(handler.getSemanticAssignees(userId,
                                                                      glossaryTermGUID,
                                                                      startFrom,
                                                                      pageSize,
@@ -4349,7 +4339,7 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                response.setElementList(handler.getGovernedElements(userId,
+                response.setElements(handler.getGovernedElements(userId,
                                                                     governanceDefinitionGUID,
                                                                     startFrom,
                                                                     pageSize,
@@ -4359,7 +4349,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             }
             else
             {
-                response.setElementList(handler.getGovernedElements(userId,
+                response.setElements(handler.getGovernedElements(userId,
                                                                     governanceDefinitionGUID,
                                                                     startFrom,
                                                                     pageSize,
@@ -4492,7 +4482,7 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                response.setElementList(handler.getSourceElements(userId,
+                response.setElements(handler.getSourceElements(userId,
                                                                   elementGUID,
                                                                   startFrom,
                                                                   pageSize,
@@ -4502,7 +4492,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             }
             else
             {
-                response.setElementList(handler.getSourceElements(userId,
+                response.setElements(handler.getSourceElements(userId,
                                                                   elementGUID,
                                                                   startFrom,
                                                                   pageSize,
@@ -4564,7 +4554,7 @@ public class GlossaryBrowserRESTServices extends TokenController
 
             if (requestBody == null)
             {
-                response.setElementList(handler.getElementsSourceFrom(userId,
+                response.setElements(handler.getElementsSourceFrom(userId,
                                                                       elementGUID,
                                                                       startFrom,
                                                                       pageSize,
@@ -4574,7 +4564,7 @@ public class GlossaryBrowserRESTServices extends TokenController
             }
             else
             {
-                response.setElementList(handler.getElementsSourceFrom(userId,
+                response.setElements(handler.getElementsSourceFrom(userId,
                                                                       elementGUID,
                                                                       startFrom,
                                                                       pageSize,

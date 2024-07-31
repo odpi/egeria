@@ -5,14 +5,12 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceDomainInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDomainElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDomainSetElement;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDomainElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDomainSetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDomain;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainSetProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDomainProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDomainSetProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -317,13 +315,13 @@ public class GovernanceDomainManager extends GovernanceProgramBaseClient impleme
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        GovernanceDomainSetListResponse restResult = restClient.callGovernanceDomainSetListPostRESTCall(methodName,
-                                                                                                        urlTemplate,
-                                                                                                        requestBody,
-                                                                                                        serverName,
-                                                                                                        userId,
-                                                                                                        startFrom,
-                                                                                                        queryPageSize);
+        GovernanceDomainSetsResponse restResult = restClient.callGovernanceDomainSetListPostRESTCall(methodName,
+                                                                                                     urlTemplate,
+                                                                                                     requestBody,
+                                                                                                     serverName,
+                                                                                                     userId,
+                                                                                                     startFrom,
+                                                                                                     queryPageSize);
         return restResult.getElements();
     }
 
@@ -366,13 +364,13 @@ public class GovernanceDomainManager extends GovernanceProgramBaseClient impleme
         requestBody.setName(name);
         requestBody.setNameParameterName(nameParameterName);
 
-        GovernanceDomainSetListResponse restResult = restClient.callGovernanceDomainSetListPostRESTCall(methodName,
-                                                                                                        urlTemplate,
-                                                                                                        requestBody,
-                                                                                                        serverName,
-                                                                                                        userId,
-                                                                                                        startFrom,
-                                                                                                        queryPageSize);
+        GovernanceDomainSetsResponse restResult = restClient.callGovernanceDomainSetListPostRESTCall(methodName,
+                                                                                                     urlTemplate,
+                                                                                                     requestBody,
+                                                                                                     serverName,
+                                                                                                     userId,
+                                                                                                     startFrom,
+                                                                                                     queryPageSize);
         return restResult.getElements();
     }
 
@@ -597,12 +595,12 @@ public class GovernanceDomainManager extends GovernanceProgramBaseClient impleme
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        GovernanceDomainListResponse restResult = restClient.callGovernanceDomainListGetRESTCall(methodName,
-                                                                                                 urlTemplate,
-                                                                                                 serverName,
-                                                                                                 userId,
-                                                                                                 startFrom,
-                                                                                                 queryPageSize);
+        GovernanceDomainsResponse restResult = restClient.callGovernanceDomainListGetRESTCall(methodName,
+                                                                                              urlTemplate,
+                                                                                              serverName,
+                                                                                              userId,
+                                                                                              startFrom,
+                                                                                              queryPageSize);
         return restResult.getElements();
     }
 
@@ -645,13 +643,13 @@ public class GovernanceDomainManager extends GovernanceProgramBaseClient impleme
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        GovernanceDomainListResponse restResult = restClient.callGovernanceDomainListPostRESTCall(methodName,
-                                                                                                  urlTemplate,
-                                                                                                  requestBody,
-                                                                                                  serverName,
-                                                                                                  userId,
-                                                                                                  startFrom,
-                                                                                                  queryPageSize);
+        GovernanceDomainsResponse restResult = restClient.callGovernanceDomainListPostRESTCall(methodName,
+                                                                                               urlTemplate,
+                                                                                               requestBody,
+                                                                                               serverName,
+                                                                                               userId,
+                                                                                               startFrom,
+                                                                                               queryPageSize);
         return restResult.getElements();
     }
 
@@ -688,13 +686,13 @@ public class GovernanceDomainManager extends GovernanceProgramBaseClient impleme
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        GovernanceDomainSetListResponse restResult = restClient.callGovernanceDomainSetListGetRESTCall(methodName,
-                                                                                                       urlTemplate,
-                                                                                                       serverName,
-                                                                                                       userId,
-                                                                                                       governanceDomainGUID,
-                                                                                                       startFrom,
-                                                                                                       queryPageSize);
+        GovernanceDomainSetsResponse restResult = restClient.callGovernanceDomainSetListGetRESTCall(methodName,
+                                                                                                    urlTemplate,
+                                                                                                    serverName,
+                                                                                                    userId,
+                                                                                                    governanceDomainGUID,
+                                                                                                    startFrom,
+                                                                                                    queryPageSize);
         return restResult.getElements();
     }
 
@@ -737,13 +735,13 @@ public class GovernanceDomainManager extends GovernanceProgramBaseClient impleme
         requestBody.setName(name);
         requestBody.setNameParameterName(nameParameterName);
 
-        GovernanceDomainListResponse restResult = restClient.callGovernanceDomainListPostRESTCall(methodName,
-                                                                                                  urlTemplate,
-                                                                                                  requestBody,
-                                                                                                  serverName,
-                                                                                                  userId,
-                                                                                                  startFrom,
-                                                                                                  queryPageSize);
+        GovernanceDomainsResponse restResult = restClient.callGovernanceDomainListPostRESTCall(methodName,
+                                                                                               urlTemplate,
+                                                                                               requestBody,
+                                                                                               serverName,
+                                                                                               userId,
+                                                                                               startFrom,
+                                                                                               queryPageSize);
         return restResult.getElements();
     }
 

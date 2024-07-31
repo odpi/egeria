@@ -150,29 +150,6 @@ public class TestSchemaAttributeRelationship
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
-
-        /*
-         * Through superclass
-         */
-        PropertyBase propertyBase = getTestObject();
-
-        try
-        {
-            jsonString = objectMapper.writeValueAsString(propertyBase);
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
-
-        try
-        {
-            validateResultObject((SchemaAttributeRelationship)objectMapper.readValue(jsonString, PropertyBase.class));
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
     }
 
 

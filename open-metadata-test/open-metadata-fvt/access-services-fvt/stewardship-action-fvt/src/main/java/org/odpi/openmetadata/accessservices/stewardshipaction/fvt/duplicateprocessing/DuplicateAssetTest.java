@@ -7,11 +7,11 @@ import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.rest.AssetConsumerRESTClient;
 import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.MeaningProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.MeaningProperties;
 import org.odpi.openmetadata.accessservices.stewardshipaction.client.StewardshipAction;
 import org.odpi.openmetadata.accessservices.stewardshipaction.client.rest.StewardshipActionRESTClient;
-import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.AssetElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
@@ -152,7 +152,7 @@ public class DuplicateAssetTest
         {
             AssetConsumerRESTClient restClient = new AssetConsumerRESTClient(serverName, serverPlatformRootURL);
 
-            MeaningProperties likeProperties = null;
+            MeaningProperties meaningProperties = null;
 
             return new AssetConsumer(serverName, serverPlatformRootURL, restClient, maxPageSize, auditLog);
         }

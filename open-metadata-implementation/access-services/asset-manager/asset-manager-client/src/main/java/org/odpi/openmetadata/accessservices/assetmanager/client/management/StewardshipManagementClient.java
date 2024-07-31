@@ -9,23 +9,16 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManage
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetOriginProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldQueryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.FindAssetOriginProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceClassificationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.OwnerProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.RetentionClassificationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SecurityTagsProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SemanticAssignmentProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SubjectAreaMemberProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
-
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 import java.util.Date;
 import java.util.List;
 
@@ -952,14 +945,14 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void addElementToSubjectArea(String                      userId,
-                                        String                      elementGUID,
-                                        SubjectAreaMemberProperties properties,
-                                        Date                        effectiveTime,
-                                        boolean                     forLineage,
-                                        boolean                     forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public void addElementToSubjectArea(String                              userId,
+                                        String                              elementGUID,
+                                        SubjectAreaClassificationProperties properties,
+                                        Date                                effectiveTime,
+                                        boolean                             forLineage,
+                                        boolean                             forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         client.addElementToSubjectArea(userId, null, null, elementGUID, null, properties, effectiveTime, forLineage, forDuplicateProcessing);
     }

@@ -4,15 +4,14 @@
 package org.odpi.openmetadata.accessservices.securitymanager.api;
 
 
-import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityManagerProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SecurityManagerProperties;
 
 /**
  * MetadataSourceInterface is the interface used to define information about the third party technologies that
  * an integration daemon is extracting metadata from.
- *
  * These technologies are represented by a software capability in open metadata.
  */
 public interface MetadataSourceInterface
@@ -38,8 +37,8 @@ public interface MetadataSourceInterface
                                          String                    externalSourceName,
                                          String                    typeName,
                                          SecurityManagerProperties securityManagerProperties) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException;
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException;
 
 
     /**

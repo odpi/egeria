@@ -4,18 +4,10 @@ package org.odpi.openmetadata.accessservices.communityprofile.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.CommunityListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.CommunityResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.PersonRoleListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelationshipRequestBody;
+
 import org.odpi.openmetadata.accessservices.communityprofile.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -216,11 +208,11 @@ public class CommunityResource
      */
     @PostMapping(path = "/communities/by-search-string")
 
-    public CommunityListResponse findCommunities(@PathVariable String                  serverName,
-                                                 @PathVariable String                  userId,
-                                                 @RequestBody  SearchStringRequestBody requestBody,
-                                                 @RequestParam int                     startFrom,
-                                                 @RequestParam int                     pageSize)
+    public CommunitiesResponse findCommunities(@PathVariable String                  serverName,
+                                               @PathVariable String                  userId,
+                                               @RequestBody  SearchStringRequestBody requestBody,
+                                               @RequestParam int                     startFrom,
+                                               @RequestParam int                     pageSize)
     {
         return restAPI.findCommunities(serverName, userId, requestBody, startFrom, pageSize);
     }
@@ -243,11 +235,11 @@ public class CommunityResource
      */
     @PostMapping(path = "/communities/by-name")
 
-    public CommunityListResponse   getCommunitiesByName(@PathVariable String          serverName,
-                                                        @PathVariable String          userId,
-                                                        @RequestBody  NameRequestBody requestBody,
-                                                        @RequestParam int             startFrom,
-                                                        @RequestParam int             pageSize)
+    public CommunitiesResponse getCommunitiesByName(@PathVariable String          serverName,
+                                                    @PathVariable String          userId,
+                                                    @RequestBody  NameRequestBody requestBody,
+                                                    @RequestParam int             startFrom,
+                                                    @RequestParam int             pageSize)
     {
         return restAPI.getCommunitiesByName(serverName, userId, requestBody, startFrom, pageSize);
     }
@@ -269,11 +261,11 @@ public class CommunityResource
      */
     @GetMapping(path = "/person-roles/by-community/{communityGUID}")
 
-    public PersonRoleListResponse getRolesForCommunity(@PathVariable String          serverName,
-                                                       @PathVariable String          userId,
-                                                       @PathVariable String          communityGUID,
-                                                       @RequestParam int             startFrom,
-                                                       @RequestParam int             pageSize)
+    public PersonRolesResponse getRolesForCommunity(@PathVariable String          serverName,
+                                                    @PathVariable String          userId,
+                                                    @PathVariable String          communityGUID,
+                                                    @RequestParam int             startFrom,
+                                                    @RequestParam int             pageSize)
     {
         return restAPI.getRolesForCommunity(serverName, userId, communityGUID, startFrom, pageSize);
     }
@@ -294,10 +286,10 @@ public class CommunityResource
      */
     @GetMapping(path = "/communities")
 
-    public CommunityListResponse   getCommunitiesByName(@PathVariable String          serverName,
-                                                        @PathVariable String          userId,
-                                                        @RequestParam int             startFrom,
-                                                        @RequestParam int             pageSize)
+    public CommunitiesResponse getCommunitiesByName(@PathVariable String          serverName,
+                                                    @PathVariable String          userId,
+                                                    @RequestParam int             startFrom,
+                                                    @RequestParam int             pageSize)
     {
         return restAPI.getCommunities(serverName, userId, startFrom, pageSize);
     }

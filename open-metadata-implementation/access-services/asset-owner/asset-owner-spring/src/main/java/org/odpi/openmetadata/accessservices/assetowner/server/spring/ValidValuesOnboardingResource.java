@@ -4,9 +4,9 @@ package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValueResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesRequestBody;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ValidValueResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ValidValuesRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ValidValuesResponse;
 import org.odpi.openmetadata.accessservices.assetowner.server.ValidValuesRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;

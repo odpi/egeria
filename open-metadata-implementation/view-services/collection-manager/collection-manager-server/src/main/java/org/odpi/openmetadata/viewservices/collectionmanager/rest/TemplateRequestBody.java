@@ -6,10 +6,9 @@ package org.odpi.openmetadata.viewservices.collectionmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 

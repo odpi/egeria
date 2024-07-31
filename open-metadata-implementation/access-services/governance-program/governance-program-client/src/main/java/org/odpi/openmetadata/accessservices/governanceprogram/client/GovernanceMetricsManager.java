@@ -4,15 +4,13 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceMetricsInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceMetricElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionMetricProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceExpectationsProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsDataSetProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMeasurementsProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMetricProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceResultsProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceMetricListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceMetricResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceMetricElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionMetricProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceExpectationsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMeasurementsDataSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMeasurementsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMetricProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceResultsProperties;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -537,13 +535,13 @@ public class GovernanceMetricsManager extends GovernanceProgramBaseClient implem
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        GovernanceMetricListResponse restResult = restClient.callGovernanceMetricListPostRESTCall(methodName,
-                                                                                                  urlTemplate,
-                                                                                                  requestBody,
-                                                                                                  serverName,
-                                                                                                  userId,
-                                                                                                  startFrom,
-                                                                                                  queryPageSize);
+        GovernanceMetricsResponse restResult = restClient.callGovernanceMetricListPostRESTCall(methodName,
+                                                                                               urlTemplate,
+                                                                                               requestBody,
+                                                                                               serverName,
+                                                                                               userId,
+                                                                                               startFrom,
+                                                                                               queryPageSize);
 
         return restResult.getElements();
     }

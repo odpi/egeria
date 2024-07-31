@@ -5,18 +5,8 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDomainListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDomainResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDomainSetListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDomainSetResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceDomainRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -143,11 +133,11 @@ public class GovernanceDomainsResource
      */
     @PostMapping(path = "/governance-domain-sets/by-search-string")
 
-    public GovernanceDomainSetListResponse findGovernanceDomainSets(@PathVariable String                  serverName,
-                                                                    @PathVariable String                  userId,
-                                                                    @RequestParam int                     startFrom,
-                                                                    @RequestParam int                     pageSize,
-                                                                    @RequestBody  SearchStringRequestBody requestBody)
+    public GovernanceDomainSetsResponse findGovernanceDomainSets(@PathVariable String                  serverName,
+                                                                 @PathVariable String                  userId,
+                                                                 @RequestParam int                     startFrom,
+                                                                 @RequestParam int                     pageSize,
+                                                                 @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findGovernanceDomainSets(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -170,11 +160,11 @@ public class GovernanceDomainsResource
      */
     @PostMapping(path = "/governance-domain-sets/by-name")
 
-    public GovernanceDomainSetListResponse getGovernanceDomainSetsByName(@PathVariable String          serverName,
-                                                                         @PathVariable String          userId,
-                                                                         @RequestParam int             startFrom,
-                                                                         @RequestParam int             pageSize,
-                                                                         @RequestBody  NameRequestBody requestBody)
+    public GovernanceDomainSetsResponse getGovernanceDomainSetsByName(@PathVariable String          serverName,
+                                                                      @PathVariable String          userId,
+                                                                      @RequestParam int             startFrom,
+                                                                      @RequestParam int             pageSize,
+                                                                      @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getGovernanceDomainSetsByName(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -351,10 +341,10 @@ public class GovernanceDomainsResource
      */
     @GetMapping(path = "/governance-domains")
 
-    public GovernanceDomainListResponse getGovernanceDomains(@PathVariable String serverName,
-                                                             @PathVariable String userId,
-                                                             @RequestParam int    startFrom,
-                                                             @RequestParam int    pageSize)
+    public GovernanceDomainsResponse getGovernanceDomains(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @RequestParam int    startFrom,
+                                                          @RequestParam int    pageSize)
     {
         return restAPI.getGovernanceDomains(serverName, userId, startFrom, pageSize);
     }
@@ -377,11 +367,11 @@ public class GovernanceDomainsResource
      */
     @PostMapping(path = "/governance-domain/by-search-string")
 
-    public GovernanceDomainListResponse findGovernanceDomains(@PathVariable String                  serverName,
-                                                              @PathVariable String                  userId,
-                                                              @RequestParam int                     startFrom,
-                                                              @RequestParam int                     pageSize,
-                                                              @RequestBody  SearchStringRequestBody requestBody)
+    public GovernanceDomainsResponse findGovernanceDomains(@PathVariable String                  serverName,
+                                                           @PathVariable String                  userId,
+                                                           @RequestParam int                     startFrom,
+                                                           @RequestParam int                     pageSize,
+                                                           @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findGovernanceDomains(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -403,11 +393,11 @@ public class GovernanceDomainsResource
      */
     @GetMapping(path = "/governance-domain-sets/by-governance-domains/{governanceDomainGUID}")
 
-    public GovernanceDomainSetListResponse getSetsForGovernanceDomain(@PathVariable String serverName,
-                                                                      @PathVariable String userId,
-                                                                      @PathVariable String governanceDomainGUID,
-                                                                      @RequestParam int    startFrom,
-                                                                      @RequestParam int    pageSize)
+    public GovernanceDomainSetsResponse getSetsForGovernanceDomain(@PathVariable String serverName,
+                                                                   @PathVariable String userId,
+                                                                   @PathVariable String governanceDomainGUID,
+                                                                   @RequestParam int    startFrom,
+                                                                   @RequestParam int    pageSize)
     {
         return restAPI.getSetsForGovernanceDomain(serverName, userId, governanceDomainGUID, startFrom, pageSize);
     }
@@ -430,11 +420,11 @@ public class GovernanceDomainsResource
      */
     @PostMapping(path = "/governance-domain/by-name")
 
-    public GovernanceDomainListResponse getGovernanceDomainsByName(@PathVariable String          serverName,
-                                                                   @PathVariable String          userId,
-                                                                   @RequestParam int             startFrom,
-                                                                   @RequestParam int             pageSize,
-                                                                   @RequestBody  NameRequestBody requestBody)
+    public GovernanceDomainsResponse getGovernanceDomainsByName(@PathVariable String          serverName,
+                                                                @PathVariable String          userId,
+                                                                @RequestParam int             startFrom,
+                                                                @RequestParam int             pageSize,
+                                                                @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getGovernanceDomainsByName(serverName, userId, startFrom, pageSize, requestBody);
     }

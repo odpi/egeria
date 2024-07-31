@@ -4,16 +4,16 @@ package org.odpi.openmetadata.accessservices.assetmanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementHeadersResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ElementHeadersResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.MetadataCorrelationHeadersResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.server.AssetManagerRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.OCFConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.AssetManagerProperties;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -54,9 +54,9 @@ public class AssetManagerOMASResource
      */
     @GetMapping(path = "/topics/out-topic-connection/{callerId}")
 
-    public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String callerId)
+    public OCFConnectionResponse getOutTopicConnection(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String callerId)
     {
         return restAPI.getOutTopicConnection(serverName, userId, callerId);
     }
@@ -80,7 +80,7 @@ public class AssetManagerOMASResource
 
     public GUIDResponse createExternalAssetManager(@PathVariable String                 serverName,
                                                    @PathVariable String                 userId,
-                                                   @RequestBody  AssetManagerProperties assetManagerProperties)
+                                                   @RequestBody AssetManagerProperties assetManagerProperties)
     {
         return restAPI.createExternalAssetManager(serverName, userId, assetManagerProperties);
     }

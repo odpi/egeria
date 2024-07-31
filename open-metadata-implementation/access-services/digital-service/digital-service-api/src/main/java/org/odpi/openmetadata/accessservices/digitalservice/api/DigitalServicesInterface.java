@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalservice.api;
 
-import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.DigitalServiceElement;
-import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceProperties;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceStatus;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalServiceDependencyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DigitalServiceElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalServiceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DigitalServiceStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalServiceDependencyProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -186,9 +186,9 @@ public interface DigitalServicesInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     List<DigitalServiceElement> findDigitalServices(String userId,
-                                                         String searchString,
-                                                         int    startFrom,
-                                                         int    pageSize) throws InvalidParameterException,
+                                                    String searchString,
+                                                    int    startFrom,
+                                                    int    pageSize) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException;
 

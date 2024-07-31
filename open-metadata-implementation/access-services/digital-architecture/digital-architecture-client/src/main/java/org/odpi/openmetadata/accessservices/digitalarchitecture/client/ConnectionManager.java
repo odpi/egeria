@@ -4,22 +4,14 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.client;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.api.ManageConnections;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ConnectionProperties;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.EndpointProperties;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ConnectorTypeProperties;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 
 import java.util.List;
 import java.util.Map;
@@ -671,7 +663,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
                                                                                 startFrom,
                                                                                 validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -720,7 +712,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
                                                                                 startFrom,
                                                                                 validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -966,7 +958,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
                                                                             startFrom,
                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1015,7 +1007,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
                                                                             startFrom,
                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1255,7 +1247,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
                                                                                       startFrom,
                                                                                       validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1304,7 +1296,7 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
                                                                                       startFrom,
                                                                                       validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1334,11 +1326,11 @@ public class ConnectionManager extends DigitalArchitectureClientBase implements 
 
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/connector-types/{2}";
 
-        ConnectorTypeResponse restResult = restClient.callMyConnectorTypeGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     connectorTypeGUID);
+        ConnectorTypeResponse restResult = restClient.callConnectorTypeGetRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   connectorTypeGUID);
         return restResult.getElement();
     }
 }

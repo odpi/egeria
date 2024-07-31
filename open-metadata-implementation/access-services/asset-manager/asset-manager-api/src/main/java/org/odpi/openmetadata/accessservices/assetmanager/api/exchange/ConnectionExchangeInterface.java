@@ -11,6 +11,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EmbeddedConnectionProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -331,7 +336,7 @@ public interface ConnectionExchangeInterface
                               boolean                    assetManagerIsHome,
                               String                     assetGUID,
                               String                     connectionGUID,
-                              AssetConnectionProperties  properties,
+                              AssetConnectionProperties properties,
                               Date                       effectiveTime,
                               boolean                    forLineage,
                               boolean                    forDuplicateProcessing) throws InvalidParameterException,

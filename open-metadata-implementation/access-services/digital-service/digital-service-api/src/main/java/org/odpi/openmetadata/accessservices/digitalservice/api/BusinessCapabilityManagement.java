@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalservice.api;
 
-import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.BusinessCapabilityElement;
-import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.BusinessCapabilityProperties;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalSupportProperties;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.OrganizationalCapabilityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.BusinessCapabilityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSupportProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.OrganizationalCapabilityProperties;
 import org.odpi.openmetadata.accessservices.digitalservice.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

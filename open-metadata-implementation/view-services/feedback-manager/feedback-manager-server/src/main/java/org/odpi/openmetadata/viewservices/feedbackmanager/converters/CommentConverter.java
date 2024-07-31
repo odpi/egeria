@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements.CommentElement;
-import org.odpi.openmetadata.viewservices.feedbackmanager.properties.CommentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.CommentProperties;
 
 import java.lang.reflect.InvocationTargetException;
 

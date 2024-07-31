@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.server;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateProperties;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.LocationHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LocationElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -922,7 +922,7 @@ public class LocationRESTServices
                                                                     false,
                                                                     new Date(),
                                                                     methodName);
-                response.setElementList(locations);
+                response.setElements(locations);
             }
         }
         catch (Exception error)
@@ -992,7 +992,7 @@ public class LocationRESTServices
                                                                           pageSize,
                                                                           new Date(),
                                                                           methodName);
-                response.setElementList(locations);
+                response.setElements(locations);
             }
         }
         catch (Exception error)

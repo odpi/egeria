@@ -4,17 +4,17 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetCertificationInterface;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.CertificationTypeElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.CertificationProperties;
-import org.odpi.openmetadata.accessservices.assetowner.rest.CertificationTypeListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.CertificationTypeResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelatedElementListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.CertificationTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.CertificationTypesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelatedElementsResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CertificationTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationProperties;
 
 import java.util.List;
 
@@ -232,13 +232,13 @@ public class AssetCertificationManager extends AssetOwnerBaseClient implements A
         requestBody.setSearchString(title);
         requestBody.setSearchStringParameterName(titleParameterName);
 
-        CertificationTypeListResponse restResult = restClient.callCertificationTypeListPostRESTCall(methodName,
-                                                                                                    urlTemplate,
-                                                                                                    requestBody,
-                                                                                                    serverName,
-                                                                                                    userId,
-                                                                                                    startFrom,
-                                                                                                    queryPageSize);
+        CertificationTypesResponse restResult = restClient.callCertificationTypeListPostRESTCall(methodName,
+                                                                                                 urlTemplate,
+                                                                                                 requestBody,
+                                                                                                 serverName,
+                                                                                                 userId,
+                                                                                                 startFrom,
+                                                                                                 queryPageSize);
 
         return restResult.getElements();
     }
@@ -273,13 +273,13 @@ public class AssetCertificationManager extends AssetOwnerBaseClient implements A
         invalidParameterHandler.validateUserId(userId, methodName);
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        CertificationTypeListResponse restResult = restClient.callCertificationTypeListGetRESTCall(methodName,
-                                                                                                   urlTemplate,
-                                                                                                   serverName,
-                                                                                                   userId,
-                                                                                                   domainIdentifier,
-                                                                                                   startFrom,
-                                                                                                   queryPageSize);
+        CertificationTypesResponse restResult = restClient.callCertificationTypeListGetRESTCall(methodName,
+                                                                                                urlTemplate,
+                                                                                                serverName,
+                                                                                                userId,
+                                                                                                domainIdentifier,
+                                                                                                startFrom,
+                                                                                                queryPageSize);
 
         return restResult.getElements();
     }
@@ -344,9 +344,9 @@ public class AssetCertificationManager extends AssetOwnerBaseClient implements A
     public void updateCertification(String                  userId,
                                     String                  certificationGUID,
                                     boolean                 isMergeUpdate,
-                                    CertificationProperties properties)  throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+                                    CertificationProperties properties) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         final String methodName = "updateCertification";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/certifications/{2}/update?isMergeUpdate={3}";
@@ -456,14 +456,14 @@ public class AssetCertificationManager extends AssetOwnerBaseClient implements A
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        RelatedElementListResponse restResult = restClient.callRelatedElementListGetRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             elementGUID,
-                                                                                             startFrom,
-                                                                                             queryPageSize);
+        RelatedElementsResponse restResult = restClient.callRelatedElementsGetRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       elementGUID,
+                                                                                       startFrom,
+                                                                                       queryPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 }

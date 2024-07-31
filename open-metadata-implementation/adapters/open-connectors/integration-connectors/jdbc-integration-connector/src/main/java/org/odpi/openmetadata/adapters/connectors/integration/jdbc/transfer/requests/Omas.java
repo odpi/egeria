@@ -2,23 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseSchemaElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseViewElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ConnectionProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseForeignKeyProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabasePrimaryKeyProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseViewProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseColumnProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseForeignKeyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabasePrimaryKeyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseSchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseTableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseViewProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.integrationservices.database.connector.DatabaseIntegratorContext;
 

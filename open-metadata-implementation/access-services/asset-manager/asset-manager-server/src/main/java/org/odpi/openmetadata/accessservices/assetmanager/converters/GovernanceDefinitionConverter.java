@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -75,7 +75,7 @@ public class GovernanceDefinitionConverter<B> extends AssetManagerOMASConverter<
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(primaryEntity.getProperties());
 
-                    String                         typeName = primaryEntity.getType().getTypeDefName();
+                    String                         typeName                       = primaryEntity.getType().getTypeDefName();
                     GovernanceDefinitionProperties governanceDefinitionProperties = new GovernanceDefinitionProperties();
 
                     governanceDefinitionProperties.setDocumentIdentifier(this.removeQualifiedName(instanceProperties));

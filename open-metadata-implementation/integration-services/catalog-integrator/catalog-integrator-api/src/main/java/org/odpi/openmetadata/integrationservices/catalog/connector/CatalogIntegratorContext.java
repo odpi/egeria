@@ -16,9 +16,9 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.Infrast
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.LineageExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ValidValuesExchangeClient;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -447,7 +447,7 @@ public class CatalogIntegratorContext extends IntegrationContext
      * @return metadata correlation header or null if the element does not have a matching correlation header
      * @throws InvalidParameterException the element passed is null
      */
-    public MetadataCorrelationHeader getMetadataCorrelationHeader(MetadataElement retrievedElement) throws InvalidParameterException
+    public MetadataCorrelationHeader getMetadataCorrelationHeader(CorrelatedMetadataElement retrievedElement) throws InvalidParameterException
     {
         final String methodName = "getMetadataCorrelationHeader";
         final String parameterName = "retrievedElement";

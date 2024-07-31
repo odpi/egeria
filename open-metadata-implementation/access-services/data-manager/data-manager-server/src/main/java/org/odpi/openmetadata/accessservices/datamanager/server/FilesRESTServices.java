@@ -3,16 +3,15 @@
 
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.datamanager.rest.*;
+import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -83,7 +82,7 @@ public class FilesRESTServices
                                                                      requestBody.getExternalSourceGUID(),
                                                                      requestBody.getExternalSourceName(),
                                                                      parentGUID,
-                                                                     requestBody.getFullPath(),
+                                                                     requestBody.getPathName(),
                                                                      null,
                                                                      null,
                                                                      false,
@@ -120,7 +119,7 @@ public class FilesRESTServices
                                                  String                    userId,
                                                  String                    fileSystemGUID,
                                                  String                    folderGUID,
-                                                 MetadataSourceRequestBody requestBody)
+                                                 ExternalSourceRequestBody requestBody)
     {
         final String methodName                  = "attachFolderToFileSystem";
         final String fileSystemGUIDParameterName = "fileSystemGUID";
@@ -288,8 +287,9 @@ public class FilesRESTServices
                                                            requestBody.getExternalSourceName(),
                                                            requestBody.getQualifiedName(),
                                                            requestBody.getName(),
+                                                           requestBody.getResourceName(),
                                                            requestBody.getVersionIdentifier(),
-                                                           requestBody.getDescription(),
+                                                           requestBody.getResourceDescription(),
                                                            pathName,
                                                            requestBody.getCreateTime(),
                                                            requestBody.getModifiedTime(),
@@ -446,8 +446,9 @@ public class FilesRESTServices
                                             isMergeUpdate,
                                             requestBody.getQualifiedName(),
                                             requestBody.getName(),
+                                            requestBody.getResourceName(),
                                             requestBody.getVersionIdentifier(),
-                                            requestBody.getDescription(),
+                                            requestBody.getResourceDescription(),
                                             requestBody.getCreateTime(),
                                             requestBody.getModifiedTime(),
                                             requestBody.getEncodingType(),
@@ -651,8 +652,9 @@ public class FilesRESTServices
                                                                       requestBody.getQualifiedName(),
                                                                       requestBody.getPathName(),
                                                                       requestBody.getName(),
+                                                                      requestBody.getResourceName(),
                                                                       requestBody.getVersionIdentifier(),
-                                                                      requestBody.getDescription(),
+                                                                      requestBody.getResourceDescription(),
                                                                       requestBody.getDeployedImplementationType(),
                                                                       requestBody.getCreateTime(),
                                                                       requestBody.getModifiedTime(),
@@ -800,8 +802,9 @@ public class FilesRESTServices
                                               isMergeUpdate,
                                               requestBody.getPathName(),
                                               requestBody.getName(),
+                                              requestBody.getResourceName(),
                                               requestBody.getVersionIdentifier(),
-                                              requestBody.getDescription(),
+                                              requestBody.getResourceDescription(),
                                               requestBody.getCreateTime(),
                                               requestBody.getModifiedTime(),
                                               requestBody.getEncodingType(),
@@ -1282,7 +1285,7 @@ public class FilesRESTServices
                                                                     false,
                                                                     new Date(),
                                                                     methodName);
-            response.setFileSystem(element);
+            response.setElement(element);
         }
         catch (Exception error)
         {
@@ -1334,7 +1337,7 @@ public class FilesRESTServices
                                                                           new Date(),
                                                                           methodName);
 
-            response.setFileSystem(element);
+            response.setElement(element);
         }
         catch (Exception error)
         {
@@ -1481,7 +1484,7 @@ public class FilesRESTServices
                         instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 FileFolderElement fileFolder = handler.getFolderByPathName(userId,
-                                                                           requestBody.getFullPath(),
+                                                                           requestBody.getPathName(),
                                                                            false,
                                                                            false,
                                                                            new Date(),
@@ -1648,15 +1651,15 @@ public class FilesRESTServices
             FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> handler =
                     instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getFolderFiles(userId,
-                                                         folderGUID,
-                                                         guidParameterName,
-                                                         startingFrom,
-                                                         maxPageSize,
-                                                         false,
-                                                         false,
-                                                         new Date(),
-                                                         methodName));
+            response.setElements(handler.getFolderFiles(userId,
+                                                        folderGUID,
+                                                        guidParameterName,
+                                                        startingFrom,
+                                                        maxPageSize,
+                                                        false,
+                                                        false,
+                                                        new Date(),
+                                                        methodName));
         }
         catch (Exception error)
         {
@@ -1754,7 +1757,7 @@ public class FilesRESTServices
                         instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 DataFileElement dataFile = handler.getDataFileByPathName(userId,
-                                                                         requestBody.getFullPath(),
+                                                                         requestBody.getPathName(),
                                                                          nameParameterName,
                                                                          false,
                                                                          false,
@@ -1815,7 +1818,7 @@ public class FilesRESTServices
                         instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 List<DataFileElement> dataFiles = handler.findDataFilesByPathName(userId,
-                                                                                  requestBody.getFullPath(),
+                                                                                  requestBody.getPathName(),
                                                                                   nameParameterName,
                                                                                   startingFrom,
                                                                                   maxPageSize,
@@ -1824,7 +1827,7 @@ public class FilesRESTServices
                                                                                   new Date(),
                                                                                   methodName);
 
-                response.setElementList(dataFiles);
+                response.setElements(dataFiles);
             }
         }
         catch (Exception error)
@@ -1876,7 +1879,7 @@ public class FilesRESTServices
                         instanceHandler.getFilesAndFoldersHandler(userId, serverName, methodName);
 
                 List<DataFileElement> dataFiles = handler.findDataFilesByName(userId,
-                                                                              requestBody.getFullPath(),
+                                                                              requestBody.getPathName(),
                                                                               nameParameterName,
                                                                               startingFrom,
                                                                               maxPageSize,
@@ -1885,7 +1888,7 @@ public class FilesRESTServices
                                                                               new Date(),
                                                                               methodName);
 
-                response.setElementList(dataFiles);
+                response.setElements(dataFiles);
             }
         }
         catch (Exception error)

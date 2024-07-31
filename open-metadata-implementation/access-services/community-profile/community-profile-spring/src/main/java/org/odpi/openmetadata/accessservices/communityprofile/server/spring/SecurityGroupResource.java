@@ -4,16 +4,10 @@ package org.odpi.openmetadata.accessservices.communityprofile.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.SecurityGroupProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ElementStubsResponse;
 
-import org.odpi.openmetadata.accessservices.communityprofile.rest.SecurityGroupResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.SecurityGroupsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.accessservices.communityprofile.server.SecurityGroupRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The SecurityGroupResource provides a Spring based server-side REST API
- * that supports the SecruityGroupManagementInterface.   It delegates each request to the
+ * that supports the SecurityGroupManagementInterface.   It delegates each request to the
  * SecurityGroupRESTServices.  This provides the server-side implementation of the Community Profile Open Metadata
  * Access Service (OMAS) which is used to manage information about people, roles and organizations.
  */
@@ -63,7 +57,7 @@ public class SecurityGroupResource
 
     public GUIDResponse createSecurityGroup(@PathVariable String                  serverName,
                                             @PathVariable String                  userId,
-                                            @RequestBody  SecurityGroupProperties requestBody)
+                                            @RequestBody SecurityGroupProperties requestBody)
     {
         return restAPI.createSecurityGroup(serverName, userId, requestBody);
     }

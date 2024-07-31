@@ -6,16 +6,16 @@ package org.odpi.openmetadata.accessservices.assetmanager.fvt.dataassets;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAssetExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaTypeElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.AssetManagerProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -43,8 +43,10 @@ public class CreateSchemasTest
     private final static String assetManagerTypeDescription = "SchemaManager type";
     private final static String assetManagerVersion         = "SchemaManager version";
 
-    private final static String assetName           = "TestAsset";
-    private final static String assetDisplayName = "Asset displayName";
+    private final static String assetName         = "TestAsset";
+    private final static String assetShortName    = "Asset name";
+    private final static String assetResourceName = "Asset resourceName";
+
     private final static String assetDescription = "Asset description";
 
     private final static String optionSchemaName        = "TestSchemaTypeOption";
@@ -332,8 +334,8 @@ public class CreateSchemasTest
 
             AssetManagerProperties properties = new AssetManagerProperties();
             properties.setQualifiedName(assetManagerName);
-            properties.setDisplayName(assetManagerDisplayName);
-            properties.setDescription(assetManagerDescription);
+            properties.setResourceName(assetManagerDisplayName);
+            properties.setResourceDescription(assetManagerDescription);
             properties.setDeployedImplementationType(assetManagerTypeDescription);
             properties.setVersion(assetManagerVersion);
 
@@ -449,11 +451,15 @@ public class CreateSchemasTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve)");
             }
-            if (! assetDisplayName.equals(retrievedAsset.getDisplayName()))
+            if (! assetShortName.equals(retrievedAsset.getName()))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad name from Retrieve)");
             }
-            if (! assetDescription.equals(retrievedAsset.getDescription()))
+            if (! assetResourceName.equals(retrievedAsset.getResourceName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad resource from Retrieve)");
+            }
+            if (! assetDescription.equals(retrievedAsset.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -482,11 +488,15 @@ public class CreateSchemasTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName)");
             }
-            if (! assetDisplayName.equals(retrievedAsset.getDisplayName()))
+            if (! assetShortName.equals(retrievedAsset.getName()))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad name from RetrieveByName)");
             }
-            if (! assetDescription.equals(retrievedAsset.getDescription()))
+            if (! assetResourceName.equals(retrievedAsset.getResourceName()))
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad resourceName from RetrieveByName)");
+            }
+            if (! assetDescription.equals(retrievedAsset.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -529,8 +539,9 @@ public class CreateSchemasTest
             DataAssetProperties properties = new DataAssetProperties();
 
             properties.setQualifiedName(assetName);
-            properties.setDisplayName(assetDisplayName);
-            properties.setDescription(assetDescription);
+            properties.setName(assetShortName);
+            properties.setResourceName(assetResourceName);
+            properties.setResourceDescription(assetDescription);
             
             properties.setTypeName("AvroFile");
 
@@ -1235,7 +1246,7 @@ public class CreateSchemasTest
 
 
     private void validateAnchorGUID(String          activityName,
-                                    MetadataElement metadataElement)
+                                    CorrelatedMetadataElement metadataElement)
     {
         if (metadataElement.getElementHeader() != null)
         {

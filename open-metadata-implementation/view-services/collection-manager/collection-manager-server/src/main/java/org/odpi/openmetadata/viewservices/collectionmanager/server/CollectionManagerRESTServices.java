@@ -4,15 +4,20 @@
 package org.odpi.openmetadata.viewservices.collectionmanager.server;
 
 import org.odpi.openmetadata.accessservices.digitalservice.client.CollectionsClient;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.CollectionResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.collectionmanager.rest.*;
+import org.odpi.openmetadata.viewservices.collectionmanager.rest.TemplateRequestBody;
 import org.slf4j.LoggerFactory;
 
 
@@ -56,18 +61,18 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionListResponse getAttachedCollections(String            serverName,
-                                                         String            parentGUID,
-                                                         int               startFrom,
-                                                         int               pageSize,
-                                                         FilterRequestBody requestBody)
+    public CollectionsResponse getAttachedCollections(String            serverName,
+                                                      String            parentGUID,
+                                                      int               startFrom,
+                                                      int               pageSize,
+                                                      FilterRequestBody requestBody)
     {
         final String methodName = "getAttachedCollections";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CollectionListResponse response = new CollectionListResponse();
-        AuditLog               auditLog = null;
+        CollectionsResponse response = new CollectionsResponse();
+        AuditLog            auditLog = null;
 
         try
         {
@@ -111,17 +116,17 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionListResponse getClassifiedCollections(String            serverName,
-                                                           int               startFrom,
-                                                           int               pageSize,
-                                                           FilterRequestBody requestBody)
+    public CollectionsResponse getClassifiedCollections(String            serverName,
+                                                        int               startFrom,
+                                                        int               pageSize,
+                                                        FilterRequestBody requestBody)
     {
         final String methodName = "getClassifiedCollections";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CollectionListResponse response = new CollectionListResponse();
-        AuditLog               auditLog = null;
+        CollectionsResponse response = new CollectionsResponse();
+        AuditLog            auditLog = null;
 
         try
         {
@@ -168,20 +173,20 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionListResponse findCollections(String            serverName,
-                                                  boolean           startsWith,
-                                                  boolean           endsWith,
-                                                  boolean           ignoreCase,
-                                                  int               startFrom,
-                                                  int               pageSize,
-                                                  FilterRequestBody requestBody)
+    public CollectionsResponse findCollections(String            serverName,
+                                               boolean           startsWith,
+                                               boolean           endsWith,
+                                               boolean           ignoreCase,
+                                               int               startFrom,
+                                               int               pageSize,
+                                               FilterRequestBody requestBody)
     {
         final String methodName = "findCollections";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CollectionListResponse response = new CollectionListResponse();
-        AuditLog               auditLog = null;
+        CollectionsResponse response = new CollectionsResponse();
+        AuditLog            auditLog = null;
 
         try
         {
@@ -234,16 +239,16 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionListResponse getCollectionsByName(String            serverName,
-                                                       int               startFrom,
-                                                       int               pageSize,
-                                                       FilterRequestBody requestBody)
+    public CollectionsResponse getCollectionsByName(String            serverName,
+                                                    int               startFrom,
+                                                    int               pageSize,
+                                                    FilterRequestBody requestBody)
     {
         final String methodName = "getCollectionsByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CollectionListResponse response = new CollectionListResponse();
+        CollectionsResponse response = new CollectionsResponse();
         AuditLog               auditLog = null;
 
         try
@@ -285,17 +290,17 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionListResponse getCollectionsByType(String            serverName,
-                                                       int               startFrom,
-                                                       int               pageSize,
-                                                       FilterRequestBody requestBody)
+    public CollectionsResponse getCollectionsByType(String            serverName,
+                                                    int               startFrom,
+                                                    int               pageSize,
+                                                    FilterRequestBody requestBody)
     {
         final String methodName = "getCollectionsByType";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CollectionListResponse response = new CollectionListResponse();
-        AuditLog               auditLog = null;
+        CollectionsResponse response = new CollectionsResponse();
+        AuditLog            auditLog = null;
 
         try
         {
@@ -1016,17 +1021,17 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionMemberListResponse getCollectionMembers(String serverName,
-                                                             String collectionGUID,
-                                                             int    startFrom,
-                                                             int    pageSize)
+    public CollectionMembersResponse getCollectionMembers(String serverName,
+                                                          String collectionGUID,
+                                                          int    startFrom,
+                                                          int    pageSize)
     {
         final String methodName = "getCollectionMembers";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        CollectionMemberListResponse response = new CollectionMemberListResponse();
-        AuditLog                     auditLog = null;
+        CollectionMembersResponse response = new CollectionMembersResponse();
+        AuditLog                  auditLog = null;
 
         try
         {

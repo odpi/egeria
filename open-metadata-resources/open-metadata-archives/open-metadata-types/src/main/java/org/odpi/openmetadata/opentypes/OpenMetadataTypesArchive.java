@@ -156,12 +156,51 @@ public class OpenMetadataTypesArchive
          */
         previousTypes.getOriginalTypes();
 
+        update0010Base();
         update0201Connections();
         update0210DataStores();
         update0235InformationView();
         update0464IntegrationGroups();
     }
 
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0010Base()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateAsset());
+    }
+
+
+    private TypeDefPatch updateAsset()
+    {
+        /*
+         * Create the Patch
+         */
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ASSET.typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.RESOURCE_NAME.name,
+                                                           OpenMetadataProperty.RESOURCE_NAME.description,
+                                                           OpenMetadataProperty.RESOURCE_NAME.descriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -178,9 +217,7 @@ public class OpenMetadataTypesArchive
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);

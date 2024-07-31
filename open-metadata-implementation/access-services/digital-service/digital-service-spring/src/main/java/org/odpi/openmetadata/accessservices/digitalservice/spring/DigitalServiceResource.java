@@ -2,13 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalservice.spring;
 
-import org.odpi.openmetadata.accessservices.digitalservice.rest.ReferenceableRequestBody;
 import org.odpi.openmetadata.accessservices.digitalservice.server.DigitalServiceRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ReferenceableRequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

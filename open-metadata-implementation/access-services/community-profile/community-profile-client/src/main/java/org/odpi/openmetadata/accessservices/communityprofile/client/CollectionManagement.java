@@ -4,21 +4,21 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.CollectionManagementInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.client.rest.CommunityProfileRESTClient;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.CollectionMember;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionFolderProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionMembershipProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.CollectionListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.CollectionMemberListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.CollectionMemberResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.CollectionResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.CollectionMembersResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.CollectionsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.CollectionMemberResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.CollectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionMember;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionFolderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 
 import java.util.List;
 
@@ -157,8 +157,8 @@ public class CollectionManagement extends CommunityProfileBaseClient implements 
                                    String               externalSourceGUID,
                                    String               externalSourceName,
                                    CollectionProperties collectionProperties) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String methodName              = "createCollection";
         final String propertiesParameterName = "collectionProperties";
@@ -380,13 +380,13 @@ public class CollectionManagement extends CommunityProfileBaseClient implements 
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        CollectionListResponse restResult = restClient.callCollectionListPostRESTCall(methodName,
-                                                                                      urlTemplate,
-                                                                                      requestBody,
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      startFrom,
-                                                                                      validatedPageSize);
+        CollectionsResponse restResult = restClient.callCollectionListPostRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   requestBody,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   startFrom,
+                                                                                   validatedPageSize);
 
         return restResult.getElements();
     }
@@ -429,13 +429,13 @@ public class CollectionManagement extends CommunityProfileBaseClient implements 
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        CollectionListResponse restResult = restClient.callCollectionListPostRESTCall(methodName,
-                                                                                      urlTemplate,
-                                                                                      requestBody,
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      startFrom,
-                                                                                      validatedPageSize);
+        CollectionsResponse restResult = restClient.callCollectionListPostRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   requestBody,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   startFrom,
+                                                                                   validatedPageSize);
 
         return restResult.getElements();
     }
@@ -474,12 +474,12 @@ public class CollectionManagement extends CommunityProfileBaseClient implements 
 
         final String urlTemplate = serverPlatformURLRoot + collectionURLTemplatePrefix + "?startFrom={2}&pageSize={3}";
 
-        CollectionListResponse restResult = restClient.callCollectionListGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     startFrom,
-                                                                                     validatedPageSize);
+        CollectionsResponse restResult = restClient.callCollectionListGetRESTCall(methodName,
+                                                                                  urlTemplate,
+                                                                                  serverName,
+                                                                                  userId,
+                                                                                  startFrom,
+                                                                                  validatedPageSize);
 
         return restResult.getElements();
     }
@@ -516,13 +516,13 @@ public class CollectionManagement extends CommunityProfileBaseClient implements 
 
         final String urlTemplate = serverPlatformURLRoot + collectionURLTemplatePrefix + "/{2}/membership?startFrom={3}&pageSize={4}";
 
-        CollectionMemberListResponse restResult = restClient.callCollectionMemberListGetRESTCall(methodName,
-                                                                                                 urlTemplate,
-                                                                                                 serverName,
-                                                                                                 userId,
-                                                                                                 collectionGUID,
-                                                                                                 Integer.toString(startFrom),
-                                                                                                 Integer.toString(pageSize));
+        CollectionMembersResponse restResult = restClient.callCollectionMemberListGetRESTCall(methodName,
+                                                                                              urlTemplate,
+                                                                                              serverName,
+                                                                                              userId,
+                                                                                              collectionGUID,
+                                                                                              Integer.toString(startFrom),
+                                                                                              Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -597,13 +597,13 @@ public class CollectionManagement extends CommunityProfileBaseClient implements 
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/elements/{2}/collections?startFrom={3}&pageSize={4}";
 
-        CollectionListResponse restResult = restClient.callCollectionListGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     elementGUID,
-                                                                                     Integer.toString(startFrom),
-                                                                                     Integer.toString(pageSize));
+        CollectionsResponse restResult = restClient.callCollectionListGetRESTCall(methodName,
+                                                                                  urlTemplate,
+                                                                                  serverName,
+                                                                                  userId,
+                                                                                  elementGUID,
+                                                                                  Integer.toString(startFrom),
+                                                                                  Integer.toString(pageSize));
 
         return restResult.getElements();
     }

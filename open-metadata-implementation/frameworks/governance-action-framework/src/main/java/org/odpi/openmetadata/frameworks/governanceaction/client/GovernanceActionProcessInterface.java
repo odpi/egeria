@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
 
 import java.util.Date;
 import java.util.List;
@@ -35,9 +36,9 @@ public interface GovernanceActionProcessInterface
      */
     String createGovernanceActionProcess(String                            userId,
                                          GovernanceActionProcessProperties processProperties,
-                                         ProcessStatus                     initialStatus) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException;
+                                         ProcessStatus initialStatus) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException;
 
 
     /**

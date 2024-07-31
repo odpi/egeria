@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 

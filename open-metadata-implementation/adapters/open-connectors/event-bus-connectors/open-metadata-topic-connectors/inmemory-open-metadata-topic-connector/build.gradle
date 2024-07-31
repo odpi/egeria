@@ -8,6 +8,7 @@ description = 'In-memory Open Metadata Topic Connector'
 
 dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

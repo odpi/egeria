@@ -4,14 +4,8 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneDefinitionResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceZoneRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,7 +53,7 @@ public class GovernanceZonesResource
 
     public GUIDResponse createGovernanceZone(@PathVariable String                  serverName,
                                              @PathVariable String                  userId,
-                                             @RequestBody ReferenceableRequestBody requestBody)
+                                             @RequestBody  ReferenceableRequestBody requestBody)
     {
         return restAPI.createGovernanceZone(serverName, userId, requestBody);
     }
@@ -285,11 +279,11 @@ public class GovernanceZonesResource
      */
     @GetMapping(path = "/governance-zones/for-domain")
 
-    public GovernanceZoneListResponse getGovernanceZonesForDomain(@PathVariable String serverName,
-                                                                  @PathVariable String userId,
-                                                                  @RequestParam int    domainIdentifier,
-                                                                  @RequestParam int    startFrom,
-                                                                  @RequestParam int    pageSize)
+    public GovernanceZonesResponse getGovernanceZonesForDomain(@PathVariable String serverName,
+                                                               @PathVariable String userId,
+                                                               @RequestParam int    domainIdentifier,
+                                                               @RequestParam int    startFrom,
+                                                               @RequestParam int    pageSize)
     {
         return restAPI.getGovernanceZonesForDomain(serverName, userId, domainIdentifier, startFrom, pageSize);
     }

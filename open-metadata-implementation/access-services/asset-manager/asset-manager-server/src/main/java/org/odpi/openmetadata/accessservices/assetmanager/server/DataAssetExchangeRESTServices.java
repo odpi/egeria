@@ -6,11 +6,15 @@ package org.odpi.openmetadata.accessservices.assetmanager.server;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.DataAssetExchangeHandler;
 
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.EffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.NameRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.UpdateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
@@ -563,8 +567,8 @@ public class DataAssetExchangeRESTServices
                 DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.setupRelatedDataAsset(userId,
-                                                               requestBody.getAssetManagerGUID(),
-                                                               requestBody.getAssetManagerName(),
+                                                               requestBody.getExternalSourceGUID(),
+                                                               requestBody.getExternalSourceName(),
                                                                assetManagerIsHome,
                                                                relationshipTypeName,
                                                                fromAssetGUID,
@@ -701,8 +705,8 @@ public class DataAssetExchangeRESTServices
                 DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
                 handler.updateAssetRelationship(userId,
-                                                requestBody.getAssetManagerGUID(),
-                                                requestBody.getAssetManagerName(),
+                                                requestBody.getExternalSourceGUID(),
+                                                requestBody.getExternalSourceName(),
                                                 relationshipTypeName,
                                                 relationshipGUID,
                                                 isMergeUpdate,
@@ -836,17 +840,17 @@ public class DataAssetExchangeRESTServices
             {
                 DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.getRelatedAssetsAtEnd2(userId,
-                                                                       requestBody.getAssetManagerGUID(),
-                                                                       requestBody.getAssetManagerName(),
-                                                                       relationshipTypeName,
-                                                                       fromAssetGUID,
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       forLineage,
-                                                                       forDuplicateProcessing,
-                                                                       requestBody.getEffectiveTime(),
-                                                                       methodName));
+                response.setElements(handler.getRelatedAssetsAtEnd2(userId,
+                                                                    requestBody.getAssetManagerGUID(),
+                                                                    requestBody.getAssetManagerName(),
+                                                                    relationshipTypeName,
+                                                                    fromAssetGUID,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    requestBody.getEffectiveTime(),
+                                                                    methodName));
             }
             else
             {
@@ -907,17 +911,17 @@ public class DataAssetExchangeRESTServices
             {
                 DataAssetExchangeHandler handler = instanceHandler.getDataAssetExchangeHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.getRelatedAssetsAtEnd1(userId,
-                                                                       requestBody.getAssetManagerGUID(),
-                                                                       requestBody.getAssetManagerName(),
-                                                                       relationshipTypeName,
-                                                                       toAssetGUID,
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       forLineage,
-                                                                       forDuplicateProcessing,
-                                                                       requestBody.getEffectiveTime(),
-                                                                       methodName));
+                response.setElements(handler.getRelatedAssetsAtEnd1(userId,
+                                                                    requestBody.getAssetManagerGUID(),
+                                                                    requestBody.getAssetManagerName(),
+                                                                    relationshipTypeName,
+                                                                    toAssetGUID,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    requestBody.getEffectiveTime(),
+                                                                    methodName));
             }
             else
             {

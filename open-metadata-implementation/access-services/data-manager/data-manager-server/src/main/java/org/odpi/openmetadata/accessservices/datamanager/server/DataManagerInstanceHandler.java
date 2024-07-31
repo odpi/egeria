@@ -2,15 +2,22 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
-import org.odpi.openmetadata.accessservices.datamanager.converters.ElementStubConverter;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileSystemElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SchemaAttributeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SchemaTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareCapabilityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ValidValueElement;
 
 
 class DataManagerInstanceHandler extends OMASServiceInstanceHandler
@@ -98,15 +105,15 @@ class DataManagerInstanceHandler extends OMASServiceInstanceHandler
      * @throws PropertyServerException error in the requested server
      */
     RelationalDataHandler<DatabaseElement,
-                                 DatabaseSchemaElement,
-                                 DatabaseTableElement,
-                                 DatabaseViewElement,
-                                 DatabaseColumnElement,
-                                 SchemaTypeElement> getRelationalDataHandler(String userId,
-                                                                             String serverName,
-                                                                             String serviceOperationName) throws InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 PropertyServerException
+                          DatabaseSchemaElement,
+                          DatabaseTableElement,
+                          DatabaseViewElement,
+                          DatabaseColumnElement,
+                          SchemaTypeElement> getRelationalDataHandler(String userId,
+                                                                      String serverName,
+                                                                      String serviceOperationName) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
     {
         DataManagerServicesInstance instance = (DataManagerServicesInstance)super.getServerServiceInstance(userId,
                                                                                                            serverName,

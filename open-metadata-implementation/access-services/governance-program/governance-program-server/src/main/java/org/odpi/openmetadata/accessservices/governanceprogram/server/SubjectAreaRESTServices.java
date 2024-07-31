@@ -3,32 +3,19 @@
 
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.converters.ElementStubConverter;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaDefinition;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaClassificationProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ElementStubListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.SubjectAreaDefinitionResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.SubjectAreaListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.SubjectAreaResponse;
+
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.generichandlers.ElementStubConverter;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SubjectAreaHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.LoggerFactory;
@@ -85,12 +72,10 @@ public class SubjectAreaRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof SubjectAreaProperties)
+                if (requestBody.getProperties() instanceof SubjectAreaProperties properties)
                 {
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                     SubjectAreaHandler<SubjectAreaElement> handler = instanceHandler.getSubjectAreaHandler(userId, serverName, methodName);
-
-                    SubjectAreaProperties properties = (SubjectAreaProperties)requestBody.getProperties();
 
                     String subjectAreaGUID = handler.createSubjectArea(userId,
                                                                        requestBody.getExternalSourceGUID(),
@@ -792,18 +777,18 @@ public class SubjectAreaRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public SubjectAreaListResponse getSubjectAreasForDomain(String serverName,
-                                                            String userId,
-                                                            int    domainIdentifier,
-                                                            int    startFrom,
-                                                            int    pageSize)
+    public SubjectAreasResponse getSubjectAreasForDomain(String serverName,
+                                                         String userId,
+                                                         int    domainIdentifier,
+                                                         int    startFrom,
+                                                         int    pageSize)
     {
         final String methodName = "getSubjectAreasForDomain";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        SubjectAreaListResponse response = new SubjectAreaListResponse();
-        AuditLog         auditLog = null;
+        SubjectAreasResponse response = new SubjectAreasResponse();
+        AuditLog             auditLog = null;
 
         try
         {
@@ -819,7 +804,7 @@ public class SubjectAreaRESTServices
                                                                                     new Date(),
                                                                                     methodName);
 
-            response.setElementList(subjectAreas);
+            response.setElements(subjectAreas);
         }
         catch (Exception error)
         {
@@ -1070,18 +1055,18 @@ public class SubjectAreaRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public ElementStubListResponse getMembersOfSubjectArea(String serverName,
-                                                           String userId,
-                                                           String subjectAreaName,
-                                                           int    startFrom,
-                                                           int    pageSize)
+    public ElementStubsResponse getMembersOfSubjectArea(String serverName,
+                                                        String userId,
+                                                        String subjectAreaName,
+                                                        int    startFrom,
+                                                        int    pageSize)
     {
         final String methodName = "getMembersOfSubjectArea";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ElementStubListResponse response = new ElementStubListResponse();
-        AuditLog                auditLog = null;
+        ElementStubsResponse response = new ElementStubsResponse();
+        AuditLog             auditLog = null;
 
         try
         {

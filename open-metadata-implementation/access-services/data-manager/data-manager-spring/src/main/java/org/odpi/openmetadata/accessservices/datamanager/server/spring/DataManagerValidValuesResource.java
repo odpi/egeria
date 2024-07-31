@@ -4,17 +4,8 @@ package org.odpi.openmetadata.accessservices.datamanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.datamanager.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.datamanager.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.ValidValueListResponse;
-import org.odpi.openmetadata.accessservices.datamanager.rest.ValidValueResponse;
 import org.odpi.openmetadata.accessservices.datamanager.server.ValidValuesRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -299,7 +290,7 @@ public class DataManagerValidValuesResource
      */
     @PostMapping(path = "/valid-values/by-search-string")
 
-    public ValidValueListResponse findValidValues(@PathVariable String                  serverName,
+    public ValidValuesResponse findValidValues(@PathVariable String                  serverName,
                                                   @PathVariable String                  userId,
                                                   @RequestParam int                     startFrom,
                                                   @RequestParam int                     pageSize,
@@ -326,7 +317,7 @@ public class DataManagerValidValuesResource
      */
     @PostMapping(path = "/valid-values/by-name")
 
-    public ValidValueListResponse getValidValuesByName(@PathVariable String          serverName,
+    public ValidValuesResponse getValidValuesByName(@PathVariable String          serverName,
                                                        @PathVariable String          userId,
                                                        @RequestParam int             startFrom,
                                                        @RequestParam int             pageSize,
@@ -353,7 +344,7 @@ public class DataManagerValidValuesResource
      */
     @GetMapping(path = "/valid-values/members/{validValueSetGUID}")
 
-    public ValidValueListResponse getValidValueSetMembers(@PathVariable String serverName,
+    public ValidValuesResponse getValidValueSetMembers(@PathVariable String serverName,
                                                           @PathVariable String userId,
                                                           @PathVariable String validValueSetGUID,
                                                           @RequestParam int    startFrom,
@@ -380,7 +371,7 @@ public class DataManagerValidValuesResource
      */
     @GetMapping(path = "/valid-values/sets/{validValueGUID}")
 
-    public ValidValueListResponse getSetsForValidValue(@PathVariable String serverName,
+    public ValidValuesResponse getSetsForValidValue(@PathVariable String serverName,
                                                        @PathVariable String userId,
                                                        @PathVariable String validValueGUID,
                                                        @RequestParam int    startFrom,
@@ -430,7 +421,7 @@ public class DataManagerValidValuesResource
      */
     @GetMapping(path = "/valid-values/{validValueGUID}/consumers")
 
-    public RelatedElementListResponse getConsumersOfValidValue(@PathVariable String serverName,
+    public RelatedElementsResponse getConsumersOfValidValue(@PathVariable String serverName,
                                                                @PathVariable String userId,
                                                                @PathVariable String validValueGUID,
                                                                @RequestParam int    startFrom,
@@ -456,7 +447,7 @@ public class DataManagerValidValuesResource
      */
     @GetMapping(path = "/valid-values/by-reference-value-tags/{elementGUID}")
 
-    public ValidValueListResponse getReferenceValues(@PathVariable String serverName,
+    public ValidValuesResponse getReferenceValues(@PathVariable String serverName,
                                                      @PathVariable String userId,
                                                      @PathVariable String elementGUID,
                                                      @RequestParam int    startFrom,
@@ -483,7 +474,7 @@ public class DataManagerValidValuesResource
      */
     @GetMapping(path = "/valid-values/{validValueGUID}/by-reference-value-tag-assignees")
 
-    public RelatedElementListResponse getAssigneesOfReferenceValue(@PathVariable String serverName,
+    public RelatedElementsResponse getAssigneesOfReferenceValue(@PathVariable String serverName,
                                                                    @PathVariable String userId,
                                                                    @PathVariable String validValueGUID,
                                                                    @RequestParam int    startFrom,
@@ -509,7 +500,7 @@ public class DataManagerValidValuesResource
      */
     @GetMapping(path = "/valid-values")
 
-    public ValidValueListResponse getAllValidValues(@PathVariable String serverName,
+    public ValidValuesResponse getAllValidValues(@PathVariable String serverName,
                                                     @PathVariable String userId,
                                                     @RequestParam int    startFrom,
                                                     @RequestParam int    pageSize)

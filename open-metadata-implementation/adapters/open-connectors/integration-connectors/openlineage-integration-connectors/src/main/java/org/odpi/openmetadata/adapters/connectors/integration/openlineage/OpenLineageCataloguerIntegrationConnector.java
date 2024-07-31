@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ProcessElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext;
 import org.odpi.openmetadata.integrationservices.lineage.connector.OpenLineageEventListener;
@@ -130,7 +130,7 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
 
                                 if (documentation != null)
                                 {
-                                    processProperties.setDescription(documentation.getDescription());
+                                    processProperties.setResourceDescription(documentation.getDescription());
                                 }
                             }
 
@@ -146,7 +146,7 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
 
                             processGUID = existingProcess.getElementHeader().getGUID();
 
-                            if (existingProcess.getProcessProperties().getDescription() == null)
+                            if (existingProcess.getProcessProperties().getDisplayDescription() == null)
                             {
                                 if (job.getFacets() != null)
                                 {
@@ -156,7 +156,7 @@ public class OpenLineageCataloguerIntegrationConnector extends LineageIntegrator
                                     {
                                         ProcessProperties processProperties = new ProcessProperties();
 
-                                        processProperties.setDescription(documentation.getDescription());
+                                        processProperties.setResourceDescription(documentation.getDescription());
 
                                         myContext.updateProcess(processGUID, true, processProperties, null);
                                     }

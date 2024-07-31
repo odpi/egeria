@@ -6,17 +6,17 @@ package org.odpi.openmetadata.accessservices.datamanager.fvt.connections;
 import org.odpi.openmetadata.accessservices.datamanager.client.ConnectionManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseManagerProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ConnectionProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ConnectorTypeProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.EndpointProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.DatabaseManagerProperties;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -196,8 +196,8 @@ public class CreateConnectionTest
 
             DatabaseManagerProperties properties = new DatabaseManagerProperties();
             properties.setQualifiedName(databaseManagerName);
-            properties.setDisplayName(databaseManagerDisplayName);
-            properties.setDescription(databaseManagerDescription);
+            properties.setResourceName(databaseManagerDisplayName);
+            properties.setResourceDescription(databaseManagerDescription);
             properties.setDeployedImplementationType(databaseManagerTypeDescription);
             properties.setVersion(databaseManagerVersion);
 
@@ -520,11 +520,11 @@ public class CreateConnectionTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from Retrieve) =>>" + retrievedEndpoint);
             }
-            if (! endpointDisplayName.equals(retrievedEndpoint.getDisplayName()))
+            if (! endpointDisplayName.equals(retrievedEndpoint.getName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve) =>>" + retrievedEndpoint);
             }
-            if (! endpointDescription.equals(retrievedEndpoint.getDescription()))
+            if (! endpointDescription.equals(retrievedEndpoint.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve) =>>" + retrievedEndpoint);
             }
@@ -553,11 +553,11 @@ public class CreateConnectionTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad qualifiedName from RetrieveByName) =>>" + retrievedEndpoint);
             }
-            if (! endpointDisplayName.equals(retrievedEndpoint.getDisplayName()))
+            if (! endpointDisplayName.equals(retrievedEndpoint.getName()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName) =>>" + retrievedEndpoint);
             }
-            if (! endpointDescription.equals(retrievedEndpoint.getDescription()))
+            if (! endpointDescription.equals(retrievedEndpoint.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName) =>>" + retrievedEndpoint);
             }
@@ -637,8 +637,8 @@ public class CreateConnectionTest
             EndpointProperties properties = new EndpointProperties();
 
             properties.setQualifiedName(endpointName);
-            properties.setDisplayName(endpointDisplayName);
-            properties.setDescription(endpointDescription);
+            properties.setName(endpointDisplayName);
+            properties.setResourceDescription(endpointDescription);
 
             String endpointGUID = client.createEndpoint(userId, databaseManagerGUID, databaseManagerName, properties);
 
@@ -688,7 +688,7 @@ public class CreateConnectionTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no ConnectorTypeElement from Retrieve)");
             }
 
-            ConnectorTypeProperties retrievedConnectorType  = retrievedElement.getConnectorTypeProperties();
+            ConnectorTypeProperties retrievedConnectorType = retrievedElement.getConnectorTypeProperties();
 
             if (retrievedConnectorType == null)
             {

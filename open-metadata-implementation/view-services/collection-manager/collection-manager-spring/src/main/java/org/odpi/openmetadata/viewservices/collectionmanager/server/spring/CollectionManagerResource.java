@@ -5,12 +5,12 @@ package org.odpi.openmetadata.viewservices.collectionmanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionMembershipProperties;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalProductProperties;
-import org.odpi.openmetadata.accessservices.digitalservice.properties.ResourceListProperties;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.viewservices.collectionmanager.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.viewservices.collectionmanager.rest.TemplateRequestBody;
 import org.odpi.openmetadata.viewservices.collectionmanager.server.CollectionManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,13 +64,13 @@ public class CollectionManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public CollectionListResponse getAttachedCollections(@PathVariable String            serverName,
-                                                         @PathVariable String            parentGUID,
-                                                         @RequestParam(required = false, defaultValue = "0")
+    public CollectionsResponse getAttachedCollections(@PathVariable String            serverName,
+                                                      @PathVariable String            parentGUID,
+                                                      @RequestParam(required = false, defaultValue = "0")
                                                                        int    startFrom,
-                                                         @RequestParam(required = false, defaultValue = "0")
+                                                      @RequestParam(required = false, defaultValue = "0")
                                                                        int    pageSize,
-                                                         @RequestBody(required = false)
+                                                      @RequestBody(required = false)
                                                                        FilterRequestBody requestBody)
     {
         return restAPI.getAttachedCollections(serverName, parentGUID, startFrom, pageSize, requestBody);
@@ -96,13 +96,13 @@ public class CollectionManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public CollectionListResponse getClassifiedCollections(@PathVariable String            serverName,
-                                                           @RequestParam(required = false, defaultValue = "0")
+    public CollectionsResponse getClassifiedCollections(@PathVariable String            serverName,
+                                                        @RequestParam(required = false, defaultValue = "0")
                                                                          int    startFrom,
-                                                           @RequestParam(required = false, defaultValue = "0")
+                                                        @RequestParam(required = false, defaultValue = "0")
                                                                          int    pageSize,
-                                                           @RequestBody(required = false)
-                                                                         FilterRequestBody requestBody)
+                                                        @RequestBody(required = false)
+                                                            FilterRequestBody requestBody)
     {
         return restAPI.getClassifiedCollections(serverName, startFrom, pageSize, requestBody);
     }
@@ -130,18 +130,18 @@ public class CollectionManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public CollectionListResponse findCollections(@PathVariable String            serverName,
-                                                  @RequestParam (required = false, defaultValue = "false")
+    public CollectionsResponse findCollections(@PathVariable String            serverName,
+                                               @RequestParam (required = false, defaultValue = "false")
                                                                 boolean           startsWith,
-                                                  @RequestParam (required = false, defaultValue = "false")
+                                               @RequestParam (required = false, defaultValue = "false")
                                                                 boolean           endsWith,
-                                                  @RequestParam (required = false, defaultValue = "false")
+                                               @RequestParam (required = false, defaultValue = "false")
                                                                 boolean           ignoreCase,
-                                                  @RequestParam (required = false, defaultValue = "0")
+                                               @RequestParam (required = false, defaultValue = "0")
                                                                 int               startFrom,
-                                                  @RequestParam (required = false, defaultValue = "0")
+                                               @RequestParam (required = false, defaultValue = "0")
                                                                 int               pageSize,
-                                                  @RequestBody  (required = false)
+                                               @RequestBody  (required = false)
                                                                 FilterRequestBody requestBody)
     {
         return restAPI.findCollections(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
@@ -167,12 +167,12 @@ public class CollectionManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public CollectionListResponse getCollectionsByName(@PathVariable String            serverName,
-                                                       @RequestParam(required = false, defaultValue = "0")
+    public CollectionsResponse getCollectionsByName(@PathVariable String            serverName,
+                                                    @RequestParam(required = false, defaultValue = "0")
                                                                      int    startFrom,
-                                                       @RequestParam(required = false, defaultValue = "0")
+                                                    @RequestParam(required = false, defaultValue = "0")
                                                                      int    pageSize,
-                                                       @RequestBody  FilterRequestBody requestBody)
+                                                    @RequestBody  FilterRequestBody requestBody)
     {
         return restAPI.getCollectionsByName(serverName, startFrom, pageSize, requestBody);
     }
@@ -197,12 +197,12 @@ public class CollectionManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public CollectionListResponse getCollectionsByType(@PathVariable String            serverName,
-                                                       @RequestParam(required = false, defaultValue = "0")
+    public CollectionsResponse getCollectionsByType(@PathVariable String            serverName,
+                                                    @RequestParam(required = false, defaultValue = "0")
                                                                      int               startFrom,
-                                                       @RequestParam(required = false, defaultValue = "0")
+                                                    @RequestParam(required = false, defaultValue = "0")
                                                                      int               pageSize,
-                                                       @RequestBody(required = false)  FilterRequestBody requestBody)
+                                                    @RequestBody(required = false)  FilterRequestBody requestBody)
     {
         return restAPI.getCollectionsByType(serverName, startFrom, pageSize, requestBody);
     }
@@ -406,7 +406,7 @@ public class CollectionManagerResource
     public VoidResponse updateCollection(@PathVariable String               serverName,
                                          @PathVariable String               collectionGUID,
                                          @RequestParam boolean              replaceAllProperties,
-                                         @RequestBody  CollectionProperties requestBody)
+                                         @RequestBody CollectionProperties requestBody)
     {
         return restAPI.updateCollection(serverName, collectionGUID, replaceAllProperties, requestBody);
     }
@@ -545,7 +545,7 @@ public class CollectionManagerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public CollectionMemberListResponse getCollectionMembers(@PathVariable String serverName,
+    public CollectionMembersResponse getCollectionMembers(@PathVariable String serverName,
                                                              @PathVariable String collectionGUID,
                                                              @RequestParam(required = false, defaultValue = "0")
                                                                            int    startFrom,

@@ -4,10 +4,9 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceDefinitionsInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.PeerDefinitionProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.SupportingDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PeerDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -17,11 +16,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 /**
  * GovernanceDefinitionManager is the java client for managing the definitions for the governance drivers, policies and controls
  * that define the motivation, goals and implementation approach for the governance program.
- *
  * Governance drivers document of the business strategy and regulations that provide the motivation behind the governance program. They feed
  * into the governance program's policymaking phase ensuring the governance program is focused on activity that delivers value to the organization.
  * A governance driver could be a governance strategy statement, a business imperative, a regulation or a regulation's article.
- *
  * Governance policies define the goals and best practices for the governance program.  There are three types of governance policies:
  * <ul>
  *     <li>

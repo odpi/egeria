@@ -3,28 +3,22 @@
 package org.odpi.openmetadata.accessservices.projectmanagement.client;
 
 import org.odpi.openmetadata.accessservices.projectmanagement.api.ProjectsInterface;
-import org.odpi.openmetadata.accessservices.projectmanagement.api.RelatedElementsInterface;
-import org.odpi.openmetadata.accessservices.projectmanagement.client.converters.ProjectConverter;
-import org.odpi.openmetadata.accessservices.projectmanagement.client.converters.TeamMemberConverter;
+import org.odpi.openmetadata.frameworks.governanceaction.converters.ProjectConverter;
+import org.odpi.openmetadata.frameworks.governanceaction.converters.TeamMemberConverter;
 import org.odpi.openmetadata.accessservices.projectmanagement.client.rest.ProjectManagementRESTClient;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectTeamMember;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectTeamMember;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.ActorProfileListResponse;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.ProjectResponse;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.ProjectListResponse;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.PersonRoleListResponse;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
@@ -900,13 +894,13 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        ProjectListResponse restResult = restClient.callProjectListPostRESTCall(methodName,
-                                                                                urlTemplate,
-                                                                                requestBody,
-                                                                                serverName,
-                                                                                userId,
-                                                                                startFrom,
-                                                                                validatedPageSize);
+        ProjectsResponse restResult = restClient.callProjectsPostRESTCall(methodName,
+                                                                          urlTemplate,
+                                                                          requestBody,
+                                                                          serverName,
+                                                                          userId,
+                                                                          startFrom,
+                                                                          validatedPageSize);
 
         return restResult.getElements();
     }
@@ -949,13 +943,13 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        ProjectListResponse restResult = restClient.callProjectListPostRESTCall(methodName,
-                                                                                urlTemplate,
-                                                                                requestBody,
-                                                                                serverName,
-                                                                                userId,
-                                                                                startFrom,
-                                                                                validatedPageSize);
+        ProjectsResponse restResult = restClient.callProjectsPostRESTCall(methodName,
+                                                                          urlTemplate,
+                                                                          requestBody,
+                                                                          serverName,
+                                                                          userId,
+                                                                          startFrom,
+                                                                          validatedPageSize);
 
         return restResult.getElements();
     }
@@ -988,12 +982,12 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
         final String urlTemplate = serverPlatformURLRoot + projectURLTemplatePrefix + "?startFrom={2}&pageSize={3}";
 
-        ProjectListResponse restResult = restClient.callProjectListGetRESTCall(methodName,
-                                                                               urlTemplate,
-                                                                               serverName,
-                                                                               userId,
-                                                                               startFrom,
-                                                                               validatedPageSize);
+        ProjectsResponse restResult = restClient.callProjectsGetRESTCall(methodName,
+                                                                         urlTemplate,
+                                                                         serverName,
+                                                                         userId,
+                                                                         startFrom,
+                                                                         validatedPageSize);
 
         return restResult.getElements();
     }
@@ -1029,13 +1023,13 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
         final String urlTemplate = serverPlatformURLRoot + projectURLTemplatePrefix + "/project-managers/by-project/{2}?startFrom={3}&pageSize={4}";
 
-        PersonRoleListResponse restResult = restClient.callPersonRoleListGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     projectGUID,
-                                                                                     Integer.toString(startFrom),
-                                                                                     Integer.toString(pageSize));
+        PersonRolesResponse restResult = restClient.callPersonRolesGetRESTCall(methodName,
+                                                                               urlTemplate,
+                                                                               serverName,
+                                                                               userId,
+                                                                               projectGUID,
+                                                                               Integer.toString(startFrom),
+                                                                               Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -1071,13 +1065,13 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
         final String urlTemplate = serverPlatformURLRoot + projectURLTemplatePrefix + "/project-actors/by-project/{2}?startFrom={3}&pageSize={4}";
 
-        ActorProfileListResponse restResult = restClient.callActorProfileListGetRESTCall(methodName,
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       projectGUID,
-                                                                                       Integer.toString(startFrom),
-                                                                                       Integer.toString(pageSize));
+        ActorProfilesResponse restResult = restClient.callActorProfilesGetRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   projectGUID,
+                                                                                   Integer.toString(startFrom),
+                                                                                   Integer.toString(pageSize));
 
         return restResult.getElements();
     }

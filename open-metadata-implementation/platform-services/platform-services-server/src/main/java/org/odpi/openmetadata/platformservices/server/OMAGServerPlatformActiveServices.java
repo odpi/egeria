@@ -272,14 +272,14 @@ public class OMAGServerPlatformActiveServices
      * @param connectorProviderClassName name of the connector provider class
      * @return ConnectorType bean or exceptions that occur when trying to create the connector
      */
-    public ConnectorTypeResponse getConnectorType(String userId,
-                                                  String connectorProviderClassName)
+    public OCFConnectorTypeResponse getConnectorType(String userId,
+                                                     String connectorProviderClassName)
     {
         final String methodName = "getConnectorType";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ConnectorTypeResponse response = new ConnectorTypeResponse();
+        OCFConnectorTypeResponse response = new OCFConnectorTypeResponse();
 
         try
         {

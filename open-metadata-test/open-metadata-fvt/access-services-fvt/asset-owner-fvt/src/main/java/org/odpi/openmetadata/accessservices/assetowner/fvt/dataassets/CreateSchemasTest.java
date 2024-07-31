@@ -5,15 +5,15 @@ package org.odpi.openmetadata.accessservices.assetowner.fvt.dataassets;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SchemaTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -365,7 +365,7 @@ public class CreateSchemasTest
             System.out.println("Asset Element: " + retrievedElement);
             validateAnchorGUID(activityName, retrievedElement);
 
-            AssetProperties retrievedAsset = retrievedElement.getAssetProperties();
+            AssetProperties retrievedAsset = retrievedElement.getProperties();
 
             if (retrievedAsset == null)
             {
@@ -380,7 +380,7 @@ public class CreateSchemasTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! assetDescription.equals(retrievedAsset.getDescription()))
+            if (! assetDescription.equals(retrievedAsset.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -403,7 +403,7 @@ public class CreateSchemasTest
             }
 
             retrievedElement = assetList.get(0);
-            retrievedAsset = retrievedElement.getAssetProperties();
+            retrievedAsset = retrievedElement.getProperties();
 
             if (! assetName.equals(retrievedAsset.getQualifiedName()))
             {
@@ -413,7 +413,7 @@ public class CreateSchemasTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! assetDescription.equals(retrievedAsset.getDescription()))
+            if (! assetDescription.equals(retrievedAsset.getResourceDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -455,7 +455,7 @@ public class CreateSchemasTest
 
             properties.setQualifiedName(assetName);
             properties.setDisplayName(assetDisplayName);
-            properties.setDescription(assetDescription);
+            properties.setResourceDescription(assetDescription);
             
             properties.setTypeName("AvroFile");
 

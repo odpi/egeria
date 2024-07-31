@@ -2,18 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.projectmanagement.server;
 
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.RelatedElement;
+
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.CommunityHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ContributionRecordHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ProjectHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

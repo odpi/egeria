@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetmanager.events;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 
 import java.util.Date;
 import java.util.Map;

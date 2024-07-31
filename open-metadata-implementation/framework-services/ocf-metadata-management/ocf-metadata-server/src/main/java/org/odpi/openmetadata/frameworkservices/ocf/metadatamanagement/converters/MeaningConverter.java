@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters;
 
 
-import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
  * MeaningConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  * EntityDetail object into a Meaning bean.
  */
-public class MeaningConverter<B> extends OCFConverter<B>
+public class MeaningConverter<B> extends OMFConverter<B>
 {
     /**
      * Constructor

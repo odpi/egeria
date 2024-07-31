@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -18,9 +20,9 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestConnectorType
 {
-    private ElementType                 type                              = new ElementType();
-    private List<ElementClassification> classifications                   = new ArrayList<>();
-    private Map<String, String>         additionalProperties              = new HashMap<>();
+    private ElementType                 type                 = new ElementType();
+    private List<ElementClassification> classifications      = new ArrayList<>();
+    private Map<String, String>         additionalProperties = new HashMap<>();
     private List<String>                recognizedAdditionalProperties    = new ArrayList<>();
     private List<String>                recognizedSecuredProperties       = new ArrayList<>();
     private List<String>                recognizedConfigurationProperties = new ArrayList<>();
@@ -258,7 +260,7 @@ public class TestConnectorType
         /*
          * Through superclass
          */
-        PropertyBase propertyBase = getTestObject();
+        ElementBase propertyBase = getTestObject();
 
         try
         {
@@ -271,7 +273,7 @@ public class TestConnectorType
 
         try
         {
-            validateResultObject((ConnectorType) objectMapper.readValue(jsonString, PropertyBase.class));
+            validateResultObject((ConnectorType) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

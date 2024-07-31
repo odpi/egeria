@@ -6,16 +6,21 @@ package org.odpi.openmetadata.integrationservices.display.connector;
 import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerEventListener;
 import org.odpi.openmetadata.accessservices.datamanager.client.DisplayApplicationClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.datamanager.properties.*;
+import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FormElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.FormProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.QueryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.display.ReportProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataContainerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display.DataFieldProperties;
 
 import java.util.List;
 

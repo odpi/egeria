@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceLevelIdentifierElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceLevelIdentifierSetElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceLevelIdentifierProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceLevelIdentifierSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceLevelIdentifierElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceLevelIdentifierSetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceLevelIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceLevelIdentifierSetProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

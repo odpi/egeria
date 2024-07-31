@@ -5,8 +5,10 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.viewservices.feedbackmanager.properties.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
 import org.odpi.openmetadata.viewservices.feedbackmanager.rest.*;
 import org.odpi.openmetadata.viewservices.feedbackmanager.server.FeedbackManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -71,7 +73,7 @@ public class FeedbackManagerResource
                                             String                         viewServiceURLMarker,
                                         @RequestParam (required = false, defaultValue = "asset-manager")
                                             String                         accessServiceURLMarker,
-                                        @RequestBody  ReferenceableUpdateRequestBody requestBody)
+                                        @RequestBody ReferenceableUpdateRequestBody requestBody)
     {
         return restAPI.addCommentReply(serverName, elementGUID, commentGUID, isPublic, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
@@ -394,7 +396,7 @@ public class FeedbackManagerResource
                                                   String                         viewServiceURLMarker,
                                               @RequestParam (required = false, defaultValue = "asset-manager")
                                                   String                         accessServiceURLMarker,
-                                              @RequestBody  FilterRequestBody requestBody)
+                                              @RequestBody FilterRequestBody requestBody)
     {
         return restAPI.getTagsByName(serverName, startFrom, pageSize, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }
@@ -1382,7 +1384,7 @@ public class FeedbackManagerResource
                                                  String                         viewServiceURLMarker,
                                    @RequestParam (required = false, defaultValue = "asset-manager")
                                                  String         accessServiceURLMarker,
-                                   @RequestBody  NoteProperties requestBody)
+                                   @RequestBody NoteProperties requestBody)
     {
         return restAPI.createNote(serverName, noteLogGUID, viewServiceURLMarker, accessServiceURLMarker, requestBody);
     }

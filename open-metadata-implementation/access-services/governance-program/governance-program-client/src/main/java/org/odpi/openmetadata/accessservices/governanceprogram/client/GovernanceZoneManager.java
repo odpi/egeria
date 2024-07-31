@@ -5,12 +5,12 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceZonesInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneDefinition;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneDefinitionResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GovernanceZoneDefinitionResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GovernanceZoneResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GovernanceZonesResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceZoneDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceZoneElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceZoneProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -384,15 +384,15 @@ public class GovernanceZoneManager extends GovernanceProgramBaseClient implement
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        GovernanceZoneListResponse restResult = restClient.callGovernanceZoneListGetRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             domainIdentifier,
-                                                                                             startFrom,
-                                                                                             queryPageSize);
+        GovernanceZonesResponse restResult = restClient.callGovernanceZoneListGetRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          domainIdentifier,
+                                                                                          startFrom,
+                                                                                          queryPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 

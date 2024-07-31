@@ -4,10 +4,11 @@ package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.RelationshipRequestBody;
+
 import org.odpi.openmetadata.accessservices.assetowner.server.RelatedElementRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelatedElementsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,7 +92,7 @@ public class AssetRelationshipsResource
                                              @PathVariable String                    userId,
                                              @PathVariable String                    elementGUID,
                                              @PathVariable String                    detailGUID,
-                                             @RequestBody  ExternalSourceRequestBody requestBody)
+                                             @RequestBody ExternalSourceRequestBody requestBody)
     {
         return restAPI.clearMoreInformation(serverName, userId, elementGUID, detailGUID, requestBody);
     }
@@ -113,11 +114,11 @@ public class AssetRelationshipsResource
      */
     @GetMapping(path = "/related-elements/more-information/by-descriptive-element/{elementGUID}")
 
-    public  RelatedElementListResponse getMoreInformation(@PathVariable String serverName,
-                                                          @PathVariable String userId,
-                                                          @PathVariable String elementGUID,
-                                                          @RequestParam int    startFrom,
-                                                          @RequestParam int    pageSize)
+    public RelatedElementsResponse getMoreInformation(@PathVariable String serverName,
+                                                      @PathVariable String userId,
+                                                      @PathVariable String elementGUID,
+                                                      @RequestParam int    startFrom,
+                                                      @RequestParam int    pageSize)
     {
         return restAPI.getMoreInformation(serverName, userId, elementGUID, startFrom, pageSize);
     }
@@ -139,11 +140,11 @@ public class AssetRelationshipsResource
      */
     @GetMapping(path = "/related-elements/more-information/by-detail-element/{detailGUID}")
 
-    public  RelatedElementListResponse getDescriptiveElements(@PathVariable String serverName,
-                                                              @PathVariable String userId,
-                                                              @PathVariable String detailGUID,
-                                                              @RequestParam int    startFrom,
-                                                              @RequestParam int    pageSize)
+    public RelatedElementsResponse getDescriptiveElements(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @PathVariable String detailGUID,
+                                                          @RequestParam int    startFrom,
+                                                          @RequestParam int    pageSize)
     {
         return restAPI.getDescriptiveElements(serverName, userId, detailGUID, startFrom, pageSize);
     }
@@ -217,11 +218,11 @@ public class AssetRelationshipsResource
      */
     @GetMapping(path = "/related-elements/stakeholders/by-commissioned-element/{elementGUID}")
 
-    public  RelatedElementListResponse getStakeholders(@PathVariable String serverName,
-                                                       @PathVariable String userId,
-                                                       @PathVariable String elementGUID,
-                                                       @RequestParam int   startFrom,
-                                                       @RequestParam int   pageSize)
+    public RelatedElementsResponse getStakeholders(@PathVariable String serverName,
+                                                   @PathVariable String userId,
+                                                   @PathVariable String elementGUID,
+                                                   @RequestParam int   startFrom,
+                                                   @RequestParam int   pageSize)
     {
         return restAPI.getStakeholders(serverName, userId, elementGUID, startFrom, pageSize);
     }
@@ -243,11 +244,11 @@ public class AssetRelationshipsResource
      */
     @GetMapping(path = "/related-elements/stakeholders/by-stakeholder/{stakeholderGUID}")
 
-    public  RelatedElementListResponse getStakeholderCommissionedElements(@PathVariable String serverName,
-                                                                          @PathVariable String userId,
-                                                                          @PathVariable String stakeholderGUID,
-                                                                          @RequestParam int   startFrom,
-                                                                          @RequestParam int   pageSize)
+    public RelatedElementsResponse getStakeholderCommissionedElements(@PathVariable String serverName,
+                                                                      @PathVariable String userId,
+                                                                      @PathVariable String stakeholderGUID,
+                                                                      @RequestParam int   startFrom,
+                                                                      @RequestParam int   pageSize)
     {
         return restAPI.getStakeholderCommissionedElements(serverName, userId, stakeholderGUID, startFrom, pageSize);
     }
@@ -321,11 +322,11 @@ public class AssetRelationshipsResource
      */
     @GetMapping(path = "/related-elements/resource-list/by-assignee/{elementGUID}")
 
-    public  RelatedElementListResponse getResourceList(@PathVariable String serverName,
-                                                       @PathVariable String userId,
-                                                       @PathVariable String elementGUID,
-                                                       @RequestParam int    startFrom,
-                                                       @RequestParam int    pageSize)
+    public RelatedElementsResponse getResourceList(@PathVariable String serverName,
+                                                   @PathVariable String userId,
+                                                   @PathVariable String elementGUID,
+                                                   @RequestParam int    startFrom,
+                                                   @RequestParam int    pageSize)
     {
         return restAPI.getResourceList(serverName, userId, elementGUID, startFrom, pageSize);
     }
@@ -347,11 +348,11 @@ public class AssetRelationshipsResource
      */
     @GetMapping(path = "/related-elements/resource-list/by-resource/{resourceGUID}")
 
-    public RelatedElementListResponse getSupportedByResource(@PathVariable String serverName,
-                                                             @PathVariable String userId,
-                                                             @PathVariable String resourceGUID,
-                                                             @RequestParam int   startFrom,
-                                                             @RequestParam int   pageSize)
+    public RelatedElementsResponse getSupportedByResource(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @PathVariable String resourceGUID,
+                                                          @RequestParam int   startFrom,
+                                                          @RequestParam int   pageSize)
     {
         return restAPI.getSupportedByResource(serverName, userId, resourceGUID, startFrom, pageSize);
     }
@@ -425,11 +426,11 @@ public class AssetRelationshipsResource
      */
     @GetMapping(path = "/related-elements/catalog-templates/by-assignee/{elementGUID}")
 
-    public  RelatedElementListResponse getCatalogTemplateList(@PathVariable String serverName,
-                                                              @PathVariable String userId,
-                                                              @PathVariable String elementGUID,
-                                                              @RequestParam int    startFrom,
-                                                              @RequestParam int    pageSize)
+    public RelatedElementsResponse getCatalogTemplateList(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @PathVariable String elementGUID,
+                                                          @RequestParam int    startFrom,
+                                                          @RequestParam int    pageSize)
     {
         return restAPI.getCatalogTemplateList(serverName, userId, elementGUID, startFrom, pageSize);
     }
@@ -451,11 +452,11 @@ public class AssetRelationshipsResource
      */
     @GetMapping(path = "/related-elements/catalog-templates/by-template/{templateGUID}")
 
-    public RelatedElementListResponse getSupportedByTemplate(@PathVariable String serverName,
-                                                             @PathVariable String userId,
-                                                             @PathVariable String templateGUID,
-                                                             @RequestParam int   startFrom,
-                                                             @RequestParam int   pageSize)
+    public RelatedElementsResponse getSupportedByTemplate(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @PathVariable String templateGUID,
+                                                          @RequestParam int   startFrom,
+                                                          @RequestParam int   pageSize)
     {
         return restAPI.getSupportedByTemplate(serverName, userId, templateGUID, startFrom, pageSize);
     }

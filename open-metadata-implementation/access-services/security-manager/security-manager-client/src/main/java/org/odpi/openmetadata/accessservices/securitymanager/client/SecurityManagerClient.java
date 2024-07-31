@@ -3,39 +3,17 @@
 
 package org.odpi.openmetadata.accessservices.securitymanager.client;
 
-
 import org.odpi.openmetadata.accessservices.securitymanager.api.SecurityManagerInterface;
 import org.odpi.openmetadata.accessservices.securitymanager.client.rest.SecurityManagerRESTClient;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleAppointee;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SecurityGroupElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityGroupProperties;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.UserIdentityProperties;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.ActorProfileListResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.ActorProfileResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.ElementStubsResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.MetadataSourceRequestBody;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.PersonRoleAppointeeListResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.PersonRoleListResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.PersonRoleResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.SecurityGroupResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.SecurityGroupsResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.UserIdentitiesResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.UserIdentityRequestBody;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.UserIdentityResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -47,12 +25,12 @@ import java.util.List;
  */
 public class SecurityManagerClient implements SecurityManagerInterface
 {
-    private String                    serverName;               /* Initialized in constructor */
-    private String                    serverPlatformURLRoot;    /* Initialized in constructor */
-    private SecurityManagerRESTClient restClient;               /* Initialized in constructor */
+    private final String                    serverName;               /* Initialized in constructor */
+    private final String                    serverPlatformURLRoot;    /* Initialized in constructor */
+    private final SecurityManagerRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final NullRequestBody         nullRequestBody         = new NullRequestBody();
 
     private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/security-manager/users/{1}";
 
@@ -345,7 +323,7 @@ public class SecurityManagerClient implements SecurityManagerInterface
                                                                                      startFrom,
                                                                                      queryPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -436,7 +414,7 @@ public class SecurityManagerClient implements SecurityManagerInterface
                                                                                       startFrom,
                                                                                       queryPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -510,10 +488,11 @@ public class SecurityManagerClient implements SecurityManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/user-identities";
 
-        UserIdentityRequestBody requestBody = new UserIdentityRequestBody(newIdentity);
+        UserIdentityRequestBody requestBody = new UserIdentityRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setProperties(newIdentity);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName, urlTemplate, requestBody, serverName, userId);
 
@@ -559,10 +538,11 @@ public class SecurityManagerClient implements SecurityManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/user-identities/{2}?isMergeUpdate={3}";
 
-        UserIdentityRequestBody requestBody = new UserIdentityRequestBody(properties);
+        UserIdentityRequestBody requestBody = new UserIdentityRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setProperties(properties);
 
         restClient.callVoidPostRESTCall(methodName, urlTemplate, requestBody, serverName, userId, userIdentityGUID, isMergeUpdate);
     }
@@ -596,7 +576,7 @@ public class SecurityManagerClient implements SecurityManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/user-identities/{2}";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
@@ -648,7 +628,7 @@ public class SecurityManagerClient implements SecurityManagerInterface
                                                                                       Integer.toString(startFrom),
                                                                                       Integer.toString(pageSize));
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -697,7 +677,7 @@ public class SecurityManagerClient implements SecurityManagerInterface
                                                                                       Integer.toString(startFrom),
                                                                                       Integer.toString(pageSize));
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -845,13 +825,13 @@ public class SecurityManagerClient implements SecurityManagerInterface
         requestBody.setNamePropertyName(namePropertyName);
         requestBody.setNameParameterName(nameParameterName);
 
-        ActorProfileListResponse restResult = restClient.callActorProfileListPostRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          Integer.toString(startFrom),
-                                                                                          Integer.toString(pageSize));
+        ActorProfilesResponse restResult = restClient.callActorProfilesPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    requestBody,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    Integer.toString(startFrom),
+                                                                                    Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -892,13 +872,13 @@ public class SecurityManagerClient implements SecurityManagerInterface
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        ActorProfileListResponse restResult = restClient.callActorProfileListPostRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          userId,
-                                                                                          Integer.toString(startFrom),
-                                                                                          Integer.toString(pageSize));
+        ActorProfilesResponse restResult = restClient.callActorProfilesPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    requestBody,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    Integer.toString(startFrom),
+                                                                                    Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -920,7 +900,7 @@ public class SecurityManagerClient implements SecurityManagerInterface
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<PersonRoleAppointee> getAppointees(String userId,
+    public List<Appointee> getAppointees(String userId,
                                                    String personRoleGUID,
                                                    Date effectiveTime,
                                                    int    startFrom,
@@ -940,14 +920,14 @@ public class SecurityManagerClient implements SecurityManagerInterface
 
         requestBody.setEffectiveTime(effectiveTime);
 
-        PersonRoleAppointeeListResponse restResult = restClient.callPersonRoleAppointeeListPostRESTCall(methodName,
-                                                                                                        urlTemplate,
-                                                                                                        requestBody,
-                                                                                                        serverName,
-                                                                                                        userId,
-                                                                                                        personRoleGUID,
-                                                                                                        Integer.toString(startFrom),
-                                                                                                        Integer.toString(pageSize));
+        AppointeesResponse restResult = restClient.callAppointeesPostRESTCall(methodName,
+                                                                              urlTemplate,
+                                                                              requestBody,
+                                                                              serverName,
+                                                                              userId,
+                                                                              personRoleGUID,
+                                                                              Integer.toString(startFrom),
+                                                                              Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -1026,13 +1006,13 @@ public class SecurityManagerClient implements SecurityManagerInterface
         requestBody.setNamePropertyName(namePropertyName);
         requestBody.setNameParameterName(nameParameterName);
 
-        PersonRoleListResponse restResult = restClient.callPersonRoleListPostRESTCall(methodName,
-                                                                                      urlTemplate,
-                                                                                      requestBody,
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      Integer.toString(startFrom),
-                                                                                      Integer.toString(pageSize));
+        PersonRolesResponse restResult = restClient.callPersonRolesPostRESTCall(methodName,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                serverName,
+                                                                                userId,
+                                                                                Integer.toString(startFrom),
+                                                                                Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -1073,13 +1053,13 @@ public class SecurityManagerClient implements SecurityManagerInterface
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        PersonRoleListResponse restResult = restClient.callPersonRoleListPostRESTCall(methodName,
-                                                                                      urlTemplate,
-                                                                                      requestBody,
-                                                                                      serverName,
-                                                                                      userId,
-                                                                                      Integer.toString(startFrom),
-                                                                                      Integer.toString(pageSize));
+        PersonRolesResponse restResult = restClient.callPersonRolesPostRESTCall(methodName,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                serverName,
+                                                                                userId,
+                                                                                Integer.toString(startFrom),
+                                                                                Integer.toString(pageSize));
 
         return restResult.getElements();
     }

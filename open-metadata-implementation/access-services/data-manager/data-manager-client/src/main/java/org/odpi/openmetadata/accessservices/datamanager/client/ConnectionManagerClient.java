@@ -4,19 +4,16 @@ package org.odpi.openmetadata.accessservices.datamanager.client;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.ConnectionManagerInterface;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.*;
-import org.odpi.openmetadata.accessservices.datamanager.rest.*;
+import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
 
 import java.util.List;
 import java.util.Map;
@@ -368,7 +365,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/connector-types/{3}";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(dataManagerGUID);
         requestBody.setExternalSourceName(dataManagerName);
@@ -415,7 +412,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/connector-types/{3}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(dataManagerGUID);
         requestBody.setExternalSourceName(dataManagerName);
@@ -462,7 +459,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/endpoints/{3}";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(dataManagerGUID);
         requestBody.setExternalSourceName(dataManagerName);
@@ -509,7 +506,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/endpoints/{3}/delete";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(dataManagerGUID);
         requestBody.setExternalSourceName(dataManagerName);
@@ -612,7 +609,7 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}/embedded-connections/{3}/delete}";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        ExternalSourceRequestBody requestBody = new ExternalSourceRequestBody();
 
         requestBody.setExternalSourceGUID(dataManagerGUID);
         requestBody.setExternalSourceName(dataManagerName);
@@ -803,15 +800,15 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        ConnectionsResponse restResult = restClient.callMyConnectionsPostRESTCall(methodName,
-                                                                                  urlTemplate,
-                                                                                  requestBody,
-                                                                                  serverName,
-                                                                                  userId,
-                                                                                  startFrom,
-                                                                                  validatedPageSize);
+        ConnectionsResponse restResult = restClient.callConnectionsPostRESTCall(methodName,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                serverName,
+                                                                                userId,
+                                                                                startFrom,
+                                                                                validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -852,15 +849,15 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        ConnectionsResponse restResult = restClient.callMyConnectionsPostRESTCall(methodName,
-                                                                                 urlTemplate,
-                                                                                 requestBody,
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 startFrom,
-                                                                                 validatedPageSize);
+        ConnectionsResponse restResult = restClient.callConnectionsPostRESTCall(methodName,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                serverName,
+                                                                                userId,
+                                                                                startFrom,
+                                                                                validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -890,11 +887,11 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectionURLTemplatePrefix + "/{2}";
 
-        ConnectionResponse restResult = restClient.callMyConnectionGetRESTCall(methodName,
-                                                                               urlTemplate,
-                                                                               serverName,
-                                                                               userId,
-                                                                               connectionGUID);
+        ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
+                                                                             urlTemplate,
+                                                                             serverName,
+                                                                             userId,
+                                                                             connectionGUID);
 
         return restResult.getElement();
     }
@@ -1141,15 +1138,15 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        EndpointsResponse restResult = restClient.callMyEndpointsPostRESTCall(methodName,
-                                                                              urlTemplate,
-                                                                              requestBody,
-                                                                              serverName,
-                                                                              userId,
-                                                                              startFrom,
-                                                                              validatedPageSize);
+        EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1190,15 +1187,15 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        EndpointsResponse restResult = restClient.callMyEndpointsPostRESTCall(methodName,
-                                                                              urlTemplate,
-                                                                              requestBody,
-                                                                              serverName,
-                                                                              userId,
-                                                                              startFrom,
-                                                                              validatedPageSize);
+        EndpointsResponse restResult = restClient.callEndpointsPostRESTCall(methodName,
+                                                                            urlTemplate,
+                                                                            requestBody,
+                                                                            serverName,
+                                                                            userId,
+                                                                            startFrom,
+                                                                            validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1228,11 +1225,11 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + endpointURLTemplatePrefix + "/{2}";
 
-        EndpointResponse restResult = restClient.callMyEndpointGetRESTCall(methodName,
-                                                                           urlTemplate,
-                                                                           serverName,
-                                                                           userId,
-                                                                           endpointGUID);
+        EndpointResponse restResult = restClient.callEndpointGetRESTCall(methodName,
+                                                                         urlTemplate,
+                                                                         serverName,
+                                                                         userId,
+                                                                         endpointGUID);
 
         return restResult.getElement();
     }
@@ -1275,15 +1272,15 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        ConnectorTypesResponse restResult = restClient.callMyConnectorTypesPostRESTCall(methodName,
-                                                                                        urlTemplate,
-                                                                                        requestBody,
-                                                                                        serverName,
-                                                                                        userId,
-                                                                                        startFrom,
-                                                                                        validatedPageSize);
+        ConnectorTypesResponse restResult = restClient.callConnectorTypesPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1325,15 +1322,15 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        ConnectorTypesResponse restResult = restClient.callMyConnectorTypesPostRESTCall(methodName,
-                                                                                        urlTemplate,
-                                                                                        requestBody,
-                                                                                        serverName,
-                                                                                        userId,
-                                                                                        startFrom,
-                                                                                        validatedPageSize);
+        ConnectorTypesResponse restResult = restClient.callConnectorTypesPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1363,11 +1360,11 @@ public class ConnectionManagerClient implements ConnectionManagerInterface
 
         final String urlTemplate = serverPlatformURLRoot + connectorTypeURLTemplatePrefix + "/{2}";
 
-        ConnectorTypeResponse restResult = restClient.callMyConnectorTypeGetRESTCall(methodName,
-                                                                                     urlTemplate,
-                                                                                     serverName,
-                                                                                     userId,
-                                                                                     connectorTypeGUID);
+        ConnectorTypeResponse restResult = restClient.callConnectorTypeGetRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   connectorTypeGUID);
 
         return restResult.getElement();
     }

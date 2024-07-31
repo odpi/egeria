@@ -3,40 +3,17 @@
 package org.odpi.openmetadata.accessservices.securitymanager.server;
 
 import org.odpi.openmetadata.accessservices.securitymanager.converters.SecurityManagerOMASConverter;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleAppointee;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SecurityGroupElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SecurityManagerElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.AppointmentProperties;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityGroupProperties;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.ActorProfileListResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.ActorProfileResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.ElementStubsResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.MetadataSourceRequestBody;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.PersonRoleAppointeeListResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.PersonRoleListResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.PersonRoleResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.SecurityGroupResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.SecurityGroupsResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.SecurityManagerRequestBody;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.UserIdentitiesResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.UserIdentityRequestBody;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.UserIdentityResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.PersonRoleAppointeesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SecurityManagerRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
@@ -48,7 +25,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -91,16 +68,16 @@ public class SecurityManagerRESTServices
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem retrieving the discovery engine definition.
      */
-    public ConnectionResponse getOutTopicConnection(String serverName,
-                                                    String userId,
-                                                    String callerId)
+    public OCFConnectionResponse getOutTopicConnection(String serverName,
+                                                       String userId,
+                                                       String callerId)
     {
         final String methodName = "getOutTopicConnection";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ConnectionResponse response = new ConnectionResponse();
-        AuditLog           auditLog = null;
+        OCFConnectionResponse response = new OCFConnectionResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -488,7 +465,7 @@ public class SecurityManagerRESTServices
             GovernanceDefinitionHandler<SecurityGroupElement> handler = instanceHandler.getSecurityGroupHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setElementList(handler.getGovernanceDefinitionsByStringParameter(userId,
+            response.setElements(handler.getGovernanceDefinitionsByStringParameter(userId,
                                                                                       OpenMetadataType.SECURITY_GROUP_TYPE_GUID,
                                                                                       OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
                                                                                       distinguishedName,
@@ -574,7 +551,7 @@ public class SecurityManagerRESTServices
                 GovernanceDefinitionHandler<SecurityGroupElement> handler = instanceHandler.getSecurityGroupHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                response.setElementList(handler.findGovernanceDefinitions(userId,
+                response.setElements(handler.findGovernanceDefinitions(userId,
                                                                           OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
                                                                           requestBody.getSearchString(),
                                                                           searchStringParameterName,
@@ -680,23 +657,31 @@ public class SecurityManagerRESTServices
                 UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                String userIdentityGUID = handler.createUserIdentity(userId,
-                                                                     requestBody.getExternalSourceGUID(),
-                                                                     requestBody.getExternalSourceName(),
-                                                                     null,
-                                                                     null,
-                                                                     requestBody.getQualifiedName(),
-                                                                     requestBody.getUserId(),
-                                                                     requestBody.getDistinguishedName(),
-                                                                     requestBody.getAdditionalProperties(),
-                                                                     requestBody.getTypeName(),
-                                                                     requestBody.getExtendedProperties(),
-                                                                     false,
-                                                                     false,
-                                                                     new Date(),
-                                                                     methodName);
 
-                response.setGUID(userIdentityGUID);
+                if (requestBody.getProperties() instanceof UserIdentityProperties)
+                {
+                    String userIdentityGUID = handler.createUserIdentity(userId,
+                                                                         requestBody.getExternalSourceGUID(),
+                                                                         requestBody.getExternalSourceName(),
+                                                                         null,
+                                                                         null,
+                                                                         requestBody.getProperties().getQualifiedName(),
+                                                                         requestBody.getProperties().getUserId(),
+                                                                         requestBody.getProperties().getDistinguishedName(),
+                                                                         requestBody.getProperties().getAdditionalProperties(),
+                                                                         requestBody.getProperties().getTypeName(),
+                                                                         requestBody.getProperties().getExtendedProperties(),
+                                                                         false,
+                                                                         false,
+                                                                         new Date(),
+                                                                         methodName);
+
+                    response.setGUID(userIdentityGUID);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(UserIdentityProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -748,24 +733,32 @@ public class SecurityManagerRESTServices
                 UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                handler.updateUserIdentity(userId,
-                                           requestBody.getExternalSourceGUID(),
-                                           requestBody.getExternalSourceName(),
-                                           userIdentityGUID,
-                                           guidParameterName,
-                                           requestBody.getQualifiedName(),
-                                           requestBody.getUserId(),
-                                           requestBody.getDistinguishedName(),
-                                           requestBody.getAdditionalProperties(),
-                                           requestBody.getTypeName(),
-                                           requestBody.getExtendedProperties(),
-                                           isMergeUpdate,
-                                           null,
-                                           null,
-                                           false,
-                                           false,
-                                           new Date(),
-                                           methodName);
+
+                if (requestBody.getProperties() instanceof UserIdentityProperties)
+                {
+                    handler.updateUserIdentity(userId,
+                                               requestBody.getExternalSourceGUID(),
+                                               requestBody.getExternalSourceName(),
+                                               userIdentityGUID,
+                                               guidParameterName,
+                                               requestBody.getProperties().getQualifiedName(),
+                                               requestBody.getProperties().getUserId(),
+                                               requestBody.getProperties().getDistinguishedName(),
+                                               requestBody.getProperties().getAdditionalProperties(),
+                                               requestBody.getProperties().getTypeName(),
+                                               requestBody.getProperties().getExtendedProperties(),
+                                               isMergeUpdate,
+                                               null,
+                                               null,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(UserIdentityProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -798,7 +791,7 @@ public class SecurityManagerRESTServices
     public VoidResponse deleteUserIdentity(String                    serverName,
                                            String                    userId,
                                            String                    userIdentityGUID,
-                                           MetadataSourceRequestBody requestBody)
+                                           ExternalSourceRequestBody requestBody)
     {
         final String methodName        = "deleteUserIdentity";
         final String guidParameterName = "userIdentityGUID";
@@ -859,7 +852,7 @@ public class SecurityManagerRESTServices
                                               String                    userId,
                                               String                    userIdentityGUID,
                                               String                    profileGUID,
-                                              MetadataSourceRequestBody requestBody)
+                                              ExternalSourceRequestBody requestBody)
     {
         final String methodName                    = "addIdentityToProfile";
         final String userIdentityGUIDParameterName = "userIdentityGUID";
@@ -927,7 +920,7 @@ public class SecurityManagerRESTServices
                                                   String                    userId,
                                                   String                    userIdentityGUID,
                                                   String                    profileGUID,
-                                                  MetadataSourceRequestBody requestBody)
+                                                  ExternalSourceRequestBody requestBody)
     {
         final String methodName                    = "removeIdentityFromProfile";
         final String userIdentityGUIDParameterName = "userIdentityGUID";
@@ -1020,7 +1013,7 @@ public class SecurityManagerRESTServices
                                                                        false,
                                                                        new Date(),
                                                                        methodName);
-                response.setElementList(elements);
+                response.setElements(elements);
             }
             else
             {
@@ -1083,7 +1076,7 @@ public class SecurityManagerRESTServices
                                                                                      false,
                                                                                      new Date(),
                                                                                      methodName);
-                response.setElementList(elements);
+                response.setElements(elements);
             }
             else
             {
@@ -1264,19 +1257,19 @@ public class SecurityManagerRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public ActorProfileListResponse getActorProfileByName(String          serverName,
-                                                          String          userId,
-                                                          int             startFrom,
-                                                          int             pageSize,
-                                                          NameRequestBody requestBody)
+    public ActorProfilesResponse getActorProfileByName(String          serverName,
+                                                       String          userId,
+                                                       int             startFrom,
+                                                       int             pageSize,
+                                                       NameRequestBody requestBody)
     {
         final String methodName         = "getActorProfileByName";
         final String nameParameterName  = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ActorProfileListResponse response = new ActorProfileListResponse();
-        AuditLog                 auditLog = null;
+        ActorProfilesResponse response = new ActorProfilesResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -1320,19 +1313,19 @@ public class SecurityManagerRESTServices
      *   PropertyServerException the server is not available.
      *   UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public ActorProfileListResponse findActorProfile(String                  serverName,
-                                                     String                  userId,
-                                                     int                     startFrom,
-                                                     int                     pageSize,
-                                                     SearchStringRequestBody requestBody)
+    public ActorProfilesResponse findActorProfile(String                  serverName,
+                                                  String                  userId,
+                                                  int                     startFrom,
+                                                  int                     pageSize,
+                                                  SearchStringRequestBody requestBody)
     {
         final String methodName                 = "findActorProfile";
         final String searchStringParameterName  = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ActorProfileListResponse response = new ActorProfileListResponse();
-        AuditLog                 auditLog = null;
+        ActorProfilesResponse response = new ActorProfilesResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -1376,20 +1369,20 @@ public class SecurityManagerRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public PersonRoleAppointeeListResponse getAppointees(String                   serverName,
-                                                         String                   userId,
-                                                         String                   personRoleGUID,
-                                                         int                      startFrom,
-                                                         int                      pageSize,
-                                                         EffectiveTimeRequestBody requestBody)
+    public AppointeesResponse getAppointees(String                   serverName,
+                                            String                   userId,
+                                            String                   personRoleGUID,
+                                            int                      startFrom,
+                                            int                      pageSize,
+                                            EffectiveTimeRequestBody requestBody)
     {
         final String methodName                  = "getAppointees";
         final String personRoleGUIDParameterName = "personRoleGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRoleAppointeeListResponse response = new PersonRoleAppointeeListResponse();
-        AuditLog                        auditLog = null;
+        AppointeesResponse response = new AppointeesResponse();
+        AuditLog           auditLog = null;
 
         try
         {
@@ -1418,10 +1411,10 @@ public class SecurityManagerRESTServices
                                                                                              methodName);
                 if (appointmentRelationships != null)
                 {
-                    List<PersonRoleAppointee>                         appointees       = new ArrayList<>();
+                    List<Appointee>                                   appointees       = new ArrayList<>();
                     OMRSRepositoryHelper                              repositoryHelper = roleHandler.getRepositoryHelper();
                     String                                            serviceName      = roleHandler.getServiceName();
-                    SecurityManagerOMASConverter<PersonRoleAppointee> converter        = new SecurityManagerOMASConverter<>(repositoryHelper, serviceName, serverName);
+                    SecurityManagerOMASConverter<Appointee>           converter        = new SecurityManagerOMASConverter<>(repositoryHelper, serviceName, serverName);
                     RepositoryErrorHandler                            errorHandler     = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName, auditLog);
 
                     for (Relationship relationship : appointmentRelationships)
@@ -1430,36 +1423,36 @@ public class SecurityManagerRESTServices
                         {
                             if (requestBody.getEffectiveTime() == null)
                             {
-                                PersonRoleAppointee appointee = getAppointeeFromRelationship(userId,
-                                                                                             relationship,
-                                                                                             profileHandler,
-                                                                                             converter,
-                                                                                             repositoryHelper,
-                                                                                             serviceName,
-                                                                                             errorHandler,
-                                                                                             methodName);
+                                Appointee appointee = getAppointeeFromRelationship(userId,
+                                                                                   relationship,
+                                                                                   profileHandler,
+                                                                                   converter,
+                                                                                   repositoryHelper,
+                                                                                   serviceName,
+                                                                                   errorHandler,
+                                                                                   methodName);
 
                                 appointees.add(appointee);
                             }
                             else
                             {
-                                InstanceProperties properties    = relationship.getProperties();
+                                InstanceProperties properties = relationship.getProperties();
                                 Date               effectiveTime = requestBody.getEffectiveTime();
 
                                 /*
                                  * Need to retrieve the appointments that are active
                                  */
                                 if (((properties.getEffectiveFromTime() == null) || properties.getEffectiveFromTime().before(effectiveTime)) &&
-                                            ((properties.getEffectiveToTime() == null) || properties.getEffectiveToTime().after(effectiveTime)))
+                                        ((properties.getEffectiveToTime() == null) || properties.getEffectiveToTime().after(effectiveTime)))
                                 {
-                                    PersonRoleAppointee appointee = getAppointeeFromRelationship(userId,
-                                                                                                 relationship,
-                                                                                                 profileHandler,
-                                                                                                 converter,
-                                                                                                 repositoryHelper,
-                                                                                                 serviceName,
-                                                                                                 errorHandler,
-                                                                                                 methodName);
+                                    Appointee appointee = getAppointeeFromRelationship(userId,
+                                                                                       relationship,
+                                                                                       profileHandler,
+                                                                                       converter,
+                                                                                       repositoryHelper,
+                                                                                       serviceName,
+                                                                                       errorHandler,
+                                                                                       methodName);
 
                                     appointees.add(appointee);
                                 }
@@ -1507,41 +1500,38 @@ public class SecurityManagerRESTServices
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    private PersonRoleAppointee getAppointeeFromRelationship(String                                             userId,
-                                                             Relationship                                       relationship,
-                                                             ActorProfileHandler<ActorProfileElement>           profileHandler,
-                                                             SecurityManagerOMASConverter<PersonRoleAppointee> converter,
-                                                             OMRSRepositoryHelper                               repositoryHelper,
-                                                             String                                             serviceName,
-                                                             RepositoryErrorHandler                             errorHandler,
-                                                             String                                             methodName) throws InvalidParameterException,
-                                                                                                                                   PropertyServerException,
-                                                                                                                                   UserNotAuthorizedException
+    private Appointee getAppointeeFromRelationship(String                                             userId,
+                                                   Relationship                                       relationship,
+                                                   ActorProfileHandler<ActorProfileElement>           profileHandler,
+                                                   SecurityManagerOMASConverter<Appointee>            converter,
+                                                   OMRSRepositoryHelper                               repositoryHelper,
+                                                   String                                             serviceName,
+                                                   RepositoryErrorHandler                             errorHandler,
+                                                   String                                             methodName) throws InvalidParameterException,
+                                                                                                                         PropertyServerException,
+                                                                                                                         UserNotAuthorizedException
     {
         final String profileGUIDParameterName = "profileGUID";
 
         if ((relationship != null) && (relationship.getProperties() != null) && (relationship.getEntityOneProxy() != null) && (relationship.getEntityTwoProxy() != null))
         {
-            PersonRoleAppointee appointee = new PersonRoleAppointee();
+            Appointee appointee = new Appointee();
 
             InstanceProperties properties = relationship.getProperties();
 
-            ElementHeader elementHeader = converter.getMetadataElementHeader(PersonRoleAppointee.class,
+            ElementHeader elementHeader = converter.getMetadataElementHeader(Appointee.class,
                                                                              relationship,
                                                                              null,
                                                                              methodName);
 
             appointee.setElementHeader(elementHeader);
+            appointee.setStartDate(properties.getEffectiveFromTime());
+            appointee.setEndDate(properties.getEffectiveToTime());
+            appointee.setIsPublic(repositoryHelper.getBooleanProperty(serviceName,
+                                                                      OpenMetadataProperty.IS_PUBLIC.name,
+                                                                      relationship.getProperties(),
+                                                                      methodName));
 
-            AppointmentProperties appointmentProperties = new AppointmentProperties();
-            appointmentProperties.setEffectiveFrom(properties.getEffectiveFromTime());
-            appointmentProperties.setEffectiveTo(properties.getEffectiveToTime());
-            appointmentProperties.setIsPublic(repositoryHelper.getBooleanProperty(serviceName,
-                                                                                  OpenMetadataProperty.IS_PUBLIC.name,
-                                                                                  relationship.getProperties(),
-                                                                                  methodName));
-
-            appointee.setProperties(appointmentProperties);
 
             ActorProfileElement profile = profileHandler.getActorProfileByGUID(userId,
                                                                                relationship.getEntityOneProxy().getGUID(),
@@ -1577,7 +1567,6 @@ public class SecurityManagerRESTServices
      * @param personRoleGUID unique identifier for the person role
      *
      * @return properties of the person role
-     *
      *   InvalidParameterException personRoleGUID or userId is null
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
@@ -1632,19 +1621,19 @@ public class SecurityManagerRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public PersonRoleListResponse getPersonRoleByName(String          serverName,
-                                                      String          userId,
-                                                      int             startFrom,
-                                                      int             pageSize,
-                                                      NameRequestBody requestBody)
+    public PersonRolesResponse getPersonRoleByName(String          serverName,
+                                                   String          userId,
+                                                   int             startFrom,
+                                                   int             pageSize,
+                                                   NameRequestBody requestBody)
     {
         final String methodName         = "getPersonRoleByName";
         final String nameParameterName  = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRoleListResponse response = new PersonRoleListResponse();
-        AuditLog               auditLog = null;
+        PersonRolesResponse response = new PersonRolesResponse();
+        AuditLog            auditLog = null;
 
         try
         {
@@ -1685,19 +1674,19 @@ public class SecurityManagerRESTServices
      *   PropertyServerException the server is not available.
      *   UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public PersonRoleListResponse findPersonRole(String                  serverName,
-                                                 String                  userId,
-                                                 int                     startFrom,
-                                                 int                     pageSize,
-                                                 SearchStringRequestBody requestBody)
+    public PersonRolesResponse findPersonRole(String                  serverName,
+                                              String                  userId,
+                                              int                     startFrom,
+                                              int                     pageSize,
+                                              SearchStringRequestBody requestBody)
     {
         final String methodName                = "findPersonRole";
         final String searchStringParameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRoleListResponse response = new PersonRoleListResponse();
-        AuditLog               auditLog = null;
+        PersonRolesResponse response = new PersonRolesResponse();
+        AuditLog            auditLog = null;
 
         try
         {

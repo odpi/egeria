@@ -16,8 +16,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalGlossaryLinkElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -779,15 +782,15 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        GlossaryElementsResponse restResult = restClient.callGlossariesPostRESTCall(methodName,
-                                                                                    urlTemplate,
-                                                                                    requestBody,
-                                                                                    serverName,
-                                                                                    userId,
-                                                                                    startFrom,
-                                                                                    validatedPageSize,
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing);
+        GlossaryElementsResponse restResult = restClient.callMyGlossariesPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -842,15 +845,15 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        GlossaryElementsResponse restResult = restClient.callGlossariesPostRESTCall(methodName,
-                                                                                    urlTemplate,
-                                                                                    requestBody,
-                                                                                    serverName,
-                                                                                    userId,
-                                                                                    startFrom,
-                                                                                    validatedPageSize,
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing);
+        GlossaryElementsResponse restResult = restClient.callMyGlossariesPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      requestBody,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -893,15 +896,15 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/by-asset-manager?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        GlossaryElementsResponse restResult = restClient.callGlossariesPostRESTCall(methodName,
-                                                                                    urlTemplate,
-                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                    serverName,
-                                                                                    userId,
-                                                                                    startFrom,
-                                                                                    validatedPageSize,
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing);
+        GlossaryElementsResponse restResult = restClient.callMyGlossariesPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      startFrom,
+                                                                                      validatedPageSize,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -943,14 +946,14 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        GlossaryElementResponse restResult = restClient.callGlossaryPostRESTCall(methodName,
-                                                                                 urlTemplate,
-                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 guid,
-                                                                                 forLineage,
-                                                                                 forDuplicateProcessing);
+        GlossaryElementResponse restResult = restClient.callMyGlossaryPostRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   guid,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -992,14 +995,14 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/for-category/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        GlossaryElementResponse restResult = restClient.callGlossaryPostRESTCall(methodName,
-                                                                                 urlTemplate,
-                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 glossaryCategoryGUID,
-                                                                                 forLineage,
-                                                                                 forDuplicateProcessing);
+        GlossaryElementResponse restResult = restClient.callMyGlossaryPostRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   glossaryCategoryGUID,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -1041,14 +1044,14 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/for-term/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        GlossaryElementResponse restResult = restClient.callGlossaryPostRESTCall(methodName,
-                                                                                 urlTemplate,
-                                                                                 getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
-                                                                                 serverName,
-                                                                                 userId,
-                                                                                 glossaryTermGUID,
-                                                                                 forLineage,
-                                                                                 forDuplicateProcessing);
+        GlossaryElementResponse restResult = restClient.callMyGlossaryPostRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   getAssetManagerIdentifiersRequestBody(assetManagerGUID, assetManagerName),
+                                                                                   serverName,
+                                                                                   userId,
+                                                                                   glossaryTermGUID,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -1438,15 +1441,15 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
-                                                                                                    urlTemplate,
-                                                                                                    requestBody,
-                                                                                                    serverName,
-                                                                                                    userId,
-                                                                                                    startFrom,
-                                                                                                    validatedPageSize,
-                                                                                                    forLineage,
-                                                                                                    forDuplicateProcessing);
+        GlossaryCategoryElementsResponse restResult = restClient.callMyGlossaryCategoriesPostRESTCall(methodName,
+                                                                                                      urlTemplate,
+                                                                                                      requestBody,
+                                                                                                      serverName,
+                                                                                                      userId,
+                                                                                                      startFrom,
+                                                                                                      validatedPageSize,
+                                                                                                      forLineage,
+                                                                                                      forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1493,16 +1496,16 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/categories/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
-        GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
-                                                                                                    urlTemplate,
-                                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                                    serverName,
-                                                                                                    userId,
-                                                                                                    glossaryGUID,
-                                                                                                    startFrom,
-                                                                                                    validatedPageSize,
-                                                                                                    forLineage,
-                                                                                                    forDuplicateProcessing);
+        GlossaryCategoryElementsResponse restResult = restClient.callMyGlossaryCategoriesPostRESTCall(methodName,
+                                                                                                      urlTemplate,
+                                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                                      serverName,
+                                                                                                      userId,
+                                                                                                      glossaryGUID,
+                                                                                                      startFrom,
+                                                                                                      validatedPageSize,
+                                                                                                      forLineage,
+                                                                                                      forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1549,16 +1552,16 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/categories/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
-        GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
-                                                                                                    urlTemplate,
-                                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                                    serverName,
-                                                                                                    userId,
-                                                                                                    glossaryTermGUID,
-                                                                                                    startFrom,
-                                                                                                    validatedPageSize,
-                                                                                                    forLineage,
-                                                                                                    forDuplicateProcessing);
+        GlossaryCategoryElementsResponse restResult = restClient.callMyGlossaryCategoriesPostRESTCall(methodName,
+                                                                                                      urlTemplate,
+                                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                                      serverName,
+                                                                                                      userId,
+                                                                                                      glossaryTermGUID,
+                                                                                                      startFrom,
+                                                                                                      validatedPageSize,
+                                                                                                      forLineage,
+                                                                                                      forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1616,15 +1619,15 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
-                                                                                                    urlTemplate,
-                                                                                                    requestBody,
-                                                                                                    serverName,
-                                                                                                    userId,
-                                                                                                    startFrom,
-                                                                                                    validatedPageSize,
-                                                                                                    forLineage,
-                                                                                                    forDuplicateProcessing);
+        GlossaryCategoryElementsResponse restResult = restClient.callMyGlossaryCategoriesPostRESTCall(methodName,
+                                                                                                      urlTemplate,
+                                                                                                      requestBody,
+                                                                                                      serverName,
+                                                                                                      userId,
+                                                                                                      startFrom,
+                                                                                                      validatedPageSize,
+                                                                                                      forLineage,
+                                                                                                      forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1666,14 +1669,14 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        GlossaryCategoryElementResponse restResult = restClient.callGlossaryCategoryPostRESTCall(methodName,
-                                                                                                 urlTemplate,
-                                                                                                 getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                                 serverName,
-                                                                                                 userId,
-                                                                                                 glossaryCategoryGUID,
-                                                                                                 forLineage,
-                                                                                                 forDuplicateProcessing);
+        GlossaryCategoryElementResponse restResult = restClient.callMyGlossaryCategoryPostRESTCall(methodName,
+                                                                                                   urlTemplate,
+                                                                                                   getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                                   serverName,
+                                                                                                   userId,
+                                                                                                   glossaryCategoryGUID,
+                                                                                                   forLineage,
+                                                                                                   forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -1715,14 +1718,14 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/parent/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        GlossaryCategoryElementResponse restResult = restClient.callGlossaryCategoryPostRESTCall(methodName,
-                                                                                                 urlTemplate,
-                                                                                                 getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                                 serverName,
-                                                                                                 userId,
-                                                                                                 glossaryCategoryGUID,
-                                                                                                 forLineage,
-                                                                                                 forDuplicateProcessing);
+        GlossaryCategoryElementResponse restResult = restClient.callMyGlossaryCategoryPostRESTCall(methodName,
+                                                                                                   urlTemplate,
+                                                                                                   getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                                   serverName,
+                                                                                                   userId,
+                                                                                                   glossaryCategoryGUID,
+                                                                                                   forLineage,
+                                                                                                   forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -1769,16 +1772,16 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/subcategories/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
-        GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
-                                                                                                    urlTemplate,
-                                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                                    serverName,
-                                                                                                    userId,
-                                                                                                    glossaryCategoryGUID,
-                                                                                                    startFrom,
-                                                                                                    validatedPageSize,
-                                                                                                    forLineage,
-                                                                                                    forDuplicateProcessing);
+        GlossaryCategoryElementsResponse restResult = restClient.callMyGlossaryCategoriesPostRESTCall(methodName,
+                                                                                                      urlTemplate,
+                                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                                      serverName,
+                                                                                                      userId,
+                                                                                                      glossaryCategoryGUID,
+                                                                                                      startFrom,
+                                                                                                      validatedPageSize,
+                                                                                                      forLineage,
+                                                                                                      forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1970,6 +1973,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                                                    methodName));
         requestBody.setParentGUID(glossaryGUID);
         requestBody.setElementProperties(templateProperties);
+        requestBody.setGlossaryTermStatus(initialStatus);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate + requestParamsURLTemplate,
@@ -3323,14 +3327,14 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/undo&forLineage={3}&forDuplicateProcessing={4}";
 
-        GlossaryTermElementResponse response = restClient.callGlossaryTermPostRESTCall(methodName,
-                                                                                       urlTemplate,
-                                                                                       getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       glossaryTermGUID,
-                                                                                       forLineage,
-                                                                                       forDuplicateProcessing);
+        GlossaryTermElementResponse response = restClient.callMyGlossaryTermPostRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         getUpdateRequestBody(assetManagerGUID, assetManagerName, glossaryTermExternalIdentifier, effectiveTime, methodName),
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         glossaryTermGUID,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing);
 
         return response.getElement();
     }
@@ -3493,15 +3497,15 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
-                                                                                           urlTemplate,
-                                                                                           requestBody,
-                                                                                           serverName,
-                                                                                           userId,
-                                                                                           startFrom,
-                                                                                           validatedPageSize,
-                                                                                           forLineage,
-                                                                                           forDuplicateProcessing);
+        GlossaryTermElementsResponse restResult = restClient.callMyGlossaryTermsPostRESTCall(methodName,
+                                                                                             urlTemplate,
+                                                                                             requestBody,
+                                                                                             serverName,
+                                                                                             userId,
+                                                                                             startFrom,
+                                                                                             validatedPageSize,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -3548,16 +3552,16 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/terms/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
-        GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
-                                                                                           urlTemplate,
-                                                                                           getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                           serverName,
-                                                                                           userId,
-                                                                                           glossaryGUID,
-                                                                                           startFrom,
-                                                                                           validatedPageSize,
-                                                                                           forLineage,
-                                                                                           forDuplicateProcessing);
+        GlossaryTermElementsResponse restResult = restClient.callMyGlossaryTermsPostRESTCall(methodName,
+                                                                                             urlTemplate,
+                                                                                             getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                             serverName,
+                                                                                             userId,
+                                                                                             glossaryGUID,
+                                                                                             startFrom,
+                                                                                             validatedPageSize,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -3609,16 +3613,16 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/related-terms?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
-        GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
-                                                                                           urlTemplate,
-                                                                                           getGlossaryTermRelationshipRequestBody(assetManagerGUID, assetManagerName, relationshipTypeName, limitResultsByStatus, effectiveTime),
-                                                                                           serverName,
-                                                                                           userId,
-                                                                                           glossaryTermGUID,
-                                                                                           startFrom,
-                                                                                           validatedPageSize,
-                                                                                           forLineage,
-                                                                                           forDuplicateProcessing);
+        GlossaryTermElementsResponse restResult = restClient.callMyGlossaryTermsPostRESTCall(methodName,
+                                                                                             urlTemplate,
+                                                                                             getGlossaryTermRelationshipRequestBody(assetManagerGUID, assetManagerName, relationshipTypeName, limitResultsByStatus, effectiveTime),
+                                                                                             serverName,
+                                                                                             userId,
+                                                                                             glossaryTermGUID,
+                                                                                             startFrom,
+                                                                                             validatedPageSize,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -3668,16 +3672,16 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/categories/{2}/terms/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
-        GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
-                                                                                           urlTemplate,
-                                                                                           getGlossaryTermRelationshipRequestBody(assetManagerGUID, assetManagerName, null, limitResultsByStatus, effectiveTime),
-                                                                                           serverName,
-                                                                                           userId,
-                                                                                           glossaryCategoryGUID,
-                                                                                           startFrom,
-                                                                                           validatedPageSize,
-                                                                                           forLineage,
-                                                                                           forDuplicateProcessing);
+        GlossaryTermElementsResponse restResult = restClient.callMyGlossaryTermsPostRESTCall(methodName,
+                                                                                             urlTemplate,
+                                                                                             getGlossaryTermRelationshipRequestBody(assetManagerGUID, assetManagerName, null, limitResultsByStatus, effectiveTime),
+                                                                                             serverName,
+                                                                                             userId,
+                                                                                             glossaryCategoryGUID,
+                                                                                             startFrom,
+                                                                                             validatedPageSize,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -3739,15 +3743,15 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
-                                                                                           urlTemplate,
-                                                                                           requestBody,
-                                                                                           serverName,
-                                                                                           userId,
-                                                                                           startFrom,
-                                                                                           validatedPageSize,
-                                                                                           forLineage,
-                                                                                           forDuplicateProcessing);
+        GlossaryTermElementsResponse restResult = restClient.callMyGlossaryTermsPostRESTCall(methodName,
+                                                                                             urlTemplate,
+                                                                                             requestBody,
+                                                                                             serverName,
+                                                                                             userId,
+                                                                                             startFrom,
+                                                                                             validatedPageSize,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -3789,16 +3793,16 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        GlossaryTermElementResponse restResult = restClient.callGlossaryTermPostRESTCall(methodName,
-                                                                                         urlTemplate,
-                                                                                         getEffectiveTimeQueryRequestBody(assetManagerGUID,
+        GlossaryTermElementResponse restResult = restClient.callMyGlossaryTermPostRESTCall(methodName,
+                                                                                           urlTemplate,
+                                                                                           getEffectiveTimeQueryRequestBody(assetManagerGUID,
                                                                                                                           assetManagerName,
                                                                                                                           effectiveTime),
-                                                                                         serverName,
-                                                                                         userId,
-                                                                                         glossaryTermGUID,
-                                                                                         forLineage,
-                                                                                         forDuplicateProcessing);
+                                                                                           serverName,
+                                                                                           userId,
+                                                                                           glossaryTermGUID,
+                                                                                           forLineage,
+                                                                                           forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -3860,17 +3864,17 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/terms/{2}/history?startFrom={3}&pageSize={4}&oldestFirst={5}&forLineage={6}&forDuplicateProcessing={7}";
 
-        GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
-                                                                                           urlTemplate,
-                                                                                           requestBody,
-                                                                                           serverName,
-                                                                                           userId,
-                                                                                           glossaryTermGUID,
-                                                                                           startFrom,
-                                                                                           validatedPageSize,
-                                                                                           oldestFirst,
-                                                                                           forLineage,
-                                                                                           forDuplicateProcessing);
+        GlossaryTermElementsResponse restResult = restClient.callMyGlossaryTermsPostRESTCall(methodName,
+                                                                                             urlTemplate,
+                                                                                             requestBody,
+                                                                                             serverName,
+                                                                                             userId,
+                                                                                             glossaryTermGUID,
+                                                                                             startFrom,
+                                                                                             validatedPageSize,
+                                                                                             oldestFirst,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -4174,16 +4178,16 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/{2}/external-links/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
-        ExternalGlossaryLinkElementsResponse restResult = restClient.callExternalGlossaryLinksPostRESTCall(methodName,
-                                                                                                           urlTemplate,
-                                                                                                           getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                                           serverName,
-                                                                                                           userId,
-                                                                                                           glossaryGUID,
-                                                                                                           startFrom,
-                                                                                                           validatedPageSize,
-                                                                                                           forLineage,
-                                                                                                           forDuplicateProcessing);
+        ExternalGlossaryLinkElementsResponse restResult = restClient.callMyExternalGlossaryLinksPostRESTCall(methodName,
+                                                                                                             urlTemplate,
+                                                                                                             getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                                             serverName,
+                                                                                                             userId,
+                                                                                                             glossaryGUID,
+                                                                                                             startFrom,
+                                                                                                             validatedPageSize,
+                                                                                                             forLineage,
+                                                                                                             forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -4230,16 +4234,16 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/glossaries/by-external-links/{2}/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
-        GlossaryElementsResponse restResult = restClient.callGlossariesPostRESTCall(methodName,
-                                                                                    urlTemplate,
-                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                    serverName,
-                                                                                    userId,
-                                                                                    externalLinkGUID,
-                                                                                    startFrom,
-                                                                                    validatedPageSize,
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing);
+        GlossaryElementsResponse restResult = restClient.callMyGlossariesPostRESTCall(methodName,
+                                                                                      urlTemplate,
+                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      externalLinkGUID,
+                                                                                      startFrom,
+                                                                                      validatedPageSize,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing);
 
         return restResult.getElementList();
     }

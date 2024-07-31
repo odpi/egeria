@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 public class LoggingHandler implements AssetConsumerLoggingInterface
 {
 
-    private AuditLog auditLog;
+    private final AuditLog auditLog;
 
 
 

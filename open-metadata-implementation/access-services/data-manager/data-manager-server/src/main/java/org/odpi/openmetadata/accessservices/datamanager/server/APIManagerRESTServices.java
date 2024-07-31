@@ -3,23 +3,20 @@
 
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIElement;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIOperationElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.APIParameterListElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.APIOperationProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.APIParameterListProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.APIParameterListType;
-import org.odpi.openmetadata.accessservices.datamanager.properties.APIProperties;
+import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIOperationElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.APIParameterListElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.APIParameterListType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIProperties;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.APIOperationHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.APIParameterListHandler;
@@ -109,8 +106,9 @@ public class APIManagerRESTServices
                                                           handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceName()),
                                                           requestBody.getQualifiedName(),
                                                           requestBody.getName(),
+                                                          requestBody.getResourceName(),
                                                           requestBody.getVersionIdentifier(),
-                                                          requestBody.getDescription(),
+                                                          requestBody.getResourceDescription(),
                                                           requestBody.getDeployedImplementationType(),
                                                           requestBody.getAdditionalProperties(),
                                                           typeName,
@@ -352,8 +350,9 @@ public class APIManagerRESTServices
                                     apiGUIDParameterName,
                                     requestBody.getQualifiedName(),
                                     requestBody.getName(),
+                                    requestBody.getResourceName(),
                                     requestBody.getVersionIdentifier(),
-                                    requestBody.getDescription(),
+                                    requestBody.getResourceDescription(),
                                     requestBody.getDeployedImplementationType(),
                                     requestBody.getAdditionalProperties(),
                                     typeName,
@@ -619,7 +618,7 @@ public class APIManagerRESTServices
                 /*
                  * Set up the vendor properties in the results before setting the results in the response object.
                  */
-                response.setElementList(this.setUpVendorProperties(userId, apiElements, handler, methodName));
+                response.setElements(this.setUpVendorProperties(userId, apiElements, handler, methodName));
             }
             else
             {
@@ -691,7 +690,7 @@ public class APIManagerRESTServices
                 /*
                  * Set up the vendor properties before adding results to response
                  */
-                response.setElementList(setUpVendorProperties(userId, apiElements, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, apiElements, handler, methodName));
             }
             else
             {
@@ -766,7 +765,7 @@ public class APIManagerRESTServices
             /*
              * Set up the vendor properties before adding results to response
              */
-            response.setElementList(setUpVendorProperties(userId, apiElements, handler, methodName));
+            response.setElements(setUpVendorProperties(userId, apiElements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -833,7 +832,7 @@ public class APIManagerRESTServices
             /*
              * Set up the vendor properties before adding results to response
              */
-            response.setElementList(setUpVendorProperties(userId, apiElements, handler, methodName));
+            response.setElements(setUpVendorProperties(userId, apiElements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1257,7 +1256,7 @@ public class APIManagerRESTServices
                 /*
                  * Set up the vendor properties before adding results to response
                  */
-                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
             }
             else
             {
@@ -1322,7 +1321,7 @@ public class APIManagerRESTServices
             /*
              * Set up the vendor properties before adding results to response
              */
-            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+            response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1385,7 +1384,7 @@ public class APIManagerRESTServices
                 /*
                  * Set up the vendor properties before adding results to response
                  */
-                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
             }
             else
             {
@@ -1840,7 +1839,7 @@ public class APIManagerRESTServices
                 /*
                  * Set up the vendor properties before adding results to response
                  */
-                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
             }
             else
             {
@@ -1905,7 +1904,7 @@ public class APIManagerRESTServices
             /*
              * Set up the vendor properties before adding results to response
              */
-            response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+            response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1968,7 +1967,7 @@ public class APIManagerRESTServices
                 /*
                  * Set up the vendor properties before adding results to response
                  */
-                response.setElementList(setUpVendorProperties(userId, elements, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, elements, handler, methodName));
             }
             else
             {

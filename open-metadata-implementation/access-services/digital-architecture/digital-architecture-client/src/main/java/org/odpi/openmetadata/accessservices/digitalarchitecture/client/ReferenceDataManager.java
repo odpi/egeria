@@ -4,16 +4,17 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.client;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.api.ManageReferenceData;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ReferenceValueAssignmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueAssignmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValuesImplProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValuesMappingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueProperties;
 
 
 import java.util.List;
@@ -956,7 +957,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
                                                                                 startFrom,
                                                                                 pageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1006,7 +1007,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
                                                                                 startFrom,
                                                                                 pageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1048,7 +1049,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
                                                                                validValueSetGUID,
                                                                                startFrom,
                                                                                pageSize);
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1090,7 +1091,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
                                                                                validValueGUID,
                                                                                startFrom,
                                                                                pageSize);
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1133,7 +1134,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
                                                                         validValueGUID,
                                                                         startFrom,
                                                                         pageSize);
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1176,7 +1177,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
                                                                           referenceableGUID,
                                                                           startFrom,
                                                                           pageSize);
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1219,7 +1220,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
                                                                                                    validValueGUID,
                                                                                                    startFrom,
                                                                                                    pageSize);
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1263,7 +1264,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
                                                                      assetGUID,
                                                                      startFrom,
                                                                      pageSize);
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1307,7 +1308,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
                                                                                              validValueGUID,
                                                                                              startFrom,
                                                                                              pageSize);
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1352,7 +1353,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
                                                                                                validValueGUID,
                                                                                                startFrom,
                                                                                                pageSize);
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1396,7 +1397,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
                                                                         validValueGUID,
                                                                         startFrom,
                                                                         pageSize);
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1440,6 +1441,6 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
                                                                               referenceableGUID,
                                                                               startFrom,
                                                                               pageSize);
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 }

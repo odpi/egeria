@@ -112,7 +112,7 @@ public class IntegrationGroupConfigurationHandler
                                                               publishZones,
                                                               auditLog);
 
-        this.connectionHandler = new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
+        this.connectionHandler = new ConnectionHandler<>(new OCFConnectionConverter<>(repositoryHelper, serviceName, serverName),
                                                          Connection.class,
                                                          serviceName,
                                                          serverName,
@@ -721,6 +721,7 @@ public class IntegrationGroupConfigurationHandler
                                                               guid,
                                                               guidParameter,
                                                               qualifiedName,
+                                                              name,
                                                               name,
                                                               versionIdentifier,
                                                               description,

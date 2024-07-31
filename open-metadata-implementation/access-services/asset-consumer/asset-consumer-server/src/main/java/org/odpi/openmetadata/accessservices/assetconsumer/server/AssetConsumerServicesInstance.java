@@ -3,19 +3,20 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic.AssetConsumerOutTopicClientProvider;
-import org.odpi.openmetadata.accessservices.assetconsumer.converters.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.*;
+import org.odpi.openmetadata.commonservices.generichandlers.MeaningConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.MetadataElementConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.MetadataRelationshipConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataRelationship;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.InformalTagConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -29,8 +30,8 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
 {
     private final static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CONSUMER_OMAS;
 
-    private final AssetHandler<Asset>                            assetHandler;
-    private final ReferenceableHandler<MetadataElement>          metadataElementHandler;
+    private final AssetHandler<AssetElement>                     assetHandler;
+    private final ReferenceableHandler<MetadataElementSummary>   metadataElementHandler;
     private final ReferenceableHandler<MetadataRelationship>     metadataRelationshipHandler;
     private final CommentHandler<OpenMetadataAPIDummyBean>       commentHandler;
     private final ConnectionHandler<OpenMetadataAPIDummyBean>    connectionHandler;
@@ -85,7 +86,7 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
                     new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName);
 
             this.assetHandler = new AssetHandler<>(new AssetConverter<>(repositoryHelper, serviceName, serverName),
-                                                   Asset.class,
+                                                   AssetElement.class,
                                                    serviceName,
                                                    serverName,
                                                    invalidParameterHandler,
@@ -101,7 +102,7 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
 
 
             this.metadataElementHandler = new ReferenceableHandler<>(new MetadataElementConverter<>(repositoryHelper, serviceName, serverName),
-                                                                     MetadataElement.class,
+                                                                     MetadataElementSummary.class,
                                                                      serviceName,
                                                                      serverName,
                                                                      invalidParameterHandler,
@@ -239,7 +240,7 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public AssetHandler<Asset> getAssetHandler() throws PropertyServerException
+    public AssetHandler<AssetElement> getAssetHandler() throws PropertyServerException
     {
         final String methodName = "getAssetHandler";
 
@@ -255,7 +256,7 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public ReferenceableHandler<MetadataElement> getMetadataElementHandler() throws PropertyServerException
+    public ReferenceableHandler<MetadataElementSummary> getMetadataElementHandler() throws PropertyServerException
     {
         final String methodName = "getMetadataElementHandler";
 

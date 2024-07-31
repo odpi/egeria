@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -45,9 +46,9 @@ public class EngineActionElement extends ReferenceableProperties
     private String                               requestType              = null;
     private Map<String, String>                  requestParameters        = null;
     private List<RequestSourceElement>           requestSourceElements    = null;
-    private List<ActionTargetElement> actionTargetElements = null;
-    private EngineActionStatus        actionStatus         = null;
-    private Date                      requestedTime        = null;
+    private List<ActionTargetElement>            actionTargetElements     = null;
+    private EngineActionStatus                   actionStatus             = null;
+    private Date                                 requestedTime            = null;
     private Date                                 requestedStartTime       = null;
     private Date                                 startTime                = null;
     private String                               processingEngineUserId   = null;

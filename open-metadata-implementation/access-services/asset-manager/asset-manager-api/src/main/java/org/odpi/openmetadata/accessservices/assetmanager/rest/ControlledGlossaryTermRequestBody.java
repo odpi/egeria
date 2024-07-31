@@ -6,9 +6,9 @@ package org.odpi.openmetadata.accessservices.assetmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 
 import java.util.Date;
 import java.util.Objects;
@@ -26,10 +26,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ControlledGlossaryTermRequestBody
 {
     private MetadataCorrelationProperties metadataCorrelationProperties = null;
-    private GlossaryTermProperties        elementProperties = null;
-    private GlossaryTermStatus            initialStatus = null;
-    private Date                          effectiveTime = null;
-    private String                        updateDescription = null;
+    private GlossaryTermProperties        elementProperties             = null;
+    private GlossaryTermStatus            initialStatus                 = null;
+    private Date                          effectiveTime                 = null;
+    private String                        updateDescription             = null;
 
     /**
      * Default constructor

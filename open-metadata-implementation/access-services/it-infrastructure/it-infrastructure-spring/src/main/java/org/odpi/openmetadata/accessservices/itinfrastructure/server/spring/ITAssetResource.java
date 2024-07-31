@@ -4,14 +4,9 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.*;
 import org.odpi.openmetadata.accessservices.itinfrastructure.server.ITAssetRESTService;
-import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.accessservices.itinfrastructure.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -184,7 +179,7 @@ public class ITAssetResource
                                           @PathVariable String                     relatedAssetTypeName,
                                           @PathVariable String                     relatedAssetGUID,
                                           @RequestParam boolean                    infrastructureManagerIsHome,
-                                          @RequestBody  AssetExtensionsRequestBody requestBody)
+                                          @RequestBody AssetExtensionsRequestBody requestBody)
     {
         return restAPI.setupRelatedAsset(serverName, userId, assetTypeName, assetGUID, relationshipTypeName, relatedAssetTypeName, relatedAssetGUID, infrastructureManagerIsHome, requestBody);
     }
@@ -247,7 +242,7 @@ public class ITAssetResource
                                           @PathVariable String                                 relationshipTypeName,
                                           @PathVariable String                                 relatedAssetTypeName,
                                           @PathVariable String                                 relatedAssetGUID,
-                                          @RequestBody  EffectiveTimeMetadataSourceRequestBody requestBody)
+                                          @RequestBody EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.clearRelatedAsset(serverName, userId, assetTypeName, assetGUID, relationshipTypeName, relatedAssetTypeName, relatedAssetGUID, requestBody);
     }
@@ -339,7 +334,7 @@ public class ITAssetResource
                                             @PathVariable String                                 assetTypeName,
                                             @PathVariable String                                 assetGUID,
                                             @PathVariable String                                 classificationName,
-                                            @RequestBody  EffectiveTimeMetadataSourceRequestBody requestBody)
+                                            @RequestBody EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.clearClassification(serverName, userId, assetTypeName, assetGUID, classificationName, requestBody);
     }
@@ -419,7 +414,7 @@ public class ITAssetResource
     public VoidResponse removeAsset(@PathVariable String                    serverName,
                                     @PathVariable String                    userId,
                                     @PathVariable String                    assetGUID,
-                                    @RequestBody  MetadataSourceRequestBody requestBody)
+                                    @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeAsset(serverName, userId, assetGUID, requestBody);
     }
@@ -445,12 +440,12 @@ public class ITAssetResource
      */
     @PostMapping(path = "/assets/{assetTypeName}/by-search-string")
 
-    public AssetListResponse findAssets(@PathVariable String                  serverName,
-                                        @PathVariable String                  userId,
-                                        @PathVariable String                  assetTypeName,
-                                        @RequestParam int                     startFrom,
-                                        @RequestParam int                     pageSize,
-                                        @RequestBody  SearchStringRequestBody requestBody)
+    public AssetElementsResponse findAssets(@PathVariable String                  serverName,
+                                            @PathVariable String                  userId,
+                                            @PathVariable String                  assetTypeName,
+                                            @RequestParam int                     startFrom,
+                                            @RequestParam int                     pageSize,
+                                            @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findAssets(serverName, userId, assetTypeName, startFrom, pageSize, requestBody);
     }
@@ -475,12 +470,12 @@ public class ITAssetResource
      */
     @PostMapping(path = "/assets/{assetTypeName}/by-name")
 
-    public AssetListResponse getAssetsByName(@PathVariable String          serverName,
-                                             @PathVariable String          userId,
-                                             @PathVariable String          assetTypeName,
-                                             @RequestParam int             startFrom,
-                                             @RequestParam int             pageSize,
-                                             @RequestBody  NameRequestBody requestBody)
+    public AssetElementsResponse getAssetsByName(@PathVariable String          serverName,
+                                                 @PathVariable String          userId,
+                                                 @PathVariable String          assetTypeName,
+                                                 @RequestParam int             startFrom,
+                                                 @RequestParam int             pageSize,
+                                                 @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getAssetsByName(serverName, userId, assetTypeName, startFrom, pageSize, requestBody);
     }
@@ -504,12 +499,12 @@ public class ITAssetResource
      */
     @PostMapping(path = "/assets/{assetTypeName}/by-deployed-implementation-type")
 
-    public AssetListResponse getAssetsByDeployedImplementationType(@PathVariable String          serverName,
-                                                                   @PathVariable String          userId,
-                                                                   @PathVariable String          assetTypeName,
-                                                                   @RequestParam int             startFrom,
-                                                                   @RequestParam int             pageSize,
-                                                                   @RequestBody(required = false)
+    public AssetElementsResponse getAssetsByDeployedImplementationType(@PathVariable String          serverName,
+                                                                       @PathVariable String          userId,
+                                                                       @PathVariable String          assetTypeName,
+                                                                       @RequestParam int             startFrom,
+                                                                       @RequestParam int             pageSize,
+                                                                       @RequestBody(required = false)
                                                                        NameRequestBody requestBody)
     {
         return restAPI.getAssetsByDeployedImplementationType(serverName, userId, assetTypeName, startFrom, pageSize, requestBody);
@@ -536,14 +531,14 @@ public class ITAssetResource
      */
     @PostMapping(path = "/infrastructure-managers/{infrastructureManagerGUID}/{infrastructureManagerName}/assets/{assetTypeName}")
 
-    public AssetListResponse getAssetsForInfrastructureManager(@PathVariable String                   serverName,
-                                                               @PathVariable String                   userId,
-                                                               @PathVariable String                   infrastructureManagerGUID,
-                                                               @PathVariable String                   infrastructureManagerName,
-                                                               @PathVariable String                   assetTypeName,
-                                                               @RequestParam int                      startFrom,
-                                                               @RequestParam int                      pageSize,
-                                                               @RequestBody  EffectiveTimeRequestBody requestBody)
+    public AssetElementsResponse getAssetsForInfrastructureManager(@PathVariable String                   serverName,
+                                                                   @PathVariable String                   userId,
+                                                                   @PathVariable String                   infrastructureManagerGUID,
+                                                                   @PathVariable String                   infrastructureManagerName,
+                                                                   @PathVariable String                   assetTypeName,
+                                                                   @RequestParam int                      startFrom,
+                                                                   @RequestParam int                      pageSize,
+                                                                   @RequestBody  EffectiveTimeRequestBody requestBody)
     {
         return restAPI.getAssetsForInfrastructureManager(serverName, userId, infrastructureManagerGUID, infrastructureManagerName, assetTypeName, startFrom, pageSize, requestBody);
     }
@@ -566,11 +561,11 @@ public class ITAssetResource
      */
     @PostMapping(path = "/assets/{assetTypeName}/{assetGUID}")
 
-    public AssetResponse getAssetByGUID(@PathVariable String                   serverName,
-                                        @PathVariable String                   userId,
-                                        @PathVariable String                   assetTypeName,
-                                        @PathVariable String                   assetGUID,
-                                        @RequestBody  EffectiveTimeRequestBody requestBody)
+    public AssetElementResponse getAssetByGUID(@PathVariable String                   serverName,
+                                               @PathVariable String                   userId,
+                                               @PathVariable String                   assetTypeName,
+                                               @PathVariable String                   assetGUID,
+                                               @RequestBody  EffectiveTimeRequestBody requestBody)
     {
         return restAPI.getAssetByGUID(serverName, userId, assetTypeName, assetGUID, requestBody);
     }
@@ -598,16 +593,16 @@ public class ITAssetResource
      */
     @PostMapping(path = "/assets/{assetTypeName}/{assetGUID}/{relationshipTypeName}/{relatedAssetTypeName}/relationships")
 
-    public AssetRelationshipListResponse getAssetRelationships(@PathVariable String                   serverName,
-                                                               @PathVariable String                   userId,
-                                                               @PathVariable String                   assetTypeName,
-                                                               @PathVariable String                   assetGUID,
-                                                               @PathVariable String                   relationshipTypeName,
-                                                               @PathVariable String                   relatedAssetTypeName,
-                                                               @RequestParam int                      startingEnd,
-                                                               @RequestParam int                      startFrom,
-                                                               @RequestParam int                      pageSize,
-                                                               @RequestBody  EffectiveTimeRequestBody requestBody)
+    public AssetRelationshipsResponse getAssetRelationships(@PathVariable String                   serverName,
+                                                            @PathVariable String                   userId,
+                                                            @PathVariable String                   assetTypeName,
+                                                            @PathVariable String                   assetGUID,
+                                                            @PathVariable String                   relationshipTypeName,
+                                                            @PathVariable String                   relatedAssetTypeName,
+                                                            @RequestParam int                      startingEnd,
+                                                            @RequestParam int                      startFrom,
+                                                            @RequestParam int                      pageSize,
+                                                            @RequestBody  EffectiveTimeRequestBody requestBody)
     {
         return restAPI.getAssetRelationships(serverName, userId, assetTypeName, assetGUID, relationshipTypeName, relatedAssetTypeName, startingEnd, startFrom, pageSize, requestBody);
     }
@@ -635,16 +630,16 @@ public class ITAssetResource
      */
     @PostMapping(path = "/assets/{assetTypeName}/{assetGUID}/{relationshipTypeName}/{relatedAssetTypeName}")
 
-    public RelatedAssetListResponse getRelatedAssets(@PathVariable String                   serverName,
-                                                     @PathVariable String                   userId,
-                                                     @PathVariable String                   assetTypeName,
-                                                     @PathVariable String                   assetGUID,
-                                                     @PathVariable String                   relationshipTypeName,
-                                                     @PathVariable String                   relatedAssetTypeName,
-                                                     @RequestParam int                      startingEnd,
-                                                     @RequestParam int                      startFrom,
-                                                     @RequestParam int                      pageSize,
-                                                     @RequestBody  EffectiveTimeRequestBody requestBody)
+    public RelatedAssetsResponse getRelatedAssets(@PathVariable String                   serverName,
+                                                  @PathVariable String                   userId,
+                                                  @PathVariable String                   assetTypeName,
+                                                  @PathVariable String                   assetGUID,
+                                                  @PathVariable String                   relationshipTypeName,
+                                                  @PathVariable String                   relatedAssetTypeName,
+                                                  @RequestParam int                      startingEnd,
+                                                  @RequestParam int                      startFrom,
+                                                  @RequestParam int                      pageSize,
+                                                  @RequestBody  EffectiveTimeRequestBody requestBody)
     {
         return restAPI.getRelatedAssets(serverName, userId, assetTypeName, assetGUID, relationshipTypeName, relatedAssetTypeName, startingEnd, startFrom, pageSize, requestBody);
     }
@@ -753,7 +748,7 @@ public class ITAssetResource
     public VoidResponse clearDataFlow(@PathVariable String                                 serverName,
                                       @PathVariable String                                 userId,
                                       @PathVariable String                                 dataFlowGUID,
-                                      @RequestBody  EffectiveTimeMetadataSourceRequestBody requestBody)
+                                      @RequestBody EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.clearDataFlow(serverName, userId, dataFlowGUID, requestBody);
     }
@@ -913,7 +908,7 @@ public class ITAssetResource
     public VoidResponse clearControlFlow(@PathVariable String                                 serverName,
                                          @PathVariable String                                 userId,
                                          @PathVariable String                                 controlFlowGUID,
-                                         @RequestBody  EffectiveTimeMetadataSourceRequestBody requestBody)
+                                         @RequestBody EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.clearControlFlow(serverName, userId, controlFlowGUID, requestBody);
     }
@@ -1073,7 +1068,7 @@ public class ITAssetResource
     public VoidResponse clearProcessCall(@PathVariable String                                 serverName,
                                          @PathVariable String                                 userId,
                                          @PathVariable String                                 processCallGUID,
-                                         @RequestBody  EffectiveTimeMetadataSourceRequestBody requestBody)
+                                         @RequestBody EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.clearProcessCall(serverName, userId, processCallGUID, requestBody);
     }
@@ -1209,7 +1204,7 @@ public class ITAssetResource
     public VoidResponse clearLineageMapping(@PathVariable String                                 serverName,
                                             @PathVariable String                                 userId,
                                             @PathVariable String                                 lineageMappingGUID,
-                                            @RequestBody  EffectiveTimeMetadataSourceRequestBody requestBody)
+                                            @RequestBody EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.clearLineageMapping(serverName, userId, lineageMappingGUID, requestBody);
     }

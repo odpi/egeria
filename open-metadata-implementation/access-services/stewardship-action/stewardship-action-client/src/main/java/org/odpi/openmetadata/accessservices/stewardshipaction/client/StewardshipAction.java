@@ -5,21 +5,17 @@ package org.odpi.openmetadata.accessservices.stewardshipaction.client;
 
 import org.odpi.openmetadata.accessservices.stewardshipaction.api.DuplicateManagementInterface;
 import org.odpi.openmetadata.accessservices.stewardshipaction.api.SurveyReportInterface;
-import org.odpi.openmetadata.accessservices.stewardshipaction.client.converters.SurveyReportConverter;
-import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.DuplicateElement;
-import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesRequestBody;
-import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesResponse;
-import org.odpi.openmetadata.accessservices.stewardshipaction.rest.ElementStubResponse;
-import org.odpi.openmetadata.accessservices.stewardshipaction.rest.ElementStubsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.surveyaction.converters.SurveyReportConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DuplicateElement;
 import org.odpi.openmetadata.accessservices.stewardshipaction.client.rest.StewardshipActionRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
@@ -572,7 +568,7 @@ public class StewardshipAction implements SurveyReportInterface,
                                                                              startFrom,
                                                                              pageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 

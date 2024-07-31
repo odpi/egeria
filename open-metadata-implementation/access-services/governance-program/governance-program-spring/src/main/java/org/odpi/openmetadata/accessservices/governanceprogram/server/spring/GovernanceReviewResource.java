@@ -5,13 +5,8 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ElementStubListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionGraphResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceMetricImplementationListResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceReviewRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -83,12 +78,12 @@ public class GovernanceReviewResource
      */
     @GetMapping(path = "/review/governance-definitions/{typeName}/for-domain")
 
-    public GovernanceDefinitionListResponse getGovernanceDefinitionsForDomain(@PathVariable String serverName,
-                                                                              @PathVariable String userId,
-                                                                              @PathVariable String typeName,
-                                                                              @RequestParam int    domainIdentifier,
-                                                                              @RequestParam int    startFrom,
-                                                                              @RequestParam int    pageSize)
+    public GovernanceDefinitionsResponse getGovernanceDefinitionsForDomain(@PathVariable String serverName,
+                                                                           @PathVariable String userId,
+                                                                           @PathVariable String typeName,
+                                                                           @RequestParam int    domainIdentifier,
+                                                                           @RequestParam int    startFrom,
+                                                                           @RequestParam int    pageSize)
     {
         return restAPI.getGovernanceDefinitionsForDomain(serverName, userId, typeName, domainIdentifier, startFrom, pageSize);
     }
@@ -111,12 +106,12 @@ public class GovernanceReviewResource
      */
     @GetMapping(path = "/review/governance-definitions/{typeName}/for-document-id/{docId}")
 
-    public GovernanceDefinitionListResponse getGovernanceDefinitionsForDocId(@PathVariable String serverName,
-                                                                             @PathVariable String userId,
-                                                                             @PathVariable String typeName,
-                                                                             @PathVariable String docId,
-                                                                             @RequestParam int    startFrom,
-                                                                             @RequestParam int    pageSize)
+    public GovernanceDefinitionsResponse getGovernanceDefinitionsForDocId(@PathVariable String serverName,
+                                                                          @PathVariable String userId,
+                                                                          @PathVariable String typeName,
+                                                                          @PathVariable String docId,
+                                                                          @RequestParam int    startFrom,
+                                                                          @RequestParam int    pageSize)
     {
         return restAPI.getGovernanceDefinitionsForDocId(serverName, userId, typeName, docId, startFrom, pageSize);
     }
@@ -161,12 +156,12 @@ public class GovernanceReviewResource
      */
     @PostMapping(path = "/review/governance-definitions/{typeName}/by-search-string")
 
-    public GovernanceDefinitionListResponse findGovernanceDefinitions(@PathVariable String                  serverName,
-                                                                      @PathVariable String                  userId,
-                                                                      @PathVariable String                  typeName,
-                                                                      @RequestParam int                     startFrom,
-                                                                      @RequestParam int                     pageSize,
-                                                                      @RequestBody  SearchStringRequestBody requestBody)
+    public GovernanceDefinitionsResponse findGovernanceDefinitions(@PathVariable String                  serverName,
+                                                                   @PathVariable String                  userId,
+                                                                   @PathVariable String                  typeName,
+                                                                   @RequestParam int                     startFrom,
+                                                                   @RequestParam int                     pageSize,
+                                                                   @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findGovernanceDefinitions(serverName, userId, typeName, startFrom, pageSize, requestBody);
     }
@@ -188,11 +183,11 @@ public class GovernanceReviewResource
      */
     @GetMapping(path = "/review/governance-definitions/{governanceDefinitionGUID}/metrics-implementation")
 
-    public GovernanceMetricImplementationListResponse getGovernanceDefinitionMetrics(@PathVariable String serverName,
-                                                                                     @PathVariable String userId,
-                                                                                     @PathVariable String governanceDefinitionGUID,
-                                                                                     @RequestParam int    startFrom,
-                                                                                     @RequestParam int    pageSize)
+    public GovernanceMetricImplementationsResponse getGovernanceDefinitionMetrics(@PathVariable String serverName,
+                                                                                  @PathVariable String userId,
+                                                                                  @PathVariable String governanceDefinitionGUID,
+                                                                                  @RequestParam int    startFrom,
+                                                                                  @RequestParam int    pageSize)
     {
         return restAPI.getGovernanceDefinitionMetrics(serverName, userId, governanceDefinitionGUID, startFrom, pageSize);
     }
@@ -215,12 +210,12 @@ public class GovernanceReviewResource
      */
     @GetMapping(path = "/review/governance-zones/{zoneName}/members/{subTypeName}")
 
-    public ElementStubListResponse getGovernanceZoneMembers(@PathVariable String serverName,
-                                                            @PathVariable String userId,
-                                                            @PathVariable String zoneName,
-                                                            @PathVariable String subTypeName,
-                                                            @RequestParam int    startFrom,
-                                                            @RequestParam int    pageSize)
+    public ElementStubsResponse getGovernanceZoneMembers(@PathVariable String serverName,
+                                                         @PathVariable String userId,
+                                                         @PathVariable String zoneName,
+                                                         @PathVariable String subTypeName,
+                                                         @RequestParam int    startFrom,
+                                                         @RequestParam int    pageSize)
     {
         return restAPI.getGovernanceZoneMembers(serverName, userId, zoneName, subTypeName, startFrom, pageSize);
     }

@@ -7,17 +7,17 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.DataAss
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ExternalAssetManagerClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelationshipElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.SchemaAttributeElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelationshipElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.AssetManagerProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -422,8 +422,8 @@ public class CreateDatabaseTest
 
             AssetManagerProperties properties = new AssetManagerProperties();
             properties.setQualifiedName(assetManagerName);
-            properties.setDisplayName(assetManagerDisplayName);
-            properties.setDescription(assetManagerDescription);
+            properties.setResourceName(assetManagerDisplayName);
+            properties.setResourceDescription(assetManagerDescription);
             properties.setDeployedImplementationType(assetManagerTypeDescription);
             properties.setVersion(assetManagerVersion);
 
@@ -540,7 +540,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! databaseDescription.equals(retrievedDatabase.getDescription()))
+            if (! databaseDescription.equals(retrievedDatabase.getDisplayDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -584,7 +584,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! databaseDescription.equals(retrievedDatabase.getDescription()))
+            if (! databaseDescription.equals(retrievedDatabase.getDisplayDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -639,7 +639,7 @@ public class CreateDatabaseTest
 
             properties.setQualifiedName(databaseName);
             properties.setDisplayName(databaseDisplayName);
-            properties.setDescription(databaseDescription);
+            properties.setDisplayDescription(databaseDescription);
 
             properties.setTypeName("Database");
 
@@ -783,7 +783,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from Retrieve)");
             }
-            if (! databaseSchemaDescription.equals(retrievedSchema.getDescription()))
+            if (! databaseSchemaDescription.equals(retrievedSchema.getDisplayDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from Retrieve)");
             }
@@ -818,7 +818,7 @@ public class CreateDatabaseTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad displayName from RetrieveByName)");
             }
-            if (! databaseSchemaDescription.equals(retrievedSchema.getDescription()))
+            if (! databaseSchemaDescription.equals(retrievedSchema.getDisplayDescription()))
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad description from RetrieveByName)");
             }
@@ -879,7 +879,7 @@ public class CreateDatabaseTest
 
             properties.setQualifiedName(databaseSchemaName);
             properties.setDisplayName(databaseSchemaDisplayName);
-            properties.setDescription(databaseSchemaDescription);
+            properties.setDisplayDescription(databaseSchemaDescription);
             properties.setTypeName("DeployedDatabaseSchema");
 
             String databaseSchemaGUID = client.createDataAsset(userId, assetManagerGUID, assetManagerName, true, null, properties);
@@ -1375,7 +1375,7 @@ public class CreateDatabaseTest
 
 
     private void validateAnchorGUID(String          activityName,
-                                    MetadataElement metadataElement)
+                                    CorrelatedMetadataElement metadataElement)
     {
         if (metadataElement.getElementHeader() != null)
         {

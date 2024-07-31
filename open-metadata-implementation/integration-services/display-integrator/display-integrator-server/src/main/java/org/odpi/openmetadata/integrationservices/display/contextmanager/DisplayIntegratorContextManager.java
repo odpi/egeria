@@ -5,7 +5,7 @@ package org.odpi.openmetadata.integrationservices.display.contextmanager;
 
 import org.odpi.openmetadata.accessservices.datamanager.client.*;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ApplicationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.ApplicationProperties;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;

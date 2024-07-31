@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = ConnectionRequestBody.class, name = "ConnectionRequestBody"),
+                @JsonSubTypes.Type(value = ConnectionRequestBody.class, name = "OCFConnectionRequestBody"),
                 @JsonSubTypes.Type(value = OriginRequestBody.class, name = "OriginRequestBody"),
                 @JsonSubTypes.Type(value = OwnerRequestBody.class, name = "OwnerRequestBody"),
                 @JsonSubTypes.Type(value = SchemaRequestBody.class, name = "SchemaRequestBody"),

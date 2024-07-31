@@ -7,6 +7,7 @@
 dependencies {
     implementation project(':open-metadata-implementation:access-services:security-manager:security-manager-server')
     implementation project(':open-metadata-implementation:access-services:security-manager:security-manager-api')
+    implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation 'org.springframework:spring-web'
     implementation 'io.swagger.core.v3:swagger-annotations'

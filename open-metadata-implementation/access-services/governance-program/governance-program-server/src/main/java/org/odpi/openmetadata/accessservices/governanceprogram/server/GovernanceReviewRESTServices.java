@@ -2,23 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionGraph;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceMetricImplementation;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ElementStubListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionGraphResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceMetricImplementationListResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionGraph;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceMetricImplementation;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceMetricHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -108,19 +103,19 @@ public class GovernanceReviewRESTServices
      *  UserNotAuthorizedException the caller is not authorized to issue the request
      *  PropertyServerException the metadata service has problems
      */
-    public GovernanceDefinitionListResponse getGovernanceDefinitionsForDomain(String serverName,
-                                                                              String userId,
-                                                                              String typeName,
-                                                                              int    domainIdentifier,
-                                                                              int    startFrom,
-                                                                              int    pageSize)
+    public GovernanceDefinitionsResponse getGovernanceDefinitionsForDomain(String serverName,
+                                                                           String userId,
+                                                                           String typeName,
+                                                                           int    domainIdentifier,
+                                                                           int    startFrom,
+                                                                           int    pageSize)
     {
         final String   methodName = "getGovernanceDefinitionsForDomain";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceDefinitionListResponse response = new GovernanceDefinitionListResponse();
-        AuditLog                         auditLog = null;
+        GovernanceDefinitionsResponse response = new GovernanceDefinitionsResponse();
+        AuditLog                      auditLog = null;
 
         try
         {
@@ -164,20 +159,20 @@ public class GovernanceReviewRESTServices
      *  UserNotAuthorizedException the caller is not authorized to issue the request
      *  PropertyServerException the metadata service has problems
      */
-    public GovernanceDefinitionListResponse getGovernanceDefinitionsForDocId(String serverName,
-                                                                             String userId,
-                                                                             String typeName,
-                                                                             String docId,
-                                                                             int    startFrom,
-                                                                             int    pageSize)
+    public GovernanceDefinitionsResponse getGovernanceDefinitionsForDocId(String serverName,
+                                                                          String userId,
+                                                                          String typeName,
+                                                                          String docId,
+                                                                          int    startFrom,
+                                                                          int    pageSize)
     {
         final String   methodName = "getGovernanceDefinitionsForDocId";
         final String   docIdParameterName = "docId";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceDefinitionListResponse response = new GovernanceDefinitionListResponse();
-        AuditLog                         auditLog = null;
+        GovernanceDefinitionsResponse response = new GovernanceDefinitionsResponse();
+        AuditLog                      auditLog = null;
 
         try
         {
@@ -270,20 +265,20 @@ public class GovernanceReviewRESTServices
      *  UserNotAuthorizedException the caller is not authorized to issue the request
      *  PropertyServerException the metadata service has problems
      */
-    public GovernanceDefinitionListResponse findGovernanceDefinitions(String                  serverName,
-                                                                      String                  userId,
-                                                                      String                  typeName,
-                                                                      int                     startFrom,
-                                                                      int                     pageSize,
-                                                                      SearchStringRequestBody requestBody)
+    public GovernanceDefinitionsResponse findGovernanceDefinitions(String                  serverName,
+                                                                   String                  userId,
+                                                                   String                  typeName,
+                                                                   int                     startFrom,
+                                                                   int                     pageSize,
+                                                                   SearchStringRequestBody requestBody)
     {
         final String methodName = "findGovernanceDefinitions";
         final String searchStringParameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceDefinitionListResponse response = new GovernanceDefinitionListResponse();
-        AuditLog                         auditLog = null;
+        GovernanceDefinitionsResponse response = new GovernanceDefinitionsResponse();
+        AuditLog                      auditLog = null;
 
         try
         {
@@ -334,19 +329,19 @@ public class GovernanceReviewRESTServices
      *  UserNotAuthorizedException the caller is not authorized to issue the request
      *  PropertyServerException the metadata service has problems
      */
-    public GovernanceMetricImplementationListResponse getGovernanceDefinitionMetrics(String serverName,
-                                                                                     String userId,
-                                                                                     String governanceDefinitionGUID,
-                                                                                     int    startFrom,
-                                                                                     int    pageSize)
+    public GovernanceMetricImplementationsResponse getGovernanceDefinitionMetrics(String serverName,
+                                                                                  String userId,
+                                                                                  String governanceDefinitionGUID,
+                                                                                  int    startFrom,
+                                                                                  int    pageSize)
     {
         final String methodName = "getGovernanceDefinitionMetrics";
         final String guidParameterName = "governanceDefinitionGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceMetricImplementationListResponse response = new GovernanceMetricImplementationListResponse();
-        AuditLog                         auditLog = null;
+        GovernanceMetricImplementationsResponse response = new GovernanceMetricImplementationsResponse();
+        AuditLog                                auditLog = null;
 
         try
         {
@@ -391,19 +386,19 @@ public class GovernanceReviewRESTServices
      *  UserNotAuthorizedException the caller is not authorized to issue the request
      *  PropertyServerException the metadata service has problems
      */
-    public ElementStubListResponse getGovernanceZoneMembers(String serverName,
-                                                            String userId,
-                                                            String zoneName,
-                                                            String subTypeName,
-                                                            int    startFrom,
-                                                            int    pageSize)
+    public ElementStubsResponse getGovernanceZoneMembers(String serverName,
+                                                         String userId,
+                                                         String zoneName,
+                                                         String subTypeName,
+                                                         int    startFrom,
+                                                         int    pageSize)
     {
         final String methodName = "getGovernanceZoneMembers";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ElementStubListResponse response = new ElementStubListResponse();
-        AuditLog                auditLog = null;
+        ElementStubsResponse response = new ElementStubsResponse();
+        AuditLog             auditLog = null;
 
         try
         {

@@ -4,12 +4,12 @@
 package org.odpi.openmetadata.accessservices.assetowner.outtopic;
 
 import org.odpi.openmetadata.accessservices.assetowner.connectors.outtopic.AssetOwnerOutTopicServerConnector;
-import org.odpi.openmetadata.accessservices.assetowner.converters.ElementHeaderConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.ElementHeaderConverter;
 import org.odpi.openmetadata.accessservices.assetowner.events.AssetOwnerEventType;
 import org.odpi.openmetadata.accessservices.assetowner.events.AssetOwnerOutTopicEvent;
 import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;

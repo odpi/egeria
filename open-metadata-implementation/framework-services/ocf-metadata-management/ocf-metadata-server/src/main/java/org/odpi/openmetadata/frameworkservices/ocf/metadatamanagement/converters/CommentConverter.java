@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters;
 
 
-import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
@@ -19,7 +19,7 @@ import java.util.Map;
  * CommentConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  * EntityDetail object into a Comment bean.
  */
-public class CommentConverter<B> extends OCFConverter<B>
+public class CommentConverter<B> extends OMFConverter<B>
 {
     /**
      * Constructor

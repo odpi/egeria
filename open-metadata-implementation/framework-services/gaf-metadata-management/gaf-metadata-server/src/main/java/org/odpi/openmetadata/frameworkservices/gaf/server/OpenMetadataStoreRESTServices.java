@@ -18,7 +18,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
@@ -1245,7 +1245,7 @@ public class OpenMetadataStoreRESTServices
     public GUIDResponse createMetadataElementInStore(String                        serverName,
                                                      String                        serviceURLMarker,
                                                      String                        userId,
-                                                     NewMetadataElementRequestBody requestBody)
+                                                     NewOpenMetadataElementRequestBody requestBody)
     {
         final String methodName = "createMetadataElementInStore";
 

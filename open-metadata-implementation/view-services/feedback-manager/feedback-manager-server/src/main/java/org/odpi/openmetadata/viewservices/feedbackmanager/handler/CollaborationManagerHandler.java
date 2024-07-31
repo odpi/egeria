@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
@@ -19,11 +19,11 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.viewservices.feedbackmanager.converters.*;
 import org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements.*;
-import org.odpi.openmetadata.viewservices.feedbackmanager.properties.*;
 
 import java.util.*;
 
@@ -511,9 +511,9 @@ public class CollaborationManagerHandler
     public String addCommentToElement(String                       userId,
                                       String                       elementGUID,
                                       boolean                      isPublic,
-                                      CommentProperties            properties) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
+                                      CommentProperties properties) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
     {
         final String methodName = "addCommentToElement";
 
@@ -1910,9 +1910,9 @@ public class CollaborationManagerHandler
      */
     public String createNote(String          userId,
                              String          noteLogGUID,
-                             NoteProperties  noteProperties) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+                             NoteProperties noteProperties) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
         final String methodName = "createNote";
         final String guidParameterName = "noteLogGUID";

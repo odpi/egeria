@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.DataAssetElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -58,9 +58,8 @@ public class AssetConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof DataAssetElement)
+            if (returnBean instanceof DataAssetElement bean)
             {
-                DataAssetElement    bean            = (DataAssetElement) returnBean;
                 DataAssetProperties assetProperties = new DataAssetProperties();
 
                 if (entity != null)
@@ -74,9 +73,10 @@ public class AssetConverter<B> extends AssetManagerOMASConverter<B>
 
                     assetProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     assetProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    assetProperties.setTechnicalName(this.removeName(instanceProperties));
+                    assetProperties.setName(this.removeName(instanceProperties));
+                    assetProperties.setResourceName(this.removeResourceName(instanceProperties));
                     assetProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
-                    assetProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
+                    assetProperties.setResourceDescription(this.removeDescription(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

@@ -4,10 +4,8 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceRolesRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -281,9 +279,9 @@ public class GovernanceRolesResource
      */
     @GetMapping(path = "/governance-roles/by-role-id/{roleId}")
 
-    public GovernanceRoleListResponse getGovernanceRoleByRoleId(@PathVariable String serverName,
-                                                                @PathVariable String userId,
-                                                                @PathVariable String roleId)
+    public GovernanceRolesResponse getGovernanceRoleByRoleId(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @PathVariable String roleId)
     {
         return restAPI.getGovernanceRoleByRoleId(serverName, userId, roleId);
     }
@@ -298,18 +296,17 @@ public class GovernanceRolesResource
      * @param startFrom where to start from in the list of definitions
      * @param pageSize max number of results to return in one call
      * @return list of governance role objects or
-     *
      * InvalidParameterException the guid is either null or invalid or
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
     @GetMapping(path = "/governance-roles/by-domain/{domainIdentifier}")
 
-    public GovernanceRoleListResponse  getGovernanceRolesByDomainId(@PathVariable String serverName,
-                                                                    @PathVariable String userId,
-                                                                    @PathVariable int    domainIdentifier,
-                                                                    @RequestParam int    startFrom,
-                                                                    @RequestParam int    pageSize)
+    public GovernanceRolesResponse getGovernanceRolesByDomainId(@PathVariable String serverName,
+                                                                @PathVariable String userId,
+                                                                @PathVariable int    domainIdentifier,
+                                                                @RequestParam int    startFrom,
+                                                                @RequestParam int    pageSize)
     {
         return restAPI.getGovernanceRolesByDomainId(serverName, userId, domainIdentifier, startFrom, pageSize);
     }
@@ -331,11 +328,11 @@ public class GovernanceRolesResource
      */
     @GetMapping(path = "/governance-roles/by-title/{title}")
 
-    public GovernanceRoleListResponse  getGovernanceRolesByTitle(@PathVariable String serverName,
-                                                                 @PathVariable String userId,
-                                                                 @PathVariable String title,
-                                                                 @RequestParam int    startFrom,
-                                                                 @RequestParam int    pageSize)
+    public GovernanceRolesResponse getGovernanceRolesByTitle(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @PathVariable String title,
+                                                             @RequestParam int    startFrom,
+                                                             @RequestParam int    pageSize)
     {
         return restAPI.getGovernanceRolesByTitle(serverName, userId, title, startFrom, pageSize);
     }
@@ -356,11 +353,11 @@ public class GovernanceRolesResource
      */
     @GetMapping(path = "/governance-roles/by-domain/{domainIdentifier}/current-appointments")
 
-    public GovernanceRoleAppointeeListResponse getCurrentGovernanceRoleAppointments(@PathVariable String serverName,
-                                                                                    @PathVariable String userId,
-                                                                                    @PathVariable int    domainIdentifier,
-                                                                                    @RequestParam int    startFrom,
-                                                                                    @RequestParam int    pageSize)
+    public GovernanceRoleAppointeesResponse getCurrentGovernanceRoleAppointments(@PathVariable String serverName,
+                                                                                 @PathVariable String userId,
+                                                                                 @PathVariable int    domainIdentifier,
+                                                                                 @RequestParam int    startFrom,
+                                                                                 @RequestParam int    pageSize)
     {
         return restAPI.getCurrentGovernanceRoleAppointments(serverName, userId, domainIdentifier, startFrom, pageSize);
     }
@@ -372,20 +369,22 @@ public class GovernanceRolesResource
      * @param serverName name of server instance to call
      * @param userId the name of the calling user.
      * @param governanceRoleGUID unique identifier (guid) of the governance role.
+     * @param profileGUID unique identifier of the actor profile
      * @param requestBody unique identifier for the profile and start date.
      * @return unique identifier (guid) of the appointment relationship or
      * UnrecognizedGUIDException the unique identifier of the governance role or profile is either null or invalid or
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @PostMapping(path = "/governance-roles/{governanceRoleGUID}/appoint")
+    @PostMapping(path = "/governance-roles/{governanceRoleGUID}/appoint/{profileGUID}")
 
     public GUIDResponse appointGovernanceRole(@PathVariable String                  serverName,
                                               @PathVariable String                  userId,
                                               @PathVariable String                  governanceRoleGUID,
+                                              @PathVariable String                  profileGUID,
                                               @RequestBody  AppointmentRequestBody  requestBody)
     {
-        return restAPI.appointGovernanceRole(serverName, userId, governanceRoleGUID, requestBody);
+        return restAPI.appointGovernanceRole(serverName, userId, governanceRoleGUID, profileGUID, requestBody);
     }
 
 
@@ -403,14 +402,15 @@ public class GovernanceRolesResource
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    @PostMapping(path = "/governance-roles/{governanceRoleGUID}/relieve/{appointmentGUID}")
+    @PostMapping(path = "/governance-roles/{governanceRoleGUID}/relieve/{appointmentGUID}/{profileGUID}")
 
     public VoidResponse relieveGovernanceRole(@PathVariable String                  serverName,
                                               @PathVariable String                  userId,
                                               @PathVariable String                  governanceRoleGUID,
                                               @PathVariable String                  appointmentGUID,
+                                              @PathVariable String                  profileGUID,
                                               @RequestBody  AppointmentRequestBody  requestBody)
     {
-        return restAPI.relieveGovernanceRole(serverName, userId, governanceRoleGUID, appointmentGUID, requestBody);
+        return restAPI.relieveGovernanceRole(serverName, userId, governanceRoleGUID, appointmentGUID, profileGUID, requestBody);
     }
 }

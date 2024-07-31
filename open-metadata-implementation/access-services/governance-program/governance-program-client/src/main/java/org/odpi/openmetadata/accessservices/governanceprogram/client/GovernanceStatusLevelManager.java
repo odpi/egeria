@@ -5,14 +5,11 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceStatusLevelInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceStatusIdentifierElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceStatusIdentifierSetElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceStatusIdentifierProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceStatusIdentifierSetProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceStatusIdentifierResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceStatusIdentifierSetListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceStatusIdentifierSetResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceStatusIdentifierElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceStatusIdentifierSetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceStatusIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceStatusIdentifierSetProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -265,10 +262,10 @@ public class GovernanceStatusLevelManager extends GovernanceProgramBaseClient im
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        GovernanceStatusIdentifierSetListResponse restResult = restClient.callStatusIdentifierSetListGetRESTCall(methodName,
-                                                                                                                 urlTemplate,
-                                                                                                                 serverName,
-                                                                                                                 userId);
+        GovernanceStatusIdentifierSetsResponse restResult = restClient.callStatusIdentifierSetListGetRESTCall(methodName,
+                                                                                                              urlTemplate,
+                                                                                                              serverName,
+                                                                                                              userId);
         return restResult.getElements();
     }
 

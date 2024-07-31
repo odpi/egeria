@@ -7,8 +7,14 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetowner.properties.*;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
+import org.odpi.openmetadata.accessservices.assetowner.rest.TemplateRequestBody;
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentProperties;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -1161,7 +1167,7 @@ public class AssetOwnerResource
     public VoidResponse addConnectionToAsset(@PathVariable String                serverName,
                                              @PathVariable String                userId,
                                              @PathVariable String                assetGUID,
-                                             @RequestBody  ConnectionRequestBody requestBody)
+                                             @RequestBody OCFConnectionRequestBody requestBody)
     {
         return restAPI.addConnectionToAsset(serverName, userId, assetGUID, requestBody);
     }
@@ -1686,11 +1692,11 @@ public class AssetOwnerResource
      */
     @GetMapping(path = "/assets/{assetGUID}/discovery-analysis-reports")
 
-    public SurveyReportListResponse getDiscoveryAnalysisReports(@PathVariable String  serverName,
-                                                                @PathVariable String  userId,
-                                                                @PathVariable String  assetGUID,
-                                                                @RequestParam int     startingFrom,
-                                                                @RequestParam int     maximumResults)
+    public SurveyReportsResponse getDiscoveryAnalysisReports(@PathVariable String  serverName,
+                                                             @PathVariable String  userId,
+                                                             @PathVariable String  assetGUID,
+                                                             @RequestParam int     startingFrom,
+                                                             @RequestParam int     maximumResults)
     {
         return restAPI.getSurveyReports(serverName,
                                         userId,
@@ -1718,12 +1724,12 @@ public class AssetOwnerResource
      */
     @GetMapping(path = "/discovery-analysis-reports/{discoveryReportGUID}/annotations")
 
-    public AnnotationListResponse getDiscoveryReportAnnotations(@PathVariable String            serverName,
-                                                                @PathVariable String            userId,
-                                                                @PathVariable String            discoveryReportGUID,
-                                                                @RequestParam int               startingFrom,
-                                                                @RequestParam int               maximumResults,
-                                                                @RequestBody  StatusRequestBody requestBody)
+    public AnnotationsResponse getDiscoveryReportAnnotations(@PathVariable String            serverName,
+                                                             @PathVariable String            userId,
+                                                             @PathVariable String            discoveryReportGUID,
+                                                             @RequestParam int               startingFrom,
+                                                             @RequestParam int               maximumResults,
+                                                             @RequestBody AnnotationStatusRequestBody requestBody)
     {
         return restAPI.getSurveyReportAnnotations(serverName,
                                                   userId,
@@ -1752,12 +1758,12 @@ public class AssetOwnerResource
      */
     @GetMapping(path = "/annotations/{annotationGUID}/annotations")
 
-    public AnnotationListResponse  getExtendedAnnotations(@PathVariable String            serverName,
-                                                          @PathVariable String            userId,
-                                                          @PathVariable String            annotationGUID,
-                                                          @RequestParam int               startingFrom,
-                                                          @RequestParam int               maximumResults,
-                                                          @RequestBody  StatusRequestBody requestBody)
+    public AnnotationsResponse getExtendedAnnotations(@PathVariable String            serverName,
+                                                      @PathVariable String            userId,
+                                                      @PathVariable String            annotationGUID,
+                                                      @RequestParam int               startingFrom,
+                                                      @RequestParam int               maximumResults,
+                                                      @RequestBody AnnotationStatusRequestBody requestBody)
     {
         return restAPI.getExtendedAnnotations(serverName,
                                               userId,

@@ -4,11 +4,9 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingFileSystem;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FileSystemElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FolderElement;
-import org.odpi.openmetadata.accessservices.assetowner.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileSystemElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FolderElement;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -219,7 +217,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         invalidParameterHandler.validateName(pathName, pathParameter, methodName);
 
         PathNameRequestBody requestBody = new PathNameRequestBody();
-        requestBody.setFullPath(pathName);
+        requestBody.setPathName(pathName);
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
                                                                           urlTemplate,
@@ -260,7 +258,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         invalidParameterHandler.validateName(pathName, pathParameter, methodName);
 
         PathNameRequestBody requestBody = new PathNameRequestBody();
-        requestBody.setFullPath(pathName);
+        requestBody.setPathName(pathName);
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
                                                                           urlTemplate,
@@ -628,7 +626,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
                                                                              userId,
                                                                              fileSystemGUID);
 
-        return restResult.getFileSystem();
+        return restResult.getElement();
     }
 
 
@@ -663,7 +661,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
                                                                              userId,
                                                                              uniqueName);
 
-        return restResult.getFileSystem();
+        return restResult.getElement();
     }
 
 
@@ -734,7 +732,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
                                                                      userId,
                                                                      folderGUID);
 
-        return restResult.getFolder();
+        return restResult.getElement();
     }
 
 
@@ -769,7 +767,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
                                                                      userId,
                                                                      pathName);
 
-        return restResult.getFolder();
+        return restResult.getElement();
     }
 
 

@@ -5,12 +5,12 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.fvt.validvalues
 
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.ReferenceDataManager;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest.DigitalArchitectureRESTClient;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ValidValueProperties;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueProperties;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;
@@ -180,8 +180,8 @@ public class CreateValidValuesSetTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for Create)");
             }
 
-            ValidValueElement    retrievedElement  = client.getValidValueByGUID(userId, validValuesSetGUID);
-            ValidValueProperties retrievedSet = retrievedElement.getValidValueProperties();
+            ValidValueElement    retrievedElement = client.getValidValueByGUID(userId, validValuesSetGUID);
+            ValidValueProperties retrievedSet     = retrievedElement.getValidValueProperties();
 
             if (retrievedSet == null)
             {

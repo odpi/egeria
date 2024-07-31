@@ -6,24 +6,19 @@ package org.odpi.openmetadata.viewservices.runtimemanager.server;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.ConnectedAssetClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.PlatformManagerClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.ServerManagerClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerPlatformElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerPlatformListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerPlatformResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.SoftwareServerResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerPlatformElement;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformConnector;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.MetadataAccessServerConnector;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.OMAGServerConnectorBase;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
@@ -72,17 +67,17 @@ public class RuntimeManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public SoftwareServerPlatformListResponse getPlatformsByName(String            serverName,
-                                                                 int               startFrom,
-                                                                 int               pageSize,
-                                                                 FilterRequestBody requestBody)
+    public SoftwareServerPlatformsResponse getPlatformsByName(String            serverName,
+                                                              int               startFrom,
+                                                              int               pageSize,
+                                                              FilterRequestBody requestBody)
     {
         final String methodName = "getPlatformsByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SoftwareServerPlatformListResponse response = new SoftwareServerPlatformListResponse();
-        AuditLog            auditLog = null;
+        SoftwareServerPlatformsResponse response = new SoftwareServerPlatformsResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -96,7 +91,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getSoftwareServerPlatformsByName(userId, requestBody.getFilter(), requestBody.getEffectiveTime(), startFrom, pageSize));
+                response.setElements(handler.getSoftwareServerPlatformsByName(userId, requestBody.getFilter(), requestBody.getEffectiveTime(), startFrom, pageSize));
             }
             else
             {
@@ -127,18 +122,18 @@ public class RuntimeManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public SoftwareServerPlatformListResponse getPlatformsByDeployedImplType(String            serverName,
-                                                                             int               startFrom,
-                                                                             int               pageSize,
-                                                                             boolean           getTemplates,
-                                                                             FilterRequestBody requestBody)
+    public SoftwareServerPlatformsResponse getPlatformsByDeployedImplType(String            serverName,
+                                                                          int               startFrom,
+                                                                          int               pageSize,
+                                                                          boolean           getTemplates,
+                                                                          FilterRequestBody requestBody)
     {
         final String methodName = "getPlatformsByDeployedImplType";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SoftwareServerPlatformListResponse response = new SoftwareServerPlatformListResponse();
-        AuditLog            auditLog = null;
+        SoftwareServerPlatformsResponse response = new SoftwareServerPlatformsResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -182,7 +177,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
                 if (! filteredPlatforms.isEmpty())
                 {
-                    response.setElementList(filteredPlatforms);
+                    response.setElements(filteredPlatforms);
                 }
             }
         }
@@ -329,17 +324,17 @@ public class RuntimeManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public SoftwareServerListResponse getServersByName(String            serverName,
-                                                       int               startFrom,
-                                                       int               pageSize,
-                                                       FilterRequestBody requestBody)
+    public SoftwareServersResponse getServersByName(String            serverName,
+                                                    int               startFrom,
+                                                    int               pageSize,
+                                                    FilterRequestBody requestBody)
     {
         final String methodName = "getServersByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SoftwareServerListResponse response = new SoftwareServerListResponse();
-        AuditLog                   auditLog = null;
+        SoftwareServersResponse response = new SoftwareServersResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -353,7 +348,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElementList(handler.getSoftwareServersByName(userId, requestBody.getFilter(), requestBody.getEffectiveTime(), startFrom, pageSize));
+                response.setElements(handler.getSoftwareServersByName(userId, requestBody.getFilter(), requestBody.getEffectiveTime(), startFrom, pageSize));
             }
             else
             {
@@ -384,18 +379,18 @@ public class RuntimeManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public SoftwareServerListResponse getServersByDeployedImplType(String            serverName,
-                                                                   int               startFrom,
-                                                                   int               pageSize,
-                                                                   boolean           getTemplates,
-                                                                   FilterRequestBody requestBody)
+    public SoftwareServersResponse getServersByDeployedImplType(String            serverName,
+                                                                int               startFrom,
+                                                                int               pageSize,
+                                                                boolean           getTemplates,
+                                                                FilterRequestBody requestBody)
     {
         final String methodName = "getServersByDeployedImplType";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SoftwareServerListResponse response = new SoftwareServerListResponse();
-        AuditLog                   auditLog = null;
+        SoftwareServersResponse response = new SoftwareServersResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -439,7 +434,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
                 if (! filteredServers.isEmpty())
                 {
-                    response.setElementList(filteredServers);
+                    response.setElements(filteredServers);
                 }
             }
         }

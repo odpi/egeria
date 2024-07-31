@@ -5,16 +5,18 @@ package org.odpi.openmetadata.accessservices.datamanager.client;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.APIManagerInterface;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.datamanager.properties.*;
-import org.odpi.openmetadata.accessservices.datamanager.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.APIParameterListType;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -488,7 +490,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                   startFrom,
                                                                   validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -537,7 +539,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                  startFrom,
                                                                  validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -585,7 +587,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                  startFrom,
                                                                  validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -629,7 +631,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                  startFrom,
                                                                  validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -914,14 +916,14 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
         APIOperationsResponse restResult = restClient.callAPIOperationsPostRESTCall(methodName,
-                                                                                   urlTemplate,
-                                                                                   requestBody,
-                                                                                   serverName,
-                                                                                   userId,
-                                                                                   startFrom,
-                                                                                   validatedPageSize);
+                                                                                    urlTemplate,
+                                                                                    requestBody,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    startFrom,
+                                                                                    validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -966,7 +968,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                                    startFrom,
                                                                                    validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1015,7 +1017,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                                    startFrom,
                                                                                    validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1081,7 +1083,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                          String                     apiManagerGUID,
                                          String                     apiManagerName,
                                          String                     apiOperationGUID,
-                                         APIParameterListType       parameterListType,
+                                         APIParameterListType parameterListType,
                                          APIParameterListProperties properties) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException
@@ -1321,7 +1323,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                                            startFrom,
                                                                                            validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1364,7 +1366,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                                            startFrom,
                                                                                            validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1413,7 +1415,7 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
                                                                                             startFrom,
                                                                                             validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1444,10 +1446,10 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/api-operations/api-parameter-lists/{2}";
 
         APIParameterListResponse restResult = restClient.callAPIParameterListGetRESTCall(methodName,
-                                                                                         urlTemplate,
-                                                                                         serverName,
-                                                                                         userId,
-                                                                                         guid);
+                                                                                      urlTemplate,
+                                                                                      serverName,
+                                                                                      userId,
+                                                                                      guid);
 
         return restResult.getElement();
     }

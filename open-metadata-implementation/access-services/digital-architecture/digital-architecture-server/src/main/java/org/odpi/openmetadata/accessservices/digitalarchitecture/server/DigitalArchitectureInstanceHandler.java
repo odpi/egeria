@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.server;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
@@ -40,11 +40,11 @@ class DigitalArchitectureInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    AssetHandler<ReferenceDataAssetElement> getAssetHandler(String userId,
-                                                            String serverName,
-                                                            String serviceOperationName) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
+    AssetHandler<AssetElement> getAssetHandler(String userId,
+                                               String serverName,
+                                               String serviceOperationName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         DigitalArchitectureServicesInstance instance = (DigitalArchitectureServicesInstance)super.getServerServiceInstance(userId,
                                                                                                                            serverName,

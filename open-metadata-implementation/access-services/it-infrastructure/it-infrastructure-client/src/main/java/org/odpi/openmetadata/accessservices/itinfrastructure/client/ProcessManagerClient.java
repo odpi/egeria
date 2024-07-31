@@ -4,43 +4,22 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.client;
 
 import org.odpi.openmetadata.accessservices.itinfrastructure.api.ProcessManagerInterface;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.rest.ITInfrastructureRESTClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.AssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ControlFlowElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataFlowElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.LineageMappingElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessCallElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ControlFlowProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataFlowProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessCallProperties;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ControlFlowProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataFlowProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageMappingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ProcessCallProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ControlFlowElementResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ControlFlowElementsResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ControlFlowRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.DataFlowElementResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.DataFlowElementsResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.DataFlowRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.EffectiveTimeMetadataSourceRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.LineageMappingElementResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.LineageMappingElementsResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.LineageMappingRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ProcessCallElementResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ProcessCallElementsResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ProcessCallRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
@@ -918,7 +897,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/data-flows/{2}/remove";
 
-        EffectiveTimeMetadataSourceRequestBody requestBody = new EffectiveTimeMetadataSourceRequestBody();
+        EffectiveTimeQueryRequestBody requestBody = new EffectiveTimeQueryRequestBody();
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
         requestBody.setEffectiveTime(effectiveTime);
@@ -977,7 +956,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
                                                                                    startFrom,
                                                                                    pageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1026,7 +1005,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
                                                                                    startFrom,
                                                                                    pageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1224,7 +1203,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/control-flows/{2}/remove";
 
-        EffectiveTimeMetadataSourceRequestBody requestBody = new EffectiveTimeMetadataSourceRequestBody();
+        EffectiveTimeQueryRequestBody requestBody = new EffectiveTimeQueryRequestBody();
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
         requestBody.setEffectiveTime(effectiveTime);
@@ -1283,7 +1262,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
                                                                                          startFrom,
                                                                                          pageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1332,7 +1311,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
                                                                                          startFrom,
                                                                                          pageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1528,7 +1507,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/process-calls/{2}/remove";
 
-        EffectiveTimeMetadataSourceRequestBody requestBody = new EffectiveTimeMetadataSourceRequestBody();
+        EffectiveTimeQueryRequestBody requestBody = new EffectiveTimeQueryRequestBody();
         requestBody.setExternalSourceGUID(infrastructureManagerGUID);
         requestBody.setExternalSourceName(infrastructureManagerName);
         requestBody.setEffectiveTime(effectiveTime);
@@ -1586,7 +1565,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
                                                                                          startFrom,
                                                                                          pageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1634,7 +1613,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
                                                                                          startFrom,
                                                                                          pageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1819,7 +1798,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
 
         final String urlTemplate = serverPlatformURLRoot + baseURLTemplatePrefix + "/lineage-mappings/{2}/remove";
 
-        EffectiveTimeMetadataSourceRequestBody requestBody = new EffectiveTimeMetadataSourceRequestBody();
+        EffectiveTimeQueryRequestBody requestBody = new EffectiveTimeQueryRequestBody();
         requestBody.setEffectiveTime(effectiveTime);
 
         restClient.callVoidPostRESTCall(methodName,
@@ -1875,7 +1854,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
                                                                                             startFrom,
                                                                                             pageSize);
 
-        return results.getElementList();
+        return results.getElements();
     }
 
 
@@ -1923,7 +1902,7 @@ public class ProcessManagerClient extends ITInfrastructureClientBase implements 
                                                                                             startFrom,
                                                                                             pageSize);
 
-        return results.getElementList();
+        return results.getElements();
     }
 
 

@@ -5,16 +5,16 @@ package org.odpi.openmetadata.accessservices.datamanager.client;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.EventBrokerInterface;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.datamanager.properties.*;
-import org.odpi.openmetadata.accessservices.datamanager.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.*;
 
 import java.util.List;
 
@@ -446,7 +446,7 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
                                                                       startFrom,
                                                                       validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -495,7 +495,7 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
                                                                       startFrom,
                                                                       validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -544,7 +544,7 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
                                                                      startFrom,
                                                                      validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -836,7 +836,7 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
                                                                               startFrom,
                                                                               validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -880,7 +880,7 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
                                                                              startFrom,
                                                                              validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -923,7 +923,7 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
                                                                              startFrom,
                                                                              validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -972,7 +972,7 @@ public class EventBrokerClient extends SchemaManagerClient implements EventBroke
                                                                               startFrom,
                                                                               validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 

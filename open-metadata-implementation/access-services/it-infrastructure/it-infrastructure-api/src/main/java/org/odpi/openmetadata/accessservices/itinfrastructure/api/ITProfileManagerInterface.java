@@ -2,12 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.api;
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ContactMethodProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ITProfileProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProfileIdentityProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.UserIdentityProperties;
+
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ITProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ContactMethodProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ProfileIdentityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

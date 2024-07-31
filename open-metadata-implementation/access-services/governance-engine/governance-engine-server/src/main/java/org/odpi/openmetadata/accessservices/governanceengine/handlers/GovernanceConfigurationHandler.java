@@ -145,7 +145,7 @@ public class GovernanceConfigurationHandler
                                                               publishZones,
                                                               auditLog);
 
-        this.connectionHandler = new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
+        this.connectionHandler = new ConnectionHandler<>(new OCFConnectionConverter<>(repositoryHelper, serviceName, serverName),
                                                          Connection.class,
                                                          serviceName,
                                                          serverName,
@@ -727,6 +727,7 @@ public class GovernanceConfigurationHandler
                                                            guid,
                                                            guidParameter,
                                                            qualifiedName,
+                                                           displayName,
                                                            displayName,
                                                            versionIdentifier,
                                                            description,
@@ -1829,6 +1830,7 @@ public class GovernanceConfigurationHandler
                                                               guid,
                                                               guidParameter,
                                                               qualifiedName,
+                                                              name,
                                                               name,
                                                               versionIdentifier,
                                                               description,

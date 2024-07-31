@@ -5,12 +5,8 @@ package org.odpi.openmetadata.viewservices.myprofile.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ActionTargetProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoProperties;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.viewservices.myprofile.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actions.*;
 import org.odpi.openmetadata.viewservices.myprofile.server.MyProfileRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -137,7 +133,7 @@ public class MyProfileResource
     public VoidResponse updateActionTargetProperties(@PathVariable String                 serverName,
                                                      @PathVariable String                 actionTargetGUID,
                                                      @RequestParam boolean                isMergeUpdate,
-                                                     @RequestBody  ActionTargetProperties actionTargetProperties)
+                                                     @RequestBody ToDoActionTargetProperties actionTargetProperties)
     {
         return restAPI.updateActionTargetProperties(serverName, actionTargetGUID, isMergeUpdate, actionTargetProperties);
     }
@@ -247,11 +243,11 @@ public class MyProfileResource
             externalDocs=@ExternalDocumentation(description="To Dos",
                     url="https://egeria-project.org/concepts/to-do"))
 
-    public ToDoListResponse getActionsForActionTarget(@PathVariable String                serverName,
-                                                      @PathVariable String                elementGUID,
-                                                      @RequestParam int                   startFrom,
-                                                      @RequestParam int                   pageSize,
-                                                      @RequestBody  (required = false)
+    public ToDosResponse getActionsForActionTarget(@PathVariable String                serverName,
+                                                   @PathVariable String                elementGUID,
+                                                   @RequestParam int                   startFrom,
+                                                   @RequestParam int                   pageSize,
+                                                   @RequestBody  (required = false)
                                                                     ToDoStatusRequestBody requestBody)
     {
         return restAPI.getActionsForActionTarget(serverName, elementGUID, startFrom, pageSize, requestBody);
@@ -279,11 +275,11 @@ public class MyProfileResource
             externalDocs=@ExternalDocumentation(description="To Dos",
                     url="https://egeria-project.org/concepts/to-do"))
 
-    public ToDoListResponse getActionsForSponsor(@PathVariable String                serverName,
-                                                 @PathVariable String                elementGUID,
-                                                 @RequestParam int                   startFrom,
-                                                 @RequestParam int                   pageSize,
-                                                 @RequestBody  (required = false)
+    public ToDosResponse getActionsForSponsor(@PathVariable String                serverName,
+                                              @PathVariable String                elementGUID,
+                                              @RequestParam int                   startFrom,
+                                              @RequestParam int                   pageSize,
+                                              @RequestBody  (required = false)
                                                              ToDoStatusRequestBody requestBody)
     {
         return restAPI.getActionsForSponsor(serverName, elementGUID, startFrom, pageSize, requestBody);
@@ -311,11 +307,11 @@ public class MyProfileResource
             externalDocs=@ExternalDocumentation(description="To Dos",
                     url="https://egeria-project.org/concepts/to-do"))
 
-    public ToDoListResponse getAssignedActions(@PathVariable String                serverName,
-                                               @PathVariable String                actorGUID,
-                                               @RequestParam int                   startFrom,
-                                               @RequestParam int                   pageSize,
-                                               @RequestBody  (required = false)
+    public ToDosResponse getAssignedActions(@PathVariable String                serverName,
+                                            @PathVariable String                actorGUID,
+                                            @RequestParam int                   startFrom,
+                                            @RequestParam int                   pageSize,
+                                            @RequestBody  (required = false)
                                                              ToDoStatusRequestBody requestBody)
     {
         return restAPI.getAssignedActions(serverName, actorGUID, startFrom, pageSize, requestBody);
@@ -345,16 +341,16 @@ public class MyProfileResource
             externalDocs=@ExternalDocumentation(description="To Dos",
                     url="https://egeria-project.org/concepts/to-do"))
 
-    public ToDoListResponse findToDos(@PathVariable String                          serverName,
-                                      @RequestParam int                             startFrom,
-                                      @RequestParam int                             pageSize,
-                                      @RequestParam (required = false, defaultValue = "false")
+    public ToDosResponse findToDos(@PathVariable String                          serverName,
+                                   @RequestParam int                             startFrom,
+                                   @RequestParam int                             pageSize,
+                                   @RequestParam (required = false, defaultValue = "false")
                                                     boolean                        startsWith,
-                                      @RequestParam (required = false, defaultValue = "false")
+                                   @RequestParam (required = false, defaultValue = "false")
                                                     boolean                        endsWith,
-                                      @RequestParam (required = false, defaultValue = "false")
+                                   @RequestParam (required = false, defaultValue = "false")
                                                     boolean                        ignoreCase,
-                                      @RequestBody  ToDoStatusSearchString         requestBody)
+                                   @RequestBody  ToDoStatusSearchString         requestBody)
     {
         return restAPI.findToDos(serverName, startFrom, pageSize, startsWith, endsWith, ignoreCase, requestBody);
     }
@@ -381,11 +377,11 @@ public class MyProfileResource
             externalDocs=@ExternalDocumentation(description="To Dos",
                     url="https://egeria-project.org/concepts/to-do"))
 
-    public ToDoListResponse getToDosByType(@PathVariable String                serverName,
-                                           @PathVariable String                toDoType,
-                                           @RequestParam int                   startFrom,
-                                           @RequestParam int                   pageSize,
-                                           @RequestBody  (required = false)
+    public ToDosResponse getToDosByType(@PathVariable String                serverName,
+                                        @PathVariable String                toDoType,
+                                        @RequestParam int                   startFrom,
+                                        @RequestParam int                   pageSize,
+                                        @RequestBody  (required = false)
                                                          ToDoStatusRequestBody requestBody)
     {
         return restAPI.getToDosByType(serverName, toDoType, startFrom, pageSize, requestBody);

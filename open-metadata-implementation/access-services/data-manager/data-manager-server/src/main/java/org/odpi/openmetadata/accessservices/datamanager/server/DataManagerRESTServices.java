@@ -2,15 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SoftwareCapabilityElement;
-import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -52,16 +48,16 @@ public class DataManagerRESTServices
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem retrieving the discovery engine definition.
      */
-    public ConnectionResponse getOutTopicConnection(String serverName,
-                                                    String userId,
-                                                    String callerId)
+    public OCFConnectionResponse getOutTopicConnection(String serverName,
+                                                       String userId,
+                                                       String callerId)
     {
         final String methodName = "getOutTopicConnection";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ConnectionResponse response = new ConnectionResponse();
-        AuditLog           auditLog = null;
+        OCFConnectionResponse response = new OCFConnectionResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -117,8 +113,8 @@ public class DataManagerRESTServices
                                                           requestBody.getExternalSourceGUID(),
                                                           requestBody.getExternalSourceName(),
                                                           requestBody.getQualifiedName(),
-                                                          requestBody.getDisplayName(),
-                                                          requestBody.getDescription(),
+                                                          requestBody.getResourceName(),
+                                                          requestBody.getResourceDescription(),
                                                           requestBody.getDeployedImplementationType(),
                                                           requestBody.getVersion(),
                                                           requestBody.getPatchLevel(),
@@ -185,8 +181,8 @@ public class DataManagerRESTServices
                                                                   OpenMetadataType.DATA_MANAGER.typeName,
                                                                   OpenMetadataType.FILE_MANAGER_CLASSIFICATION_TYPE_NAME,
                                                                   requestBody.getQualifiedName(),
-                                                                  requestBody.getDisplayName(),
-                                                                  requestBody.getDescription(),
+                                                                  requestBody.getResourceName(),
+                                                                  requestBody.getResourceDescription(),
                                                                   requestBody.getDeployedImplementationType(),
                                                                   requestBody.getVersion(),
                                                                   requestBody.getPatchLevel(),
@@ -249,8 +245,8 @@ public class DataManagerRESTServices
                                                               OpenMetadataType.DATABASE_MANAGER.typeName,
                                                               null,
                                                               requestBody.getQualifiedName(),
-                                                              requestBody.getDisplayName(),
-                                                              requestBody.getDescription(),
+                                                              requestBody.getResourceName(),
+                                                              requestBody.getResourceDescription(),
                                                               requestBody.getDeployedImplementationType(),
                                                               requestBody.getVersion(),
                                                               requestBody.getPatchLevel(),
@@ -313,8 +309,8 @@ public class DataManagerRESTServices
                                                               OpenMetadataType.API_MANAGER.typeName,
                                                               null,
                                                               requestBody.getQualifiedName(),
-                                                              requestBody.getDisplayName(),
-                                                              requestBody.getDescription(),
+                                                              requestBody.getResourceName(),
+                                                              requestBody.getResourceDescription(),
                                                               requestBody.getDeployedImplementationType(),
                                                               requestBody.getVersion(),
                                                               requestBody.getPatchLevel(),
@@ -376,8 +372,8 @@ public class DataManagerRESTServices
                                                               OpenMetadataType.EVENT_BROKER.typeName,
                                                               null,
                                                               requestBody.getQualifiedName(),
-                                                              requestBody.getDisplayName(),
-                                                              requestBody.getDescription(),
+                                                              requestBody.getResourceName(),
+                                                              requestBody.getResourceDescription(),
                                                               requestBody.getDeployedImplementationType(),
                                                               requestBody.getVersion(),
                                                               requestBody.getPatchLevel(),
@@ -439,8 +435,8 @@ public class DataManagerRESTServices
                                                               OpenMetadataType.APPLICATION.typeName,
                                                               null,
                                                               requestBody.getQualifiedName(),
-                                                              requestBody.getDisplayName(),
-                                                              requestBody.getDescription(),
+                                                              requestBody.getResourceName(),
+                                                              requestBody.getResourceDescription(),
                                                               requestBody.getDeployedImplementationType(),
                                                               requestBody.getVersion(),
                                                               requestBody.getPatchLevel(),
@@ -502,8 +498,8 @@ public class DataManagerRESTServices
                                                               OpenMetadataType.ENGINE.typeName,
                                                               null,
                                                               requestBody.getQualifiedName(),
-                                                              requestBody.getDisplayName(),
-                                                              requestBody.getDescription(),
+                                                              requestBody.getResourceName(),
+                                                              requestBody.getResourceDescription(),
                                                               requestBody.getDeployedImplementationType(),
                                                               requestBody.getVersion(),
                                                               requestBody.getPatchLevel(),

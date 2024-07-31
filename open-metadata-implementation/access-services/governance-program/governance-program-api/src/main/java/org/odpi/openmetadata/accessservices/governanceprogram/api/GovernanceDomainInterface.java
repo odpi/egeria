@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDomainElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDomainSetElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDomainElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDomainSetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDomainProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDomainSetProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

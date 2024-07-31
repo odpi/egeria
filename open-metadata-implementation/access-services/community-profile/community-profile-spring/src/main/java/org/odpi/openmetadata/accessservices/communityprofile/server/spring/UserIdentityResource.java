@@ -4,16 +4,9 @@ package org.odpi.openmetadata.accessservices.communityprofile.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityResponse;
+
 import org.odpi.openmetadata.accessservices.communityprofile.server.UserIdentityRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -207,11 +200,11 @@ public class UserIdentityResource
      */
     @PostMapping(path = "/user-identities/by-search-string")
 
-    public UserIdentityListResponse findUserIdentities(@PathVariable String                  serverName,
-                                                       @PathVariable String                  userId,
-                                                       @RequestParam int                     startFrom,
-                                                       @RequestParam int                     pageSize,
-                                                       @RequestBody  SearchStringRequestBody requestBody)
+    public UserIdentitiesResponse findUserIdentities(@PathVariable String                  serverName,
+                                                     @PathVariable String                  userId,
+                                                     @RequestParam int                     startFrom,
+                                                     @RequestParam int                     pageSize,
+                                                     @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findUserIdentities(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -234,11 +227,11 @@ public class UserIdentityResource
      */
     @PostMapping(path = "/user-identities/by-name")
 
-    public UserIdentityListResponse getUserIdentitiesByName(@PathVariable String          serverName,
-                                                            @PathVariable String          userId,
-                                                            @RequestParam int             startFrom,
-                                                            @RequestParam int             pageSize,
-                                                            @RequestBody  NameRequestBody requestBody)
+    public UserIdentitiesResponse getUserIdentitiesByName(@PathVariable String          serverName,
+                                                          @PathVariable String          userId,
+                                                          @RequestParam int             startFrom,
+                                                          @RequestParam int             pageSize,
+                                                          @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getUserIdentitiesByName(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -252,7 +245,6 @@ public class UserIdentityResource
      * @param userIdentityGUID unique identifier of the requested metadata element
      *
      * @return matching metadata element or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)

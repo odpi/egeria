@@ -4,21 +4,14 @@ package org.odpi.openmetadata.accessservices.datamanager.client;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.ExternalReferenceManagerInterface;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ExternalReferenceElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.ExternalReferenceProperties;
-import org.odpi.openmetadata.accessservices.datamanager.rest.ExternalReferenceLinkRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.ExternalReferenceRequestBody;
-import org.odpi.openmetadata.accessservices.datamanager.rest.ExternalReferenceResponse;
-import org.odpi.openmetadata.accessservices.datamanager.rest.ExternalReferencesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalReferenceElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 
 import java.util.List;
 
@@ -208,15 +201,16 @@ public class ExternalReferenceManagerClient implements ExternalReferenceManagerI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(properties.getResourceId(), qualifiedNameParameterName, methodName);
+        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix;
 
-        ExternalReferenceRequestBody requestBody = new ExternalReferenceRequestBody(properties);
+        LinkedExternalReferenceRequestBody requestBody = new LinkedExternalReferenceRequestBody();
 
         requestBody.setAnchorGUID(anchorGUID);
         requestBody.setLinkId(linkId);
         requestBody.setLinkDescription(linkDescription);
+        requestBody.setProperties(properties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -467,7 +461,7 @@ public class ExternalReferenceManagerClient implements ExternalReferenceManagerI
                                                                                               startFrom,
                                                                                               validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -515,7 +509,7 @@ public class ExternalReferenceManagerClient implements ExternalReferenceManagerI
                                                                                               startFrom,
                                                                                               validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -559,7 +553,7 @@ public class ExternalReferenceManagerClient implements ExternalReferenceManagerI
                                                                                              startFrom,
                                                                                              validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 }

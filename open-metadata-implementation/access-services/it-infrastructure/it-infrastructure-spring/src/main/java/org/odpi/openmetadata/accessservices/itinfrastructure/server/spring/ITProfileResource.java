@@ -4,19 +4,8 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ITProfileResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.ContactMethodRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.MetadataSourceRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UserIdentityListResponse;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UserIdentityRequestBody;
-import org.odpi.openmetadata.accessservices.itinfrastructure.rest.UserIdentityResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.accessservices.itinfrastructure.server.ITProfileRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,7 +57,7 @@ public class ITProfileResource
 
     public GUIDResponse createITProfile(@PathVariable String                  serverName,
                                         @PathVariable String                  userId,
-                                        @RequestBody  ITProfileRequestBody requestBody)
+                                        @RequestBody ITProfileRequestBody requestBody)
     {
         return restAPI.createITProfile(serverName, userId, requestBody);
     }
@@ -120,7 +109,7 @@ public class ITProfileResource
     public VoidResponse deleteITProfile(@PathVariable String                    serverName,
                                         @PathVariable String                    userId,
                                         @PathVariable String                    itProfileGUID,
-                                        @RequestBody  MetadataSourceRequestBody requestBody)
+                                        @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.deleteITProfile(serverName, userId, itProfileGUID, requestBody);
     }
@@ -170,7 +159,7 @@ public class ITProfileResource
     public VoidResponse deleteContactMethod(@PathVariable String                    serverName,
                                             @PathVariable String                    userId,
                                             @PathVariable String                    contactMethodGUID,
-                                            @RequestBody  MetadataSourceRequestBody requestBody)
+                                            @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.deleteContactMethod(serverName, userId, contactMethodGUID, requestBody);
     }
@@ -239,11 +228,11 @@ public class ITProfileResource
      */
     @PostMapping(path = "/profiles/by-name")
 
-    public ITProfileListResponse getITProfileByName(@PathVariable String          serverName,
-                                                    @PathVariable String          userId,
-                                                    @RequestParam int             startFrom,
-                                                    @RequestParam int             pageSize,
-                                                    @RequestBody  NameRequestBody requestBody)
+    public ITProfilesResponse getITProfileByName(@PathVariable String          serverName,
+                                                 @PathVariable String          userId,
+                                                 @RequestParam int             startFrom,
+                                                 @RequestParam int             pageSize,
+                                                 @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getITProfileByName(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -266,11 +255,11 @@ public class ITProfileResource
      */
     @PostMapping(path = "/profiles/by-search-string")
 
-    public ITProfileListResponse findITProfile(@PathVariable String                  serverName,
-                                               @PathVariable String                  userId,
-                                               @RequestParam int                     startFrom,
-                                               @RequestParam int                     pageSize,
-                                               @RequestBody  SearchStringRequestBody requestBody)
+    public ITProfilesResponse findITProfile(@PathVariable String                  serverName,
+                                            @PathVariable String                  userId,
+                                            @RequestParam int                     startFrom,
+                                            @RequestParam int                     pageSize,
+                                            @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findITProfile(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -344,7 +333,7 @@ public class ITProfileResource
     public VoidResponse deleteUserIdentity(@PathVariable String                    serverName,
                                            @PathVariable String                    userId,
                                            @PathVariable String                    userIdentityGUID,
-                                           @RequestBody  MetadataSourceRequestBody requestBody)
+                                           @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.deleteUserIdentity(serverName, userId, userIdentityGUID, requestBody);
     }
@@ -371,7 +360,7 @@ public class ITProfileResource
                                               @PathVariable String                    userId,
                                               @PathVariable String                    userIdentityGUID,
                                               @PathVariable String                    profileGUID,
-                                              @RequestBody  MetadataSourceRequestBody requestBody)
+                                              @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.addIdentityToProfile(serverName, userId, userIdentityGUID, profileGUID, requestBody);
     }
@@ -398,7 +387,7 @@ public class ITProfileResource
                                                   @PathVariable String                    userId,
                                                   @PathVariable String                    userIdentityGUID,
                                                   @PathVariable String                    profileGUID,
-                                                  @RequestBody  MetadataSourceRequestBody requestBody)
+                                                  @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeIdentityFromProfile(serverName, userId, userIdentityGUID, profileGUID, requestBody);
     }
@@ -421,11 +410,11 @@ public class ITProfileResource
      */
     @PostMapping(path = "/user-identities/by-search-string")
 
-    public UserIdentityListResponse findUserIdentities(@PathVariable String                  serverName,
-                                                       @PathVariable String                  userId,
-                                                       @RequestParam int                     startFrom,
-                                                       @RequestParam int                     pageSize,
-                                                       @RequestBody  SearchStringRequestBody requestBody)
+    public UserIdentitiesResponse findUserIdentities(@PathVariable String                  serverName,
+                                                     @PathVariable String                  userId,
+                                                     @RequestParam int                     startFrom,
+                                                     @RequestParam int                     pageSize,
+                                                     @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findUserIdentities(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -448,11 +437,11 @@ public class ITProfileResource
      */
     @PostMapping(path = "/user-identities/by-name")
 
-    public UserIdentityListResponse getUserIdentitiesByName(@PathVariable String          serverName,
-                                                            @PathVariable String          userId,
-                                                            @RequestParam int             startFrom,
-                                                            @RequestParam int             pageSize,
-                                                            @RequestBody  NameRequestBody requestBody)
+    public UserIdentitiesResponse getUserIdentitiesByName(@PathVariable String          serverName,
+                                                          @PathVariable String          userId,
+                                                          @RequestParam int             startFrom,
+                                                          @RequestParam int             pageSize,
+                                                          @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getUserIdentitiesByName(serverName, userId, startFrom, pageSize, requestBody);
     }

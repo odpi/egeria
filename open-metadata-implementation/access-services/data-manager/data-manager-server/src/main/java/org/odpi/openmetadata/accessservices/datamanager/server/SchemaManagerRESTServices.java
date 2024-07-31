@@ -4,32 +4,23 @@
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
 
-import org.odpi.openmetadata.accessservices.datamanager.converters.ElementStubConverter;
 import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerErrorCode;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaAttributeElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ValidValueSetElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaAttributeProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
-import org.odpi.openmetadata.accessservices.datamanager.rest.*;
+import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeBuilder;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -348,16 +339,16 @@ public class SchemaManagerRESTServices
             {
                 ValidValuesHandler<ValidValueSetElement> handler = instanceHandler.getValidValuesSetHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.getValidValueByName(userId,
-                                                                    requestBody.getName(),
-                                                                    nameParameterName,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    false,
-                                                                    false,
-                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
-                                                                    new Date(),
-                                                                    methodName));
+                response.setElements(handler.getValidValueByName(userId,
+                                                                 requestBody.getName(),
+                                                                 nameParameterName,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 false,
+                                                                 false,
+                                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                                 new Date(),
+                                                                 methodName));
             }
             else
             {
@@ -412,16 +403,16 @@ public class SchemaManagerRESTServices
             {
                 ValidValuesHandler<ValidValueSetElement> handler = instanceHandler.getValidValuesSetHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.findValidValues(userId,
-                                                                requestBody.getSearchString(),
-                                                                searchStringParameterName,
-                                                                startFrom,
-                                                                pageSize,
-                                                                false,
-                                                                false,
-                                                                instanceHandler.getSupportedZones(userId, serverName, methodName),
-                                                                new Date(),
-                                                                methodName));
+                response.setElements(handler.findValidValues(userId,
+                                                             requestBody.getSearchString(),
+                                                             searchStringParameterName,
+                                                             startFrom,
+                                                             pageSize,
+                                                             false,
+                                                             false,
+                                                             instanceHandler.getSupportedZones(userId, serverName, methodName),
+                                                             new Date(),
+                                                             methodName));
             }
             else
             {
@@ -1182,7 +1173,7 @@ public class SchemaManagerRESTServices
                                                                           new Date(),
                                                                           methodName);
 
-                response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, results, handler, methodName));
             }
             else
             {
@@ -1300,7 +1291,7 @@ public class SchemaManagerRESTServices
                                                                               new Date(),
                                                                               methodName);
 
-                response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, results, handler, methodName));
             }
             else
             {
@@ -2026,7 +2017,7 @@ public class SchemaManagerRESTServices
                                                                                     new Date(),
                                                                                     methodName);
 
-                response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, results, handler, methodName));
             }
         }
         catch (Exception error)
@@ -2086,7 +2077,7 @@ public class SchemaManagerRESTServices
                                                                                        new Date(),
                                                                                        methodName);
 
-            response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
+            response.setElements(setUpVendorProperties(userId, results, handler, methodName));
         }
         catch (Exception error)
         {
@@ -2155,7 +2146,7 @@ public class SchemaManagerRESTServices
                                                                                              new Date(),
                                                                                              methodName);
 
-                    response.setElementList(setUpVendorProperties(userId, results, handler, methodName));
+                    response.setElements(setUpVendorProperties(userId, results, handler, methodName));
                 }
             }
             else
@@ -2682,7 +2673,7 @@ public class SchemaManagerRESTServices
 
         if (element != null)
         {
-            SchemaAttributeProperties properties = element.getProperties();
+            SchemaAttributeProperties properties = element.getSchemaAttributeProperties();
 
             properties.setVendorProperties(handler.getVendorProperties(userId,
                                                                        element.getElementHeader().getGUID(),

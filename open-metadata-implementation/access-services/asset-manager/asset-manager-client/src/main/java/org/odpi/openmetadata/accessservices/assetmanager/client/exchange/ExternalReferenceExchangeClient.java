@@ -8,8 +8,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManage
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceLinkElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.ExternalReferenceLinkElementsResponse;
@@ -22,6 +20,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -498,7 +498,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-type?startFrom={2}&pageSize={3}";
 
-        ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
+        ExternalReferenceElementsResponse restResult = restClient.callMyExternalReferencesPostRESTCall(methodName,
                                                                                                      urlTemplate,
                                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID,
                                                                                                                                       assetManagerName,
@@ -561,7 +561,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-resource-id?startFrom={2}&pageSize={3}";
 
-        ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
+        ExternalReferenceElementsResponse restResult = restClient.callMyExternalReferencesPostRESTCall(methodName,
                                                                                                      urlTemplate,
                                                                                                      requestBody,
                                                                                                      serverName,
@@ -622,7 +622,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-url?startFrom={2}&pageSize={3}";
 
-        ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
+        ExternalReferenceElementsResponse restResult = restClient.callMyExternalReferencesPostRESTCall(methodName,
                                                                                                      urlTemplate,
                                                                                                      requestBody,
                                                                                                      serverName,
@@ -683,7 +683,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-name?startFrom={2}&pageSize={3}";
 
-        ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
+        ExternalReferenceElementsResponse restResult = restClient.callMyExternalReferencesPostRESTCall(methodName,
                                                                                                      urlTemplate,
                                                                                                      requestBody,
                                                                                                      serverName,
@@ -732,7 +732,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-asset-manager?startFrom={2}&pageSize={3}";
 
-        ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
+        ExternalReferenceElementsResponse restResult = restClient.callMyExternalReferencesPostRESTCall(methodName,
                                                                                                      urlTemplate,
                                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID,
                                                                                                                                       assetManagerName,
@@ -794,7 +794,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/by-search-string?startFrom={2}&pageSize={3}";
 
-        ExternalReferenceElementsResponse restResult = restClient.callExternalReferencesPostRESTCall(methodName,
+        ExternalReferenceElementsResponse restResult = restClient.callMyExternalReferencesPostRESTCall(methodName,
                                                                                                      urlTemplate,
                                                                                                      requestBody,
                                                                                                      serverName,
@@ -847,7 +847,7 @@ public class ExternalReferenceExchangeClient extends ExchangeClientBase implemen
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-references/attached-to/{2}?startFrom={3}&pageSize={4}";
 
-        ExternalReferenceLinkElementsResponse restResult = restClient.callExternalReferenceLinksPostRESTCall(methodName,
+        ExternalReferenceLinkElementsResponse restResult = restClient.callMyExternalReferenceLinksPostRESTCall(methodName,
                                                                                                              urlTemplate,
                                                                                                              getEffectiveTimeQueryRequestBody(assetManagerGUID,
                                                                                                                                               assetManagerName,

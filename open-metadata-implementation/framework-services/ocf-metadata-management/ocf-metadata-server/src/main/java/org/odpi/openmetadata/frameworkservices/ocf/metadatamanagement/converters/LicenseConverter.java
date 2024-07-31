@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters;
 
 
-import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.License;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -19,7 +19,7 @@ import java.lang.reflect.InvocationTargetException;
  * LicenseConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
  * EntityDetail object into an License bean.
  */
-public class LicenseConverter<B> extends OCFConverter<B>
+public class LicenseConverter<B> extends OMFConverter<B>
 {
     /**
      * Constructor

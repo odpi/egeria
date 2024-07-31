@@ -5,7 +5,7 @@ package org.odpi.openmetadata.viewservices.templatemanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateClassificationProperties;
 
 import java.util.List;
 import java.util.Map;

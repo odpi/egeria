@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabasePrimaryKeyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseColumnElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseTableElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseColumnProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabasePrimaryKeyProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcColumn;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcPrimaryKey;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Jdbc;
@@ -24,7 +24,8 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Transfers metadata of a column
  */
-public class ColumnTransfer implements Function<JdbcColumn, DatabaseColumnElement> {
+public class ColumnTransfer implements Function<JdbcColumn, DatabaseColumnElement>
+{
 
     private final Omas omas;
     private final AuditLog auditLog;
@@ -33,7 +34,8 @@ public class ColumnTransfer implements Function<JdbcColumn, DatabaseColumnElemen
     private final DatabaseTableElement omasTable;
 
     public ColumnTransfer(Omas omas, AuditLog auditLog, List<DatabaseColumnElement> omasColumns,
-                          List<JdbcPrimaryKey> jdbcPrimaryKeys, DatabaseTableElement omasTable) {
+                          List<JdbcPrimaryKey> jdbcPrimaryKeys, DatabaseTableElement omasTable)
+    {
         this.omas = omas;
         this.auditLog = auditLog;
         this.omasColumns = omasColumns;
@@ -49,7 +51,8 @@ public class ColumnTransfer implements Function<JdbcColumn, DatabaseColumnElemen
      * @return column
      */
     @Override
-    public DatabaseColumnElement apply(JdbcColumn jdbcColumn) {
+    public DatabaseColumnElement apply(JdbcColumn jdbcColumn)
+    {
         DatabaseColumnProperties columnProperties = buildColumnProperties(jdbcColumn, omasTable);
 
         Optional<DatabaseColumnElement> omasColumn = omasColumns.stream()

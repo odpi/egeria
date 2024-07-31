@@ -4,21 +4,21 @@ package org.odpi.openmetadata.accessservices.governanceprogram.samples.leadershi
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.client.UserIdentityManagement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ProfileIdentityElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceRoleManager;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceAppointee;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleAppointee;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleHistory;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceAppointee;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceRoleAppointee;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceRoleHistory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDomain;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceRoleProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProfileIdentityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
 import org.odpi.openmetadata.http.HttpHelper;
 
 
@@ -132,7 +132,7 @@ public class GovernanceLeadershipSample
         }
         else if (userIdentities.size() == 1)
         {
-            ProfileIdentityElement firstUser = userIdentities.get(0);
+            ProfileIdentityElement firstUser    = userIdentities.get(0);
             UserIdentityElement    userIdentity = firstUser.getUserIdentity();
             if (userIdentity == null)
             {

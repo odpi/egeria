@@ -2,17 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AssignmentScopeProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ResourceListProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.StakeholderProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StakeholderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -208,19 +205,19 @@ public class RelatedElementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedElementListResponse getMoreInformation(String serverName,
-                                                         String userId,
-                                                         String elementGUID,
-                                                         int    startFrom,
-                                                         int    pageSize)
+    public RelatedElementsResponse getMoreInformation(String serverName,
+                                                      String userId,
+                                                      String elementGUID,
+                                                      int    startFrom,
+                                                      int    pageSize)
     {
         final String methodName        = "getMoreInformation";
         final String guidPropertyName  = "elementGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -228,17 +225,17 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getMoreInformation(userId,
-                                                               elementGUID,
-                                                               guidPropertyName,
-                                                               OpenMetadataType.REFERENCEABLE.typeName,
-                                                               OpenMetadataType.REFERENCEABLE.typeName,
-                                                               startFrom,
-                                                               pageSize,
-                                                               false,
-                                                               false,
-                                                               new Date(),
-                                                               methodName));
+            response.setElements(handler.getMoreInformation(userId,
+                                                            elementGUID,
+                                                            guidPropertyName,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
+                                                            startFrom,
+                                                            pageSize,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
         }
         catch (Exception error)
         {
@@ -265,19 +262,19 @@ public class RelatedElementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  RelatedElementListResponse getDescriptiveElements(String serverName,
-                                                              String userId,
-                                                              String detailGUID,
-                                                              int    startFrom,
-                                                              int    pageSize)
+    public RelatedElementsResponse getDescriptiveElements(String serverName,
+                                                          String userId,
+                                                          String detailGUID,
+                                                          int    startFrom,
+                                                          int    pageSize)
     {
         final String methodName        = "getDescriptiveElements";
         final String guidPropertyName  = "detailGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                                                                           auditLog = null;
 
         try
         {
@@ -285,17 +282,17 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getDescriptiveElements(userId,
-                                                                   detailGUID,
-                                                                   guidPropertyName,
-                                                                   OpenMetadataType.REFERENCEABLE.typeName,
-                                                                   OpenMetadataType.REFERENCEABLE.typeName,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   false,
-                                                                   false,
-                                                                   new Date(),
-                                                                   methodName));
+            response.setElements(handler.getDescriptiveElements(userId,
+                                                                detailGUID,
+                                                                guidPropertyName,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
+                                                                startFrom,
+                                                                pageSize,
+                                                                false,
+                                                                false,
+                                                                new Date(),
+                                                                methodName));
         }
         catch (Exception error)
         {
@@ -345,9 +342,8 @@ public class RelatedElementRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof StakeholderProperties)
+                if (requestBody.getProperties() instanceof StakeholderProperties properties)
                 {
-                    StakeholderProperties properties = (StakeholderProperties) requestBody.getProperties();
 
                     handler.addStakeholder(userId,
                                            requestBody.getExternalSourceGUID(),
@@ -491,19 +487,19 @@ public class RelatedElementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  RelatedElementListResponse getStakeholders(String serverName,
-                                                       String userId,
-                                                       String elementGUID,
-                                                       int    startFrom,
-                                                       int    pageSize)
+    public RelatedElementsResponse getStakeholders(String serverName,
+                                                                                                              String userId,
+                                                                                                              String elementGUID,
+                                                                                                              int    startFrom,
+                                                                                                              int    pageSize)
     {
         final String methodName        = "getStakeholders";
         final String guidPropertyName  = "elementGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -511,17 +507,17 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getStakeholders(userId,
-                                                            elementGUID,
-                                                            guidPropertyName,
-                                                            OpenMetadataType.REFERENCEABLE.typeName,
-                                                            OpenMetadataType.REFERENCEABLE.typeName,
-                                                            startFrom,
-                                                            pageSize,
-                                                            false,
-                                                            false,
-                                                            new Date(),
-                                                            methodName));
+            response.setElements(handler.getStakeholders(userId,
+                                                         elementGUID,
+                                                         guidPropertyName,
+                                                         OpenMetadataType.REFERENCEABLE.typeName,
+                                                         OpenMetadataType.REFERENCEABLE.typeName,
+                                                         startFrom,
+                                                         pageSize,
+                                                         false,
+                                                         false,
+                                                         new Date(),
+                                                         methodName));
         }
         catch (Exception error)
         {
@@ -548,19 +544,19 @@ public class RelatedElementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  RelatedElementListResponse getStakeholderCommissionedElements(String serverName,
-                                                                          String userId,
-                                                                          String stakeholderGUID,
-                                                                          int    startFrom,
-                                                                          int    pageSize)
+    public RelatedElementsResponse getStakeholderCommissionedElements(String serverName,
+                                                                                                                                 String userId,
+                                                                                                                                 String stakeholderGUID,
+                                                                                                                                 int    startFrom,
+                                                                                                                                 int    pageSize)
     {
         final String methodName        = "getStakeholderCommissionedElements";
         final String guidPropertyName  = "stakeholderGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                                                                           auditLog = null;
 
         try
         {
@@ -568,17 +564,17 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getCommissionedByStakeholder(userId,
-                                                                         stakeholderGUID,
-                                                                         guidPropertyName,
-                                                                         OpenMetadataType.REFERENCEABLE.typeName,
-                                                                         OpenMetadataType.REFERENCEABLE.typeName,
-                                                                         startFrom,
-                                                                         pageSize,
-                                                                         false,
-                                                                         false,
-                                                                         new Date(),
-                                                                         methodName));
+            response.setElements(handler.getCommissionedByStakeholder(userId,
+                                                                      stakeholderGUID,
+                                                                      guidPropertyName,
+                                                                      OpenMetadataType.REFERENCEABLE.typeName,
+                                                                      OpenMetadataType.REFERENCEABLE.typeName,
+                                                                      startFrom,
+                                                                      pageSize,
+                                                                      false,
+                                                                      false,
+                                                                      new Date(),
+                                                                      methodName));
         }
         catch (Exception error)
         {
@@ -628,10 +624,8 @@ public class RelatedElementRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof AssignmentScopeProperties)
+                if (requestBody.getProperties() instanceof AssignmentScopeProperties properties)
                 {
-                    AssignmentScopeProperties properties = (AssignmentScopeProperties) requestBody.getProperties();
-
                     handler.addAssignmentScope(userId,
                                                requestBody.getExternalSourceGUID(),
                                                requestBody.getExternalSourceName(),
@@ -776,19 +770,19 @@ public class RelatedElementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  RelatedElementListResponse getAssignedScopes(String serverName,
-                                                         String userId,
-                                                         String elementGUID,
-                                                         int    startFrom,
-                                                         int    pageSize)
+    public RelatedElementsResponse getAssignedScopes(String serverName,
+                                                     String userId,
+                                                     String elementGUID,
+                                                     int    startFrom,
+                                                     int    pageSize)
     {
         final String methodName        = "getAssignedScopes";
         final String guidPropertyName  = "elementGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -796,17 +790,17 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getAssignmentScope(userId,
-                                                               elementGUID,
-                                                               guidPropertyName,
-                                                               OpenMetadataType.REFERENCEABLE.typeName,
-                                                               OpenMetadataType.REFERENCEABLE.typeName,
-                                                               startFrom,
-                                                               pageSize,
-                                                               false,
-                                                               false,
-                                                               new Date(),
-                                                               methodName));
+            response.setElements(handler.getAssignmentScope(userId,
+                                                            elementGUID,
+                                                            guidPropertyName,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
+                                                            startFrom,
+                                                            pageSize,
+                                                            false,
+                                                            false,
+                                                            new Date(),
+                                                            methodName));
         }
         catch (Exception error)
         {
@@ -833,19 +827,19 @@ public class RelatedElementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  RelatedElementListResponse getAssignedActors(String serverName,
-                                                         String userId,
-                                                         String scopeGUID,
-                                                         int    startFrom,
-                                                         int    pageSize)
+    public RelatedElementsResponse getAssignedActors(String serverName,
+                                                                                                                String userId,
+                                                                                                                String scopeGUID,
+                                                                                                                int    startFrom,
+                                                                                                                int    pageSize)
     {
         final String methodName        = "getAssignedActors";
         final String guidPropertyName  = "scopeGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                                                                           auditLog = null;
 
         try
         {
@@ -853,17 +847,17 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getAssignedActors(userId,
-                                                              scopeGUID,
-                                                              guidPropertyName,
-                                                              OpenMetadataType.REFERENCEABLE.typeName,
-                                                              OpenMetadataType.REFERENCEABLE.typeName,
-                                                              startFrom,
-                                                              pageSize,
-                                                              false,
-                                                              false,
-                                                              new Date(),
-                                                              methodName));
+            response.setElements(handler.getAssignedActors(userId,
+                                                           scopeGUID,
+                                                           guidPropertyName,
+                                                           OpenMetadataType.REFERENCEABLE.typeName,
+                                                           OpenMetadataType.REFERENCEABLE.typeName,
+                                                           startFrom,
+                                                           pageSize,
+                                                           false,
+                                                           false,
+                                                           new Date(),
+                                                           methodName));
         }
         catch (Exception error)
         {
@@ -1063,19 +1057,19 @@ public class RelatedElementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  RelatedElementListResponse getResourceList(String serverName,
-                                                       String userId,
-                                                       String elementGUID,
-                                                       int    startFrom,
-                                                       int    pageSize)
+    public RelatedElementsResponse getResourceList(String serverName,
+                                                   String userId,
+                                                   String elementGUID,
+                                                   int    startFrom,
+                                                   int    pageSize)
     {
         final String methodName        = "getResourceList";
         final String guidPropertyName  = "elementGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -1083,16 +1077,16 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getResourceList(userId,
-                                                            elementGUID,
-                                                            guidPropertyName,
-                                                            OpenMetadataType.REFERENCEABLE.typeName,
-                                                            startFrom,
-                                                            pageSize,
-                                                            false,
-                                                            false,
-                                                            new Date(),
-                                                            methodName));
+            response.setElements(handler.getResourceList(userId,
+                                                         elementGUID,
+                                                         guidPropertyName,
+                                                         OpenMetadataType.REFERENCEABLE.typeName,
+                                                         startFrom,
+                                                         pageSize,
+                                                         false,
+                                                         false,
+                                                         new Date(),
+                                                         methodName));
         }
         catch (Exception error)
         {
@@ -1119,11 +1113,11 @@ public class RelatedElementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  RelatedElementListResponse getSupportedByResource(String serverName,
-                                                              String userId,
-                                                              String resourceGUID,
-                                                              int    startFrom,
-                                                              int    pageSize)
+    public RelatedElementsResponse getSupportedByResource(String serverName,
+                                                                                                                     String userId,
+                                                                                                                     String resourceGUID,
+                                                                                                                     int    startFrom,
+                                                                                                                     int    pageSize)
     {
         final String methodName        = "getSupportedByResource";
         final String guidPropertyName  = "resourceGUID";
@@ -1131,8 +1125,8 @@ public class RelatedElementRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -1140,16 +1134,16 @@ public class RelatedElementRESTServices
 
             ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
 
-            response.setElementList(handler.getSupportedByResource(userId,
-                                                                   resourceGUID,
-                                                                   guidPropertyName,
-                                                                   OpenMetadataType.REFERENCEABLE.typeName,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   false,
-                                                                   false,
-                                                                   new Date(),
-                                                                   methodName));
+            response.setElements(handler.getSupportedByResource(userId,
+                                                                resourceGUID,
+                                                                guidPropertyName,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
+                                                                startFrom,
+                                                                pageSize,
+                                                                false,
+                                                                false,
+                                                                new Date(),
+                                                                methodName));
         }
         catch (Exception error)
         {

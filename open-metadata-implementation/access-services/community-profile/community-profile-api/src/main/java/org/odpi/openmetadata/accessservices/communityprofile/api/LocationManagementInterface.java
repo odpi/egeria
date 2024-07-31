@@ -2,15 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.LocationElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AdjacentLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.DigitalLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.FixedLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.LocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.NestedLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileLocationProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.SecureLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LocationElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AdjacentLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AssetLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.DigitalLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.NestedLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.ProfileLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.SecureLocationProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

@@ -5,12 +5,9 @@ package org.odpi.openmetadata.accessservices.datamanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.datamanager.rest.*;
+import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
 import org.odpi.openmetadata.accessservices.datamanager.server.ConnectionRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -137,7 +134,7 @@ public class ConnectionManagerResource
                                            @PathVariable String                    userId,
                                            @PathVariable String                    connectionGUID,
                                            @PathVariable String                    connectorTypeGUID,
-                                           @RequestBody  MetadataSourceRequestBody requestBody)
+                                           @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.setupConnectorType(serverName, userId, connectionGUID, connectorTypeGUID, requestBody);
     }
@@ -163,7 +160,7 @@ public class ConnectionManagerResource
                                            @PathVariable String                    userId,
                                            @PathVariable String                    connectionGUID,
                                            @PathVariable String                    connectorTypeGUID,
-                                           @RequestBody  MetadataSourceRequestBody requestBody)
+                                           @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.clearConnectorType(serverName, userId, connectionGUID, connectorTypeGUID, requestBody);
     }
@@ -189,7 +186,7 @@ public class ConnectionManagerResource
                                       @PathVariable String                    userId,
                                       @PathVariable String                    connectionGUID,
                                       @PathVariable String                    endpointGUID,
-                                      @RequestBody  MetadataSourceRequestBody requestBody)
+                                      @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.setupEndpoint(serverName, userId, connectionGUID, endpointGUID, requestBody);
     }
@@ -215,7 +212,7 @@ public class ConnectionManagerResource
                                       @PathVariable String                    userId,
                                       @PathVariable String                    connectionGUID,
                                       @PathVariable String                    endpointGUID,
-                                      @RequestBody  MetadataSourceRequestBody requestBody)
+                                      @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.clearEndpoint(serverName, userId, connectionGUID, endpointGUID, requestBody);
     }
@@ -267,7 +264,7 @@ public class ConnectionManagerResource
                                                 @PathVariable String                    userId,
                                                 @PathVariable String                    connectionGUID,
                                                 @PathVariable String                    embeddedConnectionGUID,
-                                                @RequestBody  MetadataSourceRequestBody requestBody)
+                                                @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.clearEmbeddedConnection(serverName, userId, connectionGUID, embeddedConnectionGUID, requestBody);
     }
@@ -319,7 +316,7 @@ public class ConnectionManagerResource
                                              @PathVariable String                    userId,
                                              @PathVariable String                    assetGUID,
                                              @PathVariable String                    connectionGUID,
-                                             @RequestBody  MetadataSourceRequestBody requestBody)
+                                             @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.clearAssetConnection(serverName, userId, assetGUID, connectionGUID, requestBody);
     }
@@ -344,7 +341,7 @@ public class ConnectionManagerResource
     public VoidResponse removeConnection(@PathVariable String                    serverName,
                                          @PathVariable String                    userId,
                                          @PathVariable String                    connectionGUID,
-                                         @RequestBody  MetadataSourceRequestBody requestBody)
+                                         @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeConnection(serverName, userId, connectionGUID, requestBody);
     }
@@ -523,7 +520,7 @@ public class ConnectionManagerResource
     public VoidResponse removeEndpoint(@PathVariable String                    serverName,
                                        @PathVariable String                    userId,
                                        @PathVariable String                    endpointGUID,
-                                       @RequestBody  MetadataSourceRequestBody requestBody)
+                                       @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeEndpoint(serverName, userId, endpointGUID, requestBody);
     }

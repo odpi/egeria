@@ -5,13 +5,13 @@ package org.odpi.openmetadata.accessservices.securitymanager.client;
 
 import org.odpi.openmetadata.accessservices.securitymanager.api.MetadataSourceInterface;
 import org.odpi.openmetadata.accessservices.securitymanager.client.rest.SecurityManagerRESTClient;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.*;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.SecurityManagerRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SecurityManagerRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SecurityManagerProperties;
 
 
 /**
@@ -141,8 +141,8 @@ public class MetadataSourceClient extends SecurityManagerBaseClient implements M
                                                 String                    externalSourceName,
                                                 String                    typeName,
                                                 SecurityManagerProperties securityManagerProperties) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
     {
         final String methodName                  = "createExternalSecurityManager";
         final String propertiesParameterName     = "fileSystemProperties";

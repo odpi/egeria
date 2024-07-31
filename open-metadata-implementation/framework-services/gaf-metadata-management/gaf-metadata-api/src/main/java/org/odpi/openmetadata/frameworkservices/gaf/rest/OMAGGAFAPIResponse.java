@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = ElementHeaderResponse.class, name = "ElementHeaderResponse"),
-                @JsonSubTypes.Type(value = ElementHeadersResponse.class, name = "ElementHeadersResponse"),
                 @JsonSubTypes.Type(value = OpenMetadataElementResponse.class, name = "OpenMetadataElementResponse"),
                 @JsonSubTypes.Type(value = OpenMetadataElementsResponse.class, name = "OpenMetadataElementsResponse"),
                 @JsonSubTypes.Type(value = RelatedMetadataElementListResponse.class, name = "RelatedMetadataElementListResponse"),

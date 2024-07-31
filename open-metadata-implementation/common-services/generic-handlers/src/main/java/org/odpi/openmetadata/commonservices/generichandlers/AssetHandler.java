@@ -640,6 +640,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         AssetBuilder builder = new AssetBuilder(qualifiedName,
                                                 name,
+                                                name,
                                                 versionIdentifier,
                                                 description,
                                                 deployedImplementationType,
@@ -766,9 +767,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name for this asset
-     * @param technicalName the stored name property for the asset
+     * @param name the stored name property for the asset
      * @param versionIdentifier the stored versionIdentifier property for the asset
-     * @param technicalDescription the stored description property associated with the asset
+     * @param resourceDescription the stored description property associated with the asset
      * @param deployedImplementationType type of technology
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeName name of the type that is a subtype of asset - or null to create standard type
@@ -789,9 +790,61 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            String               externalSourceGUID,
                                            String               externalSourceName,
                                            String               qualifiedName,
-                                           String               technicalName,
+                                           String               name,
                                            String               versionIdentifier,
-                                           String               technicalDescription,
+                                           String               resourceDescription,
+                                           String               deployedImplementationType,
+                                           Map<String, String>  additionalProperties,
+                                           String               typeName,
+                                           Map<String, Object>  extendedProperties,
+                                           InstanceStatus       instanceStatus,
+                                           Date                 effectiveFrom,
+                                           Date                 effectiveTo,
+                                           Date                 effectiveTime,
+                                           String               methodName) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        return createAssetInRepository(userId, externalSourceGUID, externalSourceName, qualifiedName, name, name,  versionIdentifier, resourceDescription, deployedImplementationType, additionalProperties, typeName, extendedProperties, instanceStatus, effectiveFrom, effectiveTo, effectiveTime, methodName);
+    }
+
+
+    /**
+     * Add a simple asset description to the metadata repository.  Null values for requested typename, ownership,
+     * zone membership and latest change are filled in with default values.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID unique identifier of software capability representing the caller
+     * @param externalSourceName unique name of software capability representing the caller
+     * @param qualifiedName unique name for this asset
+     * @param name the stored name property for the asset
+     * @param resourceName the full name from the resource
+     * @param versionIdentifier the stored versionIdentifier property for the asset
+     * @param resourceDescription the stored description property associated with the asset
+     * @param deployedImplementationType type of technology
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of asset - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param instanceStatus initial status of the Asset in the metadata repository
+     * @param effectiveFrom      starting time for this relationship (null for all time)
+     * @param effectiveTo        ending time for this relationship (null for all time)
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new asset
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String  createAssetInRepository(String               userId,
+                                           String               externalSourceGUID,
+                                           String               externalSourceName,
+                                           String               qualifiedName,
+                                           String               name,
+                                           String               resourceName,
+                                           String               versionIdentifier,
+                                           String               resourceDescription,
                                            String               deployedImplementationType,
                                            Map<String, String>  additionalProperties,
                                            String               typeName,
@@ -818,9 +871,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                       repositoryHelper);
 
         AssetBuilder builder = new AssetBuilder(qualifiedName,
-                                                technicalName,
+                                                name,
+                                                resourceName,
                                                 versionIdentifier,
-                                                technicalDescription,
+                                                resourceDescription,
                                                 deployedImplementationType,
                                                 additionalProperties,
                                                 assetTypeId,
@@ -860,9 +914,9 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceName unique name of software capability representing the caller
      * @param assetGUIDParameterName parameter name of the resulting asset's GUID
      * @param assetQualifiedName unique name for this asset
-     * @param technicalName the stored name property for the asset
+     * @param name the stored name property for the asset
      * @param versionIdentifier the stored versionIdentifier property for the asset
-     * @param technicalDescription the stored description property associated with the asset
+     * @param resourceDescription the stored description property associated with the asset
      * @param deployedImplementationType type of technology
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param assetTypeName name of the type that is a subtype of asset - or null to create standard type
@@ -894,9 +948,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                              String              externalSourceName,
                                              String              assetGUIDParameterName,
                                              String              assetQualifiedName,
-                                             String              technicalName,
+                                             String              name,
+                                             String              resourceName,
                                              String              versionIdentifier,
-                                             String              technicalDescription,
+                                             String              resourceDescription,
                                              String              deployedImplementationType,
                                              Map<String, String> additionalProperties,
                                              String              assetTypeName,
@@ -922,9 +977,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                         externalSourceGUID,
                                                         externalSourceName,
                                                         assetQualifiedName,
-                                                        technicalName,
+                                                        name,
+                                                        resourceName,
                                                         versionIdentifier,
-                                                        technicalDescription,
+                                                        resourceDescription,
                                                         deployedImplementationType,
                                                         additionalProperties,
                                                         assetTypeName,
@@ -973,7 +1029,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param assetGUID unique identifier of the metadata element to update
      * @param assetGUIDParameterName parameter name that supplied the assetGUID
      * @param qualifiedName unique name for this database
-     * @param technicalName the stored name property for the asset
+     * @param name the stored name property for the asset
+     * @param resourceName full name of the resource
      * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param technicalDescription the stored description property associated with the asset
      * @param deployedImplementationType type of technology
@@ -998,7 +1055,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                             String               assetGUID,
                             String               assetGUIDParameterName,
                             String               qualifiedName,
-                            String               technicalName,
+                            String               name,
+                            String               resourceName,
                             String               versionIdentifier,
                             String               technicalDescription,
                             String               deployedImplementationType,
@@ -1027,7 +1085,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          assetGUID,
                          assetGUIDParameterName,
                          qualifiedName,
-                         technicalName,
+                         name,
+                         resourceName,
                          versionIdentifier,
                          technicalDescription,
                          deployedImplementationType,
@@ -1106,6 +1165,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          assetGUIDParameterName,
                          qualifiedName,
                          technicalName,
+                         technicalName,
                          versionIdentifier,
                          technicalDescription,
                          deployedImplementationType,
@@ -1124,6 +1184,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
     }
 
 
+
+
     /**
      * Update an asset's properties.
      *
@@ -1133,9 +1195,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param assetGUID unique identifier of the metadata element to update
      * @param assetGUIDParameterName parameter name that supplied the assetGUID
      * @param qualifiedName unique name for this database
-     * @param technicalName the stored name property for the asset
+     * @param name the stored name property for the asset
+     * @param resourceName full name of the resource
      * @param versionIdentifier the stored versionIdentifier property for the asset
-     * @param technicalDescription the stored description property associated with the asset
+     * @param resourceDescription the stored description property associated with the asset
      * @param deployedImplementationType type of technology
      * @param additionalProperties any arbitrary properties not part of the type system
      * @param typeGUID identifier of the type that is a subtype of Asset - or null to create standard type
@@ -1160,9 +1223,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                             String               assetGUID,
                             String               assetGUIDParameterName,
                             String               qualifiedName,
-                            String               technicalName,
+                            String               name,
+                            String               resourceName,
                             String               versionIdentifier,
-                            String               technicalDescription,
+                            String               resourceDescription,
                             String               deployedImplementationType,
                             Map<String, String>  additionalProperties,
                             String               typeGUID,
@@ -1180,9 +1244,10 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                     PropertyServerException
     {
         AssetBuilder builder = new AssetBuilder(qualifiedName,
-                                                technicalName,
+                                                name,
+                                                resourceName,
                                                 versionIdentifier,
-                                                technicalDescription,
+                                                resourceDescription,
                                                 deployedImplementationType,
                                                 additionalProperties,
                                                 typeGUID,
@@ -1220,7 +1285,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param assetGUID unique identifier of the metadata element to update
      * @param assetGUIDParameterName parameter name that supplied the assetGUID
      * @param qualifiedName unique name for this asset
-     * @param name the stored name property for the asset
+     * @param name the short name property for the asset
+     * @param resourceName the resource name property for the asset
      * @param versionIdentifier the stored versionIdentifier property for the asset
      * @param description the stored description property associated with the asset
      * @param deployedImplementationType type of technology
@@ -1251,6 +1317,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                           String               assetGUIDParameterName,
                                           String               qualifiedName,
                                           String               name,
+                                          String               resourceName,
                                           String               versionIdentifier,
                                           String               description,
                                           String               deployedImplementationType,
@@ -1278,6 +1345,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                          assetGUIDParameterName,
                          qualifiedName,
                          name,
+                         resourceName,
                          versionIdentifier,
                          description,
                          deployedImplementationType,

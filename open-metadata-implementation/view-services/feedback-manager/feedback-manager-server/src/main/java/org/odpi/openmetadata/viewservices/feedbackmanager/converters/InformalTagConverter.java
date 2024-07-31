@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadata
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.viewservices.feedbackmanager.metadataelements.InformalTagElement;
-import org.odpi.openmetadata.viewservices.feedbackmanager.properties.InformalTagProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
 
 import java.lang.reflect.InvocationTargetException;
 

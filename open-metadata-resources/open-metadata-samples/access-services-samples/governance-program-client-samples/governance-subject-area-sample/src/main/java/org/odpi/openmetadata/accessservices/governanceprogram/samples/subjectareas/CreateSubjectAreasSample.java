@@ -6,21 +6,15 @@ import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceD
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceMetricsManager;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramReviewManager;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.SubjectAreaManager;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionGraph;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceMetricElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaDefinition;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.SubjectAreaElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceMetricProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaClassificationProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.SubjectAreaProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMetricProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaProperties;
 import org.odpi.openmetadata.http.HttpHelper;
 
 import java.util.ArrayList;

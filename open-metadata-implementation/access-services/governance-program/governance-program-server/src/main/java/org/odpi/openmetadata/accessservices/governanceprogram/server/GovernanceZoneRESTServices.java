@@ -3,27 +3,18 @@
 
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
-import org.odpi.openmetadata.accessservices.governanceprogram.converters.ElementStubConverter;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneDefinition;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneDefinitionResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceZoneResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.commonservices.generichandlers.ElementStubConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceZoneHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.LoggerFactory;
@@ -83,12 +74,10 @@ public class GovernanceZoneRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceZoneProperties)
+                if (requestBody.getProperties() instanceof GovernanceZoneProperties properties)
                 {
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                     GovernanceZoneHandler<GovernanceZoneElement> handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
-
-                    GovernanceZoneProperties properties = (GovernanceZoneProperties) requestBody.getProperties();
 
                     String zoneGUID = handler.createGovernanceZone(userId,
                                                                    requestBody.getExternalSourceGUID(),
@@ -758,18 +747,18 @@ public class GovernanceZoneRESTServices
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public GovernanceZoneListResponse getGovernanceZonesForDomain(String serverName,
-                                                                  String userId,
-                                                                  int    domainIdentifier,
-                                                                  int    startFrom,
-                                                                  int    pageSize)
+    public GovernanceZonesResponse getGovernanceZonesForDomain(String serverName,
+                                                               String userId,
+                                                               int    domainIdentifier,
+                                                               int    startFrom,
+                                                               int    pageSize)
     {
         final String methodName = "getGovernanceZonesForDomain";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceZoneListResponse response = new GovernanceZoneListResponse();
-        AuditLog                   auditLog = null;
+        GovernanceZonesResponse response = new GovernanceZonesResponse();
+        AuditLog                auditLog = null;
 
         try
         {

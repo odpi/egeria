@@ -4,12 +4,8 @@ package org.odpi.openmetadata.platformservices.client;
 
 
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
-import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.OCFConnectorTypeResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -181,7 +177,7 @@ class PlatformServicesRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a ConnectorTypeResponse object.
+     * Issue a GET REST call that returns a OCFConnectorTypeResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
@@ -192,13 +188,13 @@ class PlatformServicesRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ConnectorTypeResponse callConnectorTypeGetRESTCall(String    methodName,
-                                                       String    urlTemplate,
-                                                       Object... params) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public OCFConnectorTypeResponse callOCFConnectorTypeGetRESTCall(String methodName,
+                                                                    String urlTemplate,
+                                                                    Object... params) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
-        ConnectorTypeResponse restResult = this.callGetRESTCall(methodName, ConnectorTypeResponse.class, urlTemplate, params);
+        OCFConnectorTypeResponse restResult = this.callGetRESTCall(methodName, OCFConnectorTypeResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -208,7 +204,7 @@ class PlatformServicesRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a ConnectorTypeListResponse object.
+     * Issue a GET REST call that returns a OCFConnectorTypesResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
@@ -219,13 +215,13 @@ class PlatformServicesRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ConnectorTypeListResponse callConnectorTypeListGetRESTCall(String    methodName,
+    OCFConnectorTypesResponse callConnectorTypeListGetRESTCall(String    methodName,
                                                                String    urlTemplate,
                                                                Object... params) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        ConnectorTypeListResponse restResult = this.callGetRESTCall(methodName, ConnectorTypeListResponse.class, urlTemplate, params);
+        OCFConnectorTypesResponse restResult = this.callGetRESTCall(methodName, OCFConnectorTypesResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -428,24 +424,24 @@ class PlatformServicesRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a ConnectionResponse object.
+     * Issue a GET REST call that returns a OCFConnectionResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return ConnectionResponse
+     * @return OCFConnectionResponse
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    ConnectionResponse callConnectionGetRESTCall(String    methodName,
-                                                 String    urlTemplate,
-                                                 Object... params) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    OCFConnectionResponse callOCFConnectionGetRESTCall(String    methodName,
+                                                       String    urlTemplate,
+                                                       Object... params) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        ConnectionResponse restResult = this.callGetRESTCall(methodName, ConnectionResponse.class, urlTemplate, params);
+        OCFConnectionResponse restResult = this.callGetRESTCall(methodName, OCFConnectionResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

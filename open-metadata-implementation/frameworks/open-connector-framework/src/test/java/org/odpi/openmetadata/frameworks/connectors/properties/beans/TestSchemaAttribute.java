@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -18,9 +20,9 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestSchemaAttribute
 {
-    private ElementType                       type                 = new ElementType();
-    private List<ElementClassification>       classifications      = new ArrayList<>();
-    private Map<String, String>               additionalProperties = new HashMap<>();
+    private ElementType                 type                 = new ElementType();
+    private List<ElementClassification> classifications      = new ArrayList<>();
+    private Map<String, String>         additionalProperties = new HashMap<>();
     private SchemaType                        schemaElement        = new PrimitiveSchemaType();
     private List<SchemaAttributeRelationship> relationships        = new ArrayList<>();
 
@@ -262,7 +264,7 @@ public class TestSchemaAttribute
         /*
          * Through superclass
          */
-        PropertyBase propertyBase = getTestObject();
+        ElementBase propertyBase = getTestObject();
 
         try
         {
@@ -275,7 +277,7 @@ public class TestSchemaAttribute
 
         try
         {
-            validateResultObject((SchemaAttribute) objectMapper.readValue(jsonString, PropertyBase.class));
+            validateResultObject((SchemaAttribute) objectMapper.readValue(jsonString, ElementBase.class));
         }
         catch (Throwable  exc)
         {

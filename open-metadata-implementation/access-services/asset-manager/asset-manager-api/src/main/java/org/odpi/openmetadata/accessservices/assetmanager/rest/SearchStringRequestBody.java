@@ -104,12 +104,9 @@ public class SearchStringRequestBody extends EffectiveTimeQueryRequestBody
     public String toString()
     {
         return "SearchStringRequestBody{" +
-                       "searchString='" + searchString + '\'' +
-                       ", searchStringParameterName='" + searchStringParameterName + '\'' +
-                       ", effectiveTime=" + getEffectiveTime() +
-                       ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
-                       ", assetManagerName='" + getAssetManagerName() + '\'' +
-                       '}';
+                "searchString='" + searchString + '\'' +
+                ", searchStringParameterName='" + searchStringParameterName + '\'' +
+                "} " + super.toString();
     }
 
 

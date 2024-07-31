@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.client.DuplicateManagem
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceActionProcessInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceActionTypeInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 
@@ -970,9 +971,9 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     @Override
     public String createGovernanceActionProcess(String                            userId,
                                                 GovernanceActionProcessProperties processProperties,
-                                                ProcessStatus                     initialStatus) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+                                                ProcessStatus initialStatus) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         final String methodName = "createGovernanceActionProcess";
         final String propertiesParameterName = "processProperties";

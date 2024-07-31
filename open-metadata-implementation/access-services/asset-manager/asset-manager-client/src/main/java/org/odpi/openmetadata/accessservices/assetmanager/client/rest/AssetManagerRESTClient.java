@@ -91,62 +91,6 @@ public class AssetManagerRESTClient extends FFDCRESTClient
 
 
     /**
-     * Issue a POST REST call that returns a ElementStubsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ElementStubsResponse callElementStubsPostRESTCall(String    methodName,
-                                                             String    urlTemplate,
-                                                             Object    requestBody,
-                                                             Object... params) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
-    {
-        ElementStubsResponse restResult = this.callPostRESTCall(methodName, ElementStubsResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a RelatedElementsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public RelatedElementsResponse callRelatedElementsPostRESTCall(String    methodName,
-                                                                   String    urlTemplate,
-                                                                   Object    requestBody,
-                                                                   Object... params) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
-    {
-        RelatedElementsResponse restResult = this.callPostRESTCall(methodName, RelatedElementsResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
      * Issue a POST REST call that returns a GovernanceDefinitionsResponse object.
      *
      * @param methodName  name of the method being called.
@@ -159,12 +103,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public GovernanceDefinitionsResponse callGovernanceDefinitionsPostRESTCall(String    methodName,
-                                                                               String    urlTemplate,
-                                                                               Object    requestBody,
-                                                                               Object... params) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+    public GovernanceDefinitionsResponse callMyGovernanceDefinitionsPostRESTCall(String    methodName,
+                                                                                 String    urlTemplate,
+                                                                                 Object    requestBody,
+                                                                                 Object... params) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
     {
         GovernanceDefinitionsResponse restResult = this.callPostRESTCall(methodName, GovernanceDefinitionsResponse.class, urlTemplate, requestBody, params);
 
@@ -172,6 +116,179 @@ public class AssetManagerRESTClient extends FFDCRESTClient
 
         return restResult;
     }
+
+    /**
+     * Issue a POST REST call that returns a ConnectionsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ConnectionsResponse callMyConnectionsPostRESTCall(String    methodName,
+                                                             String    urlTemplate,
+                                                             Object    requestBody,
+                                                             Object... params) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        ConnectionsResponse restResult = this.callPostRESTCall(methodName, ConnectionsResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a ConnectionsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ConnectionResponse callMyConnectionPostRESTCall(String    methodName,
+                                                           String    urlTemplate,
+                                                           Object    requestBody,
+                                                           Object... params) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        ConnectionResponse restResult = this.callPostRESTCall(methodName, ConnectionResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
+     * Issue a POST REST call that returns a ConnectorTypeResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ConnectorTypeResponse callMyConnectorTypePostRESTCall(String    methodName,
+                                                                   String    urlTemplate,
+                                                                   Object    requestBody,
+                                                                   Object... params) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        ConnectorTypeResponse restResult = this.callPostRESTCall(methodName, ConnectorTypeResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
+     * Issue a POST REST call that returns a ConnectorTypesResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public ConnectorTypesResponse callMyConnectorTypesPostRESTCall(String    methodName,
+                                                                   String    urlTemplate,
+                                                                   Object    requestBody,
+                                                                   Object... params) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        ConnectorTypesResponse restResult = this.callPostRESTCall(methodName, ConnectorTypesResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a EndpointsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public EndpointsResponse callMyEndpointsPostRESTCall(String    methodName,
+                                                         String    urlTemplate,
+                                                         Object    requestBody,
+                                                         Object... params) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        EndpointsResponse restResult = this.callPostRESTCall(methodName, EndpointsResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+
+    /**
+     * Issue a POST REST call that returns a EndpointResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public EndpointResponse callMyEndpointPostRESTCall(String    methodName,
+                                                         String    urlTemplate,
+                                                         Object    requestBody,
+                                                         Object... params) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        EndpointResponse restResult = this.callPostRESTCall(methodName, EndpointResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
 
 
     /**
@@ -215,12 +332,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public ExternalReferenceElementsResponse callExternalReferencesPostRESTCall(String    methodName,
-                                                                                String    urlTemplate,
-                                                                                Object    requestBody,
-                                                                                Object... params) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException
+    public ExternalReferenceElementsResponse callMyExternalReferencesPostRESTCall(String    methodName,
+                                                                                  String    urlTemplate,
+                                                                                  Object    requestBody,
+                                                                                  Object... params) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         ExternalReferenceElementsResponse restResult = this.callPostRESTCall(methodName, ExternalReferenceElementsResponse.class, urlTemplate, requestBody, params);
 
@@ -243,12 +360,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public ExternalReferenceLinkElementsResponse callExternalReferenceLinksPostRESTCall(String    methodName,
-                                                                                        String    urlTemplate,
-                                                                                        Object    requestBody,
-                                                                                        Object... params) throws InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 PropertyServerException
+    public ExternalReferenceLinkElementsResponse callMyExternalReferenceLinksPostRESTCall(String    methodName,
+                                                                                          String    urlTemplate,
+                                                                                          Object    requestBody,
+                                                                                          Object... params) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
     {
         ExternalReferenceLinkElementsResponse restResult = this.callPostRESTCall(methodName, ExternalReferenceLinkElementsResponse.class, urlTemplate, requestBody, params);
 
@@ -256,6 +373,123 @@ public class AssetManagerRESTClient extends FFDCRESTClient
 
         return restResult;
     }
+
+
+    /**
+     * Issue a POST REST call that returns a SchemaTypeElementResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public SchemaTypeElementResponse callMySchemaTypePostRESTCall(String    methodName,
+                                                                  String    urlTemplate,
+                                                                  Object    requestBody,
+                                                                  Object... params) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        SchemaTypeElementResponse restResult = this.callPostRESTCall(methodName, SchemaTypeElementResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
+     * Issue a POST REST call that returns a SchemaTypeElementsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public SchemaTypeElementsResponse callMySchemaTypesPostRESTCall(String    methodName,
+                                                                    String    urlTemplate,
+                                                                    Object    requestBody,
+                                                                    Object... params) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        SchemaTypeElementsResponse restResult = this.callPostRESTCall(methodName, SchemaTypeElementsResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+
+    /**
+     * Issue a POST REST call that returns a SchemaAttributeElementResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public SchemaAttributeElementResponse callMySchemaAttributePostRESTCall(String    methodName,
+                                                                            String    urlTemplate,
+                                                                            Object    requestBody,
+                                                                            Object... params) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        SchemaAttributeElementResponse restResult = this.callPostRESTCall(methodName, SchemaAttributeElementResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
+     * Issue a POST REST call that returns a SchemaAttributeElementsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public SchemaAttributeElementsResponse callMySchemaAttributesPostRESTCall(String    methodName,
+                                                                              String    urlTemplate,
+                                                                              Object    requestBody,
+                                                                              Object... params) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        SchemaAttributeElementsResponse restResult = this.callPostRESTCall(methodName, SchemaAttributeElementsResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
 
 
     /**
@@ -271,12 +505,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public InformalTagsResponse callInformalTagListPostRESTCall(String    methodName,
-                                                                String    urlTemplate,
-                                                                Object    requestBody,
-                                                                Object... params) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public InformalTagsResponse callMyInformalTagListPostRESTCall(String    methodName,
+                                                                  String    urlTemplate,
+                                                                  Object    requestBody,
+                                                                  Object... params) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         InformalTagsResponse restResult = this.callPostRESTCall(methodName, InformalTagsResponse.class, urlTemplate, requestBody, params);
 
@@ -298,11 +532,11 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public InformalTagResponse callInformalTagGetRESTCall(String    methodName,
-                                                          String    urlTemplate,
-                                                          Object... params) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public InformalTagResponse callMyInformalTagGetRESTCall(String    methodName,
+                                                            String    urlTemplate,
+                                                            Object... params) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         InformalTagResponse restResult = this.callGetRESTCall(methodName, InformalTagResponse.class, urlTemplate, params);
 
@@ -515,12 +749,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public NoteLogElementsResponse callNoteLogElementsPostRESTCall(String    methodName,
-                                                                   String    urlTemplate,
-                                                                   Object    requestBody,
-                                                                   Object... params) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public NoteLogElementsResponse callMyNoteLogElementsPostRESTCall(String    methodName,
+                                                                     String    urlTemplate,
+                                                                     Object    requestBody,
+                                                                     Object... params) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         NoteLogElementsResponse restResult = this.callPostRESTCall(methodName, NoteLogElementsResponse.class, urlTemplate, requestBody, params);
 
@@ -543,12 +777,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public NoteLogElementResponse callNoteLogElementPostRESTCall(String    methodName,
-                                                                 String    urlTemplate,
-                                                                 Object    requestBody,
-                                                                 Object... params) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public NoteLogElementResponse callMyNoteLogElementPostRESTCall(String    methodName,
+                                                                   String    urlTemplate,
+                                                                   Object    requestBody,
+                                                                   Object... params) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         NoteLogElementResponse restResult = this.callPostRESTCall(methodName, NoteLogElementResponse.class, urlTemplate, requestBody, params);
 
@@ -572,12 +806,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public NoteElementsResponse callNoteElementsPostRESTCall(String    methodName,
-                                                             String    urlTemplate,
-                                                             Object    requestBody,
-                                                             Object... params) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public NoteElementsResponse callMyNoteElementsPostRESTCall(String    methodName,
+                                                               String    urlTemplate,
+                                                               Object    requestBody,
+                                                               Object... params) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         NoteElementsResponse restResult = this.callPostRESTCall(methodName, NoteElementsResponse.class, urlTemplate, requestBody, params);
 
@@ -600,12 +834,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public NoteElementResponse callNoteElementPostRESTCall(String    methodName,
-                                                           String    urlTemplate,
-                                                           Object    requestBody,
-                                                           Object... params) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public NoteElementResponse callMyNoteElementPostRESTCall(String    methodName,
+                                                             String    urlTemplate,
+                                                             Object    requestBody,
+                                                             Object... params) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         NoteElementResponse restResult = this.callPostRESTCall(methodName, NoteElementResponse.class, urlTemplate, requestBody, params);
 
@@ -628,12 +862,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public GlossaryElementResponse callGlossaryPostRESTCall(String    methodName,
-                                                            String    urlTemplate,
-                                                            Object    requestBody,
-                                                            Object... params) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public GlossaryElementResponse callMyGlossaryPostRESTCall(String    methodName,
+                                                              String    urlTemplate,
+                                                              Object    requestBody,
+                                                              Object... params) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         GlossaryElementResponse restResult = this.callPostRESTCall(methodName, GlossaryElementResponse.class, urlTemplate, requestBody, params);
 
@@ -656,12 +890,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public GlossaryElementsResponse callGlossariesPostRESTCall(String    methodName,
-                                                               String    urlTemplate,
-                                                               Object    requestBody,
-                                                               Object... params) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public GlossaryElementsResponse callMyGlossariesPostRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object    requestBody,
+                                                                 Object... params) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         GlossaryElementsResponse restResult = this.callPostRESTCall(methodName, GlossaryElementsResponse.class, urlTemplate, requestBody, params);
 
@@ -684,12 +918,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public GlossaryCategoryElementResponse callGlossaryCategoryPostRESTCall(String    methodName,
-                                                                            String    urlTemplate,
-                                                                            Object    requestBody,
-                                                                            Object... params) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+    public GlossaryCategoryElementResponse callMyGlossaryCategoryPostRESTCall(String    methodName,
+                                                                              String    urlTemplate,
+                                                                              Object    requestBody,
+                                                                              Object... params) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         GlossaryCategoryElementResponse restResult = this.callPostRESTCall(methodName, GlossaryCategoryElementResponse.class, urlTemplate, requestBody, params);
 
@@ -712,12 +946,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public GlossaryCategoryElementsResponse callGlossaryCategoriesPostRESTCall(String    methodName,
-                                                                               String    urlTemplate,
-                                                                               Object    requestBody,
-                                                                               Object... params) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+    public GlossaryCategoryElementsResponse callMyGlossaryCategoriesPostRESTCall(String    methodName,
+                                                                                 String    urlTemplate,
+                                                                                 Object    requestBody,
+                                                                                 Object... params) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
     {
         GlossaryCategoryElementsResponse restResult = this.callPostRESTCall(methodName, GlossaryCategoryElementsResponse.class, urlTemplate, requestBody, params);
 
@@ -740,12 +974,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public GlossaryTermElementResponse callGlossaryTermPostRESTCall(String    methodName,
-                                                                    String    urlTemplate,
-                                                                    Object    requestBody,
-                                                                    Object... params) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public GlossaryTermElementResponse callMyGlossaryTermPostRESTCall(String    methodName,
+                                                                      String    urlTemplate,
+                                                                      Object    requestBody,
+                                                                      Object... params) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         GlossaryTermElementResponse restResult = this.callPostRESTCall(methodName, GlossaryTermElementResponse.class, urlTemplate, requestBody, params);
 
@@ -768,12 +1002,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public GlossaryTermElementsResponse callGlossaryTermsPostRESTCall(String    methodName,
-                                                                      String    urlTemplate,
-                                                                      Object    requestBody,
-                                                                      Object... params) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+    public GlossaryTermElementsResponse callMyGlossaryTermsPostRESTCall(String    methodName,
+                                                                        String    urlTemplate,
+                                                                        Object    requestBody,
+                                                                        Object... params) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         GlossaryTermElementsResponse restResult = this.callPostRESTCall(methodName, GlossaryTermElementsResponse.class, urlTemplate, requestBody, params);
 
@@ -796,305 +1030,18 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public ExternalGlossaryLinkElementsResponse callExternalGlossaryLinksPostRESTCall(String    methodName,
-                                                                                      String    urlTemplate,
-                                                                                      Object    requestBody,
-                                                                                      Object... params) throws InvalidParameterException,
-                                                                                                               UserNotAuthorizedException,
-                                                                                                               PropertyServerException
+    public ExternalGlossaryLinkElementsResponse callMyExternalGlossaryLinksPostRESTCall(String    methodName,
+                                                                                        String    urlTemplate,
+                                                                                        Object    requestBody,
+                                                                                        Object... params) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException
     {
         ExternalGlossaryLinkElementsResponse restResult = this.callPostRESTCall(methodName,
                                                                                 ExternalGlossaryLinkElementsResponse.class,
                                                                                 urlTemplate,
                                                                                 requestBody,
                                                                                 params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a ElementHeaderResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ElementHeaderResponse callElementHeaderPostRESTCall(String    methodName,
-                                                               String    urlTemplate,
-                                                               Object    requestBody,
-                                                               Object... params) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
-    {
-        ElementHeaderResponse restResult = this.callPostRESTCall(methodName,
-                                                                 ElementHeaderResponse.class,
-                                                                 urlTemplate,
-                                                                 requestBody,
-                                                                 params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a ElementHeadersResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ElementHeadersResponse callElementHeadersPostRESTCall(String    methodName,
-                                                                 String    urlTemplate,
-                                                                 Object    requestBody,
-                                                                 Object... params) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
-    {
-        ElementHeadersResponse restResult = this.callPostRESTCall(methodName,
-                                                                  ElementHeadersResponse.class,
-                                                                  urlTemplate,
-                                                                  requestBody,
-                                                                  params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-
-    /**
-     * Issue a GET REST call that returns a ConnectionResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return ConnectionResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ConnectionResponse callConnectionGetRESTCall(String    methodName,
-                                                        String    urlTemplate,
-                                                        Object... params) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
-    {
-        ConnectionResponse restResult = this.callGetRESTCall(methodName, ConnectionResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a ConnectionsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return ConnectionsResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ConnectionsResponse callConnectionsGetRESTCall(String    methodName,
-                                                          String    urlTemplate,
-                                                          Object... params) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
-    {
-        ConnectionsResponse restResult = this.callGetRESTCall(methodName, ConnectionsResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-
-    /**
-     * Issue a POST REST call that returns a ConnectionResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody properties describing the valid value definition/set
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return ConnectionResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ConnectionResponse callConnectionPostRESTCall(String    methodName,
-                                                         String    urlTemplate,
-                                                         Object    requestBody,
-                                                         Object... params) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
-    {
-        ConnectionResponse restResult = this.callPostRESTCall(methodName, ConnectionResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-
-    /**
-     * Issue a POST REST call that returns a ConnectionsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody properties describing the valid value definition/set
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return ConnectionsResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ConnectionsResponse callConnectionsPostRESTCall(String    methodName,
-                                                           String    urlTemplate,
-                                                           Object    requestBody,
-                                                           Object... params) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
-    {
-        ConnectionsResponse restResult = this.callPostRESTCall(methodName, ConnectionsResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a ConnectorReportResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody properties describing the valid value definition/set
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return ConnectorReportResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ConnectorTypeResponse callConnectorTypePostRESTCall(String    methodName,
-                                                               String    urlTemplate,
-                                                               Object    requestBody,
-                                                               Object... params) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
-    {
-        ConnectorTypeResponse restResult = this.callPostRESTCall(methodName, ConnectorTypeResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a ConnectorTypesResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody properties describing the valid value definition/set
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return ConnectorTypesResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ConnectorTypesResponse callConnectorTypesPostRESTCall(String    methodName,
-                                                                 String    urlTemplate,
-                                                                 Object    requestBody,
-                                                                 Object... params) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
-    {
-        ConnectorTypesResponse restResult = this.callPostRESTCall(methodName, ConnectorTypesResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a EndpointResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody properties describing the valid value definition/set
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return EndpointResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public EndpointResponse callEndpointPostRESTCall(String    methodName,
-                                                     String    urlTemplate,
-                                                     Object    requestBody,
-                                                     Object... params) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
-    {
-        EndpointResponse restResult = this.callPostRESTCall(methodName, EndpointResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a EndpointsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody properties describing the valid value definition/set
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return EndpointsResponse
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public EndpointsResponse callEndpointsPostRESTCall(String    methodName,
-                                                       String    urlTemplate,
-                                                       Object    requestBody,
-                                                       Object... params) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
-    {
-        EndpointsResponse restResult = this.callPostRESTCall(methodName, EndpointsResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -1115,12 +1062,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public MetadataCorrelationHeadersResponse callCorrelationHeadersPostRESTCall(String    methodName,
-                                                                                 String    urlTemplate,
-                                                                                 Object    requestBody,
-                                                                                 Object... params) throws InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException
+    public MetadataCorrelationHeadersResponse callMyCorrelationHeadersPostRESTCall(String    methodName,
+                                                                                   String    urlTemplate,
+                                                                                   Object    requestBody,
+                                                                                   Object... params) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
     {
         MetadataCorrelationHeadersResponse restResult = this.callPostRESTCall(methodName, MetadataCorrelationHeadersResponse.class, urlTemplate, requestBody, params);
 
@@ -1143,12 +1090,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public DataAssetElementResponse callDataAssetPostRESTCall(String    methodName,
-                                                              String    urlTemplate,
-                                                              Object    requestBody,
-                                                              Object... params) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public DataAssetElementResponse callMyDataAssetPostRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object    requestBody,
+                                                                Object... params) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         DataAssetElementResponse restResult = this.callPostRESTCall(methodName, DataAssetElementResponse.class, urlTemplate, requestBody, params);
 
@@ -1171,12 +1118,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public DataAssetElementsResponse callDataAssetsPostRESTCall(String    methodName,
-                                                                String    urlTemplate,
-                                                                Object    requestBody,
-                                                                Object... params) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public DataAssetElementsResponse callMyDataAssetsPostRESTCall(String    methodName,
+                                                                  String    urlTemplate,
+                                                                  Object    requestBody,
+                                                                  Object... params) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         DataAssetElementsResponse restResult = this.callPostRESTCall(methodName, DataAssetElementsResponse.class, urlTemplate, requestBody, params);
 
@@ -1199,12 +1146,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public AssetElementsResponse callAssetsPostRESTCall(String    methodName,
-                                                        String    urlTemplate,
-                                                        Object    requestBody,
-                                                        Object... params) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public AssetElementsResponse callMyAssetsPostRESTCall(String    methodName,
+                                                          String    urlTemplate,
+                                                          Object    requestBody,
+                                                          Object... params) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         AssetElementsResponse restResult = this.callPostRESTCall(methodName, AssetElementsResponse.class, urlTemplate, requestBody, params);
 
@@ -1228,12 +1175,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public PortElementResponse callPortPostRESTCall(String    methodName,
-                                                    String    urlTemplate,
-                                                    Object    requestBody,
-                                                    Object... params) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public PortElementResponse callMyPortPostRESTCall(String    methodName,
+                                                      String    urlTemplate,
+                                                      Object    requestBody,
+                                                      Object... params) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         PortElementResponse restResult = this.callPostRESTCall(methodName, PortElementResponse.class, urlTemplate, requestBody, params);
 
@@ -1256,12 +1203,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public PortElementsResponse callPortsPostRESTCall(String    methodName,
-                                                      String    urlTemplate,
-                                                      Object    requestBody,
-                                                      Object... params) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public PortElementsResponse callMyPortsPostRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object    requestBody,
+                                                        Object... params) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         PortElementsResponse restResult = this.callPostRESTCall(methodName, PortElementsResponse.class, urlTemplate, requestBody, params);
 
@@ -1284,12 +1231,12 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public ProcessElementResponse callProcessPostRESTCall(String    methodName,
-                                                          String    urlTemplate,
-                                                          Object    requestBody,
-                                                          Object... params) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public ProcessElementResponse callMyProcessPostRESTCall(String    methodName,
+                                                            String    urlTemplate,
+                                                            Object    requestBody,
+                                                            Object... params) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         ProcessElementResponse restResult = this.callPostRESTCall(methodName, ProcessElementResponse.class, urlTemplate, requestBody, params);
 
@@ -1312,407 +1259,14 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public ProcessElementsResponse callProcessesPostRESTCall(String    methodName,
-                                                             String    urlTemplate,
-                                                             Object    requestBody,
-                                                             Object... params) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public ProcessElementsResponse callMyProcessesPostRESTCall(String    methodName,
+                                                               String    urlTemplate,
+                                                               Object    requestBody,
+                                                               Object... params) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         ProcessElementsResponse restResult = this.callPostRESTCall(methodName, ProcessElementsResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a SchemaAttributeElementResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public SchemaAttributeElementResponse callSchemaAttributePostRESTCall(String    methodName,
-                                                                          String    urlTemplate,
-                                                                          Object    requestBody,
-                                                                          Object... params) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
-    {
-        SchemaAttributeElementResponse restResult = this.callPostRESTCall(methodName, SchemaAttributeElementResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a SchemaAttributeElementsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public SchemaAttributeElementsResponse callSchemaAttributesPostRESTCall(String    methodName,
-                                                                            String    urlTemplate,
-                                                                            Object    requestBody,
-                                                                            Object... params) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
-    {
-        SchemaAttributeElementsResponse restResult = this.callPostRESTCall(methodName, SchemaAttributeElementsResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a SchemaTypeElementResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public SchemaTypeElementResponse callSchemaTypePostRESTCall(String    methodName,
-                                                                String    urlTemplate,
-                                                                Object    requestBody,
-                                                                Object... params) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
-    {
-        SchemaTypeElementResponse restResult = this.callPostRESTCall(methodName, SchemaTypeElementResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a SchemaTypeElementsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public SchemaTypeElementsResponse callSchemaTypesPostRESTCall(String    methodName,
-                                                                  String    urlTemplate,
-                                                                  Object    requestBody,
-                                                                  Object... params) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
-    {
-        SchemaTypeElementsResponse restResult = this.callPostRESTCall(methodName, SchemaTypeElementsResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a RelationshipElementResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public RelationshipElementResponse callRelationshipPostRESTCall(String    methodName,
-                                                                    String    urlTemplate,
-                                                                    Object    requestBody,
-                                                                    Object... params) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
-    {
-        RelationshipElementResponse restResult = this.callPostRESTCall(methodName, RelationshipElementResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a RelationshipElementsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public RelationshipElementsResponse callRelationshipsPostRESTCall(String    methodName,
-                                                                      String    urlTemplate,
-                                                                      Object    requestBody,
-                                                                      Object... params) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
-    {
-        RelationshipElementsResponse restResult = this.callPostRESTCall(methodName, RelationshipElementsResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-
-    /**
-     * Issue a POST REST call that returns a DataFlowElementResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public DataFlowElementResponse callDataFlowPostRESTCall(String    methodName,
-                                                            String    urlTemplate,
-                                                            Object    requestBody,
-                                                            Object... params) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
-    {
-        DataFlowElementResponse restResult = this.callPostRESTCall(methodName, DataFlowElementResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a DataFlowElementsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public DataFlowElementsResponse callDataFlowsPostRESTCall(String    methodName,
-                                                              String    urlTemplate,
-                                                              Object    requestBody,
-                                                              Object... params) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
-    {
-        DataFlowElementsResponse restResult = this.callPostRESTCall(methodName, DataFlowElementsResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a ControlFlowElementResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ControlFlowElementResponse callControlFlowPostRESTCall(String    methodName,
-                                                                  String    urlTemplate,
-                                                                  Object    requestBody,
-                                                                  Object... params) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
-    {
-        ControlFlowElementResponse restResult = this.callPostRESTCall(methodName, ControlFlowElementResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a ControlFlowElementsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ControlFlowElementsResponse callControlFlowsPostRESTCall(String    methodName,
-                                                                    String    urlTemplate,
-                                                                    Object    requestBody,
-                                                                    Object... params) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
-    {
-        ControlFlowElementsResponse restResult = this.callPostRESTCall(methodName, ControlFlowElementsResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a ProcessCallElementResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ProcessCallElementResponse callProcessCallPostRESTCall(String    methodName,
-                                                                  String    urlTemplate,
-                                                                  Object    requestBody,
-                                                                  Object... params) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
-    {
-        ProcessCallElementResponse restResult = this.callPostRESTCall(methodName, ProcessCallElementResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a ProcessCallElementsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ProcessCallElementsResponse callProcessCallsPostRESTCall(String    methodName,
-                                                                    String    urlTemplate,
-                                                                    Object    requestBody,
-                                                                    Object... params) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
-    {
-        ProcessCallElementsResponse restResult = this.callPostRESTCall(methodName, ProcessCallElementsResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a LineageMappingElementResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public LineageMappingElementResponse callLineageMappingPostRESTCall(String    methodName,
-                                                                        String    urlTemplate,
-                                                                        Object    requestBody,
-                                                                        Object... params) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
-    {
-        LineageMappingElementResponse restResult = this.callPostRESTCall(methodName, LineageMappingElementResponse.class, urlTemplate, requestBody, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a LineageMappingElementsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody object that passes additional parameters
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public LineageMappingElementsResponse callLineageMappingsPostRESTCall(String    methodName,
-                                                                          String    urlTemplate,
-                                                                          Object    requestBody,
-                                                                          Object... params) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
-    {
-        LineageMappingElementsResponse restResult = this.callPostRESTCall(methodName, LineageMappingElementsResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

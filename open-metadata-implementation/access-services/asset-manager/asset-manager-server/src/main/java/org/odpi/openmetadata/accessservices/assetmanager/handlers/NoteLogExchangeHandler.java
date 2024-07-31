@@ -4,15 +4,15 @@ package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 
 import org.odpi.openmetadata.accessservices.assetmanager.converters.NoteConverter;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.NoteLogConverter;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.NoteLogElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.NoteHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.NoteLogHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -142,7 +142,7 @@ public class NoteLogExchangeHandler extends ExchangeHandlerBase
     {
         if (results != null)
         {
-            for (MetadataElement noteLog : results)
+            for (CorrelatedMetadataElement noteLog : results)
             {
                 if ((noteLog != null) && (noteLog.getElementHeader() != null) && (noteLog.getElementHeader().getGUID() != null))
                 {
@@ -193,7 +193,7 @@ public class NoteLogExchangeHandler extends ExchangeHandlerBase
     {
         if (results != null)
         {
-            for (MetadataElement note : results)
+            for (CorrelatedMetadataElement note : results)
             {
                 if ((note != null) && (note.getElementHeader() != null) && (note.getElementHeader().getGUID() != null))
                 {

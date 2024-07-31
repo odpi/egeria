@@ -4,14 +4,8 @@ package org.odpi.openmetadata.accessservices.stewardshipaction.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesRequestBody;
-import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesResponse;
-import org.odpi.openmetadata.accessservices.stewardshipaction.rest.ElementStubResponse;
-import org.odpi.openmetadata.accessservices.stewardshipaction.rest.ElementStubsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.accessservices.stewardshipaction.server.StewardshipActionRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,9 +52,9 @@ public class StewardshipActionResource
      */
     @GetMapping(path = "/topics/out-topic-connection/{callerId}")
 
-    public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String callerId)
+    public OCFConnectionResponse getOutTopicConnection(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String callerId)
     {
         return restAPI.getOutTopicConnection(serverName, userId, callerId);
     }

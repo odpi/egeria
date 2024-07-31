@@ -2,17 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleAppointee;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.AppointmentProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRoleProperties;
+
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.Appointee;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 
 import java.util.Date;
 import java.util.List;
@@ -417,13 +414,13 @@ public interface OrganizationManagementInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<PersonRoleAppointee> getAppointees(String userId,
-                                            String personRoleGUID,
-                                            Date   effectiveTime,
-                                            int    startFrom,
-                                            int    pageSize) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
+    List<Appointee> getAppointees(String userId,
+                                  String personRoleGUID,
+                                  Date   effectiveTime,
+                                  int    startFrom,
+                                  int    pageSize) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException;
 
 
     /**

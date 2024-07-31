@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters;
 
 
-import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Rating;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
@@ -18,7 +18,7 @@ import java.util.Map;
  * RatingConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
  * EntityDetail object into a Rating bean.
  */
-public class RatingConverter<B> extends OCFConverter<B>
+public class RatingConverter<B> extends OMFConverter<B>
 {
     /**
      * Constructor

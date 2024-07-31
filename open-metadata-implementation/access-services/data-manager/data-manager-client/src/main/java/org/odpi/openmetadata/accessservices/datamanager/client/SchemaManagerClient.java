@@ -5,18 +5,16 @@ package org.odpi.openmetadata.accessservices.datamanager.client;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.SchemaManagerInterface;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.datamanager.properties.*;
-import org.odpi.openmetadata.accessservices.datamanager.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
+import org.odpi.openmetadata.accessservices.datamanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 
 
 import java.util.List;
@@ -24,7 +22,6 @@ import java.util.List;
 /**
  * SchemaManagerClient defines the common methods for managing SchemaTypes and SchemaAttributes. It is incorporated in the
  * EventBrokerClient, DisplayApplicationClient, FilesAndFoldersClient and the APIManagerClient.
- *
  * SchemaAttributes describe the data fields of the schema. If a schema attribute's type is simple (that is
  * primitive, literal, enum or external) its details are passed with the schema attribute.  Complex schema types (such as Maps,
  * Choices) are constructed first and then their identifiers are attached to the schema attribute.
@@ -352,7 +349,7 @@ public abstract class SchemaManagerClient extends DataManagerBaseClient implemen
                                                                                       startFrom,
                                                                                       validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -401,7 +398,7 @@ public abstract class SchemaManagerClient extends DataManagerBaseClient implemen
                                                                                       startFrom,
                                                                                       validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -856,7 +853,7 @@ public abstract class SchemaManagerClient extends DataManagerBaseClient implemen
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        SchemaTypesResponse restResult = restClient.callSchemaTypesPostRESTCall(methodName,
+        SchemaTypeElementsResponse restResult = restClient.callSchemaTypesPostRESTCall(methodName,
                                                                                urlTemplate,
                                                                                requestBody,
                                                                                serverName,
@@ -865,7 +862,7 @@ public abstract class SchemaManagerClient extends DataManagerBaseClient implemen
                                                                                startFrom,
                                                                                validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -961,7 +958,7 @@ public abstract class SchemaManagerClient extends DataManagerBaseClient implemen
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        SchemaTypesResponse restResult = restClient.callSchemaTypesPostRESTCall(methodName,
+        SchemaTypeElementsResponse restResult = restClient.callSchemaTypesPostRESTCall(methodName,
                                                                                urlTemplate,
                                                                                requestBody,
                                                                                serverName,
@@ -970,7 +967,7 @@ public abstract class SchemaManagerClient extends DataManagerBaseClient implemen
                                                                                startFrom,
                                                                                validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1403,7 +1400,7 @@ public abstract class SchemaManagerClient extends DataManagerBaseClient implemen
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        SchemaAttributesResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
                                                                                           urlTemplate,
                                                                                           requestBody,
                                                                                           serverName,
@@ -1412,7 +1409,7 @@ public abstract class SchemaManagerClient extends DataManagerBaseClient implemen
                                                                                           startFrom,
                                                                                           validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1456,7 +1453,7 @@ public abstract class SchemaManagerClient extends DataManagerBaseClient implemen
                                                                                          startFrom,
                                                                                          validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -1506,7 +1503,7 @@ public abstract class SchemaManagerClient extends DataManagerBaseClient implemen
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        SchemaAttributesResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
                                                                                           urlTemplate,
                                                                                           requestBody,
                                                                                           serverName,
@@ -1515,7 +1512,7 @@ public abstract class SchemaManagerClient extends DataManagerBaseClient implemen
                                                                                           startFrom,
                                                                                           validatedPageSize);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 

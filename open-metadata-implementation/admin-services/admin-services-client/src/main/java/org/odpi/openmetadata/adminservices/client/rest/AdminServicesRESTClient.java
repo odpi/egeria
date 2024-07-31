@@ -396,13 +396,13 @@ public class AdminServicesRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a ConnectionResponse object.
+     * Issue a GET REST call that returns a OCFConnectionResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return ConnectionResponse
+     * @return OCFConnectionResponse
      * @throws OMAGInvalidParameterException one of the parameters is invalid.
      * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
      * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.

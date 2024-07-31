@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * GlossaryConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a GlossaryElement bean.
+ * ExternalIdentifierConverter transfers the relevant properties from a GAF extracted element
+ * into an external identifier bean.
  */
 public class ExternalIdentifierConverter<B> extends OpenMetadataStoreConverter<B>
 {
@@ -214,64 +214,4 @@ public class ExternalIdentifierConverter<B> extends OpenMetadataStoreConverter<B
         return this.getNewComplexBean(beanClass, primaryEntity, relationships, methodName);
     }
 
-
-    /**
-     * Extract and delete the keyPattern property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return KeyPattern enum
-     */
-    KeyPattern removeKeyPattern(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "removeKeyPattern";
-
-        if (instanceProperties != null)
-        {
-            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataProperty.KEY_PATTERN.name,
-                                                                     instanceProperties,
-                                                                     methodName);
-
-            for (KeyPattern keyPattern : KeyPattern.values())
-            {
-                if (keyPattern.getOrdinal() == ordinal)
-                {
-                    return keyPattern;
-                }
-            }
-        }
-
-        return KeyPattern.LOCAL_KEY;
-    }
-
-
-
-    /**
-     * Extract and delete the permittedSynchronization property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return PermittedSynchronization enum
-     */
-    PermittedSynchronization removePermittedSynchronization(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "removePermittedSynchronization";
-
-        if (instanceProperties != null)
-        {
-            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
-                                                                     instanceProperties,
-                                                                     methodName);
-
-            for (PermittedSynchronization permittedSynchronization : PermittedSynchronization.values())
-            {
-                if (permittedSynchronization.getOrdinal() == ordinal)
-                {
-                    return permittedSynchronization;
-                }
-            }
-        }
-
-        return PermittedSynchronization.BOTH_DIRECTIONS;
-    }
 }

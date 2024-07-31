@@ -6,13 +6,13 @@ package org.odpi.openmetadata.accessservices.assetmanager.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SoftwareCapabilitiesProperties;
 
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 
 /**
  * AssetManagerElement contains the properties and header for a software server capabilities entity retrieved from the metadata
@@ -25,8 +25,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetManagerElement
 {
-    private ElementHeader                  elementHeader                  = null;
-    private SoftwareCapabilitiesProperties softwareCapabilitiesProperties = null;
+    private ElementHeader                elementHeader                = null;
+    private SoftwareCapabilityProperties softwareCapabilityProperties = null;
 
 
     /**
@@ -47,8 +47,8 @@ public class AssetManagerElement
     {
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            softwareCapabilitiesProperties = template.getSoftwareCapabilitiesProperties();
+            elementHeader                = template.getElementHeader();
+            softwareCapabilityProperties = template.getSoftwareCapabilityProperties();
         }
     }
 
@@ -80,20 +80,20 @@ public class AssetManagerElement
      *
      * @return properties bean
      */
-    public SoftwareCapabilitiesProperties getSoftwareCapabilitiesProperties()
+    public SoftwareCapabilityProperties getSoftwareCapabilityProperties()
     {
-        return softwareCapabilitiesProperties;
+        return softwareCapabilityProperties;
     }
 
 
     /**
      * Set up the properties of the software server capability.
      *
-     * @param softwareCapabilitiesProperties properties bean
+     * @param softwareCapabilityProperties properties bean
      */
-    public void setSoftwareCapabilitiesProperties(SoftwareCapabilitiesProperties softwareCapabilitiesProperties)
+    public void setSoftwareCapabilityProperties(SoftwareCapabilityProperties softwareCapabilityProperties)
     {
-        this.softwareCapabilitiesProperties = softwareCapabilitiesProperties;
+        this.softwareCapabilityProperties = softwareCapabilityProperties;
     }
 
 
@@ -107,7 +107,7 @@ public class AssetManagerElement
     {
         return "SoftwareCapabilityElement{" +
                 "elementHeader=" + elementHeader +
-                ", softwareCapabilitiesProperties=" + softwareCapabilitiesProperties +
+                ", softwareCapabilitiesProperties=" + softwareCapabilityProperties +
                 '}';
     }
 
@@ -135,7 +135,7 @@ public class AssetManagerElement
         }
         AssetManagerElement that = (AssetManagerElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(softwareCapabilitiesProperties, that.softwareCapabilitiesProperties);
+                Objects.equals(softwareCapabilityProperties, that.softwareCapabilityProperties);
     }
 
 
@@ -147,6 +147,6 @@ public class AssetManagerElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, softwareCapabilitiesProperties);
+        return Objects.hash(super.hashCode(), elementHeader, softwareCapabilityProperties);
     }
 }

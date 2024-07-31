@@ -5,15 +5,28 @@ package org.odpi.openmetadata.accessservices.assetmanager.client.exchange;
 
 import org.odpi.openmetadata.accessservices.assetmanager.api.exchange.LineageExchangeInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.PortElement;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ProcessElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.PortElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.PortElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.PortRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ProcessElementResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ProcessElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.ProcessStatusRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+
 
 import java.util.Date;
 import java.util.List;
@@ -666,15 +679,15 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        ProcessElementsResponse restResult = restClient.callProcessesPostRESTCall(methodName,
-                                                                                  urlTemplate,
-                                                                                  getSearchStringRequestBody(assetManagerGUID, assetManagerName, searchString, effectiveTime, methodName),
-                                                                                  serverName,
-                                                                                  userId,
-                                                                                  startFrom,
-                                                                                  validatedPageSize,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing);
+        ProcessElementsResponse restResult = restClient.callMyProcessesPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    getSearchStringRequestBody(assetManagerGUID, assetManagerName, searchString, effectiveTime, methodName),
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    startFrom,
+                                                                                    validatedPageSize,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -717,15 +730,15 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/by-asset-manager?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        ProcessElementsResponse restResult = restClient.callProcessesPostRESTCall(methodName,
-                                                                                  urlTemplate,
-                                                                                  getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                  serverName,
-                                                                                  userId,
-                                                                                  startFrom,
-                                                                                  validatedPageSize,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing);
+        ProcessElementsResponse restResult = restClient.callMyProcessesPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    startFrom,
+                                                                                    validatedPageSize,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -772,15 +785,15 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        ProcessElementsResponse restResult = restClient.callProcessesPostRESTCall(methodName,
-                                                                                  urlTemplate,
-                                                                                  getNameRequestBody(assetManagerGUID, assetManagerName, name, effectiveTime, methodName),
-                                                                                  serverName,
-                                                                                  userId,
-                                                                                  startFrom,
-                                                                                  validatedPageSize,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing);
+        ProcessElementsResponse restResult = restClient.callMyProcessesPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    getNameRequestBody(assetManagerGUID, assetManagerName, name, effectiveTime, methodName),
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    startFrom,
+                                                                                    validatedPageSize,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -822,14 +835,14 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        ProcessElementResponse restResult = restClient.callProcessPostRESTCall(methodName,
-                                                                               urlTemplate,
-                                                                               getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                               serverName,
-                                                                               userId,
-                                                                               processGUID,
-                                                                               forLineage,
-                                                                               forDuplicateProcessing);
+        ProcessElementResponse restResult = restClient.callMyProcessPostRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 processGUID,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -871,14 +884,14 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/parent/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        ProcessElementResponse restResult = restClient.callProcessPostRESTCall(methodName,
-                                                                               urlTemplate,
-                                                                               getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                               serverName,
-                                                                               userId,
-                                                                               processGUID,
-                                                                               forLineage,
-                                                                               forDuplicateProcessing);
+        ProcessElementResponse restResult = restClient.callMyProcessPostRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 processGUID,
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -926,15 +939,15 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/children?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        ProcessElementsResponse restResult = restClient.callProcessesPostRESTCall(methodName,
-                                                                                  urlTemplate,
-                                                                                  getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                  serverName,
-                                                                                  userId,
-                                                                                  startFrom,
-                                                                                  validatedPageSize,
-                                                                                  forLineage,
-                                                                                  forDuplicateProcessing);
+        ProcessElementsResponse restResult = restClient.callMyProcessesPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    startFrom,
+                                                                                    validatedPageSize,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1471,15 +1484,15 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/by-search-string?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        PortElementsResponse restResult = restClient.callPortsPostRESTCall(methodName,
-                                                                           urlTemplate,
-                                                                           getSearchStringRequestBody(assetManagerGUID, assetManagerName, searchString, effectiveTime, methodName),
-                                                                           serverName,
-                                                                           userId,
-                                                                           startFrom,
-                                                                           validatedPageSize,
-                                                                           forLineage,
-                                                                           forDuplicateProcessing);
+        PortElementsResponse restResult = restClient.callMyPortsPostRESTCall(methodName,
+                                                                             urlTemplate,
+                                                                             getSearchStringRequestBody(assetManagerGUID, assetManagerName, searchString, effectiveTime, methodName),
+                                                                             serverName,
+                                                                             userId,
+                                                                             startFrom,
+                                                                             validatedPageSize,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1526,16 +1539,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/processes/{2}/ports/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
-        PortElementsResponse restResult = restClient.callPortsPostRESTCall(methodName,
-                                                                           urlTemplate,
-                                                                           getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                           serverName,
-                                                                           userId,
-                                                                           processGUID,
-                                                                           startFrom,
-                                                                           validatedPageSize,
-                                                                           forLineage,
-                                                                           forDuplicateProcessing);
+        PortElementsResponse restResult = restClient.callMyPortsPostRESTCall(methodName,
+                                                                             urlTemplate,
+                                                                             getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                             serverName,
+                                                                             userId,
+                                                                             processGUID,
+                                                                             startFrom,
+                                                                             validatedPageSize,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1582,16 +1595,16 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/used-by/retrieve?startFrom={3}&pageSize={4}&forLineage={5}&forDuplicateProcessing={6}";
 
-        PortElementsResponse restResult = restClient.callPortsPostRESTCall(methodName,
-                                                                           urlTemplate,
-                                                                           getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                           serverName,
-                                                                           userId,
-                                                                           portGUID,
-                                                                           startFrom,
-                                                                           validatedPageSize,
-                                                                           forLineage,
-                                                                           forDuplicateProcessing);
+        PortElementsResponse restResult = restClient.callMyPortsPostRESTCall(methodName,
+                                                                             urlTemplate,
+                                                                             getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                             serverName,
+                                                                             userId,
+                                                                             portGUID,
+                                                                             startFrom,
+                                                                             validatedPageSize,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1633,14 +1646,14 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/port-delegations/retrieve?forLineage={3}&forDuplicateProcessing={4}";
 
-        PortElementResponse restResult = restClient.callPortPostRESTCall(methodName,
-                                                                         urlTemplate,
-                                                                         getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                         serverName,
-                                                                         userId,
-                                                                         portGUID,
-                                                                         forLineage,
-                                                                         forDuplicateProcessing);
+        PortElementResponse restResult = restClient.callMyPortPostRESTCall(methodName,
+                                                                           urlTemplate,
+                                                                           getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                           serverName,
+                                                                           userId,
+                                                                           portGUID,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -1686,15 +1699,15 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/by-name?startFrom={2}&pageSize={3}&forLineage={4}&forDuplicateProcessing={5}";
 
-        PortElementsResponse restResult = restClient.callPortsPostRESTCall(methodName,
-                                                                           urlTemplate,
-                                                                           getNameRequestBody(assetManagerGUID, assetManagerName, name, effectiveTime, methodName),
-                                                                           serverName,
-                                                                           userId,
-                                                                           startFrom,
-                                                                           validatedPageSize,
-                                                                           forLineage,
-                                                                           forDuplicateProcessing);
+        PortElementsResponse restResult = restClient.callMyPortsPostRESTCall(methodName,
+                                                                             urlTemplate,
+                                                                             getNameRequestBody(assetManagerGUID, assetManagerName, name, effectiveTime, methodName),
+                                                                             serverName,
+                                                                             userId,
+                                                                             startFrom,
+                                                                             validatedPageSize,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1736,14 +1749,14 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/ports/{2}/retrieve?forLineage={3}&forDuplicateProcessing={3}";
 
-        PortElementResponse restResult = restClient.callPortPostRESTCall(methodName,
-                                                                         urlTemplate,
-                                                                         getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                         serverName,
-                                                                         userId,
-                                                                         portGUID,
-                                                                         forLineage,
-                                                                         forDuplicateProcessing);
+        PortElementResponse restResult = restClient.callMyPortPostRESTCall(methodName,
+                                                                           urlTemplate,
+                                                                           getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                           serverName,
+                                                                           userId,
+                                                                           portGUID,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing);
 
         return restResult.getElement();
     }
@@ -2110,7 +2123,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                    forLineage,
                                                                                    forDuplicateProcessing);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -2167,7 +2180,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                    forLineage,
                                                                                    forDuplicateProcessing);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -2433,7 +2446,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                          forLineage,
                                                                                          forDuplicateProcessing);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -2490,7 +2503,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                          forLineage,
                                                                                          forDuplicateProcessing);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -2757,7 +2770,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                          forLineage,
                                                                                          forDuplicateProcessing);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -2814,7 +2827,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                          forLineage,
                                                                                          forDuplicateProcessing);
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -3079,7 +3092,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                             forLineage,
                                                                                             forDuplicateProcessing);
 
-        return results.getElementList();
+        return results.getElements();
     }
 
 
@@ -3135,7 +3148,7 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
                                                                                             forLineage,
                                                                                             forDuplicateProcessing);
 
-        return results.getElementList();
+        return results.getElements();
     }
 
 

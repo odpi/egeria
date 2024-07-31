@@ -3,30 +3,16 @@
 package org.odpi.openmetadata.accessservices.projectmanagement.server;
 
 
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.RelatedElement;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StakeholderProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.ActorProfileListResponse;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.PersonRoleListResponse;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.ProjectListResponse;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.ProjectResponse;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
@@ -684,19 +670,19 @@ public class ProjectManagementRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ProjectListResponse findProjects(String                  serverName,
-                                            String                  userId,
-                                            SearchStringRequestBody requestBody,
-                                            int                     startFrom,
-                                            int                     pageSize)
+    public ProjectsResponse findProjects(String                  serverName,
+                                         String                  userId,
+                                         SearchStringRequestBody requestBody,
+                                         int                     startFrom,
+                                         int                     pageSize)
     {
         final String methodName = "findProjects";
         final String searchStringParameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ProjectListResponse response = new ProjectListResponse();
-        AuditLog          auditLog = null;
+        ProjectsResponse response = new ProjectsResponse();
+        AuditLog         auditLog = null;
 
         try
         {
@@ -749,19 +735,19 @@ public class ProjectManagementRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ProjectListResponse getProjectsByName(String          serverName,
-                                                 String          userId,
-                                                 NameRequestBody requestBody,
-                                                 int             startFrom,
-                                                 int             pageSize)
+    public ProjectsResponse getProjectsByName(String          serverName,
+                                              String          userId,
+                                              NameRequestBody requestBody,
+                                              int             startFrom,
+                                              int             pageSize)
     {
         final String methodName = "getProjectsByName";
         final String nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ProjectListResponse response = new ProjectListResponse();
-        AuditLog          auditLog = null;
+        ProjectsResponse response = new ProjectsResponse();
+        AuditLog         auditLog = null;
 
         try
         {
@@ -813,7 +799,7 @@ public class ProjectManagementRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public PersonRoleListResponse getProjectManagementRoles(String          serverName,
+    public PersonRolesResponse getProjectManagementRoles(String          serverName,
                                                             String          userId,
                                                             String          projectGUID,
                                                             int             startFrom,
@@ -824,8 +810,8 @@ public class ProjectManagementRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        PersonRoleListResponse response = new PersonRoleListResponse();
-        AuditLog               auditLog = null;
+        PersonRolesResponse response = new PersonRolesResponse();
+        AuditLog            auditLog = null;
 
         try
         {
@@ -869,19 +855,19 @@ public class ProjectManagementRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public ActorProfileListResponse getProjectActors(String          serverName,
-                                                     String          userId,
-                                                     String          projectGUID,
-                                                     int             startFrom,
-                                                     int             pageSize)
+    public ActorProfilesResponse getProjectActors(String          serverName,
+                                                  String          userId,
+                                                  String          projectGUID,
+                                                  int             startFrom,
+                                                  int             pageSize)
     {
         final String methodName         = "getProjectActors";
         final String guidParameterName  = "projectGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ActorProfileListResponse response = new ActorProfileListResponse();
-        AuditLog                 auditLog = null;
+        ActorProfilesResponse response = new ActorProfilesResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -923,17 +909,17 @@ public class ProjectManagementRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ProjectListResponse getProjects(String          serverName,
-                                           String          userId,
-                                           int             startFrom,
-                                           int             pageSize)
+    public ProjectsResponse getProjects(String          serverName,
+                                        String          userId,
+                                        int             startFrom,
+                                        int             pageSize)
     {
         final String methodName = "getProjects";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ProjectListResponse response = new ProjectListResponse();
-        AuditLog            auditLog = null;
+        ProjectsResponse response = new ProjectsResponse();
+        AuditLog         auditLog = null;
 
         try
         {
@@ -1265,19 +1251,19 @@ public class ProjectManagementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public RelatedElementListResponse getMoreInformation(String serverName,
-                                                         String userId,
-                                                         String elementGUID,
-                                                         int    startFrom,
-                                                         int    pageSize)
+    public RelatedElementsResponse getMoreInformation(String serverName,
+                                                      String userId,
+                                                      String elementGUID,
+                                                      int    startFrom,
+                                                      int    pageSize)
     {
         final String methodName        = "getMoreInformation";
         final String guidPropertyName  = "elementGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -1322,19 +1308,19 @@ public class ProjectManagementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  RelatedElementListResponse getDescriptiveElements(String serverName,
-                                                              String userId,
-                                                              String detailGUID,
-                                                              int    startFrom,
-                                                              int    pageSize)
+    public RelatedElementsResponse getDescriptiveElements(String serverName,
+                                                          String userId,
+                                                          String detailGUID,
+                                                          int    startFrom,
+                                                          int    pageSize)
     {
         final String methodName        = "getDescriptiveElements";
         final String guidPropertyName  = "detailGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -1546,19 +1532,19 @@ public class ProjectManagementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  RelatedElementListResponse getStakeholders(String serverName,
-                                                       String userId,
-                                                       String elementGUID,
-                                                       int    startFrom,
-                                                       int    pageSize)
+    public RelatedElementsResponse getStakeholders(String serverName,
+                                                   String userId,
+                                                   String elementGUID,
+                                                   int    startFrom,
+                                                   int    pageSize)
     {
         final String methodName        = "getStakeholders";
         final String guidPropertyName  = "elementGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -1603,19 +1589,19 @@ public class ProjectManagementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  RelatedElementListResponse getStakeholderCommissionedElements(String serverName,
-                                                                          String userId,
-                                                                          String stakeholderGUID,
-                                                                          int    startFrom,
-                                                                          int    pageSize)
+    public RelatedElementsResponse getStakeholderCommissionedElements(String serverName,
+                                                                      String userId,
+                                                                      String stakeholderGUID,
+                                                                      int    startFrom,
+                                                                      int    pageSize)
     {
         final String methodName        = "getStakeholderCommissionedElements";
         final String guidPropertyName  = "stakeholderGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -1829,19 +1815,19 @@ public class ProjectManagementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  RelatedElementListResponse getAssignedScopes(String serverName,
-                                                         String userId,
-                                                         String elementGUID,
-                                                         int    startFrom,
-                                                         int    pageSize)
+    public RelatedElementsResponse getAssignedScopes(String serverName,
+                                                     String userId,
+                                                     String elementGUID,
+                                                     int    startFrom,
+                                                     int    pageSize)
     {
         final String methodName        = "getAssignedScopes";
         final String guidPropertyName  = "elementGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -1886,19 +1872,19 @@ public class ProjectManagementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  RelatedElementListResponse getAssignedActors(String serverName,
-                                                         String userId,
-                                                         String scopeGUID,
-                                                         int    startFrom,
-                                                         int    pageSize)
+    public RelatedElementsResponse getAssignedActors(String serverName,
+                                                     String userId,
+                                                     String scopeGUID,
+                                                     int    startFrom,
+                                                     int    pageSize)
     {
         final String methodName        = "getAssignedActors";
         final String guidPropertyName  = "scopeGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -2116,19 +2102,19 @@ public class ProjectManagementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  RelatedElementListResponse getResourceList(String serverName,
-                                                       String userId,
-                                                       String elementGUID,
-                                                       int    startFrom,
-                                                       int    pageSize)
+    public RelatedElementsResponse getResourceList(String serverName,
+                                                   String userId,
+                                                   String elementGUID,
+                                                   int    startFrom,
+                                                   int    pageSize)
     {
         final String methodName        = "getResourceList";
         final String guidPropertyName  = "elementGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -2172,11 +2158,11 @@ public class ProjectManagementRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  RelatedElementListResponse getSupportedByResource(String serverName,
-                                                              String userId,
-                                                              String resourceGUID,
-                                                              int    startFrom,
-                                                              int    pageSize)
+    public RelatedElementsResponse getSupportedByResource(String serverName,
+                                                          String userId,
+                                                          String resourceGUID,
+                                                          int    startFrom,
+                                                          int    pageSize)
     {
         final String methodName        = "getSupportedByResource";
         final String guidPropertyName  = "resourceGUID";
@@ -2184,8 +2170,8 @@ public class ProjectManagementRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.accessservices.assetmanager.server.GlossaryExchangeRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -752,7 +753,7 @@ public class GlossaryExchangeResource
                                             @RequestParam (required = false, defaultValue = "false")
                                                           boolean                      forDuplicateProcessing,
                                             @RequestBody(required = false)
-                                                          RelationshipRequestBody      requestBody)
+                                                          RelationshipRequestBody requestBody)
     {
         return restAPI.setupCategoryParent(serverName, userId, glossaryParentCategoryGUID, glossaryChildCategoryGUID, forLineage, forDuplicateProcessing, requestBody);
     }

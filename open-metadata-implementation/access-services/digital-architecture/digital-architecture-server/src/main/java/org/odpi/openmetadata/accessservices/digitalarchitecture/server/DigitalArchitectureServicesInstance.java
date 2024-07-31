@@ -2,18 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.server;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.converters.ConnectionConverter;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.converters.ReferenceDataAssetConverter;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.converters.*;
+import org.odpi.openmetadata.commonservices.generichandlers.ConnectionConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.EndpointConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.LocationConverter;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.ffdc.DigitalArchitectureErrorCode;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
 
 
     private final ReferenceableHandler<ElementHeader>     referenceableHandler;
-    private final AssetHandler<ReferenceDataAssetElement> assetHandler;
+    private final AssetHandler<AssetElement> assetHandler;
 
     private final ConnectionHandler<ConnectionElement>       connectionHandler;
     private final ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
@@ -51,8 +52,8 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones list of zones that DigitalArchitecture is allowed to serve Assets from.
      * @param auditLog destination for audit log events.
-     * @param defaultZones list of zones that DataManager sets up in new Asset instances.
-     * @param publishZones list of zones that DataManager sets up in published Asset instances.
+     * @param defaultZones list of zones that Digital Architecture sets up in new Asset instances.
+     * @param publishZones list of zones that Digital Architecture sets up in published Asset instances.
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize maximum number of results that can be returned on a single call
      * @throws NewInstanceException a problem occurred during initialization
@@ -98,8 +99,8 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
                                                                publishZones,
                                                                auditLog);
 
-        this.assetHandler = new AssetHandler<>(new ReferenceDataAssetConverter<>(repositoryHelper, serviceName, serverName),
-                                                       ReferenceDataAssetElement.class,
+        this.assetHandler = new AssetHandler<>(new AssetConverter<>(repositoryHelper, serviceName, serverName),
+                                                       AssetElement.class,
                                                        serviceName,
                                                        serverName,
                                                        invalidParameterHandler,
@@ -221,7 +222,7 @@ public class DigitalArchitectureServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    AssetHandler<ReferenceDataAssetElement> getAssetHandler() throws PropertyServerException
+    AssetHandler<AssetElement> getAssetHandler() throws PropertyServerException
     {
         final String methodName = "getAssetHandler";
 

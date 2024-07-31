@@ -2,9 +2,22 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.DigitalLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.SecureLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.PrimaryKeyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabasePrimaryKeyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -21,6 +34,34 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = ActivityDescriptionProperties.class, name = "ActivityDescriptionProperties"),
+                @JsonSubTypes.Type(value = AssetOriginProperties.class, name = "AssetOriginProperties"),
+                @JsonSubTypes.Type(value = CanonicalVocabularyProperties.class, name = "CanonicalVocabularyProperties"),
+                @JsonSubTypes.Type(value = CyberLocationProperties.class, name = "CyberLocationProperties"),
+                @JsonSubTypes.Type(value = DatabasePrimaryKeyProperties.class, name = "DatabasePrimaryKeyProperties"),
+                @JsonSubTypes.Type(value = DataFieldValuesProperties.class, name = "DataFieldValuesProperties"),
+                @JsonSubTypes.Type(value = DigitalLocationProperties.class, name = "DigitalLocationProperties"),
+                @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),
+                @JsonSubTypes.Type(value = EditingGlossaryProperties.class, name = "EditingGlossaryProperties"),
+                @JsonSubTypes.Type(value = FixedLocationProperties.class, name = "FixedLocationProperties"),
+                @JsonSubTypes.Type(value = GlossaryTermContextDefinition.class, name = "GlossaryTermContextDefinition"),
+                @JsonSubTypes.Type(value = GovernanceClassificationBase.class, name = "GovernanceClassificationBase"),
+                @JsonSubTypes.Type(value = GovernanceMeasurementsDataSetProperties.class, name = "GovernanceMeasurementsDataSetProperties"),
+                @JsonSubTypes.Type(value = GovernanceMeasurementsProperties.class, name = "GovernanceMeasurementsProperties"),
+                @JsonSubTypes.Type(value = GovernanceExpectationsProperties.class, name = "GovernanceExpectationsProperties"),
+                @JsonSubTypes.Type(value = OwnerProperties.class, name = "OwnerProperties"),
+                @JsonSubTypes.Type(value = PrimaryKeyProperties.class, name = "PrimaryKeyProperties"),
+                @JsonSubTypes.Type(value = SecureLocationProperties.class, name = "SecureLocationProperties"),
+                @JsonSubTypes.Type(value = SecurityTagsProperties.class, name = "SecurityTagsProperties"),
+                @JsonSubTypes.Type(value = StagingGlossaryProperties.class, name = "StagingGlossaryProperties"),
+                @JsonSubTypes.Type(value = SubjectAreaClassificationProperties.class, name = "SubjectAreaClassificationProperties"),
+                @JsonSubTypes.Type(value = TaxonomyProperties.class, name = "TaxonomyProperties"),
+        })
 public class ClassificationProperties
 {
     private Date effectiveFrom = null;

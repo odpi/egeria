@@ -2,17 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.securitymanager.api;
 
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.PersonRoleAppointee;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SecurityGroupElement;
-import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityGroupProperties;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -30,7 +25,6 @@ public interface SecurityManagerInterface
      * @param properties properties of the definition
      *
      * @return unique identifier of the definition
-     *
      * @throws InvalidParameterException typeName, documentIdentifier or userId is null; documentIdentifier is not unique; typeName is not valid
      * @throws PropertyServerException problem accessing the metadata service
      * @throws UserNotAuthorizedException security access problem
@@ -387,13 +381,13 @@ public interface SecurityManagerInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<PersonRoleAppointee> getAppointees(String userId,
-                                            String personRoleGUID,
-                                            Date   effectiveTime,
-                                            int    startFrom,
-                                            int    pageSize) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
+    List<Appointee> getAppointees(String userId,
+                                  String personRoleGUID,
+                                  Date   effectiveTime,
+                                  int    startFrom,
+                                  int    pageSize) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException;
 
 
     /**

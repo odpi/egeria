@@ -2,11 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.LineageMappingElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ProcessCallElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.LineageMappingProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessCallProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LineageMappingElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageMappingProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -59,9 +57,8 @@ public class LineageMappingConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof LineageMappingElement)
+            if (returnBean instanceof LineageMappingElement bean)
             {
-                LineageMappingElement    bean                     = (LineageMappingElement) returnBean;
                 LineageMappingProperties lineageMappingProperties = new LineageMappingProperties();
 
                 if (relationship != null)

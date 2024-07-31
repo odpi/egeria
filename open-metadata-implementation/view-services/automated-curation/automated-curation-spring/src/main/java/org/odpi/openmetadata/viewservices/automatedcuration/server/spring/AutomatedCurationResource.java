@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarge
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetsResponse;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeElementListResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeReportResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.server.AutomatedCurationRESTServices;

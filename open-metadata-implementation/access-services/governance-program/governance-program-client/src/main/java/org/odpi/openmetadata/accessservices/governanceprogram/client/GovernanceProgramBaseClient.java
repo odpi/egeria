@@ -5,37 +5,20 @@ package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.RelatedElementsManagementInterface;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.AssignmentScopeProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.ClassificationProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionStatus;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.ReferenceableProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.ResourceListProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.StakeholderProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ClassificationRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ElementStubListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceRoleListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceRoleRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceStatusRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDefinitionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StakeholderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 
 import java.util.List;
 
@@ -928,15 +911,15 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
 
-        RelatedElementListResponse restResult = restClient.callRelatedElementListGetRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             startingElementGUID,
-                                                                                             Integer.toString(startFrom),
-                                                                                             Integer.toString(pageSize));
+        RelatedElementsResponse restResult = restClient.callRelatedElementsGetRESTCall(methodName,
+                                                                                       urlTemplate,
+                                                                                       serverName,
+                                                                                       userId,
+                                                                                       startingElementGUID,
+                                                                                       Integer.toString(startFrom),
+                                                                                       Integer.toString(pageSize));
 
-        return restResult.getElementList();
+        return restResult.getElements();
     }
 
 
@@ -969,13 +952,13 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
-        ElementStubListResponse restResult = restClient.callElementStubListGetRESTCall(methodName,
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       name,
-                                                                                       Integer.toString(startFrom),
-                                                                                       Integer.toString(pageSize));
+        ElementStubsResponse restResult = restClient.callElementStubsGetRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 name,
+                                                                                 Integer.toString(startFrom),
+                                                                                 Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -1010,13 +993,13 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
 
-        GovernanceDefinitionListResponse restResult = restClient.callGovernanceDefinitionListGetRESTCall(methodName,
-                                                                                                         urlTemplate,
-                                                                                                         serverName,
-                                                                                                         userId,
-                                                                                                         startingElementGUID,
-                                                                                                         Integer.toString(startFrom),
-                                                                                                         Integer.toString(pageSize));
+        GovernanceDefinitionsResponse restResult = restClient.callGovernanceDefinitionsGetRESTCall(methodName,
+                                                                                                   urlTemplate,
+                                                                                                   serverName,
+                                                                                                   userId,
+                                                                                                   startingElementGUID,
+                                                                                                   Integer.toString(startFrom),
+                                                                                                   Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -1051,13 +1034,13 @@ public class GovernanceProgramBaseClient implements RelatedElementsManagementInt
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startingElementGUID, startingElementGUIDParameterName, methodName);
 
-        GovernanceRoleListResponse restResult = restClient.callGovernanceRoleListGetRESTCall(methodName,
-                                                                                             urlTemplate,
-                                                                                             serverName,
-                                                                                             userId,
-                                                                                             startingElementGUID,
-                                                                                             Integer.toString(startFrom),
-                                                                                             Integer.toString(pageSize));
+        GovernanceRolesResponse restResult = restClient.callGovernanceRoleListGetRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          startingElementGUID,
+                                                                                          Integer.toString(startFrom),
+                                                                                          Integer.toString(pageSize));
 
         return restResult.getElements();
     }

@@ -4,18 +4,18 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetLicenseInterface;
 import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.LicenseElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.LicenseTypeElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.LicenseProperties;
-import org.odpi.openmetadata.accessservices.assetowner.rest.LicenseListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.LicenseTypeListResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.LicenseTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.LicenseTypeResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.LicenseTypesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.LicensesResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LicenseElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.LicenseTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LicenseProperties;
 
 import java.util.List;
 
@@ -234,13 +234,13 @@ public class AssetLicenseManager extends AssetOwnerBaseClient implements AssetLi
         requestBody.setSearchString(title);
         requestBody.setSearchStringParameterName(titleParameterName);
 
-        LicenseTypeListResponse restResult = restClient.callLicenseTypeListPostRESTCall(methodName,
-                                                                                        urlTemplate,
-                                                                                        requestBody,
-                                                                                        serverName,
-                                                                                        userId,
-                                                                                        startFrom,
-                                                                                        queryPageSize);
+        LicenseTypesResponse restResult = restClient.callLicenseTypeListPostRESTCall(methodName,
+                                                                                     urlTemplate,
+                                                                                     requestBody,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     startFrom,
+                                                                                     queryPageSize);
 
         return restResult.getElements();
     }
@@ -275,13 +275,13 @@ public class AssetLicenseManager extends AssetOwnerBaseClient implements AssetLi
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        LicenseTypeListResponse restResult = restClient.callLicenseTypeListGetRESTCall(methodName,
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       userId,
-                                                                                       domainIdentifier,
-                                                                                       startFrom,
-                                                                                       queryPageSize);
+        LicenseTypesResponse restResult = restClient.callLicenseTypesGetRESTCall(methodName,
+                                                                                 urlTemplate,
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 domainIdentifier,
+                                                                                 startFrom,
+                                                                                 queryPageSize);
 
         return restResult.getElements();
     }
@@ -458,13 +458,13 @@ public class AssetLicenseManager extends AssetOwnerBaseClient implements AssetLi
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        LicenseListResponse restResult = restClient.callLicenseListGetRESTCall(methodName,
-                                                                               urlTemplate,
-                                                                               serverName,
-                                                                               userId,
-                                                                               elementGUID,
-                                                                               startFrom,
-                                                                               queryPageSize);
+        LicensesResponse restResult = restClient.callLicensesGetRESTCall(methodName,
+                                                                         urlTemplate,
+                                                                         serverName,
+                                                                         userId,
+                                                                         elementGUID,
+                                                                         startFrom,
+                                                                         queryPageSize);
 
         return restResult.getElements();
     }

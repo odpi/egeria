@@ -2,31 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ValidValueElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ReferenceValueAssignmentProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ValidValueAssignmentProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ValidValueMembershipProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ValidValueProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelatedElementListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ValidValueListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ValidValueResponse;
+
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -768,18 +756,18 @@ public class ValidValuesRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ValidValueListResponse findValidValues(String                  serverName,
-                                                  String                  userId,
-                                                  SearchStringRequestBody requestBody,
-                                                  int                     startFrom,
-                                                  int                     pageSize)
+    public ValidValuesResponse findValidValues(String                  serverName,
+                                               String                  userId,
+                                               SearchStringRequestBody requestBody,
+                                               int                     startFrom,
+                                               int                     pageSize)
     {
         final String methodName = "findValidValues";
         final String searchStringParameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ValidValueListResponse response = new ValidValueListResponse();
+        ValidValuesResponse response = new ValidValuesResponse();
         AuditLog          auditLog = null;
 
         try
@@ -801,7 +789,7 @@ public class ValidValuesRESTServices
                                                                               new Date(),
                                                                               methodName);
 
-                response.setElementList(setUpVendorProperties(userId, validValues, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, validValues, handler, methodName));
             }
             else
             {
@@ -834,7 +822,7 @@ public class ValidValuesRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ValidValueListResponse getValidValuesByName(String          serverName,
+    public ValidValuesResponse getValidValuesByName(String          serverName,
                                                        String          userId,
                                                        NameRequestBody requestBody,
                                                        int             startFrom,
@@ -845,7 +833,7 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ValidValueListResponse response = new ValidValueListResponse();
+        ValidValuesResponse response = new ValidValuesResponse();
         AuditLog          auditLog = null;
 
         try
@@ -867,7 +855,7 @@ public class ValidValuesRESTServices
                                                                                   new Date(),
                                                                                   methodName);
 
-                response.setElementList(setUpVendorProperties(userId, validValues, handler, methodName));
+                response.setElements(setUpVendorProperties(userId, validValues, handler, methodName));
             }
             else
             {
@@ -899,7 +887,7 @@ public class ValidValuesRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public ValidValueListResponse getValidValueSetMembers(String          serverName,
+    public ValidValuesResponse getValidValueSetMembers(String          serverName,
                                                           String          userId,
                                                           String          validValueSetGUID,
                                                           int             startFrom,
@@ -910,7 +898,7 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ValidValueListResponse response = new ValidValueListResponse();
+        ValidValuesResponse response = new ValidValuesResponse();
         AuditLog               auditLog = null;
 
         try
@@ -919,7 +907,7 @@ public class ValidValuesRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setElementList(handler.getValidValueSetMembers(userId,
+            response.setElements(handler.getValidValueSetMembers(userId,
                                                                     validValueSetGUID,
                                                                     guidParameterName,
                                                                     startFrom,
@@ -954,7 +942,7 @@ public class ValidValuesRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public ValidValueListResponse getSetsForValidValue(String          serverName,
+    public ValidValuesResponse getSetsForValidValue(String          serverName,
                                                        String          userId,
                                                        String          validValueGUID,
                                                        int             startFrom,
@@ -965,7 +953,7 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ValidValueListResponse response = new ValidValueListResponse();
+        ValidValuesResponse response = new ValidValuesResponse();
         AuditLog               auditLog = null;
 
         try
@@ -974,7 +962,7 @@ public class ValidValuesRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setElementList(handler.getSetsForValidValue(userId,
+            response.setElements(handler.getSetsForValidValue(userId,
                                                                  validValueGUID,
                                                                  guidParameterName,
                                                                  startFrom,
@@ -1062,19 +1050,19 @@ public class ValidValuesRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public RelatedElementListResponse getConsumersOfValidValue(String          serverName,
-                                                               String          userId,
-                                                               String          validValueGUID,
-                                                               int             startFrom,
-                                                               int             pageSize)
+    public RelatedElementsResponse getConsumersOfValidValue(String          serverName,
+                                                            String          userId,
+                                                            String          validValueGUID,
+                                                            int             startFrom,
+                                                            int             pageSize)
     {
         final String methodName         = "getConsumersOfValidValue";
         final String guidParameterName  = "validValueGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -1082,15 +1070,15 @@ public class ValidValuesRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setElementList(handler.getValidValueConsumers(userId,
-                                                                   validValueGUID,
-                                                                   guidParameterName,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   false,
-                                                                   false,
-                                                                   new Date(),
-                                                                   methodName));
+            response.setElements(handler.getValidValueConsumers(userId,
+                                                                validValueGUID,
+                                                                guidParameterName,
+                                                                startFrom,
+                                                                pageSize,
+                                                                false,
+                                                                false,
+                                                                new Date(),
+                                                                methodName));
         }
         catch (Exception error)
         {
@@ -1116,7 +1104,7 @@ public class ValidValuesRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ValidValueListResponse getReferenceValues(String serverName,
+    public ValidValuesResponse getReferenceValues(String serverName,
                                                      String userId,
                                                      String elementGUID,
                                                      int    startFrom,
@@ -1127,7 +1115,7 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ValidValueListResponse response = new ValidValueListResponse();
+        ValidValuesResponse response = new ValidValuesResponse();
         AuditLog               auditLog = null;
 
         try
@@ -1147,7 +1135,7 @@ public class ValidValuesRESTServices
                                                                             new Date(),
                                                                             methodName);
 
-            response.setElementList(setUpVendorProperties(userId, validValue, handler, methodName));
+            response.setElements(setUpVendorProperties(userId, validValue, handler, methodName));
         }
         catch (Exception error)
         {
@@ -1174,19 +1162,19 @@ public class ValidValuesRESTServices
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
      */
-    public RelatedElementListResponse getAssigneesOfReferenceValue(String          serverName,
-                                                                   String          userId,
-                                                                   String          validValueGUID,
-                                                                   int             startFrom,
-                                                                   int             pageSize)
+    public RelatedElementsResponse getAssigneesOfReferenceValue(String          serverName,
+                                                                String          userId,
+                                                                String          validValueGUID,
+                                                                int             startFrom,
+                                                                int             pageSize)
     {
         final String methodName         = "getAssigneesOfReferenceValue";
         final String guidParameterName  = "validValueGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        RelatedElementListResponse response = new RelatedElementListResponse();
-        AuditLog                   auditLog = null;
+        RelatedElementsResponse response = new RelatedElementsResponse();
+        AuditLog                auditLog = null;
 
         try
         {
@@ -1194,15 +1182,15 @@ public class ValidValuesRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setElementList(handler.getReferenceValueAssignees(userId,
-                                                                       validValueGUID,
-                                                                       guidParameterName,
-                                                                       startFrom,
-                                                                       pageSize,
-                                                                       false,
-                                                                       false,
-                                                                       new Date(),
-                                                                       methodName));
+            response.setElements(handler.getReferenceValueAssignees(userId,
+                                                                    validValueGUID,
+                                                                    guidParameterName,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    false,
+                                                                    false,
+                                                                    new Date(),
+                                                                    methodName));
         }
         catch (Exception error)
         {
@@ -1228,7 +1216,7 @@ public class ValidValuesRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public ValidValueListResponse getAllValidValues(String          serverName,
+    public ValidValuesResponse getAllValidValues(String          serverName,
                                                     String          userId,
                                                     int             startFrom,
                                                     int             pageSize)
@@ -1237,7 +1225,7 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ValidValueListResponse response = new ValidValueListResponse();
+        ValidValuesResponse response = new ValidValuesResponse();
         AuditLog          auditLog = null;
 
         try
@@ -1255,7 +1243,7 @@ public class ValidValuesRESTServices
                                                                          new Date(),
                                                                          methodName);
 
-            response.setElementList(setUpVendorProperties(userId, validValues, handler, methodName));
+            response.setElements(setUpVendorProperties(userId, validValues, handler, methodName));
         }
         catch (Exception error)
         {

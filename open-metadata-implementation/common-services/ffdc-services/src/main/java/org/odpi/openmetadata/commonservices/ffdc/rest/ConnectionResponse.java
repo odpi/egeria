@@ -6,32 +6,29 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-
 /**
- * ConnectionResponse is the response structure used on REST API calls that return a
- * Connection object as a response.
+ * OCFConnectionResponse is a response object for passing back a single connection object.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectionResponse extends FFDCResponseBase
 {
-    private Connection connection = null;
+    private ConnectionElement element = null;
+
 
     /**
      * Default constructor
      */
     public ConnectionResponse()
     {
-        super();
     }
 
 
@@ -40,36 +37,36 @@ public class ConnectionResponse extends FFDCResponseBase
      *
      * @param template object to copy
      */
-    public ConnectionResponse(ConnectionResponse  template)
+    public ConnectionResponse(ConnectionResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.connection = template.getConnection();
+            element = template.getElement();
         }
     }
 
 
     /**
-     * Return the Connection object.
+     * Return the metadata element.
      *
-     * @return connection
+     * @return result object
      */
-    public Connection getConnection()
+    public ConnectionElement getElement()
     {
-        return connection;
+        return element;
     }
 
 
     /**
-     * Set up the Connection object.
+     * Set up the metadata element to return.
      *
-     * @param connection - connection object
+     * @param element result object
      */
-    public void setConnection(Connection connection)
+    public void setElement(ConnectionElement element)
     {
-        this.connection = connection;
+        this.element = element;
     }
 
 
@@ -82,18 +79,8 @@ public class ConnectionResponse extends FFDCResponseBase
     public String toString()
     {
         return "ConnectionResponse{" +
-                "connection=" + connection +
-                ", exceptionClassName='" + getExceptionClassName() + '\'' +
-                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
-                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
-                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
-                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
-                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
-                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
-                ", exceptionProperties=" + getExceptionProperties() +
-                '}';
+                "element=" + element +
+                "} " + super.toString();
     }
 
 
@@ -110,7 +97,7 @@ public class ConnectionResponse extends FFDCResponseBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof ConnectionResponse))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -119,7 +106,7 @@ public class ConnectionResponse extends FFDCResponseBase
             return false;
         }
         ConnectionResponse that = (ConnectionResponse) objectToCompare;
-        return Objects.equals(getConnection(), that.getConnection());
+        return Objects.equals(element, that.element);
     }
 
 
@@ -131,13 +118,6 @@ public class ConnectionResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        if (connection == null)
-        {
-            return super.hashCode();
-        }
-        else
-        {
-            return connection.hashCode();
-        }
+        return Objects.hash(super.hashCode(), element);
     }
 }

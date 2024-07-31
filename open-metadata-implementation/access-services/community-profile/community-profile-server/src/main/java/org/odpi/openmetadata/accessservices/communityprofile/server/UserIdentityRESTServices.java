@@ -2,20 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentityProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ExternalSourceRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.ReferenceableRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityListResponse;
-import org.odpi.openmetadata.accessservices.communityprofile.rest.UserIdentityResponse;
+
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.UserIdentityElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ProfileIdentityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.UserIdentityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -73,11 +66,9 @@ public class UserIdentityRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof UserIdentityProperties)
+                if (requestBody.getProperties() instanceof UserIdentityProperties userIdentityProperties)
                 {
                     UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
-
-                    UserIdentityProperties userIdentityProperties = (UserIdentityProperties) requestBody.getProperties();
 
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                     String userIdentityGUID = handler.createUserIdentity(userId,
@@ -150,11 +141,9 @@ public class UserIdentityRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof UserIdentityProperties)
+                if (requestBody.getProperties() instanceof UserIdentityProperties userIdentityProperties)
                 {
                     UserIdentityHandler<UserIdentityElement> handler = instanceHandler.getUserIdentityHandler(userId, serverName, methodName);
-
-                    UserIdentityProperties userIdentityProperties = (UserIdentityProperties) requestBody.getProperties();
 
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                     handler.updateUserIdentity(userId,
@@ -300,9 +289,8 @@ public class UserIdentityRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ProfileIdentityProperties)
+                if (requestBody.getProperties() instanceof ProfileIdentityProperties properties)
                 {
-                    ProfileIdentityProperties properties = (ProfileIdentityProperties)requestBody.getProperties();
                     handler.addIdentityToProfile(userId,
                                                  requestBody.getExternalSourceGUID(),
                                                  requestBody.getExternalSourceName(),
@@ -400,9 +388,8 @@ public class UserIdentityRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ProfileIdentityProperties)
+                if (requestBody.getProperties() instanceof ProfileIdentityProperties properties)
                 {
-                    ProfileIdentityProperties properties = (ProfileIdentityProperties)requestBody.getProperties();
                     handler.updateIdentityProfile(userId,
                                                   requestBody.getExternalSourceGUID(),
                                                   requestBody.getExternalSourceName(),
@@ -549,7 +536,7 @@ public class UserIdentityRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public UserIdentityListResponse findUserIdentities(String                  serverName,
+    public UserIdentitiesResponse findUserIdentities(String                  serverName,
                                                        String                  userId,
                                                        int                     startFrom,
                                                        int                     pageSize,
@@ -560,7 +547,7 @@ public class UserIdentityRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        UserIdentityListResponse response = new UserIdentityListResponse();
+        UserIdentitiesResponse response = new UserIdentitiesResponse();
         AuditLog                 auditLog = null;
 
         try
@@ -614,7 +601,7 @@ public class UserIdentityRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public UserIdentityListResponse getUserIdentitiesByName(String          serverName,
+    public UserIdentitiesResponse getUserIdentitiesByName(String          serverName,
                                                             String          userId,
                                                             int             startFrom,
                                                             int             pageSize,
@@ -625,8 +612,8 @@ public class UserIdentityRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        UserIdentityListResponse response = new UserIdentityListResponse();
-        AuditLog                 auditLog = null;
+        UserIdentitiesResponse response = new UserIdentitiesResponse();
+        AuditLog               auditLog = null;
 
         try
         {
@@ -670,7 +657,6 @@ public class UserIdentityRESTServices
      * @param userIdentityGUID unique identifier of the requested metadata element
      *
      * @return matching metadata element or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)

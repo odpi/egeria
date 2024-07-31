@@ -8,19 +8,10 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManage
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetOriginProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldQueryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.FindAssetOriginProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.FindNameProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GovernanceClassificationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.LevelIdentifierProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.OwnerProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.RetentionClassificationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SecurityTagsProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SemanticAssignmentProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SubjectAreaMemberProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindNameProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.OwnerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.FindByPropertiesRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementsResponse;
@@ -29,7 +20,10 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -1357,15 +1351,15 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         requestBody.setEffectiveTime(effectiveTime);
         requestBody.setProperties(properties);
 
-        AssetElementsResponse restResult = restClient.callAssetsPostRESTCall(methodName,
-                                                                             urlTemplate + requestParamsURLTemplate,
-                                                                             requestBody,
-                                                                             serverName,
-                                                                             userId,
-                                                                             startFrom,
-                                                                             validatedPageSize,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing);
+        AssetElementsResponse restResult = restClient.callMyAssetsPostRESTCall(methodName,
+                                                                               urlTemplate + requestParamsURLTemplate,
+                                                                               requestBody,
+                                                                               serverName,
+                                                                               userId,
+                                                                               startFrom,
+                                                                               validatedPageSize,
+                                                                               forLineage,
+                                                                               forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1389,17 +1383,17 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void addElementToSubjectArea(String                      userId,
-                                        String                      assetManagerGUID,
-                                        String                      assetManagerName,
-                                        String                      elementGUID,
-                                        String                      externalIdentifier,
-                                        SubjectAreaMemberProperties properties,
-                                        Date                        effectiveTime,
-                                        boolean                     forLineage,
-                                        boolean                     forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public void addElementToSubjectArea(String                              userId,
+                                        String                              assetManagerGUID,
+                                        String                              assetManagerName,
+                                        String                              elementGUID,
+                                        String                              externalIdentifier,
+                                        SubjectAreaClassificationProperties properties,
+                                        Date                                effectiveTime,
+                                        boolean                             forLineage,
+                                        boolean                             forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         final String   methodName = "addElementToSubjectArea";
         final String   elementGUIDParameter = "elementGUID";
@@ -1663,16 +1657,16 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
-                                                                                           urlTemplate,
-                                                                                           getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
-                                                                                           serverName,
-                                                                                           userId,
-                                                                                           elementGUID,
-                                                                                           startFrom,
-                                                                                           validatedPageSize,
-                                                                                           forLineage,
-                                                                                           forDuplicateProcessing);
+        GlossaryTermElementsResponse restResult = restClient.callMyGlossaryTermsPostRESTCall(methodName,
+                                                                                             urlTemplate,
+                                                                                             getEffectiveTimeQueryRequestBody(assetManagerGUID, assetManagerName, effectiveTime),
+                                                                                             serverName,
+                                                                                             userId,
+                                                                                             elementGUID,
+                                                                                             startFrom,
+                                                                                             validatedPageSize,
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing);
 
         return restResult.getElementList();
     }
@@ -1871,18 +1865,18 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        GovernanceDefinitionsResponse restResult = restClient.callGovernanceDefinitionsPostRESTCall(methodName,
-                                                                                                    urlTemplate + requestParamsURLTemplate,
-                                                                                                    getEffectiveTimeQueryRequestBody(assetManagerGUID,
+        GovernanceDefinitionsResponse restResult = restClient.callMyGovernanceDefinitionsPostRESTCall(methodName,
+                                                                                                      urlTemplate + requestParamsURLTemplate,
+                                                                                                      getEffectiveTimeQueryRequestBody(assetManagerGUID,
                                                                                                                                      assetManagerName,
                                                                                                                                      effectiveTime),
-                                                                                                    serverName,
-                                                                                                    userId,
-                                                                                                    elementGUID,
-                                                                                                    startFrom,
-                                                                                                    validatedPageSize,
-                                                                                                    forLineage,
-                                                                                                    forDuplicateProcessing);
+                                                                                                      serverName,
+                                                                                                      userId,
+                                                                                                      elementGUID,
+                                                                                                      startFrom,
+                                                                                                      validatedPageSize,
+                                                                                                      forLineage,
+                                                                                                      forDuplicateProcessing);
 
         return restResult.getElements();
     }

@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.projectmanagement.api;
 
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectTeamMember;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProjectTeamMember;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectTeamProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;

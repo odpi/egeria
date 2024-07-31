@@ -145,7 +145,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
 
     /* =====================================================================================================================
-     * A process describes a well defined series of steps that gets something done.
+     * A process describes a well-defined series of steps that gets something done.
      */
 
     /**
@@ -155,7 +155,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
      * @param qualifiedName unique name for this asset
-     * @param technicalName the stored name property for the process
+     * @param name the short name property for the process
+     * @param resourceName the full name property for the process
      * @param versionIdentifier the stored version identifier property for the process
      * @param technicalDescription the stored description property associated with the process
      * @param deployedImplementationType technology type
@@ -181,7 +182,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                 String              externalSourceGUID,
                                 String              externalSourceName,
                                 String              qualifiedName,
-                                String              technicalName,
+                                String              name,
+                                String              resourceName,
                                 String              versionIdentifier,
                                 String              technicalDescription,
                                 String              deployedImplementationType,
@@ -248,7 +250,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                       externalSourceGUID,
                                                       externalSourceName,
                                                       qualifiedName,
-                                                      technicalName,
+                                                      name,
+                                                      resourceName,
                                                       versionIdentifier,
                                                       technicalDescription,
                                                       deployedImplementationType,
@@ -336,7 +339,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
      * @param processGUIDParameterName unique identifier of the process in the external process manager
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
      * @param qualifiedName unique name for this asset
-     * @param technicalName the stored name property for the process
+     * @param name the display name property for the process
+     * @param resourceName the full name property for the process
      * @param versionIdentifier version identifier for the process
      * @param technicalDescription the stored description property associated with the process
      * @param deployedImplementationType technology type
@@ -363,7 +367,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                               String              processGUIDParameterName,
                               boolean             isMergeUpdate,
                               String              qualifiedName,
-                              String              technicalName,
+                              String              name,
+                              String              resourceName,
                               String              versionIdentifier,
                               String              technicalDescription,
                               String              deployedImplementationType,
@@ -422,7 +427,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                    processGUID,
                                    processGUIDParameterName,
                                    qualifiedName,
-                                   technicalName,
+                                   name,
+                                   resourceName,
                                    versionIdentifier,
                                    technicalDescription,
                                    deployedImplementationType,

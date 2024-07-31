@@ -6,10 +6,10 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ElementHeadersResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.ElementHeadersResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.MetadataCorrelationHeadersResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateMetadataCorrelatorsRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.server.ExternalIdentifierRESTServices;

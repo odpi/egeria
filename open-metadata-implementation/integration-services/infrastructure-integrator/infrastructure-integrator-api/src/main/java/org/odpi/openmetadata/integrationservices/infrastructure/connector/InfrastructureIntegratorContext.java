@@ -15,25 +15,13 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.client.ITProfileMan
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.PlatformManagerClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.ProcessManagerClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.ServerManagerClient;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ControlFlowElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataAssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataFlowElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DeploymentElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.HostElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ITProfileElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.LineageMappingElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessCallElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ProcessElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.RelatedAssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.ServerAssetUseElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerPlatformElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -47,6 +35,15 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentTyp
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ControlFlowProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataFlowProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageMappingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ProcessCallProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.CapabilityDeploymentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -2253,7 +2250,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
      */
     public String setupDataFlow(String              dataSupplierGUID,
                                 String              dataConsumerGUID,
-                                DataFlowProperties  properties,
+                                DataFlowProperties properties,
                                 Date                effectiveTime) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
@@ -2401,7 +2398,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
      */
     public String setupControlFlow(String                 currentStepGUID,
                                    String                 nextStepGUID,
-                                   ControlFlowProperties  properties,
+                                   ControlFlowProperties properties,
                                    Date                   effectiveTime) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException

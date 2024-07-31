@@ -6,7 +6,7 @@ package org.odpi.openmetadata.viewservices.classificationmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 
 import java.util.Date;
 import java.util.Objects;
@@ -23,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ClassificationRequestBody
 {
-    private ClassificationProperties      properties                    = null;
-    private Date                          effectiveTime                 = null;
+    private ClassificationProperties properties    = null;
+    private Date                     effectiveTime = null;
 
 
 

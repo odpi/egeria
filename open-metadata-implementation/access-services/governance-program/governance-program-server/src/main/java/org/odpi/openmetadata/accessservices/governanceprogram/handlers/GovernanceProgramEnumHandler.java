@@ -17,8 +17,8 @@ class GovernanceProgramEnumHandler
 {
     private static final Logger log = LoggerFactory.getLogger(GovernanceProgramEnumHandler.class);
 
-    private String                        serviceName;
-    private OMRSRepositoryHelper          repositoryHelper;
+    private final String               serviceName;
+    private final OMRSRepositoryHelper repositoryHelper;
 
     /**
      * Construct the enum handler handler with a link to the property server's connector and this access service's

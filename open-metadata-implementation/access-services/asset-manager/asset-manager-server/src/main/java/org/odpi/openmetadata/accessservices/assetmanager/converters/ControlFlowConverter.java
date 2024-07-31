@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ControlFlowElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ControlFlowProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ControlFlowElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ControlFlowProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -57,9 +57,8 @@ public class ControlFlowConverter<B> extends AssetManagerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ControlFlowElement)
+            if (returnBean instanceof ControlFlowElement bean)
             {
-                ControlFlowElement    bean                  = (ControlFlowElement) returnBean;
                 ControlFlowProperties controlFlowProperties = new ControlFlowProperties();
 
                 if (relationship != null)

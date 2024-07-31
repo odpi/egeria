@@ -5,15 +5,15 @@ package org.odpi.openmetadata.accessservices.assetmanager.handlers;
 import org.odpi.openmetadata.accessservices.assetmanager.converters.ExternalReferenceConverter;
 
 import org.odpi.openmetadata.accessservices.assetmanager.converters.ExternalReferenceLinkConverter;
+import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ExternalReferenceLinkElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceLinkProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ExternalReferenceHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ExternalReferenceLinkHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -195,7 +195,7 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
     {
         if (results != null)
         {
-            for (MetadataElement externalReference : results)
+            for (CorrelatedMetadataElement externalReference : results)
             {
                 if ((externalReference != null) && (externalReference.getElementHeader() != null) && (externalReference.getElementHeader().getGUID() != null))
                 {
@@ -262,8 +262,8 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
                                                                                         anchorGUID,
                                                                                         externalReferenceProperties.getQualifiedName(),
                                                                                         externalReferenceProperties.getDisplayName(),
-                                                                                        externalReferenceProperties.getDescription(),
-                                                                                        externalReferenceProperties.getUrl(),
+                                                                                        externalReferenceProperties.getResourceDescription(),
+                                                                                        externalReferenceProperties.getURI(),
                                                                                         externalReferenceProperties.getVersion(),
                                                                                         externalReferenceProperties.getOrganization(),
                                                                                         externalReferenceProperties.getAdditionalProperties(),
@@ -349,8 +349,8 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
                                                          externalReferenceGUIDParameterName,
                                                          externalReferenceProperties.getQualifiedName(),
                                                          externalReferenceProperties.getDisplayName(),
-                                                         externalReferenceProperties.getDescription(),
-                                                         externalReferenceProperties.getUrl(),
+                                                         externalReferenceProperties.getResourceDescription(),
+                                                         externalReferenceProperties.getURI(),
                                                          externalReferenceProperties.getVersion(),
                                                          externalReferenceProperties.getOrganization(),
                                                          externalReferenceProperties.getAdditionalProperties(),

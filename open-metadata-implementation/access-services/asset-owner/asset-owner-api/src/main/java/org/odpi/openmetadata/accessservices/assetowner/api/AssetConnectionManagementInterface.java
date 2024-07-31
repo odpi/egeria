@@ -4,11 +4,11 @@ package org.odpi.openmetadata.accessservices.assetowner.api;
 
 
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.EndpointElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.ConnectionProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

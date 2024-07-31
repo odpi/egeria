@@ -3,24 +3,21 @@
 package org.odpi.openmetadata.accessservices.stewardshipaction.server;
 
 
-import org.odpi.openmetadata.accessservices.stewardshipaction.converters.ElementStubConverter;
-import org.odpi.openmetadata.accessservices.stewardshipaction.metadataelements.DuplicateElement;
-import org.odpi.openmetadata.accessservices.stewardshipaction.properties.DuplicateProperties;
-import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesRequestBody;
-import org.odpi.openmetadata.accessservices.stewardshipaction.rest.DuplicatesResponse;
-import org.odpi.openmetadata.accessservices.stewardshipaction.rest.ElementStubResponse;
-import org.odpi.openmetadata.accessservices.stewardshipaction.rest.ElementStubsResponse;
+
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.generichandlers.ElementStubConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DuplicateElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.DuplicateProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -66,16 +63,16 @@ public class StewardshipActionRESTServices
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem retrieving the discovery engine definition.
      */
-    public ConnectionResponse getOutTopicConnection(String serverName,
-                                                    String userId,
-                                                    String callerId)
+    public OCFConnectionResponse getOutTopicConnection(String serverName,
+                                                       String userId,
+                                                       String callerId)
     {
         final String methodName = "getOutTopicConnection";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ConnectionResponse response = new ConnectionResponse();
-        AuditLog           auditLog = null;
+        OCFConnectionResponse response = new OCFConnectionResponse();
+        AuditLog              auditLog = null;
 
         try
         {
@@ -452,7 +449,7 @@ public class StewardshipActionRESTServices
                                 peerProxy = relationship.getEntityTwoProxy();
                             }
 
-                            duplicateProperties.setDuplicateElement(converter.getNewBean(ElementStub.class, peerProxy, methodName));
+                            duplicateProperties.setDuplicateGUID(peerProxy.getGUID());
 
                             duplicateElement.setDuplicateProperties(duplicateProperties);
                         }
@@ -464,7 +461,7 @@ public class StewardshipActionRESTServices
 
             if (! results.isEmpty())
             {
-                response.setElementList(results);
+                response.setElements(results);
             }
         }
         catch (Exception error)
@@ -838,7 +835,7 @@ public class StewardshipActionRESTServices
             {
                 ElementStubConverter<ElementStub> converter = instanceHandler.getElementStubConverter(userId, serverName, methodName);
 
-                ElementStub elementStub = converter.getNewBean(ElementStub.class, relationship.getEntityTwoProxy(), methodName);
+                ElementStub elementStub = converter.getElementStub(ElementStub.class, relationship.getEntityTwoProxy(), methodName);
 
                 response.setElement(elementStub);
             }

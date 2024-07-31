@@ -3,13 +3,13 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.CommentElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.NoteElement;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.NoteLogElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.CommentProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.FeedbackProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.NoteLogProperties;
-import org.odpi.openmetadata.accessservices.assetowner.properties.NoteProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CommentElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.NoteElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.NoteLogElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.CommentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.FeedbackProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

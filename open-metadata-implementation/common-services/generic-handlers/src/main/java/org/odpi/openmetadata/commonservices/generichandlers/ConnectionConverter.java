@@ -2,20 +2,26 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EmbeddedConnection;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ConnectionConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
+ * OCFConnectionConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
  * EntityDetail and Relationship objects into a Connection bean (or a VirtualConnection bean).
  */
-public class ConnectionConverter<B> extends OCFConverter<B>
+public class ConnectionConverter<B> extends OMFConverter<B>
 {
     /**
      * Constructor
@@ -61,13 +67,83 @@ public class ConnectionConverter<B> extends OCFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof Connection)
+            if (returnBean instanceof ConnectionElement bean)
             {
-                /*
-                 * This cast should not fail due to the checking we have done above, but ClassCastException is caught just in case.
-                 */
-                return (B) getEmbeddedConnection(beanClass, primaryEntity, supplementaryEntities, relationships, methodName);
+                ConnectionProperties connectionProperties = new ConnectionProperties();
+
+                if (primaryEntity != null)
+                {
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, primaryEntity, methodName));
+
+                    /*
+                     * The initial set of values come from the entity.
+                     */
+                    InstanceProperties instanceProperties = new InstanceProperties(primaryEntity.getProperties());
+
+                    connectionProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    connectionProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    connectionProperties.setDisplayName(this.removeDisplayName(instanceProperties));
+                    connectionProperties.setDescription(this.removeDescription(instanceProperties));
+                    connectionProperties.setSecuredProperties(this.removeSecuredProperties(instanceProperties));
+                    connectionProperties.setConfigurationProperties(this.removeConfigurationProperties(instanceProperties));
+                    connectionProperties.setUserId(this.removeUserId(instanceProperties));
+                    connectionProperties.setClearPassword(this.removeClearPassword(instanceProperties));
+                    connectionProperties.setEncryptedPassword(this.removeEncryptedPassword(instanceProperties));
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    connectionProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    connectionProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                    bean.setConnectionProperties(connectionProperties);
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
+
+                if (relationships != null)
+                {
+                    List<EmbeddedConnection> embeddedConnections = new ArrayList<>();
+
+                    for (Relationship relationship : relationships)
+                    {
+                        if ((relationship != null) && (relationship.getType() != null))
+                        {
+                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.EMBEDDED_CONNECTION_TYPE_NAME))
+                            {
+                                EmbeddedConnection embeddedConnection = new EmbeddedConnection();
+
+                                InstanceProperties relationshipProperties = relationship.getProperties();
+
+                                embeddedConnection.setPosition(this.getPosition(relationshipProperties));
+                                embeddedConnection.setDisplayName(this.getDisplayName(relationshipProperties));
+                                embeddedConnection.setArguments(this.getArguments(relationshipProperties));
+
+                                embeddedConnection.setEmbeddedConnection(getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName));
+
+                                embeddedConnections.add(embeddedConnection);
+                            }
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_NAME))
+                            {
+                                bean.setConnectorType(getElementStub(beanClass, relationship.getEntityTwoProxy(), methodName));
+                            }
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME))
+                            {
+                                bean.setEndpoint(getElementStub(beanClass, relationship.getEntityOneProxy(), methodName));
+                            }
+                        }
+                    }
+
+                    if (! embeddedConnections.isEmpty())
+                    {
+                        bean.setEmbeddedConnections(embeddedConnections);
+                    }
+                }
             }
+
+            return returnBean;
         }
         catch (IllegalAccessException | InstantiationException | ClassCastException | NoSuchMethodException | InvocationTargetException error)
         {

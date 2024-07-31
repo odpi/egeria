@@ -93,9 +93,9 @@ public enum OpenMetadataProperty
     ANCHOR_DOMAIN_NAME("anchorDomainName", "string", "Unique name of the domain of the anchor.  This is an Open Metadata Type Name that either directly inherits from OpenMetadataRoot or Referenceable.", "Asset", "00ba532f-792f-4b78-8940-b5a9fd72f854"),
 
     /**
-     * Unique identifier for the entity.
+     * Unique name for the element.
      */
-    QUALIFIED_NAME("qualifiedName", "string", "Unique identifier for the entity.", "SoftwareServer:MyAsset:MyAssetName", "e31e5b9b-0f96-42a9-8e67-0e3fc66ad305"),
+    QUALIFIED_NAME("qualifiedName", "string", "Unique name for the element.", "SoftwareServer:MyAsset:MyAssetName", "e31e5b9b-0f96-42a9-8e67-0e3fc66ad305"),
 
     /**
      * Additional properties for the element.
@@ -103,9 +103,15 @@ public enum OpenMetadataProperty
     ADDITIONAL_PROPERTIES("additionalProperties", "map<string,string>", "Additional properties for the element.", null, "534b5665-73d4-4bdc-b83b-1a8fed19dba3"),
 
     /**
-     * Unique identifier for the entity.
+     * Name that the element is known as - not necessarily unique.
      */
-    NAME("name", "string", "Name that the element is known as - not necessarily unique.", "MyAssetName", "c075e0e7-8ecc-4f81-9ac4-ca3662c3ebe4"),
+    NAME("name", "string", "Short name that the element is known as - not necessarily unique.", "MyAssetName", "c075e0e7-8ecc-4f81-9ac4-ca3662c3ebe4"),
+
+    /**
+     * Full name that the element is known as in the owning deployed technology.
+     */
+    RESOURCE_NAME("resourceName", "string", "Full name that the element is known as in the owning deployed technology.  This name is typically unique within the scope of the owing technology", "MyAssetName", "c075e0e7-8ecc-4f81-9ac4-ca3662c3ebe4"),
+
 
     /**
      * Display name of the element used for summary tables and titles

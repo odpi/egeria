@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryCategoryElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryCategoryElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementResponse;
@@ -15,14 +14,15 @@ import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementsRe
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.RelatedElementsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelatedElementsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
@@ -403,11 +403,11 @@ public class GlossaryViewController
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
-        if ((restResult != null) && (restResult.getElementList() != null))
+        if ((restResult != null) && (restResult.getElements() != null))
         {
             List<GlossaryViewEntityDetail> results = new ArrayList<>();
 
-            for (RelatedElement relatedElement : restResult.getElementList())
+            for (RelatedElement relatedElement : restResult.getElements())
             {
                 OpenMetadataElementResponse openMetadataElement = restAPI.getMetadataElementByGUID(serverName,
                                                                                                    relatedElement.getRelatedElement().getGUID(),

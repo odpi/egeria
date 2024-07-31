@@ -5,8 +5,6 @@ package org.odpi.openmetadata.frameworks.governanceaction.search;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
-import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFRuntimeException;
 
 import java.util.*;
 

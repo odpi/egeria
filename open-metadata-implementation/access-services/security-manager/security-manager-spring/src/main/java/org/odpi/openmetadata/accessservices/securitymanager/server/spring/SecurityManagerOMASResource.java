@@ -4,28 +4,9 @@ package org.odpi.openmetadata.accessservices.securitymanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityGroupProperties;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.ActorProfileListResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.ActorProfileResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.ElementStubsResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.MetadataSourceRequestBody;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.PersonRoleAppointeeListResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.PersonRoleListResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.PersonRoleResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.SecurityGroupResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.SecurityGroupsResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.SecurityManagerRequestBody;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.UserIdentitiesResponse;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.UserIdentityRequestBody;
-import org.odpi.openmetadata.accessservices.securitymanager.rest.UserIdentityResponse;
 import org.odpi.openmetadata.accessservices.securitymanager.server.SecurityManagerRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -66,9 +47,9 @@ public class SecurityManagerOMASResource
      */
     @GetMapping(path = "/topics/out-topic-connection/{callerId}")
 
-    public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String callerId)
+    public OCFConnectionResponse getOutTopicConnection(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String callerId)
     {
         return restAPI.getOutTopicConnection(serverName, userId, callerId);
     }
@@ -361,7 +342,7 @@ public class SecurityManagerOMASResource
     public VoidResponse deleteUserIdentity(@PathVariable String                    serverName,
                                            @PathVariable String                    userId,
                                            @PathVariable String                    userIdentityGUID,
-                                           @RequestBody  MetadataSourceRequestBody requestBody)
+                                           @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.deleteUserIdentity(serverName, userId, userIdentityGUID, requestBody);
     }
@@ -388,7 +369,7 @@ public class SecurityManagerOMASResource
                                               @PathVariable String                    userId,
                                               @PathVariable String                    userIdentityGUID,
                                               @PathVariable String                    profileGUID,
-                                              @RequestBody  MetadataSourceRequestBody requestBody)
+                                              @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.addIdentityToProfile(serverName, userId, userIdentityGUID, profileGUID, requestBody);
     }
@@ -415,7 +396,7 @@ public class SecurityManagerOMASResource
                                                   @PathVariable String                    userId,
                                                   @PathVariable String                    userIdentityGUID,
                                                   @PathVariable String                    profileGUID,
-                                                  @RequestBody  MetadataSourceRequestBody requestBody)
+                                                  @RequestBody  ExternalSourceRequestBody requestBody)
     {
         return restAPI.removeIdentityFromProfile(serverName, userId, userIdentityGUID, profileGUID, requestBody);
     }
@@ -562,11 +543,11 @@ public class SecurityManagerOMASResource
      */
     @PostMapping(path = "/profiles/by-name")
 
-    public ActorProfileListResponse getActorProfileByName(@PathVariable String          serverName,
-                                                          @PathVariable String          userId,
-                                                          @RequestParam int             startFrom,
-                                                          @RequestParam int             pageSize,
-                                                          @RequestBody  NameRequestBody requestBody)
+    public ActorProfilesResponse getActorProfileByName(@PathVariable String          serverName,
+                                                       @PathVariable String          userId,
+                                                       @RequestParam int             startFrom,
+                                                       @RequestParam int             pageSize,
+                                                       @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getActorProfileByName(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -589,11 +570,11 @@ public class SecurityManagerOMASResource
      */
     @PostMapping(path = "/profiles/by-search-string")
 
-    public ActorProfileListResponse findActorProfile(@PathVariable String                  serverName,
-                                                     @PathVariable String                  userId,
-                                                     @RequestParam int                     startFrom,
-                                                     @RequestParam int                     pageSize,
-                                                     @RequestBody  SearchStringRequestBody requestBody)
+    public ActorProfilesResponse findActorProfile(@PathVariable String                  serverName,
+                                                  @PathVariable String                  userId,
+                                                  @RequestParam int                     startFrom,
+                                                  @RequestParam int                     pageSize,
+                                                  @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findActorProfile(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -617,12 +598,12 @@ public class SecurityManagerOMASResource
      */
     @PostMapping(path = "/person-roles/{personRoleGUID}/appointees")
 
-    public PersonRoleAppointeeListResponse getAppointees(@PathVariable String                   serverName,
-                                                         @PathVariable String                   userId,
-                                                         @PathVariable String                   personRoleGUID,
-                                                         @RequestParam int                      startFrom,
-                                                         @RequestParam int                      pageSize,
-                                                         @RequestBody  EffectiveTimeRequestBody requestBody)
+    public AppointeesResponse getAppointees(@PathVariable String                   serverName,
+                                            @PathVariable String                   userId,
+                                            @PathVariable String                   personRoleGUID,
+                                            @RequestParam int                      startFrom,
+                                            @RequestParam int                      pageSize,
+                                            @RequestBody  EffectiveTimeRequestBody requestBody)
     {
         return restAPI.getAppointees(serverName, userId, personRoleGUID, startFrom, pageSize, requestBody);
     }
@@ -668,11 +649,11 @@ public class SecurityManagerOMASResource
      */
     @PostMapping(path = "/person-roles/by-name")
 
-    public PersonRoleListResponse getPersonRoleByName(@PathVariable String          serverName,
-                                                      @PathVariable String          userId,
-                                                      @RequestParam int             startFrom,
-                                                      @RequestParam int             pageSize,
-                                                      @RequestBody  NameRequestBody requestBody)
+    public PersonRolesResponse getPersonRoleByName(@PathVariable String          serverName,
+                                                   @PathVariable String          userId,
+                                                   @RequestParam int             startFrom,
+                                                   @RequestParam int             pageSize,
+                                                   @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getPersonRoleByName(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -695,11 +676,11 @@ public class SecurityManagerOMASResource
      */
     @PostMapping(path = "/person-roles/by-search-string")
 
-    public PersonRoleListResponse findPersonRole(@PathVariable String                  serverName,
-                                                 @PathVariable String                  userId,
-                                                 @RequestParam int                     startFrom,
-                                                 @RequestParam int                     pageSize,
-                                                 @RequestBody  SearchStringRequestBody requestBody)
+    public PersonRolesResponse findPersonRole(@PathVariable String                  serverName,
+                                              @PathVariable String                  userId,
+                                              @RequestParam int                     startFrom,
+                                              @RequestParam int                     pageSize,
+                                              @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findPersonRole(serverName, userId, startFrom, pageSize, requestBody);
     }

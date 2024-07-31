@@ -303,7 +303,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      */
     private String getFileType(String pathName)
     {
-        // todo move lookup logic for filetypes from integration connector
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
 
@@ -421,6 +420,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param pathName full path name for the file system
      * @param name short display name
+     * @param resourceName name from the resource
      * @param versionIdentifier version identifier for the folder
      * @param description description of the file system
      * @param deployedImplementationType technology type
@@ -443,6 +443,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 String  externalSourceName,
                                 String  pathName,
                                 String  name,
+                                String  resourceName,
                                 String  versionIdentifier,
                                 String  description,
                                 String  deployedImplementationType,
@@ -474,6 +475,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                        folderAssetGUIDParameterName,
                                                        this.createQualifiedName(folderAssetTypeName, null, pathName, versionIdentifier),
                                                        name,
+                                                       resourceName,
                                                        versionIdentifier,
                                                        description,
                                                        deployedImplementationType,
@@ -507,7 +509,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param fileName name of the file
      * @param fileExtension extension if provided
      * @param pathName qualified name for the file
-     * @param displayName short display name
+     * @param name short display name
+     * @param resourceName name of the resource
      * @param versionIdentifier version identifier for the file
      * @param description description of the file
      * @param deployedImplementationType technology type
@@ -534,7 +537,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                    String              fileName,
                                    String              fileExtension,
                                    String              pathName,
-                                   String              displayName,
+                                   String              name,
+                                   String              resourceName,
                                    String              versionIdentifier,
                                    String              description,
                                    String              deployedImplementationType,
@@ -574,7 +578,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      externalSourceName,
                                                      fileAssetGUIDParameterName,
                                                      this.createQualifiedName(fileAssetTypeName, null, pathName, versionIdentifier),
-                                                     displayName,
+                                                     name,
+                                                     resourceName,
                                                      versionIdentifier,
                                                      description,
                                                      deployedImplementationType,
@@ -678,6 +683,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          externalSourceGUID,
                                          externalSourceName,
                                          pathName,
+                                         folderName,
                                          folderName,
                                          versionIdentifier,
                                          null,
@@ -1557,6 +1563,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param name  name for the folder in the catalog
+     * @param resourceName  from the resource
      * @param versionIdentifier version identifier for the folder in the catalog
      * @param description description of the folder in the catalog
      * @param pathName pathname of the file
@@ -1577,6 +1584,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                   String   externalSourceGUID,
                                                   String   externalSourceName,
                                                   String   name,
+                                                  String   resourceName,
                                                   String   versionIdentifier,
                                                   String   description,
                                                   String   deployedImplementationType,
@@ -1607,6 +1615,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     fileExtension,
                                                     pathName,
                                                     name,
+                                                    resourceName,
                                                     versionIdentifier,
                                                     description,
                                                     deployedImplementationType,
@@ -1715,6 +1724,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param qualifiedName optional qualified name
      * @param pathName pathname of the file
      * @param name  name for the folder in the catalog
+     * @param resourceName  name for the folder in the catalog
      * @param versionIdentifier  version identifier for the folder in the catalog
      * @param description description of the folder in the catalog
      * @param deployedImplementationType technology type
@@ -1747,6 +1757,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     String              qualifiedName,
                                                     String              pathName,
                                                     String              name,
+                                                    String              resourceName,
                                                     String              versionIdentifier,
                                                     String              description,
                                                     String              deployedImplementationType,
@@ -1796,6 +1807,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                        folderAssetParameterName,
                                                                        createQualifiedName(folderAssetTypeName, qualifiedName, pathName, versionIdentifier),
                                                                        name,
+                                                                       resourceName,
                                                                        versionIdentifier,
                                                                        description,
                                                                        deployedImplementationType,
@@ -1869,6 +1881,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param name  name for the folder in the catalog
+     * @param resourceName  name for the folder from tje resource
      * @param versionIdentifier  versionIdentifier for the folder in the catalog
      * @param description description of the folder in the catalog
      * @param deployedImplementationType technology type
@@ -1891,6 +1904,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     String              externalSourceName,
                                                     String              pathName,
                                                     String              name,
+                                                    String              resourceName,
                                                     String              versionIdentifier,
                                                     String              description,
                                                     String              deployedImplementationType,
@@ -1914,6 +1928,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    externalSourceName,
                                                    pathName,
                                                    name,
+                                                   resourceName,
                                                    versionIdentifier,
                                                    description,
                                                    deployedImplementationType,
@@ -1948,6 +1963,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param qualifiedName unique name for the file - typically path and file name
      * @param name short  name for file (defaults to the file name without the path)
+     * @param resourceName long name for the file
      * @param versionIdentifier version identifier for the file
      * @param description description of the file
      * @param pathName  the fully qualified physical location of the data store - default is qualified name
@@ -1983,6 +1999,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                           String              externalSourceName,
                                           String              qualifiedName,
                                           String              name,
+                                          String              resourceName,
                                           String              versionIdentifier,
                                           String              description,
                                           String              pathName,
@@ -2076,6 +2093,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                      fileAssetParameterName,
                                                                      createQualifiedName(fileAssetTypeName, qualifiedName, pathName, versionIdentifier),
                                                                      name,
+                                                                     resourceName,
                                                                      versionIdentifier,
                                                                      description,
                                                                      deployedImplementationType,
@@ -2320,6 +2338,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param name display name for the file in the catalog
+     * @param resourceName  name for the file in the resource
      * @param versionIdentifier version identifier for the file
      * @param description description of the file in the catalog
      * @param deployedImplementationType technology type
@@ -2341,6 +2360,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                               String       externalSourceGUID,
                                               String       externalSourceName,
                                               String       name,
+                                              String       resourceName,
                                               String       versionIdentifier,
                                               String       description,
                                               String       deployedImplementationType,
@@ -2372,6 +2392,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     fileExtension,
                                                     fullPath,
                                                     name,
+                                                    resourceName,
                                                     versionIdentifier,
                                                     description,
                                                     deployedImplementationType,
@@ -2407,6 +2428,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param name  name for the file in the catalog
+     * @param resourceName  name for the file in the resource
      * @param versionIdentifier version identifier for the file
      * @param description description of the file in the catalog
      * @param fullPath full path of the file - used to access the file through the connector
@@ -2430,6 +2452,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                              String       externalSourceGUID,
                                              String       externalSourceName,
                                              String       name,
+                                             String       resourceName,
                                              String       versionIdentifier,
                                              String       description,
                                              String       deployedImplementationType,
@@ -2491,6 +2514,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     fileExtension,
                                                     fullPath,
                                                     name,
+                                                    resourceName,
                                                     versionIdentifier,
                                                     description,
                                                     deployedImplementationType,
@@ -2622,7 +2646,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param dataFileGUID guid of the file asset
      * @param isMergeUpdate should the new properties be merged with the existing properties or completely replace them?
      * @param fullPath unique path and file name for file
-     * @param displayName short display name for file (defaults to the file name without the path)
+     * @param name short display name for file (defaults to the file name without the path)
+     * @param resourceName name of the resource
      * @param versionIdentifier versionIdentifier property
      * @param description description of the file
      * @param createTime the time that the file was created
@@ -2652,7 +2677,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                     String              dataFileGUID,
                                     boolean             isMergeUpdate,
                                     String              fullPath,
-                                    String              displayName,
+                                    String              name,
+                                    String              resourceName,
                                     String              versionIdentifier,
                                     String              description,
                                     Date                createTime,
@@ -2727,12 +2753,12 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 dataFileGUID,
                                 dataFileGUIDParameterName,
                                 qualifiedName,
-                                displayName,
+                                name,
+                                resourceName,
                                 versionIdentifier,
                                 description,
                                 deployedImplementationType,
                                 additionalProperties,
-                                OpenMetadataType.DATA_FILE.typeGUID,
                                 OpenMetadataType.DATA_FILE.typeName,
                                 assetExtendedProperties,
                                 effectiveFrom,
@@ -2825,7 +2851,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param isMergeUpdate should the new properties be merged with the existing properties or completely replace them?
      * @param fullPath unique path and file name for file
      * @param versionIdentifier version identifier for the file
-     * @param displayName short name for file
+     * @param name short name for file
+     * @param resourceName resource name for file
      * @param description description of the file
      * @param createTime the time that the file was created
      * @param modifiedTime the time of the latest change to the file
@@ -2852,7 +2879,8 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                       String              dataFileGUID,
                                       boolean             isMergeUpdate,
                                       String              fullPath,
-                                      String              displayName,
+                                      String              name,
+                                      String              resourceName,
                                       String              versionIdentifier,
                                       String              description,
                                       Date                createTime,
@@ -2899,12 +2927,12 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 dataFileGUID,
                                 dataFileGUIDParameterName,
                                 qualifiedName,
-                                displayName,
+                                name,
+                                resourceName,
                                 versionIdentifier,
                                 description,
                                 DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType(),
                                 additionalProperties,
-                                OpenMetadataType.DATA_FOLDER.typeGUID,
                                 OpenMetadataType.DATA_FOLDER.typeName,
                                 assetExtendedProperties,
                                 effectiveFrom,

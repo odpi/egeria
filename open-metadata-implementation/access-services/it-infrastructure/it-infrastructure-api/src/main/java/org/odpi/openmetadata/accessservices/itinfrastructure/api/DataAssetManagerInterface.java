@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.api;
 
 
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.DataAssetElement;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataAssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataAssetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
