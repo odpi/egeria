@@ -84,8 +84,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ConnectionResponse</span>
 <span class="extends-implements">extends <a href="FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a></span></div>
-<div class="block">ConnectionResponse is the response structure used on REST API calls that return a
- Connection object as a response.</div>
+<div class="block">OCFConnectionResponse is a response object for passing back a single connection object.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -124,10 +123,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return comparison result based on the content of the properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnection()" class="member-name-link">getConnection</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ConnectionElement</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElement()" class="member-name-link">getElement</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the Connection object.</div>
+<div class="block">Return the metadata element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -135,9 +134,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code for this object</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">setConnection</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElement(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement)" class="member-name-link">setElement</a><wbr>(<a href="../../../frameworks/openmetadata/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ConnectionElement</a>&nbsp;element)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the Connection object.</div>
+<div class="block">Set up the metadata element to return.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -191,24 +190,24 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getConnection()">
-<h3>getConnection</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></span>&nbsp;<span class="element-name">getConnection</span>()</div>
-<div class="block">Return the Connection object.</div>
+<section class="detail" id="getElement()">
+<h3>getElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ConnectionElement</a></span>&nbsp;<span class="element-name">getElement</span>()</div>
+<div class="block">Return the metadata element.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>connection</dd>
+<dd>result object</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setConnection(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
-<h3>setConnection</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setConnection</span><wbr><span class="parameters">(<a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span></div>
-<div class="block">Set up the Connection object.</div>
+<section class="detail" id="setElement(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement)">
+<h3>setElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setElement</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ConnectionElement</a>&nbsp;element)</span></div>
+<div class="block">Set up the metadata element to return.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>connection</code> - - connection object</dd>
+<dd><code>element</code> - result object</dd>
 </dl>
 </section>
 </li>

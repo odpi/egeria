@@ -260,9 +260,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Add a property from Apache Atlas to Egeria's additionalProperties map since it has nowhere else to go.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#atlasUpdateRequired(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement,org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity)" class="member-name-link">atlasUpdateRequired</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#atlasUpdateRequired(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement,org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity)" class="member-name-link">atlasUpdateRequired</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaTypeName,
- <a href="../../../../../accessservices/assetmanager/metadataelements/MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a>&nbsp;egeriaMetadataElement,
+ <a href="../../../../../accessservices/assetmanager/metadataelements/CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a>&nbsp;egeriaMetadataElement,
  <a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Confirm whether there have been changes since the last synchronization.</div>
@@ -275,15 +275,15 @@ loadScripts(document, 'script');</script>
 <div class="block">Create the data set in the open metadata ecosystem.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#egeriaUpdateRequired(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement,org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity)" class="member-name-link">egeriaUpdateRequired</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#egeriaUpdateRequired(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement,org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity)" class="member-name-link">egeriaUpdateRequired</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaTypeName,
- <a href="../../../../../accessservices/assetmanager/metadataelements/MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a>&nbsp;egeriaMetadataElement,
+ <a href="../../../../../accessservices/assetmanager/metadataelements/CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a>&nbsp;egeriaMetadataElement,
  <a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Confirm whether there have been changes since the last refresh().</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ensureAtlasExternalIdentifier(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement,java.lang.String,org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">ensureAtlasExternalIdentifier</a><wbr>(<a href="../../../../../accessservices/assetmanager/metadataelements/MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a>&nbsp;egeriaElement,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#ensureAtlasExternalIdentifier(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement,java.lang.String,org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">ensureAtlasExternalIdentifier</a><wbr>(<a href="../../../../../accessservices/assetmanager/metadataelements/CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a>&nbsp;egeriaElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaDisplayName,
  <a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;atlasGUID,
@@ -299,7 +299,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve a boolean property from and Apache Atlas entity's attributes.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAtlasGUID(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement)" class="member-name-link">getAtlasGUID</a><wbr>(<a href="../../../../../accessservices/assetmanager/metadataelements/MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a>&nbsp;metadataElement)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAtlasGUID(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement)" class="member-name-link">getAtlasGUID</a><wbr>(<a href="../../../../../accessservices/assetmanager/metadataelements/CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a>&nbsp;metadataElement)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the unique identifier for the equivalent element in Apache Atlas.</div>
 </div>
@@ -321,19 +321,19 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve a string property from and Apache Atlas entity's attributes.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../../accessservices/assetmanager/properties/DataAssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataAssetProperties</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../../frameworks/openmetadata/properties/assets/DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataAssetProperties(org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity,java.lang.String)" class="member-name-link">getDataAssetProperties</a><wbr>(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaTypeName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the standard properties for an Atlas asset entity into an Egeria DataAssetProperties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../../accessservices/assetmanager/properties/DataAssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataAssetProperties</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../../frameworks/openmetadata/properties/assets/DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEgeriaDataFileProperties(org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity,java.lang.String)" class="member-name-link">getEgeriaDataFileProperties</a><wbr>(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasFSPathEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaTypeName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Map the properties from the entity retrieved from Apache Atlas to the Egeria properties for the open metadata entity.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../../accessservices/assetmanager/properties/DataAssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataAssetProperties</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../../frameworks/openmetadata/properties/assets/DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEgeriaDataSetProperties(org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity,java.lang.String)" class="member-name-link">getEgeriaDataSetProperties</a><wbr>(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaTypeName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -370,13 +370,13 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return an external identifier properties object for an Atlas GUID.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../../accessservices/assetmanager/properties/ProcessProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessProperties</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../../frameworks/openmetadata/properties/assets/processes/ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessProperties(org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity,java.lang.String)" class="member-name-link">getProcessProperties</a><wbr>(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaTypeName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add the standard properties for an Atlas asset entity into an Egeria DataAssetProperties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../../accessservices/assetmanager/properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../../frameworks/openmetadata/properties/schema/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaAttributeProperties</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaAttributeProperties(org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity,java.lang.String,java.lang.String)" class="member-name-link">getSchemaAttributeProperties</a><wbr>(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaSchemaAttributeTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaSchemaTypeTypeName)</code></div>
@@ -389,7 +389,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the list of unique identifiers from a list of entities from Apache Atlas.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isAtlasOwnedElement(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)" class="member-name-link">isAtlasOwnedElement</a><wbr>(<a href="../../../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;elementHeader)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isAtlasOwnedElement(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">isAtlasOwnedElement</a><wbr>(<a href="../../../../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a flag indicating whether an element retrieved from the open metadata ecosystem.</div>
 </div>
@@ -906,9 +906,9 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="isAtlasOwnedElement(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">
+<section class="detail" id="isAtlasOwnedElement(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">
 <h3>isAtlasOwnedElement</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isAtlasOwnedElement</span><wbr><span class="parameters">(<a href="../../../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;elementHeader)</span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isAtlasOwnedElement</span><wbr><span class="parameters">(<a href="../../../../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</span></div>
 <div class="block">Return a flag indicating whether an element retrieved from the open metadata ecosystem.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -991,9 +991,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAtlasGUID(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement)">
+<section class="detail" id="getAtlasGUID(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement)">
 <h3>getAtlasGUID</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAtlasGUID</span><wbr><span class="parameters">(<a href="../../../../../accessservices/assetmanager/metadataelements/MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a>&nbsp;metadataElement)</span>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAtlasGUID</span><wbr><span class="parameters">(<a href="../../../../../accessservices/assetmanager/metadataelements/CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a>&nbsp;metadataElement)</span>
                        throws <span class="exceptions"><a href="../../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Return the unique identifier for the equivalent element in Apache Atlas.</div>
 <dl class="notes">
@@ -1007,11 +1007,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="egeriaUpdateRequired(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement,org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity)">
+<section class="detail" id="egeriaUpdateRequired(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement,org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity)">
 <h3>egeriaUpdateRequired</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">egeriaUpdateRequired</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaTypeName,
- <a href="../../../../../accessservices/assetmanager/metadataelements/MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a>&nbsp;egeriaMetadataElement,
+ <a href="../../../../../accessservices/assetmanager/metadataelements/CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a>&nbsp;egeriaMetadataElement,
  <a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity)</span>
                                 throws <span class="exceptions"><a href="../../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -1031,11 +1031,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="atlasUpdateRequired(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement,org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity)">
+<section class="detail" id="atlasUpdateRequired(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement,org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity)">
 <h3>atlasUpdateRequired</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">atlasUpdateRequired</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaTypeName,
- <a href="../../../../../accessservices/assetmanager/metadataelements/MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a>&nbsp;egeriaMetadataElement,
+ <a href="../../../../../accessservices/assetmanager/metadataelements/CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a>&nbsp;egeriaMetadataElement,
  <a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity)</span>
                                throws <span class="exceptions"><a href="../../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -1163,9 +1163,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="ensureAtlasExternalIdentifier(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement,java.lang.String,org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="ensureAtlasExternalIdentifier(org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement,java.lang.String,org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity,java.lang.String,java.lang.String,java.lang.String)">
 <h3>ensureAtlasExternalIdentifier</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">ensureAtlasExternalIdentifier</span><wbr><span class="parameters">(<a href="../../../../../accessservices/assetmanager/metadataelements/MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a>&nbsp;egeriaElement,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">ensureAtlasExternalIdentifier</span><wbr><span class="parameters">(<a href="../../../../../accessservices/assetmanager/metadataelements/CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a>&nbsp;egeriaElement,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaDisplayName,
  <a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;atlasGUID,
@@ -1407,7 +1407,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getEgeriaDataSetProperties(org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity,java.lang.String)">
 <h3>getEgeriaDataSetProperties</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../../accessservices/assetmanager/properties/DataAssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataAssetProperties</a></span>&nbsp;<span class="element-name">getEgeriaDataSetProperties</span><wbr><span class="parameters">(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../../frameworks/openmetadata/properties/assets/DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a></span>&nbsp;<span class="element-name">getEgeriaDataSetProperties</span><wbr><span class="parameters">(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaTypeName)</span></div>
 <div class="block">Map the properties from the entity retrieved from Apache Atlas to the Egeria properties for the open metadata entity.</div>
 <dl class="notes">
@@ -1422,7 +1422,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getDataAssetProperties(org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity,java.lang.String)">
 <h3>getDataAssetProperties</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../../accessservices/assetmanager/properties/DataAssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataAssetProperties</a></span>&nbsp;<span class="element-name">getDataAssetProperties</span><wbr><span class="parameters">(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../../frameworks/openmetadata/properties/assets/DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a></span>&nbsp;<span class="element-name">getDataAssetProperties</span><wbr><span class="parameters">(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaTypeName)</span></div>
 <div class="block">Add the standard properties for an Atlas asset entity into an Egeria DataAssetProperties.  This is suitable for a DataSet.</div>
 <dl class="notes">
@@ -1437,7 +1437,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getEgeriaDataFileProperties(org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity,java.lang.String)">
 <h3>getEgeriaDataFileProperties</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../../accessservices/assetmanager/properties/DataAssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataAssetProperties</a></span>&nbsp;<span class="element-name">getEgeriaDataFileProperties</span><wbr><span class="parameters">(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasFSPathEntity,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../../frameworks/openmetadata/properties/assets/DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a></span>&nbsp;<span class="element-name">getEgeriaDataFileProperties</span><wbr><span class="parameters">(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasFSPathEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaTypeName)</span></div>
 <div class="block">Map the properties from the entity retrieved from Apache Atlas to the Egeria properties for the open metadata entity.</div>
 <dl class="notes">
@@ -1452,7 +1452,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getProcessProperties(org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity,java.lang.String)">
 <h3>getProcessProperties</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../../accessservices/assetmanager/properties/ProcessProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessProperties</a></span>&nbsp;<span class="element-name">getProcessProperties</span><wbr><span class="parameters">(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../../frameworks/openmetadata/properties/assets/processes/ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a></span>&nbsp;<span class="element-name">getProcessProperties</span><wbr><span class="parameters">(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaTypeName)</span></div>
 <div class="block">Add the standard properties for an Atlas asset entity into an Egeria DataAssetProperties.  This is suitable for a DataSet.</div>
 <dl class="notes">
@@ -1467,7 +1467,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getSchemaAttributeProperties(org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasEntity,java.lang.String,java.lang.String)">
 <h3>getSchemaAttributeProperties</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../../accessservices/assetmanager/properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a></span>&nbsp;<span class="element-name">getSchemaAttributeProperties</span><wbr><span class="parameters">(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../../frameworks/openmetadata/properties/schema/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaAttributeProperties</a></span>&nbsp;<span class="element-name">getSchemaAttributeProperties</span><wbr><span class="parameters">(<a href="../../resource/properties/AtlasEntity.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties">AtlasEntity</a>&nbsp;atlasEntity,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaSchemaAttributeTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;egeriaSchemaTypeTypeName)</span></div>
 <div class="block">Add the standard properties for an Atlas asset entity into an Egeria SchemaAttributeProperties.</div>

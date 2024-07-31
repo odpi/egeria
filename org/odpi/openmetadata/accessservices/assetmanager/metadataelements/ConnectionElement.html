@@ -77,12 +77,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a></code></dd>
+<dd><code><a href="CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ConnectionElement</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a></span></div>
+implements <a href="CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a></span></div>
 <div class="block">ConnectionElement contains the properties and header for a connection retrieved from the metadata repository.</div>
 </section>
 <section class="summary">
@@ -122,12 +122,12 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return comparison result based on the content of the properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectionProperties</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/properties/connections/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.connections">ConnectionProperties</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionProperties()" class="member-name-link">getConnectionProperties</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the properties for the connection.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorType()" class="member-name-link">getConnectorType</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a copy of the properties for this connection's connector type.</div>
@@ -137,17 +137,17 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the details of the external identifier and other correlation properties about the metadata source.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementHeader()" class="member-name-link">getElementHeader</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the element header associated with the properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EmbeddedConnection.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">EmbeddedConnection</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/EmbeddedConnection.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">EmbeddedConnection</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEmbeddedConnections()" class="member-name-link">getEmbeddedConnections</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of embedded connections for this virtual connection.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndpoint()" class="member-name-link">getEndpoint</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a copy of the properties for this connection's endpoint.</div>
@@ -158,12 +158,12 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="block">Return hash code for this object</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectionProperties(org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties)" class="member-name-link">setConnectionProperties</a><wbr>(<a href="../properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectionProperties</a>&nbsp;connectionProperties)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectionProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties)" class="member-name-link">setConnectionProperties</a><wbr>(<a href="../../../frameworks/openmetadata/properties/connections/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.connections">ConnectionProperties</a>&nbsp;connectionProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the properties for the connection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectorType(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub)" class="member-name-link">setConnectorType</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&nbsp;connectorType)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectorType(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub)" class="member-name-link">setConnectorType</a><wbr>(<a href="../../../frameworks/openmetadata/metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a>&nbsp;connectorType)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the connector type properties for this Connection.</div>
 </div>
@@ -173,17 +173,17 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="block">Set up the details of the external identifier and other correlation properties about the metadata source.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)" class="member-name-link">setElementHeader</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;elementHeader)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">setElementHeader</a><wbr>(<a href="../../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the element header associated with the properties.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEmbeddedConnections(java.util.List)" class="member-name-link">setEmbeddedConnections</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EmbeddedConnection.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">EmbeddedConnection</a>&gt;&nbsp;embeddedConnections)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEmbeddedConnections(java.util.List)" class="member-name-link">setEmbeddedConnections</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/EmbeddedConnection.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">EmbeddedConnection</a>&gt;&nbsp;embeddedConnections)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the list of embedded connections for this virtual connection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEndpoint(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub)" class="member-name-link">setEndpoint</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&nbsp;endpoint)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEndpoint(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub)" class="member-name-link">setEndpoint</a><wbr>(<a href="../../../frameworks/openmetadata/metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a>&nbsp;endpoint)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the endpoint properties for this Connection.</div>
 </div>
@@ -238,24 +238,24 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <li>
 <section class="detail" id="getElementHeader()">
 <h3>getElementHeader</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></span>&nbsp;<span class="element-name">getElementHeader</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></span>&nbsp;<span class="element-name">getElementHeader</span>()</div>
 <div class="block">Return the element header associated with the properties.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="MetadataElement.html#getElementHeader()">getElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a></code></dd>
+<dd><code><a href="CorrelatedMetadataElement.html#getElementHeader()">getElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a></code></dd>
 <dt>Returns:</dt>
 <dd>element header object</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">
+<section class="detail" id="setElementHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">
 <h3>setElementHeader</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setElementHeader</span><wbr><span class="parameters">(<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;elementHeader)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setElementHeader</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</span></div>
 <div class="block">Set up the element header associated with the properties.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="MetadataElement.html#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">setElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a></code></dd>
+<dd><code><a href="CorrelatedMetadataElement.html#setElementHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">setElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>elementHeader</code> - element header object</dd>
 </dl>
@@ -270,7 +270,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
  element.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="MetadataElement.html#getCorrelationHeaders()">getCorrelationHeaders</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a></code></dd>
+<dd><code><a href="CorrelatedMetadataElement.html#getCorrelationHeaders()">getCorrelationHeaders</a></code>&nbsp;in interface&nbsp;<code><a href="CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a></code></dd>
 <dt>Returns:</dt>
 <dd>list of correlation properties objects</dd>
 </dl>
@@ -285,7 +285,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
  element.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="MetadataElement.html#setCorrelationHeaders(java.util.List)">setCorrelationHeaders</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">MetadataElement</a></code></dd>
+<dd><code><a href="CorrelatedMetadataElement.html#setCorrelationHeaders(java.util.List)">setCorrelationHeaders</a></code>&nbsp;in interface&nbsp;<code><a href="CorrelatedMetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">CorrelatedMetadataElement</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>correlationHeaders</code> - list of correlation properties objects</dd>
 </dl>
@@ -294,7 +294,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <li>
 <section class="detail" id="getConnectionProperties()">
 <h3>getConnectionProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectionProperties</a></span>&nbsp;<span class="element-name">getConnectionProperties</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/properties/connections/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.connections">ConnectionProperties</a></span>&nbsp;<span class="element-name">getConnectionProperties</span>()</div>
 <div class="block">Return the properties for the connection.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -303,9 +303,9 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </section>
 </li>
 <li>
-<section class="detail" id="setConnectionProperties(org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties)">
+<section class="detail" id="setConnectionProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties)">
 <h3>setConnectionProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setConnectionProperties</span><wbr><span class="parameters">(<a href="../properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ConnectionProperties</a>&nbsp;connectionProperties)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setConnectionProperties</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/properties/connections/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.connections">ConnectionProperties</a>&nbsp;connectionProperties)</span></div>
 <div class="block">Set up the properties for the connection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -314,9 +314,9 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </section>
 </li>
 <li>
-<section class="detail" id="setConnectorType(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub)">
+<section class="detail" id="setConnectorType(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub)">
 <h3>setConnectorType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setConnectorType</span><wbr><span class="parameters">(<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&nbsp;connectorType)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setConnectorType</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a>&nbsp;connectorType)</span></div>
 <div class="block">Set up the connector type properties for this Connection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -327,7 +327,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <li>
 <section class="detail" id="getConnectorType()">
 <h3>getConnectorType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a></span>&nbsp;<span class="element-name">getConnectorType</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a></span>&nbsp;<span class="element-name">getConnectorType</span>()</div>
 <div class="block">Returns a copy of the properties for this connection's connector type.
  A null means there is no connection type.</div>
 <dl class="notes">
@@ -337,9 +337,9 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 </section>
 </li>
 <li>
-<section class="detail" id="setEndpoint(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub)">
+<section class="detail" id="setEndpoint(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub)">
 <h3>setEndpoint</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEndpoint</span><wbr><span class="parameters">(<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&nbsp;endpoint)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEndpoint</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a>&nbsp;endpoint)</span></div>
 <div class="block">Set up the endpoint properties for this Connection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -350,7 +350,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <li>
 <section class="detail" id="getEndpoint()">
 <h3>getEndpoint</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a></span>&nbsp;<span class="element-name">getEndpoint</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a></span>&nbsp;<span class="element-name">getEndpoint</span>()</div>
 <div class="block">Returns a copy of the properties for this connection's endpoint.
  Null means no endpoint information available.</div>
 <dl class="notes">
@@ -362,7 +362,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <li>
 <section class="detail" id="getEmbeddedConnections()">
 <h3>getEmbeddedConnections</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EmbeddedConnection.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">EmbeddedConnection</a>&gt;</span>&nbsp;<span class="element-name">getEmbeddedConnections</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/EmbeddedConnection.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">EmbeddedConnection</a>&gt;</span>&nbsp;<span class="element-name">getEmbeddedConnections</span>()</div>
 <div class="block">Return the list of embedded connections for this virtual connection.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -373,7 +373,7 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <li>
 <section class="detail" id="setEmbeddedConnections(java.util.List)">
 <h3>setEmbeddedConnections</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEmbeddedConnections</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="EmbeddedConnection.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">EmbeddedConnection</a>&gt;&nbsp;embeddedConnections)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEmbeddedConnections</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/EmbeddedConnection.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">EmbeddedConnection</a>&gt;&nbsp;embeddedConnections)</span></div>
 <div class="block">Set up the list of embedded connections for this virtual connection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

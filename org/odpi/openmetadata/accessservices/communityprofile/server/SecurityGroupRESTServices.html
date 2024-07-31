@@ -111,9 +111,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSecurityGroup(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.SecurityGroupProperties)" class="member-name-link">createSecurityGroup</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSecurityGroup(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties)" class="member-name-link">createSecurityGroup</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/SecurityGroupProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">SecurityGroupProperties</a>&nbsp;requestBody)</code></div>
+ <a href="../../../frameworks/openmetadata/properties/security/SecurityGroupProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.security">SecurityGroupProperties</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new security group.</div>
 </div>
@@ -125,7 +125,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Delete a specific security group.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/SecurityGroupsResponse.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.rest">SecurityGroupsResponse</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SecurityGroupsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SecurityGroupsResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findSecurityGroups(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)" class="member-name-link">findSecurityGroups</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  int&nbsp;startFrom,
@@ -134,7 +134,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of security groups that match the search string - this can be a regular expression.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/ElementStubsResponse.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.rest">ElementStubsResponse</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/ElementStubsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ElementStubsResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementsGovernedBySecurityGroup(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getElementsGovernedBySecurityGroup</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;securityGroupGUID,
@@ -143,14 +143,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the elements that are governed by the supplied security group.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/SecurityGroupResponse.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.rest">SecurityGroupResponse</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SecurityGroupResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SecurityGroupResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecurityGroupByGUID(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getSecurityGroupByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;securityGroupGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return information about a specific actor profile.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/SecurityGroupsResponse.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.rest">SecurityGroupsResponse</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/SecurityGroupsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SecurityGroupsResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSecurityGroupsForDistinguishedName(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getSecurityGroupsForDistinguishedName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;distinguishedName,
@@ -160,11 +160,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the list of security groups associated with a unique distinguishedName.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSecurityGroup(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.SecurityGroupProperties)" class="member-name-link">updateSecurityGroup</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSecurityGroup(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties)" class="member-name-link">updateSecurityGroup</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;securityGroupGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../properties/SecurityGroupProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">SecurityGroupProperties</a>&nbsp;requestBody)</code></div>
+ <a href="../../../frameworks/openmetadata/properties/security/SecurityGroupProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.security">SecurityGroupProperties</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update an existing security group.</div>
 </div>
@@ -201,11 +201,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createSecurityGroup(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.SecurityGroupProperties)">
+<section class="detail" id="createSecurityGroup(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties)">
 <h3>createSecurityGroup</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createSecurityGroup</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../properties/SecurityGroupProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">SecurityGroupProperties</a>&nbsp;requestBody)</span></div>
+ <a href="../../../frameworks/openmetadata/properties/security/SecurityGroupProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.security">SecurityGroupProperties</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a new security group.  The type of the definition is located in the requestBody.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -221,13 +221,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateSecurityGroup(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.communityprofile.properties.SecurityGroupProperties)">
+<section class="detail" id="updateSecurityGroup(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties)">
 <h3>updateSecurityGroup</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateSecurityGroup</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;securityGroupGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../properties/SecurityGroupProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">SecurityGroupProperties</a>&nbsp;requestBody)</span></div>
+ <a href="../../../frameworks/openmetadata/properties/security/SecurityGroupProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.security">SecurityGroupProperties</a>&nbsp;requestBody)</span></div>
 <div class="block">Update an existing security group.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -269,7 +269,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getSecurityGroupsForDistinguishedName(java.lang.String,java.lang.String,java.lang.String,int,int)">
 <h3>getSecurityGroupsForDistinguishedName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/SecurityGroupsResponse.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.rest">SecurityGroupsResponse</a></span>&nbsp;<span class="element-name">getSecurityGroupsForDistinguishedName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/SecurityGroupsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SecurityGroupsResponse</a></span>&nbsp;<span class="element-name">getSecurityGroupsForDistinguishedName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;distinguishedName,
  int&nbsp;startFrom,
@@ -293,7 +293,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getElementsGovernedBySecurityGroup(java.lang.String,java.lang.String,java.lang.String,int,int)">
 <h3>getElementsGovernedBySecurityGroup</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/ElementStubsResponse.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.rest">ElementStubsResponse</a></span>&nbsp;<span class="element-name">getElementsGovernedBySecurityGroup</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/ElementStubsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ElementStubsResponse</a></span>&nbsp;<span class="element-name">getElementsGovernedBySecurityGroup</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;securityGroupGUID,
  int&nbsp;startFrom,
@@ -317,7 +317,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="findSecurityGroups(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
 <h3>findSecurityGroups</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/SecurityGroupsResponse.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.rest">SecurityGroupsResponse</a></span>&nbsp;<span class="element-name">findSecurityGroups</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/SecurityGroupsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SecurityGroupsResponse</a></span>&nbsp;<span class="element-name">findSecurityGroups</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -341,7 +341,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getSecurityGroupByGUID(java.lang.String,java.lang.String,java.lang.String)">
 <h3>getSecurityGroupByGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/SecurityGroupResponse.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.rest">SecurityGroupResponse</a></span>&nbsp;<span class="element-name">getSecurityGroupByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/SecurityGroupResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SecurityGroupResponse</a></span>&nbsp;<span class="element-name">getSecurityGroupByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;securityGroupGUID)</span></div>
 <div class="block">Return information about a specific actor profile.</div>

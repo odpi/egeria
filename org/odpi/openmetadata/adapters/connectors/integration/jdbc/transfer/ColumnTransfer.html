@@ -77,12 +77,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="model/JdbcColumn.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcColumn</a>,<wbr><a href="../../../../../accessservices/datamanager/metadataelements/DatabaseColumnElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseColumnElement</a>&gt;</code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="model/JdbcColumn.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcColumn</a>,<wbr><a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseColumnElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseColumnElement</a>&gt;</code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ColumnTransfer</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="model/JdbcColumn.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcColumn</a>,<wbr><a href="../../../../../accessservices/datamanager/metadataelements/DatabaseColumnElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseColumnElement</a>&gt;</span></div>
+implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="model/JdbcColumn.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcColumn</a>,<wbr><a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseColumnElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseColumnElement</a>&gt;</span></div>
 <div class="block">Transfers metadata of a column</div>
 </section>
 <section class="summary">
@@ -95,11 +95,11 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.util.List,java.util.List,org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement)" class="member-name-link">ColumnTransfer</a><wbr>(<a href="requests/Omas.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests">Omas</a>&nbsp;omas,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.util.List,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseTableElement)" class="member-name-link">ColumnTransfer</a><wbr>(<a href="requests/Omas.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests">Omas</a>&nbsp;omas,
  <a href="../../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../accessservices/datamanager/metadataelements/DatabaseColumnElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseColumnElement</a>&gt;&nbsp;omasColumns,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseColumnElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseColumnElement</a>&gt;&nbsp;omasColumns,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="model/JdbcPrimaryKey.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcPrimaryKey</a>&gt;&nbsp;jdbcPrimaryKeys,
- <a href="../../../../../accessservices/datamanager/metadataelements/DatabaseTableElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseTableElement</a>&nbsp;omasTable)</code></div>
+ <a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseTableElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseTableElement</a>&nbsp;omasTable)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -115,7 +115,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../../accessservices/datamanager/metadataelements/DatabaseColumnElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseColumnElement</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseColumnElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseColumnElement</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#apply(org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcColumn)" class="member-name-link">apply</a><wbr>(<a href="model/JdbcColumn.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcColumn</a>&nbsp;jdbcColumn)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Triggers column metadata transfer</div>
@@ -141,13 +141,13 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.util.List,java.util.List,org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests.Omas,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.util.List,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseTableElement)">
 <h3>ColumnTransfer</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ColumnTransfer</span><wbr><span class="parameters">(<a href="requests/Omas.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests">Omas</a>&nbsp;omas,
  <a href="../../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../accessservices/datamanager/metadataelements/DatabaseColumnElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseColumnElement</a>&gt;&nbsp;omasColumns,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseColumnElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseColumnElement</a>&gt;&nbsp;omasColumns,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="model/JdbcPrimaryKey.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcPrimaryKey</a>&gt;&nbsp;jdbcPrimaryKeys,
- <a href="../../../../../accessservices/datamanager/metadataelements/DatabaseTableElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseTableElement</a>&nbsp;omasTable)</span></div>
+ <a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseTableElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseTableElement</a>&nbsp;omasTable)</span></div>
 </section>
 </li>
 </ul>
@@ -161,11 +161,11 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <li>
 <section class="detail" id="apply(org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model.JdbcColumn)">
 <h3>apply</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../../accessservices/datamanager/metadataelements/DatabaseColumnElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseColumnElement</a></span>&nbsp;<span class="element-name">apply</span><wbr><span class="parameters">(<a href="model/JdbcColumn.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcColumn</a>&nbsp;jdbcColumn)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseColumnElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseColumnElement</a></span>&nbsp;<span class="element-name">apply</span><wbr><span class="parameters">(<a href="model/JdbcColumn.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcColumn</a>&nbsp;jdbcColumn)</span></div>
 <div class="block">Triggers column metadata transfer</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html#apply(T)" title="class or interface in java.util.function" class="external-link">apply</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="model/JdbcColumn.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcColumn</a>,<wbr><a href="../../../../../accessservices/datamanager/metadataelements/DatabaseColumnElement.html" title="class in org.odpi.openmetadata.accessservices.datamanager.metadataelements">DatabaseColumnElement</a>&gt;</code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html#apply(T)" title="class or interface in java.util.function" class="external-link">apply</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="model/JdbcColumn.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model">JdbcColumn</a>,<wbr><a href="../../../../../frameworks/openmetadata/metadataelements/DatabaseColumnElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DatabaseColumnElement</a>&gt;</code></dd>
 <dt>Parameters:</dt>
 <dd><code>jdbcColumn</code> - column</dd>
 <dt>Returns:</dt>

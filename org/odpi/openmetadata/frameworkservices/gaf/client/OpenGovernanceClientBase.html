@@ -172,9 +172,9 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="block">Request that execution of an engine action is stopped.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceActionProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties,org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus)" class="member-name-link">createGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceActionProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus)" class="member-name-link">createGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessProperties</a>&nbsp;processProperties,
- <a href="../../../frameworks/governanceaction/properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">ProcessStatus</a>&nbsp;initialStatus)</code></div>
+ <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;initialStatus)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent a governance action process.</div>
 </div>
@@ -447,10 +447,10 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
  is executing.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateGovernanceActionProcess(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties)" class="member-name-link">updateGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateGovernanceActionProcess(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties)" class="member-name-link">updateGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../frameworks/governanceaction/properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">ProcessStatus</a>&nbsp;processStatus,
+ <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;processStatus,
  <a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessProperties</a>&nbsp;processProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the metadata element representing a governance action process.</div>
@@ -1139,18 +1139,18 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </section>
 </li>
 <li>
-<section class="detail" id="createGovernanceActionProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties,org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus)">
+<section class="detail" id="createGovernanceActionProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus)">
 <h3>createGovernanceActionProcess</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createGovernanceActionProcess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessProperties</a>&nbsp;processProperties,
- <a href="../../../frameworks/governanceaction/properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">ProcessStatus</a>&nbsp;initialStatus)</span>
+ <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;initialStatus)</span>
                                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create a new metadata element to represent a governance action process.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#createGovernanceActionProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties,org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus)">createGovernanceActionProcess</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
+<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#createGovernanceActionProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus)">createGovernanceActionProcess</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processProperties</code> - properties about the process to store</dd>
@@ -1165,12 +1165,12 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </section>
 </li>
 <li>
-<section class="detail" id="updateGovernanceActionProcess(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties)">
+<section class="detail" id="updateGovernanceActionProcess(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties)">
 <h3>updateGovernanceActionProcess</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateGovernanceActionProcess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../frameworks/governanceaction/properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">ProcessStatus</a>&nbsp;processStatus,
+ <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;processStatus,
  <a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessProperties</a>&nbsp;processProperties)</span>
                                    throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -1178,7 +1178,7 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="block">Update the metadata element representing a governance action process.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#updateGovernanceActionProcess(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties)">updateGovernanceActionProcess</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
+<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#updateGovernanceActionProcess(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties)">updateGovernanceActionProcess</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processGUID</code> - unique identifier of the metadata element to update</dd>

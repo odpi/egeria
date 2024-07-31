@@ -280,16 +280,16 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="block">Remove the relationship between a schema type and its parent data asset, process or port.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAnchoredSchemaType(boolean,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties)" class="member-name-link">createAnchoredSchemaType</a><wbr>(boolean&nbsp;assetManagerIsHome,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createAnchoredSchemaType(boolean,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties)" class="member-name-link">createAnchoredSchemaType</a><wbr>(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  <a href="../../../frameworks/governanceaction/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
- <a href="../../../accessservices/assetmanager/properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties)</code></div>
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaTypeProperties</a>&nbsp;schemaTypeProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent a schema type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDataAsset(boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties)" class="member-name-link">createDataAsset</a><wbr>(boolean&nbsp;assetManagerIsHome,
- <a href="../../../accessservices/assetmanager/properties/DataAssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataAssetProperties</a>&nbsp;assetProperties)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDataAsset(boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties)" class="member-name-link">createDataAsset</a><wbr>(boolean&nbsp;assetManagerIsHome,
+ <a href="../../../frameworks/openmetadata/properties/assets/DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a>&nbsp;assetProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent the root of a data asset.</div>
 </div>
@@ -301,17 +301,17 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="block">Create a new metadata element to represent an asset using an existing metadata element as a template.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createPort(boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.PortProperties,java.util.Date)" class="member-name-link">createPort</a><wbr>(boolean&nbsp;assetManagerIsHome,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createPort(boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties,java.util.Date)" class="member-name-link">createPort</a><wbr>(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
- <a href="../../../accessservices/assetmanager/properties/PortProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">PortProperties</a>&nbsp;portProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/PortProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">PortProperties</a>&nbsp;portProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent a port.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createProcess(boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties)" class="member-name-link">createProcess</a><wbr>(boolean&nbsp;assetManagerIsHome,
- <a href="../../../accessservices/assetmanager/properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessStatus</a>&nbsp;processStatus,
- <a href="../../../accessservices/assetmanager/properties/ProcessProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessProperties</a>&nbsp;processProperties)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createProcess(boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties)" class="member-name-link">createProcess</a><wbr>(boolean&nbsp;assetManagerIsHome,
+ <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;processStatus,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a>&nbsp;processProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent a process.</div>
 </div>
@@ -323,9 +323,9 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="block">Create a new metadata element to represent a process using an existing metadata element as a template.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSchemaAttribute(boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,java.util.Date)" class="member-name-link">createSchemaAttribute</a><wbr>(boolean&nbsp;assetManagerIsHome,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSchemaAttribute(boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties,java.util.Date)" class="member-name-link">createSchemaAttribute</a><wbr>(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
- <a href="../../../accessservices/assetmanager/properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent a schema attribute.</div>
@@ -340,8 +340,8 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="block">Create a new metadata element to represent a schema attribute using an existing metadata element as a template.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSchemaType(boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties)" class="member-name-link">createSchemaType</a><wbr>(boolean&nbsp;assetManagerIsHome,
- <a href="../../../accessservices/assetmanager/properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSchemaType(boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties)" class="member-name-link">createSchemaType</a><wbr>(boolean&nbsp;assetManagerIsHome,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaTypeProperties</a>&nbsp;schemaTypeProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent a schema type.</div>
 </div>
@@ -412,7 +412,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the governance actions that are still in process.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/metadataelements/RelationshipElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">RelationshipElement</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/RelationshipElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelationshipElement</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetRelationship(java.lang.String,java.lang.String,java.lang.String,java.util.Date)" class="member-name-link">getAssetRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fromAssetGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toAssetGUID,
@@ -420,7 +420,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the relationship between two elements.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ControlFlowElement</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ControlFlowElement</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getControlFlow(java.lang.String,java.lang.String,java.lang.String,java.util.Date)" class="member-name-link">getControlFlow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nextStepGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
@@ -428,7 +428,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the control flow relationship between two elements.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ControlFlowElement</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ControlFlowElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getControlFlowNextSteps(java.lang.String,int,int,java.util.Date)" class="member-name-link">getControlFlowNextSteps</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -436,7 +436,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the control relationships linked from a specific element to the possible next elements in the process.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ControlFlowElement</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ControlFlowElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getControlFlowPreviousSteps(java.lang.String,int,int,java.util.Date)" class="member-name-link">getControlFlowPreviousSteps</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -465,7 +465,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of assets created on behalf of this asset manager.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">DataFlowElement</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFlowElement</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFlow(java.lang.String,java.lang.String,java.lang.String,java.util.Date)" class="member-name-link">getDataFlow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSupplierGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataConsumerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
@@ -473,7 +473,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the data flow relationship between two elements.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">DataFlowElement</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFlowElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFlowConsumers(java.lang.String,int,int,java.util.Date)" class="member-name-link">getDataFlowConsumers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSupplierGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -481,7 +481,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the data flow relationships linked from a specific element to the downstream consumers.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">DataFlowElement</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFlowElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFlowSuppliers(java.lang.String,int,int,java.util.Date)" class="member-name-link">getDataFlowSuppliers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataConsumerGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -489,7 +489,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the data flow relationships linked from a specific element to the upstream suppliers.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">LineageMappingElement</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">LineageMappingElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDestinationLineageMappings(java.lang.String,int,int,java.util.Date)" class="member-name-link">getDestinationLineageMappings</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceElementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -600,7 +600,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the process metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetmanager/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ProcessCallElement</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ProcessCallElement</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessCall(java.lang.String,java.lang.String,java.lang.String,java.util.Date)" class="member-name-link">getProcessCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;calledGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
@@ -608,7 +608,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the process call relationship between two elements.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ProcessCallElement</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ProcessCallElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessCalled(java.lang.String,int,int,java.util.Date)" class="member-name-link">getProcessCalled</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -616,7 +616,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the process call relationships linked from a specific element to the elements it calls.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ProcessCallElement</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ProcessCallElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessCallers(java.lang.String,int,int,java.util.Date)" class="member-name-link">getProcessCallers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;calledGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -645,7 +645,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the process metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/RelationshipElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">RelationshipElement</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/RelationshipElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelationshipElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedAssetsAtEnd1(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">getRelatedAssetsAtEnd1</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toAssetGUID,
  int&nbsp;startFrom,
@@ -654,7 +654,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the relationships linked from a specific element at end 2 of the relationship.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/RelationshipElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">RelationshipElement</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/RelationshipElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelationshipElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedAssetsAtEnd2(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">getRelatedAssetsAtEnd2</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fromAssetGUID,
  int&nbsp;startFrom,
@@ -698,13 +698,13 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the schema type associated with a specific open metadata element (data asset, process or port).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaTypeParent(java.lang.String,java.util.Date)" class="member-name-link">getSchemaTypeParent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the header of the metadata element connected to a schema type.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">LineageMappingElement</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">LineageMappingElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSourceLineageMappings(java.lang.String,int,int,java.util.Date)" class="member-name-link">getSourceLineageMappings</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;destinationElementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -824,36 +824,36 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="block">Classify the column schema attribute to indicate that it describes a primary key.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupControlFlow(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ControlFlowProperties,java.util.Date)" class="member-name-link">setupControlFlow</a><wbr>(boolean&nbsp;assetManagerIsHome,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupControlFlow(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ControlFlowProperties,java.util.Date)" class="member-name-link">setupControlFlow</a><wbr>(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nextStepGUID,
- <a href="../../../accessservices/assetmanager/properties/ControlFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ControlFlowProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/lineage/ControlFlowProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">ControlFlowProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Link two elements to show that when one completes the next is started.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupDataFlow(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.DataFlowProperties,java.util.Date)" class="member-name-link">setupDataFlow</a><wbr>(boolean&nbsp;assetManagerIsHome,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupDataFlow(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataFlowProperties,java.util.Date)" class="member-name-link">setupDataFlow</a><wbr>(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSupplierGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataConsumerGUID,
- <a href="../../../accessservices/assetmanager/properties/DataFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataFlowProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/lineage/DataFlowProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">DataFlowProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Link two elements together to show that data flows from one to the other.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupForeignKeyRelationship(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,java.util.Date)" class="member-name-link">setupForeignKeyRelationship</a><wbr>(boolean&nbsp;assetManagerIsHome,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupForeignKeyRelationship(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ForeignKeyProperties,java.util.Date)" class="member-name-link">setupForeignKeyRelationship</a><wbr>(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;primaryKeyGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;foreignKeyGUID,
- <a href="../../../accessservices/assetmanager/properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Link two schema attributes together to show a foreign key relationship.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupLineageMapping(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.LineageMappingProperties,java.util.Date)" class="member-name-link">setupLineageMapping</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceElementGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupLineageMapping(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageMappingProperties,java.util.Date)" class="member-name-link">setupLineageMapping</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;destinationElementGUID,
- <a href="../../../accessservices/assetmanager/properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LineageMappingProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/lineage/LineageMappingProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageMappingProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Link to elements together to show that they are part of the lineage of the data that is moving
@@ -876,31 +876,31 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="block">Link a schema type to a port to show the structure of data it accepts.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupProcessCall(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessCallProperties,java.util.Date)" class="member-name-link">setupProcessCall</a><wbr>(boolean&nbsp;assetManagerIsHome,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupProcessCall(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ProcessCallProperties,java.util.Date)" class="member-name-link">setupProcessCall</a><wbr>(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;calledGUID,
- <a href="../../../accessservices/assetmanager/properties/ProcessCallProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessCallProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/lineage/ProcessCallProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">ProcessCallProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Link two elements together to show a request-response call between them.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupProcessParent(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessContainmentProperties,java.util.Date)" class="member-name-link">setupProcessParent</a><wbr>(boolean&nbsp;assetManagerIsHome,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupProcessParent(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessContainmentProperties,java.util.Date)" class="member-name-link">setupProcessParent</a><wbr>(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentProcessGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;childProcessGUID,
- <a href="../../../accessservices/assetmanager/properties/ProcessContainmentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessContainmentProperties</a>&nbsp;containmentProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/ProcessContainmentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessContainmentProperties</a>&nbsp;containmentProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a parent-child relationship between two processes.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code><a href="#setupProcessParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessContainmentProperties,java.util.Date)" class="member-name-link">setupProcessParent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code><a href="#setupProcessParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessContainmentProperties,java.util.Date)" class="member-name-link">setupProcessParent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentProcessGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;childProcessGUID,
- <a href="../../../accessservices/assetmanager/properties/ProcessContainmentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessContainmentProperties</a>&nbsp;containmentProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/ProcessContainmentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessContainmentProperties</a>&nbsp;containmentProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6">
 <div class="block"><span class="deprecated-label">Deprecated.</span></div>
@@ -914,122 +914,122 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <div class="block">Link a port to a process.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupRelatedDataAsset(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties,java.util.Date)" class="member-name-link">setupRelatedDataAsset</a><wbr>(boolean&nbsp;assetManagerIsHome,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupRelatedDataAsset(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties,java.util.Date)" class="member-name-link">setupRelatedDataAsset</a><wbr>(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fromAssetGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toAssetGUID,
- <a href="../../../accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;relationshipProperties,
+ <a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;relationshipProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Link two asset together.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupSchemaElementRelationship(boolean,java.lang.String,java.lang.String,java.lang.String,java.util.Date,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties)" class="member-name-link">setupSchemaElementRelationship</a><wbr>(boolean&nbsp;assetManagerIsHome,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupSchemaElementRelationship(boolean,java.lang.String,java.lang.String,java.lang.String,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties)" class="member-name-link">setupSchemaElementRelationship</a><wbr>(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endOneGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endTwoGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
- <a href="../../../accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;properties)</code></div>
+ <a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;properties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a relationship between two schema elements.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupSchemaTypeParent(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties,java.util.Date)" class="member-name-link">setupSchemaTypeParent</a><wbr>(boolean&nbsp;assetManagerIsHome,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupSchemaTypeParent(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties,java.util.Date)" class="member-name-link">setupSchemaTypeParent</a><wbr>(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentElementTypeName,
- <a href="../../../accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Connect a schema type to a data asset, process or port.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateAssetRelationship(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties,java.util.Date)" class="member-name-link">updateAssetRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateAssetRelationship(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties,java.util.Date)" class="member-name-link">updateAssetRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;relationshipProperties,
+ <a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;relationshipProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update relationship between two elements.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateControlFlow(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ControlFlowProperties,java.util.Date)" class="member-name-link">updateControlFlow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;controlFlowGUID,
- <a href="../../../accessservices/assetmanager/properties/ControlFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ControlFlowProperties</a>&nbsp;properties,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateControlFlow(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ControlFlowProperties,java.util.Date)" class="member-name-link">updateControlFlow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;controlFlowGUID,
+ <a href="../../../frameworks/openmetadata/properties/lineage/ControlFlowProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">ControlFlowProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the relationship between two elements that shows that when one completes the next is started.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDataAsset(java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties,java.util.Date)" class="member-name-link">updateDataAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDataAsset(java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties,java.util.Date)" class="member-name-link">updateDataAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../accessservices/assetmanager/properties/DataAssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataAssetProperties</a>&nbsp;assetProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a>&nbsp;assetProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the metadata element representing a data source.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDataFlow(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.DataFlowProperties,java.util.Date)" class="member-name-link">updateDataFlow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFlowGUID,
- <a href="../../../accessservices/assetmanager/properties/DataFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataFlowProperties</a>&nbsp;properties,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDataFlow(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataFlowProperties,java.util.Date)" class="member-name-link">updateDataFlow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFlowGUID,
+ <a href="../../../frameworks/openmetadata/properties/lineage/DataFlowProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">DataFlowProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update relationship between two elements that shows that data flows from one to the other.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateForeignKeyRelationship(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,java.util.Date)" class="member-name-link">updateForeignKeyRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;primaryKeyGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateForeignKeyRelationship(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ForeignKeyProperties,java.util.Date)" class="member-name-link">updateForeignKeyRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;primaryKeyGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;foreignKeyGUID,
- <a href="../../../accessservices/assetmanager/properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the relationship properties for the query target.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateLineageMapping(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.LineageMappingProperties,java.util.Date)" class="member-name-link">updateLineageMapping</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;lineageMappingGUID,
- <a href="../../../accessservices/assetmanager/properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LineageMappingProperties</a>&nbsp;properties,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateLineageMapping(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageMappingProperties,java.util.Date)" class="member-name-link">updateLineageMapping</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;lineageMappingGUID,
+ <a href="../../../frameworks/openmetadata/properties/lineage/LineageMappingProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageMappingProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the lineage mapping relationship between two elements.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePort(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.PortProperties,java.util.Date)" class="member-name-link">updatePort</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;portGUID,
- <a href="../../../accessservices/assetmanager/properties/PortProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">PortProperties</a>&nbsp;portProperties,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePort(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties,java.util.Date)" class="member-name-link">updatePort</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;portGUID,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/PortProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">PortProperties</a>&nbsp;portProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties of the metadata element representing a port.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateProcess(java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties,java.util.Date)" class="member-name-link">updateProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateProcess(java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties,java.util.Date)" class="member-name-link">updateProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../accessservices/assetmanager/properties/ProcessProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessProperties</a>&nbsp;processProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a>&nbsp;processProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the metadata element representing a process.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateProcessCall(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessCallProperties,java.util.Date)" class="member-name-link">updateProcessCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processCallGUID,
- <a href="../../../accessservices/assetmanager/properties/ProcessCallProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessCallProperties</a>&nbsp;properties,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateProcessCall(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ProcessCallProperties,java.util.Date)" class="member-name-link">updateProcessCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processCallGUID,
+ <a href="../../../frameworks/openmetadata/properties/lineage/ProcessCallProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">ProcessCallProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the relationship between two elements that shows a request-response call between them.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateProcessStatus(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus,java.util.Date)" class="member-name-link">updateProcessStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
- <a href="../../../accessservices/assetmanager/properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessStatus</a>&nbsp;processStatus,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateProcessStatus(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus,java.util.Date)" class="member-name-link">updateProcessStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
+ <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;processStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the status of the metadata element representing a process.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchemaAttribute(java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,java.util.Date)" class="member-name-link">updateSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchemaAttribute(java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties,java.util.Date)" class="member-name-link">updateSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../accessservices/assetmanager/properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties of the metadata element representing a schema attribute.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchemaType(java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties,java.util.Date)" class="member-name-link">updateSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchemaType(java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties,java.util.Date)" class="member-name-link">updateSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../accessservices/assetmanager/properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaTypeProperties</a>&nbsp;schemaTypeProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the metadata element representing a schema type.</div>
@@ -1051,7 +1051,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.context.IntegrationContext">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.context.<a href="../../../frameworks/integration/context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></h3>
-<code><a href="../../../frameworks/integration/context/IntegrationContext.html#addCatalogTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)">addCatalogTarget</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#addCatalogTarget(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)">addCatalogTarget</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#disconnect()">disconnect</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#elementShouldBeCatalogued(java.lang.String,java.util.List,java.util.List)">elementShouldBeCatalogued</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getAnchorGUID(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)">getAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getAnchorGUID(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement)">getAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getCatalogTarget(java.lang.String)">getCatalogTarget</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getCatalogTargets(int,int)">getCatalogTargets</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getCatalogTargets(java.lang.String,int,int)">getCatalogTargets</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getConnectedAssetContext()">getConnectedAssetContext</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getExternalSourceIsHome()">getExternalSourceIsHome</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getFileClassifier()">getFileClassifier</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getIntegrationGovernanceContext()">getIntegrationGovernanceContext</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getMaxPageSize()">getMaxPageSize</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getMetadataSourceGUID()">getMetadataSourceGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getMetadataSourceQualifiedName()">getMetadataSourceQualifiedName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getPermittedSynchronization()">getPermittedSynchronization</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#isRefreshInProgress()">isRefreshInProgress</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#isTypeOf(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader,java.lang.String)">isTypeOf</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#isTypeOf(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType,java.lang.String)">isTypeOf</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#publishReport()">publishReport</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#registerDirectoryListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)">registerDirectoryListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#registerDirectoryTreeListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)">registerDirectoryTreeListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#registerFileListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface,java.io.File)">registerFileListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#removeCatalogTarget(java.lang.String)">removeCatalogTarget</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportAnchorGUID(java.lang.String,java.lang.String)">reportAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportAnchorGUID(java.lang.String,java.lang.String,java.lang.String)">reportAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementCreation(java.lang.String)">reportElementCreation</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementDelete(java.lang.String)">reportElementDelete</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementUpdate(java.lang.String)">reportElementUpdate</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportParentGUID(java.lang.String,java.lang.String)">reportParentGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#setActiveReportPublishing(boolean)">setActiveReportPublishing</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#setExternalSourceIsHome(boolean)">setExternalSourceIsHome</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#setMetadataSourceQualifiedName(java.lang.String)">setMetadataSourceQualifiedName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#setMetadataSourceQualifiedName(java.lang.String,java.lang.String)">setMetadataSourceQualifiedName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#startRecording()">startRecording</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#unregisterDirectoryListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File)">unregisterDirectoryListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#unregisterDirectoryTreeListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File)">unregisterDirectoryTreeListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#unregisterFileListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface,java.io.File)">unregisterFileListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#updateCatalogTarget(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)">updateCatalogTarget</a></code></div>
+<code><a href="../../../frameworks/integration/context/IntegrationContext.html#addCatalogTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)">addCatalogTarget</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#addCatalogTarget(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)">addCatalogTarget</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#disconnect()">disconnect</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#elementShouldBeCatalogued(java.lang.String,java.util.List,java.util.List)">elementShouldBeCatalogued</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getAnchorGUID(org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement)">getAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getAnchorGUID(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">getAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getCatalogTarget(java.lang.String)">getCatalogTarget</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getCatalogTargets(int,int)">getCatalogTargets</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getCatalogTargets(java.lang.String,int,int)">getCatalogTargets</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getConnectedAssetContext()">getConnectedAssetContext</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getExternalSourceIsHome()">getExternalSourceIsHome</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getFileClassifier()">getFileClassifier</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getIntegrationGovernanceContext()">getIntegrationGovernanceContext</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getMaxPageSize()">getMaxPageSize</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getMetadataSourceGUID()">getMetadataSourceGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getMetadataSourceQualifiedName()">getMetadataSourceQualifiedName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#getPermittedSynchronization()">getPermittedSynchronization</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#isRefreshInProgress()">isRefreshInProgress</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#isTypeOf(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader,java.lang.String)">isTypeOf</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#isTypeOf(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType,java.lang.String)">isTypeOf</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#publishReport()">publishReport</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#registerDirectoryListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)">registerDirectoryListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#registerDirectoryTreeListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)">registerDirectoryTreeListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#registerFileListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface,java.io.File)">registerFileListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#removeCatalogTarget(java.lang.String)">removeCatalogTarget</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportAnchorGUID(java.lang.String,java.lang.String)">reportAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportAnchorGUID(java.lang.String,java.lang.String,java.lang.String)">reportAnchorGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementCreation(java.lang.String)">reportElementCreation</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementDelete(java.lang.String)">reportElementDelete</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportElementUpdate(java.lang.String)">reportElementUpdate</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#reportParentGUID(java.lang.String,java.lang.String)">reportParentGUID</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#setActiveReportPublishing(boolean)">setActiveReportPublishing</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#setExternalSourceIsHome(boolean)">setExternalSourceIsHome</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#setMetadataSourceQualifiedName(java.lang.String)">setMetadataSourceQualifiedName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#setMetadataSourceQualifiedName(java.lang.String,java.lang.String)">setMetadataSourceQualifiedName</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#startRecording()">startRecording</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#unregisterDirectoryListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File)">unregisterDirectoryListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#unregisterDirectoryTreeListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File)">unregisterDirectoryTreeListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#unregisterFileListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface,java.io.File)">unregisterFileListener</a>, <a href="../../../frameworks/integration/context/IntegrationContext.html#updateCatalogTarget(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties)">updateCatalogTarget</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -1227,10 +1227,10 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="createDataAsset(boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties)">
+<section class="detail" id="createDataAsset(boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties)">
 <h3>createDataAsset</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createDataAsset</span><wbr><span class="parameters">(boolean&nbsp;assetManagerIsHome,
- <a href="../../../accessservices/assetmanager/properties/DataAssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataAssetProperties</a>&nbsp;assetProperties)</span>
+ <a href="../../../frameworks/openmetadata/properties/assets/DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a>&nbsp;assetProperties)</span>
                        throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -1274,11 +1274,11 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="updateDataAsset(java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties,java.util.Date)">
+<section class="detail" id="updateDataAsset(java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties,java.util.Date)">
 <h3>updateDataAsset</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateDataAsset</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../accessservices/assetmanager/properties/DataAssetProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataAssetProperties</a>&nbsp;assetProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataAssetProperties</a>&nbsp;assetProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -1403,13 +1403,13 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="setupRelatedDataAsset(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties,java.util.Date)">
+<section class="detail" id="setupRelatedDataAsset(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties,java.util.Date)">
 <h3>setupRelatedDataAsset</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">setupRelatedDataAsset</span><wbr><span class="parameters">(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fromAssetGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toAssetGUID,
- <a href="../../../accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;relationshipProperties,
+ <a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;relationshipProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                              throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -1436,7 +1436,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getAssetRelationship(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <h3>getAssetRelationship</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetmanager/metadataelements/RelationshipElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">RelationshipElement</a></span>&nbsp;<span class="element-name">getAssetRelationship</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/RelationshipElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelationshipElement</a></span>&nbsp;<span class="element-name">getAssetRelationship</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fromAssetGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toAssetGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -1460,12 +1460,12 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="updateAssetRelationship(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties,java.util.Date)">
+<section class="detail" id="updateAssetRelationship(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties,java.util.Date)">
 <h3>updateAssetRelationship</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateAssetRelationship</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;relationshipProperties,
+ <a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;relationshipProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                              throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -1510,7 +1510,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getRelatedAssetsAtEnd2(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <h3>getRelatedAssetsAtEnd2</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/RelationshipElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">RelationshipElement</a>&gt;</span>&nbsp;<span class="element-name">getRelatedAssetsAtEnd2</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/RelationshipElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelationshipElement</a>&gt;</span>&nbsp;<span class="element-name">getRelatedAssetsAtEnd2</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fromAssetGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -1538,7 +1538,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getRelatedAssetsAtEnd1(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <h3>getRelatedAssetsAtEnd1</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/RelationshipElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">RelationshipElement</a>&gt;</span>&nbsp;<span class="element-name">getRelatedAssetsAtEnd1</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/RelationshipElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">RelationshipElement</a>&gt;</span>&nbsp;<span class="element-name">getRelatedAssetsAtEnd1</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;toAssetGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -1664,10 +1664,10 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="createSchemaType(boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties)">
+<section class="detail" id="createSchemaType(boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties)">
 <h3>createSchemaType</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createSchemaType</span><wbr><span class="parameters">(boolean&nbsp;assetManagerIsHome,
- <a href="../../../accessservices/assetmanager/properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties)</span>
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaTypeProperties</a>&nbsp;schemaTypeProperties)</span>
                         throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -1686,12 +1686,12 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="createAnchoredSchemaType(boolean,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties)">
+<section class="detail" id="createAnchoredSchemaType(boolean,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties)">
 <h3>createAnchoredSchemaType</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createAnchoredSchemaType</span><wbr><span class="parameters">(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  <a href="../../../frameworks/governanceaction/properties/ExternalIdentifierProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ExternalIdentifierProperties</a>&nbsp;externalIdentifierProperties,
- <a href="../../../accessservices/assetmanager/properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties)</span>
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaTypeProperties</a>&nbsp;schemaTypeProperties)</span>
                                 throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -1736,11 +1736,11 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="updateSchemaType(java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties,java.util.Date)">
+<section class="detail" id="updateSchemaType(java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties,java.util.Date)">
 <h3>updateSchemaType</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateSchemaType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../accessservices/assetmanager/properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaTypeProperties</a>&nbsp;schemaTypeProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -1760,13 +1760,13 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="setupSchemaTypeParent(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties,java.util.Date)">
+<section class="detail" id="setupSchemaTypeParent(boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties,java.util.Date)">
 <h3>setupSchemaTypeParent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setupSchemaTypeParent</span><wbr><span class="parameters">(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentElementTypeName,
- <a href="../../../accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                            throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -1812,14 +1812,14 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="setupSchemaElementRelationship(boolean,java.lang.String,java.lang.String,java.lang.String,java.util.Date,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties)">
+<section class="detail" id="setupSchemaElementRelationship(boolean,java.lang.String,java.lang.String,java.lang.String,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties)">
 <h3>setupSchemaElementRelationship</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setupSchemaElementRelationship</span><wbr><span class="parameters">(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endOneGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endTwoGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
- <a href="../../../accessservices/assetmanager/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;properties)</span>
+ <a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;properties)</span>
                                     throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -1987,7 +1987,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getSchemaTypeParent(java.lang.String,java.util.Date)">
 <h3>getSchemaTypeParent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></span>&nbsp;<span class="element-name">getSchemaTypeParent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></span>&nbsp;<span class="element-name">getSchemaTypeParent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                                   throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -2007,11 +2007,11 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="createSchemaAttribute(boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,java.util.Date)">
+<section class="detail" id="createSchemaAttribute(boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties,java.util.Date)">
 <h3>createSchemaAttribute</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createSchemaAttribute</span><wbr><span class="parameters">(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
- <a href="../../../accessservices/assetmanager/properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                              throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -2061,11 +2061,11 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="updateSchemaAttribute(java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,java.util.Date)">
+<section class="detail" id="updateSchemaAttribute(java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties,java.util.Date)">
 <h3>updateSchemaAttribute</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateSchemaAttribute</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../accessservices/assetmanager/properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                            throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -2177,12 +2177,12 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="setupForeignKeyRelationship(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,java.util.Date)">
+<section class="detail" id="setupForeignKeyRelationship(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ForeignKeyProperties,java.util.Date)">
 <h3>setupForeignKeyRelationship</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setupForeignKeyRelationship</span><wbr><span class="parameters">(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;primaryKeyGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;foreignKeyGUID,
- <a href="../../../accessservices/assetmanager/properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                                  throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -2203,11 +2203,11 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="updateForeignKeyRelationship(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,java.util.Date)">
+<section class="detail" id="updateForeignKeyRelationship(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ForeignKeyProperties,java.util.Date)">
 <h3>updateForeignKeyRelationship</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateForeignKeyRelationship</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;primaryKeyGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;foreignKeyGUID,
- <a href="../../../accessservices/assetmanager/properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                                   throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -2371,11 +2371,11 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="createProcess(boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties)">
+<section class="detail" id="createProcess(boolean,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties)">
 <h3>createProcess</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createProcess</span><wbr><span class="parameters">(boolean&nbsp;assetManagerIsHome,
- <a href="../../../accessservices/assetmanager/properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessStatus</a>&nbsp;processStatus,
- <a href="../../../accessservices/assetmanager/properties/ProcessProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessProperties</a>&nbsp;processProperties)</span>
+ <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;processStatus,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a>&nbsp;processProperties)</span>
                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -2419,11 +2419,11 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="updateProcess(java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties,java.util.Date)">
+<section class="detail" id="updateProcess(java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties,java.util.Date)">
 <h3>updateProcess</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateProcess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../accessservices/assetmanager/properties/ProcessProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessProperties</a>&nbsp;processProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a>&nbsp;processProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                    throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -2443,10 +2443,10 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="updateProcessStatus(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus,java.util.Date)">
+<section class="detail" id="updateProcessStatus(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus,java.util.Date)">
 <h3>updateProcessStatus</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateProcessStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
- <a href="../../../accessservices/assetmanager/properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessStatus</a>&nbsp;processStatus,
+ <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;processStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                          throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -2465,7 +2465,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="setupProcessParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessContainmentProperties,java.util.Date)">
+<section class="detail" id="setupProcessParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessContainmentProperties,java.util.Date)">
 <h3>setupProcessParent</h3>
 <div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setupProcessParent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -2474,7 +2474,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
  boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentProcessGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;childProcessGUID,
- <a href="../../../accessservices/assetmanager/properties/ProcessContainmentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessContainmentProperties</a>&nbsp;containmentProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/ProcessContainmentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessContainmentProperties</a>&nbsp;containmentProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                         throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -2499,12 +2499,12 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="setupProcessParent(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessContainmentProperties,java.util.Date)">
+<section class="detail" id="setupProcessParent(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessContainmentProperties,java.util.Date)">
 <h3>setupProcessParent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setupProcessParent</span><wbr><span class="parameters">(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentProcessGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;childProcessGUID,
- <a href="../../../accessservices/assetmanager/properties/ProcessContainmentProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessContainmentProperties</a>&nbsp;containmentProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/ProcessContainmentProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessContainmentProperties</a>&nbsp;containmentProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                         throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -2761,11 +2761,11 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="createPort(boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.PortProperties,java.util.Date)">
+<section class="detail" id="createPort(boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties,java.util.Date)">
 <h3>createPort</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createPort</span><wbr><span class="parameters">(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
- <a href="../../../accessservices/assetmanager/properties/PortProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">PortProperties</a>&nbsp;portProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/PortProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">PortProperties</a>&nbsp;portProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                   throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -2787,10 +2787,10 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="updatePort(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.PortProperties,java.util.Date)">
+<section class="detail" id="updatePort(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties,java.util.Date)">
 <h3>updatePort</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updatePort</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;portGUID,
- <a href="../../../accessservices/assetmanager/properties/PortProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">PortProperties</a>&nbsp;portProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/PortProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">PortProperties</a>&nbsp;portProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                 throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -3159,12 +3159,12 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="setupDataFlow(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.DataFlowProperties,java.util.Date)">
+<section class="detail" id="setupDataFlow(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataFlowProperties,java.util.Date)">
 <h3>setupDataFlow</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">setupDataFlow</span><wbr><span class="parameters">(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSupplierGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataConsumerGUID,
- <a href="../../../accessservices/assetmanager/properties/DataFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataFlowProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/lineage/DataFlowProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">DataFlowProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -3189,7 +3189,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getDataFlow(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <h3>getDataFlow</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetmanager/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">DataFlowElement</a></span>&nbsp;<span class="element-name">getDataFlow</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSupplierGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFlowElement</a></span>&nbsp;<span class="element-name">getDataFlow</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSupplierGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataConsumerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -3215,10 +3215,10 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="updateDataFlow(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.DataFlowProperties,java.util.Date)">
+<section class="detail" id="updateDataFlow(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.DataFlowProperties,java.util.Date)">
 <h3>updateDataFlow</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateDataFlow</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataFlowGUID,
- <a href="../../../accessservices/assetmanager/properties/DataFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataFlowProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/lineage/DataFlowProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">DataFlowProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                     throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -3259,7 +3259,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getDataFlowConsumers(java.lang.String,int,int,java.util.Date)">
 <h3>getDataFlowConsumers</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">DataFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getDataFlowConsumers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSupplierGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getDataFlowConsumers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSupplierGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -3285,7 +3285,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getDataFlowSuppliers(java.lang.String,int,int,java.util.Date)">
 <h3>getDataFlowSuppliers</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">DataFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getDataFlowSuppliers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataConsumerGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getDataFlowSuppliers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataConsumerGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -3309,12 +3309,12 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="setupControlFlow(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ControlFlowProperties,java.util.Date)">
+<section class="detail" id="setupControlFlow(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ControlFlowProperties,java.util.Date)">
 <h3>setupControlFlow</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">setupControlFlow</span><wbr><span class="parameters">(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nextStepGUID,
- <a href="../../../accessservices/assetmanager/properties/ControlFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ControlFlowProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/lineage/ControlFlowProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">ControlFlowProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                         throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -3339,7 +3339,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getControlFlow(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <h3>getControlFlow</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetmanager/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ControlFlowElement</a></span>&nbsp;<span class="element-name">getControlFlow</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ControlFlowElement</a></span>&nbsp;<span class="element-name">getControlFlow</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nextStepGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -3365,10 +3365,10 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="updateControlFlow(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ControlFlowProperties,java.util.Date)">
+<section class="detail" id="updateControlFlow(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ControlFlowProperties,java.util.Date)">
 <h3>updateControlFlow</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateControlFlow</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;controlFlowGUID,
- <a href="../../../accessservices/assetmanager/properties/ControlFlowProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ControlFlowProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/lineage/ControlFlowProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">ControlFlowProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                        throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -3409,7 +3409,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getControlFlowNextSteps(java.lang.String,int,int,java.util.Date)">
 <h3>getControlFlowNextSteps</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ControlFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getControlFlowNextSteps</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ControlFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getControlFlowNextSteps</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -3435,7 +3435,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getControlFlowPreviousSteps(java.lang.String,int,int,java.util.Date)">
 <h3>getControlFlowPreviousSteps</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ControlFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getControlFlowPreviousSteps</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ControlFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getControlFlowPreviousSteps</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -3459,12 +3459,12 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="setupProcessCall(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessCallProperties,java.util.Date)">
+<section class="detail" id="setupProcessCall(boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ProcessCallProperties,java.util.Date)">
 <h3>setupProcessCall</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">setupProcessCall</span><wbr><span class="parameters">(boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;calledGUID,
- <a href="../../../accessservices/assetmanager/properties/ProcessCallProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessCallProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/lineage/ProcessCallProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">ProcessCallProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                         throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -3489,7 +3489,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getProcessCall(java.lang.String,java.lang.String,java.lang.String,java.util.Date)">
 <h3>getProcessCall</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetmanager/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ProcessCallElement</a></span>&nbsp;<span class="element-name">getProcessCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ProcessCallElement</a></span>&nbsp;<span class="element-name">getProcessCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;calledGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -3515,10 +3515,10 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="updateProcessCall(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessCallProperties,java.util.Date)">
+<section class="detail" id="updateProcessCall(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ProcessCallProperties,java.util.Date)">
 <h3>updateProcessCall</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateProcessCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processCallGUID,
- <a href="../../../accessservices/assetmanager/properties/ProcessCallProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessCallProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/lineage/ProcessCallProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">ProcessCallProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                        throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -3559,7 +3559,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getProcessCalled(java.lang.String,int,int,java.util.Date)">
 <h3>getProcessCalled</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ProcessCallElement</a>&gt;</span>&nbsp;<span class="element-name">getProcessCalled</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ProcessCallElement</a>&gt;</span>&nbsp;<span class="element-name">getProcessCalled</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -3585,7 +3585,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getProcessCallers(java.lang.String,int,int,java.util.Date)">
 <h3>getProcessCallers</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ProcessCallElement</a>&gt;</span>&nbsp;<span class="element-name">getProcessCallers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;calledGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ProcessCallElement</a>&gt;</span>&nbsp;<span class="element-name">getProcessCallers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;calledGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -3609,11 +3609,11 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="setupLineageMapping(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.LineageMappingProperties,java.util.Date)">
+<section class="detail" id="setupLineageMapping(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageMappingProperties,java.util.Date)">
 <h3>setupLineageMapping</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setupLineageMapping</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;destinationElementGUID,
- <a href="../../../accessservices/assetmanager/properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LineageMappingProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/lineage/LineageMappingProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageMappingProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                          throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -3635,10 +3635,10 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 </section>
 </li>
 <li>
-<section class="detail" id="updateLineageMapping(java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.LineageMappingProperties,java.util.Date)">
+<section class="detail" id="updateLineageMapping(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageMappingProperties,java.util.Date)">
 <h3>updateLineageMapping</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateLineageMapping</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;lineageMappingGUID,
- <a href="../../../accessservices/assetmanager/properties/LineageMappingProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">LineageMappingProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/lineage/LineageMappingProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageMappingProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                           throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
@@ -3679,7 +3679,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getDestinationLineageMappings(java.lang.String,int,int,java.util.Date)">
 <h3>getDestinationLineageMappings</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">LineageMappingElement</a>&gt;</span>&nbsp;<span class="element-name">getDestinationLineageMappings</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceElementGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">LineageMappingElement</a>&gt;</span>&nbsp;<span class="element-name">getDestinationLineageMappings</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceElementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
@@ -3705,7 +3705,7 @@ implements <a href="OpenLineageListenerManager.html" title="interface in org.odp
 <li>
 <section class="detail" id="getSourceLineageMappings(java.lang.String,int,int,java.util.Date)">
 <h3>getSourceLineageMappings</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/assetmanager/metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">LineageMappingElement</a>&gt;</span>&nbsp;<span class="element-name">getSourceLineageMappings</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;destinationElementGUID,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">LineageMappingElement</a>&gt;</span>&nbsp;<span class="element-name">getSourceLineageMappings</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;destinationElementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>

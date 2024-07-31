@@ -110,7 +110,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/assetconsumer/rest/AssetSearchMatchesListResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">AssetSearchMatchesListResponse</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/AssetSearchMatchesListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetSearchMatchesListResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findAssetsInDomain(java.lang.String,boolean,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">findAssetsInDomain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  boolean&nbsp;startsWith,
  boolean&nbsp;endsWith,
@@ -121,7 +121,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Locate string value in elements that are anchored to assets.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/assetconsumer/rest/AssetGraphResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">AssetGraphResponse</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/AssetGraphResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetGraphResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetGraph(java.lang.String,java.lang.String,int,int)" class="member-name-link">getAssetGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  int&nbsp;startFrom,
@@ -197,7 +197,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getAssetGraph(java.lang.String,java.lang.String,int,int)">
 <h3>getAssetGraph</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/assets/{assetGUID}/as-graph")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../accessservices/assetconsumer/rest/AssetGraphResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">AssetGraphResponse</a></span>&nbsp;<span class="element-name">getAssetGraph</span><wbr><span class="parameters">(@PathVariable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/AssetGraphResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetGraphResponse</a></span>&nbsp;<span class="element-name">getAssetGraph</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
@@ -226,7 +226,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="findAssetsInDomain(java.lang.String,boolean,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>findAssetsInDomain</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/assets/in-domain/by-search-string")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../accessservices/assetconsumer/rest/AssetSearchMatchesListResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">AssetSearchMatchesListResponse</a></span>&nbsp;<span class="element-name">findAssetsInDomain</span><wbr><span class="parameters">(@PathVariable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/AssetSearchMatchesListResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">AssetSearchMatchesListResponse</a></span>&nbsp;<span class="element-name">findAssetsInDomain</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;startsWith,

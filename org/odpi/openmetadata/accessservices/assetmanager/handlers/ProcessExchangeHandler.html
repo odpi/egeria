@@ -257,11 +257,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Unlink a port from a process.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createPort(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.PortProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">createPort</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createPort(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">createPort</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
- <a href="../properties/PortProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">PortProperties</a>&nbsp;portProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/PortProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">PortProperties</a>&nbsp;portProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -270,11 +270,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element to represent a port.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus,java.util.Date,java.lang.String)" class="member-name-link">createProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus,java.util.Date,java.lang.String)" class="member-name-link">createProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
- <a href="../properties/ProcessProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessProperties</a>&nbsp;processProperties,
- <a href="../properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessStatus</a>&nbsp;processStatus,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a>&nbsp;processProperties,
+ <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;processStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -321,7 +321,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of process metadata elements that contain the search string.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ControlFlowElement</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ControlFlowElement</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getControlFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">getControlFlow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nextStepGUID,
@@ -333,7 +333,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the control flow relationship between two elements.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ControlFlowElement</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ControlFlowElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getControlFlowNextSteps(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">getControlFlowNextSteps</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  int&nbsp;startFrom,
@@ -345,7 +345,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the control relationships linked from a specific element to the possible next elements in the process.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ControlFlowElement</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ControlFlowElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getControlFlowPreviousSteps(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">getControlFlowPreviousSteps</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  int&nbsp;startFrom,
@@ -357,7 +357,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the control relationships linked from a specific element to the possible previous elements in the process.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">DataFlowElement</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFlowElement</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">getDataFlow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSupplierGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataConsumerGUID,
@@ -369,7 +369,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the data flow relationship between two elements.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">DataFlowElement</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFlowElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFlowConsumers(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">getDataFlowConsumers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSupplierGUID,
  int&nbsp;startFrom,
@@ -381,7 +381,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the data flow relationships linked from a specific element to the downstream consumers.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">DataFlowElement</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFlowElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataFlowSuppliers(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">getDataFlowSuppliers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataConsumerGUID,
  int&nbsp;startFrom,
@@ -393,7 +393,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the data flow relationships linked from a specific element to the upstream suppliers.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">LineageMappingElement</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">LineageMappingElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDestinationLineageMappings(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">getDestinationLineageMappings</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceElementGUID,
  int&nbsp;startFrom,
@@ -405,7 +405,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the lineage mapping relationships linked from a specific source element to its destinations.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">LineageMappingElement</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">LineageMappingElement</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">getLineageMapping</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;destinationElementGUID,
@@ -497,7 +497,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the process metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ProcessCallElement</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ProcessCallElement</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessCall(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">getProcessCall</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;calledGUID,
@@ -509,7 +509,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the process call relationship between two elements.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ProcessCallElement</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ProcessCallElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessCalled(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">getProcessCalled</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerGUID,
  int&nbsp;startFrom,
@@ -521,7 +521,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the process call relationships linked from a specific element to the elements it calls.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ProcessCallElement</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ProcessCallElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessCallers(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">getProcessCallers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;calledGUID,
  int&nbsp;startFrom,
@@ -573,7 +573,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the process metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">LineageMappingElement</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">LineageMappingElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSourceLineageMappings(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">getSourceLineageMappings</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;destinationElementGUID,
  int&nbsp;startFrom,
@@ -643,10 +643,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Classify a port, process or process as "BusinessSignificant" (this may affect the way that lineage is displayed).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementAsDataField(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">setElementAsDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementAsDataField(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">setElementAsDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- <a href="../properties/DataFieldValuesProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataFieldValuesProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/schema/DataFieldValuesProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">DataFieldValuesProperties</a>&nbsp;properties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -763,13 +763,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Link two elements together to show a request-response call between them.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupProcessParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessContainmentType,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">setupProcessParent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupProcessParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">setupProcessParent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
  boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentProcessGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;childProcessGUID,
- <a href="../properties/ProcessContainmentType.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessContainmentType</a>&nbsp;containmentType,
+ <a href="../../../frameworks/openmetadata/enums/ProcessContainmentType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessContainmentType</a>&nbsp;containmentType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  boolean&nbsp;forLineage,
@@ -846,10 +846,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the lineage mapping between two elements.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePort(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.PortProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updatePort</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatePort(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updatePort</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;portGUID,
- <a href="../properties/PortProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">PortProperties</a>&nbsp;portProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/PortProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">PortProperties</a>&nbsp;portProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -858,11 +858,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of the metadata element representing a port.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updateProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updateProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../properties/ProcessProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessProperties</a>&nbsp;processProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a>&nbsp;processProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -888,10 +888,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the relationship between two elements that shows a request-response call between them.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateProcessStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updateProcessStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateProcessStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updateProcessStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
- <a href="../properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessStatus</a>&nbsp;processStatus,
+ <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;processStatus,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -989,13 +989,13 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus,java.util.Date,java.lang.String)">
+<section class="detail" id="createProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus,java.util.Date,java.lang.String)">
 <h3>createProcess</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createProcess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
- <a href="../properties/ProcessProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessProperties</a>&nbsp;processProperties,
- <a href="../properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessStatus</a>&nbsp;processStatus,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a>&nbsp;processProperties,
+ <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;processStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
@@ -1053,13 +1053,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="updateProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>updateProcess</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateProcess</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../properties/ProcessProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessProperties</a>&nbsp;processProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/ProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">ProcessProperties</a>&nbsp;processProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -1087,12 +1087,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateProcessStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessStatus,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="updateProcessStatus(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>updateProcessStatus</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateProcessStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
- <a href="../properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessStatus</a>&nbsp;processStatus,
+ <a href="../../../frameworks/openmetadata/enums/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessStatus</a>&nbsp;processStatus,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -1119,7 +1119,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setupProcessParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessContainmentType,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="setupProcessParent(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>setupProcessParent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setupProcessParent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
@@ -1127,7 +1127,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentProcessGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;childProcessGUID,
- <a href="../properties/ProcessContainmentType.html" title="enum class in org.odpi.openmetadata.accessservices.assetmanager.properties">ProcessContainmentType</a>&nbsp;containmentType,
+ <a href="../../../frameworks/openmetadata/enums/ProcessContainmentType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ProcessContainmentType</a>&nbsp;containmentType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  boolean&nbsp;forLineage,
@@ -1509,13 +1509,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createPort(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.PortProperties,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="createPort(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>createPort</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createPort</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
- <a href="../properties/PortProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">PortProperties</a>&nbsp;portProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/PortProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">PortProperties</a>&nbsp;portProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -1545,12 +1545,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updatePort(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.PortProperties,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="updatePort(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>updatePort</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updatePort</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;portGUID,
- <a href="../properties/PortProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">PortProperties</a>&nbsp;portProperties,
+ <a href="../../../frameworks/openmetadata/properties/assets/processes/PortProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes">PortProperties</a>&nbsp;portProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -2167,7 +2167,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getDataFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>getDataFlow</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">DataFlowElement</a></span>&nbsp;<span class="element-name">getDataFlow</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFlowElement</a></span>&nbsp;<span class="element-name">getDataFlow</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSupplierGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataConsumerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
@@ -2277,7 +2277,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getDataFlowConsumers(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>getDataFlowConsumers</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">DataFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getDataFlowConsumers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getDataFlowConsumers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataSupplierGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -2311,7 +2311,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getDataFlowSuppliers(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>getDataFlowSuppliers</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">DataFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getDataFlowSuppliers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/DataFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">DataFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getDataFlowSuppliers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataConsumerGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -2393,7 +2393,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getControlFlow(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>getControlFlow</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ControlFlowElement</a></span>&nbsp;<span class="element-name">getControlFlow</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ControlFlowElement</a></span>&nbsp;<span class="element-name">getControlFlow</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nextStepGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
@@ -2503,7 +2503,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getControlFlowNextSteps(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>getControlFlowNextSteps</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ControlFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getControlFlowNextSteps</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ControlFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getControlFlowNextSteps</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -2537,7 +2537,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getControlFlowPreviousSteps(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>getControlFlowPreviousSteps</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ControlFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getControlFlowPreviousSteps</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ControlFlowElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ControlFlowElement</a>&gt;</span>&nbsp;<span class="element-name">getControlFlowPreviousSteps</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentStepGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -2619,7 +2619,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getProcessCall(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>getProcessCall</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ProcessCallElement</a></span>&nbsp;<span class="element-name">getProcessCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ProcessCallElement</a></span>&nbsp;<span class="element-name">getProcessCall</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;calledGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
@@ -2729,7 +2729,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getProcessCalled(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>getProcessCalled</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ProcessCallElement</a>&gt;</span>&nbsp;<span class="element-name">getProcessCalled</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ProcessCallElement</a>&gt;</span>&nbsp;<span class="element-name">getProcessCalled</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -2763,7 +2763,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getProcessCallers(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>getProcessCallers</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">ProcessCallElement</a>&gt;</span>&nbsp;<span class="element-name">getProcessCallers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ProcessCallElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ProcessCallElement</a>&gt;</span>&nbsp;<span class="element-name">getProcessCallers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;calledGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -2843,7 +2843,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getLineageMapping(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>getLineageMapping</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">LineageMappingElement</a></span>&nbsp;<span class="element-name">getLineageMapping</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">LineageMappingElement</a></span>&nbsp;<span class="element-name">getLineageMapping</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;destinationElementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
@@ -2951,7 +2951,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getDestinationLineageMappings(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>getDestinationLineageMappings</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">LineageMappingElement</a>&gt;</span>&nbsp;<span class="element-name">getDestinationLineageMappings</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">LineageMappingElement</a>&gt;</span>&nbsp;<span class="element-name">getDestinationLineageMappings</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceElementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -2985,7 +2985,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getSourceLineageMappings(java.lang.String,java.lang.String,int,int,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>getSourceLineageMappings</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.metadataelements">LineageMappingElement</a>&gt;</span>&nbsp;<span class="element-name">getSourceLineageMappings</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/LineageMappingElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">LineageMappingElement</a>&gt;</span>&nbsp;<span class="element-name">getSourceLineageMappings</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;destinationElementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
@@ -3017,12 +3017,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setElementAsDataField(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="setElementAsDataField(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>setElementAsDataField</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setElementAsDataField</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- <a href="../properties/DataFieldValuesProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataFieldValuesProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/schema/DataFieldValuesProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">DataFieldValuesProperties</a>&nbsp;properties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,

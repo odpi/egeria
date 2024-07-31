@@ -80,11 +80,9 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">GovernanceDefinitionManager is the java client for managing the definitions for the governance drivers, policies and controls
  that define the motivation, goals and implementation approach for the governance program.
-
  Governance drivers document of the business strategy and regulations that provide the motivation behind the governance program. They feed
  into the governance program's policymaking phase ensuring the governance program is focused on activity that delivers value to the organization.
  A governance driver could be a governance strategy statement, a business imperative, a regulation or a regulation's article.
-
  Governance policies define the goals and best practices for the governance program.  There are three types of governance policies:
  <ul>
      <li>
@@ -100,7 +98,6 @@ loadScripts(document, 'script');</script>
  Within the definition of each governance policy is a description of what the policy is trying to achieve
  along with the implications to the organization's operation when they adopt this.
  These implications help to estimate the cost of the policy's implementation and the activities that need to happen.
-
  The governance definitions that define how the governance program is to be implemented.
  There are two types of governance definitions:
  <ul>
@@ -160,70 +157,70 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody)" class="member-name-link">clearSupportingDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)" class="member-name-link">clearSupportingDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportingDefinitionGUID,
- <a href="../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the supporting link between two governance definitions.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceDefinition(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionRequestBody)" class="member-name-link">createGovernanceDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceDefinition(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GovernanceDefinitionRequestBody)" class="member-name-link">createGovernanceDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../rest/GovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">GovernanceDefinitionRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../commonservices/ffdc/rest/GovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GovernanceDefinitionRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new governance definition.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody)" class="member-name-link">deleteGovernanceDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)" class="member-name-link">deleteGovernanceDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionGUID,
- <a href="../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../commonservices/ffdc/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Delete a specific governance definition.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody)" class="member-name-link">linkPeerDefinitions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)" class="member-name-link">linkPeerDefinitions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionOneGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionTwoGUID,
- <a href="../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Link two related governance definitions together.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceDefinitionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceStatusRequestBody)" class="member-name-link">setGovernanceDefinitionStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceDefinitionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GovernanceStatusRequestBody)" class="member-name-link">setGovernanceDefinitionStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionGUID,
- <a href="../rest/GovernanceStatusRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">GovernanceStatusRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../commonservices/ffdc/rest/GovernanceStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GovernanceStatusRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the status of a governance definition</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody)" class="member-name-link">setupSupportingDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)" class="member-name-link">setupSupportingDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportingDefinitionGUID,
- <a href="../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a link to show that a governance definition supports the requirements of another governance definition.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unlinkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody)" class="member-name-link">unlinkPeerDefinitions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unlinkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)" class="member-name-link">unlinkPeerDefinitions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionOneGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionTwoGUID,
- <a href="../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove the link between two definitions.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionRequestBody)" class="member-name-link">updateGovernanceDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.GovernanceDefinitionRequestBody)" class="member-name-link">updateGovernanceDefinition</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../rest/GovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">GovernanceDefinitionRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../commonservices/ffdc/rest/GovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GovernanceDefinitionRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update an existing governance definition.</div>
 </div>
@@ -260,11 +257,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createGovernanceDefinition(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionRequestBody)">
+<section class="detail" id="createGovernanceDefinition(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GovernanceDefinitionRequestBody)">
 <h3>createGovernanceDefinition</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createGovernanceDefinition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../rest/GovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">GovernanceDefinitionRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/GovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GovernanceDefinitionRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a new governance definition.  The type of the definition is located in the properties.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -280,13 +277,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceDefinitionRequestBody)">
+<section class="detail" id="updateGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.commonservices.ffdc.rest.GovernanceDefinitionRequestBody)">
 <h3>updateGovernanceDefinition</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateGovernanceDefinition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../rest/GovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">GovernanceDefinitionRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/GovernanceDefinitionRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GovernanceDefinitionRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Update an existing governance definition.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -304,12 +301,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setGovernanceDefinitionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.rest.GovernanceStatusRequestBody)">
+<section class="detail" id="setGovernanceDefinitionStatus(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GovernanceStatusRequestBody)">
 <h3>setGovernanceDefinitionStatus</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setGovernanceDefinitionStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionGUID,
- <a href="../rest/GovernanceStatusRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">GovernanceStatusRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/GovernanceStatusRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GovernanceStatusRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Update the status of a governance definition</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -326,12 +323,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="deleteGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.rest.ExternalSourceRequestBody)">
+<section class="detail" id="deleteGovernanceDefinition(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ExternalSourceRequestBody)">
 <h3>deleteGovernanceDefinition</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deleteGovernanceDefinition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionGUID,
- <a href="../rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/ExternalSourceRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ExternalSourceRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Delete a specific governance definition.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -348,13 +345,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="linkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody)">
+<section class="detail" id="linkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)">
 <h3>linkPeerDefinitions</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">linkPeerDefinitions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionOneGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionTwoGUID,
- <a href="../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Link two related governance definitions together.  The governance definitions are of the same type as follows:
  <ul>
      <li>A relationship of type GovernanceDriverLink is between two GovernanceDriver definitions</li>
@@ -378,13 +375,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="unlinkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody)">
+<section class="detail" id="unlinkPeerDefinitions(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)">
 <h3>unlinkPeerDefinitions</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">unlinkPeerDefinitions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionOneGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionTwoGUID,
- <a href="../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove the link between two definitions.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -402,13 +399,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setupSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody)">
+<section class="detail" id="setupSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)">
 <h3>setupSupportingDefinition</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setupSupportingDefinition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportingDefinitionGUID,
- <a href="../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a link to show that a governance definition supports the requirements of another governance definition.
  This supporting relationship is between definitions of different types as follows:
  <ul>
@@ -432,13 +429,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="clearSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceprogram.rest.RelationshipRequestBody)">
+<section class="detail" id="clearSupportingDefinition(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.RelationshipRequestBody)">
 <h3>clearSupportingDefinition</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearSupportingDefinition</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;definitionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportingDefinitionGUID,
- <a href="../rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceprogram.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/RelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">RelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove the supporting link between two governance definitions.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

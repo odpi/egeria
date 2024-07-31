@@ -134,13 +134,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Update classification of the metadata source as being capable if managing user profiles.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataSource(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties)" class="member-name-link">createMetadataSource</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataSource(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataSourceProperties)" class="member-name-link">createMetadataSource</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../properties/MetadataSourceProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">MetadataSourceProperties</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../frameworks/openmetadata/properties/softwarecapabilities/MetadataSourceProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">MetadataSourceProperties</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create information about the metadata source that is providing user profile information.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/MetadataSourceResponse.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.rest">MetadataSourceResponse</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/MetadataSourceResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataSource(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getMetadataSource</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceGUID)</code></div>
@@ -154,7 +154,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the unique identifier of the software server capability that describes a metadata source.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/ConnectionResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectionResponse</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OCFConnectionResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OCFConnectionResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOutTopicConnection(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getOutTopicConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;callerId)</code></div>
@@ -196,7 +196,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getOutTopicConnection(java.lang.String,java.lang.String,java.lang.String)">
 <h3>getOutTopicConnection</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/topics/out-topic-connection/{callerId}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/ConnectionResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectionResponse</a></span>&nbsp;<span class="element-name">getOutTopicConnection</span><wbr><span class="parameters">(@PathVariable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OCFConnectionResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OCFConnectionResponse</a></span>&nbsp;<span class="element-name">getOutTopicConnection</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -217,7 +217,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createMetadataSource(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.MetadataSourceProperties)">
+<section class="detail" id="createMetadataSource(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataSourceProperties)">
 <h3>createMetadataSource</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-sources")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createMetadataSource</span><wbr><span class="parameters">(@PathVariable
@@ -225,7 +225,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @RequestBody
- <a href="../../properties/MetadataSourceProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">MetadataSourceProperties</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../frameworks/openmetadata/properties/softwarecapabilities/MetadataSourceProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">MetadataSourceProperties</a>&nbsp;requestBody)</span></div>
 <div class="block">Create information about the metadata source that is providing user profile information.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -269,7 +269,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getMetadataSource(java.lang.String,java.lang.String,java.lang.String)">
 <h3>getMetadataSource</h3>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/metadata-sources/{metadataSourceGUID}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/MetadataSourceResponse.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.rest">MetadataSourceResponse</a></span>&nbsp;<span class="element-name">getMetadataSource</span><wbr><span class="parameters">(@PathVariable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/MetadataSourceResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataSourceResponse</a></span>&nbsp;<span class="element-name">getMetadataSource</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,

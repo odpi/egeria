@@ -211,11 +211,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the relationship between a schema type and its parent data asset, process or port.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSchemaAttribute(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">createSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSchemaAttribute(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">createSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
- <a href="../properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -238,11 +238,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element to represent a schema attribute using an existing metadata element as a template.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSchemaType(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">createSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createSchemaType(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">createSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
- <a href="../properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaTypeProperties</a>&nbsp;schemaTypeProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -367,7 +367,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the schema type associated with a specific open metadata element (data asset, process or port).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">getSchemaTypeParent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
@@ -402,10 +402,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the metadata element representing a schema type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementAsDataField(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">setElementAsDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementAsDataField(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">setElementAsDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- <a href="../properties/DataFieldValuesProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataFieldValuesProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/schema/DataFieldValuesProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">DataFieldValuesProperties</a>&nbsp;properties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -444,13 +444,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Classify the column schema attribute to indicate that it describes a primary key.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">setupForeignKeyRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ForeignKeyProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">setupForeignKeyRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
  boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;primaryKeyGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;foreignKeyGUID,
- <a href="../properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -459,14 +459,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Link two schema attributes together to show a foreign key relationship.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupSchemaElementRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">setupSchemaElementRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupSchemaElementRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">setupSchemaElementRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
  boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endOneGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endTwoGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
- <a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  boolean&nbsp;forLineage,
@@ -494,12 +494,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Connect a schema type to a data asset, process or port.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updateForeignKeyRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ForeignKeyProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updateForeignKeyRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;primaryKeyGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;foreignKeyGUID,
- <a href="../properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -508,11 +508,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the relationship properties for the query target.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchemaAttribute(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updateSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchemaAttribute(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">updateSchemaAttribute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -521,13 +521,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of the metadata element representing a schema attribute.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchemaType(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties,java.util.Date,java.lang.String)" class="member-name-link">updateSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateSchemaType(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties,java.util.Date,java.lang.String)" class="member-name-link">updateSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
  boolean&nbsp;isMergeUpdate,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
- <a href="../properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaTypeProperties</a>&nbsp;schemaTypeProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -613,13 +613,13 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createSchemaType(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="createSchemaType(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>createSchemaType</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createSchemaType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
- <a href="../properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaTypeProperties</a>&nbsp;schemaTypeProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -679,7 +679,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateSchemaType(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties,java.util.Date,java.lang.String)">
+<section class="detail" id="updateSchemaType(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,boolean,boolean,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties,java.util.Date,java.lang.String)">
 <h3>updateSchemaType</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateSchemaType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
@@ -687,7 +687,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;isMergeUpdate,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
- <a href="../properties/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaTypeProperties</a>&nbsp;schemaTypeProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaTypeProperties</a>&nbsp;schemaTypeProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
@@ -791,7 +791,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setupSchemaElementRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="setupSchemaElementRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties,java.util.Date,java.util.Date,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>setupSchemaElementRelationship</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setupSchemaElementRelationship</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
@@ -800,7 +800,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endOneGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;endTwoGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
- <a href="../properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">RelationshipProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  boolean&nbsp;forLineage,
@@ -1052,7 +1052,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getSchemaTypeParent(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>getSchemaTypeParent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></span>&nbsp;<span class="element-name">getSchemaTypeParent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></span>&nbsp;<span class="element-name">getSchemaTypeParent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaTypeGUID,
@@ -1084,13 +1084,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createSchemaAttribute(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="createSchemaAttribute(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,boolean,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>createSchemaAttribute</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createSchemaAttribute</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaElementGUID,
- <a href="../properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -1158,13 +1158,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateSchemaAttribute(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="updateSchemaAttribute(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>updateSchemaAttribute</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateSchemaAttribute</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;schemaAttributeGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../properties/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/SchemaAttributeProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">SchemaAttributeProperties</a>&nbsp;schemaAttributeProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -1330,7 +1330,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setupForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="setupForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ForeignKeyProperties,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>setupForeignKeyRelationship</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setupForeignKeyRelationship</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
@@ -1338,7 +1338,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;assetManagerIsHome,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;primaryKeyGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;foreignKeyGUID,
- <a href="../properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -1368,14 +1368,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.ForeignKeyProperties,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="updateForeignKeyRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ForeignKeyProperties,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>updateForeignKeyRelationship</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateForeignKeyRelationship</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetManagerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;primaryKeyGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;foreignKeyGUID,
- <a href="../properties/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
+ <a href="../../../frameworks/openmetadata/properties/schema/ForeignKeyProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">ForeignKeyProperties</a>&nbsp;foreignKeyProperties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -1618,12 +1618,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setElementAsDataField(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldValuesProperties,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="setElementAsDataField(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationProperties,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DataFieldValuesProperties,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>setElementAsDataField</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setElementAsDataField</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../frameworks/governanceaction/properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- <a href="../properties/DataFieldValuesProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">DataFieldValuesProperties</a>&nbsp;properties,
+ <a href="../../../frameworks/openmetadata/properties/schema/DataFieldValuesProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.schema">DataFieldValuesProperties</a>&nbsp;properties,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,

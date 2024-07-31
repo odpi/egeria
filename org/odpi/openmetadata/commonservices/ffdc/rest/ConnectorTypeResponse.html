@@ -84,8 +84,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ConnectorTypeResponse</span>
 <span class="extends-implements">extends <a href="FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a></span></div>
-<div class="block">ConnectorTypeResponse is the response structure used on REST API calls that return a
- ConnectorType object as a response.</div>
+<div class="block">ConnectorReportResponse is a response object for passing back a single connector type object.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -103,10 +102,6 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorTypeResponse)" class="member-name-link">ConnectorTypeResponse</a><wbr>(<a href="ConnectorTypeResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ConnectorTypeResponse</a>&nbsp;template)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Copy/clone constructor</div>
-</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType)" class="member-name-link">ConnectorTypeResponse</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a>&nbsp;template)</code></div>
-<div class="col-last even-row-color">
 <div class="block">Copy/clone constructor</div>
 </div>
 </div>
@@ -128,10 +123,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return comparison result based on the content of the properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorType()" class="member-name-link">getConnectorType</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ConnectorTypeElement</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElement()" class="member-name-link">getElement</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the ConnectorType object.</div>
+<div class="block">Return the metadata element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -139,9 +134,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code for this object</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectorType(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType)" class="member-name-link">setConnectorType</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a>&nbsp;connectorType)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElement(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement)" class="member-name-link">setElement</a><wbr>(<a href="../../../frameworks/openmetadata/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ConnectorTypeElement</a>&nbsp;element)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the ConnectorType object.</div>
+<div class="block">Set up the metadata element to return.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -186,17 +181,6 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
-<li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType)">
-<h3>ConnectorTypeResponse</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ConnectorTypeResponse</span><wbr><span class="parameters">(<a href="../../../frameworks/connectors/properties/beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a>&nbsp;template)</span></div>
-<div class="block">Copy/clone constructor</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>template</code> - object to copy</dd>
-</dl>
-</section>
-</li>
 </ul>
 </section>
 </li>
@@ -206,24 +190,24 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getConnectorType()">
-<h3>getConnectorType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a></span>&nbsp;<span class="element-name">getConnectorType</span>()</div>
-<div class="block">Return the ConnectorType object.</div>
+<section class="detail" id="getElement()">
+<h3>getElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ConnectorTypeElement</a></span>&nbsp;<span class="element-name">getElement</span>()</div>
+<div class="block">Return the metadata element.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>connectorType</dd>
+<dd>result object</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setConnectorType(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType)">
-<h3>setConnectorType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setConnectorType</span><wbr><span class="parameters">(<a href="../../../frameworks/connectors/properties/beans/ConnectorType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConnectorType</a>&nbsp;connectorType)</span></div>
-<div class="block">Set up the ConnectorType object.</div>
+<section class="detail" id="setElement(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement)">
+<h3>setElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setElement</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/metadataelements/ConnectorTypeElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ConnectorTypeElement</a>&nbsp;element)</span></div>
+<div class="block">Set up the metadata element to return.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>connectorType</code> - - connectorType object</dd>
+<dd><code>element</code> - result object</dd>
 </dl>
 </section>
 </li>

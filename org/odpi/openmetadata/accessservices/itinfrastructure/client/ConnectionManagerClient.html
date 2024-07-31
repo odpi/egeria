@@ -179,10 +179,10 @@ implements <a href="../api/ConnectionsManagerInterface.html" title="interface in
 <div class="block">Remove a relationship between a connection and an endpoint.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createConnection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectionProperties)" class="member-name-link">createConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createConnection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties)" class="member-name-link">createConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;infrastructureManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;infrastructureManagerName,
- <a href="../properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ConnectionProperties</a>&nbsp;connectionProperties)</code></div>
+ <a href="../../../frameworks/openmetadata/properties/connections/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.connections">ConnectionProperties</a>&nbsp;connectionProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent a connection.</div>
 </div>
@@ -195,7 +195,7 @@ implements <a href="../api/ConnectionsManagerInterface.html" title="interface in
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent a connection using an existing metadata element as a template.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ConnectionElement</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ConnectionElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findConnections(java.lang.String,java.lang.String,int,int)" class="member-name-link">findConnections</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
  int&nbsp;startFrom,
@@ -203,13 +203,13 @@ implements <a href="../api/ConnectionsManagerInterface.html" title="interface in
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of metadata elements that contain the search string.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ConnectionElement</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ConnectionElement</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionByGUID(java.lang.String,java.lang.String)" class="member-name-link">getConnectionByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ConnectionElement</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ConnectionElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionsByName(java.lang.String,java.lang.String,int,int)" class="member-name-link">getConnectionsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
@@ -266,12 +266,12 @@ implements <a href="../api/ConnectionsManagerInterface.html" title="interface in
 <div class="block">Create a relationship between a connection and an endpoint.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectionProperties)" class="member-name-link">updateConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties)" class="member-name-link">updateConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;infrastructureManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;infrastructureManagerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ConnectionProperties</a>&nbsp;connectionProperties)</code></div>
+ <a href="../../../frameworks/openmetadata/properties/connections/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.connections">ConnectionProperties</a>&nbsp;connectionProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the metadata element representing a connection.</div>
 </div>
@@ -404,19 +404,19 @@ implements <a href="../api/ConnectionsManagerInterface.html" title="interface in
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createConnection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectionProperties)">
+<section class="detail" id="createConnection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties)">
 <h3>createConnection</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;infrastructureManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;infrastructureManagerName,
- <a href="../properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ConnectionProperties</a>&nbsp;connectionProperties)</span>
+ <a href="../../../frameworks/openmetadata/properties/connections/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.connections">ConnectionProperties</a>&nbsp;connectionProperties)</span>
                         throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Create a new metadata element to represent a connection.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/ConnectionsManagerInterface.html#createConnection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectionProperties)">createConnection</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ConnectionsManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ConnectionsManagerInterface</a></code></dd>
+<dd><code><a href="../api/ConnectionsManagerInterface.html#createConnection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties)">createConnection</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ConnectionsManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ConnectionsManagerInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -462,14 +462,14 @@ implements <a href="../api/ConnectionsManagerInterface.html" title="interface in
 </section>
 </li>
 <li>
-<section class="detail" id="updateConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectionProperties)">
+<section class="detail" id="updateConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties)">
 <h3>updateConnection</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;infrastructureManagerGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;infrastructureManagerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID,
  boolean&nbsp;isMergeUpdate,
- <a href="../properties/ConnectionProperties.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.properties">ConnectionProperties</a>&nbsp;connectionProperties)</span>
+ <a href="../../../frameworks/openmetadata/properties/connections/ConnectionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.connections">ConnectionProperties</a>&nbsp;connectionProperties)</span>
                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -477,7 +477,7 @@ implements <a href="../api/ConnectionsManagerInterface.html" title="interface in
  set up specialized properties in extended properties.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/ConnectionsManagerInterface.html#updateConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.itinfrastructure.properties.ConnectionProperties)">updateConnection</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ConnectionsManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ConnectionsManagerInterface</a></code></dd>
+<dd><code><a href="../api/ConnectionsManagerInterface.html#updateConnection(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties)">updateConnection</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ConnectionsManagerInterface.html" title="interface in org.odpi.openmetadata.accessservices.itinfrastructure.api">ConnectionsManagerInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>infrastructureManagerGUID</code> - unique identifier of software server capability representing the caller</dd>
@@ -753,7 +753,7 @@ implements <a href="../api/ConnectionsManagerInterface.html" title="interface in
 <li>
 <section class="detail" id="findConnections(java.lang.String,java.lang.String,int,int)">
 <h3>findConnections</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ConnectionElement</a>&gt;</span>&nbsp;<span class="element-name">findConnections</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ConnectionElement</a>&gt;</span>&nbsp;<span class="element-name">findConnections</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</span>
@@ -782,7 +782,7 @@ implements <a href="../api/ConnectionsManagerInterface.html" title="interface in
 <li>
 <section class="detail" id="getConnectionsByName(java.lang.String,java.lang.String,int,int)">
 <h3>getConnectionsByName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ConnectionElement</a>&gt;</span>&nbsp;<span class="element-name">getConnectionsByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ConnectionElement</a>&gt;</span>&nbsp;<span class="element-name">getConnectionsByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</span>
@@ -811,7 +811,7 @@ implements <a href="../api/ConnectionsManagerInterface.html" title="interface in
 <li>
 <section class="detail" id="getConnectionByGUID(java.lang.String,java.lang.String)">
 <h3>getConnectionByGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements">ConnectionElement</a></span>&nbsp;<span class="element-name">getConnectionByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/ConnectionElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ConnectionElement</a></span>&nbsp;<span class="element-name">getConnectionByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionGUID)</span>
                                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,

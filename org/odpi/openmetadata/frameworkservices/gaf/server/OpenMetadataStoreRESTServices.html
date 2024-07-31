@@ -183,10 +183,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element in the metadata store using a template.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.NewMetadataElementRequestBody)" class="member-name-link">createMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.NewOpenMetadataElementRequestBody)" class="member-name-link">createMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../rest/NewMetadataElementRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">NewMetadataElementRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../rest/NewOpenMetadataElementRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">NewOpenMetadataElementRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element in the metadata store.</div>
 </div>
@@ -326,7 +326,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve all the consistent valid values for the requested property.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../frameworks/connectors/properties/beans/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementStatus(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus)" class="member-name-link">getElementStatus</a><wbr>(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;instanceStatus)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Translate the repository services' InstanceStatus to an ElementStatus.</div>
@@ -1204,12 +1204,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.NewMetadataElementRequestBody)">
+<section class="detail" id="createMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.NewOpenMetadataElementRequestBody)">
 <h3>createMetadataElementInStore</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createMetadataElementInStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../rest/NewMetadataElementRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">NewMetadataElementRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../rest/NewOpenMetadataElementRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">NewOpenMetadataElementRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
  The selected type also controls the names and types of the properties that are allowed.
  This version of the method allows access to advanced features such as multiple states and
@@ -2123,7 +2123,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getElementStatus(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus)">
 <h3>getElementStatus</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStatus</a></span>&nbsp;<span class="element-name">getElementStatus</span><wbr><span class="parameters">(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;instanceStatus)</span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a></span>&nbsp;<span class="element-name">getElementStatus</span><wbr><span class="parameters">(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&nbsp;instanceStatus)</span></div>
 <div class="block">Translate the repository services' InstanceStatus to an ElementStatus.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

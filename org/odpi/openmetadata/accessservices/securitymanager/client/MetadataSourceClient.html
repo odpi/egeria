@@ -145,11 +145,11 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createExternalSecurityManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityManagerProperties)" class="member-name-link">createExternalSecurityManager</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createExternalSecurityManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SecurityManagerProperties)" class="member-name-link">createExternalSecurityManager</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
- <a href="../properties/SecurityManagerProperties.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.properties">SecurityManagerProperties</a>&nbsp;securityManagerProperties)</code></div>
+ <a href="../../../frameworks/openmetadata/properties/softwarecapabilities/SecurityManagerProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">SecurityManagerProperties</a>&nbsp;securityManagerProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create information about a security manager such as a user access directory - such as an LDAP server or access control manager
  such as Apache Ranger.</div>
@@ -291,13 +291,13 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createExternalSecurityManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityManagerProperties)">
+<section class="detail" id="createExternalSecurityManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SecurityManagerProperties)">
 <h3>createExternalSecurityManager</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createExternalSecurityManager</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
- <a href="../properties/SecurityManagerProperties.html" title="class in org.odpi.openmetadata.accessservices.securitymanager.properties">SecurityManagerProperties</a>&nbsp;securityManagerProperties)</span>
+ <a href="../../../frameworks/openmetadata/properties/softwarecapabilities/SecurityManagerProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities">SecurityManagerProperties</a>&nbsp;securityManagerProperties)</span>
                                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -305,7 +305,7 @@ implements <a href="../api/MetadataSourceInterface.html" title="interface in org
  such as Apache Ranger.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/MetadataSourceInterface.html#createExternalSecurityManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityManagerProperties)">createExternalSecurityManager</a></code>&nbsp;in interface&nbsp;<code><a href="../api/MetadataSourceInterface.html" title="interface in org.odpi.openmetadata.accessservices.securitymanager.api">MetadataSourceInterface</a></code></dd>
+<dd><code><a href="../api/MetadataSourceInterface.html#createExternalSecurityManager(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SecurityManagerProperties)">createExternalSecurityManager</a></code>&nbsp;in interface&nbsp;<code><a href="../api/MetadataSourceInterface.html" title="interface in org.odpi.openmetadata.accessservices.securitymanager.api">MetadataSourceInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>externalSourceGUID</code> - guid of the software server capability entity that represented the external source - null for local</dd>
