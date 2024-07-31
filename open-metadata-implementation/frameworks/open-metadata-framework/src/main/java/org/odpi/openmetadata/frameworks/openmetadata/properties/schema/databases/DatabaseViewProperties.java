@@ -103,18 +103,9 @@ public class DatabaseViewProperties extends DatabaseTableProperties
     public String toString()
     {
         return "DatabaseViewProperties{" +
-                       "formula='" + formula + '\'' +
-                       ", queries=" + queries +
-                       ", deprecated=" + getIsDeprecated() +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", aliases='" + getAliases() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "formula='" + formula + '\'' +
+                ", queries=" + queries +
+                "} " + super.toString();
     }
 
 

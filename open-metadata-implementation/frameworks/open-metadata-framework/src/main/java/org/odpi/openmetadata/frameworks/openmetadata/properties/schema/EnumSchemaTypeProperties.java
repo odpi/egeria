@@ -39,6 +39,11 @@ public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
     public EnumSchemaTypeProperties(EnumSchemaTypeProperties template)
     {
         super(template);
+
+        if (template != null)
+        {
+            validValueSetGUID = template.getValidValueSetGUID();
+        }
     }
 
 
@@ -73,22 +78,8 @@ public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
     public String toString()
     {
         return "EnumSchemaTypeProperties{" +
-                "validValueSet='" + validValueSetGUID + '\'' +
-                ", dataType='" + getDataType() + '\'' +
-                ", defaultValue='" + getDefaultValue() + '\'' +
-                ", versionNumber='" + getVersionNumber() + '\'' +
-                ", author='" + getAuthor() + '\'' +
-                ", usage='" + getUsage() + '\'' +
-                ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", namespace='" + getNamespace() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", deprecated=" + getIsDeprecated() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+                "validValueSetGUID='" + validValueSetGUID + '\'' +
+                "} " + super.toString();
     }
 
 

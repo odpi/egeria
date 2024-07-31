@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.schema.display;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 
 import java.util.Objects;
 
@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataContainerProperties extends SchemaElementProperties
+public class DataContainerProperties extends SchemaAttributeProperties
 {
     private int               elementPosition       = 0;
     private int               minCardinality        = 0;

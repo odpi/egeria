@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ComplexSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 
 import java.util.Objects;
 
@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class APIOperationProperties extends ComplexSchemaTypeProperties
+public class APIOperationProperties extends SchemaTypeProperties
 {
     private String path     = null;
     private String command     = null;
@@ -104,22 +104,9 @@ public class APIOperationProperties extends ComplexSchemaTypeProperties
     public String toString()
     {
         return "APIOperationProperties{" +
-                       "path='" + path + '\'' +
-                       ", command='" + command + '\'' +
-                       ", versionNumber='" + getVersionNumber() + '\'' +
-                       ", author='" + getAuthor() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
-                       ", encodingStandard='" + getEncodingStandard() + '\'' +
-                       ", namespace='" + getNamespace() + '\'' +
-                       ", isDeprecated=" + getIsDeprecated() +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "path='" + path + '\'' +
+                ", command='" + command + '\'' +
+                "} " + super.toString();
     }
 
 

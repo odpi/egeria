@@ -276,6 +276,7 @@ public class CreateDatabaseTest
 
             if (! databaseColumnTwoType.equals(afterElement.getDatabaseColumnProperties().getDataType()))
             {
+                System.out.println("AfterElement: " + afterElement);
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(data type should be " + databaseColumnTwoType + " rather than " + afterElement.getDatabaseColumnProperties().getDataType() + ")");
             }
 

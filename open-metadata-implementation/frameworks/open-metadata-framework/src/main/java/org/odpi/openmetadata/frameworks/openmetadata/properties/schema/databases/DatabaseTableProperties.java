@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaElementProperties;
 
 import java.util.ArrayList;
@@ -24,11 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = DatabaseViewProperties.class, name = "DatabaseViewProperties"),
         })
-public class DatabaseTableProperties extends SchemaElementProperties
+public class DatabaseTableProperties extends SchemaAttributeProperties
 {
-    private List<String> aliases = null;
-
-
     /**
      * Default constructor
      */
@@ -46,40 +44,7 @@ public class DatabaseTableProperties extends SchemaElementProperties
     public DatabaseTableProperties(DatabaseTableProperties template)
     {
         super(template);
-
     }
-
-
-    /**
-     * Return a list of alternative names for the table.
-     *
-     * @return list of names
-     */
-    public List<String> getAliases()
-    {
-        if (aliases == null)
-        {
-            return null;
-        }
-        else if (aliases.isEmpty())
-        {
-            return null;
-        }
-
-        return new ArrayList<>(aliases);
-    }
-
-
-    /**
-     * Set up a list of alternative names for the table.
-     *
-     * @param aliases list of names
-     */
-    public void setAliases(List<String> aliases)
-    {
-        this.aliases = aliases;
-    }
-
 
     /**
      * Standard toString method.
@@ -89,16 +54,6 @@ public class DatabaseTableProperties extends SchemaElementProperties
     @Override
     public String toString()
     {
-        return "DatabaseTableProperties{" +
-                       "aliases=" + aliases +
-                       ", isDeprecated=" + getIsDeprecated() +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+        return "DatabaseTableProperties{} " + super.toString();
     }
 }

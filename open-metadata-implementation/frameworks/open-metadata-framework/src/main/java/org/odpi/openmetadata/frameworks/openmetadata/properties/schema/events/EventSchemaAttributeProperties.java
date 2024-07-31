@@ -10,8 +10,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * TabularColumnProperties is a class for representing a column within a table type structure.
- * Tabular columns are schema attributes with a simple type attached
+ * EventSchemaAttributeProperties is a class for representing a field within an event structure.
+ * They are schema attributes and can have either a simple or complex type attached.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

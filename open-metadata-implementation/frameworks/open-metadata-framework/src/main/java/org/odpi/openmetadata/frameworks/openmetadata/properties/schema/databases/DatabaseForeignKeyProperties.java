@@ -179,15 +179,12 @@ public class DatabaseForeignKeyProperties extends RelationshipProperties
     public String toString()
     {
         return "DatabaseForeignKeyProperties{" +
-                       "name='" + name + '\'' +
-                       ", description='" + description + '\'' +
-                       ", confidence=" + confidence +
-                       ", steward='" + steward + '\'' +
-                       ", source='" + source + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", confidence=" + confidence +
+                ", steward='" + steward + '\'' +
+                ", source='" + source + '\'' +
+                "} " + super.toString();
     }
 
 

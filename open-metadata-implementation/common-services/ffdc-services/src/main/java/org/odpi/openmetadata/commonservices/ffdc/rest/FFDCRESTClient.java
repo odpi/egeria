@@ -3696,7 +3696,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
 
 
     /**
-     * Issue a POST REST call that returns a SchemaAttributeElementResponse object.
+     * Issue a POST REST call that returns a SchemaAttributeResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -3708,14 +3708,14 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public SchemaAttributeElementResponse callSchemaAttributePostRESTCall(String    methodName,
-                                                                          String    urlTemplate,
-                                                                          Object    requestBody,
-                                                                          Object... params) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public SchemaAttributeResponse callSchemaAttributePostRESTCall(String    methodName,
+                                                                   String    urlTemplate,
+                                                                   Object    requestBody,
+                                                                   Object... params) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
-        SchemaAttributeElementResponse restResult = this.callPostRESTCall(methodName, SchemaAttributeElementResponse.class, urlTemplate, requestBody, params);
+        SchemaAttributeResponse restResult = this.callPostRESTCall(methodName, SchemaAttributeResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -3724,7 +3724,7 @@ public class FFDCRESTClient extends FFDCRESTClientBase
 
 
     /**
-     * Issue a POST REST call that returns a SchemaAttributeElementsResponse object.
+     * Issue a POST REST call that returns a SchemaAttributesResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -3736,14 +3736,14 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public SchemaAttributeElementsResponse callSchemaAttributesPostRESTCall(String    methodName,
-                                                                            String    urlTemplate,
-                                                                            Object    requestBody,
-                                                                            Object... params) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+    public SchemaAttributesResponse callSchemaAttributesPostRESTCall(String    methodName,
+                                                                     String    urlTemplate,
+                                                                     Object    requestBody,
+                                                                     Object... params) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
-        SchemaAttributeElementsResponse restResult = this.callPostRESTCall(methodName, SchemaAttributeElementsResponse.class, urlTemplate, requestBody, params);
+        SchemaAttributesResponse restResult = this.callPostRESTCall(methodName, SchemaAttributesResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

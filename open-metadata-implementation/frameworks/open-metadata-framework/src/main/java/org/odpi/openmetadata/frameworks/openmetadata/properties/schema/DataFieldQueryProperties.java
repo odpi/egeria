@@ -153,13 +153,12 @@ public class DataFieldQueryProperties extends FindProperties
     public String toString()
     {
         return "DataFieldQueryProperties{" +
-                       "defaultValue='" + defaultValue + '\'' +
-                       ", sampleValues=" + sampleValues +
-                       ", dataPattern=" + dataPattern +
-                       ", namePattern=" + namePattern +
-                       '}';
+                "defaultValue='" + defaultValue + '\'' +
+                ", sampleValues=" + sampleValues +
+                ", dataPattern=" + dataPattern +
+                ", namePattern=" + namePattern +
+                "} " + super.toString();
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.

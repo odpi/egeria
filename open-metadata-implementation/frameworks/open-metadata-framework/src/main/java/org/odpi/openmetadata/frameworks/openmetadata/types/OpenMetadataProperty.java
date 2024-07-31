@@ -364,6 +364,16 @@ public enum OpenMetadataProperty
     DATA_TYPE("dataType", "string", "The name of a primitive data type.", null, "50e73f9f-10a0-4b41-9cb6-bf55630f3734"),
 
     /**
+     * The default value of a primitive data type.
+     */
+    DEFAULT_VALUE("defaultValue", "string", "The default value of a primitive data type.", null, "e2ac5648-054c-492f-9818-bb1c55554bd6"),
+
+    /**
+     * The value of a literal data type.
+     */
+    FIXED_VALUE("fixedValue", "string", "The value of a literal data type.", null, "bd0b89c3-d865-4b62-bd86-a06b3fad08fb"),
+
+    /**
      * Position of the element in a collection of relationships.
      */
     POSITION("position", "int", "Position of the element in a collection of relationships.", null, "2fd62293-99e3-48f9-825f-e9b22d8470ae"),

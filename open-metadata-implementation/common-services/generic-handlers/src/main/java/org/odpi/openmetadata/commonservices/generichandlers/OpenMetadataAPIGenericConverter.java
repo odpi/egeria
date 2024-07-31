@@ -1183,7 +1183,10 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Set up the properties that can be extracted form the schema type.
+     * Set up the properties that can be extracted form the schema type. There are two strategies to try.
+     * The Schema Type Converter in the OCF creates a bean of a specific type to reflect the type of schema.
+     * The Schema Type Converter in the generic handler always creates a bean of type SchemaTypeProperties with the
+     * subtype's properties in extendedProperties.
      *
      * @param schemaTypeElement schema type properties
      * @param attributeProperties output column properties
@@ -1211,10 +1214,36 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         }
         else if (schemaTypeProperties instanceof ExternalSchemaTypeProperties)
         {
-            attributeProperties.setDataType(((ExternalSchemaTypeProperties) schemaTypeProperties).getDataType());
-
             SchemaTypeElement externalSchemaType = schemaTypeElement.getExternalSchemaType();
             attributeProperties.setExternalTypeGUID(externalSchemaType.getElementHeader().getGUID());
+        }
+        else
+        {
+            /*
+             * The schema type is unspecialized, so just pull any additional properties out of extended properties.
+             */
+            if (schemaTypeProperties.getExtendedProperties() != null)
+            {
+                Map<String, Object> extendedProperties = schemaTypeProperties.getExtendedProperties();
+
+                Object propertyObject = extendedProperties.get(OpenMetadataProperty.DATA_TYPE.name);
+                if (propertyObject != null)
+                {
+                    attributeProperties.setDataType(propertyObject.toString());
+                }
+
+                propertyObject = extendedProperties.get(OpenMetadataProperty.FIXED_VALUE.name);
+                if (propertyObject != null)
+                {
+                    attributeProperties.setFixedValue(propertyObject.toString());
+                }
+
+                propertyObject = extendedProperties.get(OpenMetadataProperty.DEFAULT_VALUE.name);
+                if (propertyObject != null)
+                {
+                    attributeProperties.setDefaultValue(propertyObject.toString());
+                }
+            }
         }
 
         attributeProperties.setSchemaType(schemaTypeProperties);

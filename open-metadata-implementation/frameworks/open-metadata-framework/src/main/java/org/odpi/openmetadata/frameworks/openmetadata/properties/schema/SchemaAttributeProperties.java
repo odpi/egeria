@@ -5,6 +5,9 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.DatabaseTableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventSchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularColumnProperties;
 
 import java.util.ArrayList;
@@ -25,6 +28,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = TabularColumnProperties.class, name = "TabularColumnProperties"),
+                @JsonSubTypes.Type(value = DatabaseTableProperties.class, name = "DatabaseTableProperties"),
+                @JsonSubTypes.Type(value = EventSchemaAttributeProperties.class, name = "EventSchemaAttributeProperties"),
+                @JsonSubTypes.Type(value = APIParameterProperties.class, name = "APIParameterProperties"),
         })
 public class SchemaAttributeProperties extends SchemaElementProperties
 {
@@ -390,16 +396,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      */
     public List<String> getAliases()
     {
-        if (aliases == null)
-        {
-            return null;
-        }
-        else if (aliases.isEmpty())
-        {
-            return null;
-        }
-
-        return new ArrayList<>(aliases);
+        return aliases;
     }
 
 

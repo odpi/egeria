@@ -1400,7 +1400,7 @@ public abstract class SchemaManagerClient extends DataManagerBaseClient implemen
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+        SchemaAttributesResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
                                                                                           urlTemplate,
                                                                                           requestBody,
                                                                                           serverName,
@@ -1503,7 +1503,7 @@ public abstract class SchemaManagerClient extends DataManagerBaseClient implemen
         requestBody.setName(name);
         requestBody.setNamePropertyName(nameParameterName);
 
-        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+        SchemaAttributesResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
                                                                                           urlTemplate,
                                                                                           requestBody,
                                                                                           serverName,

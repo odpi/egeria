@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
+
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DatabaseColumnElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.DerivedSchemaTypeQueryTargetProperties;
@@ -83,7 +83,6 @@ public class DatabaseColumnConverter<B> extends OMFConverter<B>
 
                     if (schemaType instanceof SchemaTypeElement schemaTypeElement)
                     {
-
                         super.addSchemaTypeToAttribute(schemaTypeElement, properties);
 
                         properties.setFormula(schemaTypeElement.getFormula());

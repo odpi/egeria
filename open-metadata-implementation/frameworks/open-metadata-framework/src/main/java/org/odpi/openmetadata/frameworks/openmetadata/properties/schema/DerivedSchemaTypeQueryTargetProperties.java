@@ -168,11 +168,10 @@ public class DerivedSchemaTypeQueryTargetProperties
         {
             return true;
         }
-        if (!(objectToCompare instanceof DerivedSchemaTypeQueryTargetProperties))
+        if (!(objectToCompare instanceof DerivedSchemaTypeQueryTargetProperties that))
         {
             return false;
         }
-        DerivedSchemaTypeQueryTargetProperties that = (DerivedSchemaTypeQueryTargetProperties) objectToCompare;
         return Objects.equals(getQueryId(), that.getQueryId()) &&
                 Objects.equals(getQuery(), that.getQuery()) &&
                 Objects.equals(getQueryType(), that.getQueryType()) &&

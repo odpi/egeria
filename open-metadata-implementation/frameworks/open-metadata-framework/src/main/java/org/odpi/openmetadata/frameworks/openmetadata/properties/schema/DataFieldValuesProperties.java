@@ -154,14 +154,11 @@ public class DataFieldValuesProperties extends ClassificationProperties
     public String toString()
     {
         return "DataFieldValuesProperties{" +
-                       "defaultValue='" + defaultValue + '\'' +
-                       ", sampleValues=" + sampleValues +
-                       ", dataPattern='" + dataPattern + '\'' +
-                       ", namePattern='" + namePattern + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "defaultValue='" + defaultValue + '\'' +
+                ", sampleValues=" + sampleValues +
+                ", dataPattern=" + dataPattern +
+                ", namePattern=" + namePattern +
+                "} " + super.toString();
     }
 
 

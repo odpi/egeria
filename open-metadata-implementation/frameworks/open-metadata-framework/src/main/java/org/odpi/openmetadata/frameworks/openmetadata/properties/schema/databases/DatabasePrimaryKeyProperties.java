@@ -129,7 +129,7 @@ public class DatabasePrimaryKeyProperties extends ClassificationProperties
         {
             return true;
         }
-        if (! (objectToCompare instanceof DatabasePrimaryKeyProperties))
+        if (! (objectToCompare instanceof DatabasePrimaryKeyProperties that))
         {
             return false;
         }
@@ -137,7 +137,6 @@ public class DatabasePrimaryKeyProperties extends ClassificationProperties
         {
             return false;
         }
-        DatabasePrimaryKeyProperties that = (DatabasePrimaryKeyProperties) objectToCompare;
         return Objects.equals(name, that.name) && keyPattern == that.keyPattern;
     }
 

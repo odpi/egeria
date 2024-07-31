@@ -23,9 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-                      @JsonSubTypes.Type(value = APIParameterListProperties.class, name = "APIParameterListProperties"),
-                      @JsonSubTypes.Type(value = StructSchemaTypeProperties.class, name = "StructSchemaTypeProperties"),
-                      @JsonSubTypes.Type(value = TabularSchemaTypeProperties.class, name = "TabularSchemaTypeProperties"),
+        @JsonSubTypes.Type(value = RootSchemaTypeProperties.class, name = "RootSchemaTypeProperties"),
+        @JsonSubTypes.Type(value = StructSchemaTypeProperties.class, name = "StructSchemaTypeProperties"),
+        @JsonSubTypes.Type(value = APIParameterListProperties.class, name = "APIParameterListProperties"),
               })
 public class ComplexSchemaTypeProperties extends SchemaTypeProperties
 {
@@ -57,20 +57,6 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
     @Override
     public String toString()
     {
-        return "ComplexSchemaTypeProperties{" +
-                       "versionNumber='" + getVersionNumber() + '\'' +
-                       ", author='" + getAuthor() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
-                       ", encodingStandard='" + getEncodingStandard() + '\'' +
-                       ", namespace='" + getNamespace() + '\'' +
-                       ", isDeprecated=" + getIsDeprecated() +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+        return "ComplexSchemaTypeProperties{} " + super.toString();
     }
 }

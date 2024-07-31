@@ -1870,7 +1870,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/by-search-string?startFrom={2}&pageSize={3}";
 
-        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+        SchemaAttributesResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
                                                                                                  urlTemplate,
                                                                                                  requestBody,
                                                                                                  serverName,
@@ -1913,14 +1913,14 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-elements/{2}/schema-attributes/retrieve?startFrom={3}&pageSize={4}";
 
-        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
-                                                                                                 urlTemplate,
-                                                                                                 new EffectiveTimeQueryRequestBody(),
-                                                                                                 serverName,
-                                                                                                 userId,
-                                                                                                 parentSchemaElementGUID,
-                                                                                                 startFrom,
-                                                                                                 validatedPageSize);
+        SchemaAttributesResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          new EffectiveTimeQueryRequestBody(),
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          parentSchemaElementGUID,
+                                                                                          startFrom,
+                                                                                          validatedPageSize);
 
         return restResult.getElements();
     }
@@ -1964,13 +1964,13 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/by-name?startFrom={2}&pageSize={3}";
 
-        SchemaAttributeElementsResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
-                                                                                                 urlTemplate,
-                                                                                                 requestBody,
-                                                                                                 serverName,
-                                                                                                 userId,
-                                                                                                 startFrom,
-                                                                                                 validatedPageSize);
+        SchemaAttributesResponse restResult = restClient.callSchemaAttributesPostRESTCall(methodName,
+                                                                                          urlTemplate,
+                                                                                          requestBody,
+                                                                                          serverName,
+                                                                                          userId,
+                                                                                          startFrom,
+                                                                                          validatedPageSize);
 
         return restResult.getElements();
     }
@@ -2002,7 +2002,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/schema-attributes/{2}/retrieve";
 
-        SchemaAttributeElementResponse restResult = restClient.callSchemaAttributePostRESTCall(methodName,
+        SchemaAttributeResponse restResult = restClient.callSchemaAttributePostRESTCall(methodName,
                                                                                                urlTemplate,
                                                                                                new EffectiveTimeQueryRequestBody(),
                                                                                                serverName,

@@ -3356,19 +3356,19 @@ public class AssetOwnerRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributeElementsResponse findSchemaAttributes(String                  serverName,
-                                                                String                  userId,
-                                                                int                     startFrom,
-                                                                int                     pageSize,
-                                                                SearchStringRequestBody requestBody)
+    public SchemaAttributesResponse findSchemaAttributes(String                  serverName,
+                                                         String                  userId,
+                                                         int                     startFrom,
+                                                         int                     pageSize,
+                                                         SearchStringRequestBody requestBody)
     {
         final String methodName = "findSchemaAttributes";
         final String searchStringParameterName = "searchString";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        SchemaAttributeElementsResponse response = new SchemaAttributeElementsResponse();
-        AuditLog                        auditLog = null;
+        SchemaAttributesResponse response = new SchemaAttributesResponse();
+        AuditLog                 auditLog = null;
 
         try
         {
@@ -3423,20 +3423,20 @@ public class AssetOwnerRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributeElementsResponse getNestedAttributes(String                        serverName,
-                                                               String                        userId,
-                                                               String                        schemaTypeGUID,
-                                                               int                           startFrom,
-                                                               int                           pageSize,
-                                                               EffectiveTimeQueryRequestBody requestBody)
+    public SchemaAttributesResponse getNestedAttributes(String                        serverName,
+                                                        String                        userId,
+                                                        String                        schemaTypeGUID,
+                                                        int                           startFrom,
+                                                        int                           pageSize,
+                                                        EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getNestedAttributes";
         final String elementGUIDParameterName    = "schemaAttributeGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        SchemaAttributeElementsResponse response = new SchemaAttributeElementsResponse();
-        AuditLog                        auditLog = null;
+        SchemaAttributesResponse response = new SchemaAttributesResponse();
+        AuditLog                 auditLog = null;
 
         try
         {
@@ -3488,18 +3488,18 @@ public class AssetOwnerRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributeElementsResponse getSchemaAttributesByName(String          serverName,
-                                                                     String          userId,
-                                                                     int             startFrom,
-                                                                     int             pageSize,
-                                                                     NameRequestBody requestBody)
+    public SchemaAttributesResponse getSchemaAttributesByName(String          serverName,
+                                                              String          userId,
+                                                              int             startFrom,
+                                                              int             pageSize,
+                                                              NameRequestBody requestBody)
     {
         final String methodName = "getSchemaAttributesByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        SchemaAttributeElementsResponse response = new SchemaAttributeElementsResponse();
-        AuditLog                        auditLog = null;
+        SchemaAttributesResponse response = new SchemaAttributesResponse();
+        AuditLog                 auditLog = null;
 
         try
         {
@@ -3551,18 +3551,18 @@ public class AssetOwnerRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SchemaAttributeElementResponse getSchemaAttributeByGUID(String                        serverName,
-                                                                   String                        userId,
-                                                                   String                        schemaAttributeGUID,
-                                                                   EffectiveTimeQueryRequestBody requestBody)
+    public SchemaAttributeResponse getSchemaAttributeByGUID(String                        serverName,
+                                                            String                        userId,
+                                                            String                        schemaAttributeGUID,
+                                                            EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getSchemaAttributeByGUID";
         final String guidParameterName = "schemaAttributeGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        SchemaAttributeElementResponse response = new SchemaAttributeElementResponse();
-        AuditLog                       auditLog = null;
+        SchemaAttributeResponse response = new SchemaAttributeResponse();
+        AuditLog                auditLog = null;
 
         try
         {

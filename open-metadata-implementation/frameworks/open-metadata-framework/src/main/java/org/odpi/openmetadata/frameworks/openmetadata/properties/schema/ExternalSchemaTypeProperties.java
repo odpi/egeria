@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 
-public class ExternalSchemaTypeProperties extends SimpleSchemaTypeProperties
+public class ExternalSchemaTypeProperties extends SchemaTypeProperties
 {
     /**
      * Default constructor
@@ -46,22 +46,6 @@ public class ExternalSchemaTypeProperties extends SimpleSchemaTypeProperties
     @Override
     public String toString()
     {
-        return "ExternalSchemaTypeProperties{" +
-                       " dataType='" + getDataType() + '\'' +
-                       ", defaultValue='" + getDefaultValue() + '\'' +
-                       ", versionNumber='" + getVersionNumber() + '\'' +
-                       ", author='" + getAuthor() + '\'' +
-                       ", usage='" + getUsage() + '\'' +
-                       ", encodingStandard='" + getEncodingStandard() + '\'' +
-                       ", namespace='" + getNamespace() + '\'' +
-                       ", isDeprecated=" + getIsDeprecated() +
-                       ", displayName='" + getDisplayName() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", vendorProperties=" + getVendorProperties() +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+        return "ExternalSchemaTypeProperties{} " + super.toString();
     }
 }

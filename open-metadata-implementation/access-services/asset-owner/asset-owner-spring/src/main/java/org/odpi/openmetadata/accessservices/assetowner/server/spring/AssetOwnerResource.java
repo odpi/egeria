@@ -1059,11 +1059,11 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/schema-attributes/by-search-string")
 
-    public SchemaAttributeElementsResponse findSchemaAttributes(@PathVariable String                  serverName,
-                                                                @PathVariable String                  userId,
-                                                                @RequestParam int                     startFrom,
-                                                                @RequestParam int                     pageSize,
-                                                                @RequestBody  SearchStringRequestBody requestBody)
+    public SchemaAttributesResponse findSchemaAttributes(@PathVariable String                  serverName,
+                                                         @PathVariable String                  userId,
+                                                         @RequestParam int                     startFrom,
+                                                         @RequestParam int                     pageSize,
+                                                         @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findSchemaAttributes(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -1086,12 +1086,12 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/schema-elements/{parentSchemaElementGUID}/schema-attributes/retrieve")
 
-    public SchemaAttributeElementsResponse getNestedAttributes(@PathVariable String                        serverName,
-                                                               @PathVariable String                        userId,
-                                                               @PathVariable String                        parentSchemaElementGUID,
-                                                               @RequestParam int                           startFrom,
-                                                               @RequestParam int                           pageSize,
-                                                               @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    public SchemaAttributesResponse getNestedAttributes(@PathVariable String                        serverName,
+                                                        @PathVariable String                        userId,
+                                                        @PathVariable String                        parentSchemaElementGUID,
+                                                        @RequestParam int                           startFrom,
+                                                        @RequestParam int                           pageSize,
+                                                        @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getNestedAttributes(serverName, userId, parentSchemaElementGUID, startFrom, pageSize, requestBody);
     }
@@ -1114,11 +1114,11 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/schema-attributes/by-name")
 
-    public SchemaAttributeElementsResponse getSchemaAttributesByName(@PathVariable String          serverName,
-                                                                     @PathVariable String          userId,
-                                                                     @RequestParam int             startFrom,
-                                                                     @RequestParam int             pageSize,
-                                                                     @RequestBody  NameRequestBody requestBody)
+    public SchemaAttributesResponse getSchemaAttributesByName(@PathVariable String          serverName,
+                                                              @PathVariable String          userId,
+                                                              @RequestParam int             startFrom,
+                                                              @RequestParam int             pageSize,
+                                                              @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getSchemaAttributesByName(serverName, userId, startFrom, pageSize, requestBody);
     }
@@ -1139,10 +1139,10 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/schema-attributes/{schemaAttributeGUID}/retrieve")
 
-    public SchemaAttributeElementResponse getSchemaAttributeByGUID(@PathVariable String                        serverName,
-                                                                   @PathVariable String                        userId,
-                                                                   @PathVariable String                        schemaAttributeGUID,
-                                                                   @RequestBody  EffectiveTimeQueryRequestBody requestBody)
+    public SchemaAttributeResponse getSchemaAttributeByGUID(@PathVariable String                        serverName,
+                                                            @PathVariable String                        userId,
+                                                            @PathVariable String                        schemaAttributeGUID,
+                                                            @RequestBody  EffectiveTimeQueryRequestBody requestBody)
     {
         return restAPI.getSchemaAttributeByGUID(serverName, userId, schemaAttributeGUID, requestBody);
     }

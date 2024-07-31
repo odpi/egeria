@@ -32,7 +32,7 @@ public class DataManagerServicesInstance extends OMASServiceInstance
                                         DatabaseTableElement,
                                         DatabaseViewElement,
                                         DatabaseColumnElement,
-            SchemaTypeElement>                                         relationalDataHandler;
+                                        SchemaTypeElement>            relationalDataHandler;
     private final FilesAndFoldersHandler<FileSystemElement,
             FileFolderElement,
                                          DataFileElement>              filesAndFoldersHandler;

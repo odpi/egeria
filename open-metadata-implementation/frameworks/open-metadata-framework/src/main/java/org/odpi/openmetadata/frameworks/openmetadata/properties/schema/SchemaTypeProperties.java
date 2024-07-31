@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularSchemaTypeProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ComplexSchemaTypeProperties.class, name = "ComplexSchemaTypeProperties"),
+        @JsonSubTypes.Type(value = ExternalSchemaTypeProperties.class, name = "ExternalSchemaTypeProperties"),
+        @JsonSubTypes.Type(value = LiteralSchemaTypeProperties.class, name = "LiteralSchemaTypeProperties"),
+        @JsonSubTypes.Type(value = MapSchemaTypeProperties.class, name = "MapSchemaTypeProperties"),
+        @JsonSubTypes.Type(value = SchemaTypeChoiceProperties.class, name = "SchemaTypeChoiceProperties"),
+        @JsonSubTypes.Type(value = SimpleSchemaTypeProperties.class, name = "SimpleSchemaTypeProperties"),
+})
 public class SchemaTypeProperties extends SchemaElementProperties
 {
     private String versionNumber    = null;
@@ -214,18 +228,7 @@ public class SchemaTypeProperties extends SchemaElementProperties
      */
     public List<DerivedSchemaTypeQueryTargetProperties> getQueries()
     {
-        if (queries == null)
-        {
-            return null;
-        }
-        else if (queries.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(queries);
-        }
+        return queries;
     }
 
 
