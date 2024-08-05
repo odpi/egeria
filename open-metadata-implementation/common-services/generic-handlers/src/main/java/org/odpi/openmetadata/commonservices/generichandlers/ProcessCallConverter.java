@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ProcessCallElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ProcessCallProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

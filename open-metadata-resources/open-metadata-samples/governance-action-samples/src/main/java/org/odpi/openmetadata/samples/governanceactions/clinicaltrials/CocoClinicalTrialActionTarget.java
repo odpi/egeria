@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
+import org.odpi.openmetadata.frameworks.connectors.properties.Certifications;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -113,11 +114,40 @@ public enum CocoClinicalTrialActionTarget
     /**
      * The person who can be contacted if there are problems with the data from this hospital.
      */
-    CONTACT_PERSON("contactPerson",
+    CONTACT_PERSON("hospitalContactPerson",
                         "The person who can be contacted if there are problems with the data from this hospital.",
                         OpenMetadataType.PERSON_TYPE_NAME,
                         null,
                         true),
+
+    /**
+     * The person who can be contacted if there are problems with the data from this hospital.
+     */
+    DATA_OWNER("dataOwner",
+                   "The person who is accountable for the correct management of the data.",
+                   OpenMetadataType.PERSON_TYPE_NAME,
+                   null,
+                   true),
+
+
+    /**
+     * The person who can be contacted if there are problems with the data from this hospital.
+     */
+    CUSTODIAN("custodian",
+              "The person who is responsible for the correct management of data and can be contacted inside of Coco pharmaceuticals.",
+               OpenMetadataType.PERSON_TYPE_NAME,
+              null,
+              true),
+
+
+    /**
+     * The certification type that should be used to certify the hospital.
+     */
+    CERTIFICATION_TYPE("certificationType",
+                   "The certification type that should be used to certify the hospital.",
+                   OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                   null,
+                   true),
 
     ;
 
@@ -171,11 +201,11 @@ public enum CocoClinicalTrialActionTarget
 
 
     /**
-     * Return all the action targets defined in this enum.
+     * Return the action targets defined for this service.
      *
      * @return list
      */
-    public static List<ActionTargetType> getHospitalActionTargetTypes()
+    public static List<ActionTargetType> getHospitalOnboardingActionTargetTypes()
     {
         List<ActionTargetType> actionTargetTypes = new ArrayList<>();
 
@@ -186,13 +216,34 @@ public enum CocoClinicalTrialActionTarget
         actionTargetTypes.add(LANDING_AREA_FOLDER.getActionTargetType());
         actionTargetTypes.add(NEW_ELEMENT_PROCESS.getActionTargetType());
         actionTargetTypes.add(CONTACT_PERSON.getActionTargetType());
+        actionTargetTypes.add(CERTIFICATION_TYPE.getActionTargetType());
 
         return actionTargetTypes;
     }
 
 
     /**
-     * Return all the action targets defined in this enum.
+     * Return the action targets defined for this service.
+     *
+     * @return list
+     */
+    public static List<ActionTargetType> getCertifyHospitalActionTargetTypes()
+    {
+        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
+
+        actionTargetTypes.add(PROJECT.getActionTargetType());
+        actionTargetTypes.add(HOSPITAL.getActionTargetType());
+        actionTargetTypes.add(CERTIFICATION_TYPE.getActionTargetType());
+        actionTargetTypes.add(CONTACT_PERSON.getActionTargetType());
+        actionTargetTypes.add(CUSTODIAN.getActionTargetType());
+        actionTargetTypes.add(DATA_OWNER.getActionTargetType());
+
+        return actionTargetTypes;
+    }
+
+
+    /**
+     * Return the action targets defined for this service.
      *
      * @return list
      */

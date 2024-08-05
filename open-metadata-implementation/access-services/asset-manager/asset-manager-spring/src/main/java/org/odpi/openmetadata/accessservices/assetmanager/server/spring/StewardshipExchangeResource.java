@@ -211,41 +211,6 @@ public class StewardshipExchangeResource
 
 
     /**
-     * Return information about the elements classified with the confidence classification.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param userId calling user
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties for the request
-     *
-     * @return classified elements or
-     *      InvalidParameterException full path or userId is null or
-     *      PropertyServerException problem accessing property server or
-     *      UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/by-confidence")
-
-    public ElementStubsResponse getConfidenceClassifiedElements(@PathVariable String                      serverName,
-                                                                @PathVariable String                      userId,
-                                                                @RequestParam(required = false, defaultValue = "0")
-                                                                int                         startFrom,
-                                                                @RequestParam(required = false, defaultValue = "0")
-                                                                int                         pageSize,
-                                                                @RequestParam(required = false, defaultValue = "false")
-                                                                boolean                     forLineage,
-                                                                @RequestParam(required = false, defaultValue = "false")
-                                                                boolean                     forDuplicateProcessing,
-                                                                @RequestBody(required = false)
-                                                                FindByPropertiesRequestBody requestBody)
-    {
-        return restAPI.getConfidenceClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
      * Classify/reclassify the element (typically an asset) to indicate how critical the element (or associated resource)
      * is to the organization.  The level of criticality is expressed by the levelIdentifier property.
      *
@@ -306,41 +271,6 @@ public class StewardshipExchangeResource
                                                        ClassificationRequestBody requestBody)
     {
         return restAPI.clearCriticalityClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Return information about the elements classified with the criticality classification.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param userId calling user
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties for the request
-     *
-     * @return classified elements or
-     *      InvalidParameterException full path or userId is null or
-     *      PropertyServerException problem accessing property server or
-     *      UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/by-criticality")
-
-    public ElementStubsResponse getCriticalityClassifiedElements(@PathVariable String                      serverName,
-                                                                 @PathVariable String                      userId,
-                                                                 @RequestParam(required = false, defaultValue = "0")
-                                                                 int                         startFrom,
-                                                                 @RequestParam(required = false, defaultValue = "0")
-                                                                 int                         pageSize,
-                                                                 @RequestParam(required = false, defaultValue = "false")
-                                                                 boolean                     forLineage,
-                                                                 @RequestParam(required = false, defaultValue = "false")
-                                                                 boolean                     forDuplicateProcessing,
-                                                                 @RequestBody(required = false)
-                                                                 FindByPropertiesRequestBody requestBody)
-    {
-        return restAPI.getCriticalityClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -411,42 +341,6 @@ public class StewardshipExchangeResource
 
 
     /**
-     * Return information about the elements classified with the confidentiality classification.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param userId calling user
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties for the request
-     *
-     * @return classified elements or
-     *      InvalidParameterException full path or userId is null or
-     *      PropertyServerException problem accessing property server or
-     *      UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/by-confidentiality")
-
-    public ElementStubsResponse getConfidentialityClassifiedElements(@PathVariable String                      serverName,
-                                                                     @PathVariable String                      userId,
-                                                                     @RequestParam(required = false, defaultValue = "0")
-                                                                     int                         startFrom,
-                                                                     @RequestParam(required = false, defaultValue = "0")
-                                                                     int                         pageSize,
-                                                                     @RequestParam(required = false, defaultValue = "false")
-                                                                     boolean                     forLineage,
-                                                                     @RequestParam(required = false, defaultValue = "false")
-                                                                     boolean                     forDuplicateProcessing,
-                                                                     @RequestBody(required = false)
-                                                                     FindByPropertiesRequestBody requestBody)
-    {
-        return restAPI.getConfidentialityClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-
-    /**
      * Classify/reclassify the element (typically an asset) to indicate how long the element (or associated resource)
      * is to be retained by the organization.  The policy to apply to the element/resource is captured by the retentionBasis
      * property.  The dates after which the element/resource is archived and then deleted are specified in the archiveAfter and deleteAfter
@@ -486,7 +380,7 @@ public class StewardshipExchangeResource
      *
      * @param serverName  name of the server instance to connect to
      * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
@@ -510,42 +404,6 @@ public class StewardshipExchangeResource
     {
         return restAPI.clearRetentionClassification(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
     }
-
-
-    /**
-     * Return information about the elements classified with the confidence classification.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param userId calling user
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties for the request
-     *
-     * @return classified elements or
-     *      InvalidParameterException full path or userId is null or
-     *      PropertyServerException problem accessing property server or
-     *      UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/by-retention")
-
-    public ElementStubsResponse getRetentionClassifiedElements(@PathVariable String                      serverName,
-                                                               @PathVariable String                      userId,
-                                                               @RequestParam(required = false, defaultValue = "0")
-                                                               int                         startFrom,
-                                                               @RequestParam(required = false, defaultValue = "0")
-                                                               int                         pageSize,
-                                                               @RequestParam(required = false, defaultValue = "false")
-                                                               boolean                     forLineage,
-                                                               @RequestParam(required = false, defaultValue = "false")
-                                                               boolean                     forDuplicateProcessing,
-                                                               @RequestBody(required = false)
-                                                               FindByPropertiesRequestBody requestBody)
-    {
-        return restAPI.getRetentionClassifiedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
-    }
-
 
 
     /**
@@ -611,41 +469,6 @@ public class StewardshipExchangeResource
 
 
     /**
-     * Return information about the elements classified with the security tags classification.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param userId calling user
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties for the request
-     *
-     * @return classified elements or
-     *      InvalidParameterException full path or userId is null or
-     *      PropertyServerException problem accessing property server or
-     *      UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/by-security-tags")
-
-    public ElementStubsResponse getSecurityTaggedElements(@PathVariable String                      serverName,
-                                                          @PathVariable String                      userId,
-                                                          @RequestParam(required = false, defaultValue = "0")
-                                                          int                         startFrom,
-                                                          @RequestParam(required = false, defaultValue = "0")
-                                                          int                         pageSize,
-                                                          @RequestParam(required = false, defaultValue = "false")
-                                                          boolean                     forLineage,
-                                                          @RequestParam(required = false, defaultValue = "false")
-                                                          boolean                     forDuplicateProcessing,
-                                                          @RequestBody(required = false)
-                                                          FindByPropertiesRequestBody requestBody)
-    {
-        return restAPI.getSecurityTaggedElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
      * Add or replace the ownership classification for an element.
      *
      * @param serverName  name of the server instance to connect to
@@ -704,41 +527,6 @@ public class StewardshipExchangeResource
                                        ClassificationRequestBody requestBody)
     {
         return restAPI.clearOwnership(serverName, userId, elementGUID, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Return information about the elements classified with the security tags classification.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param userId calling user
-     * @param startFrom    index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody properties for the request
-     *
-     * @return classified elements or
-     *      InvalidParameterException full path or userId is null or
-     *      PropertyServerException problem accessing property server or
-     *      UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/by-ownership")
-
-    public ElementStubsResponse getOwnersElements(@PathVariable String                      serverName,
-                                                  @PathVariable String                      userId,
-                                                  @RequestParam(required = false, defaultValue = "0")
-                                                  int                         startFrom,
-                                                  @RequestParam(required = false, defaultValue = "0")
-                                                  int                         pageSize,
-                                                  @RequestParam(required = false, defaultValue = "false")
-                                                  boolean                     forLineage,
-                                                  @RequestParam(required = false, defaultValue = "false")
-                                                  boolean                     forDuplicateProcessing,
-                                                  @RequestBody(required = false)
-                                                  FindByPropertiesRequestBody requestBody)
-    {
-        return restAPI.getOwnersElements(serverName, userId, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 

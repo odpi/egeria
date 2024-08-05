@@ -86,18 +86,7 @@ public class MetadataRelationship extends ElementHeader
      */
     public Map<String, Object> getProperties()
     {
-        if (properties == null)
-        {
-            return null;
-        }
-        else if (properties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(properties);
-        }
+        return properties;
     }
 
 
@@ -157,12 +146,7 @@ public class MetadataRelationship extends ElementHeader
                 "properties=" + properties +
                 ", end1=" + end1 +
                 ", end2=" + end2 +
-                ", status=" + getStatus() +
-                ", type=" + getType() +
-                ", origin=" + getOrigin() +
-                ", versions=" + getVersions() +
-                ", headerVersion=" + getHeaderVersion() +
-                '}';
+                "} " + super.toString();
     }
 
 

@@ -135,7 +135,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                     FunctionInfo functionInfo = null;
 
                     String functionName = propertyHelper.getStringProperty(catalogTargetName,
-                                                                           OpenMetadataProperty.NAME.name,
+                                                                           OpenMetadataProperty.RESOURCE_NAME.name,
                                                                            nextElement.getElement().getElementProperties(),
                                                                            methodName);
 
@@ -474,7 +474,11 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
     {
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
                                                                                OpenMetadataProperty.NAME.name,
-                                                                               functionInfo.getFull_name());
+                                                                               functionInfo.getName());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.RESOURCE_NAME.name,
+                                                             functionInfo.getFull_name());
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DESCRIPTION.name,

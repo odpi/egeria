@@ -17,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.ClassificationCondition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
@@ -3476,6 +3477,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                     {
                         owningEntityTypeGUID = potentialOwningEntityTypeDef.getGUID();
                         owningEntityTypeName = potentialOwningEntityTypeDef.getName();
+                        break;
                     }
                 }
             }
@@ -5513,6 +5515,67 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         }
 
         return null;
+    }
+
+
+    /**
+     * Return all elements for a specific type.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName type of relationship
+     * @param limitResultsByStatus       By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
+     *                                   to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime time requirements
+     * @param sequencingProperty optional property used to order results
+     * @param sequencingOrder how should results be ordered
+     * @param startingFrom paging start from
+     * @param pageSize maximum results returned in one call
+     * @param effectiveTime effective time
+     * @param methodName calling method
+     * @return list of matching relationships
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the repositories
+     */
+    public List<Relationship> getAttachmentsForType(String                userId,
+                                                    String                relationshipTypeName,
+                                                    List<InstanceStatus>  limitResultsByStatus,
+                                                    Date                  asOfTime,
+                                                    String                sequencingProperty,
+                                                    SequencingOrder       sequencingOrder,
+                                                    int                   startingFrom,
+                                                    int                   pageSize,
+                                                    Date                  effectiveTime,
+                                                    String                methodName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+
+        String relationshipTypeGUID = null;
+
+        if (relationshipTypeName != null)
+        {
+            relationshipTypeGUID = invalidParameterHandler.validateTypeName(relationshipTypeName,
+                                                                            null,
+                                                                            serviceName,
+                                                                            methodName,
+                                                                            repositoryHelper);
+        }
+
+        return repositoryHandler.getRelationshipsForType(userId,
+                                                         relationshipTypeGUID,
+                                                         relationshipTypeName,
+                                                         limitResultsByStatus,
+                                                         startingFrom,
+                                                         queryPageSize,
+                                                         asOfTime,
+                                                         sequencingProperty,
+                                                         sequencingOrder,
+                                                         effectiveTime,
+                                                         methodName);
     }
 
 
@@ -10502,6 +10565,22 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                     {
                         subTypeGUIDs.add(subTypeGUID);
                     }
+                }
+            }
+        }
+
+        if ((searchClassifications != null) && (searchClassifications.getConditions() != null))
+        {
+            for (ClassificationCondition classificationCondition : searchClassifications.getConditions())
+            {
+                if (classificationCondition != null)
+                {
+                    invalidParameterHandler.validateTypeDefName(classificationCondition.getName(),
+                                                                null,
+                                                                serviceName,
+                                                                methodName,
+                                                                repositoryHelper);
+
                 }
             }
         }

@@ -31,11 +31,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class SupplementaryProperties extends ReferenceableProperties
 {
-    private String displayName        = null;
-    private String displaySummary     = null;
-    private String displayDescription = null;
-    private String abbreviation       = null;
-    private String usage              = null;
+    protected String displayName        = null;
+    private   String displaySummary     = null;
+    protected String displayDescription = null;
+    private   String abbreviation       = null;
+    private   String usage              = null;
 
 
     /**

@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 /**
  * DuplicateEntityIterator retrieves the list of entities that need to be processed for a specific entity.
  * The first entity returned is the principle entity or its consolidated replacement.  After that are the peer duplicates.
- *
  * Note: this class is not thread-safe - use only within a single-threaded request.
  */
 public class DuplicateEntityIterator
@@ -275,7 +274,7 @@ public class DuplicateEntityIterator
                                     /*
                                      * Filter out the peers that were already added to the list of unprocessed peers.
                                      */
-                                    if(!unprocessedPeers.stream().map(InstanceHeader::getGUID).collect(Collectors.toList()).contains(peerProxy.getGUID()))
+                                    if(!unprocessedPeers.stream().map(InstanceHeader::getGUID).toList().contains(peerProxy.getGUID()))
                                     {
                                         EntityDetail peerEntity = repositoryHandler.validateEntityGUID(userId,
                                                                                                        peerProxy.getGUID(),

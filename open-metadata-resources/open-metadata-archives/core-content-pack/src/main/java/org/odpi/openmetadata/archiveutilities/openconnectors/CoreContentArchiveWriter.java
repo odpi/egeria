@@ -1322,6 +1322,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, PlaceholderProperty.FILE_TYPE.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, PlaceholderProperty.FILE_EXTENSION.getPlaceholder());
@@ -1336,7 +1337,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
-                                                  PlaceholderProperty.FILE_PATH_NAME.getPlaceholder(),
+                                                  PlaceholderProperty.FILE_NAME.getPlaceholder(),
                                                   versionIdentifier,
                                                   null,
                                                   null,
@@ -1400,6 +1401,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, PlaceholderProperty.DIRECTORY_PATH_NAME.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create an asset of type " + deployedImplementationType.getAssociatedTypeName() + " with an associated Connection.",
@@ -1538,6 +1540,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, PlaceholderProperty.FILE_TYPE.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, PlaceholderProperty.FILE_EXTENSION.getPlaceholder());
@@ -1646,6 +1649,8 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                deployedImplementationType.getDeployedImplementationType());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name,
+                               serverName);
 
         if (deployedImplementationType.getAssociatedClassification() != null)
         {
@@ -2124,6 +2129,8 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                deployedImplementationType.getDeployedImplementationType());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name,
+                               PlaceholderProperty.HOST_URL.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a " + deployedImplementationType.getDeployedImplementationType() + " Host with an associated SoftwareCapability.",
@@ -2252,6 +2259,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, fullName);
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a Schema from the Unity Catalog (UC).",
@@ -2262,7 +2270,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         archiveHelper.setGUID(qualifiedName, guid);
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
-                                                  fullName,
+                                                  UnityCatalogPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
                                                   PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                   PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                   null,
@@ -2301,6 +2309,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, fullName);
 
         facetProperties.put(UnityCatalogPlaceholderProperty.VOLUME_TYPE.getName(), UnityCatalogPlaceholderProperty.VOLUME_TYPE.getPlaceholder());
         facetProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
@@ -2314,7 +2323,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         archiveHelper.setGUID(qualifiedName, guid);
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
-                                                  fullName,
+                                                  UnityCatalogPlaceholderProperty.VOLUME_NAME.getPlaceholder(),
                                                   PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                   PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                   null,
@@ -2388,6 +2397,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         List<Classification> classifications      = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, fullName);
 
         folderProperties.put(OpenMetadataProperty.PATH_NAME.name, UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
 
@@ -2408,7 +2418,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         archiveHelper.setGUID(qualifiedName, guid);
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
-                                                  fullName,
+                                                  UnityCatalogPlaceholderProperty.TABLE_NAME.getPlaceholder(),
                                                   PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                   PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                   null,
@@ -2416,6 +2426,8 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                   classifications);
         assert(guid.equals(assetGUID));
 
+        extendedProperties   = new HashMap<>();
+        extendedProperties.put("file:///" + OpenMetadataProperty.RESOURCE_NAME.name, UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getPlaceholder());
         String folderGUID = archiveHelper.addAnchoredAsset(OpenMetadataType.DATA_FOLDER.typeName,
                                                            assetGUID,
                                                            deployedImplementationType.getAssociatedTypeName(),
@@ -2467,6 +2479,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         List<Classification> classifications    = new ArrayList<>();
 
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, fullName);
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a Function from the Unity Catalog (UC).",
@@ -2477,7 +2490,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         archiveHelper.setGUID(qualifiedName, guid);
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
-                                                  fullName,
+                                                  UnityCatalogPlaceholderProperty.FUNCTION_NAME.getPlaceholder(),
                                                   PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                   PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                   null,

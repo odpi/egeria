@@ -35,7 +35,18 @@ public enum GovernanceActionSamplesErrorCode implements ExceptionMessageSet
                    "The service stops setting up the onboarding pipeline for this hospital.",
                    "Retry the request once the certification is complete."),
 
+    /**
+     * The {0} governance action service has detected that certification type {1} is not linked to the clinical trial project {2}
+     */
+    WRONG_CERTIFICATION_TYPE_FOR_TRIAL(400, "GOVERNANCE-ACTION-SAMPLES-400-002",
+                         "The {0} governance action service has detected that certification type {1} is not linked to the clinical trial project {2}",
+                         "The service stops certifying this hospital.",
+                         "Retry the request and ensure that a valid certification type, that is linked to the clinical trial project using the GovernedBy relationship, is specified in the action targets."),
 
+
+    /**
+     * The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}
+     */
     UNEXPECTED_EXCEPTION(500, "GOVERNANCE-ACTION-CONNECTORS-500-004",
                                   "The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}",
                                   "The governance action returns an exception to the Governance Action Engine.",

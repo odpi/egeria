@@ -21,6 +21,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.ProjectDefinition;
+import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialCertifyHospitalProvider;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialHospitalOnboardingProvider;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialSetUpDataLakeProvider;
 
@@ -292,7 +293,7 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
      *
      * @return descriptive information on the governance service
      */
-    private GovernanceActionDescription getInitiateCaptureForClinicalTrialGovernanceActionService()
+    private GovernanceActionDescription getSetUpDataLakeForClinicalTrialGovernanceActionService()
     {
         final String governanceServiceName = "set-up-data-lake-for-clinical-trial-governance-action-service";
         final String governanceServiceDisplayName = "Set up Data Lake to capture weekly patient measurements";
@@ -302,6 +303,30 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
         CocoClinicalTrialSetUpDataLakeProvider provider = new CocoClinicalTrialSetUpDataLakeProvider();
 
         GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.PROVISION_RESOURCE,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                                                                                               governanceServiceProviderClassName,
+                                                                                               null,
+                                                                                               governanceServiceName,
+                                                                                               governanceServiceDisplayName,
+                                                                                               governanceServiceDescription,
+                                                                                               null);
+        return governanceActionDescription;
+    }
+
+
+    private GovernanceActionDescription getCertifyHospitalForClinicalTrialGovernanceActionService()
+    {
+        final String governanceServiceName = "certify-hospital-for-clinical-trial-governance-action-service";
+        final String governanceServiceDisplayName = "Certify that a hospital has legal and data management arrangements in place to capture and supply weekly patient measurements as part of a clinical trial.";
+        final String governanceServiceDescription = "Checks that the certification type matches the one for the clinical trial project and sets up the certification relationship between the hospital and the certification type.";
+        final String governanceServiceProviderClassName = CocoClinicalTrialCertifyHospitalProvider.class.getName();
+
+        CocoClinicalTrialSetUpDataLakeProvider provider = new CocoClinicalTrialSetUpDataLakeProvider();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.CERTIFY_RESOURCE,
                                                                                                  provider,
                                                                                                  governanceServiceDescription);
 
@@ -565,6 +590,30 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
      * @param governanceEngineName unique name of the governance engine
      * @param governanceActionDescription details for calling the governance service
      */
+    private void addCertifyHospitalToClinicalTrialRequestType(String                      governanceEngineGUID,
+                                                              String                      governanceEngineName,
+                                                              GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "certify-hospital";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription,
+                            ProjectDefinition.CLINICAL_TRIALS.getQualifiedName());
+    }
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
     private void addOnboardHospitalToClinicalTrialRequestType(String                      governanceEngineGUID,
                                                               String                      governanceEngineName,
                                                               GovernanceActionDescription governanceActionDescription)
@@ -630,13 +679,15 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
         /*
          * Define the Clinical Trials engine
          */
-        GovernanceActionDescription clinicalTrialInitiateDescription           = this.getInitiateCaptureForClinicalTrialGovernanceActionService();
+        GovernanceActionDescription clinicalTrialInitiateDescription           = this.getSetUpDataLakeForClinicalTrialGovernanceActionService();
+        GovernanceActionDescription hospitalCertificationDescription           = this.getCertifyHospitalForClinicalTrialGovernanceActionService();
         GovernanceActionDescription clinicalTrialHospitalOnboardingDescription = this.getHospitalOnboardingClinicalTrialGovernanceActionService();
 
         String clinicalTrialsEngineName = "ClinicalTrials@CocoPharmaceuticals";
         String clinicalTrialsEngineGUID = this.getClinicalTrialsEngine(clinicalTrialsEngineName);
 
         this.addSetUpDataLakeForClinicalTrialRequestType(clinicalTrialsEngineGUID, clinicalTrialsEngineName, clinicalTrialInitiateDescription);
+        this.addCertifyHospitalToClinicalTrialRequestType(clinicalTrialsEngineGUID, clinicalTrialsEngineName, hospitalCertificationDescription);
         this.addOnboardHospitalToClinicalTrialRequestType(clinicalTrialsEngineGUID, clinicalTrialsEngineName, clinicalTrialHospitalOnboardingDescription);
     }
 

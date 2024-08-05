@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadata
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
 
 import java.util.Date;
@@ -273,8 +273,9 @@ public interface MetadataElementInterface
      * @param metadataElementSubtypeNames optional list of the subtypes of the metadataElementTypeName to
      *                           include in the search results. Null means all subtypes.
      * @param searchProperties Optional list of entity property conditions to match.
-     * @param limitResultsByStatus By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
-     *                             to specify a list of statuses (e.g. ACTIVE) to restrict the results to.  Null means all status values.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param matchClassifications Optional list of classifications to match.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
@@ -295,6 +296,7 @@ public interface MetadataElementInterface
                                                    List<String>          metadataElementSubtypeNames,
                                                    SearchProperties      searchProperties,
                                                    List<ElementStatus>   limitResultsByStatus,
+                                                   Date                  asOfTime,
                                                    SearchClassifications matchClassifications,
                                                    String                sequencingProperty,
                                                    SequencingOrder       sequencingOrder,
@@ -314,6 +316,9 @@ public interface MetadataElementInterface
      * @param relationshipTypeName relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
      * @param searchProperties Optional list of relationship property conditions to match.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
@@ -328,20 +333,20 @@ public interface MetadataElementInterface
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String           userId,
-                                                                            String           relationshipTypeName,
-                                                                            SearchProperties searchProperties,
-                                                                            String           sequencingProperty,
-                                                                            SequencingOrder  sequencingOrder,
-                                                                            boolean          forLineage,
-                                                                            boolean          forDuplicateProcessing,
-                                                                            Date             effectiveTime,
-                                                                            int              startFrom,
-                                                                            int              pageSize) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException;
-
-
+    List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String              userId,
+                                                                            String              relationshipTypeName,
+                                                                            SearchProperties    searchProperties,
+                                                                            List<ElementStatus> limitResultsByStatus,
+                                                                            Date                asOfTime,
+                                                                            String              sequencingProperty,
+                                                                            SequencingOrder     sequencingOrder,
+                                                                            boolean             forLineage,
+                                                                            boolean             forDuplicateProcessing,
+                                                                            Date                effectiveTime,
+                                                                            int                 startFrom,
+                                                                            int                 pageSize) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException;
 
 
     /**

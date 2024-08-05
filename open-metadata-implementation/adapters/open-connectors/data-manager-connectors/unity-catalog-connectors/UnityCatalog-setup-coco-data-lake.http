@@ -1,13 +1,14 @@
 ###
 # Create the basic structure of the CocoDataLake
 #
-#@ucURL=http://localhost:8080
-@ucURL=http://egeria.pdr-associates.com:8070
+@ucURL=http://localhost:8080
+#@ucURL=http://egeria.pdr-associates.com:8070
 
+@cocoDataLake=/Users/amandachessell/coco_data_lake
 
 ###
 # @name list catalogs to check what is defined
-GET {{ucURL}}/api/2.1/unity-catalog/catalogs?max_results=10
+GET {{ucURL}}/api/2.1/unity-catalog/catalogs?max_results=20
 
 
 #----------------------------------------------------------------------------
@@ -38,6 +39,22 @@ Content-Type: application/json
   "comment": "New treatment for accelerating the recovery of a werewolf after transformation."
 }
 
+
+###
+# @name create volume
+POST {{ucURL}}/api/2.1/unity-catalog/volumes
+Content-Type: application/json
+
+{
+  "name": "weekly_measurements",
+  "catalog_name" : "clinical_trials",
+  "schema_name": "werewolf_transformation",
+  "comment": "Weekly measurements for patients on clinical trial.  This data may only be used for this clinical trial.",
+  "volume_type": "EXTERNAL",
+  "storage_location": "{{cocoDataLake}}/clinical_trials/werewolf_transformation/volumes/weekly_measurements/"
+}
+
+
 ###
 # @name create schema
 POST {{ucURL}}/api/2.1/unity-catalog/schemas
@@ -49,6 +66,17 @@ Content-Type: application/json
   "comment": "New treatment for hiccups."
 }
 
+
+###
+# @name create schema
+POST {{ucURL}}/api/2.1/unity-catalog/schemas
+Content-Type: application/json
+
+{
+  "name": "teddy_bear_drop_foot",
+  "catalog_name" : "clinical_trials",
+  "comment": "Observational study on the Teddy Bear Drop Foot condition."
+}
 
 ###
 #----------------------------------------------------------------------------

@@ -53,7 +53,7 @@ public enum CertificationTypeDefinition
 
     public String getQualifiedName()
     {
-        return "License: " + title;
+        return "CertificationType: " + title;
     }
 
 

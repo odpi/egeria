@@ -20,8 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MetadataElementSummary extends ElementHeader
+public class MetadataElementSummary implements MetadataElement
 {
+    private ElementHeader       elementHeader = null;
     private Map<String, String> properties = null;
 
     /**
@@ -39,34 +40,34 @@ public class MetadataElementSummary extends ElementHeader
      */
     public MetadataElementSummary(MetadataElementSummary template)
     {
-        super(template);
-
         if (template != null)
         {
+            elementHeader = template.getElementHeader();
             properties = template.getProperties();
         }
     }
 
 
     /**
-     * Copy/clone constructor
+     * Return the element header associated with the properties.
      *
-     * @param template template to copy
+     * @return element header object
      */
-    public MetadataElementSummary(ElementHeader template)
+    @Override
+    public ElementHeader getElementHeader()
     {
-        super(template);
+        return elementHeader;
     }
 
-
     /**
-     * Copy/clone constructor
+     * Set up the element header associated with the properties.
      *
-     * @param template template to copy
+     * @param elementHeader element header object
      */
-    public MetadataElementSummary(ElementControlHeader template)
+    @Override
+    public void setElementHeader(ElementHeader elementHeader)
     {
-        super(template);
+        this.elementHeader = elementHeader;
     }
 
 
@@ -90,18 +91,7 @@ public class MetadataElementSummary extends ElementHeader
      */
     public Map<String, String> getProperties()
     {
-        if (properties == null)
-        {
-            return null;
-        }
-        else if (properties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(properties);
-        }
+        return properties;
     }
 
 
@@ -114,12 +104,8 @@ public class MetadataElementSummary extends ElementHeader
     public String toString()
     {
         return "MetadataElementSummary{" +
-                "properties=" + properties +
-                ", status=" + getStatus() +
-                ", type=" + getType() +
-                ", origin=" + getOrigin() +
-                ", versions=" + getVersions() +
-                ", headerVersion=" + getHeaderVersion() +
+                "elementHeader=" + elementHeader +
+                ", properties=" + properties +
                 '}';
     }
 

@@ -7,41 +7,24 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryCategoryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryCategoryElementResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryCategoryElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.RelatedElementsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RelatedMetadataElementSummariesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.OpenMetadataElementResponse;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossarySearchStringRequestBody;
 import org.odpi.openmetadata.viewservices.glossarybrowser.server.GlossaryBrowserRESTServices;
-import org.odpi.openmetadata.viewservices.glossarybrowser.server.spring.beans.Glossary;
-import org.odpi.openmetadata.viewservices.glossarybrowser.server.spring.beans.GlossaryTerm;
-import org.odpi.openmetadata.viewservices.glossarybrowser.server.spring.beans.GlossaryCategory;
-import org.odpi.openmetadata.viewservices.glossarybrowser.server.spring.beans.ExternalGlossaryLink;
-
-import org.odpi.openmetadata.viewservices.glossarybrowser.server.spring.beans.GlossaryViewClassification;
-import org.odpi.openmetadata.viewservices.glossarybrowser.server.spring.beans.GlossaryViewEntityDetail;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.odpi.openmetadata.viewservices.glossarybrowser.server.spring.beans.*;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -393,13 +376,13 @@ public class GlossaryViewController
     {
         final String methodName = "getAssignedElements";
 
-        RelatedElementsResponse restResult = restAPI.getSemanticAssignees(serverName,
-                                                                          termGUID,
-                                                                          from,
-                                                                          size,
-                                                                          false,
-                                                                          false,
-                                                                          null);
+        RelatedMetadataElementSummariesResponse restResult = restAPI.getSemanticAssignees(serverName,
+                                                                                          termGUID,
+                                                                                          from,
+                                                                                          size,
+                                                                                          false,
+                                                                                          false,
+                                                                                          null);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -407,10 +390,10 @@ public class GlossaryViewController
         {
             List<GlossaryViewEntityDetail> results = new ArrayList<>();
 
-            for (RelatedElement relatedElement : restResult.getElements())
+            for (RelatedMetadataElementSummary relatedElement : restResult.getElements())
             {
                 OpenMetadataElementResponse openMetadataElement = restAPI.getMetadataElementByGUID(serverName,
-                                                                                                   relatedElement.getRelatedElement().getGUID(),
+                                                                                                   relatedElement.getRelatedElement().getElementHeader().getGUID(),
                                                                                                    false,
                                                                                                    false,
                                                                                                    null);

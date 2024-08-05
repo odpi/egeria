@@ -13,28 +13,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ArrayTypePropertyValue;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ClassificationCondition;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.EnumTypePropertyValue;
-import org.odpi.openmetadata.frameworks.governanceaction.search.MapTypePropertyValue;
-import org.odpi.openmetadata.frameworks.governanceaction.search.MatchCriteria;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypeCategory;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypePropertyValue;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyCondition;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyValue;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
-import org.odpi.openmetadata.frameworks.governanceaction.search.StructTypePropertyValue;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementsConverter;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
@@ -47,13 +33,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * MetadataElementHandler manages MetadataElement objects from the Governance Action Framework (GAF).
@@ -372,6 +352,130 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                               pageSize,
                               effectiveTime,
                               methodName);
+    }
+
+
+    /**
+     * Retrieve the metadata elements that are of the correct type.
+     *
+     * @param userId caller's userId
+     * @param typeName   specific type of element (and their subtypes) to retrieve
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values except DELETED.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     * @throws InvalidParameterException the qualified name is null
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public List<B> getMetadataElementsByType(String              userId,
+                                             String              typeName,
+                                             boolean             forLineage,
+                                             boolean             forDuplicateProcessing,
+                                             List<ElementStatus> limitResultsByStatus,
+                                             Date                asOfTime,
+                                             String              sequencingProperty,
+                                             SequencingOrder sequencingOrder,
+                                             List<String>        serviceSupportedZones,
+                                             Date                effectiveTime,
+                                             int                 startFrom,
+                                             int                 pageSize,
+                                             String              methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String typeParameterName = "typeName";
+        final String entityGUIDParameterName = "foundEntity.GUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(typeName, typeParameterName, methodName);
+
+        String entityTypeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                         null,
+                                                                         serviceName,
+                                                                         methodName,
+                                                                         repositoryHelper);
+
+
+        List<EntityDetail> entities = repositoryHandler.getEntitiesByType(userId,
+                                                                          entityTypeGUID,
+                                                                          forLineage,
+                                                                          forDuplicateProcessing,
+                                                                          this.getInstanceStatuses(limitResultsByStatus),
+                                                                          startFrom,
+                                                                          pageSize,
+                                                                          asOfTime,
+                                                                          sequencingProperty,
+                                                                          getSequencingOrder(sequencingOrder),
+                                                                          effectiveTime,
+                                                                          methodName);
+
+
+        if (entities != null)
+        {
+            List<B> results = new ArrayList<>();
+            List<String>       validatedAnchorGUIDs = new ArrayList<>();
+
+            for (EntityDetail entity : entities)
+            {
+                if (entity != null)
+                {
+                    try
+                    {
+                        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+
+                        if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (!validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
+                        {
+                            this.validateAnchorEntity(userId,
+                                                      entity.getGUID(),
+                                                      entity.getType().getTypeDefName(),
+                                                      entity,
+                                                      entityGUIDParameterName,
+                                                      false,
+                                                      false,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      serviceSupportedZones,
+                                                      effectiveTime,
+                                                      methodName);
+
+                            if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
+                            {
+                                validatedAnchorGUIDs.add(anchorIdentifiers.anchorGUID);
+                            }
+                        }
+
+                        /*
+                         * Entity is added if validate anchor entity does not throw an exception.
+                         */
+                        results.add(converter.getNewBean(beanClass, entity, methodName));
+                    }
+                    catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException notVisible)
+                    {
+                        log.debug("Skip entity " + entity.getGUID());
+                    }
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return results;
+            }
+        }
+
+        return null;
     }
 
 
@@ -1310,6 +1414,145 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                     results.add(relatedElementsConverter.getNewRelationshipBean(OpenMetadataRelationship.class,
                                                                                 relationship,
                                                                                 methodName));
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return results;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the relationships that are of the correct type.
+     *
+     * @param userId caller's userId
+     * @param typeName   specific type of element (and their subtypes) to retrieve
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values except DELETED.
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements (or null if no elements match the name)
+     * @throws InvalidParameterException the qualified name is null
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public List<OpenMetadataRelationship> getRelationshipsByType(String              userId,
+                                                                 String              typeName,
+                                                                 boolean             forLineage,
+                                                                 boolean             forDuplicateProcessing,
+                                                                 List<ElementStatus> limitResultsByStatus,
+                                                                 Date                asOfTime,
+                                                                 String              sequencingProperty,
+                                                                 SequencingOrder     sequencingOrder,
+                                                                 List<String>        serviceSupportedZones,
+                                                                 Date                effectiveTime,
+                                                                 int                 startFrom,
+                                                                 int                 pageSize,
+                                                                 String              methodName) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        final String typeParameterName = "typeName";
+        final String entityProxyGUIDParameterName = "foundRelationship.EntityProxy.GUID";
+        final String foundGUIDParameterName = "foundRelationship.GUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(typeName, typeParameterName, methodName);
+
+        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                   null,
+                                                                   serviceName,
+                                                                   methodName,
+                                                                   repositoryHelper);
+
+
+        List<Relationship> relationships = repositoryHandler.getRelationshipsForType(userId,
+                                                                                     typeGUID,
+                                                                                     typeName,
+                                                                                     this.getInstanceStatuses(limitResultsByStatus),
+                                                                                     startFrom,
+                                                                                     pageSize,
+                                                                                     asOfTime,
+                                                                                     sequencingProperty,
+                                                                                     getSequencingOrder(sequencingOrder),
+                                                                                     effectiveTime,
+                                                                                     methodName);
+
+        if (relationships != null)
+        {
+            List<OpenMetadataRelationship> results = new ArrayList<>();
+            List<String>                   validatedAnchorGUIDs = new ArrayList<>();
+
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    try
+                    {
+                        EntityProxy entityProxy = relationship.getEntityOneProxy();
+
+                        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entityProxy, methodName);
+
+                        if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (!validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
+                        {
+                            /*
+                             * Entity is retrieved inside the loop to ensure it is only retrieved once
+                             */
+                            EntityDetail entityDetail = repositoryHandler.getEntityByGUID(userId,
+                                                                                          entityProxy.getGUID(),
+                                                                                          entityProxyGUIDParameterName,
+                                                                                          entityProxy.getType().getTypeDefName(),
+                                                                                          forLineage,
+                                                                                          forDuplicateProcessing,
+                                                                                          effectiveTime,
+                                                                                          methodName);
+
+                            this.validateAnchorEntity(userId,
+                                                      entityDetail.getGUID(),
+                                                      entityDetail.getType().getTypeDefName(),
+                                                      entityDetail,
+                                                      foundGUIDParameterName,
+                                                      false,
+                                                      false,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      serviceSupportedZones,
+                                                      effectiveTime,
+                                                      methodName);
+
+                            if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
+                            {
+                                validatedAnchorGUIDs.add(anchorIdentifiers.anchorGUID);
+                            }
+                        }
+
+                        /*
+                         * Entity is added if validate anchor relationship does not throw an exception.
+                         */
+                        results.add(relatedElementsConverter.getNewRelationshipBean(OpenMetadataRelationship.class,
+                                                                                    relationship,
+                                                                                    methodName));
+                    }
+                    catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException notVisible)
+                    {
+                        log.debug("Skip relationship " + relationship.getGUID());
+                    }
                 }
             }
 

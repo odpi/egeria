@@ -80,8 +80,8 @@ public class FindNameProperties extends FindProperties
     public String toString()
     {
         return "FindNameProperties{" +
-                       "name='" + name + '\'' +
-                       '}';
+                "name='" + name + '\'' +
+                "} " + super.toString();
     }
 
 

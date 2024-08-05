@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CommunityElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -59,9 +58,8 @@ public class CommunityConverter<B> extends OMFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof CommunityElement)
+            if (returnBean instanceof CommunityElement bean)
             {
-                CommunityElement    bean              = (CommunityElement) returnBean;
                 CommunityProperties communityProperties = new CommunityProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
@@ -128,9 +126,8 @@ public class CommunityConverter<B> extends OMFConverter<B>
     {
         B returnBean = this.getNewBean(beanClass, entity, methodName);
 
-        if (returnBean instanceof CommunityElement)
+        if (returnBean instanceof CommunityElement bean)
         {
-            CommunityElement bean = (CommunityElement) returnBean;
 
             bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
         }

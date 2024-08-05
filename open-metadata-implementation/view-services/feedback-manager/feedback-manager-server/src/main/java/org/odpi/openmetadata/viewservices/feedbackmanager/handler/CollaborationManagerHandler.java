@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
@@ -16,7 +17,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetad
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
@@ -1177,7 +1178,8 @@ public class CollaborationManagerHandler
         List<OpenMetadataElement> openMetadataElements = client.findMetadataElements(userId,
                                                                                      OpenMetadataType.INFORMAL_TAG.typeName,
                                                                                      null,
-                                                                                     propertyHelper.getSearchPropertiesByName(propertyNames, tag),
+                                                                                     propertyHelper.getSearchPropertiesByName(propertyNames, tag, PropertyComparisonOperator.EQ),
+                                                                                     null,
                                                                                      null,
                                                                                      null,
                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
@@ -1795,7 +1797,8 @@ public class CollaborationManagerHandler
         List<OpenMetadataElement> openMetadataElements = client.findMetadataElements(userId,
                                                                                      OpenMetadataType.NOTE_LOG.typeName,
                                                                                      null,
-                                                                                     propertyHelper.getSearchPropertiesByName(propertyNames, name),
+                                                                                     propertyHelper.getSearchPropertiesByName(propertyNames, name, PropertyComparisonOperator.EQ),
+                                                                                     null,
                                                                                      null,
                                                                                      null,
                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,

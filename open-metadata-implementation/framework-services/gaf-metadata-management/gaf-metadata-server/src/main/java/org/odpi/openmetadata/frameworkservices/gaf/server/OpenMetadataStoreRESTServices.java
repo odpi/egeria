@@ -1054,22 +1054,41 @@ public class OpenMetadataStoreRESTServices
             {
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.findMetadataElements(userId,
-                                                                     requestBody.getMetadataElementTypeName(),
-                                                                     requestBody.getMetadataElementSubtypeNames(),
-                                                                     requestBody.getSearchProperties(),
-                                                                     requestBody.getLimitResultsByStatus(),
-                                                                     requestBody.getMatchClassifications(),
-                                                                     requestBody.getAsOfTime(),
-                                                                     requestBody.getSequencingProperty(),
-                                                                     requestBody.getSequencingOrder(),
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                     this.getEffectiveTimeFromLong(effectiveTime),
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     methodName));
+                if ((requestBody.getSearchProperties() != null) || (requestBody.getMatchClassifications() != null))
+                {
+                    response.setElementList(handler.findMetadataElements(userId,
+                                                                         requestBody.getMetadataElementTypeName(),
+                                                                         requestBody.getMetadataElementSubtypeNames(),
+                                                                         requestBody.getSearchProperties(),
+                                                                         requestBody.getLimitResultsByStatus(),
+                                                                         requestBody.getMatchClassifications(),
+                                                                         requestBody.getAsOfTime(),
+                                                                         requestBody.getSequencingProperty(),
+                                                                         requestBody.getSequencingOrder(),
+                                                                         forLineage,
+                                                                         forDuplicateProcessing,
+                                                                         instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                         this.getEffectiveTimeFromLong(effectiveTime),
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         methodName));
+                }
+                else
+                {
+                    response.setElementList(handler.getMetadataElementsByType(userId,
+                                                                              requestBody.getMetadataElementTypeName(),
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              requestBody.getLimitResultsByStatus(),
+                                                                              requestBody.getAsOfTime(),
+                                                                              requestBody.getSequencingProperty(),
+                                                                              requestBody.getSequencingOrder(),
+                                                                              instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                              this.getEffectiveTimeFromLong(effectiveTime),
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              methodName));
+                }
             }
             else
             {
@@ -1129,20 +1148,39 @@ public class OpenMetadataStoreRESTServices
             {
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-                response.setElementList(handler.findRelationshipsBetweenMetadataElements(userId,
-                                                                                         requestBody.getRelationshipTypeName(),
-                                                                                         requestBody.getSearchProperties(),
-                                                                                         requestBody.getLimitResultsByStatus(),
-                                                                                         requestBody.getAsOfTime(),
-                                                                                         requestBody.getSequencingProperty(),
-                                                                                         requestBody.getSequencingOrder(),
-                                                                                         forLineage,
-                                                                                         forDuplicateProcessing,
-                                                                                         instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                                         this.getEffectiveTimeFromLong(effectiveTime),
-                                                                                         startFrom,
-                                                                                         pageSize,
-                                                                                         methodName));
+                if (requestBody.getSearchProperties() != null)
+                {
+                    response.setElementList(handler.findRelationshipsBetweenMetadataElements(userId,
+                                                                                             requestBody.getRelationshipTypeName(),
+                                                                                             requestBody.getSearchProperties(),
+                                                                                             requestBody.getLimitResultsByStatus(),
+                                                                                             requestBody.getAsOfTime(),
+                                                                                             requestBody.getSequencingProperty(),
+                                                                                             requestBody.getSequencingOrder(),
+                                                                                             forLineage,
+                                                                                             forDuplicateProcessing,
+                                                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                             this.getEffectiveTimeFromLong(effectiveTime),
+                                                                                             startFrom,
+                                                                                             pageSize,
+                                                                                             methodName));
+                }
+                else
+                {
+                    response.setElementList(handler.getRelationshipsByType(userId,
+                                                                           requestBody.getRelationshipTypeName(),
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           requestBody.getLimitResultsByStatus(),
+                                                                           requestBody.getAsOfTime(),
+                                                                           requestBody.getSequencingProperty(),
+                                                                           requestBody.getSequencingOrder(),
+                                                                           instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                           this.getEffectiveTimeFromLong(effectiveTime),
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           methodName));
+                }
             }
             else
             {

@@ -134,7 +134,7 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
                     SchemaInfo schemaInfo = null;
 
                     String schemaName = propertyHelper.getStringProperty(catalogTargetName,
-                                                                         OpenMetadataProperty.NAME.name,
+                                                                         OpenMetadataProperty.RESOURCE_NAME.name,
                                                                          nextElement.getElement().getElementProperties(),
                                                                          methodName);
 
@@ -416,7 +416,15 @@ public class OSSUnityCatalogInsideCatalogSyncSchema extends OSSUnityCatalogInsid
     {
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
                                                                                OpenMetadataProperty.NAME.name,
-                                                                               info.getFull_name());
+                                                                               info.getName());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.RESOURCE_NAME.name,
+                                                             info.getFull_name());
+
+        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                             OpenMetadataProperty.RESOURCE_NAME.name,
+                                                             info.getFull_name());
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DESCRIPTION.name,

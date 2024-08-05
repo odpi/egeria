@@ -51,6 +51,15 @@ public enum GovernanceActionSamplesAuditCode implements AuditLogMessageSet
                     "The governance action service is not able to set up the data lake for the clinical trial.",
                     "Retry the request, but ensure that the action target for the catalog is supplied."),
 
+    /**
+     * The {0} governance action service was unable to create the landing area folder {1}
+     */
+    NO_LANDING_FOLDER("GOVERNANCE-ACTION-SAMPLES-0004",
+                    AuditLogRecordSeverityLevel.INFO,
+                    "The {0} governance action service was unable to create the landing area folder {1}",
+                    "The governance action service is not able to set up the landing area folder for the clinical trial.",
+                    "Add the folder manually."),
+
 
     ;
 

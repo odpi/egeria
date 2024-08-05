@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceMetricElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMetricProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -59,9 +58,8 @@ public class GovernanceMetricConverter<B> extends OMFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof GovernanceMetricElement)
+            if (returnBean instanceof GovernanceMetricElement bean)
             {
-                GovernanceMetricElement bean = (GovernanceMetricElement) returnBean;
 
                 if (entity != null)
                 {
@@ -125,9 +123,8 @@ public class GovernanceMetricConverter<B> extends OMFConverter<B>
     {
         B returnBean = this.getNewBean(beanClass, entity, methodName);
 
-        if (returnBean instanceof GovernanceMetricElement)
+        if (returnBean instanceof GovernanceMetricElement bean)
         {
-            GovernanceMetricElement bean = (GovernanceMetricElement) returnBean;
 
             bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
         }

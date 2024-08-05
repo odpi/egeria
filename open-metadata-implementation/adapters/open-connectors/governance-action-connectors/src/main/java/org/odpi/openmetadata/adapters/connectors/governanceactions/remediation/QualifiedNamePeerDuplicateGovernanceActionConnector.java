@@ -70,6 +70,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                                                                                 null,
                                                                                 null,
                                                                                 null,
+                                                                                null,
                                                                                 0,
                                                                                 0);
 

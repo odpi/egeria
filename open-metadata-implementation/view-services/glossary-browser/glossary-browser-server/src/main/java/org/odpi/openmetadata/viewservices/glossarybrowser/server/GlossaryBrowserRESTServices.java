@@ -2342,7 +2342,7 @@ public class GlossaryBrowserRESTServices extends TokenController
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody string to find in the properties
-    *
+     *
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
@@ -3542,12 +3542,12 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getDataFieldClassifiedElements(userId,
-                                                                               null,
-                                                                                startFrom,
-                                                                                pageSize,
-                                                                                null,
-                                                                                forLineage,
-                                                                                forDuplicateProcessing));
+                                                                            null,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            null,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -3575,18 +3575,18 @@ public class GlossaryBrowserRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public ElementStubsResponse getConfidenceClassifiedElements(String                      serverName,
-                                                                int                         startFrom,
-                                                                int                         pageSize,
-                                                                boolean                     forLineage,
-                                                                boolean                     forDuplicateProcessing,
-                                                                FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getConfidenceClassifiedElements(String                      serverName,
+                                                                            int                         startFrom,
+                                                                            int                         pageSize,
+                                                                            boolean                     forLineage,
+                                                                            boolean                     forDuplicateProcessing,
+                                                                            FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getConfidenceClassifiedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ElementStubsResponse response = new ElementStubsResponse();
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -3603,24 +3603,24 @@ public class GlossaryBrowserRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
                     response.setElements(handler.getConfidenceClassifiedElements(userId,
-                                                                                    properties.getReturnSpecificLevel(),
-                                                                                    properties.getLevelIdentifier(),
-                                                                                    startFrom,
-                                                                                    pageSize,
-                                                                                    requestBody.getEffectiveTime(),
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing));
+                                                                                 properties.getReturnSpecificLevel(),
+                                                                                 properties.getLevelIdentifier(),
+                                                                                 startFrom,
+                                                                                 pageSize,
+                                                                                 requestBody.getEffectiveTime(),
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElements(handler.getConfidenceClassifiedElements(userId,
-                                                                                    false,
-                                                                                    0,
-                                                                                    startFrom,
-                                                                                    pageSize,
-                                                                                    requestBody.getEffectiveTime(),
-                                                                                    forLineage,
-                                                                                    forDuplicateProcessing));
+                                                                                 false,
+                                                                                 0,
+                                                                                 startFrom,
+                                                                                 pageSize,
+                                                                                 requestBody.getEffectiveTime(),
+                                                                                 forLineage,
+                                                                                 forDuplicateProcessing));
                 }
                 else
                 {
@@ -3630,13 +3630,13 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getConfidenceClassifiedElements(userId,
-                                                                                false,
-                                                                                0,
-                                                                                startFrom,
-                                                                                pageSize,
-                                                                                null,
-                                                                                forLineage,
-                                                                                forDuplicateProcessing));
+                                                                             false,
+                                                                             0,
+                                                                             startFrom,
+                                                                             pageSize,
+                                                                             null,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -3664,18 +3664,18 @@ public class GlossaryBrowserRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public ElementStubsResponse getCriticalityClassifiedElements(String                      serverName,
-                                                                 int                         startFrom,
-                                                                 int                         pageSize,
-                                                                 boolean                     forLineage,
-                                                                 boolean                     forDuplicateProcessing,
-                                                                 FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getCriticalityClassifiedElements(String                      serverName,
+                                                                             int                         startFrom,
+                                                                             int                         pageSize,
+                                                                             boolean                     forLineage,
+                                                                             boolean                     forDuplicateProcessing,
+                                                                             FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getCriticalityClassifiedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ElementStubsResponse response = new ElementStubsResponse();
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -3692,24 +3692,24 @@ public class GlossaryBrowserRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
                     response.setElements(handler.getCriticalityClassifiedElements(userId,
-                                                                                     properties.getReturnSpecificLevel(),
-                                                                                     properties.getLevelIdentifier(),
-                                                                                     startFrom,
-                                                                                     pageSize,
-                                                                                     requestBody.getEffectiveTime(),
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing));
+                                                                                  properties.getReturnSpecificLevel(),
+                                                                                  properties.getLevelIdentifier(),
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  requestBody.getEffectiveTime(),
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElements(handler.getCriticalityClassifiedElements(userId,
-                                                                                     false,
-                                                                                     0,
-                                                                                     startFrom,
-                                                                                     pageSize,
-                                                                                     requestBody.getEffectiveTime(),
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing));
+                                                                                  false,
+                                                                                  0,
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  requestBody.getEffectiveTime(),
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing));
                 }
                 else
                 {
@@ -3719,13 +3719,13 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getCriticalityClassifiedElements(userId,
-                                                                                 false,
-                                                                                 0,
-                                                                                 startFrom,
-                                                                                 pageSize,
-                                                                                 null,
-                                                                                 forLineage,
-                                                                                 forDuplicateProcessing));
+                                                                              false,
+                                                                              0,
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              null,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -3753,18 +3753,18 @@ public class GlossaryBrowserRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public ElementStubsResponse getConfidentialityClassifiedElements(String                      serverName,
-                                                                     int                         startFrom,
-                                                                     int                         pageSize,
-                                                                     boolean                     forLineage,
-                                                                     boolean                     forDuplicateProcessing,
-                                                                     FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getConfidentialityClassifiedElements(String                      serverName,
+                                                                                 int                         startFrom,
+                                                                                 int                         pageSize,
+                                                                                 boolean                     forLineage,
+                                                                                 boolean                     forDuplicateProcessing,
+                                                                                 FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getConfidentialityClassifiedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ElementStubsResponse response = new ElementStubsResponse();
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -3781,24 +3781,24 @@ public class GlossaryBrowserRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
                     response.setElements(handler.getConfidentialityClassifiedElements(userId,
-                                                                                         properties.getReturnSpecificLevel(),
-                                                                                         properties.getLevelIdentifier(),
-                                                                                         startFrom,
-                                                                                         pageSize,
-                                                                                         requestBody.getEffectiveTime(),
-                                                                                         forLineage,
-                                                                                         forDuplicateProcessing));
+                                                                                      properties.getReturnSpecificLevel(),
+                                                                                      properties.getLevelIdentifier(),
+                                                                                      startFrom,
+                                                                                      pageSize,
+                                                                                      requestBody.getEffectiveTime(),
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElements(handler.getConfidentialityClassifiedElements(userId,
-                                                                                         false,
-                                                                                         0,
-                                                                                         startFrom,
-                                                                                         pageSize,
-                                                                                         requestBody.getEffectiveTime(),
-                                                                                         forLineage,
-                                                                                         forDuplicateProcessing));
+                                                                                      false,
+                                                                                      0,
+                                                                                      startFrom,
+                                                                                      pageSize,
+                                                                                      requestBody.getEffectiveTime(),
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing));
                 }
                 else
                 {
@@ -3808,13 +3808,13 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getConfidentialityClassifiedElements(userId,
-                                                                                     false,
-                                                                                     0,
-                                                                                     startFrom,
-                                                                                     pageSize,
-                                                                                     null,
-                                                                                     forLineage,
-                                                                                     forDuplicateProcessing));
+                                                                                  false,
+                                                                                  0,
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  null,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -3842,18 +3842,18 @@ public class GlossaryBrowserRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public ElementStubsResponse getRetentionClassifiedElements(String                      serverName,
-                                                               int                         startFrom,
-                                                               int                         pageSize,
-                                                               boolean                     forLineage,
-                                                               boolean                     forDuplicateProcessing,
-                                                               FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getRetentionClassifiedElements(String                      serverName,
+                                                                           int                         startFrom,
+                                                                           int                         pageSize,
+                                                                           boolean                     forLineage,
+                                                                           boolean                     forDuplicateProcessing,
+                                                                           FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getRetentionClassifiedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ElementStubsResponse response = new ElementStubsResponse();
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -3870,24 +3870,24 @@ public class GlossaryBrowserRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
                     response.setElements(handler.getRetentionClassifiedElements(userId,
-                                                                                   properties.getReturnSpecificLevel(),
-                                                                                   properties.getLevelIdentifier(),
-                                                                                   startFrom,
-                                                                                   pageSize,
-                                                                                   requestBody.getEffectiveTime(),
-                                                                                   forLineage,
-                                                                                   forDuplicateProcessing));
+                                                                                properties.getReturnSpecificLevel(),
+                                                                                properties.getLevelIdentifier(),
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                requestBody.getEffectiveTime(),
+                                                                                forLineage,
+                                                                                forDuplicateProcessing));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElements(handler.getRetentionClassifiedElements(userId,
-                                                                                   false,
-                                                                                   0,
-                                                                                   startFrom,
-                                                                                   pageSize,
-                                                                                   requestBody.getEffectiveTime(),
-                                                                                   forLineage,
-                                                                                   forDuplicateProcessing));
+                                                                                false,
+                                                                                0,
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                requestBody.getEffectiveTime(),
+                                                                                forLineage,
+                                                                                forDuplicateProcessing));
                 }
                 else
                 {
@@ -3897,13 +3897,13 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getRetentionClassifiedElements(userId,
-                                                                               false,
-                                                                               0,
-                                                                               startFrom,
-                                                                               pageSize,
-                                                                               null,
-                                                                               forLineage,
-                                                                               forDuplicateProcessing));
+                                                                            false,
+                                                                            0,
+                                                                            startFrom,
+                                                                            pageSize,
+                                                                            null,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -3931,18 +3931,18 @@ public class GlossaryBrowserRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public ElementStubsResponse getSecurityTaggedElements(String                      serverName,
-                                                          int                         startFrom,
-                                                          int                         pageSize,
-                                                          boolean                     forLineage,
-                                                          boolean                     forDuplicateProcessing,
-                                                          FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getSecurityTaggedElements(String                      serverName,
+                                                                      int                         startFrom,
+                                                                      int                         pageSize,
+                                                                      boolean                     forLineage,
+                                                                      boolean                     forDuplicateProcessing,
+                                                                      FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getSecurityTaggedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ElementStubsResponse response = new ElementStubsResponse();
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -3957,20 +3957,20 @@ public class GlossaryBrowserRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.getSecurityTaggedElements(userId,
-                                                                          startFrom,
-                                                                          pageSize,
-                                                                          requestBody.getEffectiveTime(),
-                                                                          forLineage,
-                                                                          forDuplicateProcessing));
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       requestBody.getEffectiveTime(),
+                                                                       forLineage,
+                                                                       forDuplicateProcessing));
             }
             else
             {
                 response.setElements(handler.getSecurityTaggedElements(userId,
-                                                                          startFrom,
-                                                                          pageSize,
-                                                                          null,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing));
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       null,
+                                                                       forLineage,
+                                                                       forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -3998,18 +3998,18 @@ public class GlossaryBrowserRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public ElementStubsResponse getOwnersElements(String                      serverName,
-                                                  int                         startFrom,
-                                                  int                         pageSize,
-                                                  boolean                     forLineage,
-                                                  boolean                     forDuplicateProcessing,
-                                                  FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getOwnersElements(String                      serverName,
+                                                              int                         startFrom,
+                                                              int                         pageSize,
+                                                              boolean                     forLineage,
+                                                              boolean                     forDuplicateProcessing,
+                                                              FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getOwnersElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ElementStubsResponse response = new ElementStubsResponse();
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -4026,22 +4026,22 @@ public class GlossaryBrowserRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof FindNameProperties properties)
                 {
                     response.setElements(handler.getOwnersElements(userId,
-                                                                      properties.getName(),
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      requestBody.getEffectiveTime(),
-                                                                      forLineage,
-                                                                      forDuplicateProcessing));
+                                                                   properties.getName(),
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   requestBody.getEffectiveTime(),
+                                                                   forLineage,
+                                                                   forDuplicateProcessing));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElements(handler.getOwnersElements(userId,
-                                                                      null,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      requestBody.getEffectiveTime(),
-                                                                      forLineage,
-                                                                      forDuplicateProcessing));
+                                                                   null,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   requestBody.getEffectiveTime(),
+                                                                   forLineage,
+                                                                   forDuplicateProcessing));
                 }
                 else
                 {
@@ -4051,12 +4051,12 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getOwnersElements(userId,
-                                                                  null,
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  null,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing));
+                                                               null,
+                                                               startFrom,
+                                                               pageSize,
+                                                               null,
+                                                               forLineage,
+                                                               forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -4084,18 +4084,18 @@ public class GlossaryBrowserRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public ElementStubsResponse getMembersOfSubjectArea(String                      serverName,
-                                                        int                         startFrom,
-                                                        int                         pageSize,
-                                                        boolean                     forLineage,
-                                                        boolean                     forDuplicateProcessing,
-                                                        FindByPropertiesRequestBody requestBody)
+    public MetadataElementSummariesResponse getMembersOfSubjectArea(String                      serverName,
+                                                                    int                         startFrom,
+                                                                    int                         pageSize,
+                                                                    boolean                     forLineage,
+                                                                    boolean                     forDuplicateProcessing,
+                                                                    FindByPropertiesRequestBody requestBody)
     {
         final String methodName = "getMembersOfSubjectArea";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        ElementStubsResponse response = new ElementStubsResponse();
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -4112,22 +4112,22 @@ public class GlossaryBrowserRESTServices extends TokenController
                 if (requestBody.getProperties() instanceof FindNameProperties properties)
                 {
                     response.setElements(handler.getMembersOfSubjectArea(userId,
-                                                                            properties.getName(),
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            requestBody.getEffectiveTime(),
-                                                                            forLineage,
-                                                                            forDuplicateProcessing));
+                                                                         properties.getName(),
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         requestBody.getEffectiveTime(),
+                                                                         forLineage,
+                                                                         forDuplicateProcessing));
                 }
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElements(handler.getMembersOfSubjectArea(userId,
-                                                                            null,
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            requestBody.getEffectiveTime(),
-                                                                            forLineage,
-                                                                            forDuplicateProcessing));
+                                                                         null,
+                                                                         startFrom,
+                                                                         pageSize,
+                                                                         requestBody.getEffectiveTime(),
+                                                                         forLineage,
+                                                                         forDuplicateProcessing));
                 }
                 else
                 {
@@ -4137,12 +4137,12 @@ public class GlossaryBrowserRESTServices extends TokenController
             else
             {
                 response.setElements(handler.getMembersOfSubjectArea(userId,
-                                                                        null,
-                                                                        startFrom,
-                                                                        pageSize,
-                                                                        null,
-                                                                        forLineage,
-                                                                        forDuplicateProcessing));
+                                                                     null,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     null,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -4242,19 +4242,19 @@ public class GlossaryBrowserRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedElementsResponse getSemanticAssignees(String                        serverName,
-                                                        String                        glossaryTermGUID,
-                                                        int                           startFrom,
-                                                        int                           pageSize,
-                                                        boolean                       forLineage,
-                                                        boolean                       forDuplicateProcessing,
-                                                        EffectiveTimeQueryRequestBody requestBody)
+    public RelatedMetadataElementSummariesResponse getSemanticAssignees(String                        serverName,
+                                                                        String                        glossaryTermGUID,
+                                                                        int                           startFrom,
+                                                                        int                           pageSize,
+                                                                        boolean                       forLineage,
+                                                                        boolean                       forDuplicateProcessing,
+                                                                        EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getSemanticAssignees";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedElementsResponse response = new RelatedElementsResponse();
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -4269,22 +4269,22 @@ public class GlossaryBrowserRESTServices extends TokenController
             if (requestBody == null)
             {
                 response.setElements(handler.getSemanticAssignees(userId,
-                                                                     glossaryTermGUID,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     null,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing));
+                                                                  glossaryTermGUID,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  null,
+                                                                  forLineage,
+                                                                  forDuplicateProcessing));
             }
             else
             {
                 response.setElements(handler.getSemanticAssignees(userId,
-                                                                     glossaryTermGUID,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     requestBody.getEffectiveTime(),
-                                                                     forLineage,
-                                                                     forDuplicateProcessing));
+                                                                  glossaryTermGUID,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  requestBody.getEffectiveTime(),
+                                                                  forLineage,
+                                                                  forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -4313,19 +4313,19 @@ public class GlossaryBrowserRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedElementsResponse getGovernedElements(String                        serverName,
-                                                       String                        governanceDefinitionGUID,
-                                                       int                           startFrom,
-                                                       int                           pageSize,
-                                                       boolean                       forLineage,
-                                                       boolean                       forDuplicateProcessing,
-                                                       EffectiveTimeQueryRequestBody requestBody)
+    public RelatedMetadataElementSummariesResponse getGovernedElements(String                        serverName,
+                                                                       String                        governanceDefinitionGUID,
+                                                                       int                           startFrom,
+                                                                       int                           pageSize,
+                                                                       boolean                       forLineage,
+                                                                       boolean                       forDuplicateProcessing,
+                                                                       EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getGovernedElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedElementsResponse response = new RelatedElementsResponse();
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -4340,22 +4340,22 @@ public class GlossaryBrowserRESTServices extends TokenController
             if (requestBody == null)
             {
                 response.setElements(handler.getGovernedElements(userId,
-                                                                    governanceDefinitionGUID,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    null,
-                                                                    forLineage,
-                                                                    forDuplicateProcessing));
+                                                                 governanceDefinitionGUID,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 null,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing));
             }
             else
             {
                 response.setElements(handler.getGovernedElements(userId,
-                                                                    governanceDefinitionGUID,
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    requestBody.getEffectiveTime(),
-                                                                    forLineage,
-                                                                    forDuplicateProcessing));
+                                                                 governanceDefinitionGUID,
+                                                                 startFrom,
+                                                                 pageSize,
+                                                                 requestBody.getEffectiveTime(),
+                                                                 forLineage,
+                                                                 forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -4456,19 +4456,19 @@ public class GlossaryBrowserRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedElementsResponse getSourceElements(String                        serverName,
-                                                     String                        elementGUID,
-                                                     int                           startFrom,
-                                                     int                           pageSize,
-                                                     boolean                       forLineage,
-                                                     boolean                       forDuplicateProcessing,
-                                                     EffectiveTimeQueryRequestBody requestBody)
+    public RelatedMetadataElementSummariesResponse getSourceElements(String                        serverName,
+                                                                     String                        elementGUID,
+                                                                     int                           startFrom,
+                                                                     int                           pageSize,
+                                                                     boolean                       forLineage,
+                                                                     boolean                       forDuplicateProcessing,
+                                                                     EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getSourceElements";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedElementsResponse response = new RelatedElementsResponse();
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -4483,22 +4483,22 @@ public class GlossaryBrowserRESTServices extends TokenController
             if (requestBody == null)
             {
                 response.setElements(handler.getSourceElements(userId,
-                                                                  elementGUID,
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  null,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing));
+                                                               elementGUID,
+                                                               startFrom,
+                                                               pageSize,
+                                                               null,
+                                                               forLineage,
+                                                               forDuplicateProcessing));
             }
             else
             {
                 response.setElements(handler.getSourceElements(userId,
-                                                                  elementGUID,
-                                                                  startFrom,
-                                                                  pageSize,
-                                                                  requestBody.getEffectiveTime(),
-                                                                  forLineage,
-                                                                  forDuplicateProcessing));
+                                                               elementGUID,
+                                                               startFrom,
+                                                               pageSize,
+                                                               requestBody.getEffectiveTime(),
+                                                               forLineage,
+                                                               forDuplicateProcessing));
             }
         }
         catch (Exception error)
@@ -4528,19 +4528,19 @@ public class GlossaryBrowserRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public RelatedElementsResponse getElementsSourceFrom(String                        serverName,
-                                                         String                        elementGUID,
-                                                         int                           startFrom,
-                                                         int                           pageSize,
-                                                         boolean                       forLineage,
-                                                         boolean                       forDuplicateProcessing,
-                                                         EffectiveTimeQueryRequestBody requestBody)
+    public RelatedMetadataElementSummariesResponse getElementsSourceFrom(String                        serverName,
+                                                                         String                        elementGUID,
+                                                                         int                           startFrom,
+                                                                         int                           pageSize,
+                                                                         boolean                       forLineage,
+                                                                         boolean                       forDuplicateProcessing,
+                                                                         EffectiveTimeQueryRequestBody requestBody)
     {
         final String methodName = "getElementsSourceFrom";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        RelatedElementsResponse response = new RelatedElementsResponse();
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
         AuditLog     auditLog = null;
 
         try
@@ -4555,22 +4555,22 @@ public class GlossaryBrowserRESTServices extends TokenController
             if (requestBody == null)
             {
                 response.setElements(handler.getElementsSourceFrom(userId,
-                                                                      elementGUID,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      null,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing));
+                                                                   elementGUID,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing));
             }
             else
             {
                 response.setElements(handler.getElementsSourceFrom(userId,
-                                                                      elementGUID,
-                                                                      startFrom,
-                                                                      pageSize,
-                                                                      requestBody.getEffectiveTime(),
-                                                                      forLineage,
-                                                                      forDuplicateProcessing));
+                                                                   elementGUID,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   requestBody.getEffectiveTime(),
+                                                                   forLineage,
+                                                                   forDuplicateProcessing));
             }
         }
         catch (Exception error)

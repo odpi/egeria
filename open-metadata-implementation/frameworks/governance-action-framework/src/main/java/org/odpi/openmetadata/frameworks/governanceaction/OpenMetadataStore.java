@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
 
 import java.util.Date;
@@ -635,6 +635,7 @@ public class OpenMetadataStore
      * @param searchProperties Optional list of entity property conditions to match.
      * @param limitResultsByStatus By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
      *                             to specify a list of statuses (e.g. ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param matchClassifications Optional list of classifications to match.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
@@ -651,6 +652,7 @@ public class OpenMetadataStore
                                                           List<String>          metadataElementSubtypeName,
                                                           SearchProperties      searchProperties,
                                                           List<ElementStatus>   limitResultsByStatus,
+                                                          Date                  asOfTime,
                                                           SearchClassifications matchClassifications,
                                                           String                sequencingProperty,
                                                           SequencingOrder       sequencingOrder,
@@ -664,6 +666,7 @@ public class OpenMetadataStore
                                                        metadataElementSubtypeName,
                                                        searchProperties,
                                                        limitResultsByStatus,
+                                                       asOfTime,
                                                        matchClassifications,
                                                        sequencingProperty,
                                                        sequencingOrder,
@@ -681,6 +684,9 @@ public class OpenMetadataStore
      * @param relationshipTypeName relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
      * @param searchProperties Optional list of relationship property conditions to match.
+     * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
@@ -692,18 +698,22 @@ public class OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not able to access the elements
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String           relationshipTypeName,
-                                                                                   SearchProperties searchProperties,
-                                                                                   String           sequencingProperty,
-                                                                                   SequencingOrder  sequencingOrder,
-                                                                                   int              startFrom,
-                                                                                   int              pageSize) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException
+    public List<OpenMetadataRelationship> findRelationshipsBetweenMetadataElements(String              relationshipTypeName,
+                                                                                   SearchProperties    searchProperties,
+                                                                                   List<ElementStatus> limitResultsByStatus,
+                                                                                   Date                asOfTime,
+                                                                                   String              sequencingProperty,
+                                                                                   SequencingOrder     sequencingOrder,
+                                                                                   int                 startFrom,
+                                                                                   int                 pageSize) throws InvalidParameterException,
+                                                                                                                        UserNotAuthorizedException,
+                                                                                                                        PropertyServerException
     {
         return openMetadataClient.findRelationshipsBetweenMetadataElements(userId,
                                                                            relationshipTypeName,
                                                                            searchProperties,
+                                                                           limitResultsByStatus,
+                                                                           asOfTime,
                                                                            sequencingProperty,
                                                                            sequencingOrder,
                                                                            forLineage,

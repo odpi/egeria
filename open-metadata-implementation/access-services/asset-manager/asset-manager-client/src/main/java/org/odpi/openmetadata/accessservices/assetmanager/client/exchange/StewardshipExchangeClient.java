@@ -8,8 +8,17 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManage
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GlossaryTermElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.GovernanceDefinitionElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyValue;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindNameProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyNamesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.OwnerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetElementsResponse;
@@ -20,13 +29,13 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -346,7 +355,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param externalIdentifier unique identifier of the element in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
@@ -408,38 +417,47 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ElementStub> getConfidenceClassifiedElements(String  userId,
-                                                             String  assetManagerGUID,
-                                                             String  assetManagerName,
-                                                             boolean returnSpecificLevel,
-                                                             int     levelIdentifier,
-                                                             int     startFrom,
-                                                             int     pageSize,
-                                                             Date    effectiveTime,
-                                                             boolean forLineage,
-                                                             boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+    public List<MetadataElementSummary> getConfidenceClassifiedElements(String  userId,
+                                                                        String  assetManagerGUID,
+                                                                        String  assetManagerName,
+                                                                        boolean returnSpecificLevel,
+                                                                        int     levelIdentifier,
+                                                                        int     startFrom,
+                                                                        int     pageSize,
+                                                                        Date    effectiveTime,
+                                                                        boolean forLineage,
+                                                                        boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException
     {
         final String methodName = "getConfidenceClassifiedElements";
 
-        LevelIdentifierProperties properties = new LevelIdentifierProperties();
-        properties.setLevelIdentifier(levelIdentifier);
-        properties.setReturnSpecificLevel(returnSpecificLevel);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/by-confidence";
-
-        return super.getClassifiedElements(userId,
-                                           assetManagerGUID,
-                                           assetManagerName,
-                                           properties,
-                                           urlTemplate,
-                                           startFrom,
-                                           pageSize,
-                                           effectiveTime,
-                                           forLineage,
-                                           forDuplicateProcessing,
-                                           methodName);
+        if (returnSpecificLevel)
+        {
+            return super.getClassifiedElements(userId,
+                                               OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
+                                               null,
+                                               levelIdentifier,
+                                               OpenMetadataProperty.CONFIDENCE_LEVEL_IDENTIFIER.name,
+                                               startFrom,
+                                               pageSize,
+                                               effectiveTime,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               methodName);
+        }
+        else
+        {
+            return super.getClassifiedElements(userId,
+                                               OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
+                                               null,
+                                               startFrom,
+                                               pageSize,
+                                               effectiveTime,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               methodName);
+        }
     }
 
 
@@ -501,7 +519,7 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software capability representing the caller
      * @param assetManagerName unique name of software capability representing the caller
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param externalIdentifier unique identifier of the element in the external asset manager
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @param forLineage return elements marked with the Memento classification?
@@ -563,38 +581,47 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ElementStub> getCriticalityClassifiedElements(String  userId,
-                                                              String  assetManagerGUID,
-                                                              String  assetManagerName,
-                                                              boolean returnSpecificLevel,
-                                                              int     levelIdentifier,
-                                                              int     startFrom,
-                                                              int     pageSize,
-                                                              Date    effectiveTime,
-                                                              boolean forLineage,
-                                                              boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+    public List<MetadataElementSummary> getCriticalityClassifiedElements(String  userId,
+                                                                         String  assetManagerGUID,
+                                                                         String  assetManagerName,
+                                                                         boolean returnSpecificLevel,
+                                                                         int     levelIdentifier,
+                                                                         int     startFrom,
+                                                                         int     pageSize,
+                                                                         Date    effectiveTime,
+                                                                         boolean forLineage,
+                                                                         boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
     {
         final String methodName = "getCriticalityClassifiedElements";
 
-        LevelIdentifierProperties properties = new LevelIdentifierProperties();
-        properties.setLevelIdentifier(levelIdentifier);
-        properties.setReturnSpecificLevel(returnSpecificLevel);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/by-criticality";
-
-        return super.getClassifiedElements(userId,
-                                           assetManagerGUID,
-                                           assetManagerName,
-                                           properties,
-                                           urlTemplate,
-                                           startFrom,
-                                           pageSize,
-                                           effectiveTime,
-                                           forLineage,
-                                           forDuplicateProcessing,
-                                           methodName);
+        if (returnSpecificLevel)
+        {
+            return super.getClassifiedElements(userId,
+                                               OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
+                                               null,
+                                               levelIdentifier,
+                                               OpenMetadataProperty.CRITICALITY_LEVEL_IDENTIFIER.name,
+                                               startFrom,
+                                               pageSize,
+                                               effectiveTime,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               methodName);
+        }
+        else
+        {
+            return super.getClassifiedElements(userId,
+                                               OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
+                                               null,
+                                               startFrom,
+                                               pageSize,
+                                               effectiveTime,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               methodName);
+        }
     }
 
 
@@ -720,38 +747,47 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ElementStub> getConfidentialityClassifiedElements(String  userId,
-                                                                  String  assetManagerGUID,
-                                                                  String  assetManagerName,
-                                                                  boolean returnSpecificLevel,
-                                                                  int     levelIdentifier,
-                                                                  int     startFrom,
-                                                                  int     pageSize,
-                                                                  Date    effectiveTime,
-                                                                  boolean forLineage,
-                                                                  boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException
+    public List<MetadataElementSummary> getConfidentialityClassifiedElements(String  userId,
+                                                                             String  assetManagerGUID,
+                                                                             String  assetManagerName,
+                                                                             boolean returnSpecificLevel,
+                                                                             int     levelIdentifier,
+                                                                             int     startFrom,
+                                                                             int     pageSize,
+                                                                             Date    effectiveTime,
+                                                                             boolean forLineage,
+                                                                             boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
     {
         final String methodName = "getConfidentialityClassifiedElements";
 
-        LevelIdentifierProperties properties = new LevelIdentifierProperties();
-        properties.setLevelIdentifier(levelIdentifier);
-        properties.setReturnSpecificLevel(returnSpecificLevel);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/by-confidentiality";
-
-        return super.getClassifiedElements(userId,
-                                           assetManagerGUID,
-                                           assetManagerName,
-                                           properties,
-                                           urlTemplate,
-                                           startFrom,
-                                           pageSize,
-                                           effectiveTime,
-                                           forLineage,
-                                           forDuplicateProcessing,
-                                           methodName);
+        if (returnSpecificLevel)
+        {
+            return super.getClassifiedElements(userId,
+                                               OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
+                                               null,
+                                               levelIdentifier,
+                                               OpenMetadataProperty.CONFIDENTIALITY_LEVEL_IDENTIFIER.name,
+                                               startFrom,
+                                               pageSize,
+                                               effectiveTime,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               methodName);
+        }
+        else
+        {
+            return super.getClassifiedElements(userId,
+                                               OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
+                                               null,
+                                               startFrom,
+                                               pageSize,
+                                               effectiveTime,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               methodName);
+        }
     }
 
 
@@ -877,38 +913,47 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ElementStub> getRetentionClassifiedElements(String  userId,
-                                                            String  assetManagerGUID,
-                                                            String  assetManagerName,
-                                                            boolean returnSpecificBasisIdentifier,
-                                                            int     basisIdentifier,
-                                                            int     startFrom,
-                                                            int     pageSize,
-                                                            Date    effectiveTime,
-                                                            boolean forLineage,
-                                                            boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+    public List<MetadataElementSummary> getRetentionClassifiedElements(String  userId,
+                                                                       String  assetManagerGUID,
+                                                                       String  assetManagerName,
+                                                                       boolean returnSpecificBasisIdentifier,
+                                                                       int     basisIdentifier,
+                                                                       int     startFrom,
+                                                                       int     pageSize,
+                                                                       Date    effectiveTime,
+                                                                       boolean forLineage,
+                                                                       boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                              UserNotAuthorizedException,
+                                                                                                              PropertyServerException
     {
         final String methodName = "getRetentionClassifiedElements";
 
-        LevelIdentifierProperties properties = new LevelIdentifierProperties();
-        properties.setLevelIdentifier(basisIdentifier);
-        properties.setReturnSpecificLevel(returnSpecificBasisIdentifier);
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/by-confidentiality";
-
-        return super.getClassifiedElements(userId,
-                                           assetManagerGUID,
-                                           assetManagerName,
-                                           properties,
-                                           urlTemplate,
-                                           startFrom,
-                                           pageSize,
-                                           effectiveTime,
-                                           forLineage,
-                                           forDuplicateProcessing,
-                                           methodName);
+        if (returnSpecificBasisIdentifier)
+        {
+            return super.getClassifiedElements(userId,
+                                               OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
+                                               null,
+                                               basisIdentifier,
+                                               OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name,
+                                               startFrom,
+                                               pageSize,
+                                               effectiveTime,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               methodName);
+        }
+        else
+        {
+            return super.getClassifiedElements(userId,
+                                               OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
+                                               null,
+                                               startFrom,
+                                               pageSize,
+                                               effectiveTime,
+                                               forLineage,
+                                               forDuplicateProcessing,
+                                               methodName);
+        }
     }
 
 
@@ -1029,26 +1074,22 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ElementStub> getSecurityTaggedElements(String  userId,
-                                                       String  assetManagerGUID,
-                                                       String  assetManagerName,
-                                                       int     startFrom,
-                                                       int     pageSize,
-                                                       Date    effectiveTime,
-                                                       boolean forLineage,
-                                                       boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+    public List<MetadataElementSummary> getSecurityTaggedElements(String  userId,
+                                                                  String  assetManagerGUID,
+                                                                  String  assetManagerName,
+                                                                  int     startFrom,
+                                                                  int     pageSize,
+                                                                  Date    effectiveTime,
+                                                                  boolean forLineage,
+                                                                  boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
     {
         final String methodName = "getSecurityTaggedElements";
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/by-security-tags";
-
         return super.getClassifiedElements(userId,
-                                           assetManagerGUID,
-                                           assetManagerName,
+                                           OpenMetadataType.SECURITY_TAGS_CLASSIFICATION_TYPE_NAME,
                                            null,
-                                           urlTemplate,
                                            startFrom,
                                            pageSize,
                                            effectiveTime,
@@ -1175,31 +1216,29 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ElementStub> getOwnersElements(String  userId,
-                                               String  assetManagerGUID,
-                                               String  assetManagerName,
-                                               String  owner,
-                                               int     startFrom,
-                                               int     pageSize,
-                                               Date    effectiveTime,
-                                               boolean forLineage,
-                                               boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+    public List<MetadataElementSummary> getOwnersElements(String  userId,
+                                                          String  assetManagerGUID,
+                                                          String  assetManagerName,
+                                                          String  owner,
+                                                          int     startFrom,
+                                                          int     pageSize,
+                                                          Date    effectiveTime,
+                                                          boolean forLineage,
+                                                          boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
     {
         final String methodName = "getOwnersElements";
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/by-ownership";
 
         FindNameProperties properties = new FindNameProperties();
 
         properties.setName(owner);
 
         return super.getClassifiedElements(userId,
-                                           assetManagerGUID,
-                                           assetManagerName,
-                                           properties,
-                                           urlTemplate,
+                                           OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName,
+                                           null,
+                                           owner,
+                                           OpenMetadataProperty.OWNER.name,
                                            startFrom,
                                            pageSize,
                                            effectiveTime,
@@ -1482,31 +1521,29 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @throws UserNotAuthorizedException security access problem
      */
     @Override
-    public List<ElementStub> getMembersOfSubjectArea(String  userId,
-                                                     String  assetManagerGUID,
-                                                     String  assetManagerName,
-                                                     String  subjectAreaName,
-                                                     int     startFrom,
-                                                     int     pageSize,
-                                                     Date    effectiveTime,
-                                                     boolean forLineage,
-                                                     boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public List<MetadataElementSummary> getMembersOfSubjectArea(String  userId,
+                                                                String  assetManagerGUID,
+                                                                String  assetManagerName,
+                                                                String  subjectAreaName,
+                                                                int     startFrom,
+                                                                int     pageSize,
+                                                                Date    effectiveTime,
+                                                                boolean forLineage,
+                                                                boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         final String methodName = "getMembersOfSubjectArea";
-
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/by-subject-area-membership";
 
         FindNameProperties properties = new FindNameProperties();
 
         properties.setName(subjectAreaName);
 
         return super.getClassifiedElements(userId,
-                                           assetManagerGUID,
-                                           assetManagerName,
-                                           properties,
-                                           urlTemplate,
+                                           OpenMetadataType.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                           null,
+                                           subjectAreaName,
+                                           OpenMetadataType.SUBJECT_AREA_NAME_PROPERTY_NAME,
                                            startFrom,
                                            pageSize,
                                            effectiveTime,
@@ -1691,29 +1728,27 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getSemanticAssignees(String  userId,
-                                                     String  assetManagerGUID,
-                                                     String  assetManagerName,
-                                                     String  glossaryTermGUID,
-                                                     int     startFrom,
-                                                     int     pageSize,
-                                                     Date    effectiveTime,
-                                                     boolean forLineage,
-                                                     boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public List<RelatedMetadataElementSummary> getSemanticAssignees(String  userId,
+                                                                    String  assetManagerGUID,
+                                                                    String  assetManagerName,
+                                                                    String  glossaryTermGUID,
+                                                                    int     startFrom,
+                                                                    int     pageSize,
+                                                                    Date    effectiveTime,
+                                                                    boolean forLineage,
+                                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         final String methodName = "getSemanticAssignees";
         final String elementGUIDParameterName = "glossaryTermGUID";
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/by-semantic-assignment/{2}";
+        invalidParameterHandler.validateGUID(glossaryTermGUID, elementGUIDParameterName, methodName);
 
         return super.getRelatedElements(userId,
-                                        assetManagerGUID,
-                                        assetManagerName,
                                         glossaryTermGUID,
-                                        elementGUIDParameterName,
-                                        urlTemplate,
+                                        2,
+                                        OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
                                         startFrom,
                                         pageSize,
                                         effectiveTime,
@@ -1868,8 +1903,8 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
         GovernanceDefinitionsResponse restResult = restClient.callMyGovernanceDefinitionsPostRESTCall(methodName,
                                                                                                       urlTemplate + requestParamsURLTemplate,
                                                                                                       getEffectiveTimeQueryRequestBody(assetManagerGUID,
-                                                                                                                                     assetManagerName,
-                                                                                                                                     effectiveTime),
+                                                                                                                                       assetManagerName,
+                                                                                                                                       effectiveTime),
                                                                                                       serverName,
                                                                                                       userId,
                                                                                                       elementGUID,
@@ -1901,29 +1936,27 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getGovernedElements(String  userId,
-                                                    String  assetManagerGUID,
-                                                    String  assetManagerName,
-                                                    String  governanceDefinitionGUID,
-                                                    int     startFrom,
-                                                    int     pageSize,
-                                                    Date    effectiveTime,
-                                                    boolean forLineage,
-                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public List<RelatedMetadataElementSummary> getGovernedElements(String  userId,
+                                                                   String  assetManagerGUID,
+                                                                   String  assetManagerName,
+                                                                   String  governanceDefinitionGUID,
+                                                                   int     startFrom,
+                                                                   int     pageSize,
+                                                                   Date    effectiveTime,
+                                                                   boolean forLineage,
+                                                                   boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
     {
         final String methodName = "getGovernedElements";
         final String elementGUIDParameterName = "governanceDefinitionGUID";
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/governed-by/{2}";
+        invalidParameterHandler.validateGUID(governanceDefinitionGUID, elementGUIDParameterName, methodName);
 
         return super.getRelatedElements(userId,
-                                        assetManagerGUID,
-                                        assetManagerName,
                                         governanceDefinitionGUID,
-                                        elementGUIDParameterName,
-                                        urlTemplate,
+                                        1,
+                                        OpenMetadataType.GOVERNED_BY_TYPE_NAME,
                                         startFrom,
                                         pageSize,
                                         effectiveTime,
@@ -1953,29 +1986,27 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getSourceElements(String  userId,
-                                                    String  assetManagerGUID,
-                                                    String  assetManagerName,
-                                                    String  elementGUID,
-                                                    int     startFrom,
-                                                    int     pageSize,
-                                                    Date    effectiveTime,
-                                                    boolean forLineage,
-                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public List<RelatedMetadataElementSummary> getSourceElements(String  userId,
+                                                                 String  assetManagerGUID,
+                                                                 String  assetManagerName,
+                                                                 String  elementGUID,
+                                                                 int     startFrom,
+                                                                 int     pageSize,
+                                                                 Date    effectiveTime,
+                                                                 boolean forLineage,
+                                                                 boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
     {
         final String methodName = "getSourceElements";
         final String elementGUIDParameterName = "elementGUID";
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/sourced-from/{2}";
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
 
         return super.getRelatedElements(userId,
-                                        assetManagerGUID,
-                                        assetManagerName,
                                         elementGUID,
-                                        elementGUIDParameterName,
-                                        urlTemplate,
+                                        1,
+                                        OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName,
                                         startFrom,
                                         pageSize,
                                         effectiveTime,
@@ -2005,34 +2036,978 @@ public class StewardshipExchangeClient extends ExchangeClientBase implements Ste
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public List<RelatedElement> getElementsSourceFrom(String  userId,
-                                                    String  assetManagerGUID,
-                                                    String  assetManagerName,
-                                                    String  elementGUID,
-                                                    int     startFrom,
-                                                    int     pageSize,
-                                                    Date    effectiveTime,
-                                                    boolean forLineage,
-                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public List<RelatedMetadataElementSummary> getElementsSourceFrom(String  userId,
+                                                                     String  assetManagerGUID,
+                                                                     String  assetManagerName,
+                                                                     String  elementGUID,
+                                                                     int     startFrom,
+                                                                     int     pageSize,
+                                                                     Date    effectiveTime,
+                                                                     boolean forLineage,
+                                                                     boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
     {
         final String methodName = "getElementsSourceFrom";
         final String elementGUIDParameterName = "elementGUID";
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/elements/{2}/sourced-from";
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
 
         return super.getRelatedElements(userId,
-                                        assetManagerGUID,
-                                        assetManagerName,
                                         elementGUID,
-                                        elementGUIDParameterName,
-                                        urlTemplate,
+                                        2,
+                                        OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName,
                                         startFrom,
                                         pageSize,
                                         effectiveTime,
                                         forLineage,
                                         forDuplicateProcessing,
                                         methodName);
+    }
+
+
+    /**
+     * Retrieve elements of the requested type name.
+     *
+     * @param userId calling user
+     * @param findProperties details of the search
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataElementSummary> getElements(String             userId,
+                                                    FindProperties     findProperties,
+                                                    int                startFrom,
+                                                    int                pageSize,
+                                                    boolean            forLineage,
+                                                    boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        final String methodName = "getElements";
+
+        List<OpenMetadataElement> openMetadataElements;
+
+        if (findProperties == null)
+        {
+            openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
+                                                                                OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                new Date(),
+                                                                                startFrom,
+                                                                                pageSize);
+        }
+        else
+        {
+            openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
+                                                                                findProperties.getOpenMetadataTypeName(),
+                                                                                null,
+                                                                                null,
+                                                                                findProperties.getLimitResultsByStatus(),
+                                                                                findProperties.getAsOfTime(),
+                                                                                null,
+                                                                                findProperties.getSequencingProperty(),
+                                                                                findProperties.getSequencingOrder(),
+                                                                                forLineage,
+                                                                                forDuplicateProcessing,
+                                                                                findProperties.getEffectiveTime(),
+                                                                                startFrom,
+                                                                                pageSize);
+        }
+
+        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
+                                                           openMetadataElements,
+                                                           methodName);
+    }
+
+
+    /**
+     * Retrieve elements by a value found in one of the properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param userId calling user
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<MetadataElementSummary> getElementsByPropertyValue(String                      userId,
+                                                                   FindPropertyNamesProperties findProperties,
+                                                                   int                         startFrom,
+                                                                   int                         pageSize,
+                                                                   boolean                     forLineage,
+                                                                   boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                              UserNotAuthorizedException,
+                                                                                                                              PropertyServerException
+    {
+        final String methodName = "getElementsByPropertyValue";
+        final String findPropertiesProperty = "findProperties";
+        final String propertyValueProperty = "propertyValue";
+        final String propertyNamesProperty = "propertyNames";
+
+        invalidParameterHandler.validateObject(findProperties, findPropertiesProperty, methodName);
+        invalidParameterHandler.validateObject(findProperties.getPropertyValue(), propertyValueProperty, methodName);
+        invalidParameterHandler.validateObject(findProperties.getPropertyNames(), propertyNamesProperty, methodName);
+
+        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.getMetadataElementsByPropertyValue(userId,
+                                                                                                                    findProperties.getOpenMetadataTypeName(),
+                                                                                                                    null,
+                                                                                                                    findProperties.getPropertyNames(),
+                                                                                                                    findProperties.getPropertyValue(),
+                                                                                                                    findProperties.getLimitResultsByStatus(),
+                                                                                                                    findProperties.getAsOfTime(),
+                                                                                                                    findProperties.getSequencingProperty(),
+                                                                                                                    findProperties.getSequencingOrder(),
+                                                                                                                    forLineage,
+                                                                                                                    forDuplicateProcessing,
+                                                                                                                    findProperties.getEffectiveTime(),
+                                                                                                                    startFrom,
+                                                                                                                    pageSize);
+
+        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
+                                                           openMetadataElements,
+                                                           methodName);
+    }
+
+
+    /**
+     * Retrieve elements by a value found in one of the properties specified.  The value must be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param userId calling user
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<MetadataElementSummary> findElementsByPropertyValue(String                      userId,
+                                                                    FindPropertyNamesProperties findProperties,
+                                                                    int                         startFrom,
+                                                                    int                         pageSize,
+                                                                    boolean                     forLineage,
+                                                                    boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                               UserNotAuthorizedException,
+                                                                                                                               PropertyServerException
+    {
+        final String methodName = "findElementsByPropertyValue";
+        final String findPropertiesProperty = "findProperties";
+        final String propertyValueProperty = "propertyValue";
+        final String propertyNamesProperty = "propertyNames";
+
+        invalidParameterHandler.validateObject(findProperties, findPropertiesProperty, methodName);
+        invalidParameterHandler.validateObject(findProperties.getPropertyValue(), propertyValueProperty, methodName);
+        invalidParameterHandler.validateObject(findProperties.getPropertyNames(), propertyNamesProperty, methodName);
+
+        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsByPropertyValue(userId,
+                                                                                                                     findProperties.getOpenMetadataTypeName(),
+                                                                                                                     null,
+                                                                                                                     findProperties.getPropertyNames(),
+                                                                                                                     findProperties.getPropertyValue(),
+                                                                                                                     findProperties.getLimitResultsByStatus(),
+                                                                                                                     findProperties.getAsOfTime(),
+                                                                                                                     findProperties.getSequencingProperty(),
+                                                                                                                     findProperties.getSequencingOrder(),
+                                                                                                                     forLineage,
+                                                                                                                     forDuplicateProcessing,
+                                                                                                                     findProperties.getEffectiveTime(),
+                                                                                                                     startFrom,
+                                                                                                                     pageSize);
+
+        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
+                                                           openMetadataElements,
+                                                           methodName);
+    }
+
+
+    /**
+     * Retrieve elements with the requested classification name. It is also possible to limit the results
+     * by specifying a type name for the elements that should be returned. If no type name is specified then
+     * any type of element may be returned.
+     *
+     * @param userId calling user
+     * @param classificationName name of classification
+     * @param findProperties  open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataElementSummary> getElementsByClassification(String             userId,
+                                                                    String             classificationName,
+                                                                    FindProperties     findProperties,
+                                                                    int                startFrom,
+                                                                    int                pageSize,
+                                                                    boolean            forLineage,
+                                                                    boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException
+    {
+        final String methodName                 = "getElementsByClassification";
+        final String classificationNameProperty = "classificationName";
+        final String findPropertiesProperty     = "findProperties";
+
+        invalidParameterHandler.validateObject(findProperties, findPropertiesProperty, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(classificationName, classificationNameProperty, methodName);
+
+        List<OpenMetadataElement> elements;
+
+        if (findProperties == null)
+        {
+            elements = openMetadataStoreClient.getMetadataElementsByClassification(userId,
+                                                                                   null,
+                                                                                   null,
+                                                                                   classificationName,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   SequencingOrder.LAST_UPDATE_RECENT,
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   new Date(),
+                                                                                   startFrom,
+                                                                                   pageSize);
+        }
+        else
+        {
+            elements = openMetadataStoreClient.getMetadataElementsByClassification(userId,
+                                                                                   findProperties.getOpenMetadataTypeName(),
+                                                                                   null,
+                                                                                   classificationName,
+                                                                                   findProperties.getLimitResultsByStatus(),
+                                                                                   findProperties.getAsOfTime(),
+                                                                                   findProperties.getSequencingProperty(),
+                                                                                   findProperties.getSequencingOrder(),
+                                                                                   forLineage,
+                                                                                   forDuplicateProcessing,
+                                                                                   findProperties.getEffectiveTime(),
+                                                                                   startFrom,
+                                                                                   pageSize);
+        }
+
+        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
+                                                           elements,
+                                                           methodName);
+    }
+
+
+    /**
+     * Retrieve elements with the requested classification name and with the requested a value
+     * found in one of the classification's properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the types of elements returned.
+     *
+     * @param userId calling user
+     * @param classificationName name of classification
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataElementSummary> getElementsByClassificationWithPropertyValue(String                      userId,
+                                                                                     String                      classificationName,
+                                                                                     FindPropertyNamesProperties findProperties,
+                                                                                     int                         startFrom,
+                                                                                     int                         pageSize,
+                                                                                     boolean                     forLineage,
+                                                                                     boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                                UserNotAuthorizedException,
+                                                                                                                                                PropertyServerException
+    {
+        final String methodName = "getElementsByClassificationWithPropertyValue";
+        final String classificationNameProperty = "classificationName";
+        final String findPropertiesProperty = "findProperties";
+        final String propertyValueProperty = "propertyValue";
+        final String propertyNamesProperty = "propertyNames";
+
+        invalidParameterHandler.validateName(classificationName, classificationNameProperty, methodName);
+        invalidParameterHandler.validateObject(findProperties, findPropertiesProperty, methodName);
+        invalidParameterHandler.validateObject(findProperties.getPropertyValue(), propertyValueProperty, methodName);
+        invalidParameterHandler.validateObject(findProperties.getPropertyNames(), propertyNamesProperty, methodName);
+
+        List<OpenMetadataElement> elements = openMetadataStoreClient.getMetadataElementsByClassificationPropertyValue(userId,
+                                                                                                                      findProperties.getOpenMetadataTypeName(),
+                                                                                                                      null,
+                                                                                                                      classificationName,
+                                                                                                                      findProperties.getPropertyNames(),
+                                                                                                                      findProperties.getPropertyValue(),
+                                                                                                                      findProperties.getLimitResultsByStatus(),
+                                                                                                                      findProperties.getAsOfTime(),
+                                                                                                                      findProperties.getSequencingProperty(),
+                                                                                                                      findProperties.getSequencingOrder(),
+                                                                                                                      forLineage,
+                                                                                                                      forDuplicateProcessing,
+                                                                                                                      findProperties.getEffectiveTime(),
+                                                                                                                      startFrom,
+                                                                                                                      pageSize);
+
+        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
+                                                           elements,
+                                                           methodName);
+    }
+
+
+    /**
+     * Retrieve elements with the requested classification name and with the requested a value found in
+     * one of the classification's properties specified.  The value must be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param userId calling user
+     * @param classificationName name of classification
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataElementSummary> findElementsByClassificationWithPropertyValue(String                      userId,
+                                                                                      String                      classificationName,
+                                                                                      FindPropertyNamesProperties findProperties,
+                                                                                      int                         startFrom,
+                                                                                      int                         pageSize,
+                                                                                      boolean                     forLineage,
+                                                                                      boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                                 UserNotAuthorizedException,
+                                                                                                                                                 PropertyServerException
+    {
+        final String methodName = "findElementsByClassificationWithPropertyValue";
+
+        final String classificationNameProperty = "classificationName";
+        final String findPropertiesProperty = "findProperties";
+        final String propertyValueProperty = "propertyValue";
+        final String propertyNamesProperty = "propertyNames";
+
+        invalidParameterHandler.validateName(classificationName, classificationNameProperty, methodName);
+        invalidParameterHandler.validateObject(findProperties, findPropertiesProperty, methodName);
+        invalidParameterHandler.validateObject(findProperties.getPropertyValue(), propertyValueProperty, methodName);
+        invalidParameterHandler.validateObject(findProperties.getPropertyNames(), propertyNamesProperty, methodName);
+
+        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsByClassificationPropertyValue(userId,
+                                                                                                                                   findProperties.getOpenMetadataTypeName(),
+                                                                                                                                   null,
+                                                                                                                                   classificationName,
+                                                                                                                                   findProperties.getPropertyNames(),
+                                                                                                                                   findProperties.getPropertyValue(),
+                                                                                                                                   findProperties.getLimitResultsByStatus(),
+                                                                                                                                   findProperties.getAsOfTime(),
+                                                                                                                                   findProperties.getSequencingProperty(),
+                                                                                                                                   findProperties.getSequencingOrder(),
+                                                                                                                                   forLineage,
+                                                                                                                                   forDuplicateProcessing,
+                                                                                                                                   findProperties.getEffectiveTime(),
+                                                                                                                                   startFrom,
+                                                                                                                                   pageSize);
+
+        return metadataElementSummaryConverter.getNewBeans(MetadataElementSummary.class,
+                                                           openMetadataElements,
+                                                           methodName);
+    }
+
+
+    /**
+     * Retrieve related elements of the requested type name.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the starting end
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param relationshipTypeName name of relationship
+     * @param findProperties  open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedMetadataElementSummary> getRelatedElements(String             userId,
+                                                                  String             elementGUID,
+                                                                  String             relationshipTypeName,
+                                                                  int                startingAtEnd,
+                                                                  FindProperties     findProperties,
+                                                                  int                startFrom,
+                                                                  int                pageSize,
+                                                                  boolean            forLineage,
+                                                                  boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
+    {
+        final String methodName = "getRelatedElements";
+
+        List<RelatedMetadataElement> relatedMetadataElements;
+
+        if (findProperties == null)
+        {
+            relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                         elementGUID,
+                                                                                         startingAtEnd,
+                                                                                         relationshipTypeName,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing,
+                                                                                         new Date(),
+                                                                                         startFrom,
+                                                                                         pageSize);
+        }
+        else
+        {
+            relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                         elementGUID,
+                                                                                         startingAtEnd,
+                                                                                         relationshipTypeName,
+                                                                                         forLineage,
+                                                                                         forDuplicateProcessing,
+                                                                                         findProperties.getEffectiveTime(),
+                                                                                         startFrom,
+                                                                                         pageSize);
+        }
+
+        if (relatedMetadataElements != null)
+        {
+            List<RelatedMetadataElementSummary> results = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            {
+                if (relatedMetadataElement != null)
+                {
+                    if ((findProperties == null) ||
+                            (findProperties.getOpenMetadataTypeName() == null) ||
+                            (findProperties.getOpenMetadataTypeName().equals(relatedMetadataElement.getElement().getType().getTypeName())))
+                    {
+                        results.add(relatedMetadataElementSummaryConverter.getNewBean(RelatedMetadataElementSummary.class,
+                                                                                      relatedMetadataElement,
+                                                                                      methodName));
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve elements linked via the requested relationship type name and with the requested a value
+     * found in one of the classification's properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the types of elements returned.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the starting element
+     * @param relationshipTypeName name of relationship
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedMetadataElementSummary> getRelatedElementsWithPropertyValue(String                      userId,
+                                                                                   String                      elementGUID,
+                                                                                   String                      relationshipTypeName,
+                                                                                   int                         startingAtEnd,
+                                                                                   FindPropertyNamesProperties findProperties,
+                                                                                   int                         startFrom,
+                                                                                   int                         pageSize,
+                                                                                   boolean                     forLineage,
+                                                                                   boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                              UserNotAuthorizedException,
+                                                                                                                                              PropertyServerException
+    {
+        final String methodName = "getRelatedElementsWithPropertyValue";
+        final String findPropertiesProperty = "findProperties";
+        final String propertyValueProperty = "propertyValue";
+        final String propertyNamesProperty = "propertyNames";
+
+        invalidParameterHandler.validateObject(findProperties, findPropertiesProperty, methodName);
+        invalidParameterHandler.validateObject(findProperties.getPropertyValue(), propertyValueProperty, methodName);
+        invalidParameterHandler.validateObject(findProperties.getPropertyNames(), propertyNamesProperty, methodName);
+
+        List<RelatedMetadataElement> relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                                  elementGUID,
+                                                                                                                  startingAtEnd,
+                                                                                                                  relationshipTypeName,
+                                                                                                                  forLineage,
+                                                                                                                  forDuplicateProcessing,
+                                                                                                                  findProperties.getEffectiveTime(),
+                                                                                                                  startFrom,
+                                                                                                                  pageSize);
+
+        if (relatedMetadataElements != null)
+        {
+            List<RelatedMetadataElementSummary> results = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            {
+                if (relatedMetadataElement != null)
+                {
+                    if ((findProperties.getOpenMetadataTypeName() == null) ||
+                            (findProperties.getOpenMetadataTypeName().equals(relatedMetadataElement.getElement().getType().getTypeName())))
+                    {
+                        ElementProperties relationshipProperties = relatedMetadataElement.getRelationshipProperties();
+                        if (relationshipProperties != null)
+                        {
+                            for (String propertyName : findProperties.getPropertyNames())
+                            {
+                                if (propertyName != null)
+                                {
+                                    PropertyValue propertyValue = relationshipProperties.getPropertyValue(propertyName);
+
+                                    if (propertyValue != null)
+                                    {
+                                        if (findProperties.getPropertyValue().equals(propertyValue.valueAsString()))
+                                        {
+                                            results.add(relatedMetadataElementSummaryConverter.getNewBean(RelatedMetadataElementSummary.class,
+                                                                                                          relatedMetadataElement,
+                                                                                                          methodName));
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve elements linked via the requested relationship type name and with the relationship's properties
+     * specified.  The value must be contained in the by a value found in one of the properties specified.
+     * The value must be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the starting element
+     * @param relationshipTypeName name of relationship
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<RelatedMetadataElementSummary> findRelatedElementsWithPropertyValue(String                      userId,
+                                                                                    String                      elementGUID,
+                                                                                    String                      relationshipTypeName,
+                                                                                    int                         startingAtEnd,
+                                                                                    FindPropertyNamesProperties findProperties,
+                                                                                    int                         startFrom,
+                                                                                    int                         pageSize,
+                                                                                    boolean                     forLineage,
+                                                                                    boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                               UserNotAuthorizedException,
+                                                                                                                                               PropertyServerException
+    {
+        final String methodName = "findRelatedElementsWithPropertyValue";
+        final String findPropertiesProperty = "findProperties";
+        final String propertyValueProperty = "propertyValue";
+        final String propertyNamesProperty = "propertyNames";
+
+        invalidParameterHandler.validateObject(findProperties, findPropertiesProperty, methodName);
+        invalidParameterHandler.validateObject(findProperties.getPropertyValue(), propertyValueProperty, methodName);
+        invalidParameterHandler.validateObject(findProperties.getPropertyNames(), propertyNamesProperty, methodName);
+
+        List<RelatedMetadataElement> relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                                  elementGUID,
+                                                                                                                  startingAtEnd,
+                                                                                                                  relationshipTypeName,
+                                                                                                                  forLineage,
+                                                                                                                  forDuplicateProcessing,
+                                                                                                                  findProperties.getEffectiveTime(),
+                                                                                                                  startFrom,
+                                                                                                                  pageSize);
+
+        if (relatedMetadataElements != null)
+        {
+            List<RelatedMetadataElementSummary> results = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements)
+            {
+                if (relatedMetadataElement != null)
+                {
+                    if ((findProperties.getOpenMetadataTypeName() == null) ||
+                            (findProperties.getOpenMetadataTypeName().equals(relatedMetadataElement.getElement().getType().getTypeName())))
+                    {
+                        ElementProperties relationshipProperties = relatedMetadataElement.getRelationshipProperties();
+                        if (relationshipProperties != null)
+                        {
+                            for (String propertyName : findProperties.getPropertyNames())
+                            {
+                                if (propertyName != null)
+                                {
+                                    PropertyValue propertyValue = relationshipProperties.getPropertyValue(propertyName);
+
+                                    if (propertyValue != null)
+                                    {
+                                        if (propertyValue.valueAsString().contains(findProperties.getPropertyValue()))
+                                        {
+                                            results.add(relatedMetadataElementSummaryConverter.getNewBean(RelatedMetadataElementSummary.class,
+                                                                                                          relatedMetadataElement,
+                                                                                                          methodName));
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName name of relationship
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataRelationshipSummary> getRelationships(String             userId,
+                                                              String             relationshipTypeName,
+                                                              FindProperties     findProperties,
+                                                              int                startFrom,
+                                                              int                pageSize,
+                                                              boolean            forLineage,
+                                                              boolean            forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
+    {
+        final String methodName = "getRelationships";
+
+        List<OpenMetadataRelationship> openMetadataRelationships;
+
+        if (findProperties == null)
+        {
+            openMetadataRelationships = openMetadataStoreClient.findRelationshipsBetweenMetadataElements(userId,
+                                                                                                         relationshipTypeName,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         SequencingOrder.LAST_UPDATE_RECENT,
+                                                                                                         forLineage,
+                                                                                                         forDuplicateProcessing,
+                                                                                                         new Date(),
+                                                                                                         startFrom,
+                                                                                                         pageSize);
+        }
+        else
+        {
+            openMetadataRelationships = openMetadataStoreClient.findRelationshipsBetweenMetadataElements(userId,
+                                                                                                         relationshipTypeName,
+                                                                                                         null,
+                                                                                                         findProperties.getLimitResultsByStatus(),
+                                                                                                         findProperties.getAsOfTime(),
+                                                                                                         findProperties.getSequencingProperty(),
+                                                                                                         findProperties.getSequencingOrder(),
+                                                                                                         forLineage,
+                                                                                                         forDuplicateProcessing,
+                                                                                                         findProperties.getEffectiveTime(),
+                                                                                                         startFrom,
+                                                                                                         pageSize);
+        }
+
+        if (openMetadataRelationships != null)
+        {
+            return metadataRelationshipSummaryConverter.getNewBeans(MetadataRelationshipSummary.class,
+                                                                    openMetadataRelationships,
+                                                                    methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in
+     * one of the relationship's properties specified.  The value must match exactly.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName name of relationship
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataRelationshipSummary> getRelationshipsWithPropertyValue(String                      userId,
+                                                                               String                      relationshipTypeName,
+                                                                               FindPropertyNamesProperties findProperties,
+                                                                               int                         startFrom,
+                                                                               int                         pageSize,
+                                                                               boolean                     forLineage,
+                                                                               boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                          UserNotAuthorizedException,
+                                                                                                                                          PropertyServerException
+    {
+        final String methodName = "getRelationships";
+
+        List<OpenMetadataRelationship> openMetadataRelationships;
+
+        if (findProperties == null)
+        {
+            openMetadataRelationships = openMetadataStoreClient.findRelationshipsBetweenMetadataElements(userId,
+                                                                                                         relationshipTypeName,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         SequencingOrder.LAST_UPDATE_RECENT,
+                                                                                                         forLineage,
+                                                                                                         forDuplicateProcessing,
+                                                                                                         new Date(),
+                                                                                                         startFrom,
+                                                                                                         pageSize);
+        }
+        else
+        {
+            openMetadataRelationships = openMetadataStoreClient.findRelationshipsBetweenMetadataElements(userId,
+                                                                                                         relationshipTypeName,
+                                                                                                         propertyHelper.getSearchPropertiesByName(findProperties.getPropertyNames(),
+                                                                                                                                                  findProperties.getPropertyValue(),
+                                                                                                                                                  PropertyComparisonOperator.LIKE),
+                                                                                                         findProperties.getLimitResultsByStatus(),
+                                                                                                         findProperties.getAsOfTime(),
+                                                                                                         findProperties.getSequencingProperty(),
+                                                                                                         findProperties.getSequencingOrder(),
+                                                                                                         forLineage,
+                                                                                                         forDuplicateProcessing,
+                                                                                                         findProperties.getEffectiveTime(),
+                                                                                                         startFrom,
+                                                                                                         pageSize);
+        }
+
+        if (openMetadataRelationships != null)
+        {
+            return metadataRelationshipSummaryConverter.getNewBeans(MetadataRelationshipSummary.class,
+                                                                    openMetadataRelationships,
+                                                                    methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in one of
+     * the relationship's properties specified.  The value must only be contained in the properties rather than
+     * needing to be an exact match.
+     *
+     * @param userId calling user
+     * @param relationshipTypeName name of relationship
+     * @param findProperties properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public List<MetadataRelationshipSummary> findRelationshipsWithPropertyValue(String                      userId,
+                                                                                String                      relationshipTypeName,
+                                                                                FindPropertyNamesProperties findProperties,
+                                                                                int                         startFrom,
+                                                                                int                         pageSize,
+                                                                                boolean                     forLineage,
+                                                                                boolean                     forDuplicateProcessing) throws InvalidParameterException,
+                                                                                                                                           UserNotAuthorizedException,
+                                                                                                                                           PropertyServerException
+    {
+        final String methodName = "getRelationships";
+
+        List<OpenMetadataRelationship> openMetadataRelationships;
+
+        if (findProperties == null)
+        {
+            openMetadataRelationships = openMetadataStoreClient.findRelationshipsBetweenMetadataElements(userId,
+                                                                                                         relationshipTypeName,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         SequencingOrder.LAST_UPDATE_RECENT,
+                                                                                                         forLineage,
+                                                                                                         forDuplicateProcessing,
+                                                                                                         new Date(),
+                                                                                                         startFrom,
+                                                                                                         pageSize);
+        }
+        else
+        {
+            openMetadataRelationships = openMetadataStoreClient.findRelationshipsBetweenMetadataElements(userId,
+                                                                                                         relationshipTypeName,
+                                                                                                         propertyHelper.getSearchPropertiesByName(findProperties.getPropertyNames(),
+                                                                                                                                                  findProperties.getPropertyValue(),
+                                                                                                                                                  PropertyComparisonOperator.LIKE),
+                                                                                                         findProperties.getLimitResultsByStatus(),
+                                                                                                         findProperties.getAsOfTime(),
+                                                                                                         findProperties.getSequencingProperty(),
+                                                                                                         findProperties.getSequencingOrder(),
+                                                                                                         forLineage,
+                                                                                                         forDuplicateProcessing,
+                                                                                                         findProperties.getEffectiveTime(),
+                                                                                                         startFrom,
+                                                                                                         pageSize);
+        }
+
+        if (openMetadataRelationships != null)
+        {
+            return metadataRelationshipSummaryConverter.getNewBeans(MetadataRelationshipSummary.class,
+                                                                    openMetadataRelationships,
+                                                                    methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the header for the instance identified by the supplied unique identifier.
+     * It may be an element (entity) or a relationship between elements.
+     *
+     * @param userId  name of the server instance to connect to
+     * @param guid identifier to use in the lookup
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param effectiveTime effective time
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @Override
+    public ElementHeader retrieveInstanceForGUID(String  userId,
+                                                 String  guid,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing,
+                                                 Date    effectiveTime) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        try
+        {
+            OpenMetadataElement openMetadataElement = openMetadataStoreClient.getMetadataElementByGUID(userId, guid, forLineage, forDuplicateProcessing, effectiveTime);
+
+            if (openMetadataElement != null)
+            {
+                ElementHeader elementHeader = new ElementHeader(openMetadataElement);
+
+                elementHeader.setGUID(openMetadataElement.getElementGUID());
+                elementHeader.setClassifications(metadataElementSummaryConverter.getElementClassifications(openMetadataElement.getClassifications()));
+
+                return elementHeader;
+            }
+        }
+        catch (InvalidParameterException notFound)
+        {
+            OpenMetadataRelationship openMetadataRelationship = openMetadataStoreClient.getRelationshipByGUID(userId, guid, forLineage, forDuplicateProcessing, effectiveTime);
+
+            if (openMetadataRelationship != null)
+            {
+                ElementHeader elementHeader = new ElementHeader(openMetadataRelationship);
+
+                elementHeader.setGUID(openMetadataRelationship.getRelationshipGUID());
+
+                return elementHeader;
+            }
+        }
+
+        return null;
     }
 }

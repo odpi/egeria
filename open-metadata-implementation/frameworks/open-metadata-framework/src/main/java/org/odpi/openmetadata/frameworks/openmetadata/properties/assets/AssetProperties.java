@@ -77,6 +77,7 @@ public class AssetProperties extends SupplementaryProperties
         if (template != null)
         {
             name                       = template.getName();
+            resourceName               = template.getResourceName();
             versionIdentifier          = template.getVersionIdentifier();
             resourceDescription        = template.getResourceDescription();
             deployedImplementationType = template.getDeployedImplementationType();
@@ -105,9 +106,9 @@ public class AssetProperties extends SupplementaryProperties
 
 
     /**
-     * Return the name of the resource that this asset represents.
+     * Return the short name of the resource that is used when displaying the resource in tables etc.
      *
-     * @return string resource name
+     * @return string
      */
     public String getName()
     {
@@ -121,7 +122,7 @@ public class AssetProperties extends SupplementaryProperties
 
 
     /**
-     * Set up the name of the resource that this asset represents.
+     * Set up the short name of the resource that is used in tables etc.
      *
      * @param name string resource name
      */
@@ -131,14 +132,40 @@ public class AssetProperties extends SupplementaryProperties
     }
 
 
+    /**
+     * Return the full name of the resource as it is known in its owning technology.
+     *
+     * @return string
+     */
     public String getResourceName()
     {
         return resourceName;
     }
 
+    /**
+     * Set up the full name of the resource as it is known in its owning technology.
+     *
+     * @param resourceName string
+     */
     public void setResourceName(String resourceName)
     {
         this.resourceName = resourceName;
+    }
+
+
+    /**
+     * Return the business oriented display name.
+     *
+     * @return display name
+     */
+    public String getDisplayName()
+    {
+        if (displayName == null)
+        {
+            return getName();
+        }
+
+        return displayName;
     }
 
 
@@ -165,7 +192,7 @@ public class AssetProperties extends SupplementaryProperties
 
 
     /**
-     * Returns the stored description property for the asset.
+     * Returns the stored description property extracted from the resource.
      * If no description is provided then null is returned.
      *
      * @return description String text
@@ -177,7 +204,7 @@ public class AssetProperties extends SupplementaryProperties
 
 
     /**
-     * Set up the stored description property associated with the asset.
+     * Set up the stored description property extracted from the resource.
      *
      * @param resourceDescription String text
      */
@@ -186,6 +213,21 @@ public class AssetProperties extends SupplementaryProperties
         this.resourceDescription = resourceDescription;
     }
 
+
+    /**
+     * This override defaults the display description to the resource description if it is null;
+     *
+     * @return description
+     */
+    public String getDisplayDescription()
+    {
+        if (displayDescription == null)
+        {
+            return getResourceDescription();
+        }
+
+        return displayDescription;
+    }
 
 
     /**

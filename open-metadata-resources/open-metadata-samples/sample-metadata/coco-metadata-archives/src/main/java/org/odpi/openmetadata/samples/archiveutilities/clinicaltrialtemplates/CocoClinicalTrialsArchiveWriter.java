@@ -14,10 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
-import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
-import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceZoneDefinition;
-import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.LicenseTypeDefinition;
-import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.ProjectDefinition;
+import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.*;
 import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialPlaceholderProperty;
 
@@ -185,6 +182,14 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                                                        null,
                                                                        otherOriginValues));
 
+        classifications.add(archiveHelper.getConfidentialityClassification(3,
+                                                                           100,
+                                                                           "tanyatidie",
+                                                                           OpenMetadataType.USER_IDENTITY_TYPE_NAME,
+                                                                           OpenMetadataProperty.USER_ID.name,
+                                                                           "Clinical Trial Board",
+                                                                           "Level approved assuming the data remains anonymized.",
+                                                                           2));
 
         classifications.add(archiveHelper.getTemplateClassification("Landing Area weekly teddy bear measurements for drop foot clinical trial",
                                                                     "This template supports the cataloguing of weekly measurement files. " +
@@ -267,6 +272,9 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                  obligations,
                                  null,
                                  licenseTypeGUID);
+
+        String dataProcessingPurposeGUID = archiveHelper.getGUID(DataProcessingPurposeDefinition.CLINICAL_TRIAL_VALIDATION.getQualifiedName());
+
 
         String topLevelSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(assetGUID,
                                                                             FileType.CSV_FILE.getAssetSubTypeName(),
