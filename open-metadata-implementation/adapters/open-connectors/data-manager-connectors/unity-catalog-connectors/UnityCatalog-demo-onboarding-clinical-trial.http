@@ -18,26 +18,9 @@ Content-Type: application/json
 
 > {% client.global.set("token", response.body); %}
 
-
 ###
 # =====================================================================================================================
-# A governance action process describes a well-defined series of steps that gets something done.
-# The commands below will help you find and underatns the process that provisions fromed from the landing area into
-# Coco Data Lake.
-
-@projectGUID=a2915132-9d9a-4449-846f-43a871b5a6a0
-
-###
-# @name findProjects
-# Returns the list of projects matching the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "filter" : "Clinical"
-}
-
+# Set up Unity Catalog ...
 
 ###
 # @name create schema
@@ -45,11 +28,213 @@ POST {{ucURL}}/api/2.1/unity-catalog/schemas
 Content-Type: application/json
 
 {
-  "name": "clinical_trial_drop_foot",
-  "catalog_name" : "unity",
+  "name": "teddy_bear_drop_foot",
+  "catalog_name" : "clinical_trials",
   "comment": "Example clinical trial used for education and testing of governance procedures."
 }
 
+###
+# @name delete volume
+DELETE {{ucURL}}/api/2.1/unity-catalog/volumes/clinical_trials.teddy_bear_drop_foot.weekly_measurements
+Content-Type: application/json
+
+
+###
+# =====================================================================================================================
+# These commands add the CocoComboArchive to active-metadata-store and a new governance engine for clinical trials
+# to engine-host.  They use IntelliJ's HTTP Client.
+#
+
+@adminUserId=garygeeke
+
+###
+# @name Load CocoComboArchive.omarchive metadata archive file
+# Load a file that contains open metadata types and instances.
+POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/active-metadata-store/instance/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/CocoComboArchive.omarchive
+
+###
+# Add the ClinicalTrials at CocoPharmaceuticals engine to engine-host
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/engine
+Content-Type: application/json
+
+{
+  "class": "EngineConfig",
+  "engineId": "113c35dc-ea92-40ce-aef2-daf9e08c1b05",
+  "engineQualifiedName": "ClinicalTrials@CocoPharmaceuticals",
+  "engineUserId": "generalnpa"
+}
+
+###
+# Restart the engine-host  server on the OMAG Server Platform.
+POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/engine-host/instance
+
+
+###
+# =====================================================================================================================
+# Set up UC cataloguing
+
+
+###
+# @name createElementFromTemplate (Unity Catalog Server 1)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "{{ucServerTemplateGUID}}",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "hostURL" : "http://localhost",
+    "portNumber" : "8080",
+    "serverName" : "Unity Catalog 1",
+    "versionIdentifier" : "V1.0",
+    "description" : "First instance of the Unity Catalog (UC) Server.",
+    "serverUserId" : "uc1"
+  }
+}
+
+
+###
+
+@server1GUID=11a2ef20-9420-4f8b-bc19-211823fc8ecf
+
+###
+
+@ucServerTemplateGUID=dcca9788-b30f-4007-b1ac-ec634aff6879
+@ucCatalogTemplateGUID=5ee006aa-a6d6-411b-9b8d-5f720c079cae
+@ucSchemaTemplateGUID=5bf92b0f-3970-41ea-b0a3-aacfbf6fd92e
+@ucVolumeTemplateGUID=92d2d2dc-0798-41f0-9512-b10548d312b7
+@ucTableTemplateGUID=6cc1e5f5-4c1e-4290-a80e-e06643ffb13d
+@ucFunctionTemplateGUID=a490ba65-6104-4213-9be9-524e16fed8aa
+
+###
+
+@integrationConnectorGUID=06d068d9-9e08-4e67-8c59-073bbf1013af
+@friendshipGUID=74dde22f-2249-4ea3-af2b-b39e73f79b81
+
+###
+# @name addCatalogTarget (UC Server 1)
+# Add a catalog target to the Unity Catalog Server Sync integration connector.
+# Notice that details of all of the templates for different types of UC elements are passed.  These
+# are not used directly by this connector, but passed to the friendship connector
+# (Unity Catalog Inside Catalog Sync integration conenctor) to support its cataloguing.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets/{{server1GUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "catalogTargetName" : "uc1",
+  "templateProperties" : {
+    "Unity Catalog Catalog"  : "{{ucCatalogTemplateGUID}}",
+    "Unity Catalog Schema"   : "{{ucSchemaTemplateGUID}}",
+    "Unity Catalog Volume"   : "{{ucVolumeTemplateGUID}}",
+    "Unity Catalog Table"    : "{{ucTableTemplateGUID}}",
+    "Unity Catalog Function" : "{{ucFunctionTemplateGUID}}"
+  },
+  "configurationProperties" : {
+    "UnityCatalogFriendshipGUID" : "74dde22f-2249-4ea3-af2b-b39e73f79b81"
+  }
+}
+
+###
+# @name Refresh Integration Connector (UnityCatalogServerSynchronizer)
+# Refreshes all Integration Connectors running in an integration daemon
+POST {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/users/garygeeke/integration-connectors/refresh
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "UnityCatalogServerSynchronizer"
+}
+
+###
+# @name Refresh Integration Connector (UnityCatalogInsideCatalogSynchronizer)
+# Refreshes all Integration Connectors running in an integration daemon
+POST {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/users/garygeeke/integration-connectors/refresh
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "UnityCatalogInsideCatalogSynchronizer"
+}
+
+
+###
+# =====================================================================================================================
+# Locate the GUIDs to set up the data lake
+
+###
+# @name Get GUID for Project
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-exact-property-value?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "openMetadataTypeName" : "Project",
+    "propertyValue" : "PROJ-CT-TBDF",
+    "propertyNames" : ["identifier"],
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+
+@projectGUID=a2915132-9d9a-4449-846f-43a871b5a6a0
+
+###
+# @name Get GUID for element representing UC Schema
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-property-value-search?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "openMetadataTypeName" : "DeployedDatabaseSchema",
+    "propertyValue" : "clinical_trials.teddy_bear_drop_foot",
+    "propertyNames" : ["resourceName"],
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+
+@schemaGUID=0038bb41-084f-4728-806b-43a6297e0237
+
+###
+
+#@dataLakeDirectoryPathName=/Users/amandachessell/Code/ODPi/egeria-oak/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.1-SNAPSHOT-distribution.tar.gz/assembly/platform/coco-data-lake
+@dataLakeDirectoryPathName=coco-pharmaceuticals/data-lake
+
+###
+# @name Create Data Lake Top-Level Folder
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "fbdd8efd-1b69-474c-bb6d-0a304b394146",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "directoryPathName" : "{{dataLakeDirectoryPathName}}",
+    "directoryName" : "data-lake",
+    "versionIdentifier" : "V1.0",
+    "fileSystemName" : "",
+    "description" : "Root directory for Coco Pharmaceuticals' data lake."
+  }
+}
+
+###
+
+@dataLakeFolderGUID=4dc5e0e9-60cc-4e2c-b1d4-7bf3ccef3420
 
 ###
 # @name findGovernanceActionTypes (Clinical Trials)
@@ -78,29 +263,52 @@ Content-Type: application/json
     {
       "class" : "NewActionTarget",
       "actionTargetName": "clinicalTrialProject",
-      "actionTargetGUID": "target guid goes here"
+      "actionTargetGUID": "{{projectGUID}}"
     },
     {
       "class" : "NewActionTarget",
       "actionTargetName": "dataLakeSchema",
-      "actionTargetGUID": "target guid goes here"
-    },
-    {
-      "class" : "NewActionTarget",
-      "actionTargetName": "volumeTemplate",
-      "actionTargetGUID": "target guid goes here"
+      "actionTargetGUID": "{{schemaGUID}}"
     },
     {
       "class" : "NewActionTarget",
       "actionTargetName": "dataLakeRootFolder",
-      "actionTargetGUID": "target guid goes here"
+      "actionTargetGUID": "{{dataLakeFolderGUID}}"
     },
     {
       "class" : "NewActionTarget",
       "actionTargetName": "lastUpdateConnector",
-      "actionTargetGUID": "target guid goes here"
-    }]
+      "actionTargetGUID": "fd26f07c-ae44-4bc5-b457-37b43112224f"
+    }],
+    "requestParameters" : {
+       "dataLakeVolumeTemplateGUID" : "{{ucVolumeTemplateGUID}}"
+    }
 }
+
+
+
+###
+# @name Refresh Integration Connector (UnityCatalogInsideCatalogSynchronizer)
+# Refreshes all Integration Connectors running in an integration daemon
+POST {{baseURL}}/servers/integration-daemon/open-metadata/integration-daemon/users/garygeeke/integration-connectors/refresh
+Content-Type: application/json
+
+{
+  "class" : "NameRequestBody",
+  "name" : "UnityCatalogInsideCatalogSynchronizer"
+}
+
+
+###
+# @name list volumes
+GET {{ucURL}}/api/2.1/unity-catalog/volumes?catalog_name=clinical_trials&schema_name=teddy_bear_drop_foot&max_results=10
+
+
+###
+# @name get volume
+GET {{ucURL}}/api/2.1/unity-catalog/volumes/clinical_trials.teddy_bear_drop_foot.weekly_measurements
+Content-Type: application/json
+
 
 
 ###
@@ -135,6 +343,85 @@ GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+###
+#===============================================
+# Create the landing area folders
+
+# @name Create landing area folder (Oak Dene)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "fbdd8efd-1b69-474c-bb6d-0a304b394146",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "directoryPathName" : "landing-area/hospitals/oak-dene/clinical-trials/drop-foot",
+    "directoryName" : "drop-foot",
+    "versionIdentifier" : "V1.0",
+    "fileSystemName" : "",
+    "description" : "Landing Area folder for Oak Dene Hospital's Teddy Bear Drop Foot clinical trial."
+  }
+}
+
+###
+
+@oakDeneLandingAreaFolderGUID=bb9d4987-afd7-48e1-a3c4-29008ab364ff
+
+###
+
+# @name Create landing area folder (Old Market)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "fbdd8efd-1b69-474c-bb6d-0a304b394146",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "directoryPathName" : "landing-area/hospitals/old-market/clinical-trials/drop-foot",
+    "directoryName" : "drop-foot",
+    "versionIdentifier" : "V1.0",
+    "fileSystemName" : "",
+    "description" : "Landing Area folder for Old Market Hospital's Teddy Bear Drop Foot clinical trial."
+  }
+}
+
+###
+
+@oldMarketLandingAreaFolderGUID=8a6ee5c7-54da-4c19-bb34-bddcd1e9b252
+
+###
+
+# @name Create landing area folder (Hampton)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "fbdd8efd-1b69-474c-bb6d-0a304b394146",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "directoryPathName" : "landing-area/hospitals/hampton/clinical-trials/drop-foot",
+    "directoryName" : "drop-foot",
+    "versionIdentifier" : "V1.0",
+    "fileSystemName" : "",
+    "description" : "Landing Area folder for Hampton Hospital's Teddy Bear Drop Foot clinical trial."
+  }
+}
+
+###
+
+@hamptonLandingAreaFolderGUID=9ea17e0f-4bce-4611-9dc9-efcef637a933
+
+###
+
+@oakDeneHospitalGUID=7905f803-7b7e-47c4-8b35-d0a0cfa47469
+@oakDeneContactPerson=80bf48b0-5ef2-4294-950d-0c6fd568a1b2
+@oldMarketHospitalGUID=fe8f4065-6664-4739-9438-3330909e6b98
+@oldMarketContactPerson=fabc88d6-d28e-4e2d-9086-6affc8c45a7a
+@hamptonHospitalGUID=c596f5c4-0aee-4fdc-969b-69fa26b72529
+@hamptonContactPerson=e2bcf56b-f822-47d8-82fa-94cd2a5a772c
 
 ###
 # @name initiate onboard-hospital (Oak Dene)
@@ -150,17 +437,12 @@ Content-Type: application/json
     {
       "class" : "NewActionTarget",
       "actionTargetName": "clinicalTrialProject",
-      "actionTargetGUID": "target guid goes here"
+      "actionTargetGUID": "{{projectGUID}}"
     },
     {
       "class" : "NewActionTarget",
       "actionTargetName": "hospital",
-      "actionTargetGUID": "target guid goes here"
-    },
-    {
-      "class" : "NewActionTarget",
-      "actionTargetName": "hospitalTemplate",
-      "actionTargetGUID": "target guid goes here"
+      "actionTargetGUID": "{{oakDeneHospitalGUID}}"
     },
     {
       "class" : "NewActionTarget",
@@ -170,40 +452,116 @@ Content-Type: application/json
     {
       "class" : "NewActionTarget",
       "actionTargetName": "landingAreaConnector",
-      "actionTargetGUID": "target guid goes here"
+      "actionTargetGUID": "1b98cdac-dd0a-4621-93db-99ef5a1098bc"
     },
     {
       "class" : "NewActionTarget",
       "actionTargetName": "landingAreaFolder",
-      "actionTargetGUID": "target guid goes here"
+      "actionTargetGUID": "{{oakDeneLandingAreaFolderGUID}}"
     },
     {
       "class" : "NewActionTarget",
-      "actionTargetName": "contactPerson",
-      "actionTargetGUID": "target guid goes here"
-    }]
+      "actionTargetName": "hospitalContactPerson",
+      "actionTargetGUID": "{{oakDeneContactPerson}}"
+    }],
+    "requestParameters" : {
+       "hospitalTemplateGUID" : "5e5ffc97-237d-46c6-95c3-49405035dedc"
+    }
 }
 
-###
-# @name list volumes
-GET {{ucURL}}/api/2.1/unity-catalog/volumes?catalog_name=unity&schema_name=clinical_trial_drop_foot&max_results=10
 
 ###
-# @name create volume
-POST {{ucURL}}/api/2.1/unity-catalog/volumes
+# @name initiate onboard-hospital (Old Market)
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "name": "weekly_measurements",
-  "catalog_name" : "unity",
-  "schema_name": "clinical_trial_drop_foot",
-  "comment": "Weekly measurements for patients on clinical trial",
-  "volume_type": "EXTERNAL",
-  "storage_location": "/Users/amandachessell/Code/uc/unitycatalog/etc/data/external/unity/clinical_trial_drop_foot/volumes/weekly_measurements/"
+  "class" : "InitiateGovernanceActionTypeRequestBody",
+  "governanceActionTypeQualifiedName": "ClinicalTrials@CocoPharmaceuticals:onboard-hospital",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "clinicalTrialProject",
+      "actionTargetGUID": "{{projectGUID}}"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospital",
+      "actionTargetGUID": "{{oldMarketHospitalGUID}}"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "newElementProcess",
+      "actionTargetGUID": "{{newElementProcessGUID}}"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "landingAreaConnector",
+      "actionTargetGUID": "1b98cdac-dd0a-4621-93db-99ef5a1098bc"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "landingAreaFolder",
+      "actionTargetGUID": "{{oldMarketLandingAreaFolderGUID}}"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospitalContactPerson",
+      "actionTargetGUID": "{{oldMarketContactPerson}}"
+    }],
+    "requestParameters" : {
+       "hospitalTemplateGUID" : "5e5ffc97-237d-46c6-95c3-49405035dedc"
+    }
 }
 
+
+
 ###
-# @name get volume
-GET {{ucURL}}/api/2.1/unity-catalog/volumes/unity.clinical_trial_drop_foot.weekly_measurements
+# @name initiate onboard-hospital (Hampton)
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+Authorization: Bearer {{token}}
 Content-Type: application/json
+
+{
+  "class" : "InitiateGovernanceActionTypeRequestBody",
+  "governanceActionTypeQualifiedName": "ClinicalTrials@CocoPharmaceuticals:onboard-hospital",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "clinicalTrialProject",
+      "actionTargetGUID": "{{projectGUID}}"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospital",
+      "actionTargetGUID": "{{hamptonHospitalGUID}}"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "newElementProcess",
+      "actionTargetGUID": "{{newElementProcessGUID}}"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "landingAreaConnector",
+      "actionTargetGUID": "1b98cdac-dd0a-4621-93db-99ef5a1098bc"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "landingAreaFolder",
+      "actionTargetGUID": "{{hamptonLandingAreaFolderGUID}}"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospitalContactPerson",
+      "actionTargetGUID": "{{hamptonContactPerson}}"
+    }],
+    "requestParameters" : {
+       "hospitalTemplateGUID" : "5e5ffc97-237d-46c6-95c3-49405035dedc"
+    }
+}
+
 

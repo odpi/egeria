@@ -11731,7 +11731,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.GLOSSARY_TYPE_NAME;
+        final String                     end2EntityType               = OpenMetadataType.GLOSSARY_TERM_TYPE_NAME;
         final String                     end2AttributeName            = "meaning";
         final String                     end2AttributeDescription     = "Semantic definition for this element.";
         final String                     end2AttributeDescriptionGUID = null;

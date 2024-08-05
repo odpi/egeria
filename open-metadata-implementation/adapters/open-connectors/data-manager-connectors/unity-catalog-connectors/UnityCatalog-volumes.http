@@ -3,7 +3,7 @@
 
 ###
 # @name list volumes
-GET {{ucURL}}/api/2.1/unity-catalog/volumes?catalog_name=unity&schema_name=default&max_results=10
+GET {{ucURL}}/api/2.1/unity-catalog/volumes?catalog_name=clinical_trials&schema_name=teddy_bear_drop_foot&max_results=10
 
 ###
 # @name create volume
@@ -37,6 +37,6 @@ Content-Type: application/json
 
 ###
 # @name delete volume
-DELETE {{ucURL}}/api/2.1/unity-catalog/volumes/unity.clinical_trial_drop_foot.weekly_measurements
+DELETE {{ucURL}}/api/2.1/unity-catalog/volumes/clinical_trials.teddy_bear_drop_foot.weekly_measurements
 Content-Type: application/json
 

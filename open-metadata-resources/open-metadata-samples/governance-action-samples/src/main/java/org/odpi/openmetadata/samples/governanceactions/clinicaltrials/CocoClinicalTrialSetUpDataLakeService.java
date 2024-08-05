@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogSurveyRequestParameter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
@@ -14,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesAuditCode;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesErrorCode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,11 +59,19 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
 
         try
         {
+            /**
+             * Retrieve template information from the request parameters.
+             */
+            if (governanceContext.getRequestParameters() != null)
+            {
+                volumeTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_FOLDER_TEMPLATE.getName());
+            }
+
             /*
              * Retrieve the values needed from the action targets.
              */
              if (governanceContext.getActionTargetElements() != null)
-            {
+             {
                 for (ActionTargetElement actionTargetElement : governanceContext.getActionTargetElements())
                 {
                     if (actionTargetElement != null)
@@ -111,10 +121,6 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
                                                                                           OpenMetadataProperty.PATH_NAME.name,
                                                                                           actionTargetElement.getTargetElement().getElementProperties(),
                                                                                           methodName);
-                        }
-                        else if (CocoClinicalTrialActionTarget.VOLUME_TEMPLATE.getName().equals(actionTargetElement.getActionTargetName()))
-                        {
-                            volumeTemplateGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
                         else if (CocoClinicalTrialActionTarget.LAST_UPDATE_CONNECTOR.getName().equals(actionTargetElement.getActionTargetName()))
                         {
@@ -253,31 +259,59 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
     {
         Map<String, String> placeholderProperties = new HashMap<>();
 
+        String volumePathName = dataLakeRootPathName + "/" + catalogName + "/" + schemaName + "/" + volumeName;
+
         placeholderProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), serverNetworkAddress);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(), catalogName);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.SCHEMA_NAME.getName(), schemaName);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.VOLUME_NAME.getName(), volumeName);
         placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), description);
         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), "V1.0");
-        placeholderProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), dataLakeRootPathName + "/" + catalogName + "/" + schemaName + "/" + volumeName);
+        placeholderProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), volumePathName);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.VOLUME_TYPE.getName(), "EXTERNAL");
 
         governanceContext.getOpenMetadataStore().setExternalSourceIds(externalSourceGUID, externalSourceName);
 
-        return governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(DeployedImplementationType.OSS_UC_VOLUME.getAssociatedTypeName(),
-                                                                                          schemaGUID,
-                                                                                          false,
-                                                                                          null,
-                                                                                          null,
-                                                                                          templateGUID,
-                                                                                          null,
-                                                                                          placeholderProperties,
-                                                                                          schemaGUID,
-                                                                                          OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
-                                                                                          null,
-                                                                                          false);
+        String volumeGUID =  governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(DeployedImplementationType.OSS_UC_VOLUME.getAssociatedTypeName(),
+                                                                                                        schemaGUID,
+                                                                                                        false,
+                                                                                                        null,
+                                                                                                        null,
+                                                                                                        templateGUID,
+                                                                                                        null,
+                                                                                                        placeholderProperties,
+                                                                                                        schemaGUID,
+                                                                                                        OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
+                                                                                                        null,
+                                                                                                        false);
+
+        governanceContext.getOpenMetadataStore().setExternalSourceIds(null, null);
+
+        this.provisionVolume(volumePathName, volumeGUID);
+
+        return volumeGUID;
     }
 
+    /**
+     * Create the landing area folder.
+     *
+     * @param pathName landing area folder name
+     */
+    private void provisionVolume(String pathName,
+                                 String volumeGUID)
+    {
+        final String methodName = "provisionVolume";
+
+        File volumeDirectory = new File(pathName);
+
+        if (! volumeDirectory.mkdir())
+        {
+            auditLog.logMessage(methodName,
+                                GovernanceActionSamplesAuditCode.NO_VOLUME_DIRECTORY.getMessageDefinition(governanceServiceName,
+                                                                                                          pathName,
+                                                                                                          volumeGUID));
+        }
+    }
 
     /**
      * If an integration connector that can maintain the last update date in the volume, then attach

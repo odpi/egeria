@@ -3,7 +3,7 @@
 
 ###
 # @name list schemas
-GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=unity&max_results=10
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=clinical_trials&max_results=10
 
 ###
 # @name create schema
@@ -52,6 +52,6 @@ Content-Type: application/json
 
 ###
 # @name delete schema
-DELETE {{ucURL}}/api/2.1/unity-catalog/schemas/unity.clinical_trial_drop_foot
+DELETE {{ucURL}}/api/2.1/unity-catalog/schemas/clinical_trials.clinical_trial_drop_foot
 Content-Type: application/json
 

@@ -80,6 +80,7 @@ public class RelatedElementsConverter<B> extends OpenMetadataStoreConverter<B>
 
                 bean.setElementGUIDAtEnd1(entityProxy.getGUID());
                 fillElementControlHeader(elementStub, entityProxy);
+                elementStub.setGUID(entityProxy.getGUID());
                 elementStub.setUniqueName(getQualifiedName(entityProxy.getUniqueProperties()));
                 bean.setElementAtEnd1(elementStub);
 
@@ -88,6 +89,7 @@ public class RelatedElementsConverter<B> extends OpenMetadataStoreConverter<B>
 
                 bean.setElementGUIDAtEnd2(entityProxy.getGUID());
                 fillElementControlHeader(elementStub, entityProxy);
+                elementStub.setGUID(entityProxy.getGUID());
                 elementStub.setUniqueName(getQualifiedName(entityProxy.getUniqueProperties()));
                 bean.setElementAtEnd2(elementStub);
 

@@ -476,7 +476,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
             }
         }
 
-        archiveHelper.addGovernedByRelationship(ProjectDefinition.CLINICAL_TRIALS.getQualifiedName(),
+        archiveHelper.addGovernedByRelationship(ProjectDefinition.DROP_FOOT_CLINICAL_TRIAL.getQualifiedName(),
                                                 CertificationTypeDefinition.DROP_FOOT_APPROVED_HOSPITAL.getQualifiedName());
 
         String oakDeneGUID = archiveHelper.queryGUID(OrganizationDefinition.OAK_DENE.getQualifiedName());
