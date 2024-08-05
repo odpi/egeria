@@ -127,7 +127,13 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="block">GOVERNANCE-ACTION-SAMPLES-0001 - The {0} governance action service has verified that hospital {1} ({2}) is certified to supply data for project {3} ({4})</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#WRONG_CERTIFICATION_TYPE_FOR_TRIAL" class="member-name-link">WRONG_CERTIFICATION_TYPE_FOR_TRIAL</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The {0} governance action service has detected that certification type {1} is not linked to the clinical trial project {2}</div>
+</div>
 </div>
 </section>
 </li>
@@ -137,8 +143,8 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <h2>Method Summary</h2>
 <div id="method-summary-table">
 <div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
-<div id="method-summary-table.tabpanel" role="tabpanel">
-<div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
+<div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
+<div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
@@ -196,9 +202,17 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="WRONG_CERTIFICATION_TYPE_FOR_TRIAL">
+<h3>WRONG_CERTIFICATION_TYPE_FOR_TRIAL</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionSamplesErrorCode.html" title="enum class in org.odpi.openmetadata.samples.governanceactions.ffdc">GovernanceActionSamplesErrorCode</a></span>&nbsp;<span class="element-name">WRONG_CERTIFICATION_TYPE_FOR_TRIAL</span></div>
+<div class="block">The {0} governance action service has detected that certification type {1} is not linked to the clinical trial project {2}</div>
+</section>
+</li>
+<li>
 <section class="detail" id="UNEXPECTED_EXCEPTION">
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionSamplesErrorCode.html" title="enum class in org.odpi.openmetadata.samples.governanceactions.ffdc">GovernanceActionSamplesErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
+<div class="block">The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}</div>
 </section>
 </li>
 </ul>

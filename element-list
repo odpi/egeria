@@ -539,6 +539,7 @@ org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics
 org.odpi.openmetadata.frameworks.openmetadata.properties.collections
 org.odpi.openmetadata.frameworks.openmetadata.properties.communities
 org.odpi.openmetadata.frameworks.openmetadata.properties.connections
+org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing
 org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness
 org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences
 org.odpi.openmetadata.frameworks.openmetadata.properties.feedback
