@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDomainElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDomainProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -59,9 +58,8 @@ public class GovernanceDomainConverter<B> extends OMFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof GovernanceDomainElement)
+            if (returnBean instanceof GovernanceDomainElement bean)
             {
-                GovernanceDomainElement bean = (GovernanceDomainElement) returnBean;
 
                 if (entity != null)
                 {

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceDefinitionGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationTypeProperties;
@@ -70,9 +69,8 @@ public class GovernanceDefinitionGraphConverter<B> extends OMFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof GovernanceDefinitionGraph)
+            if (returnBean instanceof GovernanceDefinitionGraph bean)
             {
-                GovernanceDefinitionGraph bean = (GovernanceDefinitionGraph) returnBean;
 
                 if (primaryEntity != null)
                 {

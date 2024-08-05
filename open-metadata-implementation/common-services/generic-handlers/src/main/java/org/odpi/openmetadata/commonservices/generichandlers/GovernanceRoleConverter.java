@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -60,9 +59,8 @@ public class GovernanceRoleConverter<B> extends OMFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof GovernanceRoleElement)
+            if (returnBean instanceof GovernanceRoleElement bean)
             {
-                GovernanceRoleElement    bean                     = (GovernanceRoleElement) returnBean;
                 GovernanceRoleProperties governanceRoleProperties = new GovernanceRoleProperties();
 
                 if (entity != null)

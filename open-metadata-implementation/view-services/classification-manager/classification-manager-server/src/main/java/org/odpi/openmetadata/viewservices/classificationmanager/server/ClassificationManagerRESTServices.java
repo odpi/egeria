@@ -7,9 +7,10 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.management.Stewa
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.EffectiveTimeRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyNamesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
@@ -1230,6 +1231,794 @@ public class ClassificationManagerRESTServices extends TokenController
                                                               requestBody.getEffectiveTime(),
                                                               forLineage,
                                                               forDuplicateProcessing);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve elements of the requested type name.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody  open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public MetadataElementSummariesResponse getElements(String         serverName,
+                                                        int            startFrom,
+                                                        int            pageSize,
+                                                        boolean        forLineage,
+                                                        boolean        forDuplicateProcessing,
+                                                        FindProperties requestBody)
+    {
+        final String methodName = "getElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            response.setElements(handler.getElements(userId,
+                                                     requestBody,
+                                                     startFrom,
+                                                     pageSize,
+                                                     forLineage,
+                                                     forDuplicateProcessing));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve elements by a value found in one of the properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public MetadataElementSummariesResponse getElementsByPropertyValue(String                       serverName,
+                                                                       int                          startFrom,
+                                                                       int                          pageSize,
+                                                                       boolean                      forLineage,
+                                                                       boolean                      forDuplicateProcessing,
+                                                                       FindPropertyNamesProperties  requestBody)
+    {
+        final String methodName = "getElementsByPropertyValue";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            response.setElements(handler.getElementsByPropertyValue(userId,
+                                                                    requestBody,
+                                                                    startFrom,
+                                                                    pageSize,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve elements by a value found in one of the properties specified.  The value must be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public MetadataElementSummariesResponse findElementsByPropertyValue(String                       serverName,
+                                                                        int                          startFrom,
+                                                                        int                          pageSize,
+                                                                        boolean                      forLineage,
+                                                                        boolean                      forDuplicateProcessing,
+                                                                        FindPropertyNamesProperties requestBody)
+    {
+        final String methodName = "findElementsByPropertyValue";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            response.setElements(handler.findElementsByPropertyValue(userId,
+                                                                     requestBody,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve elements with the requested classification name. It is also possible to limit the results
+     * by specifying a type name for the elements that should be returned. If no type name is specified then
+     * any type of element may be returned.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param classificationName name of classification
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody  open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public MetadataElementSummariesResponse getElementsByClassification(String         serverName,
+                                                                        String         classificationName,
+                                                                        int            startFrom,
+                                                                        int            pageSize,
+                                                                        boolean        forLineage,
+                                                                        boolean        forDuplicateProcessing,
+                                                                        FindProperties requestBody)
+    {
+        final String methodName = "getElementsByClassification";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            response.setElements(handler.getElementsByClassification(userId,
+                                                                     classificationName,
+                                                                     requestBody,
+                                                                     startFrom,
+                                                                     pageSize,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve elements with the requested classification name and with the requested a value
+     * found in one of the classification's properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the types of elements returned.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param classificationName name of classification
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public MetadataElementSummariesResponse getElementsByClassificationWithPropertyValue(String                       serverName,
+                                                                                         String                       classificationName,
+                                                                                         int                          startFrom,
+                                                                                         int                          pageSize,
+                                                                                         boolean                      forLineage,
+                                                                                         boolean                      forDuplicateProcessing,
+                                                                                         FindPropertyNamesProperties requestBody)
+    {
+        final String methodName = "getElementsByClassificationWithPropertyValue";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            response.setElements(handler.getElementsByClassificationWithPropertyValue(userId,
+                                                                                      classificationName,
+                                                                                      requestBody,
+                                                                                      startFrom,
+                                                                                      pageSize,
+                                                                                      forLineage,
+                                                                                      forDuplicateProcessing));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve elements with the requested classification name and with the requested a value found in
+     * one of the classification's properties specified.  The value must be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param classificationName name of classification
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public MetadataElementSummariesResponse findElementsByClassificationWithPropertyValue(String                       serverName,
+                                                                                          String                       classificationName,
+                                                                                          int                          startFrom,
+                                                                                          int                          pageSize,
+                                                                                          boolean                      forLineage,
+                                                                                          boolean                      forDuplicateProcessing,
+                                                                                          FindPropertyNamesProperties requestBody)
+    {
+        final String methodName = "findElementsByClassificationWithPropertyValue";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        MetadataElementSummariesResponse response = new MetadataElementSummariesResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            response.setElements(handler.findElementsByClassificationWithPropertyValue(userId,
+                                                                                       classificationName,
+                                                                                       requestBody,
+                                                                                       startFrom,
+                                                                                       pageSize,
+                                                                                       forLineage,
+                                                                                       forDuplicateProcessing));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve related elements of the requested type name.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the starting element
+     * @param relationshipTypeName name of relationship
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody  open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public RelatedMetadataElementSummariesResponse getRelatedElements(String                    serverName,
+                                                                      String                    elementGUID,
+                                                                      String                    relationshipTypeName,
+                                                                      int                       startingAtEnd,
+                                                                      int                       startFrom,
+                                                                      int                       pageSize,
+                                                                      boolean                   forLineage,
+                                                                      boolean                   forDuplicateProcessing,
+                                                                      FindProperties requestBody)
+    {
+        final String methodName = "getRelatedElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        AuditLog                               auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            response.setElements(handler.getRelatedElements(userId,
+                                                            elementGUID,
+                                                            relationshipTypeName,
+                                                            startingAtEnd,
+                                                            requestBody,
+                                                            startFrom,
+                                                            pageSize,
+                                                            forLineage,
+                                                            forDuplicateProcessing));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve elements linked via the requested relationship type name and with the requested a value
+     * found in one of the classification's properties specified.  The value must match exactly.
+     * An open metadata type name may be supplied to restrict the types of elements returned.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the starting element
+     * @param relationshipTypeName name of relationship
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public RelatedMetadataElementSummariesResponse getRelatedElementsWithPropertyValue(String                       serverName,
+                                                                                       String                       elementGUID,
+                                                                                       String                       relationshipTypeName,
+                                                                                       int                          startingAtEnd,
+                                                                                       int                          startFrom,
+                                                                                       int                          pageSize,
+                                                                                       boolean                      forLineage,
+                                                                                       boolean                      forDuplicateProcessing,
+                                                                                       FindPropertyNamesProperties requestBody)
+    {
+        final String methodName = "getRelatedElementsWithPropertyValue";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            response.setElements(handler.getRelatedElementsWithPropertyValue(userId,
+                                                                             elementGUID,
+                                                                             relationshipTypeName,
+                                                                             startingAtEnd,
+                                                                             requestBody,
+                                                                             startFrom,
+                                                                             pageSize,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve elements linked via the requested relationship type name and with the relationship's properties
+     * specified.  The value must be contained in the by a value found in one of the properties specified.
+     * The value must be contained in the
+     * properties rather than needing to be an exact match.
+     * An open metadata type name may be supplied to restrict the results.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of the starting element
+     * @param relationshipTypeName name of relationship
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public RelatedMetadataElementSummariesResponse findRelatedElementsWithPropertyValue(String                       serverName,
+                                                                                        String                       elementGUID,
+                                                                                        String                       relationshipTypeName,
+                                                                                        int                          startingAtEnd,
+                                                                                        int                          startFrom,
+                                                                                        int                          pageSize,
+                                                                                        boolean                      forLineage,
+                                                                                        boolean                      forDuplicateProcessing,
+                                                                                        FindPropertyNamesProperties requestBody)
+    {
+        final String methodName = "findRelatedElementsWithPropertyValue";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        RelatedMetadataElementSummariesResponse response = new RelatedMetadataElementSummariesResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            response.setElements(handler.findRelatedElementsWithPropertyValue(userId,
+                                                                              elementGUID,
+                                                                              relationshipTypeName,
+                                                                              startingAtEnd,
+                                                                              requestBody,
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param relationshipTypeName name of relationship
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody  open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public MetadataRelationshipSummariesResponse getRelationships(String         serverName,
+                                                                  String         relationshipTypeName,
+                                                                  int            startFrom,
+                                                                  int            pageSize,
+                                                                  boolean        forLineage,
+                                                                  boolean        forDuplicateProcessing,
+                                                                  FindProperties requestBody)
+    {
+        final String methodName = "getRelatedElements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        MetadataRelationshipSummariesResponse response = new MetadataRelationshipSummariesResponse();
+        AuditLog                              auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            response.setRelationships(handler.getRelationships(userId,
+                                                               relationshipTypeName,
+                                                               requestBody,
+                                                               startFrom,
+                                                               pageSize,
+                                                               forLineage,
+                                                               forDuplicateProcessing));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in
+     * one of the relationship's properties specified.  The value must match exactly.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param relationshipTypeName name of relationship
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public MetadataRelationshipSummariesResponse getRelationshipsWithPropertyValue(String                       serverName,
+                                                                                   String                       relationshipTypeName,
+                                                                                   int                          startFrom,
+                                                                                   int                          pageSize,
+                                                                                   boolean                      forLineage,
+                                                                                   boolean                      forDuplicateProcessing,
+                                                                                   FindPropertyNamesProperties requestBody)
+    {
+        final String methodName = "getRelationshipsWithPropertyValue";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        MetadataRelationshipSummariesResponse response = new MetadataRelationshipSummariesResponse();
+        AuditLog                              auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            response.setRelationships(handler.getRelationshipsWithPropertyValue(userId,
+                                                                                relationshipTypeName,
+                                                                                requestBody,
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                forLineage,
+                                                                                forDuplicateProcessing));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in one of
+     * the relationship's properties specified.  The value must only be contained in the properties rather than
+     * needing to be an exact match.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param relationshipTypeName name of relationship
+     * @param requestBody properties and optional open metadata type to search on
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public MetadataRelationshipSummariesResponse findRelationshipsWithPropertyValue(String                       serverName,
+                                                                                    String                       relationshipTypeName,
+                                                                                    int                          startFrom,
+                                                                                    int                          pageSize,
+                                                                                    boolean                      forLineage,
+                                                                                    boolean                      forDuplicateProcessing,
+                                                                                    FindPropertyNamesProperties requestBody)
+    {
+        final String methodName = "findRelationshipsWithPropertyValue";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        MetadataRelationshipSummariesResponse response = new MetadataRelationshipSummariesResponse();
+        AuditLog                              auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            response.setRelationships(handler.findRelationshipsWithPropertyValue(userId,
+                                                                                     relationshipTypeName,
+                                                                                     requestBody,
+                                                                                     startFrom,
+                                                                                     pageSize,
+                                                                                     forLineage,
+                                                                                     forDuplicateProcessing));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the header for the instance identified by the supplied unique identifier.
+     * It may be an element (entity) or a relationship between elements.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param guid identifier to use in the lookup
+     * @param forLineage return elements marked with the Memento classification?
+     * @param forDuplicateProcessing do not merge elements marked as duplicates?
+     * @param requestBody effective time
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public ElementHeaderResponse retrieveInstanceForGUID(String                   serverName,
+                                                         String                   guid,
+                                                         boolean                  forLineage,
+                                                         boolean                  forDuplicateProcessing,
+                                                         EffectiveTimeRequestBody requestBody)
+    {
+        final String methodName = "retrieveInstanceForGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        ElementHeaderResponse response = new ElementHeaderResponse();
+        AuditLog              auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                response.setElement(handler.retrieveInstanceForGUID(userId,
+                                                                    guid,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    null));
+            }
+            else
+            {
+                response.setElement(handler.retrieveInstanceForGUID(userId,
+                                                                    guid,
+                                                                    forLineage,
+                                                                    forDuplicateProcessing,
+                                                                    requestBody.getEffectiveTime()));
             }
         }
         catch (Exception error)

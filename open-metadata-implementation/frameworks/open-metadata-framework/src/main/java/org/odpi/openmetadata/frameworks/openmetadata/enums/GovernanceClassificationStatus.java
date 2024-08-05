@@ -41,7 +41,7 @@ public enum GovernanceClassificationStatus implements OpenMetadataEnum
                                "The classification assignment was imported from another metadata system.", false),
 
     /**
-     * The classification assignment has been validated and approved by a subject matter expert.
+     * The classification assignment has been validated and approved by a subject-matter-expert.
      */
     VALIDATED  ("f0e4b19e-8f08-4bfd-91aa-8070bce01b69", 3,"Validated",
                                "The classification assignment has been validated and approved by a subject matter expert.", false),

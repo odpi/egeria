@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.*;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalReferenceElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ReferenceableElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
@@ -19,7 +20,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementCla
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -537,7 +538,8 @@ public class AutomatedCurationRESTServices extends TokenController
                     List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
                                                                                                       OpenMetadataType.REFERENCEABLE.typeName,
                                                                                                       null,
-                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, requestBody.getFilter()),
+                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, requestBody.getFilter(), PropertyComparisonOperator.LIKE),
+                                                                                                      null,
                                                                                                       null,
                                                                                                       null,
                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,

@@ -268,7 +268,7 @@ public class AssetConsumerRESTServices
                         if (metadataElement != null)
                         {
                             relationships = metadataRelationshipHandler.getAllAttachmentLinks(userId,
-                                                                                              metadataElement.getGUID(),
+                                                                                              metadataElement.getElementHeader().getGUID(),
                                                                                               anchoredElementParameterName,
                                                                                               OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                               false,
@@ -405,6 +405,11 @@ public class AssetConsumerRESTServices
                 propertyConditions.add(namePropertyCondition);
 
                 displayNamePropertyCondition.setProperty(OpenMetadataProperty.DISPLAY_NAME.name);
+                displayNamePropertyCondition.setOperator(PropertyComparisonOperator.LIKE);
+                displayNamePropertyCondition.setValue(displayNamePropertyValue);
+                propertyConditions.add(displayNamePropertyCondition);
+
+                displayNamePropertyCondition.setProperty(OpenMetadataProperty.RESOURCE_NAME.name);
                 displayNamePropertyCondition.setOperator(PropertyComparisonOperator.LIKE);
                 displayNamePropertyCondition.setValue(displayNamePropertyValue);
                 propertyConditions.add(displayNamePropertyCondition);

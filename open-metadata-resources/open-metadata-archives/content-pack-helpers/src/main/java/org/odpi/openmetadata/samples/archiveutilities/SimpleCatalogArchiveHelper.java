@@ -2400,6 +2400,45 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
+     * Return the asset zone membership classification.
+     *
+     * @param zones list of zones that the asset is a member of.
+     */
+    public Classification getAssetZoneMembershipClassification(List<String> zones)
+    {
+        final String methodName = "getAssetZoneMembershipClassification";
+
+        return archiveHelper.getClassification(OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME,
+                                               archiveHelper.addStringArrayPropertyToInstance(archiveRootName,
+                                                                                              null,
+                                                                                              OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                                              zones,
+                                                                                              methodName),
+                                               InstanceStatus.ACTIVE);
+    }
+
+
+    /**
+     * Add the asset zone membership classification to the requested asset.
+     *
+     * @param assetGUID unique identifier of the asset to classify
+     * @param zones list of zones that the asset is a member of.
+     */
+    public void addAssetZoneMembershipClassification(String       assetGUID,
+                                                     List<String> zones)
+    {
+        EntityDetail assetEntity = archiveBuilder.getEntity(assetGUID);
+        EntityProxy  entityProxy = archiveHelper.getEntityProxy(assetEntity);
+
+        Classification  classification = this.getAssetZoneMembershipClassification(zones);
+
+        archiveBuilder.addClassification(archiveHelper.getClassificationEntityExtension(entityProxy, classification));
+    }
+
+
+
+
+    /**
      * Return the asset origin classification.
      *
      * @param organization organization GUID/name
@@ -2451,41 +2490,77 @@ public class SimpleCatalogArchiveHelper
                                                InstanceStatus.ACTIVE);
     }
 
-    /**
-     * Return the asset zone membership classification.
-     *
-     * @param zones list of zones that the asset is a member of.
-     */
-    public Classification getAssetZoneMembershipClassification(List<String> zones)
-    {
-        final String methodName = "getAssetZoneMembershipClassification";
 
-        return archiveHelper.getClassification(OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME,
-                                               archiveHelper.addStringArrayPropertyToInstance(archiveRootName,
-                                                                                              null,
-                                                                                              OpenMetadataProperty.ZONE_MEMBERSHIP.name,
-                                                                                              zones,
-                                                                                              methodName),
+    /**
+     * Return the confidentiality classification.
+     *
+     * @param statusIdentifier status of this classification
+     * @param confidence how confident that it is correct 0-100
+     * @param steward who agreed to the setting
+     * @param stewardTypeName that type of element is describing the steward
+     * @param stewardPropertyName which property name was used to identify the steward
+     * @param source what is the source of this classification
+     * @param notes additional notes from the steward
+     * @param levelIdentifier what is the level of the classification
+     * @return classification
+     */
+    public Classification getConfidentialityClassification(int    statusIdentifier,
+                                                           int    confidence,
+                                                           String steward,
+                                                           String stewardTypeName,
+                                                           String stewardPropertyName,
+                                                           String source,
+                                                           String notes,
+                                                           int    levelIdentifier)
+    {
+        final String methodName = "getConfidentialityClassification";
+
+        InstanceProperties classificationProperties = archiveHelper.addIntPropertyToInstance(archiveRootName,
+                                                                                             null,
+                                                                                             OpenMetadataProperty.STATUS_IDENTIFIER.name,
+                                                                                             statusIdentifier,
+                                                                                             methodName);
+        classificationProperties = archiveHelper.addIntPropertyToInstance(archiveRootName,
+                                                                          classificationProperties,
+                                                                          OpenMetadataProperty.CONFIDENCE.name,
+                                                                          confidence,
+                                                                          methodName);
+        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                             classificationProperties,
+                                                                             OpenMetadataProperty.STEWARD.name,
+                                                                             steward,
+                                                                             methodName);
+        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                             classificationProperties,
+                                                                             OpenMetadataProperty.STEWARD_TYPE_NAME.name,
+                                                                             stewardTypeName,
+                                                                             methodName);
+        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                             classificationProperties,
+                                                                             OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
+                                                                             stewardPropertyName,
+                                                                             methodName);
+        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                             classificationProperties,
+                                                                             OpenMetadataProperty.SOURCE.name,
+                                                                             source,
+                                                                             methodName);
+        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                             classificationProperties,
+                                                                             OpenMetadataProperty.NOTES.name,
+                                                                             notes,
+                                                                             methodName);
+        classificationProperties = archiveHelper.addIntPropertyToInstance(archiveRootName,
+                                                                          classificationProperties,
+                                                                          OpenMetadataProperty.CONFIDENTIALITY_LEVEL_IDENTIFIER.name,
+                                                                          levelIdentifier,
+                                                                          methodName);
+
+        return archiveHelper.getClassification(OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
+                                               classificationProperties,
                                                InstanceStatus.ACTIVE);
     }
 
-
-    /**
-     * Add the asset zone membership classification to the requested asset.
-     *
-     * @param assetGUID unique identifier of the asset to classify
-     * @param zones list of zones that the asset is a member of.
-     */
-    public void addAssetZoneMembershipClassification(String       assetGUID,
-                                                     List<String> zones)
-    {
-        EntityDetail assetEntity = archiveBuilder.getEntity(assetGUID);
-        EntityProxy  entityProxy = archiveHelper.getEntityProxy(assetEntity);
-
-        Classification  classification = this.getAssetZoneMembershipClassification(zones);
-
-        archiveBuilder.addClassification(archiveHelper.getClassificationEntityExtension(entityProxy, classification));
-    }
 
 
     /**
@@ -5797,6 +5872,29 @@ public class SimpleCatalogArchiveHelper
                                                                      end1,
                                                                      end2));
     }
+
+
+    /**
+     * Create an approved purpose between a Referenceable and a data processing purpose.
+     *
+     * @param referenceableGUID identifier of term
+     * @param dataProcessingPurposeGUID identifier of the purpose
+     */
+    public void linkApprovedPurpose(String  referenceableGUID,
+                                    String  dataProcessingPurposeGUID)
+    {
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(referenceableGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(dataProcessingPurposeGUID));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.APPROVED_PURPOSE_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(dataProcessingPurposeGUID + "_to_" + referenceableGUID + "_approved_purpose_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
 
     /**
      * Create a semantic assignment between a term and a Referenceable - for example a model element.

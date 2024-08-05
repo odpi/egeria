@@ -300,6 +300,40 @@ public class RepositoryHandler
 
 
     /**
+     * Validate an relationship retrieved from the repository is suitable for the requester.
+     * There are two considerations: (1) Are the effectivity dates in the relationship's properties indicating that this relationship
+     * is effective at this time? (2) is the type of the relationship correct..
+     *
+     * @param relationship retrieved relationship
+     * @param relationshipTypeName unique name for type of relationship
+     * @param effectiveTime   time when the examined elements must be effective
+     * @param methodName calling method
+     * @return relationship to return to the caller - or null to mean the retrieved relationship is not appropriate for the caller
+     */
+    public Relationship validateRetrievedRelationship(Relationship relationship,
+                                                      String       relationshipTypeName,
+                                                      Date         effectiveTime,
+                                                      String       methodName)
+    {
+        if (relationship == null)
+        {
+            log.debug("no supplied relationship");
+            return null;
+        }
+
+        if ((isCorrectEffectiveTime(relationship.getProperties(), effectiveTime) &&
+                (errorHandler.isInstanceATypeOf(relationship, relationshipTypeName, methodName))))
+        {
+            return relationship;
+        }
+
+        log.debug("invalid relationship");
+        return null;
+    }
+
+
+
+    /**
      * Use the dates in the entities and return the one that was last updated most recently.
      * If the dates are equal, then compare GUIDs in order to always retrieve the same entity (no matter
      * which of the entities is the current and which is the new one).
@@ -405,6 +439,74 @@ public class RepositoryHandler
                     else
                     {
                         log.debug("Skipping entity since unavailable for some reason");
+                    }
+                }
+            }
+
+            if (log.isDebugEnabled())
+            {
+                log.debug(results.size() + " entities returned");
+            }
+
+            return results;
+        }
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("No entities returned");
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Filter relationship results that do not match the requester's criteria.  If all entities are filtered out, an empty list is
+     * returned to show that the caller can issue another retrieve if more elements are needed.
+     *
+     * @param retrievedRelationships list of entities retrieved from the repositories
+     * @param expectedRelationshipTypeName type name to validate
+     * @param effectiveTime  effective time to match against
+     * @param methodName calling method
+     *
+     * @return matching relationships
+     */
+    private List<Relationship> validateRelationships(List<Relationship> retrievedRelationships,
+                                                     String             expectedRelationshipTypeName,
+                                                     Date               effectiveTime,
+                                                     String             methodName)
+    {
+        Set<String> acceptedGUIDs = new HashSet<>();
+
+        if (retrievedRelationships != null)
+        {
+            List<Relationship> results = new ArrayList<>();
+
+            for (Relationship relationship : retrievedRelationships)
+            {
+                if (relationship != null)
+                {
+                    Relationship validatedRelationship = this.validateRetrievedRelationship(relationship,
+                                                                                            expectedRelationshipTypeName,
+                                                                                            effectiveTime,
+                                                                                            methodName);
+
+                    if (validatedRelationship != null)
+                    {
+                        if (! acceptedGUIDs.contains(validatedRelationship.getGUID()))
+                        {
+                            acceptedGUIDs.add(validatedRelationship.getGUID());
+                            results.add(validatedRelationship);
+                        }
+                        else
+                        {
+                            log.debug("Skipping relationship since already retrieved - because using consolidated entities");
+                        }
+                    }
+                    else
+                    {
+                        log.debug("Skipping relationship since unavailable for some reason");
                     }
                 }
             }
@@ -3806,42 +3908,11 @@ public class RepositoryHandler
      *
      * @param userId calling userId
      * @param entityTypeGUID type of entity required
-     * @param startingFrom initial position in the stored list.
-     * @param pageSize maximum number of definitions to return on this call.
-     * @param methodName calling method
-     *
-     * @return list of returned entities - null means no more to retrieve; list (even if empty) means more to receive
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the entity.
-     */
-    public List<EntityDetail> getEntitiesByType(String userId,
-                                                String entityTypeGUID,
-                                                int    startingFrom,
-                                                int    pageSize,
-                                                String methodName) throws UserNotAuthorizedException,
-                                                                          PropertyServerException
-    {
-        return getEntitiesByType(userId,
-                                 entityTypeGUID,
-                                 false,
-                                 false,
-                                 startingFrom,
-                                 pageSize,
-                                 null,
-                                 null,
-                                 null,
-                                 new Date(),
-                                 methodName);
-    }
-
-
-    /**
-     * Return the requested entities that match the requested type.
-     *
-     * @param userId calling userId
-     * @param entityTypeGUID type of entity required
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values except DELETED.
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
@@ -3855,18 +3926,19 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
-    public List<EntityDetail> getEntitiesByType(String          userId,
-                                                String          entityTypeGUID,
-                                                boolean         forLineage,
-                                                boolean         forDuplicateProcessing,
-                                                int             startingFrom,
-                                                int             pageSize,
-                                                Date            asOfTime,
-                                                String          sequencingProperty,
-                                                SequencingOrder sequencingOrder,
-                                                Date            effectiveTime,
-                                                String          methodName) throws UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public List<EntityDetail> getEntitiesByType(String               userId,
+                                                String               entityTypeGUID,
+                                                boolean              forLineage,
+                                                boolean              forDuplicateProcessing,
+                                                List<InstanceStatus> limitResultsByStatus,
+                                                int                  startingFrom,
+                                                int                  pageSize,
+                                                Date                 asOfTime,
+                                                String               sequencingProperty,
+                                                SequencingOrder      sequencingOrder,
+                                                Date                 effectiveTime,
+                                                String               methodName) throws UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         final String localMethodName = "getEntitiesByType";
 
@@ -3877,7 +3949,7 @@ public class RepositoryHandler
                                                                                              null,
                                                                                              null,
                                                                                              startingFrom,
-                                                                                             null,
+                                                                                             limitResultsByStatus,
                                                                                              null,
                                                                                              asOfTime,
                                                                                              sequencingProperty,
@@ -4420,6 +4492,72 @@ public class RepositoryHandler
             {
                 errorHandler.handleRepositoryError(error, methodName, localMethodName);
             }
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Return the requested relationships that match the requested type.
+     *
+     * @param userId calling userId
+     * @param relationshipTypeGUID type of relationship required
+     * @param relationshipTypeName type of relationship required
+     * @param startingFrom initial position in the stored list.
+     * @param pageSize maximum number of definitions to return on this call.
+     * @param asOfTime Requests a historical query of the relationship.  Null means return the present values.
+     * @param sequencingProperty String name of the relationship property that is to be used to sequence the results.
+     *                                Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return list of returned relationship - null means no more to retrieve; list (even if empty) means more to receive
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public List<Relationship> getRelationshipsForType(String               userId,
+                                                      String               relationshipTypeGUID,
+                                                      String               relationshipTypeName,
+                                                      List<InstanceStatus> limitResultsByStatus,
+                                                      int                  startingFrom,
+                                                      int                  pageSize,
+                                                      Date                 asOfTime,
+                                                      String               sequencingProperty,
+                                                      SequencingOrder      sequencingOrder,
+                                                      Date                 effectiveTime,
+                                                      String               methodName) throws UserNotAuthorizedException,
+                                                                                              PropertyServerException
+    {
+        final String localMethodName = "getRelationshipsForType";
+
+        try
+        {
+            List<Relationship> retrievedRelationships = metadataCollection.findRelationshipsByProperty(userId,
+                                                                                                       relationshipTypeGUID,
+                                                                                                       null,
+                                                                                                       null,
+                                                                                                       startingFrom,
+                                                                                                       limitResultsByStatus,
+                                                                                                       asOfTime,
+                                                                                                       sequencingProperty,
+                                                                                                       sequencingOrder,
+                                                                                                       pageSize);
+
+            return validateRelationships(retrievedRelationships,
+                                         relationshipTypeName,
+                                         effectiveTime,
+                                         methodName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Exception   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;

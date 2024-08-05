@@ -228,7 +228,7 @@ public class AssetLicensesResource
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
-     * @param licenseGUID unique identifier for the license
+     * @param licenseTypeGUID unique identifier for the license
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -237,15 +237,15 @@ public class AssetLicensesResource
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    @GetMapping (path = "/elements/licenses/{licenseGUID}")
+    @GetMapping (path = "/elements/licenses/{licenseTypeGUID}")
 
-    public RelatedElementsResponse getCertifiedElements(@PathVariable String serverName,
-                                                        @PathVariable String userId,
-                                                        @PathVariable String licenseGUID,
-                                                        @RequestParam int    startFrom,
-                                                        @RequestParam int    pageSize)
+    public RelatedElementsResponse getLicensedElements(@PathVariable String serverName,
+                                                       @PathVariable String userId,
+                                                       @PathVariable String licenseTypeGUID,
+                                                       @RequestParam int    startFrom,
+                                                       @RequestParam int    pageSize)
     {
-        return restAPI.getLicensedElements(serverName, userId, licenseGUID, startFrom, pageSize);
+        return restAPI.getLicensedElements(serverName, userId, licenseTypeGUID, startFrom, pageSize);
     }
 
 

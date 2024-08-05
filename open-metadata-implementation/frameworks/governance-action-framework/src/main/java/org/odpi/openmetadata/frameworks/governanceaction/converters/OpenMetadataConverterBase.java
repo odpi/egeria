@@ -536,17 +536,19 @@ public abstract class OpenMetadataConverterBase<B>
     {
         if (element != null)
         {
-            MetadataElementSummary elementHeader = new MetadataElementSummary(element);
+            MetadataElementSummary elementSummary = new MetadataElementSummary();
+            ElementHeader          elementHeader  = new ElementHeader(element);
 
             elementHeader.setGUID(element.getElementGUID());
             elementHeader.setClassifications(this.getElementClassifications(element.getClassifications()));
 
+            elementSummary.setElementHeader(elementHeader);
             if (element.getElementProperties() != null)
             {
-                elementHeader.setProperties(element.getElementProperties().getPropertiesAsStrings());
+                elementSummary.setProperties(element.getElementProperties().getPropertiesAsStrings());
             }
 
-            return elementHeader;
+            return elementSummary;
         }
         else
         {
@@ -556,6 +558,56 @@ public abstract class OpenMetadataConverterBase<B>
         return null;
     }
 
+
+    /**
+     * Extract the properties from the element.
+     *
+     * @param beanClass name of the class to create
+     * @param relatedElement from the repository
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    public RelatedMetadataElementSummary getRelatedElementSummary(Class<B>               beanClass,
+                                                                  RelatedMetadataElement relatedElement,
+                                                                  String                 methodName) throws PropertyServerException
+    {
+        if ((relatedElement != null) && (relatedElement.getElement() != null))
+        {
+            RelatedMetadataElementSummary relatedElementSummary = new RelatedMetadataElementSummary();
+            MetadataElementSummary        elementSummary = new MetadataElementSummary();
+            ElementHeader                 elementHeader  = new ElementHeader(relatedElement);
+
+            elementHeader.setGUID(relatedElement.getRelationshipGUID());
+
+            relatedElementSummary.setRelationshipHeader(elementHeader);
+            if (relatedElement.getRelationshipProperties() != null)
+            {
+                relatedElementSummary.setRelationshipProperties(relatedElement.getRelationshipProperties().getPropertiesAsStrings());
+            }
+
+            elementHeader = new ElementHeader(relatedElement.getElement());
+            elementHeader.setGUID(relatedElement.getElement().getElementGUID());
+            elementHeader.setClassifications(this.getElementClassifications(relatedElement.getElement().getClassifications()));
+
+            elementSummary.setElementHeader(elementHeader);
+            if (relatedElement.getElement().getElementProperties() != null)
+            {
+                elementSummary.setProperties(relatedElement.getElement().getElementProperties().getPropertiesAsStrings());
+            }
+
+            relatedElementSummary.setRelatedElement(elementSummary);
+
+            return relatedElementSummary;
+        }
+        else
+        {
+            this.handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
+        }
+
+        return null;
+    }
 
     /**
      * Extract the properties from the element.
@@ -653,7 +705,7 @@ public abstract class OpenMetadataConverterBase<B>
      * @param attachedClassifications classifications direct from the element
      * @return list of bean classifications
      */
-    protected List<ElementClassification> getElementClassifications(List<AttachedClassification> attachedClassifications)
+    public List<ElementClassification> getElementClassifications(List<AttachedClassification> attachedClassifications)
     {
         List<ElementClassification> beanClassifications = null;
 

@@ -2273,6 +2273,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.RESOURCE_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
 
         List<EntityDetail> results = this.getEntitiesByValue(userId,
@@ -2968,6 +2970,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.RESOURCE_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
 
         return this.getBeansByValue(userId,
@@ -3094,6 +3098,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.RESOURCE_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
 
         return this.getEntityGUIDsByValue(userId,
                                           name,
@@ -3219,6 +3225,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.RESOURCE_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.PATH_NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,

@@ -875,9 +875,9 @@ public class ToDosTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Null action target from Retrieve)");
             }
-            if (! assetGUID.equals(actionTarget.getTargetElement().getGUID()))
+            if (! assetGUID.equals(actionTarget.getTargetElement().getElementHeader().getGUID()))
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad action target GUID from Retrieve) =>> " + actionTarget.getTargetElement().getGUID());
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad action target GUID from Retrieve) =>> " + actionTarget.getTargetElement().getElementHeader().getGUID());
             }
             
             if (! actionTargetName.equals(actionTarget.getRelationshipProperties().getActionTargetName()))

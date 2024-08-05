@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
-import org.odpi.openmetadata.commonservices.generichandlers.OMFConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.GovernanceMetricImplementation;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceMetricProperties;
@@ -63,9 +62,8 @@ public class GovernanceMetricImplementationConverter<B> extends OMFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof GovernanceMetricImplementation)
+            if (returnBean instanceof GovernanceMetricImplementation bean)
             {
-                GovernanceMetricImplementation bean = (GovernanceMetricImplementation) returnBean;
 
                 if (entity != null)
                 {
@@ -129,9 +127,8 @@ public class GovernanceMetricImplementationConverter<B> extends OMFConverter<B>
     {
         B returnBean = this.getNewBean(beanClass, entity, methodName);
 
-        if (returnBean instanceof GovernanceMetricImplementation)
+        if (returnBean instanceof GovernanceMetricImplementation bean)
         {
-            GovernanceMetricImplementation bean = (GovernanceMetricImplementation) returnBean;
 
             bean.setRelatedElement(super.getRelatedElement(beanClass, entity, relationship, methodName));
         }
@@ -165,9 +162,8 @@ public class GovernanceMetricImplementationConverter<B> extends OMFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof GovernanceMetricImplementation)
+            if (returnBean instanceof GovernanceMetricImplementation bean)
             {
-                GovernanceMetricImplementation bean = (GovernanceMetricImplementation) returnBean;
 
                 if (primaryEntity != null)
                 {

@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -23,7 +24,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -880,7 +881,8 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
                                                                                                       OpenMetadataType.COLLECTION.typeName,
                                                                                                       null,
-                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, validValueName),
+                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, validValueName, PropertyComparisonOperator.EQ),
+                                                                                                      null,
                                                                                                       null,
                                                                                                       null,
                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,

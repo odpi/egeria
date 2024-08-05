@@ -9,9 +9,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.CollectionConverter;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.CollectionMemberConverter;
+import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CollectionMemberStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OrderBy;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.CollectionMember;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionFolderProperties;
@@ -24,11 +26,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ClassificationCondition;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.MatchCriteria;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SearchClassifications;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -227,6 +224,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                                       null,
                                                                                                       null,
                                                                                                       null,
+                                                                                                      null,
                                                                                                       searchClassifications,
                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                       SequencingOrder.PROPERTY_ASCENDING,
@@ -351,7 +349,8 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
                                                                                                       OpenMetadataType.COLLECTION.typeName,
                                                                                                       null,
-                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, name),
+                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames, name, PropertyComparisonOperator.EQ),
+                                                                                                      null,
                                                                                                       null,
                                                                                                       null,
                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
@@ -399,7 +398,9 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                                       OpenMetadataType.COLLECTION.typeName,
                                                                                                       null,
                                                                                                       propertyHelper.getSearchPropertiesByName(propertyNames,
-                                                                                                                                               collectionType),
+                                                                                                                                               collectionType,
+                                                                                                                                               PropertyComparisonOperator.EQ),
+                                                                                                      null,
                                                                                                       null,
                                                                                                       null,
                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,

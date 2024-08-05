@@ -48,7 +48,6 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
         String projectGUID              = null;
         String hospitalGUID             = null;
         String hospitalName             = null;
-        String personGUID               = null;
         String contactName              = null;
         String contactEmail             = null;
         String rawTemplateGUID          = null;
@@ -97,7 +96,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
                                                                            OpenMetadataProperty.NAME.name,
                                                                            actionTargetElement.getTargetElement().getElementProperties(),
                                                                            methodName);
-                            personGUID = actionTargetElement.getTargetElement().getElementGUID();
+                            String personGUID = actionTargetElement.getTargetElement().getElementGUID();
 
                             List<RelatedMetadataElement> contactDetails = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(personGUID,
                                                                                                                                               1,
@@ -238,7 +237,8 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
 
 
     /**
-     * Ensure that the hospital is certified.
+     * Ensure that the hospital is certified.  Begin at the node that represents the hospital and retrieve the
+     * certification relationships it has.  For each certification navigate to
      *
      * @param projectGUID the unique identifier of the clinical trail project
      * @param clinicalTrialName name of the clinical trial
@@ -427,9 +427,16 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
      */
     private void provisionLandingFolder(String pathName)
     {
+        final String methodName = "provisionLandingFolder";
+
         File landingFolder = new File(pathName);
 
-        landingFolder.mkdir();
+        if (! landingFolder.mkdir())
+        {
+            auditLog.logMessage(methodName,
+                                GovernanceActionSamplesAuditCode.NO_LANDING_FOLDER.getMessageDefinition(governanceServiceName,
+                                                                                                        pathName));
+        }
     }
 
 

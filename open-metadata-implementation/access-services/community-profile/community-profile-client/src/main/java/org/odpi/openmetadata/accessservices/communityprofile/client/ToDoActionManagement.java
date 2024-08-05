@@ -21,7 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 
 import java.util.*;
 
@@ -667,22 +667,20 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<String> propertyNames = List.of(OpenMetadataType.TO_DO_TYPE_PROPERTY_NAME);
-
-        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
-                                                                                                      OpenMetadataType.TO_DO_TYPE_NAME,
-                                                                                                      null,
-                                                                                                      propertyHelper.getSearchPropertiesByName(propertyNames,
-                                                                                                                                               toDoType),
-                                                                                                      null,
-                                                                                                      null,
-                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                      SequencingOrder.PROPERTY_ASCENDING,
-                                                                                                      false,
-                                                                                                      false,
-                                                                                                      new Date(),
-                                                                                                      startFrom,
-                                                                                                      pageSize);
+        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.getMetadataElementsByPropertyValue(userId,
+                                                                                                                    OpenMetadataType.TO_DO_TYPE_NAME,
+                                                                                                                    null,
+                                                                                                                    OpenMetadataType.TO_DO_TYPE_PROPERTY_NAME,
+                                                                                                                    toDoType,
+                                                                                                                    null,
+                                                                                                                    null,
+                                                                                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                                    SequencingOrder.PROPERTY_ASCENDING,
+                                                                                                                    false,
+                                                                                                                    false,
+                                                                                                                    new Date(),
+                                                                                                                    startFrom,
+                                                                                                                    pageSize);
 
         return convertToDos(userId, openMetadataElements, toDoStatus, methodName);
     }

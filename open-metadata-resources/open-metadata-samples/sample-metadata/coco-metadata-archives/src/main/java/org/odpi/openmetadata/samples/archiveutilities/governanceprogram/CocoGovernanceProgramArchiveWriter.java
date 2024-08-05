@@ -57,6 +57,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
         writeDomains();
         writeLicenseTypes();
         writeCertificationTypes();
+        writeDataProcessingPurposes();
         writeZones();
         writeSubjectAreaDefinitions();
         writeCommunities();
@@ -188,6 +189,28 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
     }
 
 
+    /**
+     * Creates DataProcessing definitions.
+     */
+    private void writeDataProcessingPurposes()
+    {
+        for (DataProcessingPurposeDefinition dataProcessingPurposeDefinition : DataProcessingPurposeDefinition.values())
+        {
+            archiveHelper.addGovernanceDefinition(OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName,
+                                                  dataProcessingPurposeDefinition.getQualifiedName(),
+                                                  dataProcessingPurposeDefinition.getTitle(),
+                                                  dataProcessingPurposeDefinition.getSummary(),
+                                                  dataProcessingPurposeDefinition.getScope().getPreferredValue(),
+                                                  dataProcessingPurposeDefinition.getDescription(),
+                                                  0,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null);
+        }
+    }
 
     /**
      * Creates Governance Zone definitions.
@@ -458,7 +481,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
 
         String oakDeneGUID = archiveHelper.queryGUID(OrganizationDefinition.OAK_DENE.getQualifiedName());
         String hamptonGUID = archiveHelper.queryGUID(OrganizationDefinition.HAMPTON.getQualifiedName());
-        String dropFootGUID = archiveHelper.queryGUID(CertificationTypeDefinition.DROP_FOOT_APPROVED_HOSPITAL.getQualifiedName());
+        String dropFootCertificationTypeGUID = archiveHelper.queryGUID(CertificationTypeDefinition.DROP_FOOT_APPROVED_HOSPITAL.getQualifiedName());
 
         archiveHelper.addCertification(oakDeneGUID,
                                        UUID.randomUUID().toString(),
@@ -475,7 +498,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
                                        OpenMetadataType.PERSON_TYPE_NAME,
                                        OpenMetadataProperty.QUALIFIED_NAME.name,
                                        null,
-                                       dropFootGUID);
+                                       dropFootCertificationTypeGUID);
 
         archiveHelper.addCertification(hamptonGUID,
                                        UUID.randomUUID().toString(),
@@ -492,6 +515,6 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
                                        OpenMetadataType.PERSON_TYPE_NAME,
                                        OpenMetadataProperty.QUALIFIED_NAME.name,
                                        null,
-                                       dropFootGUID);
+                                       dropFootCertificationTypeGUID);
     }
 }

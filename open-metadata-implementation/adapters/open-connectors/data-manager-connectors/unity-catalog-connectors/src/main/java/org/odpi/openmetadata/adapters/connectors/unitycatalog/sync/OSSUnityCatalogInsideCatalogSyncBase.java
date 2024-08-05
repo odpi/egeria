@@ -350,7 +350,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         ElementProperties elementProperties = memberElement.getElement().getElementProperties();
 
         String fullName = propertyHelper.getStringProperty(catalogTargetName,
-                                                           OpenMetadataProperty.NAME.name,
+                                                           OpenMetadataProperty.RESOURCE_NAME.name,
                                                            elementProperties,
                                                            methodName);
 
@@ -371,7 +371,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         ElementProperties elementProperties = memberElement.getElement().getElementProperties();
 
         String fullName = propertyHelper.getStringProperty(catalogTargetName,
-                                                           OpenMetadataProperty.NAME.name,
+                                                           OpenMetadataProperty.RESOURCE_NAME.name,
                                                            elementProperties,
                                                            methodName);
 
@@ -393,7 +393,7 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
         ElementProperties elementProperties = memberElement.getElement().getElementProperties();
 
         String fullName = propertyHelper.getStringProperty(catalogTargetName,
-                                                           OpenMetadataProperty.NAME.name,
+                                                           OpenMetadataProperty.RESOURCE_NAME.name,
                                                            elementProperties,
                                                            methodName);
 

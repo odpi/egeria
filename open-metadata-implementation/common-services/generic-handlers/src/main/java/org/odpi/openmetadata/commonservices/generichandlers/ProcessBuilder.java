@@ -16,9 +16,9 @@ import java.util.Map;
  */
 public class ProcessBuilder extends AssetBuilder
 {
-    private String formula                = null;
-    private String formulaType            = null;
-    private String implementationLanguage = null;
+    private final String formula     = null;
+    private final String formulaType = null;
+    private final String implementationLanguage = null;
 
     /**
      * Creation constructor used when working with classifications

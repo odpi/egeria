@@ -138,11 +138,13 @@ public class PropertyHelper
      * Return the search properties that requests elements with an exactly matching name in any of the listed property names.
      *
      * @param propertyNames list of property names
-     * @param name name to match on
+     * @param value name to match on
+     * @param propertyComparisonOperator set to EQ for exact match and LIKE for fuzzy match
      * @return search properties
      */
-    public SearchProperties getSearchPropertiesByName(List<String> propertyNames,
-                                                      String       name)
+    public SearchProperties getSearchPropertiesByName(List<String>               propertyNames,
+                                                      String                     value,
+                                                      PropertyComparisonOperator propertyComparisonOperator)
     {
         if ((propertyNames != null) && (! propertyNames.isEmpty()))
         {
@@ -151,7 +153,15 @@ public class PropertyHelper
             PrimitiveTypePropertyValue propertyValue = new PrimitiveTypePropertyValue();
             propertyValue.setTypeName("string");
             propertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
-            propertyValue.setPrimitiveValue(name);
+
+            if (PropertyComparisonOperator.LIKE.equals(propertyComparisonOperator))
+            {
+                propertyValue.setPrimitiveValue(".*" + Pattern.quote(value) + ".*");
+            }
+            else
+            {
+                propertyValue.setPrimitiveValue(value);
+            }
 
             List<PropertyCondition> propertyConditions = new ArrayList<>();
 
@@ -161,7 +171,15 @@ public class PropertyHelper
 
                 propertyCondition.setValue(propertyValue);
                 propertyCondition.setProperty(propertyName);
-                propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+
+                if (propertyComparisonOperator == null)
+                {
+                    propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+                }
+                else
+                {
+                    propertyCondition.setOperator(propertyComparisonOperator);
+                }
 
                 propertyConditions.add(propertyCondition);
             }

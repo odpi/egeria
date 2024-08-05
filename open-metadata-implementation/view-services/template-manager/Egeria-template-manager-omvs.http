@@ -31,7 +31,7 @@ Content-Type: application/json
 #
 # Further Information: https://egeria-project.org/services/gaf-metadata-management/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/templates/by-search-string)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/templates/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

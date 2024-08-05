@@ -10,6 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -153,6 +154,7 @@ public class AssetCatalogUIRESTServices extends TokenController
                                                                              null,
                                                                              searchProperties,
                                                                              activeElementsOnly,
+                                                                             null,
                                                                              this.getMatchClassifications(instanceHandler.getSupportedAssetTypes(userId, serverName, methodName),
                                                                                                           typeNames),
                                                                              sequencingProperty,

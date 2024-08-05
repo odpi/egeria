@@ -2069,6 +2069,79 @@ public enum OpenMetadataType
                                       "b1e75f5d-0c80-49ee-8550-8e1a54b91cb6",
                                       "A link between two valid values from different valid value sets that have equivalent meanings and can be used to translate values from one set to another."),
 
+    /**
+     * A detailed description of the effect of some data processing.
+     */
+    DATA_PROCESSING_DESCRIPTION("685f91fb-c74b-437b-a9b6-c5e557c6d3b2",
+                                "DataProcessingDescription",
+                                OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                "3c1d6681-5ef6-404a-8876-4ad6d9b48e37",
+                                "A detailed description of the effect of some data processing."),
+
+    /**
+     * Expected outcome, service or value from processing.
+     */
+    DATA_PROCESSING_PURPOSE("9062df4c-9f4a-4012-a67a-968d7a3f4bcf",
+                            "DataProcessingPurpose",
+                            OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                            "596481bd-0771-406b-8dd2-bac9487bf565",
+                            "Expected outcome, service or value from processing."),
+
+    /**
+     * Description of the processing on a single target item.
+     */
+    DATA_PROCESSING_ACTION("7f53928f-9148-4710-ad37-47633f33cb08",
+                           "DataProcessingActionProperties",
+                           OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                           "85954b5a-ef3e-4bf7-94a6-ce7a24153ef6",
+                           "Description of the processing on a single target item."),
+
+    /**
+     * Relationship relates data processing descriptions with purposes (outcomes).
+     */
+    PERMITTED_PROCESSING_RELATIONSHIP("b472a2ec-f419-4d3f-86fb-e9d97365f961",
+                                      "PermittedProcessing",
+                                      OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                      "0cf13128-42c3-4d22-a3c6-c3ab70f7ae43",
+                                      "Relationship relates data processing descriptions with purposes (outcomes)."),
+
+    /**
+     * Relationship identifying the proposes that processes/people have permission to process data for.
+     */
+    APPROVED_PURPOSE_RELATIONSHIP("33ec3aaa-dfb6-4f58-8d5d-c42d077be1b3",
+                                  "ApprovedPurpose",
+                                  OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                  "f39090c4-c4bb-4594-8a9d-e9d43f3bdb1a",
+                                  "Relationship identifying the proposes that processes/people have permission to process data for."),
+
+    /**
+     * Relationship identifying the individual actions in a data processing description.
+     */
+    DETAILED_PROCESSING_ACTION_RELATIONSHIP("0ac0e793-6727-45d2-9403-06bd19d9ce2e",
+                                            "DetailedProcessingAction",
+                                            OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                            "11d4a348-15ab-4520-b5cc-ddfe9c88559d",
+                                            "Relationship identifying the individual actions in a data processing description."),
+
+    /**
+     * Relationship identifying the processing being performed by processes or people.
+     */
+    DATA_PROCESSING_SPECIFICATION_RELATIONSHIP("1dfdec0f-f206-4db7-bac8-ec344205fb3c",
+                                               "DataProcessingSpecification",
+                                               OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                               "21ba7de7-62ff-442c-aa97-84b8ac4d6291",
+                                               "Relationship identifying the processing being performed by processes or people."),
+
+    /**
+     * Relationship identifying the actions being performed on data.
+     */
+    DATA_PROCESSING_TARGET_RELATIONSHIP("6ad18aa4-f5fc-47e7-99e1-80acfc536c9a",
+                                        "DataProcessingTarget",
+                                        OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
+                                        "bb2dfb94-fa8e-4e01-83a2-8a8558fa8515",
+                                        "Relationship identifying the actions being performed on data."),
+
+
 
     /* ============================================================================================================================*/
     /* Area 6 - Metadata Surveys                                                                                                   */

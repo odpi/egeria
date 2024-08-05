@@ -74,6 +74,7 @@ public class MetadataCollectionIterator extends IntegrationIterator
                                                                    null,
                                                                    null,
                                                                    null,
+                                                                   null,
                                                                    startFrom,
                                                                    maxPageSize);
             startFrom = startFrom + maxPageSize;

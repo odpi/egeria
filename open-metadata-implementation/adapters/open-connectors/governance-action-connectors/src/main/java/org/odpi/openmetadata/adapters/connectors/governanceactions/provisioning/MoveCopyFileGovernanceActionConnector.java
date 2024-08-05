@@ -812,11 +812,18 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         if (parentGUID == null)
         {
+            parentGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFolderName, OpenMetadataProperty.RESOURCE_NAME.name);
+        }
+
+        if (parentGUID == null)
+        {
             parentGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(destinationFolderName, OpenMetadataProperty.NAME.name);
         }
 
         ElementProperties destinationFileProperties = propertyHelper.addStringProperty(null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName);
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.NAME.name, destinationFileClassification.getFileName());
+        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.RESOURCE_NAME.name, destinationFileClassification.getPathName());
+        destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.PATH_NAME.name, destinationFileClassification.getPathName());
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.FILE_NAME.name, destinationFileClassification.getFileName());
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.FILE_TYPE.name, destinationFileClassification.getFileType());
         destinationFileProperties = propertyHelper.addStringProperty(destinationFileProperties, OpenMetadataProperty.FILE_EXTENSION.name, destinationFileClassification.getFileExtension());

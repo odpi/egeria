@@ -80,21 +80,8 @@ public class CertificationTypeProperties extends GovernanceDefinitionProperties
     public String toString()
     {
         return "CertificationTypeProperties{" +
-                       "details='" + details + '\'' +
-                       ", typeName='" + getTypeName() + '\'' +
-                       ", documentIdentifier='" + getDocumentIdentifier() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", title='" + getTitle() + '\'' +
-                       ", summary='" + getSummary() + '\'' +
-                       ", description='" + getDescription() + '\'' +
-                       ", scope='" + getScope() + '\'' +
-                       ", domainIdentifier=" + getDomainIdentifier() +
-                       ", priority='" + getPriority() + '\'' +
-                       ", implications=" + getImplications() +
-                       ", outcomes=" + getOutcomes() +
-                       ", results=" + getResults() +
-                       '}';
+                "details='" + details + '\'' +
+                "} " + super.toString();
     }
 
 
