@@ -22,10 +22,15 @@ public enum CocoClinicalTrialRequestParameter
                       "string",
                       "OSS Unity Catalog (UC) Catalog:http://localhost:8080:unity"),
 
-    DATA_LAKE_FOLDER_TEMPLATE("dataLakeFolderTemplate",
-                              "Qualified name of the template to use when cataloguing the directory where the weekly measurements results are to be stored.  Also add the placeholders used by this template as request parameters.",
+    DATA_LAKE_FOLDER_TEMPLATE("dataLakeVolumeTemplateGUID",
+                              "Unique identifier of the template to use when cataloguing the directory where the weekly measurements results are to be stored.  Also add the placeholders used by this template as request parameters.",
                               "string",
-                              "OSS Unity Catalog (UC) Volume:{{serverNetworkAddress}}:{{ucCatalogName}}.{{ucSchemaName}}.{{ucVolumeName}}"),
+                              null),
+
+    HOSPITAL_TEMPLATE("hospitalTemplateGUID",
+                              "Unique identifier of the template to use when onboarding a hospital.",
+                              "string",
+                              null),
     DATA_LAKE_FOLDER_PARENT("dataLakeFolderParent",
                             "Optional qualified name of the parent data set that the folder supplies data to.  If supplied, the data lake folder is linked to this data set using the DataContentForDataSet relationship.",
                             "string",

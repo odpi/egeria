@@ -910,8 +910,32 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                         60,
                                                         landingAreaIntegrationConnectorGUID);
 
+        /*
+         * The maintain data folder last update date connector expects to be given catalog targets that are data folders representing directories that contain the instance data as files.
+         */
+        deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.DATA_FOLDER.getQualifiedName());
+        configurationProperties.put("catalogAllFiles", "true");
+        String dataFolderIntegrationConnectorQualifiedName = OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":MaintainDataFolderLastUpdateDateIntegrationConnector";
+        String dataFolderIntegrationConnectorGUID = "fd26f07c-ae44-4bc5-b457-37b43112224f";
+        archiveHelper.setGUID(dataFolderIntegrationConnectorQualifiedName, dataFolderIntegrationConnectorGUID);
+        guid = archiveHelper.addIntegrationConnector(DataFilesMonitorIntegrationProvider.class.getName(),
+                                                     null,
+                                                     dataFolderIntegrationConnectorQualifiedName,
+                                                     "MaintainDataFolderLastUpdateDateIntegrationConnector",
+                                                     "Maintain the last update date in a data folder asset based on the file activity in the resource's directory.",
+                                                     null,
+                                                     null);
+        assert(dataFolderIntegrationConnectorGUID.equals(guid));
+
+        archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
+                                                        "MaintainLastUpdateDate",
+                                                        "datafoldercatnpa",
+                                                        null,
+                                                        60,
+                                                        dataFolderIntegrationConnectorGUID);
+
         archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
-                                                        landingAreaIntegrationConnectorGUID,
+                                                        dataFolderIntegrationConnectorGUID,
                                                         ResourceUse.CATALOG_RESOURCE.getResourceUse(),
                                                         ResourceUse.CATALOG_RESOURCE.getDescription());
 
@@ -920,6 +944,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
          */
         String databaseIntegrationConnectorQualifiedName = OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":JDBCIntegrationConnector";
         String databaseIntegrationConnectorGUID = "70dcd0b7-9f06-48ad-ad44-ae4d7a7762aa";
+        deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getQualifiedName());
         archiveHelper.setGUID(databaseIntegrationConnectorQualifiedName, databaseIntegrationConnectorGUID);
         guid = archiveHelper.addIntegrationConnector(JDBCIntegrationConnectorProvider.class.getName(),
                                                      null,
@@ -930,7 +955,6 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                      null);
         assert(databaseIntegrationConnectorGUID.equals(guid));
 
-        deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getQualifiedName());
         archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
                                                         databaseIntegrationConnectorGUID,
                                                         ResourceUse.CATALOG_RESOURCE.getResourceUse(),

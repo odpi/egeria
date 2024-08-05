@@ -83,6 +83,6 @@ public enum CertificationTypeDefinition
     @Override
     public String toString()
     {
-        return "LicenseTypeDefinition{" + summary + '}';
+        return "CertificationTypeDefinition{" + summary + '}';
     }
 }

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -220,7 +221,8 @@ public class CocoClinicalTrialCertifyHospitalService extends GeneralGovernanceAc
 
 
     /**
-     * Create a certification relationship between the hospital and the certification type.
+     * Create a certification relationship between the hospital and the certification type OR,
+     * if the certification is already in place then update the start date to make it valid.
      *
      * @param hospitalGUID unique identifier of the hospital
      * @param certificationTypeGUID unique identifier of the certification type
@@ -237,55 +239,94 @@ public class CocoClinicalTrialCertifyHospitalService extends GeneralGovernanceAc
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException
     {
-        ElementProperties elementProperties = propertyHelper.addDateProperty(null,
-                                                                             OpenMetadataType.START_PROPERTY_NAME,
-                                                                             new Date());
+        final String methodName = "addCertificationToHospital";
 
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.CERTIFICATE_GUID_PROPERTY_NAME,
-                                                             UUID.randomUUID().toString());
+        List<OpenMetadataRelationship> existingCertifications = governanceContext.getOpenMetadataStore().getMetadataElementRelationships(hospitalGUID,
+                                                                                                                                        certificationTypeGUID,
+                                                                                                                                        OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                                                                                                        0,
+                                                                                                                                        0);
 
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.CERTIFIED_BY_PROPERTY_NAME,
-                                                             dataOwnerGUID);
+        if (existingCertifications == null)
+        {
+            ElementProperties elementProperties = propertyHelper.addDateProperty(null,
+                                                                                 OpenMetadataType.START_PROPERTY_NAME,
+                                                                                 new Date());
 
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.CERTIFIED_BY_TYPE_NAME_PROPERTY_NAME,
-                                                             OpenMetadataType.PERSON_TYPE_NAME);
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataType.CERTIFICATE_GUID_PROPERTY_NAME,
+                                                                 UUID.randomUUID().toString());
 
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.CERTIFIED_BY_PROPERTY_NAME_PROPERTY_NAME,
-                                                             OpenMetadataProperty.GUID.name);
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataType.CERTIFIED_BY_PROPERTY_NAME,
+                                                                 dataOwnerGUID);
 
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.CUSTODIAN_PROPERTY_NAME,
-                                                             custodianGUID);
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataType.CERTIFIED_BY_TYPE_NAME_PROPERTY_NAME,
+                                                                 OpenMetadataType.PERSON_TYPE_NAME);
 
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.CUSTODIAN_TYPE_NAME_PROPERTY_NAME,
-                                                             OpenMetadataType.PERSON_TYPE_NAME);
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataType.CERTIFIED_BY_PROPERTY_NAME_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.GUID.name);
 
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.CUSTODIAN_PROPERTY_NAME_PROPERTY_NAME,
-                                                             OpenMetadataProperty.GUID.name);
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataType.CUSTODIAN_PROPERTY_NAME,
+                                                                 custodianGUID);
 
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.RECIPIENT_PROPERTY_NAME,
-                                                             hospitalContactGUID);
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataType.CUSTODIAN_TYPE_NAME_PROPERTY_NAME,
+                                                                 OpenMetadataType.PERSON_TYPE_NAME);
 
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.RECIPIENT_TYPE_NAME_PROPERTY_NAME,
-                                                             OpenMetadataType.PERSON_TYPE_NAME);
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataType.CUSTODIAN_PROPERTY_NAME_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.GUID.name);
 
-        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                             OpenMetadataType.RECIPIENT_PROPERTY_NAME_PROPERTY_NAME,
-                                                             OpenMetadataProperty.GUID.name);
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataType.RECIPIENT_PROPERTY_NAME,
+                                                                 hospitalContactGUID);
 
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
-                                                                              hospitalGUID,
-                                                                              certificationTypeGUID,
-                                                                              null,
-                                                                              null,
-                                                                              elementProperties);
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataType.RECIPIENT_TYPE_NAME_PROPERTY_NAME,
+                                                                 OpenMetadataType.PERSON_TYPE_NAME);
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataType.RECIPIENT_PROPERTY_NAME_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.GUID.name);
+
+            governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                                                  hospitalGUID,
+                                                                                  certificationTypeGUID,
+                                                                                  null,
+                                                                                  null,
+                                                                                  elementProperties);
+        }
+        else
+        {
+            ElementProperties updatedProperties = propertyHelper.addDateProperty(null,
+                                                                                 OpenMetadataType.START_PROPERTY_NAME,
+                                                                                 new Date());
+
+            for (OpenMetadataRelationship certification : existingCertifications)
+            {
+                if (certification != null)
+                {
+                    Date startDate = propertyHelper.getDateProperty(governanceServiceName,
+                                                                    OpenMetadataType.START_PROPERTY_NAME,
+                                                                    certification.getRelationshipProperties(),
+                                                                    methodName);
+                    Date endDate = propertyHelper.getDateProperty(governanceServiceName,
+                                                                  OpenMetadataType.END_PROPERTY_NAME,
+                                                                  certification.getRelationshipProperties(),
+                                                                  methodName);
+
+                    if ((endDate == null) && (startDate == null))
+                    {
+                        governanceContext.getOpenMetadataStore().updateRelatedElementsInStore(certification.getRelationshipGUID(),
+                                                                                              false,
+                                                                                              updatedProperties);
+                    }
+                }
+            }
+        }
     }
 }

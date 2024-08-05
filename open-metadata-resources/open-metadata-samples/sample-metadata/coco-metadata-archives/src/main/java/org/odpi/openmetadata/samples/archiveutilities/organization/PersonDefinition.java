@@ -515,6 +515,27 @@ public enum PersonDefinition
                     WorkLocationDefinition.HAMPTON_HOSPITAL),
 
     /**
+     * Mr Robbert Records
+     */
+    NELLIE_DUNN("Nellie Dunn",
+                   "She/her/hers",
+                   OrganizationDefinition.COCO,
+                   "Miss",
+                   "Eleanor",
+                   "F",
+                   "Dunn",
+                   "Miss Eleanor Dunn",
+                   null,
+                   CountryCodeDefinition.USA,
+                   EmployeeTypeDefinition.PARTNER,
+                   "Data Office (Old Market Hospital)",
+                   null,
+                   "nelliedunn",
+                   "cn=nellie,ou=people,ou=users,o=cocoPharma",
+                   "nellie_dunn@OldMarketHospital.com",
+                   WorkLocationDefinition.OLD_MARKET_HOSPITAL),
+
+    /**
      * Mr Sidney Seeker
      */
     SIDNEY_SEEKER("Sidney Seeker",

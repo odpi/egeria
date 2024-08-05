@@ -217,7 +217,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add technology type name here"
+  "filter" : "FileFolder"
 }
 
 
@@ -292,7 +292,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "templateGUID" : "553f51cf-3981-480e-acd8-86ed3e25329d",
+  "templateGUID" : "fbdd8efd-1b69-474c-bb6d-0a304b394146",
   "isOwnAnchor" : true,
   "placeholderPropertyValues" : {
     "pathName" : "Add full path name here, eg a/b/c/myFolder",
