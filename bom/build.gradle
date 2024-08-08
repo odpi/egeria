@@ -34,7 +34,7 @@ ext {
     commonsconfiguration2Version = '2.10.1'
     commonsconfigurationVersion = '1.10'
     commonsioVersion = '2.16.1'
-    commonsloggingVersion = '1.3.2'
+    commonsloggingVersion = '1.3.3'
     // Version 1.12.0 breaks XTDB because of a change in lucene's library names
     commonstextVersion = '1.11.0'
     commonscliVersion = '1.8.0'
