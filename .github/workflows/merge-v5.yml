@@ -93,19 +93,19 @@ jobs:
           platforms: linux/amd64,linux/arm64
       # --
       - name: Upload Log of any dependency failures
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v4.3.4
         with:
           name: Dependency Analysis Report (on failure)
           path: build/reports/dependency-analysis/build-health-report.txt
           if-no-files-found: ignore
       # Mostly for verification - not published to the release itself for now
       - name: Upload assemblies
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v4.3.4
         with:
           name: Assemblies
           path: open-metadata-distribution/omag-server-platform/build/distributions/*.gz
       - name: Upload Test coverage report
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v4.3.4
         with:
           name: Jacoco Coverage Report
           path: build/reports/jacoco/codeCoverageReport
