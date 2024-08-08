@@ -217,14 +217,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve a list of defined FileSystems assets.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/FolderResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FolderResponse</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/FileFolderResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FileFolderResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFolderByGUID(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getFolderByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;folderGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve a FolderElement asset by its unique identifier (GUID).</div>
+<div class="block">Retrieve a FileFolderElement asset by its unique identifier (GUID).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/FolderResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FolderResponse</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/FileFolderResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FileFolderResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFolderByPathName(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.PathNameRequestBody)" class="member-name-link">getFolderByPathName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../commonservices/ffdc/rest/PathNameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">PathNameRequestBody</a>&nbsp;requestBody)</code></div>
@@ -631,17 +631,17 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getFolderByGUID(java.lang.String,java.lang.String,java.lang.String)">
 <h3>getFolderByGUID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/FolderResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FolderResponse</a></span>&nbsp;<span class="element-name">getFolderByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/FileFolderResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FileFolderResponse</a></span>&nbsp;<span class="element-name">getFolderByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;folderGUID)</span></div>
-<div class="block">Retrieve a FolderElement asset by its unique identifier (GUID).</div>
+<div class="block">Retrieve a FileFolderElement asset by its unique identifier (GUID).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of calling server</dd>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>folderGUID</code> - unique identifier used to locate the folder</dd>
 <dt>Returns:</dt>
-<dd>FolderElement properties or
+<dd>FileFolderElement properties or
  InvalidParameterException one of the parameters is null or invalid or
  PropertyServerException problem accessing property server or
  UserNotAuthorizedException security access problem.</dd>
@@ -651,7 +651,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getFolderByPathName(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.PathNameRequestBody)">
 <h3>getFolderByPathName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/FolderResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FolderResponse</a></span>&nbsp;<span class="element-name">getFolderByPathName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/FileFolderResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FileFolderResponse</a></span>&nbsp;<span class="element-name">getFolderByPathName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../commonservices/ffdc/rest/PathNameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">PathNameRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve a folder by its fully qualified path name.</div>
@@ -661,7 +661,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>requestBody</code> - path name</dd>
 <dt>Returns:</dt>
-<dd>FolderElement properties or
+<dd>FileFolderElement properties or
  InvalidParameterException one of the parameters is null or invalid or
  PropertyServerException problem accessing property server or
  UserNotAuthorizedException security access problem.</dd>

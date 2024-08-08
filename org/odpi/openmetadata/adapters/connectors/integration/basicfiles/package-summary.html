@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="package-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../../../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -93,38 +97,46 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <div id="class-summary">
-<div class="caption"><span>Classes</span></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button><button id="class-summary-tab3" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab3', 2)" class="table-tab">Enum Classes</button></div>
+<div id="class-summary.tabpanel" role="tabpanel" aria-labelledby="class-summary-tab0">
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="BasicFilesMonitorIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">BasicFilesMonitorIntegrationConnectorBase</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="BasicFilesMonitoringConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">BasicFilesMonitoringConfigurationProperty</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="block">BasicFilesMonitoringConfigurationProperty provides some standard definitions for configuration properties used to
+ pass properties
+ to connectors when they run.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="BasicFilesMonitorIntegrationConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">BasicFilesMonitorIntegrationConnectorBase</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">BasicFilesMonitorIntegrationConnectorBase provides common methods for the connectors in this module.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataFilesMonitorForTarget.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorForTarget</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataFilesMonitorIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorIntegrationConnector</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataFilesMonitorForTarget.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorForTarget</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataFilesMonitorIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorIntegrationConnector</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">DataFilesMonitorIntegrationConnector monitors a file directory and catalogues the files it finds.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataFilesMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorIntegrationProvider</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataFilesMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFilesMonitorIntegrationProvider</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">DataFilesMonitorIntegrationProvider is the OCF connector provider for the Data Files Monitor Integration Connector.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataFolderMonitorForTarget.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorForTarget</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataFolderMonitorIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorIntegrationConnector</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataFolderMonitorForTarget.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorForTarget</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataFolderMonitorIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorIntegrationConnector</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">DataFolderMonitorIntegrationConnector monitors a file directory that is linked to a DataFolder asset and
  maintains the update time of the DataFolder each time one of the files or embedded directories change in some way.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataFolderMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorIntegrationProvider</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataFolderMonitorIntegrationProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DataFolderMonitorIntegrationProvider</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">DataFolderMonitorIntegrationProvider is the OCF connector provider for the Data Folder Monitor Integration Connector.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DirectoryToMonitor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DirectoryToMonitor</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DirectoryToMonitor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles">DirectoryToMonitor</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Directory to monitor caches information about a specific directory that is at the root of the monitoring.</div>
+</div>
 </div>
 </div>
 </div>

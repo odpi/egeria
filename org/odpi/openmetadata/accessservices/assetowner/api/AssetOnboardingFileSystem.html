@@ -186,13 +186,13 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieve a list of defined FileSystems assets.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../../../frameworks/openmetadata/metadataelements/FolderElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">FolderElement</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../../../frameworks/openmetadata/metadataelements/FileFolderElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">FileFolderElement</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getFolderByGUID(java.lang.String,java.lang.String)" class="member-name-link">getFolderByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;folderGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Retrieve a FolderProperties asset by its unique identifier (GUID).</div>
+<div class="block">Retrieve a FileFolderProperties asset by its unique identifier (GUID).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../../../frameworks/openmetadata/metadataelements/FolderElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">FolderElement</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../../../frameworks/openmetadata/metadataelements/FileFolderElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">FileFolderElement</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getFolderByPathName(java.lang.String,java.lang.String)" class="member-name-link">getFolderByPathName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
@@ -604,18 +604,18 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getFolderByGUID(java.lang.String,java.lang.String)">
 <h3>getFolderByGUID</h3>
-<div class="member-signature"><span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/FolderElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">FolderElement</a></span>&nbsp;<span class="element-name">getFolderByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/FileFolderElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">FileFolderElement</a></span>&nbsp;<span class="element-name">getFolderByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;folderGUID)</span>
-                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                           throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Retrieve a FolderProperties asset by its unique identifier (GUID).</div>
+<div class="block">Retrieve a FileFolderProperties asset by its unique identifier (GUID).</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>folderGUID</code> - unique identifier used to locate the folder</dd>
 <dt>Returns:</dt>
-<dd>FolderProperties properties</dd>
+<dd>FileFolderProperties properties</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>
@@ -626,9 +626,9 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getFolderByPathName(java.lang.String,java.lang.String)">
 <h3>getFolderByPathName</h3>
-<div class="member-signature"><span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/FolderElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">FolderElement</a></span>&nbsp;<span class="element-name">getFolderByPathName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="return-type"><a href="../../../frameworks/openmetadata/metadataelements/FileFolderElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">FileFolderElement</a></span>&nbsp;<span class="element-name">getFolderByPathName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName)</span>
-                           throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                               throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve a folder by its fully qualified path name.</div>
@@ -637,7 +637,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>pathName</code> - path name</dd>
 <dt>Returns:</dt>
-<dd>FolderProperties properties</dd>
+<dd>FileFolderProperties properties</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem accessing property server</dd>

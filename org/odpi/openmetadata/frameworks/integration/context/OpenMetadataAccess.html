@@ -148,7 +148,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
- <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;templateProperties,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;replacementProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
@@ -398,7 +398,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
- <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;templateProperties,
+ <a href="../../governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;replacementProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
@@ -425,7 +425,7 @@ loadScripts(document, 'script');</script>
 <dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
 <dd><code>templateGUID</code> - the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
                      connection etc)</dd>
-<dd><code>templateProperties</code> - properties of the new metadata element.  These override the template values</dd>
+<dd><code>replacementProperties</code> - properties of the new metadata element.  These override the placeholder values</dd>
 <dd><code>placeholderProperties</code> - property name-to-property value map to replace any placeholder values in the
                               template element - and their anchored elements, which are also copied as part of this operation.</dd>
 <dd><code>parentGUID</code> - unique identifier of optional parent entity</dd>
