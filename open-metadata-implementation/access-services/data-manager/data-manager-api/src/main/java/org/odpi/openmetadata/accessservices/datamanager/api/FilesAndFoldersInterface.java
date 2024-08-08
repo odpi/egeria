@@ -442,12 +442,12 @@ public interface FilesAndFoldersInterface
 
 
     /**
-     * Retrieve a FolderProperties asset by its unique identifier (GUID).
+     * Retrieve a FileFolderProperties asset by its unique identifier (GUID).
      *
      * @param userId calling user
      * @param folderGUID unique identifier used to locate the folder
      *
-     * @return FolderProperties properties
+     * @return FileFolderProperties properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
@@ -465,7 +465,7 @@ public interface FilesAndFoldersInterface
      * @param userId calling user
      * @param pathName path name
      *
-     * @return FolderProperties properties
+     * @return FileFolderProperties properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
@@ -567,7 +567,7 @@ public interface FilesAndFoldersInterface
 
 
     /**
-     * Retrieve a FolderProperties asset by its unique identifier (GUID).
+     * Retrieve a FileFolderProperties asset by its unique identifier (GUID).
      *
      * @param userId calling user
      * @param fileGUID unique identifier used to locate the folder

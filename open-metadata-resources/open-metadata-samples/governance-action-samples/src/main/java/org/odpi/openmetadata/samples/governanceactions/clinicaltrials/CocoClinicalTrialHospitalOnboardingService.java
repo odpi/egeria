@@ -3,9 +3,12 @@
 
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
+import org.apache.commons.io.FileUtils;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileRequestParameter;
+import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.BasicFilesMonitoringConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -13,6 +16,7 @@ import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamp
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesErrorCode;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -41,18 +45,20 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
 
         super.start();
 
-        String clinicalTrialId          = null;
-        String clinicalTrialName        = null;
-        String projectGUID              = null;
-        String hospitalGUID             = null;
-        String hospitalName             = null;
-        String contactName              = null;
-        String contactEmail             = null;
-        String rawTemplateGUID          = null;
-        String landingAreaFolderGUID    = null;
-        String landingAreaPathName      = null;
-        String newElementProcessName    = null;
-        String integrationConnectorGUID = null;
+        String clinicalTrialId                  = null;
+        String clinicalTrialName                = null;
+        String projectGUID                      = null;
+        String hospitalGUID                     = null;
+        String hospitalName                     = null;
+        String contactName                      = null;
+        String contactEmail                     = null;
+        String landingAreaDirectoryTemplateGUID = null;
+        String landingAreaFileTemplateGUID      = null;
+        String landingAreaPathName              = null;
+        String dataLakePathName                 = null;
+        String dataLakeFileTemplateGUID         = null;
+        String newFileProcessName               = null;
+        String integrationConnectorGUID         = null;
 
         List<String>     outputGuards = new ArrayList<>();
         CompletionStatus completionStatus;
@@ -88,14 +94,6 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
                                                                             methodName);
                             hospitalGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
-                        else if (CocoClinicalTrialActionTarget.LANDING_AREA_FOLDER.getName().equals(actionTargetElement.getActionTargetName()))
-                        {
-                            landingAreaFolderGUID = actionTargetElement.getTargetElement().getElementGUID();
-                            landingAreaPathName   = propertyHelper.getStringProperty(governanceServiceName,
-                                                                                     OpenMetadataProperty.PATH_NAME.name,
-                                                                                     actionTargetElement.getTargetElement().getElementProperties(),
-                                                                                     methodName);
-                        }
                         else if (CocoClinicalTrialActionTarget.CONTACT_PERSON.getName().equals(actionTargetElement.getActionTargetName()))
                         {
                             contactName = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
@@ -123,20 +121,9 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
                                 }
                             }
                         }
-                        else if (CocoClinicalTrialActionTarget.HOSPITAL_TEMPLATE.getName().equals(actionTargetElement.getActionTargetName()))
-                        {
-                            rawTemplateGUID = actionTargetElement.getTargetElement().getElementGUID();
-                        }
                         else if (CocoClinicalTrialActionTarget.LANDING_AREA_CONNECTOR.getName().equals(actionTargetElement.getActionTargetName()))
                         {
                             integrationConnectorGUID = actionTargetElement.getTargetElement().getElementGUID();
-                        }
-                        else if (CocoClinicalTrialActionTarget.NEW_ELEMENT_PROCESS.getName().equals(actionTargetElement.getActionTargetName()))
-                        {
-                            newElementProcessName = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
-                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                     actionTargetElement.getTargetElement().getElementProperties(),
-                                                                                     methodName);
                         }
                     }
                 }
@@ -147,13 +134,26 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
              */
             if (governanceContext.getRequestParameters() != null)
             {
-                rawTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.HOSPITAL_TEMPLATE.getName());
+                landingAreaDirectoryTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.LANDING_AREA_DIRECTORY_TEMPLATE.getName());
+                landingAreaPathName = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.LANDING_AREA_DIRECTORY_NAME.getName());
+                landingAreaFileTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.LANDING_AREA_FILE_TEMPLATE.getName());
+                dataLakeFileTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_FILE_TEMPLATE.getName());
+
+                /*
+                 * These value are passed on - they are extracted here to provide validation.
+                 */
+                dataLakePathName = governanceContext.getRequestParameters().get(MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName());
+                newFileProcessName = governanceContext.getRequestParameters().get(BasicFilesMonitoringConfigurationProperty.NEW_FILE_PROCESS_NAME.getName());
             }
 
-            if ((clinicalTrialId == null) || (clinicalTrialName == null) || (hospitalName == null) || (contactName == null) || (contactEmail == null) ||
-                (clinicalTrialId.isBlank()) || (clinicalTrialName.isBlank()) || (hospitalName.isBlank()) || (contactName.isBlank()) || (contactEmail.isBlank()) ||
-                    (rawTemplateGUID==null) || (rawTemplateGUID.isBlank()) || (landingAreaFolderGUID==null) || (landingAreaFolderGUID.isBlank()) ||
-                    (landingAreaPathName==null) || (landingAreaPathName.isBlank()))
+            if (clinicalTrialId == null || clinicalTrialName == null || hospitalName == null || contactName == null || contactEmail == null ||
+                clinicalTrialId.isBlank() || clinicalTrialName.isBlank() || hospitalName.isBlank() || contactName.isBlank() || contactEmail.isBlank() ||
+                    landingAreaFileTemplateGUID==null || landingAreaFileTemplateGUID.isBlank() ||
+                    landingAreaDirectoryTemplateGUID==null || landingAreaDirectoryTemplateGUID.isBlank() ||
+                    landingAreaPathName==null || landingAreaPathName.isBlank() ||
+                    dataLakePathName == null || dataLakePathName.isBlank() ||
+                    dataLakeFileTemplateGUID == null || dataLakeFileTemplateGUID.isBlank() ||
+                    newFileProcessName == null || newFileProcessName.isBlank())
             {
 
                 if ((clinicalTrialId == null) || (clinicalTrialId.isBlank()))
@@ -181,16 +181,36 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
                     auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
                                                                                                                         CocoClinicalTrialPlaceholderProperty.CONTACT_EMAIL.getName()));
                 }
-                if ((rawTemplateGUID == null) || (rawTemplateGUID.isBlank()))
+                if ((landingAreaFileTemplateGUID == null) || (landingAreaFileTemplateGUID.isBlank()))
                 {
                     auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        CocoClinicalTrialRequestParameter.HOSPITAL_TEMPLATE.getName()));
+                                                                                                                        CocoClinicalTrialRequestParameter.LANDING_AREA_FILE_TEMPLATE.getName()));
                 }
-                if ((landingAreaFolderGUID == null) || (landingAreaFolderGUID.isBlank()) ||
-                    (landingAreaPathName==null) || (landingAreaPathName.isBlank()))
+                if ((landingAreaDirectoryTemplateGUID == null) || (landingAreaDirectoryTemplateGUID.isBlank()))
                 {
                     auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        CocoClinicalTrialActionTarget.LANDING_AREA_FOLDER.getName()));
+                                                                                                                        CocoClinicalTrialRequestParameter.LANDING_AREA_DIRECTORY_TEMPLATE.getName()));
+                }
+                if ((landingAreaPathName == null) || (landingAreaPathName.isBlank()))
+                {
+                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                                        CocoClinicalTrialRequestParameter.LANDING_AREA_DIRECTORY_NAME.getName()));
+                }
+
+                if ((dataLakeFileTemplateGUID == null) || (dataLakeFileTemplateGUID.isBlank()))
+                {
+                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                                        CocoClinicalTrialRequestParameter.DATA_LAKE_FILE_TEMPLATE.getName()));
+                }
+                if ((dataLakePathName == null) || (dataLakePathName.isBlank()))
+                {
+                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                                        MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName()));
+                }
+                if ((newFileProcessName == null) || (newFileProcessName.isBlank()))
+                {
+                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                                        BasicFilesMonitoringConfigurationProperty.NEW_FILE_PROCESS_NAME.getName()));
                 }
 
                 completionStatus = CocoClinicalTrialGuard.MISSING_INFO.getCompletionStatus();
@@ -206,16 +226,28 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
                                            hospitalGUID,
                                            hospitalName);
 
+
+                String landingAreaFolderGUID = catalogLandingAreaFolder(hospitalName,
+                                                                        landingAreaPathName,
+                                                                        landingAreaDirectoryTemplateGUID);
+
                 /*
-                 * This template has the project and hospital information filled out, leaving specifics
+                 * These templates have the project and hospital information filled out, leaving specifics
                  * for the files to be filled out by the integration connector.
                  */
-                String hospitalTemplate = this.createTemplate(rawTemplateGUID,
-                                                              hospitalName,
-                                                              clinicalTrialId,
-                                                              clinicalTrialName,
-                                                              contactName,
-                                                              contactEmail);
+                String hospitalLandingAreaTemplateName = this.createTemplate(landingAreaFileTemplateGUID,
+                                                                             hospitalName,
+                                                                             clinicalTrialId,
+                                                                             clinicalTrialName,
+                                                                             contactName,
+                                                                             contactEmail);
+
+                String hospitalDataLakeTemplateName = this.createTemplate(dataLakeFileTemplateGUID,
+                                                                          hospitalName,
+                                                                          clinicalTrialId,
+                                                                          clinicalTrialName,
+                                                                          contactName,
+                                                                          contactEmail);
 
                 /*
                  * Create the physical folder
@@ -225,17 +257,19 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
                 /*
                  * Listen for new assets and initiate the provisioning workflow
                  */
-                this.initiateWatchdog(landingAreaFolderGUID, newElementProcessName);
+                //this.initiateWatchdog(landingAreaFolderGUID, hospitalDataLakeTemplateName, newFileProcessName);
 
                 /*
                  * Add the catalog target for the new landing are folder and template.
                  */
                 this.startMonitoringLandingArea(landingAreaFolderGUID,
                                                 integrationConnectorGUID,
-                                                hospitalTemplate,
+                                                hospitalLandingAreaTemplateName,
                                                 hospitalName,
                                                 clinicalTrialId,
-                                                clinicalTrialName);
+                                                clinicalTrialName,
+                                                hospitalDataLakeTemplateName,
+                                                newFileProcessName);
 
                 completionStatus = CocoClinicalTrialGuard.SET_UP_COMPLETE.getCompletionStatus();
                 outputGuards.add(CocoClinicalTrialGuard.SET_UP_COMPLETE.getName());
@@ -375,6 +409,47 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
 
 
     /**
+     * Create a FileFolder for the hospital landing are.
+     *
+     * @param hospitalName name of hospital
+     * @param landingAreaPathName path name for the landing area
+     * @param landingAreaDirectoryTemplateGUID template to use
+     * @return unique identifier of the landing area
+     * @throws InvalidParameterException parameter error
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException authorization error
+     */
+    private String catalogLandingAreaFolder(String hospitalName,
+                                            String landingAreaPathName,
+                                            String landingAreaDirectoryTemplateGUID) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        Map<String, String> placeholderPropertyValues = new HashMap<>();
+
+        placeholderPropertyValues.put(PlaceholderProperty.DIRECTORY_PATH_NAME.getName(), landingAreaPathName);
+        placeholderPropertyValues.put(PlaceholderProperty.DIRECTORY_NAME.getName(), "drop-foot");
+        placeholderPropertyValues.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), "V1.0");
+        placeholderPropertyValues.put(PlaceholderProperty.FILE_SYSTEM_NAME.getName(), "");
+        placeholderPropertyValues.put(PlaceholderProperty.DESCRIPTION.getName(), "Landing Area folder for" + hospitalName + "'s Teddy Bear Drop Foot clinical trial.");
+
+        return governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(OpenMetadataType.FILE_FOLDER.typeName,
+                                                                                          null,
+                                                                                          true,
+                                                                                          null,
+                                                                                          null,
+                                                                                          landingAreaDirectoryTemplateGUID,
+                                                                                          null,
+                                                                                          placeholderPropertyValues,
+                                                                                          null,
+                                                                                                         null,
+                                                                                                         null,
+                                                                                                         true);
+
+    }
+
+
+    /**
      * Create a new template that partially fills out the placeholder properties with the clinical trial and
      * hospital information.  The placeholder properties left to fill out are FILE_PATH_NAME, FILE_NAME and
      * RECEIVED_DATE.
@@ -439,15 +514,19 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
      * @param hospitalName hospital name
      * @param clinicalTrialId identifier of the clinical trial
      * @param clinicalTrialName name of the clinical trial
+     * @param dataLakeTemplateName qualified name
+     * @param newElementProcessName qualified name of the process to onboard the files from the landing area.
      */
     private void startMonitoringLandingArea(String folderGUID,
                                             String integrationConnectorGUID,
                                             String templateName,
                                             String hospitalName,
                                             String clinicalTrialId,
-                                            String clinicalTrialName) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+                                            String clinicalTrialName,
+                                            String dataLakeTemplateName,
+                                            String newElementProcessName) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
         CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
 
@@ -455,13 +534,32 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
 
         Map<String, String> templateProperties = new HashMap<>();
         templateProperties.put(OpenMetadataType.DATA_FILE.typeName, templateName);
+        templateProperties.put(OpenMetadataType.CSV_FILE.typeName, templateName);
 
         catalogTargetProperties.setTemplateProperties(templateProperties);
+
+        Map<String, Object> configurationProperties = new HashMap<>();
+
+        configurationProperties.put(BasicFilesMonitoringConfigurationProperty.NEW_FILE_PROCESS_NAME.getName(), newElementProcessName);
+
+        if (governanceContext.getRequestParameters() != null)
+        {
+            for (String requestParameter : governanceContext.getRequestParameters().keySet())
+            {
+                configurationProperties.put(requestParameter, governanceContext.getRequestParameters().get(requestParameter));
+            }
+        }
+
+        configurationProperties.put("newElementProcessName", newElementProcessName);
+        configurationProperties.put("targetFileNamePattern", "DropFoot_{1, number,000000}.csv");
+        configurationProperties.put("publishZones", "data-lake,clinical-trials");
+        configurationProperties.put(MoveCopyFileRequestParameter.DESTINATION_TEMPLATE_NAME.getName(), dataLakeTemplateName);
+
+        catalogTargetProperties.setConfigurationProperties(configurationProperties);
 
         governanceContext.addCatalogTarget(integrationConnectorGUID,
                                            folderGUID,
                                            catalogTargetProperties);
-
     }
 
     /**
@@ -475,11 +573,18 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
 
         File landingFolder = new File(pathName);
 
-        if (! landingFolder.mkdir())
+        if (! landingFolder.exists())
         {
-            auditLog.logMessage(methodName,
-                                GovernanceActionSamplesAuditCode.NO_LANDING_FOLDER.getMessageDefinition(governanceServiceName,
-                                                                                                        pathName));
+            try
+            {
+                FileUtils.forceMkdir(landingFolder);
+            }
+            catch (IOException error)
+            {
+                auditLog.logMessage(methodName,
+                                    GovernanceActionSamplesAuditCode.NO_LANDING_FOLDER.getMessageDefinition(governanceServiceName,
+                                                                                                            pathName));
+            }
         }
     }
 
@@ -487,12 +592,14 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
     /**
      * Stat the watchdog process that waits for new files from the hospital
      * @param landingAreaFolderGUID unique identifier of the folder element
+     * @param dataLakeTemplateName qualified name
      * @param newElementProcessName qualified name of the process to onboard the files into the landing area.
      * @throws InvalidParameterException parameter error
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
      */
     private void initiateWatchdog(String landingAreaFolderGUID,
+                                  String dataLakeTemplateName,
                                   String newElementProcessName) throws InvalidParameterException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
@@ -501,10 +608,18 @@ public class CocoClinicalTrialHospitalOnboardingService extends GeneralGovernanc
         final String governanceActionTypeName = "AssetOnboarding:watch-for-new-files-in-folder";
         final String governanceEngineName = "ClinicalTrials@CocoPharmaceuticals";
 
-        Map<String, String> requestParameters = new HashMap<>();
+        Map<String, String> requestParameters = governanceContext.getRequestParameters();
+
+        if (requestParameters == null)
+        {
+            requestParameters = new HashMap<>();
+        }
         requestParameters.put("interestingTypeName", OpenMetadataType.CSV_FILE.typeName);
         requestParameters.put("actionTargetName", "sourceFile");
         requestParameters.put("newElementProcessName", newElementProcessName);
+        requestParameters.put("targetFileNamePattern", "DropFoot_{1, number,000000}.csv");
+        requestParameters.put("publishZones", "data-lake,clinical-trials");
+        requestParameters.put(MoveCopyFileRequestParameter.DESTINATION_TEMPLATE_NAME.getName(), dataLakeTemplateName);
 
         NewActionTarget newActionTarget = new NewActionTarget();
         newActionTarget.setActionTargetName(actionTargetName);

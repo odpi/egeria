@@ -3,8 +3,9 @@
 
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
+import org.apache.commons.io.FileUtils;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
-import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogSurveyRequestParameter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
@@ -16,6 +17,7 @@ import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamp
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesErrorCode;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +53,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
         String ucSchemaName                 = null;
         String serverNetworkAddress         = null;
         String schemaGUID                   = null;
-        String dataLakeRootFolderPathName   = null;
+        String dataLakeDirectoryPathName    = null;
         String volumeTemplateGUID           = null;
         String lastUpdateConnectorGUID      = null;
 
@@ -59,12 +61,12 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
 
         try
         {
-            /**
+            /*
              * Retrieve template information from the request parameters.
              */
             if (governanceContext.getRequestParameters() != null)
             {
-                volumeTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_FOLDER_TEMPLATE.getName());
+                volumeTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_TEMPLATE.getName());
             }
 
             /*
@@ -115,19 +117,20 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
                                 }
                             }
                         }
-                        else if (CocoClinicalTrialActionTarget.ROOT_FOLDER.getName().equals(actionTargetElement.getActionTargetName()))
-                        {
-                            dataLakeRootFolderPathName = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
-                                                                                          OpenMetadataProperty.PATH_NAME.name,
-                                                                                          actionTargetElement.getTargetElement().getElementProperties(),
-                                                                                          methodName);
-                        }
                         else if (CocoClinicalTrialActionTarget.LAST_UPDATE_CONNECTOR.getName().equals(actionTargetElement.getActionTargetName()))
                         {
                             lastUpdateConnectorGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
                     }
                 }
+             }
+
+            /*
+             * Retrieve the data lake information from the request parameters
+             */
+            if (governanceContext.getRequestParameters() != null)
+            {
+                dataLakeDirectoryPathName = governanceContext.getRequestParameters().get(MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName());
             }
 
              List<String>     outputGuards = new ArrayList<>();
@@ -140,7 +143,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
                     (ucCatalogName == null) ||
                     (ucSchemaName == null) ||
                     (serverNetworkAddress == null) ||
-                    (dataLakeRootFolderPathName == null) ||
+                    (dataLakeDirectoryPathName == null) ||
                     (volumeTemplateGUID == null))
             {
                 if (dataLakeCatalogQualifiedGUID == null)
@@ -178,10 +181,10 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
                     auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
                                                                                                                         CocoClinicalTrialActionTarget.VOLUME_TEMPLATE.getName()));
                 }
-                if (dataLakeRootFolderPathName == null)
+                if (dataLakeDirectoryPathName == null)
                 {
                     auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        CocoClinicalTrialActionTarget.ROOT_FOLDER.getName()));
+                                                                                                                        MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName()));
                 }
 
                 completionStatus = CocoClinicalTrialGuard.MISSING_INFO.getCompletionStatus();
@@ -198,7 +201,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
                                                            ucSchemaName,
                                                            "weekly_measurements",
                                                            "Weekly measurements for clinical trial " + clinicalTrialId + " - " + clinicalTrialName,
-                                                           dataLakeRootFolderPathName);
+                                                           dataLakeDirectoryPathName);
 
                 monitorVolumeAsset(lastUpdateConnectorGUID,
                                    volumeAssetGUID);
@@ -238,7 +241,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
      * @param schemaName short name of the schema
      * @param volumeName short name of the volume
      * @param description description of the volume
-     * @param dataLakeRootPathName data lake's location
+     * @param dataLakePathName data lake's location
      * @return guid for the new asset
      * @throws InvalidParameterException bad parameter
      * @throws PropertyServerException problem with repository
@@ -253,13 +256,11 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
                                 String  schemaName,
                                 String  volumeName,
                                 String  description,
-                                String  dataLakeRootPathName) throws InvalidParameterException,
+                                String  dataLakePathName) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
         Map<String, String> placeholderProperties = new HashMap<>();
-
-        String volumePathName = dataLakeRootPathName + "/" + catalogName + "/" + schemaName + "/" + volumeName;
 
         placeholderProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), serverNetworkAddress);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(), catalogName);
@@ -267,7 +268,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
         placeholderProperties.put(UnityCatalogPlaceholderProperty.VOLUME_NAME.getName(), volumeName);
         placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), description);
         placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), "V1.0");
-        placeholderProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), volumePathName);
+        placeholderProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), dataLakePathName);
         placeholderProperties.put(UnityCatalogPlaceholderProperty.VOLUME_TYPE.getName(), "EXTERNAL");
 
         governanceContext.getOpenMetadataStore().setExternalSourceIds(externalSourceGUID, externalSourceName);
@@ -287,7 +288,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
 
         governanceContext.getOpenMetadataStore().setExternalSourceIds(null, null);
 
-        this.provisionVolume(volumePathName, volumeGUID);
+        this.provisionVolume(dataLakePathName, volumeGUID);
 
         return volumeGUID;
     }
@@ -304,12 +305,19 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
 
         File volumeDirectory = new File(pathName);
 
-        if (! volumeDirectory.mkdir())
+        if (! volumeDirectory.exists())
         {
-            auditLog.logMessage(methodName,
-                                GovernanceActionSamplesAuditCode.NO_VOLUME_DIRECTORY.getMessageDefinition(governanceServiceName,
-                                                                                                          pathName,
-                                                                                                          volumeGUID));
+            try
+            {
+                FileUtils.forceMkdir(volumeDirectory);
+            }
+            catch (IOException error)
+            {
+                auditLog.logMessage(methodName,
+                                    GovernanceActionSamplesAuditCode.NO_VOLUME_DIRECTORY.getMessageDefinition(governanceServiceName,
+                                                                                                              pathName,
+                                                                                                              volumeGUID));
+            }
         }
     }
 

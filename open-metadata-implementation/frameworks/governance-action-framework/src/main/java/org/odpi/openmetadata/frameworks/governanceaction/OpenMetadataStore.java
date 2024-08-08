@@ -889,7 +889,7 @@ public class OpenMetadataStore
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
-     * @param templateProperties properties of the new metadata element.  These override the template values
+     * @param replacementProperties properties of the new metadata element.  These override the placeholder values
      * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
      *                              template element - and their anchored elements, which are also copied as part of this operation.
      * @param parentGUID unique identifier of optional parent entity
@@ -909,7 +909,7 @@ public class OpenMetadataStore
                                                     Date                           effectiveFrom,
                                                     Date                           effectiveTo,
                                                     String                         templateGUID,
-                                                    ElementProperties              templateProperties,
+                                                    ElementProperties              replacementProperties,
                                                     Map<String, String>            placeholderProperties,
                                                     String                         parentGUID,
                                                     String                         parentRelationshipTypeName,
@@ -927,7 +927,7 @@ public class OpenMetadataStore
                                                                     effectiveFrom,
                                                                     effectiveTo,
                                                                     templateGUID,
-                                                                    templateProperties,
+                                                                    replacementProperties,
                                                                     placeholderProperties,
                                                                     parentGUID,
                                                                     parentRelationshipTypeName,

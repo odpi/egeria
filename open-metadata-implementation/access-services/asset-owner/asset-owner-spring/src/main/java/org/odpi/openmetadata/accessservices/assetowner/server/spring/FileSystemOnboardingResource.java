@@ -397,22 +397,22 @@ public class FileSystemOnboardingResource
 
 
     /**
-     * Retrieve a FolderProperties asset by its unique identifier (GUID).
+     * Retrieve a FileFolderProperties asset by its unique identifier (GUID).
      *
      * @param serverName name of calling server
      * @param userId calling user
      * @param folderGUID unique identifier used to locate the folder
      *
-     * @return FolderProperties properties or
+     * @return FileFolderProperties properties or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
     @GetMapping(path = "/folders/{folderGUID}")
 
-    public FolderResponse getFolderByGUID(@PathVariable String  serverName,
-                                          @PathVariable String  userId,
-                                          @PathVariable String  folderGUID)
+    public FileFolderResponse getFolderByGUID(@PathVariable String  serverName,
+                                              @PathVariable String  userId,
+                                              @PathVariable String  folderGUID)
     {
         return restAPI.getFolderByGUID(serverName, userId, folderGUID);
     }
@@ -425,16 +425,16 @@ public class FileSystemOnboardingResource
      * @param userId calling user
      * @param requestBody path name
      *
-     * @return FolderProperties properties or
+     * @return FileFolderProperties properties or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
     @GetMapping(path = "/folders/by-path-name")
 
-    public FolderResponse getFolderByPathName(@PathVariable String                serverName,
-                                              @PathVariable String                userId,
-                                              @RequestBody  PathNameRequestBody   requestBody)
+    public FileFolderResponse getFolderByPathName(@PathVariable String                serverName,
+                                                  @PathVariable String                userId,
+                                                  @RequestBody  PathNameRequestBody   requestBody)
     {
         return restAPI.getFolderByPathName(serverName, userId, requestBody);
     }

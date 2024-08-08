@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public abstract class DirectoryToMonitor implements FileDirectoryListenerInterface
 {
-    protected final AuditLog                 auditLog;
+    protected final AuditLog                                  auditLog;
     protected final BasicFilesMonitorIntegrationConnectorBase integrationConnector;
     protected final String                                    connectorName;
 
@@ -78,6 +78,8 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
     protected String  incidentReportTemplateQualifiedName = null;
     protected String  incidentReportTemplateGUID = null;
 
+    protected String  newFileProcessName = null;
+
     /**
      * Policy for deleting
      */
@@ -92,6 +94,8 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
      * Should only file types that are recognized by the classifier be catalogued.
      */
     protected boolean catalogClassifiedFiles              = true;
+
+    protected final Map<String, Object> configurationProperties;
 
 
     /**
@@ -123,15 +127,28 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
 
         this.connectorName = connectorName;
         this.sourceName = sourceName;
-        this.directoryName = pathName;
-        this.directoryFile = new File(pathName);
+        if (pathName.startsWith("file:///"))
+        {
+            this.directoryName = pathName.substring(7);
+        }
+        else
+        {
+            this.directoryName = pathName;
+        }
+
+        this.directoryFile = new File(this.directoryName);
         this.dataFolderElement = dataFolderElement;
         this.catalogTargetGUID = catalogTargetGUID;
         this.integrationConnector = integrationConnector;
         this.auditLog = auditLog;
+        this.configurationProperties = configurationProperties;
 
         if (configurationProperties != null)
         {
+            if (configurationProperties.get(BasicFilesMonitoringConfigurationProperty.NEW_FILE_PROCESS_NAME.getName()) != null)
+            {
+                newFileProcessName = configurationProperties.get(BasicFilesMonitoringConfigurationProperty.NEW_FILE_PROCESS_NAME.getName()).toString();
+            }
             if (configurationProperties.containsKey(BasicFilesMonitorIntegrationProviderBase.ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY))
             {
                 allowCatalogDelete = true;
@@ -206,7 +223,7 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
 
         auditLog.logMessage(methodName,
                             BasicFilesIntegrationConnectorsAuditCode.CONNECTOR_CONFIGURATION.getMessageDefinition(connectorName,
-                                                                                                                  pathName,
+                                                                                                                  this.directoryName,
                                                                                                                   Boolean.toString(allowCatalogDelete),
                                                                                                                   Boolean.toString(waitForDirectory),
                                                                                                                   fileTemplateQualifiedName,

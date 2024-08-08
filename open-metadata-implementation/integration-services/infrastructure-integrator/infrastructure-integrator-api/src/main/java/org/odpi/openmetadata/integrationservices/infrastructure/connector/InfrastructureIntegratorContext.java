@@ -15,6 +15,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.client.ITProfileMan
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.PlatformManagerClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.ProcessManagerClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.ServerManagerClient;
+import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
@@ -82,6 +83,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
      * @param openIntegrationClient client for calling the metadata server
      * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
+     * @param actionControlInterface client for initiating governance actions
      * @param capabilityManagerClient client for software capabilities
      * @param connectionManagerClient client for connections
      * @param connectorTypeManagerClient client for connector types
@@ -109,6 +111,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                            OpenIntegrationClient        openIntegrationClient,
                                            GovernanceConfiguration      governanceConfiguration,
                                            OpenMetadataClient           openMetadataStoreClient,
+                                           ActionControlInterface       actionControlInterface,
                                            CapabilityManagerClient      capabilityManagerClient,
                                            ConnectionManagerClient      connectionManagerClient,
                                            ConnectorTypeManagerClient   connectorTypeManagerClient,
@@ -135,6 +138,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
               openIntegrationClient,
               governanceConfiguration,
               openMetadataStoreClient,
+              actionControlInterface,
               generateIntegrationReport,
               permittedSynchronization,
               externalSourceGUID,

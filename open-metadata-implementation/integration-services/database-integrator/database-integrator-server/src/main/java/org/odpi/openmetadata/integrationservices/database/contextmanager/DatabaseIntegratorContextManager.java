@@ -81,6 +81,7 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
     {
         super.openIntegrationClient = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
         super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
+        super.actionControlInterface = new OpenGovernanceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
         super.governanceConfiguration = new GovernanceConfigurationClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
 
         if (localServerPassword == null)
@@ -194,6 +195,7 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
                                                                                         openIntegrationClient,
                                                                                         governanceConfiguration,
                                                                                         openMetadataStoreClient,
+                                                                                        actionControlInterface,
                                                                                         databaseManagerClient,
                                                                                         connectionManagerClient,
                                                                                         validValueManagement,

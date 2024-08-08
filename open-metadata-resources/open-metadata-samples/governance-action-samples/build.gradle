@@ -10,6 +10,9 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
+    implementation 'commons-io:commons-io'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }

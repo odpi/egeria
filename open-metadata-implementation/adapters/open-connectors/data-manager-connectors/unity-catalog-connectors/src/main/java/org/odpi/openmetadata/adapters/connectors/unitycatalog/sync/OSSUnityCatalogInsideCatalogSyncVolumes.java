@@ -282,13 +282,16 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
 
         if (templateGUID != null)
         {
+            ElementProperties replacementProperties = propertyHelper.addStringProperty(null,
+                                                                                       OpenMetadataProperty.PATH_NAME.name,
+                                                                                       super.getPathNameFromStorageLocation(volumeInfo.getStorage_location()));
             ucVolumeGUID = openMetadataAccess.createMetadataElementFromTemplate(deployedImplementationType.getAssociatedTypeName(),
                                                                                 schemaGUID,
                                                                                 false,
                                                                                 null,
                                                                                 null,
                                                                                 templateGUID,
-                                                                                null,
+                                                                                replacementProperties,
                                                                                 this.getPlaceholderProperties(volumeInfo),
                                                                                 schemaGUID,
                                                                                 parentLinkTypeName,
@@ -322,6 +325,8 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
             {
                 facetProperties.put(UnityCatalogPlaceholderProperty.VOLUME_TYPE.getName(), null);
             }
+
+            facetProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), volumeInfo.getStorage_location());
 
             super.addPropertyFacet(ucVolumeGUID, qualifiedName, facetProperties);
         }
@@ -513,7 +518,7 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.PATH_NAME.name,
-                                                             info.getStorage_location());
+                                                             getPathNameFromStorageLocation(info.getStorage_location()));
 
         elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                 OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,

@@ -56,6 +56,8 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
         CompletionStatus      completionStatus = null;
         Map<String, String>   newRequestParameters = null;
 
+        governanceContext.getOpenMetadataStore().setForLineage(true);
+
         try
         {
             if (governanceContext.getActionTargetElements() == null)

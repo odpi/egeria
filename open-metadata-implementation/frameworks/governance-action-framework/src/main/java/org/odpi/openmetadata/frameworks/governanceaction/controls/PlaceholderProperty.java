@@ -155,7 +155,6 @@ public enum PlaceholderProperty
                    "string",
                    "JSON"),
 
-
     /**
      * The programming language used to encode the file.
      */
@@ -172,6 +171,27 @@ public enum PlaceholderProperty
                        "map<string, string>",
                        null),
 
+    /**
+     * The date that the file was created.
+     */
+    CREATION_DATE ("dateCreated",
+                  "The date that the file was created.",
+                  "string",
+                  null),
+
+
+    /**
+     * The date that the file was created.
+     */
+    LAST_UPDATE_DATE ("dateLastModified",
+                   "The date that the file was last changed.",
+                   "string",
+                   null),
+
+    LAST_ACCESSED_DATE ("dateLastAccessed",
+                        "The date that the file was last read.",
+                        "string",
+                        null),
 
     /**
      * The date/time that the data/resource was received.

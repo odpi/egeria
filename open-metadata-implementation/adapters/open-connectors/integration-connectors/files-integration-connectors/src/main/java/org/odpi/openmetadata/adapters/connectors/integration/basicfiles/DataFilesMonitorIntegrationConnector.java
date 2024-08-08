@@ -120,9 +120,9 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                             if (dataFile != null)
                             {
                                 if ((dataFile.getElementHeader() != null) && (dataFile.getElementHeader().getGUID() != null) &&
-                                        (dataFile.getDataFileProperties() != null) && (dataFile.getDataFileProperties().getPathName() != null))
+                                        (dataFile.getProperties() != null) && (dataFile.getProperties().getPathName() != null))
                                 {
-                                    File file = new File(dataFile.getDataFileProperties().getPathName());
+                                    File file = new File(dataFile.getProperties().getPathName());
 
                                     if (! file.exists())
                                     {

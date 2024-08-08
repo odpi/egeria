@@ -1377,7 +1377,7 @@ public class OpenMetadataStoreRESTServices
                                                                            requestBody.getEffectiveFrom(),
                                                                            requestBody.getEffectiveTo(),
                                                                            requestBody.getTemplateGUID(),
-                                                                           requestBody.getTemplateProperties(),
+                                                                           requestBody.getReplacementProperties(),
                                                                            requestBody.getPlaceholderPropertyValues(),
                                                                            requestBody.getParentGUID(),
                                                                            requestBody.getParentRelationshipTypeName(),

@@ -918,7 +918,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         String dataFolderIntegrationConnectorQualifiedName = OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":MaintainDataFolderLastUpdateDateIntegrationConnector";
         String dataFolderIntegrationConnectorGUID = "fd26f07c-ae44-4bc5-b457-37b43112224f";
         archiveHelper.setGUID(dataFolderIntegrationConnectorQualifiedName, dataFolderIntegrationConnectorGUID);
-        guid = archiveHelper.addIntegrationConnector(DataFilesMonitorIntegrationProvider.class.getName(),
+        guid = archiveHelper.addIntegrationConnector(DataFolderMonitorIntegrationProvider.class.getName(),
                                                      null,
                                                      dataFolderIntegrationConnectorQualifiedName,
                                                      "MaintainDataFolderLastUpdateDateIntegrationConnector",
