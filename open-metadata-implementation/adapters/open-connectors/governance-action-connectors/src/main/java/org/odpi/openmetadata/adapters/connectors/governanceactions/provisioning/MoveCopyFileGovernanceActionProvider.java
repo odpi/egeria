@@ -44,9 +44,9 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         super();
         super.setConnectorClassName(connectorClassName);
 
-        supportedRequestTypes = RequestType.getRequestTypeTypes();
+        supportedRequestTypes = MoveCopyFileRequestType.getRequestTypeTypes();
 
-        supportedRequestParameters = RequestParameter.getRequestParameterTypes();
+        supportedRequestParameters = MoveCopyFileRequestParameter.getRequestParameterTypes();
 
         supportedActionTargetTypes = new ArrayList<>();
 
@@ -95,15 +95,15 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         connectorType.setSupportedDeployedImplementationType(supportedDeployedImplementationType);
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(RequestParameter.TARGET_FILE_NAME_PATTERN.getName());
-        recognizedConfigurationProperties.add(RequestParameter.NO_LINEAGE.getName());
-        recognizedConfigurationProperties.add(RequestParameter.TOP_LEVEL_PROCESS_NAME.getName());
-        recognizedConfigurationProperties.add(RequestParameter.TOP_LEVEL_PROCESS_TEMPLATE_NAME.getName());
-        recognizedConfigurationProperties.add(RequestParameter.DESTINATION_TEMPLATE_NAME.getName());
-        recognizedConfigurationProperties.add(RequestParameter.DESTINATION_DIRECTORY.getName());
-        recognizedConfigurationProperties.add(RequestParameter.TOP_LEVEL_PROCESS_ONLY_LINEAGE.getName());
-        recognizedConfigurationProperties.add(RequestParameter.LINEAGE_FROM_SOURCE_FOLDER_ONLY.getName());
-        recognizedConfigurationProperties.add(RequestParameter.LINEAGE_TO_DESTINATION_FOLDER_ONLY.getName());
+        recognizedConfigurationProperties.add(MoveCopyFileRequestParameter.TARGET_FILE_NAME_PATTERN.getName());
+        recognizedConfigurationProperties.add(MoveCopyFileRequestParameter.NO_LINEAGE.getName());
+        recognizedConfigurationProperties.add(MoveCopyFileRequestParameter.TOP_LEVEL_PROCESS_NAME.getName());
+        recognizedConfigurationProperties.add(MoveCopyFileRequestParameter.TOP_LEVEL_PROCESS_TEMPLATE_NAME.getName());
+        recognizedConfigurationProperties.add(MoveCopyFileRequestParameter.DESTINATION_TEMPLATE_NAME.getName());
+        recognizedConfigurationProperties.add(MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName());
+        recognizedConfigurationProperties.add(MoveCopyFileRequestParameter.TOP_LEVEL_PROCESS_ONLY_LINEAGE.getName());
+        recognizedConfigurationProperties.add(MoveCopyFileRequestParameter.LINEAGE_FROM_SOURCE_FOLDER_ONLY.getName());
+        recognizedConfigurationProperties.add(MoveCopyFileRequestParameter.LINEAGE_TO_DESTINATION_FOLDER_ONLY.getName());
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;

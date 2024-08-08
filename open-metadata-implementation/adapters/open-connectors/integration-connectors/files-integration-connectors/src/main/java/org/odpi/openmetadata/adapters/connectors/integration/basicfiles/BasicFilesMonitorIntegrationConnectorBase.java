@@ -27,8 +27,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static org.odpi.openmetadata.adapters.connectors.integration.basicfiles.BasicFilesMonitorIntegrationProviderBase.CATALOG_TARGET_NAME;
-
 
 /**
  * BasicFilesMonitorIntegrationConnectorBase provides common methods for the connectors in this module.
@@ -170,7 +168,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
             {
                 this.throwConfigException(BasicFilesIntegrationConnectorsErrorCode.FILES_LOCATION_NOT_DIRECTORY,
                                           directoryToMonitor.sourceName,
-                                          pathName,
+                                          directoryToMonitor.directoryName,
                                           null);
             }
 
@@ -181,7 +179,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
             {
                 this.throwConfigException(BasicFilesIntegrationConnectorsErrorCode.FILES_LOCATION_NOT_READABLE,
                                           directoryToMonitor.sourceName,
-                                          pathName,
+                                          directoryToMonitor.directoryName,
                                           null);
             }
         }
@@ -191,7 +189,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
             {
                 this.throwConfigException(BasicFilesIntegrationConnectorsErrorCode.FILES_LOCATION_NOT_DIRECTORY,
                                           directoryToMonitor.sourceName,
-                                          pathName,
+                                          directoryToMonitor.directoryName,
                                           null);
             }
             else if (auditLog != null)
@@ -323,8 +321,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
         /*
          * Seems to be new - but we need to check that this is not matching the endpoint catalog target.
          */
-        if ((this.getContext().isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.FILE_FOLDER.typeName)) &&
-                    ((catalogTarget.getCatalogTargetName() == null) || (CATALOG_TARGET_NAME.equals(catalogTarget.getCatalogTargetName()))))
+        if (this.getContext().isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.FILE_FOLDER.typeName))
         {
             /*
              * It is the right type of catalog target.  We now need the path name associated with this catalog target.
@@ -567,18 +564,18 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                 }
 
                 if ((cataloguedElement.getElementHeader() != null) && (cataloguedElement.getElementHeader().getGUID() != null) &&
-                        (cataloguedElement.getDataFileProperties() != null) && (cataloguedElement.getDataFileProperties().getPathName() != null))
+                        (cataloguedElement.getProperties() != null) && (cataloguedElement.getProperties().getPathName() != null))
                 {
                     if (allowCatalogDelete)
                     {
                         this.getContext().deleteDataFileFromCatalog(cataloguedElement.getElementHeader().getGUID(),
-                                                                                    cataloguedElement.getDataFileProperties().getPathName());
+                                                                                    cataloguedElement.getProperties().getPathName());
 
                         if (auditLog != null)
                         {
                             auditLog.logMessage(methodName,
                                                 BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_DELETED.getMessageDefinition(connectorName,
-                                                                                                                                cataloguedElement.getDataFileProperties().getPathName(),
+                                                                                                                                cataloguedElement.getProperties().getPathName(),
                                                                                                                                 cataloguedElement.getElementHeader().getGUID()));
                         }
                     }
@@ -595,7 +592,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                         {
                             auditLog.logMessage(methodName,
                                                 BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_ARCHIVED.getMessageDefinition(connectorName,
-                                                                                                                                 cataloguedElement.getDataFileProperties().getPathName(),
+                                                                                                                                 cataloguedElement.getProperties().getPathName(),
                                                                                                                                  cataloguedElement.getElementHeader().getGUID()));
                         }
                     }

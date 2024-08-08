@@ -21,6 +21,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
@@ -69,6 +70,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
      * @param openIntegrationClient client for calling the metadata server
      * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
+     * @param actionControlInterface client for initiating governance actions
      * @param openGovernanceClient client for calling the metadata server
      * @param openLineageListenerManager object responsible for managing open lineage listeners
      * @param dataAssetExchangeClient client for data asset requests
@@ -92,6 +94,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                     OpenIntegrationClient        openIntegrationClient,
                                     GovernanceConfiguration      governanceConfiguration,
                                     OpenMetadataClient           openMetadataStoreClient,
+                                    ActionControlInterface       actionControlInterface,
                                     OpenGovernanceClient         openGovernanceClient,
                                     OpenLineageListenerManager   openLineageListenerManager,
                                     DataAssetExchangeClient      dataAssetExchangeClient,
@@ -114,6 +117,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
               openIntegrationClient,
               governanceConfiguration,
               openMetadataStoreClient,
+              actionControlInterface,
               generateIntegrationReport,
               permittedSynchronization,
               externalSourceGUID,

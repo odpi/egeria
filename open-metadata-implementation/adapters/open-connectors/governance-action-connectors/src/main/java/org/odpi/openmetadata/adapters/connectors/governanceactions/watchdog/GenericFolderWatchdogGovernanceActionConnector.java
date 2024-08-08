@@ -148,7 +148,13 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
 
                     if ((matchFolderToFileName(metadataElementEvent.getMetadataElement().getElementProperties())) || (fileInFolder(fileGUID)))
                     {
-                        Map<String, String>   requestParameters = new HashMap<>();
+                        Map<String, String>   requestParameters = governanceContext.getRequestParameters();
+
+                        if (requestParameters == null)
+                        {
+                            requestParameters = new HashMap<>();
+                        }
+
                         List<NewActionTarget> actionTargets     = new ArrayList<>();
 
                         NewActionTarget actionTarget = new NewActionTarget();
@@ -160,7 +166,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                         if (metadataElementEvent.getEventType() == WatchdogEventType.NEW_ELEMENT)
                         {
                             initiateProcess(newElementProcessName,
-                                            null,
+                                            requestParameters,
                                             actionTargets);
                         }
                         else if (metadataElementEvent.getEventType() == WatchdogEventType.UPDATED_ELEMENT_PROPERTIES)
@@ -182,7 +188,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                         else if (metadataElementEvent.getEventType() == WatchdogEventType.DELETED_ELEMENT)
                         {
                             initiateProcess(deletedElementProcessName,
-                                            null,
+                                            requestParameters,
                                             actionTargets);
                         }
                         else

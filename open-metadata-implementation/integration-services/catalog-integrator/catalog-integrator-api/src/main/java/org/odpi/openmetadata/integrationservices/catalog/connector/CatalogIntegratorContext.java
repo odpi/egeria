@@ -17,6 +17,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.Lineage
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ValidValuesExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CorrelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ExternalIdentifierProperties;
@@ -133,6 +134,7 @@ public class CatalogIntegratorContext extends IntegrationContext
      * @param openIntegrationClient client for calling the metadata server
      * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
+     * @param actionControlInterface client for initiating governance actions
      * @param assetManagerClient common client to map requests to
      * @param eventClient client to register for events
      * @param connectedAssetClient client for connectors
@@ -164,6 +166,7 @@ public class CatalogIntegratorContext extends IntegrationContext
                                     OpenIntegrationClient           openIntegrationClient,
                                     GovernanceConfiguration         governanceConfiguration,
                                     OpenMetadataClient              openMetadataStoreClient,
+                                    ActionControlInterface          actionControlInterface,
                                     ExternalAssetManagerClient      assetManagerClient,
                                     AssetManagerEventClient         eventClient,
                                     ConnectedAssetClient            connectedAssetClient,
@@ -194,6 +197,7 @@ public class CatalogIntegratorContext extends IntegrationContext
               openIntegrationClient,
               governanceConfiguration,
               openMetadataStoreClient,
+              actionControlInterface,
               generateIntegrationReport,
               permittedSynchronization,
               assetManagerGUID,

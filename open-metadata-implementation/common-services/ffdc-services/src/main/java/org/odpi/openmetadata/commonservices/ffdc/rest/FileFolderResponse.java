@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FileFolderResponse extends FFDCResponseBase
 {
-    private FileFolderElement folder = null;
+    private FileFolderElement element = null;
 
 
     /**
@@ -47,7 +47,7 @@ public class FileFolderResponse extends FFDCResponseBase
 
         if (template != null)
         {
-            this.folder = template.getFolder();
+            this.element = template.getElement();
         }
     }
 
@@ -57,20 +57,20 @@ public class FileFolderResponse extends FFDCResponseBase
      *
      * @return bean
      */
-    public FileFolderElement getFolder()
+    public FileFolderElement getElement()
     {
-        return folder;
+        return element;
     }
 
 
     /**
      * Set up the folder result.
      *
-     * @param folder  bean
+     * @param element  bean
      */
-    public void setFolder(FileFolderElement folder)
+    public void setElement(FileFolderElement element)
     {
-        this.folder = folder;
+        this.element = element;
     }
 
 
@@ -83,7 +83,7 @@ public class FileFolderResponse extends FFDCResponseBase
     public String toString()
     {
         return "FileFolderResponse{" +
-                "folder=" + folder +
+                "folder=" + element +
                 "} " + super.toString();
     }
 
@@ -110,7 +110,7 @@ public class FileFolderResponse extends FFDCResponseBase
             return false;
         }
         FileFolderResponse that = (FileFolderResponse) objectToCompare;
-        return Objects.equals(folder, that.folder);
+        return Objects.equals(element, that.element);
     }
 
 
@@ -122,6 +122,6 @@ public class FileFolderResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(folder);
+        return Objects.hash(element);
     }
 }

@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.Certifications;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -56,22 +55,13 @@ public enum CocoClinicalTrialActionTarget
                     true),
 
     /**
-     * Template used to catalog the landing area folder for a particular hospital.
+     * Folder describing where the onboarded files should be stored in the data lake.
      */
-    HOSPITAL_TEMPLATE("hospitalTemplate",
-                      "Template used to catalog the landing area folder for a particular hospital.",
-                      OpenMetadataType.FILE_FOLDER.typeName,
-                      null,
-                      true),
-
-    /**
-     * Folder describing the root directory for the data lake.
-     */
-    ROOT_FOLDER("dataLakeRootFolder",
-                "Folder describing the root directory for the data lake.",
-                OpenMetadataType.FILE_FOLDER.typeName,
-                null,
-                true),
+    DATA_LAKE_FOLDER("dataLakeFolder",
+                     "Folder describing where the onboarded files should be stored in the data lake.",
+                     OpenMetadataType.FILE_FOLDER.typeName,
+                     null,
+                     true),
 
     /**
      * Folder describing the place where new files will be stored by the hospital.
@@ -211,10 +201,9 @@ public enum CocoClinicalTrialActionTarget
 
         actionTargetTypes.add(PROJECT.getActionTargetType());
         actionTargetTypes.add(HOSPITAL.getActionTargetType());
-        actionTargetTypes.add(HOSPITAL_TEMPLATE.getActionTargetType());
         actionTargetTypes.add(LANDING_AREA_CONNECTOR.getActionTargetType());
         actionTargetTypes.add(LANDING_AREA_FOLDER.getActionTargetType());
-        actionTargetTypes.add(NEW_ELEMENT_PROCESS.getActionTargetType());
+        actionTargetTypes.add(DATA_LAKE_FOLDER.getActionTargetType());
         actionTargetTypes.add(CONTACT_PERSON.getActionTargetType());
         actionTargetTypes.add(CERTIFICATION_TYPE.getActionTargetType());
 
@@ -253,7 +242,7 @@ public enum CocoClinicalTrialActionTarget
 
         actionTargetTypes.add(PROJECT.getActionTargetType());
         actionTargetTypes.add(SCHEMA.getActionTargetType());
-        actionTargetTypes.add(ROOT_FOLDER.getActionTargetType());
+        actionTargetTypes.add(DATA_LAKE_FOLDER.getActionTargetType());
         actionTargetTypes.add(VOLUME_TEMPLATE.getActionTargetType());
         actionTargetTypes.add(LAST_UPDATE_CONNECTOR.getActionTargetType());
 

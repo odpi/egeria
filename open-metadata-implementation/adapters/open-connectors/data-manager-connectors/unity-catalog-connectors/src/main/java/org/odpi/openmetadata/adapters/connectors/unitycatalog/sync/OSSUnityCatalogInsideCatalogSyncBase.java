@@ -455,4 +455,29 @@ public abstract class OSSUnityCatalogInsideCatalogSyncBase
 
         return null;
     }
+
+
+
+    /**
+     * Convert the US format for the storage location into a proper pathname.
+     *
+     * @param storageLocation storage location from UC
+     * @return pathname
+     */
+    protected String getPathNameFromStorageLocation(String storageLocation)
+    {
+        if (storageLocation != null)
+        {
+            if (storageLocation.startsWith("file:///"))
+            {
+                return storageLocation.substring(7);
+            }
+            else
+            {
+                return storageLocation;
+            }
+        }
+
+        return null;
+    }
 }

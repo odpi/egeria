@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * RequestType provides a template for defining the request type for a governance service.
+ * MoveCopyFileRequestType provides a template for defining the request type for a governance service.
  */
 public enum GenericFolderRequestType
 {
@@ -110,6 +110,6 @@ public enum GenericFolderRequestType
     @Override
     public String toString()
     {
-        return "RequestType{" + requestType + "}";
+        return "MoveCopyFileRequestType{" + requestType + "}";
     }
 }

@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.frameworkservices.gaf.client.OpenGovernanceClientBase;
 import org.odpi.openmetadata.integrationservices.topic.connector.TopicIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.topic.connector.TopicIntegratorContext;
 import org.odpi.openmetadata.integrationservices.topic.ffdc.TopicIntegratorAuditCode;
@@ -81,6 +82,7 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
     {
         super.openIntegrationClient = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
         super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
+        super.actionControlInterface = new OpenGovernanceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
         super.governanceConfiguration = new GovernanceConfigurationClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
 
         if (localServerPassword == null)
@@ -194,6 +196,7 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
                                                                                   openIntegrationClient,
                                                                                   governanceConfiguration,
                                                                                   openMetadataStoreClient,
+                                                                                  actionControlInterface,
                                                                                   eventBrokerClient,
                                                                                   connectionManagerClient,
                                                                                   validValueManagement,

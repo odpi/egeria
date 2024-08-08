@@ -332,6 +332,8 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
                 facetProperties.put(UnityCatalogPlaceholderProperty.DATA_SOURCE_FORMAT.getName(), null);
             }
 
+            facetProperties.put(UnityCatalogPlaceholderProperty.STORAGE_LOCATION.getName(), tableInfo.getStorage_location());
+
 
             super.addPropertyFacet(ucTableGUID, qualifiedName, facetProperties);
         }

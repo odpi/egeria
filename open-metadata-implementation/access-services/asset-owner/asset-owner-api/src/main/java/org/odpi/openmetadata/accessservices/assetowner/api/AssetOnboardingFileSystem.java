@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileSystemElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FolderElement;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -320,19 +320,19 @@ public interface AssetOnboardingFileSystem
 
 
     /**
-     * Retrieve a FolderProperties asset by its unique identifier (GUID).
+     * Retrieve a FileFolderProperties asset by its unique identifier (GUID).
      *
      * @param userId calling user
      * @param folderGUID unique identifier used to locate the folder
      *
-     * @return FolderProperties properties
+     * @return FileFolderProperties properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    FolderElement getFolderByGUID(String   userId,
-                                  String   folderGUID) throws InvalidParameterException,
+    FileFolderElement getFolderByGUID(String   userId,
+                                      String   folderGUID) throws InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException;
 
@@ -343,16 +343,16 @@ public interface AssetOnboardingFileSystem
      * @param userId calling user
      * @param pathName path name
      *
-     * @return FolderProperties properties
+     * @return FileFolderProperties properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    FolderElement getFolderByPathName(String   userId,
-                                      String   pathName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException;
+    FileFolderElement getFolderByPathName(String   userId,
+                                          String   pathName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException;
 
 
     /**

@@ -3,10 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectionElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ConnectorTypeElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.EndpointElement;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerErrorCode;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -37,8 +33,8 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
     private final ReferenceableHandler<ReferenceableElement> referenceableHandler;
 
     private final FilesAndFoldersHandler<FileSystemElement,
-                                         FolderElement,
-                                         FileElement> filesAndFoldersHandler;
+                                         FileFolderElement,
+                                         DataFileElement> filesAndFoldersHandler;
 
     private final ValidValuesHandler<ValidValueElement> validValuesHandler;
 
@@ -152,9 +148,9 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
         this.filesAndFoldersHandler = new FilesAndFoldersHandler<>(new FileSystemConverter<>(repositoryHelper, serviceName, serverName),
                                                                    FileSystemElement.class,
                                                                    new FileFolderConverter<>(repositoryHelper, serviceName, serverName),
-                                                                   FolderElement.class,
+                                                                   FileFolderElement.class,
                                                                    new DataFileConverter<>(repositoryHelper, serviceName, serverName),
-                                                                   FileElement.class,
+                                                                   DataFileElement.class,
                                                                    serviceName,
                                                                    serverName,
                                                                    invalidParameterHandler,
@@ -382,7 +378,7 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    FilesAndFoldersHandler<FileSystemElement, FolderElement, FileElement> getFilesAndFoldersHandler() throws PropertyServerException
+    FilesAndFoldersHandler<FileSystemElement, FileFolderElement, DataFileElement> getFilesAndFoldersHandler() throws PropertyServerException
     {
         final String methodName = "getFilesAndFoldersHandler";
 

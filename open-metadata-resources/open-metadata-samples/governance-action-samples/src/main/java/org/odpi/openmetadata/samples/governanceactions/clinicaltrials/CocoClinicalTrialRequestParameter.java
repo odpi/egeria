@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileRequestParameter;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
 
 import java.util.ArrayList;
@@ -22,45 +22,34 @@ public enum CocoClinicalTrialRequestParameter
                       "string",
                       "OSS Unity Catalog (UC) Catalog:http://localhost:8080:unity"),
 
-    DATA_LAKE_FOLDER_TEMPLATE("dataLakeVolumeTemplateGUID",
+    DATA_LAKE_VOLUME_TEMPLATE("dataLakeVolumeTemplateGUID",
                               "Unique identifier of the template to use when cataloguing the directory where the weekly measurements results are to be stored.  Also add the placeholders used by this template as request parameters.",
                               "string",
                               null),
 
-    HOSPITAL_TEMPLATE("hospitalTemplateGUID",
-                              "Unique identifier of the template to use when onboarding a hospital.",
-                              "string",
-                              null),
     DATA_LAKE_FOLDER_PARENT("dataLakeFolderParent",
                             "Optional qualified name of the parent data set that the folder supplies data to.  If supplied, the data lake folder is linked to this data set using the DataContentForDataSet relationship.",
                             "string",
                             "OSS Unity Catalog (UC) Schema:http://localhost:8080:unity.default"),
 
-    CLINICAL_TRIAL_ID(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getName(),
-                      CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getDescription(),
-                      CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getDataType(),
-                      CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getExample()),
-    CLINICAL_TRIAL_NAME(CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getName(),
-                        CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getDescription(),
-                        CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getDataType(),
-                        CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getExample()),
-    HOSPITAL_NAME(CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getName(),
-                  CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getDescription(),
-                  CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getDataType(),
-                  CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getExample()),
-    CONTACT_NAME(CocoClinicalTrialPlaceholderProperty.CONTACT_NAME.getName(),
-                 CocoClinicalTrialPlaceholderProperty.CONTACT_NAME.getDescription(),
-                 CocoClinicalTrialPlaceholderProperty.CONTACT_NAME.getDataType(),
-                 CocoClinicalTrialPlaceholderProperty.CONTACT_NAME.getExample()),
-    CONTACT_DEPT(CocoClinicalTrialPlaceholderProperty.CONTACT_EMAIL.getName(),
-                 CocoClinicalTrialPlaceholderProperty.CONTACT_EMAIL.getDescription(),
-                 CocoClinicalTrialPlaceholderProperty.CONTACT_EMAIL.getDataType(),
-                 CocoClinicalTrialPlaceholderProperty.CONTACT_EMAIL.getExample()),
+    LANDING_AREA_DIRECTORY_NAME("landingAreaDirectoryName",
+                                "Name of the hospital's landing area directory.",
+                                "string",
+                                null),
 
-    DIRECTORY_NAME(PlaceholderProperty.DIRECTORY_NAME.getName(),
-                   PlaceholderProperty.DIRECTORY_NAME.getDescription(),
-                   PlaceholderProperty.DIRECTORY_NAME.getDataType(),
-                   PlaceholderProperty.DIRECTORY_NAME.getExample()),
+    LANDING_AREA_DIRECTORY_TEMPLATE("landingAreaDirectoryTemplateGUID",
+                               "Unique identifier of the template to use when creating the FileFolder for hospital's landing area files.",
+                               "string",
+                               null),
+    LANDING_AREA_FILE_TEMPLATE("landingAreaFileTemplateGUID",
+                               "Unique identifier of the template to use in the landing area when onboarding a file from a hospital.  A new, partially filled out template will be created for the hospital.  This template is of type CSVFile.",
+                               "string",
+                               null),
+
+    DATA_LAKE_FILE_TEMPLATE("dataLakeFileTemplateGUID",
+                               "Unique identifier of the template to use in the data lake when onboarding a file from a hospital.  A new, partially filled out template will be created for the hospital.  This template is of type CSVFile.",
+                               "string",
+                               null),
     ;
 
     public final String           name;
@@ -140,7 +129,11 @@ public enum CocoClinicalTrialRequestParameter
      */
     public static List<RequestParameterType> getSetUpDataLakeRequestParameterTypes()
     {
-        return null;
+        List<RequestParameterType> requestParameterTypes = new ArrayList<>();
+
+        requestParameterTypes.add(DATA_LAKE_VOLUME_TEMPLATE.getRequestParameterType());
+
+        return requestParameterTypes;
     }
 
 
@@ -148,12 +141,11 @@ public enum CocoClinicalTrialRequestParameter
     {
         List<RequestParameterType> requestParameterTypes = new ArrayList<>();
 
-        requestParameterTypes.add(CLINICAL_TRIAL_ID.getRequestParameterType());
-        requestParameterTypes.add(CLINICAL_TRIAL_NAME.getRequestParameterType());
-        requestParameterTypes.add(HOSPITAL_NAME.getRequestParameterType());
-        requestParameterTypes.add(CONTACT_DEPT.getRequestParameterType());
-        requestParameterTypes.add(CONTACT_NAME.getRequestParameterType());
-        requestParameterTypes.add(DIRECTORY_NAME.getRequestParameterType());
+        requestParameterTypes.add(LANDING_AREA_FILE_TEMPLATE.getRequestParameterType());
+        requestParameterTypes.add(DATA_LAKE_FILE_TEMPLATE.getRequestParameterType());
+        requestParameterTypes.add(MoveCopyFileRequestParameter.DESTINATION_TEMPLATE_NAME.getRequestParameterType());
+        requestParameterTypes.add(MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getRequestParameterType());
+
 
         return requestParameterTypes;
     }

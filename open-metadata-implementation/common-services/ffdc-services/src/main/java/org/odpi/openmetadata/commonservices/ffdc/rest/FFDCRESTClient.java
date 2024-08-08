@@ -617,18 +617,18 @@ public class FFDCRESTClient extends FFDCRESTClientBase
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return FolderResponse
+     * @return FileFolderResponse
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public FolderResponse callFolderGetRESTCall(String    methodName,
-                                                String    urlTemplate,
-                                                Object... params) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public FileFolderResponse callFolderGetRESTCall(String    methodName,
+                                                    String    urlTemplate,
+                                                    Object... params) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
-        FolderResponse restResult = this.callGetRESTCall(methodName, FolderResponse.class, urlTemplate, params);
+        FileFolderResponse restResult = this.callGetRESTCall(methodName, FileFolderResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

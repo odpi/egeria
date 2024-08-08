@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
@@ -51,6 +52,7 @@ public class OrganizationIntegratorContext extends IntegrationContext
      * @param openIntegrationClient client for calling the metadata server
      * @param governanceConfiguration client for managing catalog targets
      * @param openMetadataStoreClient client for calling the metadata server
+     * @param actionControlInterface client for initiating governance actions
      * @param organizationManagement client for exchange requests
      * @param securityGroupManagement client for exchange requests
      * @param userIdentityManagement client for exchange requests
@@ -71,6 +73,7 @@ public class OrganizationIntegratorContext extends IntegrationContext
                                          OpenIntegrationClient        openIntegrationClient,
                                          GovernanceConfiguration      governanceConfiguration,
                                          OpenMetadataClient           openMetadataStoreClient,
+                                         ActionControlInterface       actionControlInterface,
                                          OrganizationManagement       organizationManagement,
                                          SecurityGroupManagement      securityGroupManagement,
                                          UserIdentityManagement       userIdentityManagement,
@@ -90,6 +93,7 @@ public class OrganizationIntegratorContext extends IntegrationContext
               openIntegrationClient,
               governanceConfiguration,
               openMetadataStoreClient,
+              actionControlInterface,
               generateIntegrationReport,
               permittedSynchronization,
               externalSourceGUID,

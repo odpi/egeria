@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
@@ -24,8 +25,9 @@ public class IntegrationContextManager
     protected String                       partnerOMASPlatformRootURL   = null;
     protected String                       partnerOMASServerName        = null;
     protected OpenIntegrationClient        openIntegrationClient        = null;
-    protected GovernanceConfiguration      governanceConfiguration      = null;
-    protected ConnectedAssetContext        connectedAssetContext        = null;
+    protected GovernanceConfiguration      governanceConfiguration = null;
+    protected ActionControlInterface       actionControlInterface = null;
+    protected ConnectedAssetContext        connectedAssetContext   = null;
     protected OpenMetadataClient           openMetadataStoreClient      = null;
     protected String                       localServerUserId            = null;
     protected String                       localServerPassword          = null;
@@ -173,6 +175,7 @@ public class IntegrationContextManager
                                                         openIntegrationClient,
                                                         governanceConfiguration,
                                                         openMetadataStoreClient,
+                                                        actionControlInterface,
                                                         generateIntegrationReport,
                                                         permittedSynchronization,
                                                         externalSourceGUID,

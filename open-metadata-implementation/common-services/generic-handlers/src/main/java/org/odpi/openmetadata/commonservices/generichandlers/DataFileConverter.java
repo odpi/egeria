@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.FileElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataFileElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -46,7 +46,6 @@ public class DataFileConverter<B> extends OMFConverter<B>
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     @Override
-    @SuppressWarnings(value = "deprecation")
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
@@ -58,9 +57,9 @@ public class DataFileConverter<B> extends OMFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof FileElement bean)
+            if (returnBean instanceof DataFileElement bean)
             {
-                FileProperties fileProperties = new FileProperties();
+                DataFileProperties fileProperties = new DataFileProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
@@ -101,7 +100,7 @@ public class DataFileConverter<B> extends OMFConverter<B>
                     fileProperties.setEncodingDescription(this.getDataStoreEncodingDescription(instanceProperties));
                     fileProperties.setEncodingProperties(this.getEncodingProperties(instanceProperties));
 
-                    bean.setFileProperties(fileProperties);
+                    bean.setProperties(fileProperties);
                 }
                 else
                 {

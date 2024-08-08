@@ -1438,7 +1438,7 @@ public class FilesRESTServices
                                                                    false,
                                                                    new Date(),
                                                                    methodName);
-            response.setFolder(fileFolder);
+            response.setElement(fileFolder);
         }
         catch (Exception error)
         {
@@ -1489,7 +1489,7 @@ public class FilesRESTServices
                                                                            false,
                                                                            new Date(),
                                                                            methodName);
-                response.setFolder(fileFolder);
+                response.setElement(fileFolder);
             }
         }
         catch (Exception error)

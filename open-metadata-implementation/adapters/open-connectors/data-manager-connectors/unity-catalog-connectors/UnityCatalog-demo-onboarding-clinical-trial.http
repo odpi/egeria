@@ -101,7 +101,7 @@ Content-Type: application/json
 
 ###
 
-@server1GUID=11a2ef20-9420-4f8b-bc19-211823fc8ecf
+@server1GUID=ab08269d-9ef2-4ad3-9ab0-e5c880695261
 
 ###
 
@@ -205,36 +205,17 @@ Content-Type: application/json
 
 ###
 
-@schemaGUID=0038bb41-084f-4728-806b-43a6297e0237
+@schemaGUID=2999cd5d-14f9-48b4-8161-735e95e7d5e0
 
 ###
 
 #@dataLakeDirectoryPathName=/Users/amandachessell/Code/ODPi/egeria-oak/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.1-SNAPSHOT-distribution.tar.gz/assembly/platform/coco-data-lake
-@dataLakeDirectoryPathName=coco-pharmaceuticals/data-lake
+@dataLakeDirectoryPathName=/Users/amandachessell/Code/uc/unitycatalog/etc/data/coco-data-lake/research/clinical-trials/drop-foot/weekly-measurements
+#@dataLakeDirectoryPathName=/Users/amandachessell/Code/uc/unitycatalog/etc/data
 
 ###
-# @name Create Data Lake Top-Level Folder
-# Create a new element from a template.
-# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "templateGUID" : "fbdd8efd-1b69-474c-bb6d-0a304b394146",
-  "isOwnAnchor" : true,
-  "placeholderPropertyValues" : {
-    "directoryPathName" : "{{dataLakeDirectoryPathName}}",
-    "directoryName" : "data-lake",
-    "versionIdentifier" : "V1.0",
-    "fileSystemName" : "",
-    "description" : "Root directory for Coco Pharmaceuticals' data lake."
-  }
-}
-
-###
-
-@dataLakeFolderGUID=4dc5e0e9-60cc-4e2c-b1d4-7bf3ccef3420
+#===============================================
+# Set up the data loke volume
 
 ###
 # @name findGovernanceActionTypes (Clinical Trials)
@@ -244,7 +225,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "onboard-hospital"
+  "filter" : "set-up-data-lake"
 }
 
 
@@ -272,16 +253,12 @@ Content-Type: application/json
     },
     {
       "class" : "NewActionTarget",
-      "actionTargetName": "dataLakeRootFolder",
-      "actionTargetGUID": "{{dataLakeFolderGUID}}"
-    },
-    {
-      "class" : "NewActionTarget",
       "actionTargetName": "lastUpdateConnector",
       "actionTargetGUID": "fd26f07c-ae44-4bc5-b457-37b43112224f"
     }],
     "requestParameters" : {
-       "dataLakeVolumeTemplateGUID" : "{{ucVolumeTemplateGUID}}"
+       "dataLakeVolumeTemplateGUID" : "{{ucVolumeTemplateGUID}}",
+       "destinationDirectory" : "{{dataLakeDirectoryPathName}}"
     }
 }
 
@@ -317,8 +294,8 @@ Content-Type: application/json
 # The commands below will help you find and underatns the process that provisions fromed from the landing area into
 # Coco Data Lake.
 
-@newElementProcessName=Coco:GovernanceActionProcess:ClinicalTrials:WeeklyMeasurements:Onboarding
-@newElementProcessGUID=508d3878-8eae-47e5-8507-ee936f33b418
+@newFileProcessName=Coco:GovernanceActionProcess:ClinicalTrials:WeeklyMeasurements:Onboarding
+@newFileProcessGUID=508d3878-8eae-47e5-8507-ee936f33b418
 
 
 ###
@@ -330,7 +307,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "{{newElementProcessName}}"
+  "filter" : "{{newFileProcessName}}"
 }
 
 
@@ -339,7 +316,7 @@ Content-Type: application/json
 # Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
 #
 # Asset: https://egeria-project.org/concepts/asset/
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{newElementProcessGUID}}/as-graph?startFrom=0&pageSize=0
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{newFileProcessGUID}}/as-graph?startFrom=0&pageSize=0
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -366,7 +343,7 @@ Content-Type: application/json
 
 ###
 
-@oakDeneLandingAreaFolderGUID=bb9d4987-afd7-48e1-a3c4-29008ab364ff
+@oakDeneLandingAreaFolderGUID=793db4f6-6560-434e-a295-4cd62a78c726
 
 ###
 
@@ -415,6 +392,25 @@ Content-Type: application/json
 @hamptonLandingAreaFolderGUID=9ea17e0f-4bce-4611-9dc9-efcef637a933
 
 ###
+#===============================================
+# Onboard the hospitals
+
+
+###
+# @name findGovernanceActionTypes (Clinical Trials)
+# Retrieve the list of governance action type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "onboard-hospital"
+}
+
+###
+
+
+###
 
 @oakDeneHospitalGUID=7905f803-7b7e-47c4-8b35-d0a0cfa47469
 @oakDeneContactPerson=80bf48b0-5ef2-4294-950d-0c6fd568a1b2
@@ -422,6 +418,17 @@ Content-Type: application/json
 @oldMarketContactPerson=fabc88d6-d28e-4e2d-9086-6affc8c45a7a
 @hamptonHospitalGUID=c596f5c4-0aee-4fdc-969b-69fa26b72529
 @hamptonContactPerson=e2bcf56b-f822-47d8-82fa-94cd2a5a772c
+
+@landingAreaFolderTemplateGUID=fbdd8efd-1b69-474c-bb6d-0a304b394146
+@landingAreaRootDirectoryName=landing-area
+@oakDeneLandingAreaDirectoryName=landing-area/hospitals/oak-dene/clinical-trials/drop-foot
+@oldMarketLandingAreaDirectoryName=landing-area/hospitals/old-market/clinical-trials/drop-foot
+@hamptonLandingAreaDirectoryName=landing-area/hospitals/hampton/clinical-trials/drop-foot
+
+@landingAreaTemplateGUID=5e5ffc97-237d-46c6-95c3-49405035dedc
+@landingAreaTemplate=CSVFile:LandingArea:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{filePathName}}
+@dataLakeTemplateGUID=b2ec7c9d-3462-488a-897d-8e873658dded
+@dataLakeTemplate="CSVFile:DataLake:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{filePathName}}
 
 ###
 # @name initiate onboard-hospital (Oak Dene)
@@ -446,18 +453,8 @@ Content-Type: application/json
     },
     {
       "class" : "NewActionTarget",
-      "actionTargetName": "newElementProcess",
-      "actionTargetGUID": "{{newElementProcessGUID}}"
-    },
-    {
-      "class" : "NewActionTarget",
       "actionTargetName": "landingAreaConnector",
       "actionTargetGUID": "1b98cdac-dd0a-4621-93db-99ef5a1098bc"
-    },
-    {
-      "class" : "NewActionTarget",
-      "actionTargetName": "landingAreaFolder",
-      "actionTargetGUID": "{{oakDeneLandingAreaFolderGUID}}"
     },
     {
       "class" : "NewActionTarget",
@@ -465,7 +462,12 @@ Content-Type: application/json
       "actionTargetGUID": "{{oakDeneContactPerson}}"
     }],
     "requestParameters" : {
-       "hospitalTemplateGUID" : "5e5ffc97-237d-46c6-95c3-49405035dedc"
+       "landingAreaDirectoryTemplateGUID" : "{{landingAreaFolderTemplateGUID}}",
+       "landingAreaDirectoryName" : "{{oakDeneLandingAreaDirectoryName}}",
+       "landingAreaFileTemplateGUID" : "{{landingAreaTemplateGUID}}",
+       "dataLakeFileTemplateGUID" : "{{dataLakeTemplateGUID}}",
+       "destinationDirectory" : "{{dataLakeDirectoryPathName}}",
+       "newFileProcessName" : "{{newFileProcessName}}"
     }
 }
 
@@ -494,7 +496,7 @@ Content-Type: application/json
     {
       "class" : "NewActionTarget",
       "actionTargetName": "newElementProcess",
-      "actionTargetGUID": "{{newElementProcessGUID}}"
+      "actionTargetGUID": "{{newFileProcessGUID}}"
     },
     {
       "class" : "NewActionTarget",
@@ -503,16 +505,16 @@ Content-Type: application/json
     },
     {
       "class" : "NewActionTarget",
-      "actionTargetName": "landingAreaFolder",
-      "actionTargetGUID": "{{oldMarketLandingAreaFolderGUID}}"
-    },
-    {
-      "class" : "NewActionTarget",
       "actionTargetName": "hospitalContactPerson",
       "actionTargetGUID": "{{oldMarketContactPerson}}"
     }],
     "requestParameters" : {
-       "hospitalTemplateGUID" : "5e5ffc97-237d-46c6-95c3-49405035dedc"
+       "landingAreaDirectoryTemplateGUID" : "{{landingAreaFolderTemplateGUID}}",
+       "landingAreaDirectoryName" : "{{oldMarketLandingAreaDirectoryName}}",
+       "landingAreaFileTemplateGUID" : "{{landingAreaTemplateGUID}}",
+       "dataLakeFileTemplateGUID" : "{{dataLakeTemplateGUID}}",
+       "destinationDirectory" : "{{dataLakeDirectoryPathName}}",
+       "newFileProcessName" : "{{newFileProcessName}}"
     }
 }
 
@@ -542,7 +544,7 @@ Content-Type: application/json
     {
       "class" : "NewActionTarget",
       "actionTargetName": "newElementProcess",
-      "actionTargetGUID": "{{newElementProcessGUID}}"
+      "actionTargetGUID": "{{newFileProcessGUID}}"
     },
     {
       "class" : "NewActionTarget",
@@ -551,16 +553,16 @@ Content-Type: application/json
     },
     {
       "class" : "NewActionTarget",
-      "actionTargetName": "landingAreaFolder",
-      "actionTargetGUID": "{{hamptonLandingAreaFolderGUID}}"
-    },
-    {
-      "class" : "NewActionTarget",
       "actionTargetName": "hospitalContactPerson",
       "actionTargetGUID": "{{hamptonContactPerson}}"
     }],
     "requestParameters" : {
-       "hospitalTemplateGUID" : "5e5ffc97-237d-46c6-95c3-49405035dedc"
+       "landingAreaDirectoryTemplateGUID" : "{{landingAreaFolderTemplateGUID}}",
+       "landingAreaDirectoryName" : "{{hamptonLandingAreaDirectoryName}}",
+       "landingAreaFileTemplateGUID" : "{{landingAreaTemplateGUID}}",
+       "dataLakeFileTemplateGUID" : "{{dataLakeTemplateGUID}}",
+       "destinationDirectory" : "{{dataLakeDirectoryPathName}}",
+       "newFileProcessName" : "{{newFileProcessName}}"
     }
 }
 

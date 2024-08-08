@@ -47,5 +47,6 @@ public class DataFolderMonitorIntegrationProvider extends BasicFilesMonitorInteg
 
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.FILE_FOLDER,
         DeployedImplementationType.DATA_FOLDER});
+        super.supportedConfigurationProperties = BasicFilesMonitoringConfigurationProperty.getConfigurationPropertyTypes();
     }
 }
