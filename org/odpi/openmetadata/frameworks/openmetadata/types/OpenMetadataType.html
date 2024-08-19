@@ -1074,6 +1074,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The element(s) that the engine action will work on.</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#TARGET_FOR_ACTION_PROCESS" class="member-name-link">TARGET_FOR_ACTION_PROCESS</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action process.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#TARGET_FOR_ACTION_TYPE" class="member-name-link">TARGET_FOR_ACTION_TYPE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action type.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#TASK_CLASSIFICATION" class="member-name-link">TASK_CLASSIFICATION</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">A self-contained, short activity, typically for one or two people.</div>
@@ -5652,34 +5660,6 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="INCIDENT_REPORT">
-<h3>INCIDENT_REPORT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">INCIDENT_REPORT</span></div>
-<div class="block">A description of an adverse situation or activity.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="OPEN_DISCOVERY_ENGINE">
-<h3>OPEN_DISCOVERY_ENGINE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">OPEN_DISCOVERY_ENGINE</span></div>
-<div class="block">A server capability for running open discovery services.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="OPEN_DISCOVERY_SERVICE">
-<h3>OPEN_DISCOVERY_SERVICE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">OPEN_DISCOVERY_SERVICE</span></div>
-<div class="block">A pluggable component for discovering properties about an asset.</div>
-</section>
-</li>
-<li>
-<section class="detail" id="OPEN_DISCOVERY_PIPELINE">
-<h3>OPEN_DISCOVERY_PIPELINE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">OPEN_DISCOVERY_PIPELINE</span></div>
-<div class="block">A pluggable component that calls multiple discovery services.</div>
-</section>
-</li>
-<li>
 <section class="detail" id="REPOSITORY_GOVERNANCE_ENGINE">
 <h3>REPOSITORY_GOVERNANCE_ENGINE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">REPOSITORY_GOVERNANCE_ENGINE</span></div>
@@ -5698,6 +5678,20 @@ the order they are declared.</div>
 <h3>SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP</span></div>
 <div class="block">Link between a governance engine and one of its services.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TARGET_FOR_ACTION_TYPE">
+<h3>TARGET_FOR_ACTION_TYPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">TARGET_FOR_ACTION_TYPE</span></div>
+<div class="block">The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action type.  Additional targets for action can be supplied by the caller.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TARGET_FOR_ACTION_PROCESS">
+<h3>TARGET_FOR_ACTION_PROCESS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">TARGET_FOR_ACTION_PROCESS</span></div>
+<div class="block">The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action process.  Additional targets for action can be supplied by the caller.</div>
 </section>
 </li>
 <li>
@@ -5747,6 +5741,13 @@ the order they are declared.</div>
 <h3>INTEGRATION_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">INTEGRATION_CONNECTOR</span></div>
 <div class="block">A definition to control the execution of an integration connector.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="INCIDENT_REPORT">
+<h3>INCIDENT_REPORT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">INCIDENT_REPORT</span></div>
+<div class="block">A description of an adverse situation or activity.</div>
 </section>
 </li>
 <li>
@@ -6104,6 +6105,27 @@ the order they are declared.</div>
 <h3>DATA_PROCESSING_TARGET_RELATIONSHIP</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">DATA_PROCESSING_TARGET_RELATIONSHIP</span></div>
 <div class="block">Relationship identifying the actions being performed on data.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_DISCOVERY_ENGINE">
+<h3>OPEN_DISCOVERY_ENGINE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">OPEN_DISCOVERY_ENGINE</span></div>
+<div class="block">A server capability for running open discovery services.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_DISCOVERY_SERVICE">
+<h3>OPEN_DISCOVERY_SERVICE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">OPEN_DISCOVERY_SERVICE</span></div>
+<div class="block">A pluggable component for discovering properties about an asset.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_DISCOVERY_PIPELINE">
+<h3>OPEN_DISCOVERY_PIPELINE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a></span>&nbsp;<span class="element-name">OPEN_DISCOVERY_PIPELINE</span></div>
+<div class="block">A pluggable component that calls multiple discovery services.</div>
 </section>
 </li>
 <li>

@@ -171,16 +171,20 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last odd-row-color">
 <div class="block">UNITY-CATALOG-CONNECTOR-0016 - The {0} Connector has detected that the open metadata element that controls the definition of element {1} in Unity Catalog (UC) at {2} has been deleted</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-first even-row-color"><code><a href="#UNABLE_TO_REGISTER_LISTENER" class="member-name-link">UNABLE_TO_REGISTER_LISTENER</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">UNITY-CATALOG-CONNECTOR-0018 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">UNITY-CATALOG-CONNECTOR-0001 - The Unity Catalog connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#VOLUME_UPDATE" class="member-name-link">VOLUME_UPDATE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#VOLUME_UPDATE" class="member-name-link">VOLUME_UPDATE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">UNITY-CATALOG-CONNECTOR-0014 - The {0} Connector has detected a change in the open metadata element {1} that controls the definition of volume {2} but is unable to update the volume in Unity Catalog (UC) at {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#WRONG_REST_CONNECTOR" class="member-name-link">WRONG_REST_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#WRONG_REST_CONNECTOR" class="member-name-link">WRONG_REST_CONNECTOR</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">UNITY-CATALOG-CONNECTOR-0006 - The {0} OSS Unity Catalog Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}</div>
 </div>
 </div>
@@ -360,6 +364,13 @@ the order they are declared.</div>
 <h3>MISSING_METHOD</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">MISSING_METHOD</span></div>
 <div class="block">UNITY-CATALOG-CONNECTOR-0017 - The {0} Connector has called method {1} that is not implemented and so is not able to synchronize element {2} with the Unity Catalog (UC) at {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNABLE_TO_REGISTER_LISTENER">
+<h3>UNABLE_TO_REGISTER_LISTENER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="UCAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc">UCAuditCode</a></span>&nbsp;<span class="element-name">UNABLE_TO_REGISTER_LISTENER</span></div>
+<div class="block">UNITY-CATALOG-CONNECTOR-0018 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}</div>
 </section>
 </li>
 </ul>

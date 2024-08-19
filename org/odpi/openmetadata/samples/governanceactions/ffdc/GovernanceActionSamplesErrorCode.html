@@ -122,16 +122,20 @@ implements <a href="../../../frameworks/auditlog/messagesets/ExceptionMessageSet
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#UNCERTIFIED_HOSPITAL" class="member-name-link">UNCERTIFIED_HOSPITAL</a></code></div>
+<div class="col-first even-row-color"><code><a href="#HOSPITAL_NOT_NOMINATED" class="member-name-link">HOSPITAL_NOT_NOMINATED</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">GOVERNANCE-ACTION-SAMPLES-0001 - The {0} governance action service has verified that hospital {1} ({2}) is certified to supply data for project {3} ({4})</div>
+<div class="block">The {0} governance action service has detected that hospital {1} ({2}) is not nominated to participate in project {3} ({4})</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#UNCERTIFIED_HOSPITAL" class="member-name-link">UNCERTIFIED_HOSPITAL</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">The {0} governance action service has detected that hospital {1} ({2}) is not certified to supply data for project {3} ({4})</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#WRONG_CERTIFICATION_TYPE_FOR_TRIAL" class="member-name-link">WRONG_CERTIFICATION_TYPE_FOR_TRIAL</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#WRONG_CERTIFICATION_TYPE_FOR_TRIAL" class="member-name-link">WRONG_CERTIFICATION_TYPE_FOR_TRIAL</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The {0} governance action service has detected that certification type {1} is not linked to the clinical trial project {2}</div>
 </div>
 </div>
@@ -195,10 +199,17 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="HOSPITAL_NOT_NOMINATED">
+<h3>HOSPITAL_NOT_NOMINATED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionSamplesErrorCode.html" title="enum class in org.odpi.openmetadata.samples.governanceactions.ffdc">GovernanceActionSamplesErrorCode</a></span>&nbsp;<span class="element-name">HOSPITAL_NOT_NOMINATED</span></div>
+<div class="block">The {0} governance action service has detected that hospital {1} ({2}) is not nominated to participate in project {3} ({4})</div>
+</section>
+</li>
+<li>
 <section class="detail" id="UNCERTIFIED_HOSPITAL">
 <h3>UNCERTIFIED_HOSPITAL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionSamplesErrorCode.html" title="enum class in org.odpi.openmetadata.samples.governanceactions.ffdc">GovernanceActionSamplesErrorCode</a></span>&nbsp;<span class="element-name">UNCERTIFIED_HOSPITAL</span></div>
-<div class="block">GOVERNANCE-ACTION-SAMPLES-0001 - The {0} governance action service has verified that hospital {1} ({2}) is certified to supply data for project {3} ({4})</div>
+<div class="block">The {0} governance action service has detected that hospital {1} ({2}) is not certified to supply data for project {3} ({4})</div>
 </section>
 </li>
 <li>

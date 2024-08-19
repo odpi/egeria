@@ -176,27 +176,35 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0005 - The {0} governance action service has been called without a source file name to work with</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NO_TARGETS" class="member-name-link">NO_TARGETS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NO_STEWARD" class="member-name-link">NO_STEWARD</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0026 - The {0} governance action service has not been passed a steward as an action target</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NO_TARGETS" class="member-name-link">NO_TARGETS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0018 - The {0} governance action service has no targets to operate on</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NO_ZONES" class="member-name-link">NO_ZONES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NO_ZONES" class="member-name-link">NO_ZONES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0019 - The {0} governance action service has publishZones set to null</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PROVISIONING_EXCEPTION" class="member-name-link">PROVISIONING_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PROVISIONING_EXCEPTION" class="member-name-link">PROVISIONING_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0007 - The {0} governance action service encountered an {1} exception when provisioning file {2} to {3}
  destination folder using the {4} file pattern.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PROVISIONING_FAILURE" class="member-name-link">PROVISIONING_FAILURE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PROVISIONING_FAILURE" class="member-name-link">PROVISIONING_FAILURE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0006 - The {0} governance action service is unable to provision file {1} 
  to {2} destination folder using {3} file pattern</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#QUALIFIED_NAME_PATH_NAME" class="member-name-link">QUALIFIED_NAME_PATH_NAME</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#QUALIFIED_NAME_PATH_NAME" class="member-name-link">QUALIFIED_NAME_PATH_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0009 - The {0} governance action service is using the qualified name from the Folder asset as the path name: {1}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SETTING_RETENTION" class="member-name-link">SETTING_RETENTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0025 - The {0} governance action service is attaching the retention classification to asset {1} with an archive time of {2} and a delete time of {3}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#SETTING_ZONES" class="member-name-link">SETTING_ZONES</a></code></div>
 <div class="col-last odd-row-color">
@@ -459,6 +467,20 @@ the order they are declared.</div>
 <h3>BLANK_INFO_LOG_MESSAGE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">BLANK_INFO_LOG_MESSAGE</span></div>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0024 - {0}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SETTING_RETENTION">
+<h3>SETTING_RETENTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">SETTING_RETENTION</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0025 - The {0} governance action service is attaching the retention classification to asset {1} with an archive time of {2} and a delete time of {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NO_STEWARD">
+<h3>NO_STEWARD</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NO_STEWARD</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0026 - The {0} governance action service has not been passed a steward as an action target</div>
 </section>
 </li>
 </ul>
