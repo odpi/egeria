@@ -187,6 +187,18 @@ public class IntegrationContext
 
 
     /**
+     * Return the userId for this connector.  It is used to determine if changes where made by this connector.
+     * It should not be needed to issue calls to open metadata.
+     *
+     * @return string
+     */
+    public String getMyUserId()
+    {
+        return userId;
+    }
+
+
+    /**
      * Return the file classifier that uses reference data to describe a file.
      *
      * @return file classifier utility

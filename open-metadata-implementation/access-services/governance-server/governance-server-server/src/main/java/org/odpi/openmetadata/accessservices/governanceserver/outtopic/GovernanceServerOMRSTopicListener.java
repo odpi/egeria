@@ -355,6 +355,22 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
                         return true;
                     }
                 }
+                else if (repositoryHelper.isTypeOf(sourceName,
+                                                   type.getTypeDefName(),
+                                                   OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME))
+                {
+                    EntityProxy integrationConnectorEntityProxy = relationship.getEntityOneProxy();
+
+                    if (integrationConnectorEntityProxy != null)
+                    {
+                        eventPublisher.publishRefreshIntegrationConnectorEvent(integrationConnectorEntityProxy.getGUID(),
+                                                                               repositoryHelper.getStringProperty(sourceName,
+                                                                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                                  integrationConnectorEntityProxy.getUniqueProperties(),
+                                                                                                                  methodName));
+                        return true;
+                    }
+                }
             }
         }
 

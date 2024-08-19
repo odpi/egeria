@@ -17,8 +17,11 @@ import java.util.List;
  */
 public enum BasicFilesMonitoringConfigurationProperty
 {
-    NEW_FILE_PROCESS_NAME  ("newFileProcessName", "Qualified name of the process to run each time a new file is detected and catalogued.", "string", ""),
-        ;
+    NEW_FILE_PROCESS_NAME  ("newFileProcessName",
+                            "Qualified name of the process to run each time a new file is detected and catalogued.",
+                            "string",
+                            "Coco:GovernanceActionProcess:ClinicalTrials:WeeklyMeasurements:Onboarding"),
+    ;
 
     public final String           name;
     public final String           description;

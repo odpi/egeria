@@ -148,7 +148,7 @@ public enum GovernanceServerAuditCode implements AuditLogMessageSet
      * for Governance Engine {0} ({1}) has changed
      */
     REFRESH_GOVERNANCE_ENGINE("OMAS-GOVERNANCE-SERVER-0013",
-                              AuditLogRecordSeverityLevel.INFO,
+                              AuditLogRecordSeverityLevel.EVENT,
                              "The Governance Server Open Metadata Access Service (OMAS) sent notification that the configuration for Governance Engine {0} " +
                                      "({1}) has changed",
                              "The access service sends out configuration notifications to ensure listening engine hosts have the most up to-date " +

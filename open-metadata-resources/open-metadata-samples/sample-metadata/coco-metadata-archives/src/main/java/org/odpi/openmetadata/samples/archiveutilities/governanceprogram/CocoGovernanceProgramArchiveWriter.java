@@ -3,20 +3,17 @@
 package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.CollectionType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
-import org.odpi.openmetadata.samples.archiveutilities.organization.OrganizationDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 
 /**
@@ -475,46 +472,5 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
 
             }
         }
-
-        archiveHelper.addGovernedByRelationship(ProjectDefinition.DROP_FOOT_CLINICAL_TRIAL.getQualifiedName(),
-                                                CertificationTypeDefinition.DROP_FOOT_APPROVED_HOSPITAL.getQualifiedName());
-
-        String oakDeneGUID = archiveHelper.queryGUID(OrganizationDefinition.OAK_DENE.getQualifiedName());
-        String hamptonGUID = archiveHelper.queryGUID(OrganizationDefinition.HAMPTON.getQualifiedName());
-        String dropFootCertificationTypeGUID = archiveHelper.queryGUID(CertificationTypeDefinition.DROP_FOOT_APPROVED_HOSPITAL.getQualifiedName());
-
-        archiveHelper.addCertification(oakDeneGUID,
-                                       UUID.randomUUID().toString(),
-                                       new Date(),
-                                       null,
-                                       null,
-                                       PersonDefinition.TESSA_TUBE.getQualifiedName(),
-                                       OpenMetadataType.PERSON_TYPE_NAME,
-                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                       PersonDefinition.TANYA_TIDIE.getQualifiedName(),
-                                       OpenMetadataType.PERSON_TYPE_NAME,
-                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                       PersonDefinition.ROBBIE_RECORDS.getQualifiedName(),
-                                       OpenMetadataType.PERSON_TYPE_NAME,
-                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                       null,
-                                       dropFootCertificationTypeGUID);
-
-        archiveHelper.addCertification(hamptonGUID,
-                                       UUID.randomUUID().toString(),
-                                       new Date(),
-                                       null,
-                                       null,
-                                       PersonDefinition.TESSA_TUBE.getQualifiedName(),
-                                       OpenMetadataType.PERSON_TYPE_NAME,
-                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                       PersonDefinition.TANYA_TIDIE.getQualifiedName(),
-                                       OpenMetadataType.PERSON_TYPE_NAME,
-                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                       PersonDefinition.GRANT_ABLE.getQualifiedName(),
-                                       OpenMetadataType.PERSON_TYPE_NAME,
-                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                       null,
-                                       dropFootCertificationTypeGUID);
     }
 }

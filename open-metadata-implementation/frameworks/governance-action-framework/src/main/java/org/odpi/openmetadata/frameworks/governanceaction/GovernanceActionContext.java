@@ -2,21 +2,23 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.governanceaction;
 
+import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.client.*;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
-import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.*;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-
 
 import java.util.*;
 
@@ -54,6 +56,8 @@ public class GovernanceActionContext implements GovernanceContext,
     private final OpenMetadataStore                openMetadataStore;
     private final GovernanceConfiguration          governanceConfiguration;
     private final PropertyHelper                   propertyHelper = new PropertyHelper();
+
+    private final MessageFormatter                 messageFormatter = new MessageFormatter();
 
 
     /**
@@ -263,13 +267,13 @@ public class GovernanceActionContext implements GovernanceContext,
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     @Override
-    public void updateActionTargetStatus(String                 actionTargetGUID,
+    public void updateActionTargetStatus(String             actionTargetGUID,
                                          EngineActionStatus status,
-                                         Date                   startDate,
-                                         Date                   completionDate,
-                                         String                 completionMessage) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+                                         Date               startDate,
+                                         Date               completionDate,
+                                         String              completionMessage) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         governanceCompletionClient.updateActionTargetStatus(userId, actionTargetGUID, status, startDate, completionDate, completionMessage);
     }
@@ -344,7 +348,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        this.recordCompletionStatus(status, outputGuards, newRequestParameters, newActionTargets, null);
+        this.recordCompletionStatus(status, outputGuards, newRequestParameters, newActionTargets, (String) null);
     }
 
 
@@ -392,6 +396,46 @@ public class GovernanceActionContext implements GovernanceContext,
                                                           outputGuards,
                                                           newActionTargets,
                                                           completionMessage);
+    }
+
+
+    /**
+     * Declare that all the processing for the governance action service is finished and the status of the work.
+     *
+     * @param status               completion status enum value
+     * @param outputGuards         optional guard strings for triggering subsequent action(s)
+     * @param newRequestParameters additional request parameters.  These override/augment any request parameters defined for the next invoked service
+     * @param newActionTargets     list of action target names to GUIDs for the resulting governance action service
+     * @param completionMessage    message to describe completion results or reasons for failure
+     * @throws InvalidParameterException  the completion status is null
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
+     *                                    action service completion status
+     * @throws PropertyServerException    there is a problem connecting to the metadata store
+     */
+    @Override
+    public synchronized void recordCompletionStatus(CompletionStatus          status,
+                                                    List<String>              outputGuards,
+                                                    Map<String, String>       newRequestParameters,
+                                                    List<NewActionTarget>     newActionTargets,
+                                                    AuditLogMessageDefinition completionMessage) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        if (completionMessage != null)
+        {
+            this.recordCompletionStatus(status,
+                                        outputGuards,
+                                        newRequestParameters,
+                                        newActionTargets,
+                                        messageFormatter.getFormattedMessage(completionMessage));
+        }
+        else
+        {
+            this.recordCompletionStatus(status,
+                                        outputGuards,
+                                        newRequestParameters,
+                                        newActionTargets);
+        }
     }
 
 
@@ -1151,7 +1195,14 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                ElementStatus.ACTIVE,
                                                                null,
                                                                null,
-                                                               properties);
+                                                               true,
+                                                               null,
+                                                               null,
+                                                               properties,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               true);
     }
 
 
@@ -1190,7 +1241,14 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                ElementStatus.ACTIVE,
                                                                null,
                                                                null,
-                                                               properties);
+                                                               true,
+                                                               null,
+                                                               null,
+                                                               properties,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               true);
     }
 
 
@@ -1274,7 +1332,7 @@ public class GovernanceActionContext implements GovernanceContext,
     {
         final String methodName = "createAssetFromTemplate";
 
-        String metadataElementTypeName = "Asset";
+        String metadataElementTypeName = OpenMetadataType.ASSET.typeName;
 
         if (assetTypeName != null)
         {
@@ -1284,7 +1342,7 @@ public class GovernanceActionContext implements GovernanceContext,
         ElementProperties properties = packBasicProperties(qualifiedName, name, versionIdentifier, description, extendedProperties, methodName);
 
         return openMetadataClient.createMetadataElementFromTemplate(userId,
-                                                                    OpenMetadataType.ASSET.typeName,
+                                                                    metadataElementTypeName,
                                                                     null,
                                                                     true,
                                                                     null,
@@ -1328,11 +1386,18 @@ public class GovernanceActionContext implements GovernanceContext,
         ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
 
         return openMetadataClient.createMetadataElementInStore(userId,
-                                                                 processTypeName,
-                                                                 initialStatus,
-                                                                 null,
-                                                                 null,
-                                                                 properties);
+                                                               processTypeName,
+                                                               initialStatus,
+                                                               null,
+                                                               null,
+                                                               true,
+                                                               null,
+                                                               null,
+                                                               properties,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               true);
     }
 
 
@@ -1373,11 +1438,18 @@ public class GovernanceActionContext implements GovernanceContext,
         properties = propertyHelper.addStringProperty(properties, "formula", formula);
 
         return openMetadataClient.createMetadataElementInStore(userId,
-                                                                 processTypeName,
-                                                                 initialStatus,
-                                                                 null,
-                                                                 null,
-                                                                 properties);
+                                                               processTypeName,
+                                                               initialStatus,
+                                                               null,
+                                                               null,
+                                                               true,
+                                                               null,
+                                                               null,
+                                                               properties,
+                                                               null,
+                                                               null,
+                                                               null,
+                                                               true);
     }
 
 
@@ -1509,33 +1581,24 @@ public class GovernanceActionContext implements GovernanceContext,
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
 
-        String processGUID = openMetadataClient.createMetadataElementInStore(userId,
-                                                                             processTypeName,
-                                                                             initialStatus,
-                                                                             null,
-                                                                             null,
-                                                                             properties);
+        ElementProperties relationshipProperties = propertyHelper.addEnumProperty(null,
+                                                                                  OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME,
+                                                                                  OpenMetadataType.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_NAME,
+                                                                                  ProcessContainmentType.OWNED.getName());
 
-        if (processGUID != null)
-        {
-            ElementProperties relationshipProperties = propertyHelper.addEnumProperty(null,
-                                                                                      "containmentType",
-                                                                                      "ProcessContainmentType",
-                                                                                      "OWNED");
-
-            openMetadataClient.createRelatedElementsInStore(userId,
-                                                              "ProcessHierarchy",
-                                                              parentGUID,
-                                                              processGUID,
-                                                              true,
-                                                              false,
-                                                              null,
-                                                              null,
-                                                              relationshipProperties,
-                                                              new Date());
-        }
-
-        return processGUID;
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                               processTypeName,
+                                                               initialStatus,
+                                                               null,
+                                                               parentGUID,
+                                                               false,
+                                                               null,
+                                                               null,
+                                                               properties,
+                                                               parentGUID,
+                                                               OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
+                                                               relationshipProperties,
+                                                               true);
     }
 
 
@@ -1578,33 +1641,24 @@ public class GovernanceActionContext implements GovernanceContext,
 
         properties = propertyHelper.addStringProperty(properties, "formula", formula);
 
-        String processGUID = openMetadataClient.createMetadataElementInStore(userId,
-                                                                             processTypeName,
-                                                                             initialStatus,
-                                                                             null,
-                                                                             null,
-                                                                             properties);
+        ElementProperties relationshipProperties = propertyHelper.addEnumProperty(null,
+                                                                                  OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME,
+                                                                                  OpenMetadataType.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_NAME,
+                                                                                  ProcessContainmentType.OWNED.getName());
 
-        if (processGUID != null)
-        {
-            ElementProperties relationshipProperties = propertyHelper.addEnumProperty(null,
-                                                                                      "containmentType",
-                                                                                      "ProcessContainmentType",
-                                                                                      "OWNED");
-
-            openMetadataClient.createRelatedElementsInStore(userId,
-                                                              "ProcessHierarchy",
-                                                              parentGUID,
-                                                              processGUID,
-                                                              true,
-                                                              false,
-                                                              null,
-                                                              null,
-                                                              relationshipProperties,
-                                                              new Date());
-        }
-
-        return processGUID;
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                               processTypeName,
+                                                               initialStatus,
+                                                               null,
+                                                               parentGUID,
+                                                               false,
+                                                               null,
+                                                               null,
+                                                               properties,
+                                                               parentGUID,
+                                                               OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
+                                                               relationshipProperties,
+                                                               true);
     }
 
 
@@ -1631,49 +1685,31 @@ public class GovernanceActionContext implements GovernanceContext,
                                                        PropertyServerException
     {
         final String methodName = "createProcess";
-
-        final String portTypeName        = "PortImplementation";
-        final String processPortTypeName = "ProcessPort";
-
-        final String displayNamePropertyName = "displayName";
-        final String portTypePropertyName = "portType";
-        final String portTypeTypeName = "PortType";
-
         final String processGUIDParameterName = "processGUID";
 
         propertyHelper.validateGUID(processGUID, processGUIDParameterName, methodName);
 
         ElementProperties properties = packBasicProperties(qualifiedName, null, null, null,null, methodName);
 
-        if (displayName != null)
-        {
-            properties = propertyHelper.addStringProperty(properties, displayNamePropertyName, displayName);
-        }
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName);
+        properties = propertyHelper.addEnumProperty(properties,
+                                                    OpenMetadataType.PORT_TYPE_PROPERTY_NAME,
+                                                    OpenMetadataType.PORT_TYPE_ENUM_TYPE_NAME,
+                                                    portType.getName());
 
-        if (portType != null)
-        {
-            properties = propertyHelper.addEnumProperty(properties, portTypePropertyName, portTypeTypeName, portType.getName());
-        }
-
-        String portGUID = openMetadataClient.createMetadataElementInStore(userId,
-                                                                            portTypeName,
-                                                                            ElementStatus.ACTIVE,
-                                                                            null,
-                                                                            null,
-                                                                            properties);
-
-        openMetadataClient.createRelatedElementsInStore(userId,
-                                                          processPortTypeName,
-                                                          processGUID,
-                                                          portGUID,
-                                                          true,
-                                                          false,
-                                                          null,
-                                                          null,
-                                                          null,
-                                                          new Date());
-
-        return portGUID;
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                               OpenMetadataType.PORT_IMPLEMENTATION_TYPE_NAME,
+                                                               ElementStatus.ACTIVE,
+                                                               null,
+                                                               processGUID,
+                                                               false,
+                                                               null,
+                                                               null,
+                                                               properties,
+                                                               processGUID,
+                                                               OpenMetadataType.PROCESS_PORT_TYPE_NAME,
+                                                               null,
+                                                               true);
     }
 
 
@@ -1744,7 +1780,6 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                              PropertyServerException
     {
         final String methodName = "createLineageRelationship";
-        final String lineageMappingTypeName = "LineageMapping";
 
         final String sourceElementGUIDParameterName = "sourceElementGUID";
         final String targetElementGUIDParameterName = "targetElementGUID";
@@ -1757,32 +1792,23 @@ public class GovernanceActionContext implements GovernanceContext,
         relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, "description", description);
         relationshipProperties = propertyHelper.addStringProperty(relationshipProperties, "formula", formula);
 
-        if (relationshipName == null)
+        String lineageRelationshipTypeName = OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME;
+        if (relationshipName != null)
         {
-            return openMetadataClient.createRelatedElementsInStore(userId,
-                                                                     lineageMappingTypeName,
-                                                                     sourceElementGUID,
-                                                                     targetElementGUID,
-                                                                     true,
-                                                                     false,
-                                                                     null,
-                                                                     null,
-                                                                     relationshipProperties,
-                                                                     new Date());
+            lineageRelationshipTypeName = relationshipName;
         }
-        else
-        {
-            return openMetadataClient.createRelatedElementsInStore(userId,
-                                                                     relationshipName,
-                                                                     sourceElementGUID,
-                                                                     targetElementGUID,
-                                                                     true,
-                                                                     false,
-                                                                     null,
-                                                                     null,
-                                                                     relationshipProperties,
-                                                                     new Date());
-        }
+
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               lineageRelationshipTypeName,
+                                                               sourceElementGUID,
+                                                               targetElementGUID,
+                                                               true,
+                                                               false,
+                                                               null,
+                                                               null,
+                                                               relationshipProperties,
+                                                               new Date());
+
     }
 
 
@@ -2527,7 +2553,9 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param instructions further details on what to do
      * @param priority priority value (based on organization's scale)
      * @param dueDate date/time this needs to be completed
-     * @param assignTo qualified name of the PersonRole element for the recipient
+     * @param assignToGUID unique identifier for the recipient actor
+     * @param actionTargetGUID unique identifier of the element to work on.
+     * @param actionTargetName name of the element to work on.
      * @return unique identifier of new to do element
      * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
      * @throws UserNotAuthorizedException the governance action service is not authorized to create a to-do
@@ -2537,128 +2565,45 @@ public class GovernanceActionContext implements GovernanceContext,
     public String openToDo(String toDoQualifiedName,
                            String title,
                            String instructions,
+                           String toDoType,
                            int    priority,
                            Date   dueDate,
-                           String assignTo) throws InvalidParameterException,
-                                                   UserNotAuthorizedException,
-                                                   PropertyServerException
+                           String assignToGUID,
+                           String actionTargetGUID,
+                           String actionTargetName) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
         final String methodName = "openToDo";
 
-        final String titlePropertyName         = "name";
-        final String instructionsPropertyName  = "description";
-        final String priorityPropertyName      = "priority";
-        final String dueDatePropertyName       = "dueTime";
-        final String statusPropertyName        = "status";
-        final String statusPropertyTypeName    = "ToDoStatus";
-        final String openEnumPropertyValue     = "Open";
-
         final String toDoQualifiedNameParameterName = "toDoQualifiedName";
-        final String assignToParameterName          = "assignTo";
+        final String assignToParameterName          = "assignToGUID";
 
         propertyHelper.validateMandatoryName(toDoQualifiedName, toDoQualifiedNameParameterName, methodName);
-        propertyHelper.validateMandatoryName(assignTo, assignToParameterName, methodName);
-
-        SearchProperties           searchProperties           = new SearchProperties();
-        List<PropertyCondition>    conditions                 = new ArrayList<>();
-        PropertyCondition          condition                  = new PropertyCondition();
-        PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
-
-        primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
-        primitiveTypePropertyValue.setPrimitiveValue(assignTo);
-        primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-
-        condition.setProperty(OpenMetadataProperty.QUALIFIED_NAME.name);
-        condition.setOperator(PropertyComparisonOperator.EQ);
-        condition.setValue(primitiveTypePropertyValue);
-
-        conditions.add(condition);
-
-        searchProperties.setConditions(conditions);
-        searchProperties.setMatchCriteria(MatchCriteria.ALL);
-
-        /*
-         * Validate that there is a person role to assign the "to do" to
-         */
-        List<OpenMetadataElement> personRoleMatches = openMetadataClient.findMetadataElements(userId,
-                                                                                              OpenMetadataType.PERSON_ROLE_TYPE_NAME,
-                                                                                              null,
-                                                                                              searchProperties,
-                                                                                              null,
-                                                                                              null,
-                                                                                              null,
-                                                                                              null,
-                                                                                              null,
-                                                                                              false,
-                                                                                              false,
-                                                                                              new Date(),
-                                                                                              0,
-                                                                                              0);
-
-        if ((personRoleMatches == null) || personRoleMatches.isEmpty())
-        {
-            throw new InvalidParameterException(GAFErrorCode.UNKNOWN_ELEMENT.getMessageDefinition(toDoQualifiedName,
-                                                                                                  toDoQualifiedNameParameterName,
-                                                                                                  methodName),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                toDoQualifiedNameParameterName);
-        }
-        else if (personRoleMatches.size() > 1)
-        {
-            List<String> matchingGUIDs = new ArrayList<>();
-
-            for (OpenMetadataElement element : personRoleMatches)
-            {
-                if (element != null)
-                {
-                    matchingGUIDs.add(element.getElementGUID());
-                }
-            }
-
-            throw new InvalidParameterException(GAFErrorCode.DUPLICATE_ELEMENT.getMessageDefinition(toDoQualifiedName,
-                                                                                                    toDoQualifiedNameParameterName,
-                                                                                                    methodName,
-                                                                                                    matchingGUIDs.toString()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                toDoQualifiedNameParameterName);
-        }
-
-        OpenMetadataElement personRoleElement = personRoleMatches.get(0);
-        String personRoleGUID = null;
-
-        if ((personRoleElement != null) && (personRoleElement.getElementGUID() != null))
-        {
-            personRoleGUID = personRoleElement.getElementGUID();
-        }
+        propertyHelper.validateMandatoryName(assignToGUID, assignToParameterName, methodName);
 
         /*
          * Create the to do entity
          */
-        ElementProperties properties = propertyHelper.addStringProperty(null,
-                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                        toDoQualifiedName);
+        NewActionTarget actionTarget = new NewActionTarget();
+        actionTarget.setActionTargetGUID(actionTargetGUID);
+        actionTarget.setActionTargetName(actionTargetName);
 
-        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, title);
-        properties = propertyHelper.addStringProperty(properties, instructionsPropertyName, instructionsPropertyName);
-        properties = propertyHelper.addDateProperty(properties, dueDatePropertyName, dueDate);
-        properties = propertyHelper.addIntProperty(properties, priorityPropertyName, priority);
-        properties = propertyHelper.addEnumProperty(properties, statusPropertyName, statusPropertyTypeName, openEnumPropertyValue);
+        List<NewActionTarget> actionTargets = new ArrayList<>();
+        actionTargets.add(actionTarget);
 
-        return openMetadataClient.createMetadataElementInStore(userId,
-                                                               OpenMetadataType.TO_DO_TYPE_NAME,
-                                                               ElementStatus.ACTIVE,
-                                                               null,
-                                                               null,
-                                                               false,
-                                                               null,
-                                                               null,
-                                                               properties,
-                                                               personRoleGUID,
-                                                               OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                                               null,
-                                                               true);
+        return openMetadataClient.openToDo(userId,
+                                           toDoQualifiedName,
+                                           title,
+                                           instructions,
+                                           toDoType,
+                                           priority,
+                                           dueDate,
+                                           null,
+                                           assignToGUID,
+                                           null,
+                                           null,
+                                           actionTargets);
     }
 
 

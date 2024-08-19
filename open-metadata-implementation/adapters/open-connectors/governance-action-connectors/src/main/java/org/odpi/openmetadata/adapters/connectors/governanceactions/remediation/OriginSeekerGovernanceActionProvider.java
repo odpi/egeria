@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
@@ -41,13 +42,7 @@ public class OriginSeekerGovernanceActionProvider extends GovernanceActionServic
         producedGuards = OriginSeekerGuard.getGuardTypes();
 
         supportedActionTargetTypes = new ArrayList<>();
-        ActionTargetType actionTargetType = new ActionTargetType();
-
-        actionTargetType.setName(ACTION_TARGET_NAME);
-        actionTargetType.setTypeName(DeployedImplementationType.DATA_ASSET.getAssociatedTypeName());
-        actionTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_ASSET.getDeployedImplementationType());
-
-        super.supportedActionTargetTypes.add(actionTargetType);
+        super.supportedActionTargetTypes.add(ActionTarget.NEW_ASSET.getActionTargetType());
 
         super.setConnectorClassName(connectorClassName);
 

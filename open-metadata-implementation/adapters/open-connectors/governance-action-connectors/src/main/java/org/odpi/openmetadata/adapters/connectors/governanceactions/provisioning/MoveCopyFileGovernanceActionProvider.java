@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
@@ -23,14 +24,12 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
     private static final String  connectorTypeDisplayName   = "Move, Copy or Delete File Governance Action Service";
     private static final String  connectorTypeDescription   = "Provisioning Governance Action Service that moves, copies or deletes files on request.";
 
-    static final String DEFAULT_TOP_LEVEL_PROCESS_NAME_PROPERTY                    = "Egeria:MoveCopyDeleteFileGovernanceActionService";
+    static final String DEFAULT_TOP_LEVEL_PROCESS_NAME_PROPERTY = "Egeria:MoveCopyDeleteFileGovernanceActionService";
 
     static final String SOURCE_FILE_PROPERTY                    = "sourceFile";
     static final String SOURCE_FILE_PROPERTY_DESCRIPTION        = "The full path name of the source file.";
     static final String DESTINATION_FOLDER_PROPERTY             = "destinationFolder";
     static final String DESTINATION_FOLDER_PROPERTY_DESCRIPTION = "The full path name of the destination directory.";
-    static final String NEW_ASSET_PROPERTY                      = "newAsset";
-    static final String NEW_ASSET_PROPERTY_DESCRIPTION          = "This is the asset for the destination file.";
 
     private static final String connectorClassName = MoveCopyFileGovernanceActionConnector.class.getName();
 
@@ -69,16 +68,7 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         supportedActionTargetTypes.add(actionTargetType);
 
         producedActionTargetTypes = new ArrayList<>();
-
-        actionTargetType = new ActionTargetType();
-
-        actionTargetType.setName(NEW_ASSET_PROPERTY);
-        actionTargetType.setDescription(NEW_ASSET_PROPERTY_DESCRIPTION);
-        actionTargetType.setTypeName(DeployedImplementationType.FILE.getAssociatedTypeName());
-        actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE.getDeployedImplementationType());
-
-        super.producedActionTargetTypes.add(actionTargetType);
-
+        super.producedActionTargetTypes.add(ActionTarget.NEW_ASSET.getActionTargetType());
 
         producedGuards = MoveCopyFileGuard.getGuardTypes();
 

@@ -160,6 +160,7 @@ public class OpenMetadataTypesArchive
         update0201Connections();
         update0210DataStores();
         update0235InformationView();
+        update0462GovernanceActionProcesses();
         update0464IntegrationGroups();
     }
 
@@ -334,6 +335,157 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+    private void update0462GovernanceActionProcesses()
+    {
+        this.archiveBuilder.addRelationshipDef(getTargetForActionType());
+        this.archiveBuilder.addRelationshipDef(getTargetForActionProcess());
+        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcessFlow());
+    }
+
+
+    private RelationshipDef getTargetForActionType()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TARGET_FOR_ACTION_TYPE,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "associatedGovernanceActionType";
+        final String                     end1AttributeDescription     = "Describes the governance action that will use this target for action.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "predefinedTargetForAction";
+        final String                     end2AttributeDescription     = "Provides a fixed target for action that will be used when this governance action executes.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                           OpenMetadataProperty.ACTION_TARGET_NAME.description,
+                                                           OpenMetadataProperty.ACTION_TARGET_NAME.descriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+
+    private RelationshipDef getTargetForActionProcess()
+    {
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TARGET_FOR_ACTION_PROCESS,
+                                                                                null,
+                                                                                ClassificationPropagationRule.NONE);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1AttributeName            = "associatedGovernanceActionProcess";
+        final String                     end1AttributeDescription     = "Describes the governance action that will use this target for action.";
+        final String                     end1AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2AttributeName            = "predefinedTargetForAction";
+        final String                     end2AttributeDescription     = "Provides a fixed target for action that will be used when this governance action executes.";
+        final String                     end2AttributeDescriptionGUID = null;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                           OpenMetadataProperty.ACTION_TARGET_NAME.description,
+                                                           OpenMetadataProperty.ACTION_TARGET_NAME.descriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+
+    /**
+     * Add requestParameter
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateGovernanceActionProcessFlow()
+    {
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_NAME);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.REQUEST_PARAMETERS.name,
+                                                                    OpenMetadataProperty.REQUEST_PARAMETERS.description,
+                                                                    OpenMetadataProperty.REQUEST_PARAMETERS.descriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+
+        return typeDefPatch;
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
     private void update0464IntegrationGroups()
     {
         this.archiveBuilder.addEnumDef(getDeleteMethodEnum());
@@ -409,8 +561,5 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
-
-
-
 }
 

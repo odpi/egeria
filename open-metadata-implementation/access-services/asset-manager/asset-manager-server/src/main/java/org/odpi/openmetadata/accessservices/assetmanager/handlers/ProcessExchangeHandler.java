@@ -618,11 +618,11 @@ public class ProcessExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateGUID(parentProcessGUID, parentProcessGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(childProcessGUID, childProcessGUIDParameterName, methodName);
 
-        int containmentTypeOrdinal = ProcessContainmentType.USED.getOpenTypeOrdinal();
+        int containmentTypeOrdinal = ProcessContainmentType.USED.getOrdinal();
 
         if (containmentType != null)
         {
-            containmentTypeOrdinal = containmentType.getOpenTypeOrdinal();
+            containmentTypeOrdinal = containmentType.getOrdinal();
         }
 
         processHandler.setupProcessParent(userId,

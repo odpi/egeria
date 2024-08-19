@@ -13,7 +13,10 @@ import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * GovernanceActionServiceConnector describes the base class for a specific type of connector that is responsible for preforming
@@ -146,6 +149,134 @@ public abstract class GovernanceActionServiceConnector extends ConnectorBase imp
     }
 
 
+
+    /**
+     * Retrieve a request parameter that is a comma-separated list of strings.
+     *
+     * @param propertyName name of property
+     * @param requestParameters request parameters
+     * @param defaultValue value to use if the property is not specified.
+     * @return list of strings or null if not set
+     */
+    protected List<String> getArrayRequestParameter(String              propertyName,
+                                                    Map<String, String> requestParameters,
+                                                    List<String>        defaultValue)
+    {
+        if (requestParameters != null)
+        {
+            if (requestParameters.containsKey(propertyName))
+            {
+                Object arrayOption = requestParameters.get(propertyName);
+
+                String[] options = arrayOption.toString().split(",");
+
+                return new ArrayList<>(Arrays.asList(options));
+            }
+        }
+
+        return defaultValue;
+    }
+
+
+    /**
+     * Retrieve a request parameter that is a boolean.  If any non-null value is set it returns true unless
+     * the value is set to FALSE, False or false.
+     *
+     * @param propertyName name of property
+     * @param requestParameters request parameter
+     * @return boolean flag or false if not set
+     */
+    protected boolean getBooleanRequestParameter(String              propertyName,
+                                                 Map<String, String> requestParameters)
+    {
+        if (requestParameters != null)
+        {
+            if (requestParameters.containsKey(propertyName))
+            {
+                String booleanOption = requestParameters.get(propertyName);
+
+                return ((! "FALSE".equals(booleanOption)) && (! "false".equals(booleanOption)) && (! "False".equals(booleanOption)));
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Retrieve a request parameter that is an integer.
+     *
+     * @param propertyName name of property
+     * @param requestParameters request parameter
+     * @return integer value or zero if not supplied
+     */
+    protected int getIntRequestParameter(String              propertyName,
+                                         Map<String, String> requestParameters)
+    {
+        if (requestParameters != null)
+        {
+            if (requestParameters.get(propertyName) != null)
+            {
+                String integerOption = requestParameters.get(propertyName);
+
+                if (integerOption != null)
+                {
+                    return Integer.parseInt(integerOption);
+                }
+            }
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Retrieve a request parameter that is a long.
+     *
+     * @param propertyName name of property
+     * @param requestParameters request parameter
+     * @return long value or zero if not supplied
+     */
+    protected long getLongRequestParameter(String              propertyName,
+                                           Map<String, String> requestParameters)
+    {
+        if (requestParameters != null)
+        {
+            if (requestParameters.get(propertyName) != null)
+            {
+                String integerOption = requestParameters.get(propertyName);
+
+                if (integerOption != null)
+                {
+                    return Long.parseLong(integerOption);
+                }
+            }
+        }
+
+        return 0L;
+    }
+
+
+    /**
+     * Retrieve a request parameter that is a string or null if not set.
+     *
+     * @param propertyName name of property
+     * @param requestParameters request parameter
+     * @return string value of property or null if not supplied
+     */
+    protected String getStringRequestParameter(String              propertyName,
+                                               Map<String, String> requestParameters)
+    {
+        if (requestParameters != null)
+        {
+            if (requestParameters.get(propertyName) != null)
+            {
+                return requestParameters.get(propertyName);
+            }
+        }
+
+        return null;
+    }
 
 
     /**

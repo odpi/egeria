@@ -64,11 +64,9 @@ public abstract class WatchdogGovernanceActionService extends GovernanceActionSe
     /**
      * Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
      * or the administer requested this governance action service stop running or the hosting server is shutting down.
-     *
      * If disconnect completes before the governance action service records
      * its completion status then the governance action service is restarted either at the administrator's request or the next time the server starts.
      * If you do not want this governance action service restarted, be sure to record the completion status in disconnect().
-     *
      * The disconnect() method is a standard method from the Open Connector Framework (OCF).  If you need to override this method
      * be sure to call super.disconnect() in your version.
      *

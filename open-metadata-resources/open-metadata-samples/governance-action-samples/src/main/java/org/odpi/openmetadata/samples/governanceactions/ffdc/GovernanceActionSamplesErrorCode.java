@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.samples.governanceactions.ffdc;
 
-import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
@@ -28,29 +27,37 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum GovernanceActionSamplesErrorCode implements ExceptionMessageSet
 {
     /**
-     * GOVERNANCE-ACTION-SAMPLES-0001 - The {0} governance action service has verified that hospital {1} ({2}) is certified to supply data for project {3} ({4})
+     * The {0} governance action service has detected that hospital {1} ({2}) is not nominated to participate in project {3} ({4})
      */
-    UNCERTIFIED_HOSPITAL(400, "GOVERNANCE-ACTION-SAMPLES-400-001",
-                   "The {0} governance action service has detected that hospital {1} ({2}) is not certified to supply data for project {3} ({4})",
-                   "The service stops setting up the onboarding pipeline for this hospital.",
-                   "Retry the request once the certification is complete."),
+    HOSPITAL_NOT_NOMINATED(400, "GOVERNANCE-ACTION-SAMPLES-400-001",
+                   "The {0} governance action service has detected that hospital {1} ({2}) is not nominated to participate in project {3} ({4})",
+                   "The service stops processing for this hospital.",
+                   "Retry the request once the nomination is complete."),
+
+    /**
+     * The {0} governance action service has detected that hospital {1} ({2}) is not certified to supply data for project {3} ({4})
+     */
+    UNCERTIFIED_HOSPITAL(400, "GOVERNANCE-ACTION-SAMPLES-400-002",
+                         "The {0} governance action service has detected that hospital {1} ({2}) is not certified to supply data for project {3} ({4})",
+                         "The service stops setting up the onboarding pipeline for this hospital.",
+                         "Retry the request once the certification is complete."),
 
     /**
      * The {0} governance action service has detected that certification type {1} is not linked to the clinical trial project {2}
      */
-    WRONG_CERTIFICATION_TYPE_FOR_TRIAL(400, "GOVERNANCE-ACTION-SAMPLES-400-002",
-                         "The {0} governance action service has detected that certification type {1} is not linked to the clinical trial project {2}",
-                         "The service stops certifying this hospital.",
-                         "Retry the request and ensure that a valid certification type, that is linked to the clinical trial project using the GovernedBy relationship, is specified in the action targets."),
+    WRONG_CERTIFICATION_TYPE_FOR_TRIAL(400, "GOVERNANCE-ACTION-SAMPLES-400-003",
+                                       "The {0} governance action service has detected that certification type {1} is not linked to the clinical trial project {2}",
+                                       "The service stops certifying this hospital.",
+                                       "Retry the request and ensure that a valid certification type, that is linked to the clinical trial project using the GovernedBy relationship, is specified in the action targets."),
 
 
     /**
      * The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}
      */
     UNEXPECTED_EXCEPTION(500, "GOVERNANCE-ACTION-CONNECTORS-500-004",
-                                  "The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}",
-                                  "The governance action returns an exception to the Governance Action Engine.",
-                                  "Use details from the error message to determine the cause of the error and retry the service call once it is resolved."),
+                         "The {0} governance action service received an unexpected exception {1} during its processing; the error message was: {2}",
+                         "The governance action returns an exception to the Governance Action Engine.",
+                         "Use details from the error message to determine the cause of the error and retry the service call once it is resolved."),
     ;
 
 

@@ -655,6 +655,40 @@ public class FilesIntegratorContext extends IntegrationContext
 
 
     /**
+     * Update the data folder asset description in the catalog.
+     *
+     * @param dataFolderGUID unique identifier of the data folder asset
+     * @param isMergeUpdate should the supplied properties completely override the existing properties or augment them?
+     * @param fileFolderProperties properties for the asset
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateDataFolderInCatalog(String               metadataSourceGUID,
+                                          String               metadataSourceName,
+                                          String               dataFolderGUID,
+                                          boolean              isMergeUpdate,
+                                          FileFolderProperties fileFolderProperties) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        filesAndFoldersClient.updateDataFolderInCatalog(userId,
+                                                        metadataSourceGUID,
+                                                        metadataSourceName,
+                                                        dataFolderGUID,
+                                                        isMergeUpdate,
+                                                        fileFolderProperties);
+
+        if (integrationReportWriter != null)
+        {
+            integrationReportWriter.setAnchor(dataFolderGUID, dataFolderGUID);
+            integrationReportWriter.reportElementUpdate(dataFolderGUID);
+        }
+    }
+
+
+    /**
      * Mark the data folder asset description in the catalog as archived.
      *
      * @param dataFolderGUID unique identifier of the data folder asset

@@ -4,20 +4,20 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.governanceaction.RemediationGovernanceActionService;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * ZonePublisherGovernanceActionConnector sets the supplied governance zone names into the assets supplied as action targets.
@@ -79,29 +79,21 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
             }
         }
 
-        List<String>        outputGuards = new ArrayList<>();
-        CompletionStatus    completionStatus;
+        List<String>              outputGuards = new ArrayList<>();
+        CompletionStatus          completionStatus;
+        AuditLogMessageDefinition messageDefinition = null;
 
         try
         {
             if (governanceContext.getActionTargetElements() == null)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        GovernanceActionConnectorsAuditCode.NO_TARGETS.getMessageDefinition(governanceServiceName));
-                }
+                messageDefinition = GovernanceActionConnectorsAuditCode.NO_TARGETS.getMessageDefinition(governanceServiceName);
 
-                completionStatus = ZonePublisherGuard.NO_TARGETS_DETECTED.getCompletionStatus();
-                outputGuards.add(ZonePublisherGuard.NO_TARGETS_DETECTED.getName());
+                completionStatus = Guard.NO_TARGETS_DETECTED.getCompletionStatus();
+                outputGuards.add(Guard.NO_TARGETS_DETECTED.getName());
             }
             else if ((publishZones == null) || (publishZones.isEmpty()))
             {
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.NO_ZONES.getMessageDefinition(governanceServiceName));
-                }
-
                 for (ActionTargetElement actionTarget : governanceContext.getActionTargetElements())
                 {
                     if ((actionTarget != null) &&
@@ -126,6 +118,7 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
                     }
                 }
 
+                messageDefinition = GovernanceActionConnectorsAuditCode.NO_ZONES.getMessageDefinition(governanceServiceName);
                 completionStatus = ZonePublisherGuard.NO_ZONES_DETECTED.getCompletionStatus();
                 outputGuards.add(ZonePublisherGuard.NO_ZONES_DETECTED.getName());
             }
@@ -137,17 +130,15 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
                 {
                     if ((actionTarget != null) &&
                             (actionTarget.getTargetElement() != null) &&
-                            (propertyHelper.isTypeOf(actionTarget.getTargetElement(), OpenMetadataType.ASSET.typeName)))
+                            (ActionTarget.NEW_ASSET.getName().equals(actionTarget.getActionTargetName()) &&
+                            (propertyHelper.isTypeOf(actionTarget.getTargetElement(), OpenMetadataType.ASSET.typeName))))
                     {
                         OpenMetadataElement element = actionTarget.getTargetElement();
 
-                        if (auditLog != null)
-                        {
-                            auditLog.logMessage(methodName,
-                                                GovernanceActionConnectorsAuditCode.SETTING_ZONES.getMessageDefinition(governanceServiceName,
-                                                                                                                       element.getElementGUID(),
-                                                                                                                       publishZones.toString()));
-                        }
+                        auditLog.logMessage(methodName,
+                                            GovernanceActionConnectorsAuditCode.SETTING_ZONES.getMessageDefinition(governanceServiceName,
+                                                                                                                   element.getElementGUID(),
+                                                                                                                   publishZones.toString()));
 
                         governanceContext.classifyMetadataElement(element.getElementGUID(),
                                                                   OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME,
@@ -162,7 +153,12 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
                 outputGuards.add(ZonePublisherGuard.ZONE_ASSIGNED.getName());
             }
 
-            governanceContext.recordCompletionStatus(completionStatus, outputGuards);
+            if (messageDefinition != null)
+            {
+                auditLog.logMessage(methodName, messageDefinition);
+            }
+
+            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);
         }
         catch (OCFCheckedExceptionBase error)
         {

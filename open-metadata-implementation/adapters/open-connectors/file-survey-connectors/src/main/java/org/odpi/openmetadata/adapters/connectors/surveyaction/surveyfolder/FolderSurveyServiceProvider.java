@@ -72,7 +72,11 @@ public class FolderSurveyServiceProvider extends SurveyActionServiceProvider
         actionTargetType.setTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
 
-        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{DeployedImplementationType.FILE_FOLDER, DeployedImplementationType.DATA_FOLDER});
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationType[]{
+                DeployedImplementationType.FILE_FOLDER,
+                DeployedImplementationType.DATA_FOLDER,
+                DeployedImplementationType.OSS_UC_VOLUME});
+
         super.supportedActionTargetTypes.add(actionTargetType);
         super.producedAnnotationTypes = SurveyFolderAnnotationType.getAnnotationTypeTypes();
         super.supportedRequestParameters = FolderRequestParameter.getRequestParameterTypes();

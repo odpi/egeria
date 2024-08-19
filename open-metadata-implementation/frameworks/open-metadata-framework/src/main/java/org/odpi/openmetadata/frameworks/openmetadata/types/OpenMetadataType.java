@@ -1548,42 +1548,6 @@ public enum OpenMetadataType
                           "A governance service for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset."),
 
     /**
-     * A description of an adverse situation or activity.
-     */
-    INCIDENT_REPORT("072f252b-dea7-4b88-bb2e-8f741c9ca7f6e",
-                    "IncidentReport",
-                    OpenMetadataWikiPages.MODEL_0470_INCIDENT_REPORTING,
-                    "56c76116-1b1c-447c-b74d-ff860a2e41c6",
-                    "A description of an adverse situation or activity."),
-
-    /**
-     * A server capability for running open discovery services.
-     */
-    OPEN_DISCOVERY_ENGINE("be650674-790b-487a-a619-0a9002488055",
-                          "OpenDiscoveryEngine",
-                          OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
-                          "bde9e812-35a0-49fb-b5ed-9cb1ffa48d60",
-                          "A server capability for running open discovery services."),
-
-    /**
-     * A pluggable component for discovering properties about an asset.
-     */
-    OPEN_DISCOVERY_SERVICE("2f278dfc-4640-4714-b34b-303e84e4fc40",
-                           "OpenDiscoveryService",
-                           OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
-                           "38b8d73d-3c60-4e86-8561-256c77e10c16",
-                           "A pluggable component for discovering properties about an asset."),
-
-    /**
-     * A pluggable component that calls multiple discovery services.
-     */
-    OPEN_DISCOVERY_PIPELINE("081abe00-740e-4143-b0d5-a1f55450fc22",
-                            "OpenDiscoveryPipeline",
-                            OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
-                            "85a985ab-2f07-4ffc-99d5-d423d787c51e",
-                            "A pluggable component that calls multiple discovery services."),
-
-    /**
      * A governance engine for open metadata repositories.
      */
     REPOSITORY_GOVERNANCE_ENGINE("2b3bed05-c227-47d7-87a3-139ab0568361",
@@ -1609,6 +1573,24 @@ public enum OpenMetadataType
                                               OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                                               "346ca38f-287d-401f-bbe9-375ecd2b938f",
                                               "Link between a governance engine and one of its services."),
+
+    /**
+     * The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action type.  Additional targets for action can be supplied by the caller.
+     */
+    TARGET_FOR_ACTION_TYPE("059ed11f-f8dd-45cc-991e-2cf9ad3be4a7",
+                      "TargetForActionType",
+                      OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                      "433f34f5-572e-44cf-888d-653bed1bce54",
+                      "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action type.  Additional targets for action can be supplied by the caller."),
+
+    /**
+     * The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action process.  Additional targets for action can be supplied by the caller.
+     */
+    TARGET_FOR_ACTION_PROCESS("7a72262e-c466-49cf-b67d-01b7b45c3f19",
+                      "TargetForActionProcess",
+                      OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                      "90dea768-2b9e-4a3c-b065-95efcfd5a48f",
+                      "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action process.  Additional targets for action can be supplied by the caller."),
 
     /**
      * An engine action that has been created to support the active governance of the open metadata ecosystem and/or digital landscape.
@@ -1672,6 +1654,15 @@ public enum OpenMetadataType
                           OpenMetadataWikiPages.MODEL_0464_INTEGRATION_GROUPS,
                           "fe907752-40e5-4bbc-9984-5a363bfd0241",
                           "A definition to control the execution of an integration connector."),
+
+    /**
+     * A description of an adverse situation or activity.
+     */
+    INCIDENT_REPORT("072f252b-dea7-4b88-bb2e-8f741c9ca7f6e",
+                    "IncidentReport",
+                    OpenMetadataWikiPages.MODEL_0470_INCIDENT_REPORTING,
+                    "56c76116-1b1c-447c-b74d-ff860a2e41c6",
+                    "A description of an adverse situation or activity."),
 
 
     /* ============================================================================================================================*/
@@ -2146,6 +2137,34 @@ public enum OpenMetadataType
     /* ============================================================================================================================*/
     /* Area 6 - Metadata Surveys                                                                                                   */
     /* ============================================================================================================================*/
+
+
+    /**
+     * A server capability for running open discovery services.
+     */
+    OPEN_DISCOVERY_ENGINE("be650674-790b-487a-a619-0a9002488055",
+                          "OpenDiscoveryEngine",
+                          OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
+                          "bde9e812-35a0-49fb-b5ed-9cb1ffa48d60",
+                          "A server capability for running open discovery services."),
+
+    /**
+     * A pluggable component for discovering properties about an asset.
+     */
+    OPEN_DISCOVERY_SERVICE("2f278dfc-4640-4714-b34b-303e84e4fc40",
+                           "OpenDiscoveryService",
+                           OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
+                           "38b8d73d-3c60-4e86-8561-256c77e10c16",
+                           "A pluggable component for discovering properties about an asset."),
+
+    /**
+     * A pluggable component that calls multiple discovery services.
+     */
+    OPEN_DISCOVERY_PIPELINE("081abe00-740e-4143-b0d5-a1f55450fc22",
+                            "OpenDiscoveryPipeline",
+                            OpenMetadataWikiPages.MODEL_0601_DISCOVERY_ENGINES,
+                            "85a985ab-2f07-4ffc-99d5-d423d787c51e",
+                            "A pluggable component that calls multiple discovery services."),
 
     /**
      * A set of results describing the analysis from the execution of a survey action service.

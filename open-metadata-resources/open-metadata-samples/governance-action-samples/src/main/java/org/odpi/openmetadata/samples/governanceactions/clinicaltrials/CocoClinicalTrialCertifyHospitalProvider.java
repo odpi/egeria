@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CocoClinicalTrialCertifyHospitalProvider extends GovernanceActionServiceProviderBase
 {
-    private static final String  connectorTypeGUID = "6fed0f88-af3e-4fef-8c2f-f7f7bb6a88ac";
+    private static final String  connectorTypeGUID = "fb8b3d5a-cbb6-4645-9c64-68ab0bb968f1";
     private static final String  connectorTypeQualifiedName = "CocoPharmaceuticals:GovernanceActionService:ClinicalTrial:CertifyHospital";
     private static final String  connectorTypeDisplayName = "Clinical Trial Certify Hospital Governance Action Service";
     private static final String  connectorTypeDescription = "Adds a certification to the Hospital organization so that its data can be included in a clinical trial.";
@@ -28,8 +28,7 @@ public class CocoClinicalTrialCertifyHospitalProvider extends GovernanceActionSe
         super();
         super.setConnectorClassName(connectorClassName);
 
-        supportedRequestParameters = null;
-
+        supportedRequestParameters = CocoClinicalTrialRequestParameter.getCertifyHospitalRequestParameterTypes();
         supportedActionTargetTypes = CocoClinicalTrialActionTarget.getCertifyHospitalActionTargetTypes();
 
         producedGuards = CocoClinicalTrialGuard.getGuardTypes();
@@ -45,10 +44,6 @@ public class CocoClinicalTrialCertifyHospitalProvider extends GovernanceActionSe
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
         connectorType.setSupportedDeployedImplementationType(supportedDeployedImplementationType);
-
-        List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(CocoClinicalTrialRequestParameter.DATA_LAKE_CATALOG.getName());
-        connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
     }

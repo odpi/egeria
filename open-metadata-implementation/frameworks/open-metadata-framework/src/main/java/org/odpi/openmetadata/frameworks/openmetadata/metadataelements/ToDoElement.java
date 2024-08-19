@@ -22,12 +22,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ToDoElement implements MetadataElement
 {
-    private ElementHeader             elementHeader  = null;
-    private ToDoProperties            properties     = null;
-    private ElementStub               toDoSource     = null;
-    private List<ElementStub>         assignedActors = null;
-    private List<ElementStub>             sponsors      = null;
-    private List<ToDoActionTargetElement> actionTargets = null;
+    private ElementHeader                 elementHeader  = null;
+    private ToDoProperties                properties     = null;
+    private ElementStub                   toDoSource     = null;
+    private List<ElementStub>             assignedActors = null;
+    private List<ElementStub>             sponsors       = null;
+    private List<ToDoActionTargetElement> actionTargets  = null;
 
     /**
      * Default constructor

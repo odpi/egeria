@@ -1171,14 +1171,6 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getMoreInformationRelationship()
     {
-        final String guid            = OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeGUID;
-        final String name            = OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName;
-        final String description     = OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.description;
-        final String descriptionGUID = OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.wikiURL;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.MORE_INFORMATION_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
