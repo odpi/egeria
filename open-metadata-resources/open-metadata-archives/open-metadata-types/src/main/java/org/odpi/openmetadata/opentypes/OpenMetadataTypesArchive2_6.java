@@ -1510,11 +1510,8 @@ public class OpenMetadataTypesArchive2_6
 
     private RelationshipDef addTargetForActionRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TARGET_FOR_ACTION.typeGUID,
-                                                                                OpenMetadataType.TARGET_FOR_ACTION.typeName,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TARGET_FOR_ACTION,
                                                                                 null,
-                                                                                OpenMetadataType.TARGET_FOR_ACTION.description,
-                                                                                OpenMetadataType.TARGET_FOR_ACTION.descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
@@ -1558,35 +1555,22 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.ACTION_STATUS.name;
-        final String attribute1Description     = OpenMetadataProperty.ACTION_STATUS.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.ACTION_STATUS.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.START_DATE.name;
-        final String attribute2Description     = OpenMetadataProperty.START_DATE.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.START_DATE.descriptionGUID;
-        final String attribute3Name            = OpenMetadataProperty.COMPLETION_DATE.name;
-        final String attribute3Description     = OpenMetadataProperty.COMPLETION_DATE.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.COMPLETION_DATE.descriptionGUID;
-        final String attribute4Name            = OpenMetadataProperty.ACTION_TARGET_NAME.name;
-        final String attribute4Description     = OpenMetadataProperty.ACTION_TARGET_NAME.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.ACTION_TARGET_NAME.descriptionGUID;
-
         property = archiveHelper.getEnumTypeDefAttribute(EngineActionStatus.getOpenTypeName(),
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
+                                                         OpenMetadataProperty.ACTION_STATUS.name,
+                                                         OpenMetadataProperty.ACTION_STATUS.description,
+                                                         OpenMetadataProperty.ACTION_STATUS.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
+        property = archiveHelper.getDateTypeDefAttribute(OpenMetadataProperty.START_DATE.name,
+                                                         OpenMetadataProperty.START_DATE.description,
+                                                         OpenMetadataProperty.START_DATE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getDateTypeDefAttribute(attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
+        property = archiveHelper.getDateTypeDefAttribute(OpenMetadataProperty.COMPLETION_DATE.name,
+                                                         OpenMetadataProperty.COMPLETION_DATE.description,
+                                                         OpenMetadataProperty.COMPLETION_DATE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                           OpenMetadataProperty.ACTION_TARGET_NAME.description,
+                                                           OpenMetadataProperty.ACTION_TARGET_NAME.descriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -1596,11 +1580,8 @@ public class OpenMetadataTypesArchive2_6
 
     private RelationshipDef addNextEngineActionRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.NEXT_ENGINE_ACTION.typeGUID,
-                                                                                OpenMetadataType.NEXT_ENGINE_ACTION.typeName,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.NEXT_ENGINE_ACTION,
                                                                                 null,
-                                                                                OpenMetadataType.NEXT_ENGINE_ACTION.description,
-                                                                                OpenMetadataType.NEXT_ENGINE_ACTION.descriptionGUID,
                                                                                 ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;

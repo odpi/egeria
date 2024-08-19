@@ -167,7 +167,7 @@ public enum UnityCatalogAnnotationType implements AnnotationType
 
 
     /**
-     * Return the defined annotation types for the PostgreSQL Server
+     * Return the defined annotation types for the Unity Catalog Server
      * survey action service as a list of annotation type types.
      *
      * @return list

@@ -359,7 +359,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
 
         List<RelatedMetadataElement> assignedActors = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                          toDoGUID,
-                                                                                                         1,
+                                                                                                         2,
                                                                                                          OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                                                                                          false,
                                                                                                          false,
@@ -385,8 +385,8 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                              null,
                                                              null,
                                                              OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                                             toDoGUID,
                                                              actorGUID,
+                                                             toDoGUID,
                                                              false,
                                                              false,
                                                              null,

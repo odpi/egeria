@@ -1,5 +1,6 @@
 
-@ucURL=http://localhost:8080
+#@ucURL=http://localhost:8080
+@ucURL=http://egeria.pdr-associates.com:8070
 
 ###
 # @name list tables

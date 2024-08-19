@@ -285,13 +285,9 @@ public class OpenMetadataTypesArchive3_15
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.COMPLETION_MESSAGE.name;
-        final String attribute1Description     = OpenMetadataProperty.COMPLETION_MESSAGE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.COMPLETION_MESSAGE.descriptionGUID;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.COMPLETION_MESSAGE.name,
+                                                           OpenMetadataProperty.COMPLETION_MESSAGE.description,
+                                                           OpenMetadataProperty.COMPLETION_MESSAGE.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);

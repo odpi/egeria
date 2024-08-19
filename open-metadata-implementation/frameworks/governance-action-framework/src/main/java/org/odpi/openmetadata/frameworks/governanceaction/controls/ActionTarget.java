@@ -39,6 +39,58 @@ public enum ActionTarget
               "Any element of type Asset (or a subtype of).",
               OpenMetadataType.ASSET.typeName,
               null),
+
+
+    /**
+     * A newly created Asset (or a subtype of).
+     */
+    NEW_ASSET("newAsset",
+              "A newly created Asset (or a subtype of).",
+              OpenMetadataType.ASSET.typeName,
+              null),
+
+    /**
+     * A person or team who is accountable for the correct operation of a process.
+     */
+    PROCESS_OWNER("processOwner",
+               "A person or team who is accountable for the correct operation of a process.",
+               OpenMetadataType.ACTOR_TYPE_NAME,
+               null),
+
+    /**
+     * A person or team who is accountable for the correct management and use of a particular collection of data.
+     */
+    DATA_OWNER("dataOwner",
+              "A person or team who is accountable for the correct management and use of a particular collection of data.",
+              OpenMetadataType.ACTOR_TYPE_NAME,
+              null),
+
+
+    /**
+     * A person that is described by some data.
+     */
+    DATA_SUBJECT("dataSubject",
+               "A person that is described by some data.",
+               OpenMetadataType.ACTOR_TYPE_NAME,
+               null),
+
+
+    /**
+     * The person who can be contacted if there are problems with the data from this hospital.
+     */
+    CUSTODIAN("custodian",
+              "The person, or team who is responsible for the correct management and use of a particular collection of data inside the consuming organization.",
+              OpenMetadataType.ACTOR_TYPE_NAME,
+              null),
+
+    /**
+     * The person who can be contacted if there are problems with the data from this hospital.
+     */
+    STEWARD("steward",
+              "The person, or team who is responsible for setting up the governance metadata associated with .",
+              OpenMetadataType.ACTOR_TYPE_NAME,
+              null),
+
     ;
 
 

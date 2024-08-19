@@ -97,6 +97,9 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
 
     protected final Map<String, Object> configurationProperties;
 
+    protected String  metadataSourceGUID = null;
+    protected String  metadataSourceName = null;
+
 
     /**
      * Construct the monitor for a specific catalog target.
@@ -138,6 +141,13 @@ public abstract class DirectoryToMonitor implements FileDirectoryListenerInterfa
 
         this.directoryFile = new File(this.directoryName);
         this.dataFolderElement = dataFolderElement;
+
+        if (dataFolderElement != null)
+        {
+            this.metadataSourceGUID = dataFolderElement.getElementHeader().getOrigin().getHomeMetadataCollectionId();
+            this.metadataSourceName = dataFolderElement.getElementHeader().getOrigin().getHomeMetadataCollectionName();
+        }
+
         this.catalogTargetGUID = catalogTargetGUID;
         this.integrationConnector = integrationConnector;
         this.auditLog = auditLog;

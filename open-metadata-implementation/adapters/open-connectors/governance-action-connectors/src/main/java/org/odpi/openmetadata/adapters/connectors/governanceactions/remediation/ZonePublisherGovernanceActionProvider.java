@@ -37,10 +37,7 @@ public class ZonePublisherGovernanceActionProvider extends GovernanceActionServi
         supportedRequestParameters = ZonePublisherRequestParameter.getRequestParameterTypes();
 
         supportedActionTargetTypes = new ArrayList<>();
-
-        ActionTargetType actionTargetType = ActionTarget.ANY_ASSET.getActionTargetType();
-
-        supportedActionTargetTypes.add(actionTargetType);
+        supportedActionTargetTypes.add(ActionTarget.NEW_ASSET.getActionTargetType());
 
         producedGuards = ZonePublisherGuard.getGuardTypes();
 

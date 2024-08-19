@@ -22,22 +22,18 @@ Content-Type: application/json
 # =====================================================================================================================
 # Set up Unity Catalog ...
 
-###
-# @name create schema
-POST {{ucURL}}/api/2.1/unity-catalog/schemas
-Content-Type: application/json
 
-{
-  "name": "teddy_bear_drop_foot",
-  "catalog_name" : "clinical_trials",
-  "comment": "Example clinical trial used for education and testing of governance procedures."
-}
 
 ###
 # @name delete volume
 DELETE {{ucURL}}/api/2.1/unity-catalog/volumes/clinical_trials.teddy_bear_drop_foot.weekly_measurements
 Content-Type: application/json
 
+
+###
+# @name delete schema
+DELETE {{ucURL}}/api/2.1/unity-catalog/schemas/clinical_trials.teddy_bear_drop_foot
+Content-Type: application/json
 
 ###
 # =====================================================================================================================
@@ -101,7 +97,7 @@ Content-Type: application/json
 
 ###
 
-@server1GUID=ab08269d-9ef2-4ad3-9ab0-e5c880695261
+@server1GUID=e0c71666-4517-4b7e-872a-2b259033c34e
 
 ###
 
@@ -189,29 +185,153 @@ Content-Type: application/json
 @projectGUID=a2915132-9d9a-4449-846f-43a871b5a6a0
 
 ###
-# @name Get GUID for element representing UC Schema
-
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-property-value-search?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "DeployedDatabaseSchema",
-    "propertyValue" : "clinical_trials.teddy_bear_drop_foot",
-    "propertyNames" : ["resourceName"],
-    "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-###
-
-@schemaGUID=2999cd5d-14f9-48b4-8161-735e95e7d5e0
-
-###
 
 #@dataLakeDirectoryPathName=/Users/amandachessell/Code/ODPi/egeria-oak/egeria/open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-5.1-SNAPSHOT-distribution.tar.gz/assembly/platform/coco-data-lake
 @dataLakeDirectoryPathName=/Users/amandachessell/Code/uc/unitycatalog/etc/data/coco-data-lake/research/clinical-trials/drop-foot/weekly-measurements
 #@dataLakeDirectoryPathName=/Users/amandachessell/Code/uc/unitycatalog/etc/data
+
+###
+#===============================================
+# Set up the clinical trial
+
+###
+# @name findGovernanceActionTypes (Clinical Trials)
+# Retrieve the list of governance action type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "set-up-clinical-trial"
+}
+
+###
+# @name findGovernanceActionTypes (Clinical Trials)
+# Retrieve the list of governance action type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "nominate-hospital"
+}
+
+
+###
+# @name findGovernanceActionTypes (Clinical Trials)
+# Retrieve the list of governance action type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "certify-hospital"
+}
+
+###
+# @name findGovernanceActionTypes (Clinical Trials)
+# Retrieve the list of governance action type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "onboard-hospital"
+}
+
+
+
+###
+# @name findGovernanceActionProcesses (Clinical Trials)
+# Retrieve the list of governance action type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Coco:GovernanceActionProcess:ClinicalTrials:WeeklyMeasurements:Onboarding"
+}
+
+###
+# @name initiate set-up-clinical-trial
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "InitiateGovernanceActionTypeRequestBody",
+  "governanceActionTypeQualifiedName": "ClinicalTrials@CocoPharmaceuticals:set-up-clinical-trial",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "clinicalTrialProject",
+      "actionTargetGUID": "a2915132-9d9a-4449-846f-43a871b5a6a0"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "processOwner",
+      "actionTargetGUID": "685b486b-d627-448a-9396-07b6c06da071"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "custodian",
+      "actionTargetGUID": "8fb16e47-77a1-4e31-9917-79d77d108b0c"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "steward",
+      "actionTargetGUID": "58e34d15-3043-4c1f-b148-3f0671b0a369"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospitalCertificationType",
+      "actionTargetGUID": "88c8200e-8b64-4720-a707-3d31437bc011"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "onboardingPipeline",
+      "actionTargetGUID": "508d3878-8eae-47e5-8507-ee936f33b418"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "setUpDataLakeGovernanceActionType",
+      "actionTargetGUID": "4c33571b-043b-4fba-9b4f-ada7cd8910d3"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospitalNominationGovernanceActionType",
+      "actionTargetGUID": "25f1f005-d051-4f78-a56a-7b94eda114aa"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospitalCertificationGovernanceActionType",
+      "actionTargetGUID": "12746ea1-750b-43ef-b6d8-74c145c0d18c"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospitalOnboardingGovernanceActionType",
+      "actionTargetGUID": "7d12e715-53c6-4c33-bc05-7db9156056c8"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "lastUpdateConnector",
+      "actionTargetGUID": "fd26f07c-ae44-4bc5-b457-37b43112224f"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "landingAreaConnector",
+      "actionTargetGUID": "1b98cdac-dd0a-4621-93db-99ef5a1098bc"
+    }],
+    "requestParameters" : {
+       "dataLakeVolumeTemplateGUID" : "{{ucVolumeTemplateGUID}}",
+       "dataLakeSchemaTemplateGUID" : "{{ucSchemaTemplateGUID}}",
+       "landingAreaDirectoryTemplateGUID" : "fbdd8efd-1b69-474c-bb6d-0a304b394146",
+       "landingAreaFileTemplateGUID" : "5e5ffc97-237d-46c6-95c3-49405035dedc",
+       "dataLakeFileTemplateGUID" : "b2ec7c9d-3462-488a-897d-8e873658dded"
+    }
+}
+
 
 ###
 #===============================================
@@ -228,40 +348,50 @@ Content-Type: application/json
   "filter" : "set-up-data-lake"
 }
 
-
-
 ###
-# @name initiate set-up-data-lake
-# Using the named governance action type as a template, initiate a single engine action.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+# @name getElementsByPropertyValue - find catalog
+# Retrieve elements by a value found in one of the properties specified.  The value must match exactly.
+# An open metadata type name may be supplied to restrict the results.
+#
+# https://egeria-project.org/types/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-exact-property-value?startFrom=0&pageSize=10
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "InitiateGovernanceActionTypeRequestBody",
-  "governanceActionTypeQualifiedName": "ClinicalTrials@CocoPharmaceuticals:set-up-data-lake",
+    "class" : "FindPropertyNamesProperties",
+    "openMetadataTypeName" : "Catalog",
+    "propertyValue" : "clinical_trials",
+    "propertyNames" : ["name", "qualifiedName"],
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name initiateGovernanceActionProcess set-up-data-lake
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "ClinicalTrials:PROJ-CT-TBDF:set-up-data-lake",
   "actionTargets": [
     {
       "class" : "NewActionTarget",
-      "actionTargetName": "clinicalTrialProject",
-      "actionTargetGUID": "{{projectGUID}}"
-    },
-    {
-      "class" : "NewActionTarget",
-      "actionTargetName": "dataLakeSchema",
-      "actionTargetGUID": "{{schemaGUID}}"
-    },
-    {
-      "class" : "NewActionTarget",
-      "actionTargetName": "lastUpdateConnector",
-      "actionTargetGUID": "fd26f07c-ae44-4bc5-b457-37b43112224f"
+      "actionTargetName": "dataLakeCatalog",
+      "actionTargetGUID": "0d83746c-5479-4339-bae1-0335393d8a36"
     }],
     "requestParameters" : {
-       "dataLakeVolumeTemplateGUID" : "{{ucVolumeTemplateGUID}}",
-       "destinationDirectory" : "{{dataLakeDirectoryPathName}}"
-    }
+       "dataLakeSchemaName" : "teddy_bear_drop_foot",
+       "dataLakeSchemaDescription" : "Data for the Teddy Bear Drop Foot Clinical Trial.",
+       "dataLakeVolumeDirectoryPathName" : "{{dataLakeDirectoryPathName}}",
+       "dataLakeVolumeName" : "weekly_measurements",
+       "dataLakeVolumeDescription" : "Weekly patient measurements"
+       }
 }
-
 
 
 ###
@@ -322,92 +452,145 @@ Content-Type: application/json
 
 ###
 #===============================================
-# Create the landing area folders
 
-# @name Create landing area folder (Oak Dene)
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+###
+# @name initiateGovernanceActionProcess nominate-hospital
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "templateGUID" : "fbdd8efd-1b69-474c-bb6d-0a304b394146",
-  "isOwnAnchor" : true,
-  "placeholderPropertyValues" : {
-    "directoryPathName" : "landing-area/hospitals/oak-dene/clinical-trials/drop-foot",
-    "directoryName" : "drop-foot",
-    "versionIdentifier" : "V1.0",
-    "fileSystemName" : "",
-    "description" : "Landing Area folder for Oak Dene Hospital's Teddy Bear Drop Foot clinical trial."
-  }
+  "processQualifiedName": "ClinicalTrials:PROJ-CT-TBDF:nominate-hospital",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospital",
+      "actionTargetGUID": "{{oakDeneHospitalGUID}}"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospitalContactPerson",
+      "actionTargetGUID": "{{oakDeneContactPerson}}"
+    }]
 }
 
-###
-
-@oakDeneLandingAreaFolderGUID=793db4f6-6560-434e-a295-4cd62a78c726
 
 ###
+# @name initiateGovernanceActionProcess nominate-hospital
+# Using the named governance action process as a template, initiate a chain of engine actions.
 
-# @name Create landing area folder (Old Market)
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "templateGUID" : "fbdd8efd-1b69-474c-bb6d-0a304b394146",
-  "isOwnAnchor" : true,
-  "placeholderPropertyValues" : {
-    "directoryPathName" : "landing-area/hospitals/old-market/clinical-trials/drop-foot",
-    "directoryName" : "drop-foot",
-    "versionIdentifier" : "V1.0",
-    "fileSystemName" : "",
-    "description" : "Landing Area folder for Old Market Hospital's Teddy Bear Drop Foot clinical trial."
-  }
+  "processQualifiedName": "ClinicalTrials:PROJ-CT-TBDF:nominate-hospital",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospital",
+      "actionTargetGUID": "{{hamptonHospitalGUID}}"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospitalContactPerson",
+      "actionTargetGUID": "{{hamptonContactPerson}}"
+    }]
 }
 
 ###
-
-@oldMarketLandingAreaFolderGUID=8a6ee5c7-54da-4c19-bb34-bddcd1e9b252
-
-###
-
-# @name Create landing area folder (Hampton)
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+# @name initiateGovernanceActionProcess nominate-hospital
+# Using the named governance action process as a template, initiate a chain of engine actions.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "templateGUID" : "fbdd8efd-1b69-474c-bb6d-0a304b394146",
-  "isOwnAnchor" : true,
-  "placeholderPropertyValues" : {
-    "directoryPathName" : "landing-area/hospitals/hampton/clinical-trials/drop-foot",
-    "directoryName" : "drop-foot",
-    "versionIdentifier" : "V1.0",
-    "fileSystemName" : "",
-    "description" : "Landing Area folder for Hampton Hospital's Teddy Bear Drop Foot clinical trial."
-  }
+  "processQualifiedName": "ClinicalTrials:PROJ-CT-TBDF:nominate-hospital",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospital",
+      "actionTargetGUID": "{{oldMarketHospitalGUID}}"
+    },
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospitalContactPerson",
+      "actionTargetGUID": "{{oldMarketContactPerson}}"
+    }]
 }
 
-###
 
-@hamptonLandingAreaFolderGUID=9ea17e0f-4bce-4611-9dc9-efcef637a933
+###
+#===============================================
+
+###
+# @name initiateGovernanceActionProcess certify-hospital
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "ClinicalTrials:PROJ-CT-TBDF:certify-hospital",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospital",
+      "actionTargetGUID": "{{oakDeneHospitalGUID}}"
+    }]
+}
+
 
 ###
 #===============================================
 # Onboard the hospitals
-
+#===============================================
 
 ###
-# @name findGovernanceActionTypes (Clinical Trials)
-# Retrieve the list of governance action type metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+# @name initiateGovernanceActionProcess onboard-hospital
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "onboard-hospital"
+  "processQualifiedName": "ClinicalTrials:PROJ-CT-TBDF:onboard-hospital",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospital",
+      "actionTargetGUID": "{{oakDeneHospitalGUID}}"
+    }],
+    "requestParameters" : {
+       "landingAreaDirectoryPathName" : "{{oakDeneLandingAreaDirectoryName}}"
+    }
 }
 
 ###
+# @name initiateGovernanceActionProcess onboard-hospital
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "ClinicalTrials:PROJ-CT-TBDF:onboard-hospital",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospital",
+      "actionTargetGUID": "{{oldMarketHospitalGUID}}"
+    }],
+    "requestParameters" : {
+       "landingAreaDirectoryPathName" : "{{oldMarketLandingAreaDirectoryName}}"
+    }
+}
 
 
 ###
@@ -421,6 +604,7 @@ Content-Type: application/json
 
 @landingAreaFolderTemplateGUID=fbdd8efd-1b69-474c-bb6d-0a304b394146
 @landingAreaRootDirectoryName=landing-area
+
 @oakDeneLandingAreaDirectoryName=landing-area/hospitals/oak-dene/clinical-trials/drop-foot
 @oldMarketLandingAreaDirectoryName=landing-area/hospitals/old-market/clinical-trials/drop-foot
 @hamptonLandingAreaDirectoryName=landing-area/hospitals/hampton/clinical-trials/drop-foot

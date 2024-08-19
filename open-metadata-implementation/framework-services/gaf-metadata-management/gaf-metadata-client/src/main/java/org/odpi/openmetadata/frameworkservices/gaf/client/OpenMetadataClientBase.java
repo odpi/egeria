@@ -11,7 +11,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ArchiveProperties;
@@ -3934,7 +3933,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param priority priority value (based on organization's scale)
      * @param dueDate date/time this needs to be completed
      * @param additionalProperties additional arbitrary properties for the incident reports
-     * @param assignTo qualified name of the Actor element for the recipient
+     * @param assignToGUID unique identifier of the Actor element for the recipient
      * @param sponsorGUID unique identifier of the element that describes the rule, project that this is on behalf of
      * @param originatorGUID unique identifier of the source of the to do
      * @param actionTargets the list of elements that should be acted upon
@@ -3954,7 +3953,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                            int                   priority,
                            Date                  dueDate,
                            Map<String, String>   additionalProperties,
-                           String                assignTo,
+                           String                assignToGUID,
                            String                sponsorGUID,
                            String                originatorGUID,
                            List<NewActionTarget> actionTargets) throws InvalidParameterException,
@@ -3962,35 +3961,11 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                        PropertyServerException
     {
         final String methodName = "openToDo";
-        final String openEnumPropertyValue     = "Open";
         final String toDoQualifiedNameParameterName = "qualifiedName";
-        final String assignToParameterName          = "assignTo";
+        final String assignToParameterName          = "assignToGUID";
 
         propertyHelper.validateMandatoryName(qualifiedName, toDoQualifiedNameParameterName, methodName);
-        propertyHelper.validateMandatoryName(assignTo, assignToParameterName, methodName);
-
-
-        /*
-         * Validate that there is a person role to assign the "to do" to
-         */
-        OpenMetadataElement personRoleElement = this.getMetadataElementByUniqueName(userId,
-                                                                                    assignTo,
-                                                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                    false,
-                                                                                    false,
-                                                                                    new Date());
-
-        if (personRoleElement == null)
-        {
-            throw new InvalidParameterException(GAFErrorCode.UNKNOWN_ELEMENT.getMessageDefinition(qualifiedName,
-                                                                                                  toDoQualifiedNameParameterName,
-                                                                                                  methodName),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                toDoQualifiedNameParameterName);
-        }
-
-        String personRoleGUID = personRoleElement.getElementGUID();
+        propertyHelper.validateMandatoryName(assignToGUID, assignToParameterName, methodName);
 
 
         /*
@@ -4000,53 +3975,91 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                         qualifiedName);
 
-        properties = propertyHelper.addStringProperty(properties,
-                                                      OpenMetadataProperty.NAME.name,
-                                                      title);
-
-        properties = propertyHelper.addStringProperty(properties,
-                                                      OpenMetadataProperty.DESCRIPTION.name,
-                                                      instructions);
-
-        properties = propertyHelper.addStringProperty(properties,
-                                                      OpenMetadataType.TO_DO_TYPE_PROPERTY_NAME,
-                                                      category);
-
-        properties = propertyHelper.addDateProperty(properties,
-                                                    OpenMetadataType.DUE_TIME_PROPERTY_NAME,
-                                                    dueDate);
-
-        properties = propertyHelper.addIntProperty(properties,
-                                                   OpenMetadataType.PRIORITY_PROPERTY_NAME,
-                                                   priority);
-
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, title);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.DESCRIPTION.name, instructions);
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataType.TO_DO_TYPE_PROPERTY_NAME, category);
+        properties = propertyHelper.addDateProperty(properties, OpenMetadataType.DUE_TIME_PROPERTY_NAME, dueDate);
+        properties = propertyHelper.addIntProperty(properties, OpenMetadataType.PRIORITY_PROPERTY_NAME, priority);
         properties = propertyHelper.addEnumProperty(properties,
                                                     OpenMetadataProperty.TO_DO_STATUS.name,
                                                     ToDoStatus.getOpenTypeName(),
-                                                    openEnumPropertyValue);
+                                                    ToDoStatus.OPEN.getName());
 
-        String todoGUID = this.createMetadataElementInStore(userId,
+        String toDoGUID = this.createMetadataElementInStore(userId,
                                                             OpenMetadataType.TO_DO_TYPE_NAME,
                                                             ElementStatus.ACTIVE,
                                                             null,
                                                             null,
-                                                            properties);
+                                                            false,
+                                                            null,
+                                                            null,
+                                                            properties,
+                                                            assignToGUID,
+                                                            OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                            null,
+                                                            true);
 
-        /*
-         * Link the "to do" and the person role
-         */
-        this.createRelatedElementsInStore(userId,
-                                          OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                          personRoleGUID,
-                                          todoGUID,
-                                          false,
-                                          false,
-                                          null,
-                                          null,
-                                          null,
-                                          new Date());
+        if (toDoGUID != null)
+        {
+            if (actionTargets != null)
+            {
+                for (NewActionTarget actionTarget : actionTargets)
+                {
+                    if ((actionTarget != null) && (actionTarget.getActionTargetGUID() != null))
+                    {
+                        ElementProperties relationshipProperties = propertyHelper.addStringProperty(null,
+                                                                                                    OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                                                    actionTarget.getActionTargetName());
+                        this.createRelatedElementsInStore(userId,
+                                                          OpenMetadataType.ACTION_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                          toDoGUID,
+                                                          actionTarget.getActionTargetGUID(),
+                                                          false,
+                                                          false,
+                                                          null,
+                                                          null,
+                                                          relationshipProperties,
+                                                          null);
+                    }
+                }
+            }
 
-        return todoGUID;
+            if (sponsorGUID != null)
+            {
+                /*
+                 * Link the "to do" and the sponsor
+                 */
+                this.createRelatedElementsInStore(userId,
+                                                  OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP_TYPE_NAME,
+                                                  sponsorGUID,
+                                                  toDoGUID,
+                                                  false,
+                                                  false,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  new Date());
+            }
+
+            if (originatorGUID != null)
+            {
+                /*
+                 * Link the "to do" and the originator
+                 */
+                this.createRelatedElementsInStore(userId,
+                                                  OpenMetadataType.TO_DO_SOURCE_RELATIONSHIP_TYPE_NAME,
+                                                  originatorGUID,
+                                                  toDoGUID,
+                                                  false,
+                                                  false,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  new Date());
+            }
+        }
+
+        return toDoGUID;
     }
 
 

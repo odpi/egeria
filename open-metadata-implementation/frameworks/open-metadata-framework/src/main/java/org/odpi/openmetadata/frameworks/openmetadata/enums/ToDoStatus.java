@@ -38,17 +38,17 @@ public enum ToDoStatus implements OpenMetadataEnum
     /**
      * The assigned person is unable to proceed because another action needs to complete first.
      */
-    WAITING     (2,  "c3ee17dd-9b9e-497f-88c9-888bed62f377",  "Waiting",     "The assigned person is unable to proceed because another action needs to complete first, or a needed resource is unavailable.", false),
+    WAITING     (2,  "4de31b2c-d01a-4109-9c20-e7a7621284b6",  "Waiting",     "The assigned person is unable to proceed because another action needs to complete first, or a needed resource is unavailable.", false),
 
     /**
      * The requested action is complete.
      */
-    COMPLETE    (3,  "c3ee17dd-9b9e-497f-88c9-888bed62f377",  "Complete",    "The requested action is complete.", false),
+    COMPLETE    (3,  "e8ce8601-4929-460e-9840-0ca74d797074",  "Complete",    "The requested action is complete.", false),
 
     /**
      * The requested action has been abandoned and will never complete.
      */
-    ABANDONED   (99, "c3ee17dd-9b9e-497f-88c9-888bed62f377", "Abandoned",   "The requested action has been abandoned and will never complete.", false);
+    ABANDONED   (99, "1538ada4-cb2d-4f26-8bbc-bb9887289705", "Abandoned",   "The requested action has been abandoned and will never complete.", false);
 
 
     private static final String ENUM_TYPE_GUID  = "7197ea39-334d-403f-a70b-d40231092df7";

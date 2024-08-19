@@ -692,17 +692,20 @@ public class IntegrationConnectorHandler
         permittedSynchronization = registeredIntegrationConnectorElement.getRegistrationProperties().getPermittedSynchronization();
         minMinutesBetweenRefresh = registeredIntegrationConnectorElement.getRegistrationProperties().getRefreshTimeInterval();
 
-        if ((! connection.equals(registeredIntegrationConnectorElement.getProperties().getConnection())) &&
+        if (needDedicatedThread != registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls())
+        {
+            needDedicatedThread = registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls();
+            reinitializeConnector(methodName);
+        }
+        else if ((! connection.equals(registeredIntegrationConnectorElement.getProperties().getConnection())) &&
                 (registeredIntegrationConnectorElement.getProperties().getConnection() != null))
         {
             connection = registeredIntegrationConnectorElement.getProperties().getConnection();
             reinitializeConnector(methodName);
         }
-
-        if (needDedicatedThread != registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls())
+        else
         {
-            needDedicatedThread = registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls();
-            reinitializeConnector(methodName);
+            refreshConnector(methodName, true);
         }
     }
 

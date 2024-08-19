@@ -35,7 +35,7 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     protected IntegrationContext       integrationContext          = null;
     protected List<Connector>          embeddedConnectors          = null;
 
-    private final PropertyHelper propertyHelper = new PropertyHelper();
+    protected final PropertyHelper propertyHelper = new PropertyHelper();
 
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it

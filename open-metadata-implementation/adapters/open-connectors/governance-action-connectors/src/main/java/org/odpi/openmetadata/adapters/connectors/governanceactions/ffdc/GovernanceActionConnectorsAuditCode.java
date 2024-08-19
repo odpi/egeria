@@ -286,6 +286,26 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                      "{0}",
                      "The message is supplied by the caller.",
                      "Look at the message text to understand any actions."),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0025 - The {0} governance action service is attaching the retention classification to asset {1} with an archive time of {2} and a delete time of {3}
+     */
+    SETTING_RETENTION("GOVERNANCE-ACTION-CONNECTORS-0025",
+                  AuditLogRecordSeverityLevel.INFO,
+                  "The {0} governance action service is attaching the retention classification to asset {1} with an archive time of {2} and a delete time of {3}",
+                  "This governance action service completes normally once the retention classification is attached.",
+                  "Validate that these are the intended retention dates."),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0026 - The {0} governance action service has not been passed a steward as an action target
+     */
+    NO_STEWARD("GOVERNANCE-ACTION-CONNECTORS-0026",
+             AuditLogRecordSeverityLevel.INFO,
+             "The {0} governance action service has not been passed a steward as an action target",
+             "The governance action service will stop with a completion status of INVALID.",
+             "Rerun the request, but this time add a steward action target."),
+
+
     ;
 
     private final String                      logMessageId;

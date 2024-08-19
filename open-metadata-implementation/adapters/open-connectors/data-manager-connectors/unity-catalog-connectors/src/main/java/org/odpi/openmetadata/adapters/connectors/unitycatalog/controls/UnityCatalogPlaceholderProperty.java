@@ -46,8 +46,6 @@ public enum UnityCatalogPlaceholderProperty
      */
     DATA_SOURCE_FORMAT ("ucDataSourceFormat", "The format of the data source: DELTA, CSV, JSON, AVRO, PARQUET, ORC, TEXT.", "string", "CSV"),
 
-
-
     /**
      * The name of a volume within a schema and catalog in Unity Catalog (UC).
      */

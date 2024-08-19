@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTarget
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
 import java.util.*;
 
@@ -263,7 +262,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                     List<String> outputGuards = new ArrayList<>();
                     outputGuards.add(GenericWatchdogGuard.MONITORING_STOPPED.getName());
 
-                    governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_STOPPED.getCompletionStatus(), outputGuards, null, null, null);
+                    governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_STOPPED.getCompletionStatus(), outputGuards);
                 }
                 catch (Exception error)
                 {

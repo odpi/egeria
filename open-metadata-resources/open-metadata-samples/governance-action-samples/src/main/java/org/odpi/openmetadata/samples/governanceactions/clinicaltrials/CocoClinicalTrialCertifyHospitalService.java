@@ -3,12 +3,11 @@
 
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataRelationship;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -28,7 +27,7 @@ import java.util.UUID;
  *     <li>Linking the certification type to the hospital using the certification relationship.</li>
  * </ul>
  */
-public class CocoClinicalTrialCertifyHospitalService extends GeneralGovernanceActionService
+public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBaseService
 {
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
@@ -42,12 +41,17 @@ public class CocoClinicalTrialCertifyHospitalService extends GeneralGovernanceAc
     {
         final String methodName = "start";
 
-        String projectGUID           = null;
-        String hospitalGUID          = null;
-        String certificationTypeGUID = null;
-        String dataOwnerGUID         = null;
-        String custodianGUID         = null;
-        String hospitalContactGUID   = null;
+        String projectGUID             = null;
+        String clinicalTrialName       = null;
+        String hospitalGUID            = null;
+        String hospitalName            = null;
+        String certificationTypeGUID   = null;
+        String processOwnerGUID        = null;
+        String processOwnerTypeName    = null;
+        String custodianGUID           = null;
+        String custodianTypeName       = null;
+        String hospitalContactGUID     = null;
+        String hospitalContactTypeName = null;
 
         super.start();
 
@@ -56,7 +60,7 @@ public class CocoClinicalTrialCertifyHospitalService extends GeneralGovernanceAc
             /*
              * Retrieve the values needed from the action targets.
              */
-             if (governanceContext.getActionTargetElements() != null)
+            if (governanceContext.getActionTargetElements() != null)
             {
                 for (ActionTargetElement actionTargetElement : governanceContext.getActionTargetElements())
                 {
@@ -65,65 +69,57 @@ public class CocoClinicalTrialCertifyHospitalService extends GeneralGovernanceAc
                         if (CocoClinicalTrialActionTarget.PROJECT.getName().equals(actionTargetElement.getActionTargetName()))
                         {
                             projectGUID = actionTargetElement.getTargetElement().getElementGUID();
+
+                            clinicalTrialName = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
+                                                                                 OpenMetadataProperty.NAME.name,
+                                                                                 actionTargetElement.getTargetElement().getElementProperties(),
+                                                                                 methodName);
                         }
-                        if (CocoClinicalTrialActionTarget.HOSPITAL.getName().equals(actionTargetElement.getActionTargetName()))
+                        else if (CocoClinicalTrialActionTarget.HOSPITAL.getName().equals(actionTargetElement.getActionTargetName()))
                         {
                             hospitalGUID = actionTargetElement.getTargetElement().getElementGUID();
+                            hospitalName = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
+                                                                            OpenMetadataProperty.NAME.name,
+                                                                            actionTargetElement.getTargetElement().getElementProperties(),
+                                                                            methodName);
                         }
-                        if (CocoClinicalTrialActionTarget.CERTIFICATION_TYPE.getName().equals(actionTargetElement.getActionTargetName()))
+                        else if (CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName().equals(actionTargetElement.getActionTargetName()))
                         {
                             certificationTypeGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
-                        if (CocoClinicalTrialActionTarget.CUSTODIAN.getName().equals(actionTargetElement.getActionTargetName()))
+                        else if (CocoClinicalTrialActionTarget.CUSTODIAN.getName().equals(actionTargetElement.getActionTargetName()))
                         {
                             custodianGUID = actionTargetElement.getTargetElement().getElementGUID();
-                        }
-                        if (CocoClinicalTrialActionTarget.DATA_OWNER.getName().equals(actionTargetElement.getActionTargetName()))
-                        {
-                            dataOwnerGUID = actionTargetElement.getTargetElement().getElementGUID();
-                        }
-                        if (CocoClinicalTrialActionTarget.CONTACT_PERSON.getName().equals(actionTargetElement.getActionTargetName()))
-                        {
-                            hospitalContactGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
                     }
                 }
             }
 
-             List<String>     outputGuards = new ArrayList<>();
-             CompletionStatus completionStatus;
+            List<String>              outputGuards = new ArrayList<>();
+            CompletionStatus          completionStatus;
+            AuditLogMessageDefinition messageDefinition = null;
 
-            if ((projectGUID == null) || (hospitalGUID == null) || (certificationTypeGUID == null))
+            if ((projectGUID == null) || (hospitalGUID == null) || (certificationTypeGUID == null) || (custodianGUID == null))
             {
-                if ((projectGUID == null) || (projectGUID.isBlank()))
+                if (projectGUID == null)
                 {
-                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        CocoClinicalTrialActionTarget.PROJECT.getName()));
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialActionTarget.PROJECT.getName());
                 }
-                if ((hospitalGUID == null) || (hospitalGUID.isBlank()))
+                else if (hospitalGUID == null)
                 {
-                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        CocoClinicalTrialActionTarget.HOSPITAL.getName()));
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialActionTarget.HOSPITAL.getName());
                 }
-                if ((certificationTypeGUID == null) || (certificationTypeGUID.isBlank()))
+                else if (certificationTypeGUID == null)
                 {
-                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        CocoClinicalTrialActionTarget.CERTIFICATION_TYPE.getName()));
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName());
                 }
-                if ((custodianGUID == null) || (custodianGUID.isBlank()))
+                else
                 {
-                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        CocoClinicalTrialActionTarget.CUSTODIAN.getName()));
-                }
-                if ((dataOwnerGUID == null) || (dataOwnerGUID.isBlank()))
-                {
-                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        CocoClinicalTrialActionTarget.DATA_OWNER.getName()));
-                }
-                if ((hospitalContactGUID == null) || (hospitalContactGUID.isBlank()))
-                {
-                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        CocoClinicalTrialActionTarget.CONTACT_PERSON.getName()));
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialActionTarget.CUSTODIAN.getName());
                 }
 
                 completionStatus = CocoClinicalTrialGuard.MISSING_INFO.getCompletionStatus();
@@ -131,19 +127,25 @@ public class CocoClinicalTrialCertifyHospitalService extends GeneralGovernanceAc
             }
             else
             {
-                this.checkCertificationValidForProject(projectGUID, certificationTypeGUID);
+                super.checkCertificationValidForProject(projectGUID, certificationTypeGUID);
 
-                this.addCertificationToHospital(hospitalGUID,
-                                                dataOwnerGUID,
-                                                custodianGUID,
-                                                hospitalContactGUID,
-                                                certificationTypeGUID);
+                this.updateCertificationToHospital(projectGUID,
+                                                   clinicalTrialName,
+                                                   hospitalGUID,
+                                                   hospitalName,
+                                                   custodianGUID,
+                                                   certificationTypeGUID);
 
                 completionStatus = CocoClinicalTrialGuard.SET_UP_COMPLETE.getCompletionStatus();
                 outputGuards.add(CocoClinicalTrialGuard.SET_UP_COMPLETE.getName());
             }
 
-            governanceContext.recordCompletionStatus(completionStatus, outputGuards);
+            if (messageDefinition != null)
+            {
+                auditLog.logMessage(methodName, messageDefinition);
+            }
+
+            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);
         }
         catch (ConnectorCheckedException error)
         {
@@ -164,141 +166,70 @@ public class CocoClinicalTrialCertifyHospitalService extends GeneralGovernanceAc
         }
     }
 
-    /**
-     * Check that the certification type is associated with the requested project.  Otherwise, the certification does not make sense.
-     *
-     * @param projectGUID unique identifier of the project
-     * @param certificationTypeGUID unique identifier of the certification type
-     *
-     * @throws ConnectorCheckedException the certification type is not linked to the project
-     * @throws InvalidParameterException invalid parameter passed somehow
-     * @throws PropertyServerException problem connecting to the open metadata repository
-     * @throws UserNotAuthorizedException security problem
-     */
-    private void checkCertificationValidForProject(String projectGUID,
-                                                   String certificationTypeGUID) throws ConnectorCheckedException,
-                                                                                        InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException
-    {
-        final String methodName = "checkCertificationValidForProject";
-
-        int projectStartFrom = 0;
-        List<RelatedMetadataElement> projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certificationTypeGUID,
-                                                                                                                    2,
-                                                                                                                    OpenMetadataType.GOVERNED_BY_TYPE_NAME,
-                                                                                                                    projectStartFrom,
-                                                                                                                    governanceContext.getMaxPageSize());
-        while (projects != null)
-        {
-            for (RelatedMetadataElement project : projects)
-            {
-                if (project != null)
-                {
-                    if (projectGUID.equals(project.getElement().getElementGUID()))
-                    {
-                        return;
-                    }
-                }
-            }
-
-            projectStartFrom = projectStartFrom + governanceContext.getMaxPageSize();
-
-            projects = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(certificationTypeGUID,
-                                                                                           2,
-                                                                                           OpenMetadataType.GOVERNED_BY_TYPE_NAME,
-                                                                                           projectStartFrom,
-                                                                                           governanceContext.getMaxPageSize());
-        }
-
-        /*
-         * If we get to this point, the certification type is not linked to the clinical trial.
-         */
-        throw new ConnectorCheckedException(GovernanceActionSamplesErrorCode.WRONG_CERTIFICATION_TYPE_FOR_TRIAL.getMessageDefinition(certificationTypeGUID, projectGUID),
-                                            this.getClass().getName(),
-                                            methodName);
-    }
-
 
     /**
      * Create a certification relationship between the hospital and the certification type OR,
      * if the certification is already in place then update the start date to make it valid.
      *
+     * @param projectGUID unique identifier of the project
+     * @param clinicalTrialName name of the clinical trial
      * @param hospitalGUID unique identifier of the hospital
+     * @param hospitalName name of the hospital
+     * @param custodianGUID unique identifier of the custodian
      * @param certificationTypeGUID unique identifier of the certification type
      *
      * @throws InvalidParameterException invalid parameter passed somehow
      * @throws PropertyServerException problem connecting to the open metadata repository
      * @throws UserNotAuthorizedException security problem
      */
-    private void addCertificationToHospital(String hospitalGUID,
-                                            String dataOwnerGUID,
-                                            String custodianGUID,
-                                            String hospitalContactGUID,
-                                            String certificationTypeGUID) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
+    private void updateCertificationToHospital(String projectGUID,
+                                               String clinicalTrialName,
+                                               String hospitalGUID,
+                                               String hospitalName,
+                                               String custodianGUID,
+                                               String certificationTypeGUID) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException, ConnectorCheckedException
     {
-        final String methodName = "addCertificationToHospital";
+        final String methodName = "updateCertificationToHospital";
 
+        int startFrom = 0;
         List<OpenMetadataRelationship> existingCertifications = governanceContext.getOpenMetadataStore().getMetadataElementRelationships(hospitalGUID,
-                                                                                                                                        certificationTypeGUID,
-                                                                                                                                        OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
-                                                                                                                                        0,
-                                                                                                                                        0);
+                                                                                                                                         certificationTypeGUID,
+                                                                                                                                         OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                                                                                                         startFrom,
+                                                                                                                                         governanceContext.getMaxPageSize());
 
         if (existingCertifications == null)
         {
-            ElementProperties elementProperties = propertyHelper.addDateProperty(null,
-                                                                                 OpenMetadataType.START_PROPERTY_NAME,
-                                                                                 new Date());
+            PersonContactDetails custodianContactDetails = super.getContactDetailsForPersonGUID(custodianGUID);
 
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.CERTIFICATE_GUID_PROPERTY_NAME,
-                                                                 UUID.randomUUID().toString());
+            if (custodianContactDetails != null)
+            {
+                /*
+                 * The hospital is not part of the clinical trial.
+                 */
+                String title        = "Set up of onboarding pipeline for hospital " + hospitalName + "(" + hospitalGUID + ") failed because this hospital is not nominated for project " + clinicalTrialName + "(" + projectGUID + ")";
+                String instructions = "Check with the clinical records clerk if you think this hospital should be included in the clinical trial.  Otherwise ignore this message.";
 
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.CERTIFIED_BY_PROPERTY_NAME,
-                                                                 dataOwnerGUID);
+                governanceContext.openToDo(governanceServiceName + ":" + connectorInstanceId,
+                                           title,
+                                           instructions,
+                                           "Clinical Trial Action",
+                                           1,
+                                           null,
+                                           custodianGUID,
+                                           hospitalGUID,
+                                           CocoClinicalTrialActionTarget.HOSPITAL.getName());
+            }
 
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.CERTIFIED_BY_TYPE_NAME_PROPERTY_NAME,
-                                                                 OpenMetadataType.PERSON_TYPE_NAME);
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.CERTIFIED_BY_PROPERTY_NAME_PROPERTY_NAME,
-                                                                 OpenMetadataProperty.GUID.name);
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.CUSTODIAN_PROPERTY_NAME,
-                                                                 custodianGUID);
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.CUSTODIAN_TYPE_NAME_PROPERTY_NAME,
-                                                                 OpenMetadataType.PERSON_TYPE_NAME);
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.CUSTODIAN_PROPERTY_NAME_PROPERTY_NAME,
-                                                                 OpenMetadataProperty.GUID.name);
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.RECIPIENT_PROPERTY_NAME,
-                                                                 hospitalContactGUID);
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.RECIPIENT_TYPE_NAME_PROPERTY_NAME,
-                                                                 OpenMetadataType.PERSON_TYPE_NAME);
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.RECIPIENT_PROPERTY_NAME_PROPERTY_NAME,
-                                                                 OpenMetadataProperty.GUID.name);
-
-            governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
-                                                                                  hospitalGUID,
-                                                                                  certificationTypeGUID,
-                                                                                  null,
-                                                                                  null,
-                                                                                  elementProperties);
+            throw new ConnectorCheckedException(GovernanceActionSamplesErrorCode.HOSPITAL_NOT_NOMINATED.getMessageDefinition(governanceServiceName,
+                                                                                                                             hospitalName,
+                                                                                                                             hospitalGUID,
+                                                                                                                             clinicalTrialName,
+                                                                                                                             projectGUID),
+                                                this.getClass().getName(),
+                                                methodName);
         }
         else
         {

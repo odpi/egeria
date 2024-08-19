@@ -597,6 +597,13 @@ Authorization: Bearer {{token}}
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/dde1e255-6d0c-4589-b4a6-17e7d01db5ab/graph
 Authorization: Bearer {{token}}
 
+###
+# @name getGovernanceActionProcessGraph (Onboarding Data Process)
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/508d3878-8eae-47e5-8507-ee936f33b418/graph
+Authorization: Bearer {{token}}
+
 
 ###
 # =====================================================================================================================

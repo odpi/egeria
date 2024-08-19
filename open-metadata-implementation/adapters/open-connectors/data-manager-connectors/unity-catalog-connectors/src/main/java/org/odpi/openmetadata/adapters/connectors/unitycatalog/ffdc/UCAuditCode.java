@@ -177,6 +177,16 @@ public enum UCAuditCode implements AuditLogMessageSet
                   "The {0} Connector has called method {1} that is not implemented and so is not able to synchronize element {2} with the Unity Catalog (UC) at {3}",
                   "The connector will continue to synchronize metadata with Unity Catalog (UC) catalog.  However, the current element will remain unchanged and out of sync with the open metadata ecosystem.",
                   "Update the connector code to implement this method."),
+
+    /**
+     *  UNITY-CATALOG-CONNECTOR-0018 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}
+     */
+    UNABLE_TO_REGISTER_LISTENER(" UNITY-CATALOG-CONNECTOR-0018",
+                                AuditLogRecordSeverityLevel.EXCEPTION,
+                                "The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}",
+                                "The connector continues to scan and synchronize metadata as configured.  Without the listener, updates to open metadata elements with only be synchronized to Unity Catalog during a refresh scan.",
+                                "The likely cause of this error is that the Asset Manager OMAS in the metadata access server used by the integration daemon is not configured to support topics.  This can be changed by reconfiguring the metadata access server to support topics.  A less likely cause is that the metadata access server has stopped running."),
+
     ;
 
     private final String                     logMessageId;

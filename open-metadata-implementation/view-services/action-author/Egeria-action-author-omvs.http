@@ -252,7 +252,7 @@ Authorization: Bearer {{token}}
 # @name getGovernanceActionProcessGraph
 # Retrieve the governance action process metadata element with the supplied unique identifier
 # along with the flow definition describing its implementation.
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/{{processGUID}}/graph
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/{{processGUID}}/graph
 Authorization: Bearer {{token}}
 
 

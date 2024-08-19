@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.governanceaction;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -221,6 +222,29 @@ public interface GovernanceContext
                                 String                completionMessage) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException;
+
+
+    /**
+     * Declare that all the processing for the governance action service is finished and the status of the work.
+     *
+     * @param status completion status enum value
+     * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param newRequestParameters additional request parameters.  These override/augment any request parameters defined for the next invoked service
+     * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
+     * @param completionMessage message to describe completion results or reasons for failure
+     *
+     * @throws InvalidParameterException the completion status is null
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
+     *                                     action service completion status
+     * @throws PropertyServerException there is a problem connecting to the metadata store
+     */
+    void recordCompletionStatus(CompletionStatus          status,
+                                List<String>              outputGuards,
+                                Map<String, String>       newRequestParameters,
+                                List<NewActionTarget>     newActionTargets,
+                                AuditLogMessageDefinition completionMessage) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
 
 
     /**

@@ -6,10 +6,12 @@ package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -18,10 +20,7 @@ import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamp
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Responsible for setting up the mechanisms that support the smooth operation of a clinical trial.
@@ -45,17 +44,24 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
     {
         final String methodName = "start";
 
-        String dataLakeCatalogQualifiedName = null;
-        String dataLakeCatalogQualifiedGUID = null;
         String clinicalTrialId              = null;
         String clinicalTrialName            = null;
-        String ucCatalogName                = null;
-        String ucSchemaName                 = null;
+
+        String dataLakeCatalogQualifiedName = null;
+        String dataLakeCatalogQualifiedGUID = null;
+        String dataLakeCatalogName          = null;
+        String dataLakeSchemaName           = null;
+        String dataLakeSchemaDescription    = "Example clinical trial used for education and testing of governance procedures.";
         String serverNetworkAddress         = null;
-        String schemaGUID                   = null;
-        String dataLakeDirectoryPathName    = null;
-        String volumeTemplateGUID           = null;
+
+        String dataLakeVolumePathName       = null;
+        String dataLakeVolumeName           = "weekly_measurements";
+        String dataLakeVolumeDescription    = "Weekly measurements for clinical trial";
+        String schemaTemplateGUID           = "5bf92b0f-3970-41ea-b0a3-aacfbf6fd92e";
+        String volumeTemplateGUID           = "92d2d2dc-0798-41f0-9512-b10548d312b7";
         String lastUpdateConnectorGUID      = null;
+
+        String hospitalOnboardingProcessGUID = null;
 
         super.start();
 
@@ -89,16 +95,18 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
                                                                                  actionTargetElement.getTargetElement().getElementProperties(),
                                                                                  methodName);
                         }
-                        else if (CocoClinicalTrialActionTarget.SCHEMA.getName().equals(actionTargetElement.getActionTargetName()))
+                        else if (CocoClinicalTrialActionTarget.CATALOG.getName().equals(actionTargetElement.getActionTargetName()))
                         {
-                            dataLakeCatalogQualifiedGUID = actionTargetElement.getTargetElement().getOrigin().getHomeMetadataCollectionId();
-                            dataLakeCatalogQualifiedName = actionTargetElement.getTargetElement().getOrigin().getHomeMetadataCollectionName();
-                            schemaGUID = actionTargetElement.getTargetElement().getElementGUID();
+                            dataLakeCatalogQualifiedGUID = actionTargetElement.getTargetElement().getElementGUID();
+                            dataLakeCatalogQualifiedName = propertyHelper.getStringProperty(actionTargetElement.getActionTargetName(),
+                                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                            actionTargetElement.getTargetElement().getElementProperties(),
+                                                                                            methodName);
 
                             List<MetadataCorrelationHeader> externalIdentifiers = governanceContext.getOpenMetadataStore().getMetadataCorrelationHeaders(dataLakeCatalogQualifiedGUID,
-                                                                                                                                  dataLakeCatalogQualifiedName,
-                                                                                                                                  actionTargetElement.getTargetElement().getElementGUID(),
-                                                                                                                                  actionTargetElement.getTargetElement().getType().getTypeName());
+                                                                                                                                                         dataLakeCatalogQualifiedName,
+                                                                                                                                                         actionTargetElement.getTargetElement().getElementGUID(),
+                                                                                                                                                         actionTargetElement.getTargetElement().getType().getTypeName());
                             if (externalIdentifiers != null)
                             {
                                 for (MetadataCorrelationHeader externalIdentifier : externalIdentifiers)
@@ -107,8 +115,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
                                     {
                                         if (externalIdentifier.getMappingProperties() != null)
                                         {
-                                            ucCatalogName = externalIdentifier.getMappingProperties().get(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName());
-                                            ucSchemaName  = externalIdentifier.getMappingProperties().get(UnityCatalogPlaceholderProperty.SCHEMA_NAME.getName());
+                                            dataLakeCatalogName = externalIdentifier.getMappingProperties().get(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName());
                                             serverNetworkAddress  = externalIdentifier.getMappingProperties().get(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName());
 
                                             break;
@@ -121,96 +128,136 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
                         {
                             lastUpdateConnectorGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
+                        else if (CocoClinicalTrialActionTarget.ONBOARD_HOSPITAL_PROCESS.getName().equals(actionTargetElement.getActionTargetName()))
+                        {
+                            hospitalOnboardingProcessGUID = actionTargetElement.getTargetElement().getElementGUID();
+                        }
                     }
                 }
              }
 
             /*
              * Retrieve the data lake information from the request parameters
+             * MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName()
              */
             if (governanceContext.getRequestParameters() != null)
             {
-                dataLakeDirectoryPathName = governanceContext.getRequestParameters().get(MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName());
+                schemaTemplateGUID     = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_TEMPLATE.getName());
+                volumeTemplateGUID     = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_TEMPLATE.getName());
+
+                dataLakeSchemaName        = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_NAME.getName());
+                dataLakeSchemaDescription = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_DESCRIPTION.getName());
+                dataLakeVolumePathName    = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_PATH_NAME.getName());
+                dataLakeVolumeName        = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_NAME.getName());
+                dataLakeVolumeDescription = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_DESCRIPTION.getName());
             }
 
-             List<String>     outputGuards = new ArrayList<>();
-             CompletionStatus completionStatus;
+            List<String>              outputGuards = new ArrayList<>();
+            CompletionStatus          completionStatus;
+            AuditLogMessageDefinition messageDefinition = null;
 
             if ((clinicalTrialId == null) ||
                     (clinicalTrialName == null) ||
                     (dataLakeCatalogQualifiedGUID == null) ||
-                    (schemaGUID == null) ||
-                    (ucCatalogName == null) ||
-                    (ucSchemaName == null) ||
+                    (dataLakeCatalogName == null) ||
                     (serverNetworkAddress == null) ||
-                    (dataLakeDirectoryPathName == null) ||
-                    (volumeTemplateGUID == null))
+                    (lastUpdateConnectorGUID == null) ||
+                    (hospitalOnboardingProcessGUID == null) ||
+                    (dataLakeSchemaName == null) ||
+                    (dataLakeVolumePathName == null) ||
+                    (schemaTemplateGUID == null) || (schemaTemplateGUID.isBlank()) ||
+                    (volumeTemplateGUID == null) || (volumeTemplateGUID.isBlank()))
             {
                 if (dataLakeCatalogQualifiedGUID == null)
                 {
-                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_CATALOG.getMessageDefinition(governanceServiceName,
-                                                                                                                          dataLakeCatalogQualifiedName));
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_CATALOG.getMessageDefinition(governanceServiceName, dataLakeCatalogQualifiedName);
                 }
                 if ((clinicalTrialId == null) || (clinicalTrialId.isBlank()))
                 {
-                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getName()));
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_ID.getName());
                 }
                 if ((clinicalTrialName == null) || (clinicalTrialName.isBlank()))
                 {
-                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getName()));
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getName());
                 }
-                if ((ucCatalogName == null) || (ucCatalogName.isBlank()))
+                if ((dataLakeCatalogName == null) || (dataLakeCatalogName.isBlank()))
                 {
-                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        UnityCatalogPlaceholderProperty.CATALOG_NAME.getName()));
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            UnityCatalogPlaceholderProperty.CATALOG_NAME.getName());
                 }
-                if ((ucSchemaName == null) || (ucSchemaName.isBlank()))
+                if ((dataLakeSchemaName == null) || (dataLakeSchemaName.isBlank()))
                 {
-                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        UnityCatalogPlaceholderProperty.CATALOG_NAME.getName()));
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_NAME.getName());
                 }
-                if (schemaGUID == null)
+                if (volumeTemplateGUID == null || volumeTemplateGUID.isBlank())
                 {
-                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        CocoClinicalTrialActionTarget.SCHEMA.getName()));
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_TEMPLATE.getName());
                 }
-                if (volumeTemplateGUID == null)
+                if (schemaTemplateGUID == null || schemaTemplateGUID.isBlank())
                 {
-                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        CocoClinicalTrialActionTarget.VOLUME_TEMPLATE.getName()));
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_TEMPLATE.getName());
                 }
-                if (dataLakeDirectoryPathName == null)
+                if (dataLakeVolumePathName == null)
                 {
-                    auditLog.logMessage(methodName, GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
-                                                                                                                        MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName()));
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_PATH_NAME.getName());
                 }
+                if (lastUpdateConnectorGUID == null)
+                {
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialActionTarget.LAST_UPDATE_CONNECTOR.getName());
+                }
+                if (hospitalOnboardingProcessGUID == null)
+                {
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialActionTarget.ONBOARD_HOSPITAL_PROCESS.getName());
+                }
+
 
                 completionStatus = CocoClinicalTrialGuard.MISSING_INFO.getCompletionStatus();
                 outputGuards.add(CocoClinicalTrialGuard.MISSING_INFO.getName());
             }
             else
             {
+                String schemaGUID = this.createSchema(dataLakeCatalogQualifiedGUID,
+                                                      dataLakeCatalogQualifiedName,
+                                                      schemaTemplateGUID,
+                                                      serverNetworkAddress,
+                                                      dataLakeCatalogQualifiedGUID,
+                                                      dataLakeCatalogName,
+                                                      dataLakeSchemaName,
+                                                      dataLakeSchemaDescription);
+
                 String volumeAssetGUID = this.createVolume(dataLakeCatalogQualifiedGUID,
                                                            dataLakeCatalogQualifiedName,
                                                            volumeTemplateGUID,
                                                            serverNetworkAddress,
-                                                           ucCatalogName,
+                                                           dataLakeCatalogName,
                                                            schemaGUID,
-                                                           ucSchemaName,
-                                                           "weekly_measurements",
-                                                           "Weekly measurements for clinical trial " + clinicalTrialId + " - " + clinicalTrialName,
-                                                           dataLakeDirectoryPathName);
+                                                           dataLakeSchemaName,
+                                                           dataLakeVolumeName,
+                                                           dataLakeVolumeDescription + ": " + clinicalTrialId + " - " + clinicalTrialName,
+                                                           dataLakeVolumePathName);
 
-                monitorVolumeAsset(lastUpdateConnectorGUID,
-                                   volumeAssetGUID);
+                monitorVolumeAsset(lastUpdateConnectorGUID, volumeAssetGUID, dataLakeCatalogQualifiedName);
+
+                passOnDestinationFolder(dataLakeVolumePathName, hospitalOnboardingProcessGUID);
 
                 completionStatus = CocoClinicalTrialGuard.SET_UP_COMPLETE.getCompletionStatus();
                 outputGuards.add(CocoClinicalTrialGuard.SET_UP_COMPLETE.getName());
             }
 
-            governanceContext.recordCompletionStatus(completionStatus, outputGuards);
+            if (messageDefinition != null)
+            {
+                auditLog.logMessage(methodName, messageDefinition);
+            }
+
+            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, null, messageDefinition);
         }
         catch (OCFCheckedExceptionBase error)
         {
@@ -225,6 +272,66 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
                                                 methodName,
                                                 error);
         }
+    }
+
+
+    /**
+     * Catalog the schema in the same metadata collection as the catalog.
+     * The new asset is linked to the catalog.
+     *
+     * @param externalSourceGUID unique identifier of the metadata collection for the volume's asset
+     * @param externalSourceName unique name of the metadata collection for the volume's asset
+     * @param templateGUID template to use to create the asset
+     * @param serverNetworkAddress address of the server where the volume can be accessed from
+     * @param catalogName name of the catalog
+     * @param catalogGUID unique identifier of the catalog
+     * @param schemaName short name of the schema
+     * @param description description of the schema
+     * @return guid for the new asset
+     * @throws InvalidParameterException bad parameter
+     * @throws PropertyServerException problem with repository
+     * @throws UserNotAuthorizedException access problem
+     */
+    private String createSchema(String  externalSourceGUID,
+                                String  externalSourceName,
+                                String  templateGUID,
+                                String  serverNetworkAddress,
+                                String  catalogGUID,
+                                String  catalogName,
+                                String  schemaName,
+                                String  description) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException
+    {
+        Map<String, String> placeholderProperties = new HashMap<>();
+
+        placeholderProperties.put(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName(), serverNetworkAddress);
+        placeholderProperties.put(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName(), catalogName);
+        placeholderProperties.put(UnityCatalogPlaceholderProperty.SCHEMA_NAME.getName(), schemaName);
+        placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), description);
+        placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), "V1.0");
+
+        governanceContext.getOpenMetadataStore().setExternalSourceIds(externalSourceGUID, externalSourceName);
+
+        String schemaGUID =  governanceContext.getOpenMetadataStore().createMetadataElementFromTemplate(DeployedImplementationType.OSS_UC_SCHEMA.getAssociatedTypeName(),
+                                                                                                        catalogGUID,
+                                                                                                        false,
+                                                                                                        null,
+                                                                                                        null,
+                                                                                                        templateGUID,
+                                                                                                        null,
+                                                                                                        placeholderProperties,
+                                                                                                        catalogGUID,
+                                                                                                        OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
+                                                                                                        propertyHelper.addEnumProperty(null,
+                                                                                                                                       OpenMetadataProperty.USE_TYPE.name,
+                                                                                                                                       ServerAssetUseType.getOpenTypeName(),
+                                                                                                                                       ServerAssetUseType.OWNS.getName()),
+                                                                                                        true);
+
+        governanceContext.getOpenMetadataStore().setExternalSourceIds(null, null);
+
+        return schemaGUID;
     }
 
 
@@ -257,8 +364,8 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
                                 String  volumeName,
                                 String  description,
                                 String  dataLakePathName) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
     {
         Map<String, String> placeholderProperties = new HashMap<>();
 
@@ -293,6 +400,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
         return volumeGUID;
     }
 
+
     /**
      * Create the landing area folder.
      *
@@ -321,6 +429,7 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
         }
     }
 
+
     /**
      * If an integration connector that can maintain the last update date in the volume, then attach
      * the asset to the connector as a catalog target.
@@ -332,19 +441,66 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
      * @throws UserNotAuthorizedException access problem
      */
     private void monitorVolumeAsset(String integrationConnectorGUID,
-                                    String volumeAssetGUID) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+                                    String volumeAssetGUID,
+                                    String dataLakeCatalogQualifiedName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
         if (integrationConnectorGUID != null)
         {
             CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
+
+            catalogTargetProperties.setMetadataSourceQualifiedName(dataLakeCatalogQualifiedName);
 
             catalogTargetProperties.setCatalogTargetName("dataFolder");
 
             governanceContext.addCatalogTarget(integrationConnectorGUID,
                                                volumeAssetGUID,
                                                catalogTargetProperties);
+        }
+    }
+
+
+    /**
+     * Add the volume folder to the hospital onboarding process's request parameters.
+     *
+     * @param destinationDirectory directory for the volume (and where the files go.
+     * @param hospitalOnboardingProcessGUID unique identifier of the hospital onboarding process.
+     * @throws InvalidParameterException bad parameter
+     * @throws PropertyServerException problem with repository
+     * @throws UserNotAuthorizedException access problem
+     */
+    private void passOnDestinationFolder(String destinationDirectory,
+                                         String hospitalOnboardingProcessGUID) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String methodName = "passOnDestinationFolder";
+
+        RelatedMetadataElement processFlowRelationship = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(hospitalOnboardingProcessGUID,
+                                                                                                                            1,
+                                                                                                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_NAME,
+                                                                                                                            new Date());
+
+        if (processFlowRelationship != null)
+        {
+            Map<String, String> requestParameters = propertyHelper.getStringMapFromProperty(governanceServiceName,
+                                                                                            OpenMetadataProperty.REQUEST_PARAMETERS.name,
+                                                                                            processFlowRelationship.getRelationshipProperties(),
+                                                                                            methodName);
+
+            if (requestParameters == null)
+            {
+                requestParameters = new HashMap<>();
+            }
+
+            requestParameters.put(MoveCopyFileRequestParameter.DESTINATION_DIRECTORY.getName(), destinationDirectory);
+
+            governanceContext.getOpenMetadataStore().updateRelatedElementsInStore(processFlowRelationship.getRelationshipGUID(),
+                                                                                  false,
+                                                                                  propertyHelper.addStringMapProperty(null,
+                                                                                                                      OpenMetadataProperty.REQUEST_PARAMETERS.name,
+                                                                                                                      requestParameters));
         }
     }
 }

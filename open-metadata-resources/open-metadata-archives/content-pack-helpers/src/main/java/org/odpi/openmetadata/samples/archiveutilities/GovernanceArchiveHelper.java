@@ -1630,11 +1630,13 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @param governanceActionProcessGUID unique identifier of the governance action process
      * @param guard initial guard for the first step in the process
+     * @param requestParameters predefined request parameters
      * @param governanceActionProcessStepGUID unique identifier of the implementing governance engine
      */
-    public void addGovernanceActionProcessFlow(String governanceActionProcessGUID,
-                                               String guard,
-                                               String governanceActionProcessStepGUID)
+    public void addGovernanceActionProcessFlow(String              governanceActionProcessGUID,
+                                               String              guard,
+                                               Map<String, String> requestParameters,
+                                               String              governanceActionProcessStepGUID)
     {
         final String methodName = "addGovernanceActionFlow";
 
@@ -1645,6 +1647,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         EntityProxy end2 = archiveHelper.getEntityProxy(actionTypeEntity);
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.GUARD_PROPERTY_NAME, guard, methodName);
+
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.REQUEST_PARAMETERS.name, requestParameters, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_NAME,
                                                                      idToGUIDMap.getGUID(governanceActionProcessGUID + "_to_" + governanceActionProcessStepGUID + "_governance_action_process_flow_relationship"),

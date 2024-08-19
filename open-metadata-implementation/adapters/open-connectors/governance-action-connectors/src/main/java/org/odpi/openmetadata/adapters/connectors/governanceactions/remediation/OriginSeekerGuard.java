@@ -20,9 +20,6 @@ public enum OriginSeekerGuard
     ORIGIN_ALREADY_ASSIGNED("origin-already-assigned", CompletionStatus.ACTIONED, "The asset already has an AssetOrigin classification so no action was required."),
     MULTIPLE_ORIGINS_DETECTED("multiple-origins-detected", CompletionStatus.INVALID, "The lineage graph showed that the data in the asset came from multiple origins.  A steward needs to assign the AssetOrigin because it is not obvious which values to use."),
     NO_ORIGINS_DETECTED( "no-origins-detected", CompletionStatus.INVALID, "None of the assets in the lineage graph have an AssetOrigin classification."),
-    NO_TARGETS_DETECTED("no-targets-detected", CompletionStatus.INVALID, "There is no supplied action target and so the governance service does not know which asset to work on."),
-    TARGET_NOT_ASSET("target-not-asset", CompletionStatus.INVALID, "The action target is not an asset."),
-    MULTIPLE_TARGETS_DETECTED("multiple-targets-detected", CompletionStatus.INVALID, "Multiple action targets supplied.  This governance service does not support multiple action targets because the result of the origin search could be different for each action target making it difficult to automate the response."),
     ORIGIN_SEEKING_FAILED("origin-seeking-failed", CompletionStatus.FAILED, "An unexpected error occurred during the origin seeking process.  Check the audit log for reported errors."),
 
     ;

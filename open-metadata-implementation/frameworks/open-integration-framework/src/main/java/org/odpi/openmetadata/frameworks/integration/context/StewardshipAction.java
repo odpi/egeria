@@ -95,7 +95,7 @@ public  class StewardshipAction
      * @param priority priority value (based on organization's scale)
      * @param dueDate date/time this needs to be completed
      * @param additionalProperties additional arbitrary properties for the incident reports
-     * @param assignTo qualified name of the Actor element for the recipient
+     * @param assignToGUID unique identifier the Actor element for the recipient
      * @param sponsorGUID unique identifier of the element that describes the rule, project that this is on behalf of
      * @param actionTargets the list of elements that should be acted upon
      *
@@ -112,13 +112,13 @@ public  class StewardshipAction
                            int                   priority,
                            Date                  dueDate,
                            Map<String, String>   additionalProperties,
-                           String                assignTo,
+                           String                assignToGUID,
                            String                sponsorGUID,
                            List<NewActionTarget> actionTargets) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        return openMetadataStore.openToDo(userId, qualifiedName, title, instructions, category, priority, dueDate, additionalProperties, assignTo, sponsorGUID, originatorGUID, actionTargets);
+        return openMetadataStore.openToDo(userId, qualifiedName, title, instructions, category, priority, dueDate, additionalProperties, assignToGUID, sponsorGUID, originatorGUID, actionTargets);
     }
 
 

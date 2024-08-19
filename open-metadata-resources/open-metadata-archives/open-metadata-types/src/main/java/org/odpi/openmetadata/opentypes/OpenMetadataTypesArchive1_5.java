@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CollectionMemberStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -175,48 +177,29 @@ public class OpenMetadataTypesArchive1_5
      */
     private EnumDef getProcessContainmentTypeEnum()
     {
-        final String guid            = "1bb4b908-7983-4802-a2b5-91b095552ee9";
-        final String name            = "ProcessContainmentType";
-        final String description     = "The containment relationship between two processes.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(ProcessContainmentType.getOpenTypeGUID(),
+                                                        ProcessContainmentType.getOpenTypeName(),
+                                                        ProcessContainmentType.getOpenTypeDescription(),
+                                                        ProcessContainmentType.getOpenTypeDescriptionGUID(),
+                                                        ProcessContainmentType.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "OWNED";
-        final String element1Description     = "The parent process owns the child process in the relationship, such that if the parent is removed the child should also be removed. A child can have at most one such parent.";
-        final String element1DescriptionGUID = null;
+        for (ProcessContainmentType processContainmentType : ProcessContainmentType.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(processContainmentType.getOrdinal(),
+                                                         processContainmentType.getName(),
+                                                         processContainmentType.getDescription(),
+                                                         processContainmentType.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "USED";
-        final String element2Description     = "The child process is simply used by the parent. A child process can have many such relationships to parents.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 99;
-        final String element3Value           = "OTHER";
-        final String element3Description     = "None of the above.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (processContainmentType.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 

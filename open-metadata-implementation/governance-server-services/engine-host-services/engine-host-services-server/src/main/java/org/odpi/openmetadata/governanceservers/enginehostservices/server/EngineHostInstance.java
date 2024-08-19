@@ -85,7 +85,7 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
 
         if (handler == null)
         {
-            throw new InvalidParameterException(EngineHostServicesErrorCode.UNKNOWN_ENGINE_NAME.getMessageDefinition(serverName, governanceEngineName),
+            throw new InvalidParameterException(EngineHostServicesErrorCode.UNKNOWN_ENGINE_NAME.getMessageDefinition(governanceEngineName, serverName),
                                                 this.getClass().getName(),
                                                 serviceOperationName,
                                                 governanceEngineParameterName);
@@ -123,7 +123,7 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
 
         if (handler == null)
         {
-            throw new InvalidParameterException(EngineHostServicesErrorCode.UNKNOWN_ENGINE_NAME.getMessageDefinition(serverName, governanceEngineName),
+            throw new InvalidParameterException(EngineHostServicesErrorCode.UNKNOWN_ENGINE_NAME.getMessageDefinition(governanceEngineName, serverName),
                                                 this.getClass().getName(),
                                                 serviceOperationName,
                                                 governanceEngineParameterName);

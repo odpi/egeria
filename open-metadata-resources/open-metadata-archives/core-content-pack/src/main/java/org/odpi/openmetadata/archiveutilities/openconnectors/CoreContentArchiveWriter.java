@@ -22,6 +22,7 @@ import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.Vi
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OriginSeekerGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.QualifiedNamePeerDuplicateGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.RetentionClassifierGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.*;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.VerifyAssetGovernanceActionProvider;
@@ -549,7 +550,25 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                       ToDoStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(ToDoStatus.values())));
 
+        addOpenMetadataEnumValidNames(OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
+                                      OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME,
+                                      ProcessContainmentType.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ProcessContainmentType.values())));
 
+        addOpenMetadataEnumValidNames(OpenMetadataType.RELATED_MEDIA.typeName,
+                                      OpenMetadataProperty.MEDIA_TYPE.name,
+                                      MediaType.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(MediaType.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataType.RELATED_MEDIA.typeName,
+                                      OpenMetadataProperty.DEFAULT_MEDIA_USAGE.name,
+                                      MediaUsage.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(MediaUsage.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName,
+                                      OpenMetadataProperty.MEDIA_USAGE.name,
+                                      MediaUsage.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(MediaUsage.values())));
 
         /*
          * Add valid metadata values for deployedImplementationType.  The GUIDs are saved in a look-up map
@@ -1120,6 +1139,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         GovernanceActionDescription originSeekerDescription                    = this.getOriginSeekerGovernanceActionService();
         GovernanceActionDescription qualifiedNameDeDupDescription              = this.getQualifiedNameDeDupGovernanceActionService();
         GovernanceActionDescription zonePublisherDescription                   = this.getZonePublisherGovernanceActionService();
+        GovernanceActionDescription retentionClassifierDescription             = this.getRetentionClassifierGovernanceActionService();
         GovernanceActionDescription evaluateAnnotationsDescription             = this.getEvaluateAnnotationsGovernanceActionService();
         GovernanceActionDescription writeAuditLogDescription                   = this.getWriteAuditLogGovernanceActionService();
         GovernanceActionDescription dayOfWeekDescription                       = this.getDayOfWeekGovernanceActionService();
@@ -1155,6 +1175,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         this.addWatchNestedInFolderRequestType(assetOnboardingEngineGUID, assetOnboardingEngineName, watchDogServiceDescription);
         this.addSeekOriginRequestType(assetOnboardingEngineGUID, assetOnboardingEngineName, originSeekerDescription);
         this.addSetZoneMembershipRequestType(assetOnboardingEngineGUID, assetOnboardingEngineName, zonePublisherDescription);
+        this.addRetentionClassificationRequestType(assetOnboardingEngineGUID, assetOnboardingEngineName, retentionClassifierDescription);
         this.addVerifyAssetRequestType(assetOnboardingEngineGUID, assetOnboardingEngineName, verifyAssetDescription);
 
         this.addOnboardingGovernanceActionProcess(fileProvisioningEngineGUID, assetOnboardingEngineGUID);
@@ -3538,8 +3559,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Add a governance service that walks backwards through an asset's lineage to find an origin classification.
-     * If found, the same origin is added to the asset.
+     * Add a governance service that add an AssetZoneMembership classification to an asset.
      *
      * @return descriptive information on the governance service
      */
@@ -3550,6 +3570,36 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         final String governanceServiceProviderClassName = ZonePublisherGovernanceActionProvider.class.getName();
 
         ZonePublisherGovernanceActionProvider provider = new ZonePublisherGovernanceActionProvider();
+
+        final String governanceServiceDescription = provider.getConnectorType().getDescription();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.IMPROVE_METADATA,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                                                                                               governanceServiceProviderClassName,
+                                                                                               null,
+                                                                                               governanceServiceName,
+                                                                                               governanceServiceDisplayName,
+                                                                                               governanceServiceDescription,
+                                                                                               null);
+        return governanceActionDescription;
+    }
+
+
+    /**
+     * Add a governance service that adds a retention classification to assets.
+     *
+     * @return descriptive information on the governance service
+     */
+    private GovernanceActionDescription getRetentionClassifierGovernanceActionService()
+    {
+        final String governanceServiceName = "retention-classifier-governance-action-service";
+        final String governanceServiceDisplayName = "Add a Retention classification to an Asset Governance Action Service";
+        final String governanceServiceProviderClassName = RetentionClassifierGovernanceActionProvider.class.getName();
+
+        RetentionClassifierGovernanceActionProvider provider = new RetentionClassifierGovernanceActionProvider();
 
         final String governanceServiceDescription = provider.getConnectorType().getDescription();
 
@@ -3992,6 +4042,29 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                  GovernanceActionDescription governanceActionDescription)
     {
         final String governanceRequestType = "set-zone-membership-for-asset";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription);
+    }
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addRetentionClassificationRequestType(String                      governanceEngineGUID,
+                                                       String                      governanceEngineName,
+                                                       GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "set-retention-for-asset";
 
         this.addRequestType(governanceEngineGUID,
                             governanceEngineName,
@@ -4774,9 +4847,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                       null,
                                                       fileProvisioningEngineGUID);
 
-            archiveHelper.addGovernanceActionProcessFlow(processGUID,
-                                                         null,
-                                                         step1GUID);
+            archiveHelper.addGovernanceActionProcessFlow(processGUID, null, null, step1GUID);
         }
 
         String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
@@ -4818,9 +4889,9 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                                         processGUID,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                                         OpenMetadataType.ASSET.typeName,
-                                                                        qualifiedName + ":SetZones",
-                                                                        "Publish asset.",
-                                                                        "Set up the zones in the asset so that is it visible in the data lake.",
+                                                                        qualifiedName + ":SetRetention",
+                                                                        "SetRetentionPeriod.",
+                                                                        "Set up the dates went the data associated with the asset should be archived and then deleted.",
                                                                         0,
                                                                         null,
                                                                         null,
@@ -4838,7 +4909,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
         if (step3GUID != null)
         {
             archiveHelper.addGovernanceActionExecutor(step3GUID,
-                                                      "set-zone-membership-for-asset",
+                                                      "set-retention-for-asset",
                                                       null,
                                                       null,
                                                       null,
@@ -4848,6 +4919,41 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
 
             archiveHelper.addNextGovernanceActionProcessStep(step2GUID, "origin-assigned", false, step3GUID);
             archiveHelper.addNextGovernanceActionProcessStep(step2GUID, "origin-already-assigned", false, step3GUID);
+        }
+
+        String step4GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        qualifiedName + ":SetZones",
+                                                                        "Publish asset.",
+                                                                        "Set up the zones in the asset so that is it visible in the data lake.",
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step4GUID != null)
+        {
+            archiveHelper.addGovernanceActionExecutor(step4GUID,
+                                                      "set-zone-membership-for-asset",
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      onboardingEngineGUID);
+
+            archiveHelper.addNextGovernanceActionProcessStep(step3GUID, "classification-assigned", false, step4GUID);
         }
     }
 
@@ -4897,9 +5003,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                       null,
                                                       governanceEngineGUID);
 
-            archiveHelper.addGovernanceActionProcessFlow(processGUID,
-                                                         null,
-                                                         step1GUID);
+            archiveHelper.addGovernanceActionProcessFlow(processGUID, null, null, step1GUID);
         }
 
         String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,

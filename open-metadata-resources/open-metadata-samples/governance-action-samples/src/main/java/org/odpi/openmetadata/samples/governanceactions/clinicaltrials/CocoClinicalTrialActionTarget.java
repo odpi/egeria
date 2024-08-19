@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -28,7 +29,7 @@ public enum CocoClinicalTrialActionTarget
 
 
     /**
-     * Project used to control the clinical trial.
+     * Hospital that will be supplying data for the clinical trial..
      */
     HOSPITAL("hospital",
             "Hospital that will be supplying data for the clinical trial.",
@@ -37,87 +38,22 @@ public enum CocoClinicalTrialActionTarget
             true),
 
     /**
-     * Schema where the weekly measurements volume is to reside.
-     */
-    SCHEMA("dataLakeSchema",
-           "Schema where the weekly measurements volume is to reside.",
-           OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
-           null,
-           true),
-
-    /**
-     * Template used to catalog the new volume.
-     */
-    VOLUME_TEMPLATE("volumeTemplate",
-                    "Template used to catalog the new volume.",
-                    DeployedImplementationType.OSS_UC_VOLUME.getAssociatedTypeName(),
-                    DeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType(),
-                    true),
-
-    /**
-     * Folder describing where the onboarded files should be stored in the data lake.
-     */
-    DATA_LAKE_FOLDER("dataLakeFolder",
-                     "Folder describing where the onboarded files should be stored in the data lake.",
-                     OpenMetadataType.FILE_FOLDER.typeName,
-                     null,
-                     true),
-
-    /**
-     * Folder describing the place where new files will be stored by the hospital.
-     */
-    LANDING_AREA_FOLDER("landingAreaFolder",
-                "Folder describing the place where new files will be stored by the hospital.",
-                OpenMetadataType.FILE_FOLDER.typeName,
-                null,
-                true),
-
-    /**
-     * Integration connector that maintains the last update date for the volume.
-     */
-    LAST_UPDATE_CONNECTOR("lastUpdateConnector",
-                    "Integration connector that maintains the last update date for the volume.",
-                    DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
-                    null,
-                    false),
-
-    /**
-     * Integration connector that maintains the last update date for the volume.
-     */
-    LANDING_AREA_CONNECTOR("landingAreaConnector",
-                          "Integration connector that maintains the last update date for the volume.",
-                          DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
-                          null,
-                          true),
-
-
-    /**
-     * The process that should run to provision files from the landing area into the data lake.
-     */
-    NEW_ELEMENT_PROCESS("newElementProcess",
-                        "The process that should run to provision files from the landing area into the data lake.",
-                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                        null,
-                        true),
-
-
-    /**
      * The person who can be contacted if there are problems with the data from this hospital.
      */
     CONTACT_PERSON("hospitalContactPerson",
-                        "The person who can be contacted if there are problems with the data from this hospital.",
-                        OpenMetadataType.PERSON_TYPE_NAME,
-                        null,
-                        true),
+                   "The person who can be contacted if there are problems with the data from this hospital.",
+                   OpenMetadataType.PERSON_TYPE_NAME,
+                   null,
+                   true),
 
     /**
      * The person who can be contacted if there are problems with the data from this hospital.
      */
-    DATA_OWNER("dataOwner",
-                   "The person who is accountable for the correct management of the data.",
-                   OpenMetadataType.PERSON_TYPE_NAME,
-                   null,
-                   true),
+    PROCESS_OWNER("processOwner",
+                  "The person who is accountable for the correct management of the data.",
+                  OpenMetadataType.PERSON_TYPE_NAME,
+                  null,
+                  true),
 
 
     /**
@@ -125,19 +61,118 @@ public enum CocoClinicalTrialActionTarget
      */
     CUSTODIAN("custodian",
               "The person who is responsible for the correct management of data and can be contacted inside of Coco pharmaceuticals.",
-               OpenMetadataType.PERSON_TYPE_NAME,
+              OpenMetadataType.PERSON_TYPE_NAME,
               null,
               true),
 
+    /**
+     * The person, or team, in Coco Pharmaceuticals that sets up metadata for data.
+     */
+    STEWARD (ActionTarget.STEWARD.getName(),
+             "The person, or team in Coco Pharmaceuticals that sets up metadata for data.",
+             OpenMetadataType.ACTOR_TYPE_NAME,
+             null,
+             true),
+
+    /**
+     * Catalog where data for clinical trial is to reside.
+     */
+    CATALOG("dataLakeCatalog",
+            "Schema where the weekly measurements volume is to reside.",
+            DeployedImplementationType.OSS_UC_CATALOG.getAssociatedTypeName(),
+            DeployedImplementationType.OSS_UC_CATALOG.getDeployedImplementationType(),
+            true),
+
+    /**
+     * Integration connector that maintains the last update date for the volume.
+     */
+    LAST_UPDATE_CONNECTOR("lastUpdateConnector",
+                          "Integration connector that maintains the last update date for the volume.",
+                          DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                          DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                          false),
+
+    /**
+     * Integration connector that maintains the last update date for the volume.
+     */
+    LANDING_AREA_CONNECTOR("landingAreaConnector",
+                          "Integration connector that maintains the last update date for the volume.",
+                           DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                           DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                          true),
+
+    /**
+     * The type of licences granted by the hospital for data that originates from them for this clinical trial.
+     */
+    HOSPITAL_DATA_LICENSE_TYPE("hospitalDataLicenseType",
+                               "The type of licences granted by the hospital for data that originates from them for this clinical trial.",
+                               OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+                               null,
+                               true),
+
+    /**
+     * A data processing purpose that has been approved for data from this hospital.  It is a combination of permitted purposes from the license, and Coco Pharmaceutical's own governance practices.
+     */
+    APPROVED_PURPOSES("approvedPurpose",
+                      "A data processing purpose that has been approved for data from this hospital.  It is a combination of permitted purposes from the license, and Coco Pharmaceutical's own governance practices.",
+                      OpenMetadataType.DATA_PROCESSING_PURPOSE.typeName,
+                      null,
+                      false),
 
     /**
      * The certification type that should be used to certify the hospital.
      */
-    CERTIFICATION_TYPE("certificationType",
-                   "The certification type that should be used to certify the hospital.",
-                   OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
-                   null,
-                   true),
+    HOSPITAL_CERTIFICATION_TYPE("hospitalCertificationType",
+                                "The certification type that should be used to certify the hospital.",
+                                OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                                null,
+                                true),
+
+    /**
+     * The certification type that should be used to certify the hospital.
+     */
+    DATA_QUALITY_CERTIFICATION_TYPE("dataQualityCertificationType",
+                                "The certification type that should be used to certify that data from the hospital conforms to specification.",
+                                OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                                null,
+                                true),
+
+    GENERIC_ONBOARDING_PIPELINE("onboardingPipeline",
+                                "The standard onboarding pipeline that brings data from the landing area to the data lake that is not customized for a project or hospital.",
+                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                null,
+                                true),
+
+    GENERIC_HOSPITAL_NOMINATION_GAT("hospitalNominationGovernanceActionType",
+                                    "The Governance Action Type that tentatively adds a hospital to a clinical trial.",
+                                    OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                    null,
+                                    true),
+
+    GENERIC_HOSPITAL_CERTIFICATION_GAT("hospitalCertificationGovernanceActionType",
+                                       "The Governance Action Type that implements the hospital certification process.",
+                                       OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                       null,
+                                       true),
+
+    GENERIC_HOSPITAL_ONBOARDING_GAT("hospitalOnboardingGovernanceActionType",
+                                       "The Governance Action Type that implements the hospital certification process.",
+                                       OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                       null,
+                                       true),
+
+    GENERIC_SET_UP_DATA_LAKE_GAT("setUpDataLakeGovernanceActionType",
+                                    "The Governance Action Type that sets up the volume in the data lake catalog.",
+                                    OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME,
+                                    null,
+                                    true),
+
+    ONBOARD_HOSPITAL_PROCESS("onboardHospitalProcess",
+                                 "The Governance Action Process that sets up the onboarding pipeline.  SetUpDataLake needs to pass the destination directory onto this process.",
+                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                 null,
+                                 true),
+
 
     ;
 
@@ -190,22 +225,57 @@ public enum CocoClinicalTrialActionTarget
     }
 
 
+
     /**
      * Return the action targets defined for this service.
      *
      * @return list
      */
-    public static List<ActionTargetType> getHospitalOnboardingActionTargetTypes()
+    public static List<ActionTargetType> getClinicalTrialSetupActionTargetTypes()
     {
         List<ActionTargetType> actionTargetTypes = new ArrayList<>();
 
         actionTargetTypes.add(PROJECT.getActionTargetType());
-        actionTargetTypes.add(HOSPITAL.getActionTargetType());
+        actionTargetTypes.add(HOSPITAL_CERTIFICATION_TYPE.getActionTargetType());
+        actionTargetTypes.add(PROCESS_OWNER.getActionTargetType());
+        actionTargetTypes.add(CUSTODIAN.getActionTargetType());
+        actionTargetTypes.add(STEWARD.getActionTargetType());
+
         actionTargetTypes.add(LANDING_AREA_CONNECTOR.getActionTargetType());
-        actionTargetTypes.add(LANDING_AREA_FOLDER.getActionTargetType());
-        actionTargetTypes.add(DATA_LAKE_FOLDER.getActionTargetType());
+        actionTargetTypes.add(LAST_UPDATE_CONNECTOR.getActionTargetType());
+
+        actionTargetTypes.add(GENERIC_ONBOARDING_PIPELINE.getActionTargetType());
+        actionTargetTypes.add(GENERIC_HOSPITAL_ONBOARDING_GAT.getActionTargetType());
+        actionTargetTypes.add(GENERIC_HOSPITAL_NOMINATION_GAT.getActionTargetType());
+        actionTargetTypes.add(GENERIC_HOSPITAL_CERTIFICATION_GAT.getActionTargetType());
+        actionTargetTypes.add(GENERIC_SET_UP_DATA_LAKE_GAT.getActionTargetType());
+
+        return actionTargetTypes;
+    }
+
+
+    /**
+     * Return the action targets defined for this service.
+     *
+     * @return list
+     */
+    public static List<ActionTargetType> getNominateHospitalActionTargetTypes()
+    {
+        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
+
+        /*
+         * Predefined by ClinicalTrialSetup
+         */
+        actionTargetTypes.add(PROJECT.getActionTargetType());
+        actionTargetTypes.add(CUSTODIAN.getActionTargetType());
+        actionTargetTypes.add(PROCESS_OWNER.getActionTargetType());
+        actionTargetTypes.add(HOSPITAL_CERTIFICATION_TYPE.getActionTargetType());
+
+        /*
+         * Supplied by caller
+         */
+        actionTargetTypes.add(HOSPITAL.getActionTargetType());
         actionTargetTypes.add(CONTACT_PERSON.getActionTargetType());
-        actionTargetTypes.add(CERTIFICATION_TYPE.getActionTargetType());
 
         return actionTargetTypes;
     }
@@ -220,12 +290,17 @@ public enum CocoClinicalTrialActionTarget
     {
         List<ActionTargetType> actionTargetTypes = new ArrayList<>();
 
+        /*
+         * Predefined by ClinicalTrialSetup
+         */
         actionTargetTypes.add(PROJECT.getActionTargetType());
-        actionTargetTypes.add(HOSPITAL.getActionTargetType());
-        actionTargetTypes.add(CERTIFICATION_TYPE.getActionTargetType());
-        actionTargetTypes.add(CONTACT_PERSON.getActionTargetType());
+        actionTargetTypes.add(HOSPITAL_CERTIFICATION_TYPE.getActionTargetType());
         actionTargetTypes.add(CUSTODIAN.getActionTargetType());
-        actionTargetTypes.add(DATA_OWNER.getActionTargetType());
+
+        /*
+         * Supplied by caller
+         */
+        actionTargetTypes.add(HOSPITAL.getActionTargetType());
 
         return actionTargetTypes;
     }
@@ -240,14 +315,49 @@ public enum CocoClinicalTrialActionTarget
     {
         List<ActionTargetType> actionTargetTypes = new ArrayList<>();
 
+        /*
+         * All predefined by ClinicalTrialSetUp
+         */
         actionTargetTypes.add(PROJECT.getActionTargetType());
-        actionTargetTypes.add(SCHEMA.getActionTargetType());
-        actionTargetTypes.add(DATA_LAKE_FOLDER.getActionTargetType());
-        actionTargetTypes.add(VOLUME_TEMPLATE.getActionTargetType());
+        actionTargetTypes.add(STEWARD.getActionTargetType());
         actionTargetTypes.add(LAST_UPDATE_CONNECTOR.getActionTargetType());
+        actionTargetTypes.add(ONBOARD_HOSPITAL_PROCESS.getActionTargetType()); // pass on destination folder
+
+        /*
+         * Supplied by caller
+         */
+        actionTargetTypes.add(CATALOG.getActionTargetType());
 
         return actionTargetTypes;
     }
+
+
+    /**
+     * Return the action targets defined for this service.
+     *
+     * @return list
+     */
+    public static List<ActionTargetType> getHospitalOnboardingActionTargetTypes()
+    {
+        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
+
+        /*
+         * Predefined by ClinicalTrialSetUp
+         */
+        actionTargetTypes.add(PROJECT.getActionTargetType());
+        actionTargetTypes.add(HOSPITAL_CERTIFICATION_TYPE.getActionTargetType());
+        actionTargetTypes.add(LANDING_AREA_CONNECTOR.getActionTargetType());
+        actionTargetTypes.add(GENERIC_ONBOARDING_PIPELINE.getActionTargetType());
+        actionTargetTypes.add(STEWARD.getActionTargetType());
+
+        /*
+         * Supplied by the caller
+         */
+        actionTargetTypes.add(HOSPITAL.getActionTargetType());
+
+        return actionTargetTypes;
+    }
+
 
 
     /**

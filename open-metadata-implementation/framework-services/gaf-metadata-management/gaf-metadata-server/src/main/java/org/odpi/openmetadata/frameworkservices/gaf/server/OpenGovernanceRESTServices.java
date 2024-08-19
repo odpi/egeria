@@ -1343,25 +1343,6 @@ public class OpenGovernanceRESTServices
                                         supportedZones,
                                         pageSize);
                 }
-                else
-                {
-                    GovernanceActionProcessStepElement processStepElement = handler.getGovernanceActionProcessStepByGUID(userId,
-                                                                                                                         relationship.getEntityTwoProxy().getGUID(),
-                                                                                                                         supportedZones,
-                                                                                                                         null,
-                                                                                                                         methodName);
-
-                    List<GovernanceActionProcessStepElement> processStepElements = governanceActionProcessGraph.getNextProcessSteps();
-
-                    if (processStepElements == null)
-                    {
-                        processStepElements = new ArrayList<>();
-                    }
-
-                    processStepElements.add(processStepElement);
-
-                    governanceActionProcessGraph.setNextProcessSteps(processStepElements);
-                }
             }
 
             startFrom = startFrom + pageSize;
@@ -3177,7 +3158,7 @@ public class OpenGovernanceRESTServices
                                              String                  governanceEngineName,
                                              InitiateEngineActionRequestBody requestBody)
     {
-        final String methodName = "initiateGovernanceAction";
+        final String methodName = "initiateEngineAction";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 

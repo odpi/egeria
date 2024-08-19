@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
@@ -427,7 +428,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                         NewActionTarget actionTarget = new NewActionTarget();
 
                         actionTarget.setActionTargetGUID(newActionTargetGUID);
-                        actionTarget.setActionTargetName(MoveCopyFileGovernanceActionProvider.NEW_ASSET_PROPERTY);
+                        actionTarget.setActionTargetName(ActionTarget.NEW_ASSET.name);
                         newActionTargets.add(actionTarget);
                     }
 
@@ -741,7 +742,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
         String newFileGUID;
 
-        governanceContext.getOpenMetadataStore().setForLineage(true);
+        metadataStore.setForLineage(true);
 
         String topLevelProcessGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(topLevelProcessName, null);
         String processGUID;
@@ -885,24 +886,6 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                                                           assetTemplateGUID,
                                                                           null,
                                                                           placeholderProperties,
-                                                                          parentGUID,
-                                                                          OpenMetadataType.NESTED_FILE_TYPE_NAME,
-                                                                          null,
-                                                                          true);
-        }
-        else if (sourceFileGUID != null)
-        {
-            /*
-             * Use the source file as a template
-             */
-            newFileGUID = metadataStore.createMetadataElementFromTemplate(assetTypeName,
-                                                                          null,
-                                                                          true,
-                                                                          null,
-                                                                          null,
-                                                                          sourceFileGUID,
-                                                                          destinationFileProperties,
-                                                                          null,
                                                                           parentGUID,
                                                                           OpenMetadataType.NESTED_FILE_TYPE_NAME,
                                                                           null,

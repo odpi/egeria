@@ -21,9 +21,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.ProjectDefinition;
-import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialCertifyHospitalProvider;
-import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialHospitalOnboardingProvider;
-import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialSetUpDataLakeProvider;
+import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.*;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -221,16 +219,16 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
      * @param governanceRequestType name of request type
      * @param serviceRequestType internal name of the request type
      * @param requestParameters any request parameters
-     * @param governanceActionDescription description of the governance action if and
+     * @param governanceActionDescription description of the governance action
      */
-    private void addRequestType(String                      governanceEngineGUID,
-                                String                      governanceEngineName,
-                                String                      governanceEngineTypeName,
-                                String                      governanceRequestType,
-                                String                      serviceRequestType,
-                                Map<String, String>         requestParameters,
-                                GovernanceActionDescription governanceActionDescription,
-                                String                      supportedElementQualifiedName)
+    private String addRequestType(String                      governanceEngineGUID,
+                                  String                      governanceEngineName,
+                                  String                      governanceEngineTypeName,
+                                  String                      governanceRequestType,
+                                  String                      serviceRequestType,
+                                  Map<String, String>         requestParameters,
+                                  GovernanceActionDescription governanceActionDescription,
+                                  String                      supportedElementQualifiedName)
     {
         archiveHelper.addSupportedGovernanceService(governanceEngineGUID,
                                                     governanceRequestType,
@@ -238,54 +236,81 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
                                                     requestParameters,
                                                     governanceActionDescription.governanceServiceGUID);
 
-        if (governanceActionDescription.supportedActionTargets != null)
+        String governanceActionTypeGUID = archiveHelper.addGovernanceActionType(null,
+                                                                                governanceEngineGUID,
+                                                                                governanceEngineTypeName,
+                                                                                OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                                                                governanceEngineName + ":" + governanceRequestType,
+                                                                                governanceRequestType + " (" + governanceEngineName + ")",
+                                                                                governanceActionDescription.governanceServiceDescription,
+                                                                                0,
+                                                                                governanceActionDescription.supportedRequestParameters,
+                                                                                governanceActionDescription.supportedActionTargets,
+                                                                                governanceActionDescription.supportedAnalysisSteps,
+                                                                                governanceActionDescription.supportedAnnotationTypes,
+                                                                                governanceActionDescription.producedRequestParameters,
+                                                                                governanceActionDescription.producedActionTargets,
+                                                                                governanceActionDescription.producedGuards,
+                                                                                0,
+                                                                                null,
+                                                                                null,
+                                                                                null);
+
+
+        if (governanceActionTypeGUID != null)
         {
-            String governanceActionTypeGUID = archiveHelper.addGovernanceActionType(null,
-                                                                                    governanceEngineGUID,
-                                                                                    governanceEngineTypeName,
-                                                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
-                                                                                    governanceEngineName + ":" + governanceRequestType,
-                                                                                    governanceRequestType + " (" + governanceEngineName + ")",
-                                                                                    governanceActionDescription.governanceServiceDescription,
-                                                                                    0,
-                                                                                    governanceActionDescription.supportedRequestParameters,
-                                                                                    governanceActionDescription.supportedActionTargets,
-                                                                                    governanceActionDescription.supportedAnalysisSteps,
-                                                                                    governanceActionDescription.supportedAnnotationTypes,
-                                                                                    governanceActionDescription.producedRequestParameters,
-                                                                                    governanceActionDescription.producedActionTargets,
-                                                                                    governanceActionDescription.producedGuards,
-                                                                                    0,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null);
+            archiveHelper.addGovernanceActionExecutor(governanceActionTypeGUID,
+                                                      governanceRequestType,
+                                                      requestParameters,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      governanceEngineGUID);
 
-
-            if (governanceActionTypeGUID != null)
+            if (supportedElementQualifiedName != null)
             {
-                archiveHelper.addGovernanceActionExecutor(governanceActionTypeGUID,
-                                                          governanceRequestType,
-                                                          requestParameters,
-                                                          null,
-                                                          null,
-                                                          null,
-                                                          null,
-                                                          governanceEngineGUID);
-
-                if (supportedElementQualifiedName != null)
-                {
-                    String supportedElementGUID = archiveHelper.queryGUID(supportedElementQualifiedName);
-                    archiveHelper.addResourceListRelationshipByGUID(supportedElementGUID,
-                                                                    governanceActionTypeGUID,
-                                                                    governanceActionDescription.resourceUse.getResourceUse(),
-                                                                    governanceActionDescription.governanceServiceDescription,
-                                                                    requestParameters,
-                                                                    false);
-                }
+                String supportedElementGUID = archiveHelper.queryGUID(supportedElementQualifiedName);
+                archiveHelper.addResourceListRelationshipByGUID(supportedElementGUID,
+                                                                governanceActionTypeGUID,
+                                                                governanceActionDescription.resourceUse.getResourceUse(),
+                                                                governanceActionDescription.governanceServiceDescription,
+                                                                requestParameters,
+                                                                false);
             }
         }
+
+        return governanceActionTypeGUID;
     }
 
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @return descriptive information on the governance service
+     */
+    private GovernanceActionDescription getSetUpClinicalTrialGovernanceActionService()
+    {
+        final String governanceServiceName = "set-up-clinical-trial-governance-action-service";
+        final String governanceServiceDisplayName = "Set up new clinical trial";
+        final String governanceServiceDescription = "Sets up the processes that will govern the clinical trial.";
+        final String governanceServiceProviderClassName = CocoClinicalTrialSetUpProvider.class.getName();
+
+        CocoClinicalTrialSetUpProvider provider = new CocoClinicalTrialSetUpProvider();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.PROVISION_RESOURCE,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                                                                                               governanceServiceProviderClassName,
+                                                                                               null,
+                                                                                               governanceServiceName,
+                                                                                               governanceServiceDisplayName,
+                                                                                               governanceServiceDescription,
+                                                                                               null);
+        return governanceActionDescription;
+    }
 
 
     /**
@@ -317,14 +342,14 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
     }
 
 
-    private GovernanceActionDescription getCertifyHospitalForClinicalTrialGovernanceActionService()
+    private GovernanceActionDescription getNominateHospitalForClinicalTrialGovernanceActionService()
     {
-        final String governanceServiceName = "certify-hospital-for-clinical-trial-governance-action-service";
-        final String governanceServiceDisplayName = "Certify that a hospital has legal and data management arrangements in place to capture and supply weekly patient measurements as part of a clinical trial.";
-        final String governanceServiceDescription = "Checks that the certification type matches the one for the clinical trial project and sets up the certification relationship between the hospital and the certification type.";
-        final String governanceServiceProviderClassName = CocoClinicalTrialCertifyHospitalProvider.class.getName();
+        final String governanceServiceName = "nominate-hospital-for-clinical-trial-governance-action-service";
+        final String governanceServiceDisplayName = "Nominate a hospital has legal and data management arrangements in place to capture and supply weekly patient measurements as part of a clinical trial.";
+        final String governanceServiceDescription = "Checks that the certification type matches the one for the clinical trial project and sets up the certification relationship between the hospital and the certification type.  The start date is null.  The certification relationship identifies the people involved in completing the certification process.";
+        final String governanceServiceProviderClassName = CocoClinicalTrialNominateHospitalProvider.class.getName();
 
-        CocoClinicalTrialSetUpDataLakeProvider provider = new CocoClinicalTrialSetUpDataLakeProvider();
+        CocoClinicalTrialNominateHospitalProvider provider = new CocoClinicalTrialNominateHospitalProvider();
 
         GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.CERTIFY_RESOURCE,
                                                                                                  provider,
@@ -337,6 +362,32 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
                                                                                                governanceServiceDisplayName,
                                                                                                governanceServiceDescription,
                                                                                                null);
+
+
+        return governanceActionDescription;
+    }
+
+    private GovernanceActionDescription getCertifyHospitalForClinicalTrialGovernanceActionService()
+    {
+        final String governanceServiceName = "certify-hospital-for-clinical-trial-governance-action-service";
+        final String governanceServiceDisplayName = "Certify that a hospital has legal and data management arrangements in place to capture and supply weekly patient measurements as part of a clinical trial.";
+        final String governanceServiceDescription = "Checks that the certification type matches the one for the clinical trial project and sets up the start date in the certification relationship between the hospital and the certification type.";
+        final String governanceServiceProviderClassName = CocoClinicalTrialCertifyHospitalProvider.class.getName();
+
+        CocoClinicalTrialCertifyHospitalProvider provider = new CocoClinicalTrialCertifyHospitalProvider();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.CERTIFY_RESOURCE,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                                                                                               governanceServiceProviderClassName,
+                                                                                               null,
+                                                                                               governanceServiceName,
+                                                                                               governanceServiceDisplayName,
+                                                                                               governanceServiceDescription,
+                                                                                               null);
+
         return governanceActionDescription;
     }
 
@@ -566,11 +617,59 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
      * @param governanceEngineName unique name of the governance engine
      * @param governanceActionDescription details for calling the governance service
      */
+    private void addSetUpClinicalTrialRequestType(String                      governanceEngineGUID,
+                                                  String                      governanceEngineName,
+                                                  GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "set-up-clinical-trial";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription,
+                            ProjectDefinition.CLINICAL_TRIALS.getQualifiedName());
+    }
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
     private void addSetUpDataLakeForClinicalTrialRequestType(String                      governanceEngineGUID,
                                                              String                      governanceEngineName,
                                                              GovernanceActionDescription governanceActionDescription)
     {
         final String governanceRequestType = "set-up-data-lake";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription,
+                            ProjectDefinition.CLINICAL_TRIALS.getQualifiedName());
+    }
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addNominateHospitalToClinicalTrialRequestType(String                      governanceEngineGUID,
+                                                               String                      governanceEngineName,
+                                                               GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "nominate-hospital";
 
         this.addRequestType(governanceEngineGUID,
                             governanceEngineName,
@@ -679,16 +778,22 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
         /*
          * Define the Clinical Trials engine
          */
-        GovernanceActionDescription clinicalTrialInitiateDescription           = this.getSetUpDataLakeForClinicalTrialGovernanceActionService();
+        GovernanceActionDescription setUpClinicalTrialDescription              = this.getSetUpClinicalTrialGovernanceActionService();
+        GovernanceActionDescription clinicalTrialSetUpDataLakeDescription      = this.getSetUpDataLakeForClinicalTrialGovernanceActionService();
+        GovernanceActionDescription hospitalNominationDescription              = this.getNominateHospitalForClinicalTrialGovernanceActionService();
         GovernanceActionDescription hospitalCertificationDescription           = this.getCertifyHospitalForClinicalTrialGovernanceActionService();
         GovernanceActionDescription clinicalTrialHospitalOnboardingDescription = this.getHospitalOnboardingClinicalTrialGovernanceActionService();
 
         String clinicalTrialsEngineName = "ClinicalTrials@CocoPharmaceuticals";
         String clinicalTrialsEngineGUID = this.getClinicalTrialsEngine(clinicalTrialsEngineName);
 
-        this.addSetUpDataLakeForClinicalTrialRequestType(clinicalTrialsEngineGUID, clinicalTrialsEngineName, clinicalTrialInitiateDescription);
+        this.addSetUpClinicalTrialRequestType(clinicalTrialsEngineGUID, clinicalTrialsEngineName, setUpClinicalTrialDescription);
+        this.addSetUpDataLakeForClinicalTrialRequestType(clinicalTrialsEngineGUID, clinicalTrialsEngineName, clinicalTrialSetUpDataLakeDescription);
+        this.addNominateHospitalToClinicalTrialRequestType(clinicalTrialsEngineGUID, clinicalTrialsEngineName, hospitalNominationDescription);
         this.addCertifyHospitalToClinicalTrialRequestType(clinicalTrialsEngineGUID, clinicalTrialsEngineName, hospitalCertificationDescription);
         this.addOnboardHospitalToClinicalTrialRequestType(clinicalTrialsEngineGUID, clinicalTrialsEngineName, clinicalTrialHospitalOnboardingDescription);
+
+
     }
 
 

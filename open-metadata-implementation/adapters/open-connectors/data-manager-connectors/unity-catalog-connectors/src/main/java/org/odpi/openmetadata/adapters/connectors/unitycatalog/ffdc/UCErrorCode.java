@@ -43,10 +43,10 @@ public enum UCErrorCode implements ExceptionMessageSet
 
 
     /**
-     * UNITY-CATALOG-CONNECTOR-500-001 - The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}
+     * UNITY-CATALOG-CONNECTOR-500-001 - The {0} Unity Catalog connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION(500, "UNITY-CATALOG-CONNECTOR-500-001",
-                         "The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}",
+                         "The {0} Unity Catalog (UC) connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector is unable to process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 

@@ -1,5 +1,7 @@
 # Egeria-open-metadata-store
 
+@serviceURLName=asset-manager
+
 ###
 # group: Valid Metadata Values
 # @name setUpValidMetadataValue
@@ -33,12 +35,12 @@ Content-Type: application/json
 # @name validateMetadataValue
 GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/validate-value/projectType?
     actualValue=clinical-trial&
-    typeName=ProjectCharter
+    typeName=ProjectCharter§
 
 ###
 # group: Valid Metadata Values
 # @name getValidMetadataValue
-GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/get-value/projectType?
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/open-metadata-store/users/{{user}}/valid-metadata-values/get-value/toDoStatus?
     preferredValue=clinical-trial&
     typeName=ProjectCharter
 

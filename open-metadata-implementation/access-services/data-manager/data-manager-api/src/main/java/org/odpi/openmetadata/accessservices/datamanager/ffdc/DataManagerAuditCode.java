@@ -116,7 +116,7 @@ public enum DataManagerAuditCode implements AuditLogMessageSet
      * and type name {2} due to exception {3}.  The error message from the exception was {4}
      */
     OUTBOUND_EVENT_EXCEPTION("OMAS-DATA-MANAGER-0018",
-                             AuditLogRecordSeverityLevel.EXCEPTION,
+                             AuditLogRecordSeverityLevel.EVENT,
                              "Unable to send an outbound event of type {0} for instance with unique identifier of {1} and type name {2} due to exception {3}.  The error message from the exception was {4}",
                              "The system detected an exception whilst attempting to send an event to the out topic.  No event is sent.",
                              "Investigate and correct the source of the error.  Once fixed, events will be sent."),

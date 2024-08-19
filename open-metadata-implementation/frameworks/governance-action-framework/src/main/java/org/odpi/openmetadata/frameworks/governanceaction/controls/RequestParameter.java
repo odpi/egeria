@@ -20,6 +20,12 @@ public enum RequestParameter
     SOURCE_DIRECTORY ("sourceDirectory", "The name of a directory (folder) to process.", "string", "directoryA/B/C"),
     DESTINATION_DIRECTORY ("destinationDirectory", "The name of a directory (folder) to add files to.", "string", "directoryA/B/C"),
 
+    DOMAIN_IDENTIFIER ("domainIdentifier", "Identifier for the governance domain; 0 means any/all governance domain(s).", "int", "0"),
+    STATUS_IDENTIFIER ("statusIdentifier", "Identifier for the governance classification status.", "int", "0"),
+    LEVEL_IDENTIFIER ("levelIdentifier", "Identifier for the level associated with a governance classification.", "int", "0"),
+    BASIS_IDENTIFIER ("basisIdentifier", "Identifier for the basis under which the retention date(s) are set.", "int", "2"),
+    RETENTION_TIME_TO_ARCHIVE ("timeToArchive", "Number of milliseconds before the data should be archived.", "long", "31556952000"),
+    RETENTION_TIME_TO_DELETE ("timeToDelete", "Number of milliseconds before the data should be deleted.", "long", "31556952000"),
     ;
 
     public final String           name;
