@@ -20,8 +20,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerStatus;
 
@@ -139,19 +137,19 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
          */
         try
         {
-            if (connectionProperties.getUserId() != null)
+            if (clientUserId != null)
             {
                 extractor = new EgeriaExtractor(targetRootURL,
                                                 null,
                                                 serverName,
-                                                connectionProperties.getUserId());
+                                                clientUserId);
             }
             else
             {
                 extractor = new EgeriaExtractor(targetRootURL,
                                                 null,
                                                 serverName,
-                                                clientUserId);
+                                                connectionProperties.getUserId());
             }
         }
         catch (Exception error)
@@ -334,5 +332,68 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
                                                    PropertyServerException
     {
         return extractor.getActiveServices();
+    }
+
+
+    /**
+     * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+     * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+     * event has been sent.
+     * If the server has already registered in the past, it sends a reregistration request.
+     *
+     * @param userId calling user
+     * @param cohortName name of cohort
+     *
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     *
+     * @throws InvalidParameterException one of the supplied parameters caused a problem
+     * @throws PropertyServerException there is a problem communicating with the remote server.
+     * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
+     */
+    public boolean connectToCohort(String userId,
+                                   String cohortName) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException
+    {
+        return extractor.connectToCohort(userId, cohortName);
+    }
+
+
+
+    /**
+     * Disconnect communications from a specific cohort.
+     *
+     * @param userId calling user
+     * @param cohortName name of cohort
+     * @return boolean flag to indicate success.
+     * @throws InvalidParameterException one of the supplied parameters caused a problem
+     * @throws PropertyServerException there is a problem communicating with the remote server.
+     * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
+     */
+    public boolean disconnectFromCohort(String userId,
+                                        String cohortName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        return extractor.disconnectFromCohort(userId, cohortName);
+    }
+
+
+    /**
+     * Unregister from a specific cohort and disconnect from cohort communications.
+     *
+     * @param userId calling user
+     * @param cohortName name of cohort
+     * @return boolean flag to indicate success.
+     * @throws InvalidParameterException one of the supplied parameters caused a problem
+     * @throws PropertyServerException there is a problem communicating with the remote server.
+     * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
+     */
+    public boolean unregisterFromCohort(String userId,
+                                        String cohortName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        return extractor.unregisterFromCohort(userId, cohortName);
     }
 }

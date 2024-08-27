@@ -6,11 +6,12 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.ConnectorConfigPropertiesRequestBody;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.viewservices.runtimemanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.viewservices.runtimemanager.rest.PlatformReportResponse;
-import org.odpi.openmetadata.viewservices.runtimemanager.rest.ServerReportResponse;
+import org.odpi.openmetadata.viewservices.runtimemanager.rest.*;
 import org.odpi.openmetadata.viewservices.runtimemanager.server.RuntimeManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -334,7 +335,7 @@ public class RuntimeManagerResource
 
     /*
      * =============================================================
-     * Operational status and control
+     * Open Metadata Archives
      */
 
 
@@ -348,7 +349,8 @@ public class RuntimeManagerResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or fileName parameter.
      */
-    @PostMapping(path = "/omag-servers/{serverGUID}/instance/load/open-metadata-archives/file")
+    @PostMapping(path = { "/omag-servers/{serverGUID}/instance/load/open-metadata-archives/file",
+            "/metadata-access-stores/{serverGUID}/instance/load/open-metadata-archives/file"})
 
     @Operation(summary="addOpenMetadataArchiveFile",
             description="An open metadata archive contains metadata types and instances.  This operation loads an open metadata " +
@@ -375,7 +377,8 @@ public class RuntimeManagerResource
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or openMetadataArchive parameter.
      */
-    @PostMapping(path = "/omag-servers/{serverGUID}/instance/load/open-metadata-archives/archive-content")
+    @PostMapping(path = {"/omag-servers/{serverGUID}/instance/load/open-metadata-archives/archive-content",
+                         "/metadata-access-stores/{serverGUID}/instance/load/open-metadata-archives/archive-content"})
 
     @Operation(summary="addOpenMetadataArchiveContent",
             description="An open metadata archive contains metadata types and instances.  This operation loads the supplied open metadata " +
@@ -388,5 +391,361 @@ public class RuntimeManagerResource
                                                @RequestBody  OpenMetadataArchive openMetadataArchive)
     {
         return restAPI.addOpenMetadataArchiveContent(serverName, serverGUID, openMetadataArchive);
+    }
+
+
+    /*
+     * =============================================================
+     * Engine Host
+     */
+
+
+    /**
+     * Request that the governance engine refresh its configuration by calling the metadata server.
+     * This request is useful if the metadata server has an outage, particularly while the
+     * governance server is initializing.  This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @param serverName name of the governance server
+     * @param serverGUID unique identifier of the server to call
+     * @param governanceEngineName unique name of the governance engine
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  GovernanceEngineException there was a problem detected by the governance engine.
+     */
+    @GetMapping(path = "/engine-hosts/{serverGUID}/governance-engines/{governanceEngineName}/refresh-config")
+
+    @Operation(summary="refreshConfig",
+            description="Request that the governance engine refresh its configuration by calling the metadata server. " +
+                    "This request is useful if the metadata server has an outage, particularly while the " +
+                    "governance server is initializing.  This request just ensures that the latest configuration " +
+                    "is in use.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-engine-definition/"))
+
+    public  VoidResponse refreshConfig(@PathVariable String                       serverName,
+                                       @PathVariable String                       serverGUID,
+                                       @PathVariable String                       governanceEngineName)
+    {
+        return restAPI.refreshConfig(serverName, serverGUID, governanceEngineName);
+    }
+
+
+    /*
+     * =============================================================
+     * Integration Daemon
+     */
+
+
+    /**
+     * Retrieve the configuration properties of the named integration connector running in the integration daemon.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param connectorName name of a specific connector
+     *
+     * @return properties map or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+    @GetMapping(path = "/integration-daemons/{serverGUID}/integration-connectors/{connectorName}/configuration-properties")
+
+    @Operation(summary="getConfigurationProperties",
+            description="Retrieve the configuration properties of the named integration connector running in the integration daemon.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public PropertiesResponse getConfigurationProperties(@PathVariable String serverName,
+                                                         @PathVariable String serverGUID,
+                                                         @PathVariable String connectorName)
+    {
+        return restAPI.getConfigurationProperties(serverName, serverGUID, connectorName);
+    }
+
+
+    /**
+     * Update the configuration properties of the integration connectors, or specific integration connector if a
+     * connector name is supplied.  This update is in memory and will not persist over a server restart.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param requestBody name of a specific connector or null for all connectors and the properties to change
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+    @PostMapping(path = "/integration-daemons/{serverGUID}/integration-connectors/configuration-properties")
+
+    @Operation(summary="updateConfigurationProperties",
+            description="Update the configuration properties of the integration connectors, or specific integration connector if a connector name is supplied.  This update is in memory and will not persist over a server restart.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public  VoidResponse updateConfigurationProperties(@PathVariable String                               serverName,
+                                                       @PathVariable String                               serverGUID,
+                                                       @RequestBody  ConnectorConfigPropertiesRequestBody requestBody)
+    {
+        return restAPI.updateConfigurationProperties(serverName, serverGUID, requestBody);
+    }
+
+
+    /**
+     * Update the endpoint network address for a specific integration connector.
+     * This update is in memory and will not persist over a server restart.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param connectorName name of a specific connector
+     * @param requestBody new endpoint address
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+    @PostMapping(path = "/integration-daemons/{serverGUID}/integration-connectors/{connectorName}/endpoint-network-address")
+
+    @Operation(summary="updateEndpointNetworkAddress",
+            description="Update the endpoint network address for a specific integration connector.  This update is in memory and will not persist over a server restart.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public  VoidResponse updateEndpointNetworkAddress(@PathVariable String            serverName,
+                                                      @PathVariable String            serverGUID,
+                                                      @PathVariable String            connectorName,
+                                                      @RequestBody  StringRequestBody requestBody)
+    {
+        return restAPI.updateEndpointNetworkAddress(serverName, serverGUID, connectorName, requestBody);
+    }
+
+
+    /**
+     * Update the connection for a specific integration connector.
+     * This update is in memory and will not persist over a server restart.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param connectorName name of a specific connector
+     * @param requestBody new connection object
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+    @PostMapping(path = "/integration-daemons/{serverGUID}/integration-connectors/{connectorName}/connection")
+
+    @Operation(summary="updateConnectorConnection",
+            description="Update the connection for a specific integration connector.  This update is in memory and will not persist over a server restart.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public  VoidResponse updateConnectorConnection(@PathVariable String     serverName,
+                                                   @PathVariable String     serverGUID,
+                                                   @PathVariable String     connectorName,
+                                                   @RequestBody  Connection requestBody)
+    {
+        return restAPI.updateConnectorConnection(serverName, serverGUID, connectorName,requestBody);
+    }
+
+
+    /**
+     * Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param requestBody optional name of the connector to target - if no connector name is specified, all
+     *                      connectors managed by this integration service are refreshed.
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration daemon.
+     */
+    @PostMapping(path = "/integration-daemons/{serverGUID}/integration-connectors/refresh")
+
+    @Operation(summary="refreshConnectors",
+            description="Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-daemon/"))
+
+    public VoidResponse refreshConnectors(@PathVariable                  String          serverName,
+                                          @PathVariable                  String          serverGUID,
+                                          @RequestBody(required = false) NameRequestBody requestBody)
+    {
+        return restAPI.refreshConnectors(serverName, serverGUID, requestBody);
+    }
+
+
+    /**
+     * Restart all connectors running in the integration daemon, or restart a specific connector if the connector name is specified.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param requestBody optional name of the connector to target - if no connector name is specified, all
+     *                      connectors managed by this integration service are refreshed.
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration daemon.
+     */
+    @PostMapping(path = "/integration-daemons/{serverGUID}/integration-connectors/restart")
+
+    @Operation(summary="restartConnectors",
+            description="Restart all connectors running in the integration daemon, or restart a specific connector if the connector name is specified.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-daemon/"))
+
+    public VoidResponse restartConnectors(@PathVariable                  String          serverName,
+                                          @PathVariable                  String          serverGUID,
+                                          @RequestBody(required = false) NameRequestBody requestBody)
+    {
+        return restAPI.restartConnectors(serverName, serverGUID, requestBody);
+    }
+
+
+    /**
+     * Request that the integration group refresh its configuration by calling the metadata access server.
+     * Changes to the connector configuration will result in the affected connectors being restarted.
+     * This request is useful if the metadata access server has an outage, particularly while the
+     * integration daemon is initializing.  This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @param serverName name of the governance server
+     * @param serverGUID unique identifier of the server to call
+     * @param integrationGroupName unique name of the integration group
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  IntegrationGroupException there was a problem detected by the integration group.
+     */
+    @GetMapping(path = "/integration-daemons/{serverGUID}/integration-groups/{integrationGroupName}/refresh-config")
+
+    @Operation(summary="refreshIntegrationGroupConfig",
+            description="Request that the integration group refresh its configuration by calling the metadata access server. " +
+                    "Changes to the connector configuration will result in the affected connectors being restarted. " +
+                    "This request is useful if the metadata access server has an outage, particularly while the " +
+                    "integration daemon is initializing.  This request just ensures that the latest configuration " +
+                    "is in use.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-group/"))
+
+    public  VoidResponse refreshIntegrationGroupConfig(@PathVariable String serverName,
+                                                       @PathVariable String serverGUID,
+                                                       @PathVariable String integrationGroupName)
+    {
+        return restAPI.refreshIntegrationGroupConfig(serverName, serverGUID, integrationGroupName);
+    }
+
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param event open lineage event to publish.
+     */
+    @PostMapping(path = "/integration-daemons/{serverGUID}/open-lineage-events/publish")
+
+    @Operation(summary="publishOpenLineageEvent",
+            description="Send an Open Lineage event to the integration daemon.  It will pass it on to the integration connectors that have" +
+                    " registered a listener for open lineage events.",
+            externalDocs=@ExternalDocumentation(description="Open Lineage Standard",
+                    url="https://egeria-project.org/features/lineage-management/overview/#the-openlineage-standard"))
+
+    public VoidResponse publishOpenLineageEvent(@PathVariable String serverName,
+                                                @PathVariable String serverGUID,
+                                                @RequestBody  String event)
+    {
+        return restAPI.publishOpenLineageEvent(serverName, serverGUID, event);
+    }
+
+
+    /*
+     * =============================================================
+     * Metadata Access Store
+     */
+
+
+    /**
+     * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+     * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+     * event has been sent.
+     * If the server has already registered in the past, it sends a reregistration request.
+     *
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     * @param serverName server to query
+     * @param serverGUID unique identifier of the server to call
+     * @param cohortName name of cohort
+     */
+    @GetMapping(path = "/cohort-members/{serverGUID}/cohorts/{cohortName}/connect")
+
+    @Operation(summary="connectToCohort",
+            description="A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the" +
+                    " open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration" +
+                    " event has been sent." +
+                    " If the server has already registered in the past, it sends a reregistration request.",
+            externalDocs=@ExternalDocumentation(description="Cohort Member",
+                    url="https://egeria-project.org/concepts/cohort-member/"))
+
+    public BooleanResponse connectToCohort(@PathVariable String serverName,
+                                           @PathVariable String serverGUID,
+                                           @PathVariable String cohortName)
+    {
+        return restAPI.connectToCohort(serverName, serverGUID, cohortName);
+    }
+
+
+    /**
+     * Disconnect communications from a specific cohort.
+     *
+     * @param serverName server to query
+     * @param serverGUID unique identifier of the server to call
+     * @param cohortName name of cohort
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     */
+    @GetMapping(path = "/cohort-members/{serverGUID}/cohorts/{cohortName}/disconnect")
+
+    @Operation(summary="disconnectFromCohort",
+            description="Disconnect communications from a specific cohort.",
+            externalDocs=@ExternalDocumentation(description="Cohort Member",
+                    url="https://egeria-project.org/concepts/cohort-member/"))
+
+    public BooleanResponse disconnectFromCohort(@PathVariable String serverName,
+                                                @PathVariable String serverGUID,
+                                                @PathVariable String cohortName)
+    {
+        return restAPI.disconnectFromCohort(serverName, serverGUID, cohortName);
+    }
+
+
+    /**
+     * Unregister from a specific cohort and disconnect from cohort communications.
+     *
+     * @param serverName server to query
+     * @param serverGUID unique identifier of the server to call
+     * @param cohortName name of cohort
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     */
+    @GetMapping(path = "/cohort-members/{serverGUID}/cohorts/{cohortName}/unregister")
+
+    @Operation(summary="unregisterFromCohort",
+            description="Unregister from a specific cohort and disconnect from cohort communications.",
+            externalDocs=@ExternalDocumentation(description="Cohort Member",
+                    url="https://egeria-project.org/concepts/cohort-member/"))
+
+    public BooleanResponse unregisterFromCohort(@PathVariable String serverName,
+                                                @PathVariable String serverGUID,
+                                                @PathVariable String cohortName)
+    {
+        return restAPI.unregisterFromCohort(serverName, serverGUID, cohortName);
     }
 }

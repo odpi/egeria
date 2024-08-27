@@ -23,6 +23,13 @@ public enum ResourceUse
                     null),
 
     /**
+     * Create a survey report that details whether the content of the real-world resource that is attached to an asset is withing the bounds required by its data specification.
+     */
+    VALIDATE_RESOURCE("Validate Resource",
+                    "Creates a certification relationship between a certification type and a resource (asset, person, project, ...) that has passed the appropriate quality checks.",
+                    null),
+
+    /**
      * Create a survey report that details the content of the real-world resource that is attached to an asset.
      */
     CERTIFY_RESOURCE("Certify Resource",
@@ -30,7 +37,7 @@ public enum ResourceUse
                     null),
 
     /**
-     * Create a survey report that details the content of the real-world resource that is attached to an asset.
+     * Extract metadata from the real-world resource and add it to the open metadata repositories.  Ongoing monitoring means that any changes to the resource are reflected in the open metadata repositories.
      */
     CATALOG_RESOURCE("Catalog Resource",
             "Extract metadata from the real-world resource and add it to the open metadata repositories.  Ongoing monitoring means that any changes to the resource are reflected in the open metadata repositories.",

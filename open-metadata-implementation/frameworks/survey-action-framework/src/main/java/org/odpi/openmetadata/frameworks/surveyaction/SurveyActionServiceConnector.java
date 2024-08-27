@@ -13,9 +13,12 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
+import org.odpi.openmetadata.frameworks.connectors.properties.NestedSchemaType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionGuard;
 import org.odpi.openmetadata.frameworks.surveyaction.ffdc.SAFAuditCode;
 import org.odpi.openmetadata.frameworks.surveyaction.ffdc.SAFErrorCode;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
@@ -186,15 +189,21 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
             return connector;
         }
 
-        this.throwWrongTypeOfConnector(connector.getClass().getName(),
-                                       expectedConnectorClass.getName(),
-                                       assetStore.getAssetGUID(),
-                                       methodName);
+        surveyContext.recordCompletionStatus(SurveyActionGuard.SURVEY_INVALID.getCompletionStatus(),
+                                             Collections.singletonList(SurveyActionGuard.SURVEY_INVALID.getName()),
+                                             null,
+                                             null,
+                                             SAFAuditCode.WRONG_TYPE_OF_CONNECTOR.getMessageDefinition(surveyActionServiceName,
+                                                                                                       connector.getClass().getName(),
+                                                                                                       expectedConnectorClass.getName(),
+                                                                                                       assetStore.getAssetGUID()));
 
-        /*
-         * Not reached
-         */
-        return null;
+        throw new ConnectorCheckedException(SAFErrorCode.WRONG_TYPE_OF_CONNECTOR.getMessageDefinition(surveyActionServiceName,
+                                                                                                      connector.getClass().getName(),
+                                                                                                      expectedConnectorClass.getName(),
+                                                                                                      assetStore.getAssetGUID()),
+                                            this.getClass().getName(),
+                                            methodName);
     }
 
 
@@ -227,17 +236,128 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
         if (assetUniverse == null)
         {
+            surveyContext.recordCompletionStatus(SurveyActionGuard.SURVEY_INVALID.getCompletionStatus(),
+                                                 Collections.singletonList(SurveyActionGuard.SURVEY_INVALID.getName()),
+                                                 null,
+                                                 null,
+                                                 SAFAuditCode.NO_ASSET.getMessageDefinition(assetStore.getAssetGUID(), surveyActionServiceName));
+
             super.throwNoAsset(assetStore.getAssetGUID(),
                                surveyActionServiceName,
                                methodName);
         }
         else if (!propertyHelper.isTypeOf(assetUniverse, expectedAssetType))
         {
-            this.throwWrongTypeOfAsset(assetUniverse.getGUID(),
-                                       assetUniverse.getType().getTypeName(),
-                                       expectedAssetType,
-                                       methodName);
+            surveyContext.recordCompletionStatus(SurveyActionGuard.SURVEY_INVALID.getCompletionStatus(),
+                                                 Collections.singletonList(SurveyActionGuard.SURVEY_INVALID.getName()),
+                                                 null,
+                                                 null,
+                                                 SAFAuditCode.WRONG_TYPE_OF_ASSET.getMessageDefinition(assetUniverse.getGUID(),
+                                                                                                       assetUniverse.getType().getTypeName(),
+                                                                                                       surveyActionServiceName,
+                                                                                                       expectedAssetType));
+
+            throw new ConnectorCheckedException(SAFErrorCode.INVALID_ASSET_TYPE.getMessageDefinition(assetUniverse.getGUID(),
+                                                                                                     assetUniverse.getType().getTypeName(),
+                                                                                                     surveyActionServiceName,
+                                                                                                     expectedAssetType),
+                                                this.getClass().getName(),
+                                                methodName);
         }
+    }
+
+
+    /**
+     * Return the nested schema type associated with the asset
+     *
+     * @param assetUniverse details of asset
+     * @param schemaTypeName name of type for schema
+     * @return nested schema type or null
+     * @throws ConnectorCheckedException  problem with the connector
+     * @throws InvalidParameterException  invalid property
+     * @throws PropertyServerException    problem with repositories
+     * @throws UserNotAuthorizedException security problem
+     */
+    protected NestedSchemaType getNestedSchemaType(AssetUniverse assetUniverse,
+                                                   String        schemaTypeName) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    ConnectorCheckedException
+    {
+        final String methodName = "getNestedSchemaType";
+
+        SchemaType rootSchemaType = assetUniverse.getRootSchemaType();
+
+        if (rootSchemaType instanceof NestedSchemaType nestedSchemaType)
+        {
+            if (propertyHelper.isTypeOf(nestedSchemaType, schemaTypeName))
+            {
+                if ((nestedSchemaType.getSchemaAttributes() != null) && (nestedSchemaType.getSchemaAttributes().hasNext()))
+                {
+                    return nestedSchemaType;
+                }
+                else
+                {
+                    surveyContext.recordCompletionStatus(SurveyActionGuard.SURVEY_INVALID.getCompletionStatus(),
+                                                         Collections.singletonList(SurveyActionGuard.SURVEY_INVALID.getName()),
+                                                         null,
+                                                         null,
+                                                         SAFAuditCode.NO_SCHEMA_ATTRIBUTES.getMessageDefinition(surveyActionServiceName, assetUniverse.getGUID()));
+
+                    throw new ConnectorCheckedException(SAFErrorCode.NO_SCHEMA_ATTRIBUTES.getMessageDefinition(surveyActionServiceName, assetUniverse.getGUID()),
+                                                        this.getClass().getName(),
+                                                        methodName);
+                }
+            }
+        }
+
+        if (rootSchemaType != null)
+        {
+            surveyContext.recordCompletionStatus(SurveyActionGuard.SURVEY_INVALID.getCompletionStatus(),
+                                                 Collections.singletonList(SurveyActionGuard.SURVEY_INVALID.getName()),
+                                                 null,
+                                                 null,
+                                                 SAFAuditCode.INVALID_ROOT_SCHEMA_TYPE.getMessageDefinition(assetUniverse.getGUID(),
+                                                                                                            assetUniverse.getType().getTypeName(),
+                                                                                                            surveyActionServiceName,
+                                                                                                            schemaTypeName));
+
+            super.throwWrongTypeOfRootSchema(assetUniverse.getGUID(),
+                                             rootSchemaType.getType().getTypeName(),
+                                             schemaTypeName,
+                                             surveyActionServiceName,
+                                             methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Record that an asset does not have a schema.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @throws ConnectorCheckedException  problem with the connector
+     * @throws InvalidParameterException  invalid property
+     * @throws PropertyServerException    problem with repositories
+     * @throws UserNotAuthorizedException security problem
+     */
+    protected void throwMissingSchemaType(String assetGUID) throws ConnectorCheckedException,
+                                                                   InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "throwMissingSchemaType";
+
+        surveyContext.recordCompletionStatus(SurveyActionGuard.SURVEY_INVALID.getCompletionStatus(),
+                                             Collections.singletonList(SurveyActionGuard.SURVEY_INVALID.getName()),
+                                             null,
+                                             null,
+                                             SAFAuditCode.NO_SCHEMA.getMessageDefinition(surveyActionServiceName, assetGUID));
+
+        throw new ConnectorCheckedException(SAFErrorCode.NO_SCHEMA.getMessageDefinition(surveyActionServiceName, assetGUID),
+                                            this.getClass().getName(),
+                                            methodName);
     }
 
 
@@ -272,7 +392,7 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * @param annotation     output annotation
      * @param annotationType annotation type definition
      */
-    protected void setUpAnnotation(Annotation annotation,
+    protected void setUpAnnotation(Annotation     annotation,
                                    AnnotationType annotationType)
     {
         annotation.setAnnotationType(annotationType.getName());
@@ -748,79 +868,6 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
         }
 
         return assetGUID;
-    }
-
-
-    /**
-     * Log that the survey action service can not process the type of asset it has been passed.
-     *
-     * @param assetGUID identifier of the asset
-     * @param assetType type of the asset
-     * @param supportedAssetType supported asset types
-     * @param methodName calling method
-     * @throws ConnectorCheckedException resulting exception
-     */
-    protected void throwWrongTypeOfAsset(String    assetGUID,
-                                         String    assetType,
-                                         String    supportedAssetType,
-                                         String    methodName) throws ConnectorCheckedException
-    {
-        throw new ConnectorCheckedException(SAFErrorCode.INVALID_ASSET_TYPE.getMessageDefinition(assetGUID,
-                                                                                                 assetType,
-                                                                                                 surveyActionServiceName,
-                                                                                                 supportedAssetType),
-                                            this.getClass().getName(),
-                                            methodName);
-    }
-
-
-    /**
-     * Log audit message and throw exception to indicate that the asset's connector is wrong.
-     *
-     * @param actualConnectorClass class name of the supplied connector
-     * @param expectedConnectorClass class name expected for the connector
-     * @param assetGUID unique identifier for the asset
-     * @param methodName calling method
-     * @throws ConnectorCheckedException requested exception
-     */
-    public void throwWrongTypeOfConnector(String actualConnectorClass,
-                                          String expectedConnectorClass,
-                                          String assetGUID,
-                                          String methodName) throws ConnectorCheckedException
-    {
-        auditLog.logMessage(methodName,
-                            SAFAuditCode.WRONG_TYPE_OF_CONNECTOR.getMessageDefinition(surveyActionServiceName,
-                                                                                      actualConnectorClass,
-                                                                                      expectedConnectorClass,
-                                                                                      assetGUID));
-
-        throw new ConnectorCheckedException(SAFErrorCode.WRONG_TYPE_OF_CONNECTOR.getMessageDefinition(surveyActionServiceName,
-                                                                                                      actualConnectorClass,
-                                                                                                      expectedConnectorClass,
-                                                                                                      assetGUID),
-                                            this.getClass().getName(),
-                                            methodName);
-    }
-
-
-    /**
-     * Log audit message and throw exception to indicate that the asset's connector is wrong.
-     *
-     * @param actualConnectorClass class name of the supplied connector
-     * @param expectedConnectorClass class name expected for the connector
-     * @param assetGUID unique identifier for the asset
-     * @param methodName calling method
-     */
-    public void logWrongTypeOfConnector(String actualConnectorClass,
-                                        String expectedConnectorClass,
-                                        String assetGUID,
-                                        String methodName)
-    {
-        auditLog.logMessage(methodName,
-                            SAFAuditCode.WRONG_TYPE_OF_CONNECTOR.getMessageDefinition(surveyActionServiceName,
-                                                                                      actualConnectorClass,
-                                                                                      expectedConnectorClass,
-                                                                                      assetGUID));
     }
 
 

@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
@@ -484,9 +484,9 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                                              OpenMetadataProperty.DESCRIPTION.name,
                                                              functionInfo.getComment());
 
-        elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                functionInfo.getProperties());
+        //elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+        //                                                        OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+        //                                                        functionInfo.getProperties());
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,

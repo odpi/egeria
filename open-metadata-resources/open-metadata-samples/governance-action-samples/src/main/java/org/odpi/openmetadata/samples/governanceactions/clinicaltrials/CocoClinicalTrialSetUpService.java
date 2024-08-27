@@ -48,7 +48,8 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
         String genericHospitalCertificationGUID = null;
         String genericSetUpDataLakeGUID         = null;
         String genericHospitalOnboardingGUID    = null;
-        String certificationTypeGUID            = null;
+        String hospitalCertificationTypeGUID    = null;
+        String dataQualityCertificationTypeGUID = null;
         String clinicalTrialProjectGUID         = null;
         String clinicalTrialId                  = null;
         String clinicalTrialName                = null;
@@ -89,7 +90,11 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                         }
                         else if (CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName().equals(actionTargetElement.getActionTargetName()))
                         {
-                            certificationTypeGUID = actionTargetElement.getTargetElement().getElementGUID();
+                            hospitalCertificationTypeGUID = actionTargetElement.getTargetElement().getElementGUID();
+                        }
+                        else if (CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName().equals(actionTargetElement.getActionTargetName()))
+                        {
+                            dataQualityCertificationTypeGUID = actionTargetElement.getTargetElement().getElementGUID();
                         }
                         else if (CocoClinicalTrialActionTarget.GENERIC_SET_UP_DATA_LAKE_GAT.getName().equals(actionTargetElement.getActionTargetName()))
                         {
@@ -154,7 +159,8 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                     clinicalTrialName == null || clinicalTrialName.isBlank() ||
                     lastUpdateConnectorGUID == null ||
                     landingAreaConnectorGUID == null ||
-                    certificationTypeGUID == null ||
+                    hospitalCertificationTypeGUID == null ||
+                    dataQualityCertificationTypeGUID == null ||
                     genericHospitalNominationGUID == null ||
                     genericHospitalCertificationGUID == null ||
                     genericSetUpDataLakeGUID == null ||
@@ -212,10 +218,15 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                     messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
                                                                                                             CocoClinicalTrialActionTarget.GENERIC_HOSPITAL_ONBOARDING_GAT.getName());
                 }
-                else if (certificationTypeGUID == null)
+                else if (hospitalCertificationTypeGUID == null)
                 {
                     messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
                                                                                                             CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName());
+                }
+                else if (dataQualityCertificationTypeGUID == null)
+                {
+                    messageDefinition = GovernanceActionSamplesAuditCode.MISSING_VALUE.getMessageDefinition(governanceServiceName,
+                                                                                                            CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName());
                 }
                 else if (genericOnboardingPipelineGUID == null)
                 {
@@ -258,7 +269,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
             }
             else
             {
-                setUpCertificationType(clinicalTrialProjectGUID, certificationTypeGUID);
+                setUpCertificationType(clinicalTrialProjectGUID, hospitalCertificationTypeGUID);
 
 
                 String nominateHospitalGUID = this.createProcessFromGovernanceActionType("ClinicalTrials:" + clinicalTrialId + ":nominate-hospital",
@@ -270,7 +281,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(nominateHospitalGUID, CocoClinicalTrialActionTarget.PROJECT.getName(), clinicalTrialProjectGUID);
                 addActionTargetToProcess(nominateHospitalGUID, CocoClinicalTrialActionTarget.CUSTODIAN.getName(), custodianGUID);
                 addActionTargetToProcess(nominateHospitalGUID, CocoClinicalTrialActionTarget.PROCESS_OWNER.getName(), processOwnerGUID);
-                addActionTargetToProcess(nominateHospitalGUID, CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName(), certificationTypeGUID);
+                addActionTargetToProcess(nominateHospitalGUID, CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName(), hospitalCertificationTypeGUID);
 
                 String certifyHospitalGUID = this.createProcessFromGovernanceActionType("ClinicalTrials:" + clinicalTrialId + ":certify-hospital",
                                                                                         "Certify Hospital",
@@ -279,7 +290,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                         governanceContext.getRequestParameters());
 
                 addActionTargetToProcess(certifyHospitalGUID, CocoClinicalTrialActionTarget.PROJECT.getName(), clinicalTrialProjectGUID);
-                addActionTargetToProcess(certifyHospitalGUID, CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName(), certificationTypeGUID);
+                addActionTargetToProcess(certifyHospitalGUID, CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName(), hospitalCertificationTypeGUID);
                 addActionTargetToProcess(certifyHospitalGUID, CocoClinicalTrialActionTarget.CUSTODIAN.getName(), custodianGUID);
 
 
@@ -290,7 +301,8 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                         governanceContext.getRequestParameters());
 
                 addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.PROJECT.getName(), clinicalTrialProjectGUID);
-                addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName(), certificationTypeGUID);
+                addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName(), hospitalCertificationTypeGUID);
+                addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName(), dataQualityCertificationTypeGUID);
                 addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.LANDING_AREA_CONNECTOR.getName(), landingAreaConnectorGUID);
                 addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.GENERIC_ONBOARDING_PIPELINE.getName(), genericOnboardingPipelineGUID);
                 addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.STEWARD.getName(), stewardGUID);

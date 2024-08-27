@@ -48,7 +48,7 @@ public interface ElementBase
      *
      * @return property string map
      */
-    Map<String, String> getProperties();
+    //Map<String, String> getProperties();
 
 
     /**
@@ -56,7 +56,7 @@ public interface ElementBase
      *
      * @param properties property string map
      */
-    void setProperties(Map<String, String> properties);
+    //void setProperties(Map<String, String> properties);
 
 
     /**

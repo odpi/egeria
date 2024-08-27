@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers;
 
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformConfigurationProperty;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
@@ -67,9 +68,7 @@ public class MetadataAccessServerProvider extends ConnectorProviderBase
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(DeployedImplementationType.METADATA_ACCESS_SERVER.getAssociatedTypeName());
         connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.METADATA_ACCESS_SERVER.getDeployedImplementationType());
-        List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add("serverName");
-        connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
+        connectorType.setRecognizedConfigurationProperties(OMAGServerPlatformConfigurationProperty.getRecognizedConfigurationProperties());
         super.connectorTypeBean = connectorType;
 
         /*
@@ -84,5 +83,7 @@ public class MetadataAccessServerProvider extends ConnectorProviderBase
         componentDescription.setComponentWikiURL(connectorWikiPage);
 
         super.setConnectorComponentDescription(componentDescription);
+
+        super.supportedConfigurationProperties = OMAGServerPlatformConfigurationProperty.getConfigurationPropertyTypes();
     }
 }

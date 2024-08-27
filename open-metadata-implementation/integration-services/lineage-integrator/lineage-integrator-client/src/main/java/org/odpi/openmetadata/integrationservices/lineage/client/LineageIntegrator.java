@@ -126,6 +126,7 @@ public class LineageIntegrator implements LineageIntegratorAPI
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException there is a problem processing the request
      */
+    @Override
     public ConnectorReport validateConnector(String userId,
                                              String connectorProviderClassName) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
@@ -160,10 +161,43 @@ public class LineageIntegrator implements LineageIntegratorAPI
      * @throws UserNotAuthorizedException the caller is not authorized to call the service
      * @throws PropertyServerException there is a problem processing the request
      */
+    @Override
     public void publishOpenLineageEvent(String               userId,
                                         OpenLineage.RunEvent event) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
+    {
+        final String methodName = "publishOpenLineageEvent";
+        final String eventParameter = "event";
+        final String urlTemplate = "/servers/{0}/open-metadata/integration-services/lineage-integrator/users/{1}/publish-lineage-warehouse-event";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(event, eventParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        event,
+                                        serverName,
+                                        userId);
+    }
+
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param userId calling user
+     * @param event open lineage event to publish.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException there is a problem processing the request
+     */
+    @Override
+    public void publishOpenLineageEvent(String userId,
+                                        String event) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
         final String methodName = "publishOpenLineageEvent";
         final String eventParameter = "event";

@@ -3,11 +3,13 @@
 package org.odpi.openmetadata.frameworks.governanceaction.search;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFRuntimeException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -2655,6 +2657,27 @@ public class PropertyHelper
 
         return null;
     }
+
+
+    public boolean isClassified(ElementHeader elementHeader,
+                                String        classificationName)
+    {
+        if (elementHeader== null || elementHeader.getClassifications() == null)
+        {
+            return false;
+        }
+
+        for (ElementClassification classification : elementHeader.getClassifications())
+        {
+            if ((classification != null) && (classificationName.equals(classification.getClassificationName())))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 
     /**

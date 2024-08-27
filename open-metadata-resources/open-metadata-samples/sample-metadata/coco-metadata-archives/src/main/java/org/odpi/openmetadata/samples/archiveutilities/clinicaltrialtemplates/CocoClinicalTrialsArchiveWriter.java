@@ -6,7 +6,7 @@ package org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.archiveutilities.openconnectors.CoreContentArchiveWriter;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -275,6 +275,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
 
         String dataProcessingPurposeGUID = archiveHelper.getGUID(DataProcessingPurposeDefinition.CLINICAL_TRIAL_VALIDATION.getQualifiedName());
 
+        archiveHelper.addApprovedPurpose(assetGUID, dataProcessingPurposeGUID);
 
         String topLevelSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(assetGUID,
                                                                             FileType.CSV_FILE.getAssetSubTypeName(),

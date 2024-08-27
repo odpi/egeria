@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 
 import java.util.ArrayList;
 import java.util.List;

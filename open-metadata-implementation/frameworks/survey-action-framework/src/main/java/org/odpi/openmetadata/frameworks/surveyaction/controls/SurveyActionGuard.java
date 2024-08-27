@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.frameworks.surveyaction.controls;
 
-import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 
@@ -17,8 +16,13 @@ import java.util.List;
 public enum SurveyActionGuard
 {
     SURVEY_COMPLETED("survey-completed", CompletionStatus.ACTIONED,  "The survey completed successfully.  The survey report is attached to the asset."),
-    SURVEY_FAILED(  "survey-failed", CompletionStatus.FAILED, "An unexpected error occurred during the survey process.  The survey report is incomplete.");
+    SURVEY_INVALID("survey-invalid", CompletionStatus.INVALID,  "The survey did not run because the supplied information (such as the asset) is invalid for this type of survey."),
+    SURVEY_FAILED(  "survey-failed", CompletionStatus.FAILED, "An unexpected error occurred during the survey process.  The survey report is incomplete."),
 
+    DATA_CERTIFIED("data-certified", CompletionStatus.ACTIONED,  "All of the quality checks on the data succeeded.  The data has been certified."),
+    DATA_NOT_CERTIFIED("data-not-certified", CompletionStatus.ACTIONED,  "One or more of the quality checks on the data failed.  The data has not been certified and a request for action has been raised."),
+    MISSING_CERTIFICATION_TYPE("missing-certification-type", CompletionStatus.INVALID, "The certification type is not supplied in the action targets.  This means the survey is not able to certify the data if it is correct."),
+    MISSING_SCHEMA_TYPE("missing-schema-type", CompletionStatus.INVALID, "The surveyed asset does not have a schema type attached.  This means the survey is not able to certify that the data is stored in the correct structure."),
     ;
 
 
@@ -74,25 +78,42 @@ public enum SurveyActionGuard
         return description;
     }
 
+
     /**
-     * Return details of all defined guards.
+     * Return details of the guards used on a simple survey.  These guards are set automatically if the survey does not
+     * set a guard itself.
      *
      * @return guard types
      */
-    public static List<GuardType> getGuardTypes()
+    public static List<GuardType> getSimpleSurveyGuardTypes()
     {
         List<GuardType> guardTypes = new ArrayList<>();
 
-        for (SurveyActionGuard guard : SurveyActionGuard.values())
-        {
-            GuardType guardType = new GuardType();
+        guardTypes.add(SURVEY_COMPLETED.getGuardType());
+        guardTypes.add(SURVEY_INVALID.getGuardType());
+        guardTypes.add(SURVEY_FAILED.getGuardType());
 
-            guardType.setGuard(guard.getName());
-            guardType.setDescription(guard.getDescription());
-            guardType.setCompletionStatus(guard.getCompletionStatus());
+        return guardTypes;
+    }
 
-            guardTypes.add(guardType);
-        }
+
+
+    /**
+     * Return details of the guards used on a survey that is validating the structure and content of data.
+     * Each check produces a Qualify Annotation.  If all checks pass, the certification is added to the asset.
+     * If any checks fail, a request for action is created for the asset, linking the failing quality annotations.
+     *
+     * @return guard types
+     */
+    public static List<GuardType> getDataValidationSurveyGuardTypes()
+    {
+        List<GuardType> guardTypes = new ArrayList<>();
+
+        guardTypes.add(DATA_CERTIFIED.getGuardType());
+        guardTypes.add(DATA_NOT_CERTIFIED.getGuardType());
+        guardTypes.add(MISSING_CERTIFICATION_TYPE.getGuardType());
+        guardTypes.add(MISSING_SCHEMA_TYPE.getGuardType());
+        guardTypes.add(SURVEY_FAILED.getGuardType());
 
         return guardTypes;
     }

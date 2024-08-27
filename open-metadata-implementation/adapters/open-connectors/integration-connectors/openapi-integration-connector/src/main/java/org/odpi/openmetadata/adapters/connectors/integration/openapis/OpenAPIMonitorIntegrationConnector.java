@@ -76,7 +76,7 @@ public class OpenAPIMonitorIntegrationConnector extends APIIntegratorConnector i
 
         if (configurationProperties != null)
         {
-            templateQualifiedName = configurationProperties.get(OpenAPIMonitorIntegrationProvider.TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
+            templateQualifiedName = super.getStringConfigurationProperty(OpenAPIMonitorIntegrationProvider.TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY, configurationProperties);
         }
 
         try

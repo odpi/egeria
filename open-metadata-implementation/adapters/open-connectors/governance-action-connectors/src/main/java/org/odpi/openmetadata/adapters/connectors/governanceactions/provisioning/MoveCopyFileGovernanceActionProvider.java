@@ -22,7 +22,8 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
     private static final String  connectorTypeGUID          = "e2a14ca8-57b1-48d7-9cc4-d0b44983ca79";
     private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Provisioning:MoveCopyDeleteFile";
     private static final String  connectorTypeDisplayName   = "Move, Copy or Delete File Governance Action Service";
-    private static final String  connectorTypeDescription   = "Provisioning Governance Action Service that moves, copies or deletes files on request.";
+    private static final String  connectorTypeDescription   = "Works with files.  The request type defines which action is taken.  " +
+        "The request parameters define the source file and destination folder, along with lineage options";
 
     static final String DEFAULT_TOP_LEVEL_PROCESS_NAME_PROPERTY = "Egeria:MoveCopyDeleteFileGovernanceActionService";
 

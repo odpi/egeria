@@ -2,6 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.integration.context;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+
 /**
  * IntegrationContextRefreshProxy is used to provide a protected mechanism for the integration daemon to set
  * isRefreshInProcess.
@@ -26,9 +30,23 @@ public class IntegrationContextRefreshProxy
      * Set up whether the refresh is in progress or not.
      *
      * @param refreshInProgress boolean flag
+     * @throws InvalidParameterException an invalid property has been passed
+     * @throws UserNotAuthorizedException the user is not authorized
+     * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
      */
-    public void setRefreshInProgress(boolean refreshInProgress)
+    public void setRefreshInProgress(boolean refreshInProgress) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
     {
-        this.integrationContext.setRefreshInProgress(refreshInProgress);
+        if (refreshInProgress)
+        {
+            this.integrationContext.startRecording();
+            this.integrationContext.setRefreshInProgress(true);
+        }
+        else
+        {
+            this.integrationContext.setRefreshInProgress(false);
+            this.integrationContext.publishReport();
+        }
     }
 }

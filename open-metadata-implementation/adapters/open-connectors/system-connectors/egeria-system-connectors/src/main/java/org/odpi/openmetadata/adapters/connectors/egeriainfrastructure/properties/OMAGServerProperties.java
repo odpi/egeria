@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.serveroperations.properties.OMAGServerInstanceHistory;
 import org.odpi.openmetadata.serveroperations.properties.OMAGServerServiceStatus;

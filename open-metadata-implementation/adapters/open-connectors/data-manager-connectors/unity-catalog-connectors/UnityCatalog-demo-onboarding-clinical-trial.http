@@ -63,6 +63,19 @@ Content-Type: application/json
   "engineUserId": "generalnpa"
 }
 
+
+###
+# Add the AssetQuality at CocoPharmaceuticals engine to engine-host
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/engine
+Content-Type: application/json
+
+{
+  "class": "EngineConfig",
+  "engineId": "76257f18-293f-4e7c-b79f-8b7e5fa44552",
+  "engineQualifiedName": "AssetQuality@CocoPharmaceuticals",
+  "engineUserId": "generalnpa"
+}
+
 ###
 # Restart the engine-host  server on the OMAG Server Platform.
 POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/engine-host/instance
@@ -71,6 +84,29 @@ POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-pl
 ###
 # =====================================================================================================================
 # Set up UC cataloguing
+
+
+
+
+###
+# @name initiate catalog-unity-catalog-server
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "InitiateGovernanceActionTypeRequestBody",
+  "governanceActionTypeQualifiedName": "UnityCatalogGovernanceServices:catalog-unity-catalog-server",
+  "requestParameters" : {
+    "hostURL" : "http://localhost",
+    "portNumber" : "8080",
+    "serverName" : "Unity Catalog 1",
+    "versionIdentifier" : "V1.0",
+    "description" : "First instance of the Unity Catalog (UC) Server.",
+    "serverUserId" : "uc1"
+  }
+}
 
 
 ###
@@ -285,43 +321,8 @@ Content-Type: application/json
     },
     {
       "class" : "NewActionTarget",
-      "actionTargetName": "hospitalCertificationType",
-      "actionTargetGUID": "88c8200e-8b64-4720-a707-3d31437bc011"
-    },
-    {
-      "class" : "NewActionTarget",
       "actionTargetName": "onboardingPipeline",
-      "actionTargetGUID": "508d3878-8eae-47e5-8507-ee936f33b418"
-    },
-    {
-      "class" : "NewActionTarget",
-      "actionTargetName": "setUpDataLakeGovernanceActionType",
-      "actionTargetGUID": "4c33571b-043b-4fba-9b4f-ada7cd8910d3"
-    },
-    {
-      "class" : "NewActionTarget",
-      "actionTargetName": "hospitalNominationGovernanceActionType",
-      "actionTargetGUID": "25f1f005-d051-4f78-a56a-7b94eda114aa"
-    },
-    {
-      "class" : "NewActionTarget",
-      "actionTargetName": "hospitalCertificationGovernanceActionType",
-      "actionTargetGUID": "12746ea1-750b-43ef-b6d8-74c145c0d18c"
-    },
-    {
-      "class" : "NewActionTarget",
-      "actionTargetName": "hospitalOnboardingGovernanceActionType",
-      "actionTargetGUID": "7d12e715-53c6-4c33-bc05-7db9156056c8"
-    },
-    {
-      "class" : "NewActionTarget",
-      "actionTargetName": "lastUpdateConnector",
-      "actionTargetGUID": "fd26f07c-ae44-4bc5-b457-37b43112224f"
-    },
-    {
-      "class" : "NewActionTarget",
-      "actionTargetName": "landingAreaConnector",
-      "actionTargetGUID": "1b98cdac-dd0a-4621-93db-99ef5a1098bc"
+      "actionTargetGUID": "58050a15-745a-4727-8257-074c19b02796"
     }],
     "requestParameters" : {
        "dataLakeVolumeTemplateGUID" : "{{ucVolumeTemplateGUID}}",
@@ -382,7 +383,7 @@ Content-Type: application/json
     {
       "class" : "NewActionTarget",
       "actionTargetName": "dataLakeCatalog",
-      "actionTargetGUID": "0d83746c-5479-4339-bae1-0335393d8a36"
+      "actionTargetGUID": "c861d5e8-1cda-4063-9c89-d79e0e505d05"
     }],
     "requestParameters" : {
        "dataLakeSchemaName" : "teddy_bear_drop_foot",
@@ -425,7 +426,7 @@ Content-Type: application/json
 # Coco Data Lake.
 
 @newFileProcessName=Coco:GovernanceActionProcess:ClinicalTrials:WeeklyMeasurements:Onboarding
-@newFileProcessGUID=508d3878-8eae-47e5-8507-ee936f33b418
+@newFileProcessGUID=58050a15-745a-4727-8257-074c19b02796
 
 
 ###

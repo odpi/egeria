@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.sync;
 
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogTemplateType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -15,13 +16,14 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * OSSUnityCatalogServerSyncConnector synchronizes metadata between Unity Catalog and the Open Metadata Ecosystem.
  */
-public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnector implements CatalogTargetIntegrator
+public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnector implements CatalogTargetIntegrator
 {
     String       defaultFriendshipGUID  = null;
     List<String> defaultExcludeCatalogs = new ArrayList<>();
@@ -60,6 +62,30 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
 
 
     /**
+     * Merge the templates supplied on the catalog target relationship with the default templates.
+     *
+     * @param catalogTargetTemplates supplied templates
+     * @return template properties
+     */
+    private Map<String, String> getTemplates(Map<String, String> catalogTargetTemplates)
+    {
+        Map<String, String> templateProperties = new HashMap<>();
+
+        for (UnityCatalogTemplateType templateType : UnityCatalogTemplateType.values())
+        {
+            templateProperties.put(templateType.getTemplateName(), templateType.getDefaultTemplateGUID());
+        }
+
+        if (catalogTargetTemplates != null)
+        {
+            templateProperties.putAll(catalogTargetTemplates);
+        }
+
+        return templateProperties;
+    }
+
+
+    /**
      * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
@@ -87,7 +113,7 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
                         catalogCatalogs(null,
                                         "endpoint",
                                         this.getContext().getPermittedSynchronization(),
-                                        null,
+                                        this.getTemplates(null),
                                         connectionProperties.getConfigurationProperties(),
                                         unityCatalogResourceConnector);
                     }
@@ -145,7 +171,7 @@ public class OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConnect
                 catalogCatalogs(ucServerGUID,
                                 requestedCatalogTarget.getCatalogTargetName(),
                                 permittedSynchronization,
-                                requestedCatalogTarget.getTemplateProperties(),
+                                this.getTemplates(requestedCatalogTarget.getTemplateProperties()),
                                 requestedCatalogTarget.getConfigurationProperties(),
                                 assetConnector);
 

@@ -596,7 +596,7 @@ public class IntegrationContext
      * normally needed by the integration connector since it is called by the
      * connector handler just before refresh.  It is also called by publish report.
      */
-    public void startRecording()
+    void startRecording()
     {
         if (integrationReportWriter != null)
         {
@@ -711,9 +711,9 @@ public class IntegrationContext
      * @throws UserNotAuthorizedException the user is not authorized
      * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
      */
-    public void publishReport() throws InvalidParameterException,
-                                       UserNotAuthorizedException,
-                                       PropertyServerException
+    void publishReport() throws InvalidParameterException,
+                                UserNotAuthorizedException,
+                                PropertyServerException
     {
         if (integrationReportWriter != null)
         {

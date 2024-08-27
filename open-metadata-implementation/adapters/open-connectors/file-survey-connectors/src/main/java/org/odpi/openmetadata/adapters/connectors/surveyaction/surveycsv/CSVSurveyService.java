@@ -211,12 +211,11 @@ public class CSVSurveyService extends SurveyActionServiceConnector
              */
             annotationStore.setAnalysisStep(AnalysisStep.SCHEMA_EXTRACTION.getName());
 
-            SchemaType rootSchemaType = assetUniverse.getRootSchemaType();
-
             String           schemaTypeGUID;
             SchemaAttributes schemaAttributes;
+            NestedSchemaType nestedSchemaType = super.getNestedSchemaType(assetUniverse, schemaType);
 
-            if (rootSchemaType == null)
+            if (nestedSchemaType == null)
             {
                 /*
                  * Set up a new schema type.
@@ -224,44 +223,11 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                 schemaTypeGUID   = createSchemaType(openMetadataStore, assetUniverse);
                 schemaAttributes = null;
             }
-            else if (rootSchemaType instanceof NestedSchemaType nestedSchemaType)
-            {
-                /*
-                 * There is a root schema type already.
-                 * Check the type of the root schema is tabular and, assuming it is ok, extract its details.
-                 */
-                if (propertyHelper.isTypeOf(nestedSchemaType, schemaType))
-                {
-                    schemaTypeGUID   = nestedSchemaType.getGUID();
-                    schemaAttributes = nestedSchemaType.getSchemaAttributes();
-                }
-                else
-                {
-                    assetStore.logAssetAuditMessage(surveyActionServiceName, "Invalid type of nested root schema: " + rootSchemaType.getClass().getName());
-
-                    super.throwWrongTypeOfRootSchema(assetUniverse.getGUID(),
-                                                     nestedSchemaType.getType().getTypeName(),
-                                                     schemaType,
-                                                     surveyActionServiceName,
-                                                     methodName);
-                    return;
-                }
-            }
             else
             {
-                /*
-                 * Throw an exception the schema type is completely wrong.
-                 */
-                assetStore.logAssetAuditMessage(surveyActionServiceName, "Invalid type of root schema: " + rootSchemaType.getClass().getName());
-
-                super.throwWrongTypeOfRootSchema(assetUniverse.getGUID(),
-                                                 rootSchemaType.getType().getTypeName(),
-                                                 schemaType,
-                                                 surveyActionServiceName,
-                                                 methodName);
-                return;
+                schemaTypeGUID   = nestedSchemaType.getGUID();
+                schemaAttributes = nestedSchemaType.getSchemaAttributes();
             }
-
 
             List<String>             columnNames     = assetConnector.getColumnNames();
 

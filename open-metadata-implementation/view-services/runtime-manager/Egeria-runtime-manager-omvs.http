@@ -12,7 +12,7 @@ POST {{baseURL}}/api/token
 Content-Type: application/json
 
 {
-  "userId" : "peterprofile",
+  "userId" : "garygeeke",
   "password" : "secret"
 }
 

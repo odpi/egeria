@@ -25,12 +25,19 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.client.EngineH
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.client.IntegrationDaemon;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationDaemonStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
+import org.odpi.openmetadata.integrationservices.lineage.client.LineageIntegrator;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogReport;
+import org.odpi.openmetadata.repositoryservices.clients.AuditLogServicesClient;
 import org.odpi.openmetadata.repositoryservices.clients.MetadataHighwayServicesClient;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.properties.CohortConnectionStatus;
 import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
+import org.odpi.openmetadata.repositoryservices.rest.properties.BooleanResponse;
+import org.odpi.openmetadata.repositoryservices.rest.properties.CohortMembershipListResponse;
 import org.odpi.openmetadata.serveroperations.client.ServerOperationsClient;
 import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerStatus;
@@ -52,7 +59,9 @@ public class EgeriaExtractor
     private final OMAGServerPlatformConfigurationClient platformConfigurationClient;
     private final ConfigurationManagementClient         configurationManagementClient;
     private final IntegrationDaemon                     integrationDaemonClient;
+    private final LineageIntegrator                     openLineageClient;
     private final EngineHostClient                      engineHostClient;
+    private final AuditLogServicesClient                auditLogServicesClient;
     private final MetadataHighwayServicesClient         metadataHighwayServicesClient;
     private final ServerOperationsClient                serverOperationsClient;
 
@@ -87,14 +96,18 @@ public class EgeriaExtractor
         if (serverOfInterest != null)
         {
             integrationDaemonClient = new IntegrationDaemon(serverOfInterest, platformURLRoot);
+            openLineageClient = new LineageIntegrator(serverOfInterest, platformURLRoot);
             engineHostClient = new EngineHostClient(platformURLRoot, serverOfInterest);
             metadataHighwayServicesClient = new MetadataHighwayServicesClient(serverOfInterest, platformURLRoot);
+            auditLogServicesClient = new AuditLogServicesClient(serverOfInterest, platformURLRoot);
         }
         else
         {
             integrationDaemonClient = null;
+            openLineageClient = null;
             engineHostClient = null;
             metadataHighwayServicesClient = null;
+            auditLogServicesClient = null;
         }
     }
 
@@ -313,8 +326,6 @@ public class EgeriaExtractor
     }
 
 
-
-
     /**
      * Temporarily deactivate any open metadata and governance services.
      *
@@ -393,6 +404,121 @@ public class EgeriaExtractor
                                                          PropertyServerException
     {
         platformServicesClient.shutdownAndUnregisterAllServers(clientUserId);
+    }
+
+
+
+    /**
+     * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+     * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+     * event has been sent.
+     * If the server has already registered in the past, it sends a reregistration request.
+     *
+     * @param userId calling user
+     * @param cohortName name of cohort
+     *
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     *
+     * @throws InvalidParameterException one of the supplied parameters caused a problem
+     * @throws PropertyServerException there is a problem communicating with the remote server.
+     * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
+     */
+    public boolean connectToCohort(String userId,
+                                   String cohortName) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException
+    {
+        assert (metadataHighwayServicesClient != null);
+
+        try
+        {
+            return metadataHighwayServicesClient.connectToCohort(userId, cohortName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException error)
+        {
+            throw new InvalidParameterException(error, cohortName);
+        }
+        catch (RepositoryErrorException error)
+        {
+            throw new PropertyServerException(error);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            throw new UserNotAuthorizedException(error, userId);
+        }
+    }
+
+
+
+    /**
+     * Disconnect communications from a specific cohort.
+     *
+     * @param userId calling user
+     * @param cohortName name of cohort
+     * @return boolean flag to indicate success.
+     * @throws InvalidParameterException one of the supplied parameters caused a problem
+     * @throws PropertyServerException there is a problem communicating with the remote server.
+     * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
+     */
+    public boolean disconnectFromCohort(String userId,
+                                        String cohortName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        assert (metadataHighwayServicesClient != null);
+
+        try
+        {
+            return metadataHighwayServicesClient.disconnectFromCohort(userId, cohortName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException error)
+        {
+            throw new InvalidParameterException(error, cohortName);
+        }
+        catch (RepositoryErrorException error)
+        {
+            throw new PropertyServerException(error);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            throw new UserNotAuthorizedException(error, userId);
+        }
+    }
+
+
+    /**
+     * Unregister from a specific cohort and disconnect from cohort communications.
+     *
+     * @param userId calling user
+     * @param cohortName name of cohort
+     * @return boolean flag to indicate success.
+     * @throws InvalidParameterException one of the supplied parameters caused a problem
+     * @throws PropertyServerException there is a problem communicating with the remote server.
+     * @throws UserNotAuthorizedException the user is not authorized to perform the operation requested
+     */
+    public boolean unregisterFromCohort(String userId,
+                                        String cohortName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        assert (metadataHighwayServicesClient != null);
+
+        try
+        {
+            return metadataHighwayServicesClient.unregisterFromCohort(userId, cohortName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException error)
+        {
+            throw new InvalidParameterException(error, cohortName);
+        }
+        catch (RepositoryErrorException error)
+        {
+            throw new PropertyServerException(error);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            throw new UserNotAuthorizedException(error, userId);
+        }
     }
 
 
@@ -561,6 +687,8 @@ public class EgeriaExtractor
 
         return null;
     }
+
+
 
 
     /**
@@ -749,10 +877,14 @@ public class EgeriaExtractor
     {
         currentDetails.setServerName(serverName);
         currentDetails.setServerType(serverTypeClassification.getServerTypeName());
-        currentDetails.setDescription(configuration.getLocalServerDescription());
 
         if (configuration != null)
         {
+            currentDetails.setDescription(configuration.getLocalServerDescription());
+            currentDetails.setOrganizationName(configuration.getOrganizationName());
+            currentDetails.setSecurityConnection(configuration.getServerSecurityConnection());
+            currentDetails.setServerId(configuration.getLocalServerId());
+
             if (configuration.getRepositoryServicesConfig() != null)
             {
                 currentDetails.setCohorts(this.getCohortConfigDetails(serverName, configuration.getRepositoryServicesConfig().getCohortConfigList()));
@@ -1096,7 +1228,6 @@ public class EgeriaExtractor
     }
 
 
-
     /**
      * Request that the integration group refresh its configuration by calling the metadata server.
      * This request is useful if the metadata server has an outage, particularly while the
@@ -1109,12 +1240,32 @@ public class EgeriaExtractor
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the integration group.
      */
-    public  void refreshConfig(String integrationGroupName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public  void refreshIntegrationGroupConfig(String integrationGroupName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         assert integrationDaemonClient != null;
         integrationDaemonClient.refreshConfig(clientUserId, integrationGroupName);
+    }
+
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param event open lineage event to publish.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UserNotAuthorizedException the caller is not authorized to call the service
+     * @throws PropertyServerException there is a problem processing the request
+     */
+    public void publishOpenLineageEvent(String event) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
+    {
+        assert openLineageClient != null;
+
+        openLineageClient.publishOpenLineageEvent(clientUserId, event);
     }
 
 

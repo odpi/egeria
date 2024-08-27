@@ -92,19 +92,20 @@ public class IntegrationConnectorRefreshThread implements Runnable
             {
                 try
                 {
-                    if (connectorHandler.getLastRefreshTime() == null)
+                    Date lastRefreshTime = connectorHandler.getLastRefreshTime();
+                    long minMinutedBetweenRefresh = connectorHandler.getMinMinutesBetweenRefresh();
+
+                    if (lastRefreshTime == null)
                     {
-                        connectorHandler.refreshConnector(actionDescription, true);
+                        connectorHandler.refreshConnector(actionDescription);
                     }
-                    else if (connectorHandler.getMinMinutesBetweenRefresh() > 0)
+                    else if (minMinutedBetweenRefresh > 0)
                     {
-                        long nextRefreshTime =
-                                connectorHandler.getLastRefreshTime().getTime() +
-                                        (connectorHandler.getMinMinutesBetweenRefresh() * 60000);
+                        long nextRefreshTime = lastRefreshTime.getTime() + (minMinutedBetweenRefresh * 60000);
 
                         if (nextRefreshTime < now.getTime())
                         {
-                            connectorHandler.refreshConnector(actionDescription, false);
+                            connectorHandler.refreshConnector(actionDescription);
                         }
                     }
                 }

@@ -226,7 +226,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
 
         catalogProperties.setName(name);
         catalogProperties.setComment(comment);
-        catalogProperties.setProperties(properties);
+        //catalogProperties.setProperties(properties);
 
         return callPostRESTCallNoParams(methodName,
                                         CatalogInfo.class,
@@ -381,7 +381,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         schemaProperties.setName(name);
         schemaProperties.setCatalog_name(catalogName);
         schemaProperties.setComment(comment);
-        schemaProperties.setProperties(properties);
+        //schemaProperties.setProperties(properties);
 
         return callPostRESTCallNoParams(methodName,
                                         SchemaInfo.class,
@@ -729,7 +729,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
         tableProperties.setData_source_format(dataSourceFormat);
         tableProperties.setColumns(columns);
         tableProperties.setStorage_location(storageLocation);
-        tableProperties.setProperties(properties);
+       // tableProperties.setProperties(properties);
 
         return createTable(tableProperties);
     }

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesErrorCode;
+import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineStatus;
 import org.odpi.openmetadata.governanceservers.enginehostservices.properties.GovernanceEngineSummary;
 import org.odpi.openmetadata.governanceservers.enginehostservices.threads.EngineConfigurationRefreshThread;
 
@@ -123,6 +124,16 @@ public class EngineHostInstance extends GovernanceServerServiceInstance
 
         if (handler == null)
         {
+            if (governanceEngineHandlers.getGovernanceEngineNames().contains(governanceEngineName))
+            {
+                GovernanceEngineSummary simpleSummary = new GovernanceEngineSummary();
+
+                simpleSummary.setGovernanceEngineName(governanceEngineName);
+                simpleSummary.setGovernanceEngineStatus(GovernanceEngineStatus.ASSIGNED);
+
+                return simpleSummary;
+            }
+
             throw new InvalidParameterException(EngineHostServicesErrorCode.UNKNOWN_ENGINE_NAME.getMessageDefinition(governanceEngineName, serverName),
                                                 this.getClass().getName(),
                                                 serviceOperationName,
