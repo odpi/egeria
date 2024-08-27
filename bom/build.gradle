@@ -38,11 +38,11 @@ ext {
     // Version 1.12.0 breaks XTDB because of a change in lucene's library names
     commonstextVersion = '1.11.0'
     commonscliVersion = '1.8.0'
-    elasticsearchVersion = '8.7.1'
+    elasticsearchVersion = '8.15.0'
     findbugsVersion = '3.0.2'
     glassfishVersion = '1.1.4'
     // TODO: Held back for compatability
-    gremlinVersion = '3.5.6'
+    gremlinVersion = '3.7.2'
     // TODO: Version 4 under new package name. 3.0.13 is held to be compat with gradle tests (fvt)
     groovyVersion = '3.0.15'
     guavaVersion = '33.2.1-jre'
@@ -55,7 +55,7 @@ ext {
     jakartaannotationVersion = '2.1.1'
     jakartapersistenceVersion = '3.2.0'
     jakartavalidationVersion = '3.1.0'
-    janusVersion = '0.6.4'
+    janusVersion = '1.1.0-20240820-131340.85dc06d'
     javassistVersion = '3.29.2-GA'
     jaxbVersion = '2.3.1'
     jenaVersion = '5.0.0'
