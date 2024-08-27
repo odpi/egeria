@@ -522,6 +522,7 @@ org.odpi.openmetadata.frameworks.integration.filelistener
 org.odpi.openmetadata.frameworks.integration.iterator
 org.odpi.openmetadata.frameworks.integration.properties
 org.odpi.openmetadata.frameworks.integration.reports
+org.odpi.openmetadata.frameworks.openmetadata.controls
 org.odpi.openmetadata.frameworks.openmetadata.enums
 org.odpi.openmetadata.frameworks.openmetadata.mapper
 org.odpi.openmetadata.frameworks.openmetadata.metadataelements

@@ -137,6 +137,14 @@ implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="
 <div class="col-last odd-row-color">
 <div class="block">SURVEY-ACTION-SERVICE-400-002 - No embedded survey action services supplied to the survey action pipeline {0}</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#NO_SCHEMA" class="member-name-link">NO_SCHEMA</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">SURVEY-ACTION-SERVICE-400-007 - The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NO_SCHEMA_ATTRIBUTES" class="member-name-link">NO_SCHEMA_ATTRIBUTES</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">SURVEY-ACTION-SERVICE-400-008 - The {0} Survey Acton Service has been supplied with asset {1} which does not have any schema attributes attached</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#NULL_SURVEY_CONTEXT" class="member-name-link">NULL_SURVEY_CONTEXT</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">SURVEY-ACTION-SERVICE-400-001 - No survey context supplied to the survey action service {0}</div>
@@ -146,7 +154,9 @@ implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="
 <div class="block">SURVEY-ACTION-SERVICE-500-001 - Unexpected exception in survey action service {0} of type {1} detected by method {2}.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#WRONG_TYPE_OF_CONNECTOR" class="member-name-link">WRONG_TYPE_OF_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">SURVEY-ACTION-SERVICE-400-006 - The {0} Survey Acton Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}</div>
+</div>
 </div>
 </section>
 </li>
@@ -246,6 +256,21 @@ the order they are declared.</div>
 <section class="detail" id="WRONG_TYPE_OF_CONNECTOR">
 <h3>WRONG_TYPE_OF_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.ffdc">SAFErrorCode</a></span>&nbsp;<span class="element-name">WRONG_TYPE_OF_CONNECTOR</span></div>
+<div class="block">SURVEY-ACTION-SERVICE-400-006 - The {0} Survey Acton Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NO_SCHEMA">
+<h3>NO_SCHEMA</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.ffdc">SAFErrorCode</a></span>&nbsp;<span class="element-name">NO_SCHEMA</span></div>
+<div class="block">SURVEY-ACTION-SERVICE-400-007 - The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NO_SCHEMA_ATTRIBUTES">
+<h3>NO_SCHEMA_ATTRIBUTES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SAFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.ffdc">SAFErrorCode</a></span>&nbsp;<span class="element-name">NO_SCHEMA_ATTRIBUTES</span></div>
+<div class="block">SURVEY-ACTION-SERVICE-400-008 - The {0} Survey Acton Service has been supplied with asset {1} which does not have any schema attributes attached</div>
 </section>
 </li>
 <li>

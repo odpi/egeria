@@ -113,7 +113,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageLogStoreConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.integration.openlineage.<a href="OpenLineageLogStoreConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageLogStoreConnectorBase</a></h3>
-<code><a href="OpenLineageLogStoreConnectorBase.html#destinationName">destinationName</a>, <a href="OpenLineageLogStoreConnectorBase.html#myContext">myContext</a></code></div>
+<code><a href="OpenLineageLogStoreConnectorBase.html#destinationAddresses">destinationAddresses</a>, <a href="OpenLineageLogStoreConnectorBase.html#distributorName">distributorName</a>, <a href="OpenLineageLogStoreConnectorBase.html#myContext">myContext</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorBase</a></h3>
 <code><a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#auditLog">auditLog</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#connectorName">connectorName</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#embeddedConnectors">embeddedConnectors</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#integrationContext">integrationContext</a>, <a href="../../../../frameworks/integration/connectors/IntegrationConnectorBase.html#propertyHelper">propertyHelper</a></code></div>
@@ -148,14 +148,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newDestinationIdentified(java.lang.String)" class="member-name-link">newDestinationIdentified</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logStoreDirectoryName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the name of the file store</div>
+<div class="block">Informs the subclasses that there is a new destination - in case they need to do special setup.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#storeEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String)" class="member-name-link">storeEvent</a><wbr>(<a href="../../../../integrationservices/lineage/properties/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.integrationservices.lineage.properties">OpenLineageRunEvent</a>&nbsp;openLineageEvent,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#storeEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String,java.lang.String)" class="member-name-link">storeEvent</a><wbr>(<a href="../../../../integrationservices/lineage/properties/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.integrationservices.lineage.properties">OpenLineageRunEvent</a>&nbsp;openLineageEvent,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logStoreDirectoryName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Store the open lineage event in the open lineage log store.</div>
 </div>
@@ -164,7 +165,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageLogStoreConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.integration.openlineage.<a href="OpenLineageLogStoreConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageLogStoreConnectorBase</a></h3>
-<code><a href="OpenLineageLogStoreConnectorBase.html#getDestinationName()">getDestinationName</a>, <a href="OpenLineageLogStoreConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a>, <a href="OpenLineageLogStoreConnectorBase.html#logNoRawEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String)">logNoRawEvent</a>, <a href="OpenLineageLogStoreConnectorBase.html#processOpenLineageRunEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String)">processOpenLineageRunEvent</a>, <a href="OpenLineageLogStoreConnectorBase.html#refresh()">refresh</a></code></div>
+<code><a href="OpenLineageLogStoreConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a>, <a href="OpenLineageLogStoreConnectorBase.html#logNoRawEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent)">logNoRawEvent</a>, <a href="OpenLineageLogStoreConnectorBase.html#processOpenLineageRunEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String)">processOpenLineageRunEvent</a>, <a href="OpenLineageLogStoreConnectorBase.html#refresh()">refresh</a>, <a href="OpenLineageLogStoreConnectorBase.html#start()">start</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector">Methods inherited from class&nbsp;org.odpi.openmetadata.integrationservices.lineage.connector.<a href="../../../../integrationservices/lineage/connector/LineageIntegratorConnector.html" title="class in org.odpi.openmetadata.integrationservices.lineage.connector">LineageIntegratorConnector</a></h3>
 <code><a href="../../../../integrationservices/lineage/connector/LineageIntegratorConnector.html#getContext()">getContext</a>, <a href="../../../../integrationservices/lineage/connector/LineageIntegratorConnector.html#setContext(org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext)">setContext</a></code></div>
@@ -207,38 +208,40 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="start()">
-<h3>start</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">start</span>()
-           throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Set up the name of the file store</div>
+<section class="detail" id="newDestinationIdentified(java.lang.String)">
+<h3>newDestinationIdentified</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">newDestinationIdentified</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logStoreDirectoryName)</span>
+                                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Informs the subclasses that there is a new destination - in case they need to do special setup.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html#start()">start</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code></dd>
-<dt>Overrides:</dt>
-<dd><code><a href="OpenLineageLogStoreConnectorBase.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageLogStoreConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageLogStoreConnectorBase</a></code></dd>
+<dd><code><a href="OpenLineageLogStoreConnectorBase.html#newDestinationIdentified(java.lang.String)">newDestinationIdentified</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageLogStoreConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageLogStoreConnectorBase</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>logStoreDirectoryName</code> - new destination</dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - something went wrong</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - new destination not valid</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="storeEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String)">
+<section class="detail" id="storeEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String,java.lang.String)">
 <h3>storeEvent</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">storeEvent</span><wbr><span class="parameters">(<a href="../../../../integrationservices/lineage/properties/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.integrationservices.lineage.properties">OpenLineageRunEvent</a>&nbsp;openLineageEvent,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;logStoreDirectoryName)</span>
                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Store the open lineage event in the open lineage log store.  If the raw event is null, a json version of the open lineage event is
  generated using the Egeria beans.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="OpenLineageLogStore.html#storeEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String)">storeEvent</a></code>&nbsp;in interface&nbsp;<code><a href="OpenLineageLogStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageLogStore</a></code></dd>
+<dd><code><a href="OpenLineageLogStore.html#storeEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String,java.lang.String)">storeEvent</a></code>&nbsp;in interface&nbsp;<code><a href="OpenLineageLogStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageLogStore</a></code></dd>
 <dt>Specified by:</dt>
-<dd><code><a href="OpenLineageLogStoreConnectorBase.html#storeEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String)">storeEvent</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageLogStoreConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageLogStoreConnectorBase</a></code></dd>
+<dd><code><a href="OpenLineageLogStoreConnectorBase.html#storeEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String,java.lang.String)">storeEvent</a></code>&nbsp;in class&nbsp;<code><a href="OpenLineageLogStoreConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageLogStoreConnectorBase</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>openLineageEvent</code> - event formatted using Egeria beans</dd>
 <dd><code>rawEvent</code> - event in Json form from the originator - may have facets that are not known to Egeria</dd>
+<dd><code>logStoreDirectoryName</code> - address to send the event to</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - indicates that the openLineageEvent parameter is invalid.</dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - indicates that the  log store is not available or has an error.</dd>

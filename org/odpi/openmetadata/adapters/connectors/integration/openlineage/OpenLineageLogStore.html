@@ -93,15 +93,11 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getDestinationName()" class="member-name-link">getDestinationName</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#storeEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String,java.lang.String)" class="member-name-link">storeEvent</a><wbr>(<a href="../../../../integrationservices/lineage/properties/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.integrationservices.lineage.properties">OpenLineageRunEvent</a>&nbsp;openLineageEvent,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;destinationAddress)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Return the name of this destination.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#storeEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String)" class="member-name-link">storeEvent</a><wbr>(<a href="../../../../integrationservices/lineage/properties/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.integrationservices.lineage.properties">OpenLineageRunEvent</a>&nbsp;openLineageEvent,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Store the open lineage event in the open lineage log store.</div>
 </div>
 </div>
@@ -119,21 +115,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getDestinationName()">
-<h3>getDestinationName</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDestinationName</span>()</div>
-<div class="block">Return the name of this destination.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string display name suitable for messages.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="storeEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String)">
+<section class="detail" id="storeEvent(org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent,java.lang.String,java.lang.String)">
 <h3>storeEvent</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">storeEvent</span><wbr><span class="parameters">(<a href="../../../../integrationservices/lineage/properties/OpenLineageRunEvent.html" title="class in org.odpi.openmetadata.integrationservices.lineage.properties">OpenLineageRunEvent</a>&nbsp;openLineageEvent,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawEvent,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;destinationAddress)</span>
          throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -143,6 +129,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>openLineageEvent</code> - event formatted using Egeria beans</dd>
 <dd><code>rawEvent</code> - event in Json form from the originator - may have facets that are not known to Egeria</dd>
+<dd><code>destinationAddress</code> - destination address</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - indicates that the openLineageEvent parameter is invalid.</dd>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - indicates that the caller is not authorized to access the log store.</dd>

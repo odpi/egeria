@@ -106,10 +106,20 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code><a href="#DATA_CERTIFIED" class="member-name-link">DATA_CERTIFIED</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#DATA_NOT_CERTIFIED" class="member-name-link">DATA_NOT_CERTIFIED</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#MISSING_CERTIFICATION_TYPE" class="member-name-link">MISSING_CERTIFICATION_TYPE</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#MISSING_SCHEMA_TYPE" class="member-name-link">MISSING_SCHEMA_TYPE</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="#SURVEY_COMPLETED" class="member-name-link">SURVEY_COMPLETED</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#SURVEY_FAILED" class="member-name-link">SURVEY_FAILED</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#SURVEY_INVALID" class="member-name-link">SURVEY_INVALID</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -150,39 +160,44 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the typical completion status used with this guard.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/controls/GuardType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">GuardType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDataValidationSurveyGuardTypes()" class="member-name-link">getDataValidationSurveyGuardTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return details of the guards used on a survey that is validating the structure and content of data.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the description of the guard.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../governanceaction/controls/GuardType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">GuardType</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGuardType()" class="member-name-link">getGuardType</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../governanceaction/controls/GuardType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">GuardType</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGuardType()" class="member-name-link">getGuardType</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the details of a specific guard.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/controls/GuardType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">GuardType</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getGuardTypes()" class="member-name-link">getGuardTypes</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Return details of all defined guards.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the guard.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/controls/GuardType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">GuardType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSimpleSurveyGuardTypes()" class="member-name-link">getSimpleSurveyGuardTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return details of the guards used on a simple survey.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SurveyActionGuard.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyActionGuard</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SurveyActionGuard.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyActionGuard</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SurveyActionGuard.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyActionGuard</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SurveyActionGuard.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyActionGuard</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -213,9 +228,39 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="SURVEY_INVALID">
+<h3>SURVEY_INVALID</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionGuard.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyActionGuard</a></span>&nbsp;<span class="element-name">SURVEY_INVALID</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="SURVEY_FAILED">
 <h3>SURVEY_FAILED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionGuard.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyActionGuard</a></span>&nbsp;<span class="element-name">SURVEY_FAILED</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATA_CERTIFIED">
+<h3>DATA_CERTIFIED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionGuard.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyActionGuard</a></span>&nbsp;<span class="element-name">DATA_CERTIFIED</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATA_NOT_CERTIFIED">
+<h3>DATA_NOT_CERTIFIED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionGuard.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyActionGuard</a></span>&nbsp;<span class="element-name">DATA_NOT_CERTIFIED</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="MISSING_CERTIFICATION_TYPE">
+<h3>MISSING_CERTIFICATION_TYPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionGuard.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyActionGuard</a></span>&nbsp;<span class="element-name">MISSING_CERTIFICATION_TYPE</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="MISSING_SCHEMA_TYPE">
+<h3>MISSING_SCHEMA_TYPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionGuard.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyActionGuard</a></span>&nbsp;<span class="element-name">MISSING_SCHEMA_TYPE</span></div>
 </section>
 </li>
 </ul>
@@ -317,10 +362,24 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getGuardTypes()">
-<h3>getGuardTypes</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/controls/GuardType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">GuardType</a>&gt;</span>&nbsp;<span class="element-name">getGuardTypes</span>()</div>
-<div class="block">Return details of all defined guards.</div>
+<section class="detail" id="getSimpleSurveyGuardTypes()">
+<h3>getSimpleSurveyGuardTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/controls/GuardType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">GuardType</a>&gt;</span>&nbsp;<span class="element-name">getSimpleSurveyGuardTypes</span>()</div>
+<div class="block">Return details of the guards used on a simple survey.  These guards are set automatically if the survey does not
+ set a guard itself.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>guard types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDataValidationSurveyGuardTypes()">
+<h3>getDataValidationSurveyGuardTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/controls/GuardType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">GuardType</a>&gt;</span>&nbsp;<span class="element-name">getDataValidationSurveyGuardTypes</span>()</div>
+<div class="block">Return details of the guards used on a survey that is validating the structure and content of data.
+ Each check produces a Qualify Annotation.  If all checks pass, the certification is added to the asset.
+ If any checks fail, a request for action is created for the asset, linking the failing quality annotations.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>guard types</dd>

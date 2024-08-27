@@ -105,9 +105,17 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#SURVEY_REPORT" class="member-name-link">SURVEY_REPORT</a></code></div>
+<div class="col-first even-row-color"><code><a href="#STEWARD" class="member-name-link">STEWARD</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">The person who can be contacted if there are problems with the data from this hospital.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SURVEY_REPORT" class="member-name-link">SURVEY_REPORT</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The survey report created by a survey action service.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#TO_DO_ELEMENT" class="member-name-link">TO_DO_ELEMENT</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">To Do element created for the steward.</div>
 </div>
 </div>
 </section>
@@ -176,6 +184,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the name of the action target.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getStewardshipHandoverActionTargetTypes()" class="member-name-link">getStewardshipHandoverActionTargetTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return all the action targets defined in this enum.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getStewardshipReviewActionTargetTypes()" class="member-name-link">getStewardshipReviewActionTargetTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return all the action targets defined in this enum.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -222,6 +240,20 @@ the order they are declared.</div>
 <h3>SURVEY_REPORT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionTarget.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyActionTarget</a></span>&nbsp;<span class="element-name">SURVEY_REPORT</span></div>
 <div class="block">The survey report created by a survey action service.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="STEWARD">
+<h3>STEWARD</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionTarget.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyActionTarget</a></span>&nbsp;<span class="element-name">STEWARD</span></div>
+<div class="block">The person who can be contacted if there are problems with the data from this hospital.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TO_DO_ELEMENT">
+<h3>TO_DO_ELEMENT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionTarget.html" title="enum class in org.odpi.openmetadata.frameworks.surveyaction.controls">SurveyActionTarget</a></span>&nbsp;<span class="element-name">TO_DO_ELEMENT</span></div>
+<div class="block">To Do element created for the steward.</div>
 </section>
 </li>
 </ul>
@@ -289,6 +321,28 @@ not permitted.)</div>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if this enum class has no constant with the specified name</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if the argument is null</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getStewardshipReviewActionTargetTypes()">
+<h3>getStewardshipReviewActionTargetTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</span>&nbsp;<span class="element-name">getStewardshipReviewActionTargetTypes</span>()</div>
+<div class="block">Return all the action targets defined in this enum.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getStewardshipHandoverActionTargetTypes()">
+<h3>getStewardshipHandoverActionTargetTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../governanceaction/controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</span>&nbsp;<span class="element-name">getStewardshipHandoverActionTargetTypes</span>()</div>
+<div class="block">Return all the action targets defined in this enum.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
 </dl>
 </section>
 </li>

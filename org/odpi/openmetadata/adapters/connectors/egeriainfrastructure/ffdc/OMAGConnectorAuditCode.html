@@ -115,9 +115,21 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The {0} integration connector has stopped its platform monitoring and is shutting down</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#EGERIA_CONNECTOR_START" class="member-name-link">EGERIA_CONNECTOR_START</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The {0} integration connector has been started and will call the platforms with userId {1}.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">EGERIA-CONNECTOR-0001 - The {0} Egeria Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#UNKNOWN_PLATFORM" class="member-name-link">UNKNOWN_PLATFORM</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The {0} integration connector is not able to retrieve platform {1} ({2}) from the catalog</div>
 </div>
 </div>
 </section>
@@ -184,6 +196,27 @@ the order they are declared.</div>
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
 <div class="block">EGERIA-CONNECTOR-0001 - The {0} Egeria Connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EGERIA_CONNECTOR_START">
+<h3>EGERIA_CONNECTOR_START</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">EGERIA_CONNECTOR_START</span></div>
+<div class="block">The {0} integration connector has been started and will call the platforms with userId {1}.  The monitored platforms are: {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNKNOWN_PLATFORM">
+<h3>UNKNOWN_PLATFORM</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">UNKNOWN_PLATFORM</span></div>
+<div class="block">The {0} integration connector is not able to retrieve platform {1} ({2}) from the catalog</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CONNECTOR_STOPPING">
+<h3>CONNECTOR_STOPPING</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMAGConnectorAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc">OMAGConnectorAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_STOPPING</span></div>
+<div class="block">The {0} integration connector has stopped its platform monitoring and is shutting down</div>
 </section>
 </li>
 </ul>
