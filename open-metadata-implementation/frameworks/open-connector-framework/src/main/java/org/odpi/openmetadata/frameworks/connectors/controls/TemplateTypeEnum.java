@@ -12,25 +12,34 @@ import java.util.Map;
  */
 public enum TemplateTypeEnum
 {
-    EXAMPLE("exampleTemplateName", "Asset", "Supply the qualified name of the template that the ", null);
+    EXAMPLE("exampleTemplateName", "Supply the qualified name of the template that the ", "Asset", false, null, null);
 
 
     /**
-     * Catalog target name.
+     * Symbolic name of the template.
      */
-    private final String name;
-
+    private final String templateName;
 
     /**
-     * The open metadata type name of the element that should be the parent element of the template.
+     * Description of the value to provide for this template.
+     */
+    private final String templateDescription;
+
+    /**
+     * Open metadata type name of the template.
      */
     private final String typeName;
 
+    /**
+     * Is this catalog template required for the connector to work successfully.
+     */
+    private final boolean required;
+
 
     /**
-     * The deployed implementation type allows the connector to be more specific about the resources it works with.
+     * Option guid for a template to use if no template is specified.
      */
-    private final String description;
+    private final String defaultTemplateGUID;
 
     /**
      * A map of property name to property value for values that should match in the catalog template for it to be compatible with this integration
@@ -42,35 +51,55 @@ public enum TemplateTypeEnum
     /**
      * Constructor for Enum
      *
-     * @param name catalog template name
+     * @param templateName catalog template name
      * @param typeName open metadata type name for the linked element
-     * @param description deployed implementation type for the linked element
+     * @param templateDescription deployed implementation type for the linked element
+     * @param required is this template required bu the connector
+     * @param defaultTemplateGUID is there a default template
      * @param otherPropertyValues other values
      */
-    TemplateTypeEnum(String name, String typeName, String description, Map<String, String> otherPropertyValues)
+    TemplateTypeEnum(String              templateName,
+                     String              templateDescription,
+                     String              typeName,
+                     boolean             required,
+                     String              defaultTemplateGUID,
+                     Map<String, String> otherPropertyValues)
     {
-        this.name                = name;
+        this.templateName        = templateName;
+        this.templateDescription = templateDescription;
         this.typeName            = typeName;
-        this.description         = description;
+        this.required            = required;
+        this.defaultTemplateGUID = defaultTemplateGUID;
         this.otherPropertyValues = otherPropertyValues;
     }
 
 
     /**
-     * Return the catalog template name.
+     * Return the name of the template.
      *
-     * @return string name
+     * @return name
      */
-    public String getName()
+    public String getTemplateName()
     {
-        return name;
+        return templateName;
     }
 
 
     /**
-     * Return the type name (or super type name) of a permitted catalog template.
+     * Return the description of the template, such as its content.
      *
-     * @return name of an open metadata type
+     * @return description
+     */
+    public String getTemplateDescription()
+    {
+        return templateDescription;
+    }
+
+
+    /**
+     * Return the open metadata type name.
+     *
+     * @return open metadata type name
      */
     public String getTypeName()
     {
@@ -79,13 +108,24 @@ public enum TemplateTypeEnum
 
 
     /**
-     * Return a more specific definition of a permitted catalog template.
+     * Return whether this catalog template is required for this service to work successful.
      *
-     * @return deployed implementation type name
+     * @return boolean flag
      */
-    public String getDescription()
+    public boolean getRequired()
     {
-        return description;
+        return required;
+    }
+
+
+    /**
+     * Return the unique identifier of the default template to use with this connector - this is optional.
+     *
+     * @return string
+     */
+    public String getDefaultTemplateGUID()
+    {
+        return defaultTemplateGUID;
     }
 
 
@@ -125,14 +165,16 @@ public enum TemplateTypeEnum
      */
     public TemplateType getTemplateType()
     {
-        TemplateType catalogTargetType = new TemplateType();
+        TemplateType templateType = new TemplateType();
 
-        catalogTargetType.setTemplateName(name);
-        catalogTargetType.setTypeName(typeName);
-        catalogTargetType.setTemplateDescription(description);
-        catalogTargetType.setOtherPropertyValues(otherPropertyValues);
+        templateType.setTemplateName(templateName);
+        templateType.setTypeName(typeName);
+        templateType.setTemplateDescription(templateDescription);
+        templateType.setRequired(required);
+        templateType.setDefaultTemplateGUID(defaultTemplateGUID);
+        templateType.setOtherPropertyValues(otherPropertyValues);
 
-        return catalogTargetType;
+        return templateType;
     }
 
 
@@ -144,6 +186,6 @@ public enum TemplateTypeEnum
     @Override
     public String toString()
     {
-        return "TemplateTypeEnum{templateName='" + name + "'}";
+        return "TemplateType{templateName='" + templateName + "'}";
     }
 }

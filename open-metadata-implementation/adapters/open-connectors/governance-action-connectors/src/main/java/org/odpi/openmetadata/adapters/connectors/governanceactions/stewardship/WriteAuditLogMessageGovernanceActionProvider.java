@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionService
 public class WriteAuditLogMessageGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "9ad61312-e578-43c9-b493-ec5a8510c576";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Verification:EvaluateAnnotations";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Stewardship:EvaluateAnnotations";
     private static final String  connectorTypeDisplayName = "Write Audit Log Governance Action Service";
     private static final String  connectorTypeDescription = "Governance Action Service that writes requested messages to the Audit Log Destinations.";
 

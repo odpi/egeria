@@ -169,7 +169,9 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
 
             extendedProperties.put(OpenMetadataType.DETAILS_PROPERTY_NAME, certificationTypeDefinition.getDetails());
 
-            archiveHelper.addGovernanceDefinition(OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+            archiveHelper.setGUID(certificationTypeDefinition.getQualifiedName(), certificationTypeDefinition.getGUID());
+
+            String guid = archiveHelper.addGovernanceDefinition(OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
                                                   certificationTypeDefinition.getQualifiedName(),
                                                   certificationTypeDefinition.getTitle(),
                                                   certificationTypeDefinition.getSummary(),
@@ -182,6 +184,8 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
                                                   null,
                                                   null,
                                                   extendedProperties);
+
+            assert (certificationTypeDefinition.getGUID().equals(guid));
         }
     }
 

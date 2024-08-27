@@ -2,12 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers;
 
+import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
@@ -18,6 +17,7 @@ import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationCo
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredIntegrationConnectorElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationConnectorDedicatedThread;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationConnectorRefreshThread;
@@ -56,16 +56,16 @@ public class IntegrationConnectorHandler
     /*
      * These values change as the connector handler operates
      */
-    private IntegrationContext                  integrationContext                  = null;
-    private IntegrationContextRefreshProxy      integrationContextRefreshProxy      = null;
-    private Connector                           genericConnector                    = null;
-    private IntegrationConnector                integrationConnector                = null;
-    private IntegrationConnectorDedicatedThread integrationConnectorDedicatedThread = null;
-    private IntegrationConnectorRefreshThread   integrationConnectorRefreshThread   = null;
-    private IntegrationConnectorStatus          integrationConnectorStatus          = null;
-    private Date                                lastStatusChange                    = null;
-    private String                              failingExceptionMessage             = null;
-    private Date                                lastRefreshTime                     = null;
+    private          IntegrationContext                  integrationContext                  = null;
+    private          IntegrationContextRefreshProxy      integrationContextRefreshProxy      = null;
+    private          Connector                           genericConnector                    = null;
+    private          IntegrationConnector                integrationConnector                = null;
+    private          IntegrationConnectorDedicatedThread integrationConnectorDedicatedThread = null;
+    private          IntegrationConnectorRefreshThread   integrationConnectorRefreshThread   = null;
+    private volatile IntegrationConnectorStatus          integrationConnectorStatus          = null;
+    private volatile Date                                lastStatusChange                    = null;
+    private volatile String                              failingExceptionMessage             = null;
+    private volatile Date                                lastRefreshTime                     = null;
 
 
     /**
@@ -128,6 +128,29 @@ public class IntegrationConnectorHandler
         this.reinitializeConnector(actionDescription);
     }
 
+    /**
+     * Retrieve details of this connector.
+     *
+     * @return connector report
+     */
+    public IntegrationConnectorReport getConnectorReport()
+    {
+        IntegrationConnectorReport connectorReport = new IntegrationConnectorReport();
+
+        connectorReport.setConnectorId(integrationConnectorId);
+        connectorReport.setConnectorGUID(integrationConnectorGUID);
+        connectorReport.setConnectorName(integrationConnectorName);
+        connectorReport.setConnectorStatus(integrationConnectorStatus);
+        connectorReport.setConnection(connection);
+        connectorReport.setConnectorInstanceId(integrationConnectorId);
+        connectorReport.setFailingExceptionMessage(failingExceptionMessage);
+        connectorReport.setStatistics(this.getStatistics());
+        connectorReport.setLastStatusChange(lastStatusChange);
+        connectorReport.setLastRefreshTime(lastRefreshTime);
+        connectorReport.setMinMinutesBetweenRefresh(minMinutesBetweenRefresh);
+
+        return connectorReport;
+    }
 
     /**
      * Return the unique identifier of the connector from the configuration or the integration group definition.
@@ -172,6 +195,7 @@ public class IntegrationConnectorHandler
     {
         return connection;
     }
+
 
     /**
      * Return the unique instance identifier of the connector.
@@ -221,6 +245,7 @@ public class IntegrationConnectorHandler
         return stopDate;
     }
 
+
     /**
      * Return the status for the integration connector.
      *
@@ -237,7 +262,7 @@ public class IntegrationConnectorHandler
      *
      * @return timestamp
      */
-    public Date getLastStatusChange()
+    public  Date getLastStatusChange()
     {
         return lastStatusChange;
     }
@@ -276,7 +301,7 @@ public class IntegrationConnectorHandler
      *
      * @return timestamp
      */
-    public Date getLastRefreshTime()
+    public  Date getLastRefreshTime()
     {
         return lastRefreshTime;
     }
@@ -430,7 +455,7 @@ public class IntegrationConnectorHandler
      *
      * @return property map
      */
-    public Map<String, Object> getConfigurationProperties()
+    public  Map<String, Object> getConfigurationProperties()
     {
         if (connection != null)
         {
@@ -507,7 +532,6 @@ public class IntegrationConnectorHandler
     }
 
 
-
     /**
      * Update the endpoint network address for a specific integration connector.
      *
@@ -516,9 +540,9 @@ public class IntegrationConnectorHandler
      * @param networkAddress name of a specific connector or null for all connectors and the properties to change
      */
 
-    public void updateEndpointNetworkAddress(String userId,
-                                             String actionDescription,
-                                             String networkAddress)
+    public synchronized void updateEndpointNetworkAddress(String userId,
+                                                          String actionDescription,
+                                                          String networkAddress)
     {
         if (connection != null)
         {
@@ -557,9 +581,9 @@ public class IntegrationConnectorHandler
      * @param connection new connection object
      */
 
-    public  void updateConnectorConnection(String     userId,
-                                           String     actionDescription,
-                                           Connection connection)
+    public synchronized void updateConnectorConnection(String     userId,
+                                                       String     actionDescription,
+                                                       Connection connection)
     {
         this.connection = connection;
 
@@ -589,8 +613,7 @@ public class IntegrationConnectorHandler
             }
             if (integrationConnectorStatus == IntegrationConnectorStatus.INITIALIZED)
             {
-                this.startConnector(actionDescription,
-                                    IntegrationConnectorStatus.RUNNING);
+                this.startConnector(actionDescription, IntegrationConnectorStatus.RUNNING);
             }
             if (integrationConnectorStatus == IntegrationConnectorStatus.RUNNING)
             {
@@ -608,32 +631,52 @@ public class IntegrationConnectorHandler
      * Call refresh() on the connector provided it is in the correct state.
      *
      * @param actionDescription external caller's activity
-     * @param firstCall is this the first call to refresh?
+     * @throws InvalidParameterException an invalid property has been passed
+     * @throws UserNotAuthorizedException the user is not authorized
+     * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
      */
-    public synchronized void refreshConnector(String   actionDescription,
-                                              boolean  firstCall)
+    private synchronized boolean prepareForRefresh(String actionDescription) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
     {
-        final String operationName = "refresh";
+        if (integrationConnectorStatus == IntegrationConnectorStatus.INITIALIZE_FAILED)
+        {
+            this.reinitializeConnector(actionDescription);
+        }
+        if (integrationConnectorStatus == IntegrationConnectorStatus.INITIALIZED)
+        {
+            this.startConnector(actionDescription, IntegrationConnectorStatus.WAITING);
+        }
+        if (integrationConnectorStatus == IntegrationConnectorStatus.WAITING)
+        {
+            updateStatus(IntegrationConnectorStatus.REFRESHING);
+            integrationContextRefreshProxy.setRefreshInProgress(true);
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Call refresh() on the connector provided it is in the correct state.
+     *
+     * @param actionDescription external caller's activity
+     */
+    public  void refreshConnector(String   actionDescription)
+    {
+        final String operationName = "refreshConnector";
 
         try
         {
-            if (integrationConnectorStatus == IntegrationConnectorStatus.INITIALIZE_FAILED)
+            if (prepareForRefresh(actionDescription))
             {
-                this.reinitializeConnector(actionDescription);
-            }
-            if (integrationConnectorStatus == IntegrationConnectorStatus.INITIALIZED)
-            {
-                this.startConnector(actionDescription,
-                                    IntegrationConnectorStatus.WAITING);
-            }
-            if (integrationConnectorStatus == IntegrationConnectorStatus.WAITING)
-            {
-                updateStatus(IntegrationConnectorStatus.REFRESHING);
                 Date refreshStart = new Date();
 
                 if (auditLog != null)
                 {
-                    if (firstCall)
+                    if (lastRefreshTime == null)
                     {
                         auditLog.logMessage(actionDescription,
                                             IntegrationDaemonServicesAuditCode.DAEMON_CONNECTOR_FIRST_REFRESH.getMessageDefinition(integrationConnectorName,
@@ -647,30 +690,50 @@ public class IntegrationConnectorHandler
                     }
                 }
 
-                integrationContext.startRecording();
-                integrationContextRefreshProxy.setRefreshInProgress(true);
                 integrationConnector.refresh();
-                integrationContextRefreshProxy.setRefreshInProgress(false);
-                integrationContext.publishReport();
-                updateStatus(IntegrationConnectorStatus.WAITING);
-
-                if (auditLog != null)
-                {
-                    Date refreshEnd = new Date();
-
-                    auditLog.logMessage(actionDescription,
-                                        IntegrationDaemonServicesAuditCode.DAEMON_CONNECTOR_REFRESH_COMPLETE.getMessageDefinition(integrationConnectorName,
-                                                                                                                                  integrationDaemonName,
-                                                                                                                                  Long.toString(refreshEnd.getTime() - refreshStart.getTime())));
-                }
+                afterRefreshConnector(actionDescription, refreshStart);
             }
 
-            this.lastRefreshTime = new Date();
+            setLastRefreshTime();
         }
         catch (Exception error)
         {
             processConnectorException(actionDescription, operationName, error);
         }
+    }
+
+    /**
+     * Call refresh() on the connector provided it is in the correct state.
+     *
+     * @param actionDescription external caller's activity
+     * @param refreshStart when did the refresh start
+     */
+    private synchronized void afterRefreshConnector(String actionDescription,
+                                                    Date   refreshStart) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        integrationContextRefreshProxy.setRefreshInProgress(false);
+        updateStatus(IntegrationConnectorStatus.WAITING);
+
+        if (auditLog != null)
+        {
+            Date refreshEnd = new Date();
+
+            auditLog.logMessage(actionDescription,
+                                IntegrationDaemonServicesAuditCode.DAEMON_CONNECTOR_REFRESH_COMPLETE.getMessageDefinition(integrationConnectorName,
+                                                                                                                          integrationDaemonName,
+                                                                                                                          Long.toString(refreshEnd.getTime() - refreshStart.getTime())));
+        }
+    }
+
+
+    /**
+     * Set up the last time the connector was refreshed.
+     */
+    private void setLastRefreshTime()
+    {
+        this.lastRefreshTime = new Date();
     }
 
 
@@ -679,10 +742,29 @@ public class IntegrationConnectorHandler
      *
      * @param registeredIntegrationConnectorElement new configuration information from the server
      */
-    public synchronized void updateConnectorDetails(RegisteredIntegrationConnectorElement registeredIntegrationConnectorElement)
+    public void refreshConnectorDetails(RegisteredIntegrationConnectorElement registeredIntegrationConnectorElement)
     {
-        final String methodName = "updateConnectorDetails";
+        final String methodName = "refreshConnectorDetails";
 
+        if (updateConnectorDetails(registeredIntegrationConnectorElement))
+        {
+            reinitializeConnector(methodName);
+        }
+        else
+        {
+            refreshConnector(methodName);
+        }
+    }
+
+
+    /**
+     * Update the connector properties with as little disruption to the running connector.
+     *
+     * @param registeredIntegrationConnectorElement new configuration information from the server
+     * @return boolean - true if the connection has changed
+     */
+    public synchronized boolean updateConnectorDetails(RegisteredIntegrationConnectorElement registeredIntegrationConnectorElement)
+    {
         integrationConnectorGUID = registeredIntegrationConnectorElement.getElementHeader().getGUID();
         integrationConnectorName = registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorName();
         integrationConnectorUserId = registeredIntegrationConnectorElement.getRegistrationProperties().getConnectorUserId();
@@ -695,17 +777,17 @@ public class IntegrationConnectorHandler
         if (needDedicatedThread != registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls())
         {
             needDedicatedThread = registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls();
-            reinitializeConnector(methodName);
+            return true;
         }
         else if ((! connection.equals(registeredIntegrationConnectorElement.getProperties().getConnection())) &&
                 (registeredIntegrationConnectorElement.getProperties().getConnection() != null))
         {
             connection = registeredIntegrationConnectorElement.getProperties().getConnection();
-            reinitializeConnector(methodName);
+            return true;
         }
         else
         {
-            refreshConnector(methodName, true);
+            return false;
         }
     }
 
@@ -715,7 +797,7 @@ public class IntegrationConnectorHandler
      *
      * @param actionDescription external caller's activity
      */
-    public synchronized void shutdown(String   actionDescription)
+    public void shutdown(String   actionDescription)
     {
         this.disconnectConnector(actionDescription);
         this.resetConnectorHandler();
@@ -728,8 +810,8 @@ public class IntegrationConnectorHandler
      * @param actionDescription external caller's activity
      * @param nextStatus next integration connector status
      */
-    private void startConnector(String                     actionDescription,
-                                IntegrationConnectorStatus nextStatus)
+    private synchronized void startConnector(String                     actionDescription,
+                                             IntegrationConnectorStatus nextStatus)
     {
         final String operationName = "start";
 
@@ -759,7 +841,7 @@ public class IntegrationConnectorHandler
      *
      * @param actionDescription external caller's activity
      */
-    public void disconnectConnector(String   actionDescription)
+    public synchronized void disconnectConnector(String   actionDescription)
     {
         final String operationName = "disconnect";
 
@@ -786,7 +868,7 @@ public class IntegrationConnectorHandler
     /**
      * This private method ensures that the instance variables are reset for a new connector instance.
      */
-    private void resetConnectorHandler()
+    private synchronized void resetConnectorHandler()
     {
         if (integrationConnectorDedicatedThread != null)
         {
@@ -914,7 +996,7 @@ public class IntegrationConnectorHandler
      *
      * @param newStatus new value
      */
-    private void updateStatus(IntegrationConnectorStatus  newStatus)
+    private synchronized void updateStatus(IntegrationConnectorStatus  newStatus)
     {
         if (newStatus == null)
         {

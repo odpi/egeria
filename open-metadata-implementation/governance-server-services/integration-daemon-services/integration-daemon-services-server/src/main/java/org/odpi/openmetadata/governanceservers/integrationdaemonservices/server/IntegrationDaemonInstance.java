@@ -395,8 +395,9 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
     public List<IntegrationConnectorReport> getConnectorReports()
     {
         List<IntegrationConnectorReport> connectorReports = new ArrayList<>();
+        List<String> connectorIds = integrationConnectorCacheMap.getConnectorIds();
 
-        for (String connectorId : integrationConnectorCacheMap.getConnectorIds())
+        for (String connectorId : connectorIds)
         {
             if (connectorId != null)
             {
@@ -404,21 +405,7 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 
                 if (connectorHandler != null)
                 {
-                    IntegrationConnectorReport connectorReport = new IntegrationConnectorReport();
-
-                    connectorReport.setConnectorId(connectorHandler.getIntegrationConnectorId());
-                    connectorReport.setConnectorGUID(connectorHandler.getIntegrationConnectorGUID());
-                    connectorReport.setConnectorName(connectorHandler.getIntegrationConnectorName());
-                    connectorReport.setConnectorStatus(connectorHandler.getIntegrationConnectorStatus());
-                    connectorReport.setConnection(connectorHandler.getConnection());
-                    connectorReport.setConnectorInstanceId(connectorHandler.getIntegrationConnectorInstanceId());
-                    connectorReport.setFailingExceptionMessage(connectorHandler.getFailingExceptionMessage());
-                    connectorReport.setStatistics(connectorHandler.getStatistics());
-                    connectorReport.setLastStatusChange(connectorHandler.getLastStatusChange());
-                    connectorReport.setLastRefreshTime(connectorHandler.getLastRefreshTime());
-                    connectorReport.setMinMinutesBetweenRefresh(connectorHandler.getMinMinutesBetweenRefresh());
-
-                    connectorReports.add(connectorReport);
+                    connectorReports.add(connectorHandler.getConnectorReport());
                 }
             }
         }
@@ -439,7 +426,8 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 
         if (connectorName == null)
         {
-            for (String connectorId : integrationConnectorCacheMap.getConnectorIds())
+            List<String> connectorIds = integrationConnectorCacheMap.getConnectorIds();
+            for (String connectorId : connectorIds)
             {
                 if (connectorId != null)
                 {
@@ -447,7 +435,7 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 
                     if (connectorHandler != null)
                     {
-                        connectorHandler.refreshConnector(methodName, false);
+                        connectorHandler.refreshConnector(methodName);
                     }
                 }
             }
@@ -458,7 +446,7 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
 
             if (connectorHandler != null)
             {
-                connectorHandler.refreshConnector(methodName, false);
+                connectorHandler.refreshConnector(methodName);
             }
             else
             {

@@ -7,15 +7,11 @@ import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.Op
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.integrationservices.lineage.properties.OpenLineageRunEvent;
 
 import java.io.File;
 import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 /**
@@ -25,11 +21,6 @@ import java.util.UUID;
  */
 public class FileBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreConnectorBase
 {
-    private static final String defaultLogDirectory = "open-lineage-log";
-
-    private String logStoreDirectoryName = null;
-
-
     /**
      * Default constructor used by the connector provider.
      */
@@ -40,28 +31,15 @@ public class FileBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreCo
 
 
     /**
-     * Set up the name of the file store
+     * Informs the subclasses that there is a new destination - in case they need to do special setup.
      *
-     * @throws ConnectorCheckedException something went wrong
+     * @param logStoreDirectoryName new destination
+     * @throws ConnectorCheckedException new destination not valid
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    protected void newDestinationIdentified(String logStoreDirectoryName) throws ConnectorCheckedException
     {
-        super.start();
-
-        final String methodName = "start";
-
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
-
-        if (endpoint != null)
-        {
-            logStoreDirectoryName = endpoint.getAddress();
-        }
-
-        if (logStoreDirectoryName == null)
-        {
-            logStoreDirectoryName = defaultLogDirectory;
-        }
+        final String methodName = "newDestinationIdentified";
 
         try
         {
@@ -95,8 +73,9 @@ public class FileBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreCo
      */
     @Override
     public void storeEvent(OpenLineageRunEvent openLineageEvent,
-                           String              rawEvent) throws InvalidParameterException,
-                                                                PropertyServerException
+                           String              rawEvent,
+                           String              logStoreDirectoryName) throws InvalidParameterException,
+                                                                             PropertyServerException
     {
         final String methodName = "storeEvent";
 
@@ -171,7 +150,7 @@ public class FileBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreCo
         }
         else
         {
-            super.logNoRawEvent(openLineageEvent, methodName);
+            super.logNoRawEvent(openLineageEvent);
         }
     }
 }

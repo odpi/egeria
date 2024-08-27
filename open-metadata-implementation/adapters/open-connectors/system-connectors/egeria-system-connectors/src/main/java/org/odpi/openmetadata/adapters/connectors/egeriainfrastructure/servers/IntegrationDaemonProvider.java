@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers;
 
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformConfigurationProperty;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
@@ -66,9 +67,7 @@ public class IntegrationDaemonProvider extends ConnectorProviderBase
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(DeployedImplementationType.INTEGRATION_DAEMON.getAssociatedTypeName());
         connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.INTEGRATION_DAEMON.getDeployedImplementationType());
-        List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add("serverName");
-        connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
+        connectorType.setRecognizedConfigurationProperties(OMAGServerPlatformConfigurationProperty.getRecognizedConfigurationProperties());
         super.connectorTypeBean = connectorType;
 
         /*
@@ -83,5 +82,7 @@ public class IntegrationDaemonProvider extends ConnectorProviderBase
         componentDescription.setComponentWikiURL(connectorWikiPage);
 
         super.setConnectorComponentDescription(componentDescription);
+
+        super.supportedConfigurationProperties = OMAGServerPlatformConfigurationProperty.getConfigurationPropertyTypes();
     }
 }

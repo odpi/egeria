@@ -9,7 +9,7 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCata
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.governanceaction.controls;
+package org.odpi.openmetadata.frameworks.openmetadata.controls;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -13,38 +13,39 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * PlaceholderPropertyType characterises one of the placeholder properties used in a template.
+ * ReplacementAttributeType characterises one of the attribute values that should be provided when using a specific
+ * template.  A replacement attribute value is ued to update the principle entity of a template.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PlaceholderPropertyType
+public class ReplacementAttributeType
 {
     /**
-     * Value to use for the name of the placeholder property.
+     * Value to use for the name of the replacement attribute.
      */
     private String name = null;
 
     /**
-     * Description of the placeholder property.
+     * Description of the replacement attribute.
      */
     private String description = null;
 
     /**
-     * The type name of the value for this placeholder property.
+     * The type name of the value for this attribute.
      */
     private String dataType = null;
 
     /**
-     * An example values for this placeholder property.
+     * An example values for this parameter.
      */
     private String example = null;
 
 
     /**
-     * Is this placeholder property required for the service to work successfully.
+     * Is this replacement attribute required for the service to work successfully.
      */
-    private boolean required = true;
+    private boolean required = false;
 
     /**
      * A map of additional property name to property value for this governance service.
@@ -54,7 +55,7 @@ public class PlaceholderPropertyType
     /**
      * Default constructor
      */
-    public PlaceholderPropertyType()
+    public ReplacementAttributeType()
     {
     }
 
@@ -64,7 +65,7 @@ public class PlaceholderPropertyType
      *
      * @param template object to copy
      */
-    public PlaceholderPropertyType(PlaceholderPropertyType template)
+    public ReplacementAttributeType(ReplacementAttributeType template)
     {
         if (template != null)
         {
@@ -77,9 +78,8 @@ public class PlaceholderPropertyType
         }
     }
 
-
     /**
-     * Return the string to use as the name of the placeholder property.
+     * Return the string to use as the name of the replacement attribute.
      *
      * @return string name
      */
@@ -90,7 +90,7 @@ public class PlaceholderPropertyType
 
 
     /**
-     * Set up the string to use as the name of the placeholder property.
+     * Set up the string to use as the name of the replacement attribute.
      *
      * @param name string name
      */
@@ -102,7 +102,7 @@ public class PlaceholderPropertyType
 
 
     /**
-     * Return the description of the placeholder property.
+     * Return the description of the replacement attribute.
      *
      * @return string
      */
@@ -113,7 +113,7 @@ public class PlaceholderPropertyType
 
 
     /**
-     * Set up the description of the placeholder property.
+     * Set up the description of the replacement attribute.
      *
      * @param description string
      */
@@ -124,7 +124,7 @@ public class PlaceholderPropertyType
 
 
     /**
-     * Return the data type name for the placeholder property value.
+     * Return the data type name for the parameter value.
      *
      * @return data type
      */
@@ -135,7 +135,7 @@ public class PlaceholderPropertyType
 
 
     /**
-     * Set up data type name for the placeholder property value.
+     * Set up data type name for the parameter value.
      *
      * @param dataType data type
      */
@@ -146,7 +146,7 @@ public class PlaceholderPropertyType
 
 
     /**
-     * Return an example placeholder property value.
+     * Return an example parameter value.
      *
      * @return string
      */
@@ -157,7 +157,7 @@ public class PlaceholderPropertyType
 
 
     /**
-     * Set up an example placeholder property value.
+     * Set up an example parameter value.
      *
      * @param example string
      */
@@ -168,7 +168,7 @@ public class PlaceholderPropertyType
 
 
     /**
-     * Return whether this placeholder property is required for this service to work successful.
+     * Return whether this replacement attribute is required for this service to work successful.
      *
      * @return boolean flag
      */
@@ -179,7 +179,7 @@ public class PlaceholderPropertyType
 
 
     /**
-     * Set up whether this placeholder property is required for this service to work successful.
+     * Set up whether this replacement attribute is required for this service to work successful.
      *
      * @param required boolean flag
      */
@@ -190,7 +190,7 @@ public class PlaceholderPropertyType
 
 
     /**
-     * Return a map of property name to property value to provide additional information for this service.
+     * Return a map of attribute name to attribute value to provide additional information for this service.
      *
      * @return map of string to string
      */
@@ -201,7 +201,7 @@ public class PlaceholderPropertyType
 
 
     /**
-     * Set up a map of property name to property value to provide additional information for this service.
+     * Set up a map of attribute name to attribute value to provide additional information for this service.
      *
      * @param otherPropertyValues map of string to string
      */
@@ -215,12 +215,12 @@ public class PlaceholderPropertyType
     /**
      * JSON-style toString
      *
-     * @return return string containing the property names and values
+     * @return return string containing the attribute names and values
      */
     @Override
     public String toString()
     {
-        return "RequestParameterType{" +
+        return "ReplacementAttributeType{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", dataType='" + dataType + '\'' +
@@ -243,7 +243,7 @@ public class PlaceholderPropertyType
         {
             return true;
         }
-        if (! (objectToCompare instanceof PlaceholderPropertyType that))
+        if (! (objectToCompare instanceof ReplacementAttributeType that))
         {
             return false;
         }

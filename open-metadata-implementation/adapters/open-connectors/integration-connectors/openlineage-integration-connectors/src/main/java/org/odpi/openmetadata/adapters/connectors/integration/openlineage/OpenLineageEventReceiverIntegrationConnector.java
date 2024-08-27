@@ -56,12 +56,11 @@ public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegra
             {
                 for (Connector embeddedConnector : embeddedConnectors)
                 {
-                    if (embeddedConnector instanceof OpenMetadataTopicConnector)
+                    if (embeddedConnector instanceof OpenMetadataTopicConnector topicConnector)
                     {
                         /*
                          * Register this connector as a listener of the event bus connector.
                          */
-                        OpenMetadataTopicConnector topicConnector = (OpenMetadataTopicConnector)embeddedConnector;
                         topicConnector.registerListener(this);
 
                         ConnectionProperties connectionProperties = topicConnector.getConnection();

@@ -37,9 +37,9 @@ public class WriteAuditLogMessageGovernanceActionConnector extends GeneralGovern
     {
         final String methodName = "start";
 
-        String messageText = getProperty(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "This is the default Message Text");
-
         super.start();
+
+        String messageText = getProperty(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "This is the default Message Text");
 
         try
         {

@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.governanceaction.controls;
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
@@ -30,7 +31,6 @@ public enum ActionTarget
                       "Any element of type Referenceable (or a subtype of).",
                       OpenMetadataType.REFERENCEABLE.typeName,
                       null),
-
 
     /**
      * Any element of type Referenceable (or a subtype of).
@@ -87,10 +87,17 @@ public enum ActionTarget
      * The person who can be contacted if there are problems with the data from this hospital.
      */
     STEWARD("steward",
-              "The person, or team who is responsible for setting up the governance metadata associated with .",
+              "The person, or team who is responsible for setting up the governance metadata associated with a resource.",
               OpenMetadataType.ACTOR_TYPE_NAME,
               null),
 
+    /**
+     * The person who can be contacted if there are problems with the data from this hospital.
+     */
+    INTEGRATION_CONNECTOR("integrationConnector",
+                          "An integration connector that the service should work with.",
+                          DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                          DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType()),
     ;
 
 

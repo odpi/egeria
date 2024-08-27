@@ -6,6 +6,8 @@ import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceCo
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionAuditCode;
+import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
@@ -14,20 +16,24 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTar
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyContext;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionGuard;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionTarget;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
- * SurveyActionServiceHandler provides the support to run a survey action service.  A new instance is created for each request, and it is assigned its
+ * SurveyActionServiceHandler provides the support to run a survey action service.
+ * A new instance is created for each request, and it is assigned its
  * own thread.
  */
 public class SurveyActionServiceHandler extends GovernanceServiceHandler
 {
     private final SurveyActionServiceConnector surveyActionService;
-    private final SurveyContext surveyContext;
+    private final SurveyContext                surveyContext;
+    private final String                       assetGUID;
 
     /**
      * Constructor sets up the key parameters for running the survey action service.
@@ -77,6 +83,7 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
         try
         {
             this.surveyActionService = (SurveyActionServiceConnector) surveyActionServiceConnector;
+            this.assetGUID           = surveyContext.getAssetGUID();
         }
         catch (Exception error)
         {
@@ -111,6 +118,11 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
         Date endTime;
         String surveyReportGUID = null;
 
+        CompletionStatus          completionStatus;
+        List<String>              completionGuards;
+        AuditLogMessageDefinition completionMessage;
+        Map<String, String>       completionRequestParameters;
+        List<NewActionTarget>     completionActionTargets;
 
         final String actionDescription = "Survey an Asset";
 
@@ -135,62 +147,94 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
             surveyContext.getAnnotationStore().setCompletionMessage(null);
             endTime = new Date();
 
-            auditLog.logMessage(actionDescription,
-                                SurveyActionAuditCode.SURVEY_ACTION_SERVICE_COMPLETE.getMessageDefinition(governanceServiceName,
-                                                                                                          surveyContext.getAssetGUID(),
-                                                                                                          serviceRequestType,
-                                                                                                          Long.toString(endTime.getTime() - startTime.getTime()),
-                                                                                                          surveyReportGUID));
+            completionStatus            = surveyContext.getCompletionStatus();
+            completionGuards            = surveyContext.getCompletionGuards();
+            completionMessage           = surveyContext.getCompletionMessage();
+            completionRequestParameters = surveyContext.getCompletionRequestParameters();
+            completionActionTargets     = surveyContext.getCompletionActionTargets();
 
-            super.disconnect();
-            surveyActionService.setSurveyContext(null);
+            if (completionStatus == null)
+            {
+                completionStatus = SurveyActionGuard.SURVEY_COMPLETED.getCompletionStatus();
+            }
 
-            List<String> outputGuards = new ArrayList<>();
-            outputGuards.add(SurveyActionGuard.SURVEY_COMPLETED.getName());
+            if ((completionGuards == null) || (completionGuards.isEmpty()))
+            {
+                completionGuards = new ArrayList<>();
+                completionGuards.add(SurveyActionGuard.SURVEY_COMPLETED.getName());
+            }
 
-            List<NewActionTarget> newActionTargets = new ArrayList<>();
-            NewActionTarget newActionTarget = new NewActionTarget();
-
-            newActionTarget.setActionTargetGUID(surveyReportGUID);
-            newActionTarget.setActionTargetName("surveyReport");
-
-            newActionTargets.add(newActionTarget);
-
-            super.recordCompletionStatus(CompletionStatus.ACTIONED, outputGuards, null, newActionTargets, "SUCCESS");
+            if (completionMessage == null)
+            {
+                completionMessage = SurveyActionAuditCode.SURVEY_ACTION_SERVICE_COMPLETE.getMessageDefinition(governanceServiceName,
+                                                                                                              surveyContext.getAssetGUID(),
+                                                                                                              serviceRequestType,
+                                                                                                              Long.toString(endTime.getTime() - startTime.getTime()),
+                                                                                                              surveyReportGUID);
+            }
         }
         catch (Exception  error)
         {
-            try
+            completionStatus            = surveyContext.getCompletionStatus();
+            completionGuards            = surveyContext.getCompletionGuards();
+            completionMessage           = surveyContext.getCompletionMessage();
+            completionRequestParameters = surveyContext.getCompletionRequestParameters();
+            completionActionTargets     = surveyContext.getCompletionActionTargets();
+
+            if (completionStatus == null)
             {
-                /*
-                 * Try to log the completion message - may not work
-                 */
-                surveyContext.getAnnotationStore().setCompletionMessage(error.getMessage());
-
-                List<String> outputGuards = new ArrayList<>();
-                outputGuards.add(SurveyActionGuard.SURVEY_FAILED.getName());
-
-                super.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null, null, error.getMessage());
-
-                auditLog.logException(actionDescription,
-                                      SurveyActionAuditCode.SURVEY_ACTION_SERVICE_FAILED.getMessageDefinition(governanceServiceName,
-                                                                                                              error.getClass().getName(),
-                                                                                                              surveyReportGUID,
-                                                                                                              surveyContext.getAssetGUID(),
-                                                                                                              serviceRequestType,
-                                                                                                              governanceEngineProperties.getQualifiedName(),
-                                                                                                              governanceEngineGUID,
-                                                                                                              error.getMessage()),
-                                      error.toString(),
-                                      error);
-            }
-            catch (Exception ignore)
-            {
-                /*
-                 * Ignore this exception - focus on first error.
-                 */
+                completionStatus = SurveyActionGuard.SURVEY_FAILED.getCompletionStatus();
             }
 
+            if ((completionGuards == null) || (completionGuards.isEmpty()))
+            {
+                completionGuards = new ArrayList<>();
+                completionGuards.add(SurveyActionGuard.SURVEY_FAILED.getName());
+            }
+
+            if (completionMessage == null)
+            {
+                completionMessage = SurveyActionAuditCode.SURVEY_ACTION_SERVICE_FAILED.getMessageDefinition(governanceServiceName,
+                                                                                                            error.getClass().getName(),
+                                                                                                            surveyReportGUID,
+                                                                                                            assetGUID,
+                                                                                                            serviceRequestType,
+                                                                                                            governanceEngineProperties.getQualifiedName(),
+                                                                                                            governanceEngineGUID,
+                                                                                                            error.getMessage());
+            }
+        }
+
+        try
+        {
+            super.disconnect();
+
+            if (completionActionTargets == null)
+            {
+                completionActionTargets = new ArrayList<>();
+            }
+
+            NewActionTarget reportActionTarget = new NewActionTarget();
+
+            reportActionTarget.setActionTargetGUID(surveyReportGUID);
+            reportActionTarget.setActionTargetName(SurveyActionTarget.SURVEY_REPORT.getName());
+
+            completionActionTargets.add(reportActionTarget);
+
+            MessageFormatter messageFormatter = new MessageFormatter();
+
+            String messageText = messageFormatter.getFormattedMessage(completionMessage);
+
+            auditLog.logMessage(actionDescription, completionMessage);
+            surveyContext.getAnnotationStore().setCompletionMessage(messageText);
+
+            super.recordCompletionStatus(completionStatus, completionGuards, completionRequestParameters, completionActionTargets, messageText);
+        }
+        catch (Exception ignore)
+        {
+            /*
+             * Ignore this exception - focus on first error.
+             */
         }
     }
 }

@@ -780,10 +780,8 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
             super.getContext().setupProcessCall(connectorGUID, dataAssetGUID, null, new Date());
         }
 
-        if (connectorConnection instanceof VirtualConnection)
+        if (connectorConnection instanceof VirtualConnection virtualConnection)
         {
-            VirtualConnection virtualConnection = (VirtualConnection)connectorConnection;
-
             if (virtualConnection.getEmbeddedConnections() != null)
             {
                 for (EmbeddedConnection embeddedConnection : virtualConnection.getEmbeddedConnections())

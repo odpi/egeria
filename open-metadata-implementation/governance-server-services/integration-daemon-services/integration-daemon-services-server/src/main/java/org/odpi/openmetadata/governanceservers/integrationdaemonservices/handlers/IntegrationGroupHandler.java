@@ -96,7 +96,7 @@ public class IntegrationGroupHandler
      *
      * @return integration group summary
      */
-    public synchronized IntegrationGroupSummary getSummary()
+    public IntegrationGroupSummary getSummary()
     {
         IntegrationGroupSummary mySummary = new IntegrationGroupSummary();
 
@@ -159,7 +159,7 @@ public class IntegrationGroupHandler
      *
      * @return string or null
      */
-    public synchronized String getIntegrationGroupGUID()
+    public  String getIntegrationGroupGUID()
     {
         return integrationGroupGUID;
     }
@@ -173,9 +173,9 @@ public class IntegrationGroupHandler
      * @throws UserNotAuthorizedException user id is not allowed to access configuration
      * @throws PropertyServerException problem in configuration server
      */
-    public synchronized void refreshConfig() throws InvalidParameterException,
-                                                    UserNotAuthorizedException,
-                                                    PropertyServerException
+    public  void refreshConfig() throws InvalidParameterException,
+                                        UserNotAuthorizedException,
+                                        PropertyServerException
     {
         final String methodName = "refreshConfig";
 
@@ -289,6 +289,7 @@ public class IntegrationGroupHandler
                     if (connectorId.equals(runningConnector.getIntegrationConnectorId()))
                     {
                         found = true;
+                        break;
                     }
                 }
 
@@ -317,9 +318,9 @@ public class IntegrationGroupHandler
      * @throws UserNotAuthorizedException user id is not allowed to access configuration
      * @throws PropertyServerException problem in configuration server
      */
-    public synchronized void refreshConnectorConfig(String  integrationConnectorGUID) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public  void refreshConnectorConfig(String  integrationConnectorGUID) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String methodName = "refreshConnectorConfig";
 
@@ -426,7 +427,7 @@ public class IntegrationGroupHandler
             }
             else
             {
-                connectorHandler.updateConnectorDetails(registeredIntegrationConnectorElement);
+                connectorHandler.refreshConnectorDetails(registeredIntegrationConnectorElement);
             }
 
             return connectorHandler;

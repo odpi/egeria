@@ -129,6 +129,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                     SurveyActionServiceHandler surveyActionServiceHandler = this.getSurveyActionServiceHandler(assetGUID,
                                                                                                                governanceRequestType,
                                                                                                                requestParameters,
+                                                                                                               actionTargetElements,
                                                                                                                engineActionGUID,
                                                                                                                requesterUserId,
                                                                                                                requestedStartDate,
@@ -243,6 +244,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
      * @param assetGUID unique identifier of the asset to analyse
      * @param requestType type of survey
      * @param requestParameters parameters for the survey
+     * @param actionTargetElements the elements for the service to work on
      * @param engineActionGUID unique identifier of the associated engine action entity
      * @param requesterUserId original user requesting this governance service
      * @param requestedStartDate date/time that the governance service should start executing
@@ -254,15 +256,16 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the survey action engine.
      */
-    private SurveyActionServiceHandler getSurveyActionServiceHandler(String                 assetGUID,
-                                                                     String                 requestType,
-                                                                     Map<String, String>    requestParameters,
-                                                                     String                 engineActionGUID,
-                                                                     String                 requesterUserId,
-                                                                     Date                   requestedStartDate,
-                                                                     GovernanceServiceCache governanceServiceCache) throws InvalidParameterException,
-                                                                                                                           UserNotAuthorizedException,
-                                                                                                                           PropertyServerException
+    private SurveyActionServiceHandler getSurveyActionServiceHandler(String                    assetGUID,
+                                                                     String                    requestType,
+                                                                     Map<String, String>       requestParameters,
+                                                                     List<ActionTargetElement> actionTargetElements,
+                                                                     String                    engineActionGUID,
+                                                                     String                    requesterUserId,
+                                                                     Date                      requestedStartDate,
+                                                                     GovernanceServiceCache    governanceServiceCache) throws InvalidParameterException,
+                                                                                                                              UserNotAuthorizedException,
+                                                                                                                              PropertyServerException
     {
         Date                creationTime = new Date();
         Map<String, String> analysisParameters = governanceServiceCache.getRequestParameters(requestParameters);
@@ -300,6 +303,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
         SurveyContext surveyContext = new SurveyContext(engineUserId,
                                                         assetGUID,
                                                         analysisParameters,
+                                                        actionTargetElements,
                                                         assetStore,
                                                         annotationStore,
                                                         openMetadataStore,

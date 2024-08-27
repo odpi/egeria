@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public enum UnityCatalogPlaceholderProperty
     TABLE_NAME ("ucTableName", "The name of a table within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", "string", "my_table"),
 
     /**
-     * The type of a table: MANAGED or EXTERNAL.
+     * The type a table: MANAGED or EXTERNAL.
      */
     TABLE_TYPE ("ucTableType", "The type of a table: MANAGED or EXTERNAL.", "string", "MANAGED"),
 
@@ -52,7 +52,7 @@ public enum UnityCatalogPlaceholderProperty
     VOLUME_NAME ("ucVolumeName", "The name of a volume within a schema and catalog in Unity Catalog (UC).  This value is combined with the name of the schema and catalog to get the full name.", "string", "my_volume"),
 
     /**
-     * The type of a volume: MANAGED or EXTERNAL.
+     * The type of volume: MANAGED or EXTERNAL.
      */
     VOLUME_TYPE ("ucVolumeType", "The type of a volume: MANAGED or EXTERNAL.", "string", "MANAGED"),
 

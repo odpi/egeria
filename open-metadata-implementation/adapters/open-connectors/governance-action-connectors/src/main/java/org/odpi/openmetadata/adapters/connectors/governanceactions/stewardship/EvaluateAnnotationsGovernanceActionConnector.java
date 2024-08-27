@@ -5,13 +5,13 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship;
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.RetentionClassifierGuard;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -51,11 +51,12 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
 
         try
         {
-            List<String>              outputGuards      = new ArrayList<>();
-            CompletionStatus          completionStatus  = null;
-            AuditLogMessageDefinition messageDefinition = null;
-            ActionTargetElement       surveyReport      = null;
-            String                    stewardGUID       = null;
+            List<String>              outputGuards        = new ArrayList<>();
+            List<NewActionTarget>     outputActionTargets = new ArrayList<>();
+            CompletionStatus          completionStatus;
+            AuditLogMessageDefinition messageDefinition;
+            ActionTargetElement       surveyReport        = null;
+            String                    stewardGUID         = null;
 
             if (governanceContext.getActionTargetElements() != null)
             {
@@ -77,14 +78,15 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
 
             if (surveyReport == null)
             {
+                messageDefinition = GovernanceActionConnectorsAuditCode.NO_SURVEY_REPORT.getMessageDefinition(governanceServiceName);
                 outputGuards.add(EvaluateAnnotationsGuard.NO_SURVEY_REPORT.getName());
                 completionStatus = EvaluateAnnotationsGuard.NO_SURVEY_REPORT.getCompletionStatus();
             }
             else if (stewardGUID == null)
             {
                 messageDefinition = GovernanceActionConnectorsAuditCode.NO_STEWARD.getMessageDefinition(governanceServiceName);
-                outputGuards.add(RetentionClassifierGuard.MISSING_STEWARD.getName());
-                completionStatus = RetentionClassifierGuard.MISSING_STEWARD.getCompletionStatus();
+                outputGuards.add(EvaluateAnnotationsGuard.MISSING_STEWARD.getName());
+                completionStatus = EvaluateAnnotationsGuard.MISSING_STEWARD.getCompletionStatus();
             }
             else
             {
@@ -92,6 +94,7 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
                  * Search the survey report looking for request for action annotations
                  */
                 int startFrom = 0;
+                int rfaCount  = 0;
                 List<RelatedMetadataElement> reportedAnnotations = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(surveyReport.getActionTargetGUID(),
                                                                                                                                        1,
                                                                                                                                        OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
@@ -105,15 +108,27 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
                         {
                             if (reportedAnnotation.getElement().getType().getTypeName().equals(OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName))
                             {
-                                governanceContext.openToDo(governanceServiceName + ":" + connectorInstanceId,
-                                                           ToDoType.REQUEST_FOR_ACTION.getDescription(),
-                                                           "Follow the link for the request for action to discover the issue and suggested remedy.",
-                                                           ToDoType.REQUEST_FOR_ACTION.getName(),
-                                                           0,
-                                                           null,
-                                                           stewardGUID,
-                                                           reportedAnnotation.getElement().getElementGUID(),
-                                                           ToDoType.REQUEST_FOR_ACTION.getActionTargetName());
+                                rfaCount++;
+
+                                String toDoGUID = governanceContext.openToDo(governanceServiceName + ":" + connectorInstanceId,
+                                                                             ToDoType.REQUEST_FOR_ACTION.getDescription(),
+                                                                             "Follow the link for the request for action to discover the issue and suggested remedy.",
+                                                                             ToDoType.REQUEST_FOR_ACTION.getName(),
+                                                                             0,
+                                                                             null,
+                                                                             stewardGUID,
+                                                                             reportedAnnotation.getElement().getElementGUID(),
+                                                                             ToDoType.REQUEST_FOR_ACTION.getActionTargetName());
+
+                                if (toDoGUID != null)
+                                {
+                                    NewActionTarget actionTarget = new NewActionTarget();
+
+                                    actionTarget.setActionTargetName(SurveyActionTarget.TO_DO_ELEMENT.getName());
+                                    actionTarget.setActionTargetGUID(toDoGUID);
+
+                                    outputActionTargets.add(actionTarget);
+                                }
                             }
                         }
                     }
@@ -125,14 +140,29 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
                                                                                                               startFrom,
                                                                                                               governanceContext.getMaxPageSize());
                 }
+
+                if (rfaCount == 0)
+                {
+                    messageDefinition = GovernanceActionConnectorsAuditCode.NO_RFAS.getMessageDefinition(surveyReport.getTargetElement().getElementGUID());
+                }
+                else
+                {
+                    messageDefinition = GovernanceActionConnectorsAuditCode.RFAS_DETECTED.getMessageDefinition(Integer.toString(rfaCount),
+                                                                                                               surveyReport.getTargetElement().getElementGUID());
+                }
+
+                completionStatus = EvaluateAnnotationsGuard.ACTIONS_ACTIONED.getCompletionStatus();
+                outputGuards.add(EvaluateAnnotationsGuard.ACTIONS_ACTIONED.getName());
             }
 
-            if (messageDefinition != null)
+            auditLog.logMessage(methodName, messageDefinition);
+
+            if (outputActionTargets.isEmpty())
             {
-                auditLog.logMessage(methodName, messageDefinition);
+                outputActionTargets = null;
             }
 
-            governanceContext.recordCompletionStatus(completionStatus, outputGuards);
+            governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, outputActionTargets, messageDefinition);
         }
         catch (Exception error)
         {

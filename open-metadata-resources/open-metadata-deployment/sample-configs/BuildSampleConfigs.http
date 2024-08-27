@@ -138,7 +138,7 @@ Content-Type: application/json
     {
       "class": "EngineConfig",
       "engineId": "4fe58760-ec4c-4f23-89c2-f7ae979e0e8b",
-      "engineQualifiedName": "AssetSurvey",
+      "engineQualifiedName": "AssetSurveys",
       "engineUserId": "generalnpa"
     },
     {
@@ -157,6 +157,42 @@ Content-Type: application/json
       "class": "EngineConfig",
       "engineId": "947248ee-a6eb-4f99-8376-7ff488b6281e",
       "engineQualifiedName": "Stewardship",
+      "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "d91b91c2-e019-4eca-870d-d88f7caae696",
+      "engineQualifiedName": "FileSurveys",
+      "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "8be68bbe-54ac-4358-aeb9-90782d4e544c",
+      "engineQualifiedName": "FileGovernanceServices",
+      "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "f71a3abb-6d61-4338-8caf-6124a07e35d2",
+      "engineQualifiedName": "UnityCatalogSurveys",
+      "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "d4d86ff2-0654-4616-a5f2-3c15c07865b6",
+      "engineQualifiedName": "UnityCatalogGovernanceServices",
+      "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "c0cf5da9-7725-4bdc-ae6e-6f69b4ce3ba2",
+      "engineQualifiedName": "PostgreSQLSurveys",
+      "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "4a8f28dc-5257-49e3-bfab-6605d83537dd",
+      "engineQualifiedName": "PostgreSQLGovernanceServices",
       "engineUserId": "generalnpa"
     }
   ],

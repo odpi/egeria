@@ -7,6 +7,9 @@ import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropert
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.*;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -339,6 +342,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                                      end2));
     }
 
+
+
     /**
      * Create a governance service entity.
      *
@@ -665,7 +670,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            parentTypeName + ":" + parentGUID + ":SupportedTemplate:" + templateType.getTemplateName(),
                                                            templateType.getTemplateName(),
                                                            SpecificationPropertyType.SUPPORTED_TEMPLATE.getDescription(),
-                                                           SpecificationPropertyType.PLACEHOLDER_PROPERTY.getPropertyType(),
+                                                           SpecificationPropertyType.SUPPORTED_TEMPLATE.getPropertyType(),
                                                            null,
                                                            null,
                                                            null,
@@ -1732,6 +1737,90 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME,
                                                                      idToGUIDMap.getGUID(governanceActionGUID + "_to_" + governanceEngineGUID + "_governance_action_executor_relationship"),
                                                                      properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+    /**
+     * Create the relationship between a governance action type and a pre-defined action target.
+     *
+     * @param governanceActionTypeGUID unique identifier of the governance action type/process step
+     * @param actionTarget details of the action target
+     */
+    public void addTargetForActionType(String          governanceActionTypeGUID,
+                                       NewActionTarget actionTarget)
+    {
+        final String methodName = "addTargetForActionType";
+
+        EntityDetail actionTypeEntity = archiveBuilder.getEntity(governanceActionTypeGUID);
+        EntityDetail targetEntity = archiveBuilder.getEntity(actionTarget.getActionTargetGUID());
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(actionTypeEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(targetEntity);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ACTION_TARGET_NAME.name, actionTarget.getActionTargetName(), methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TARGET_FOR_ACTION_TYPE.typeName,
+                                                                     idToGUIDMap.getGUID(governanceActionTypeGUID + "_to_" + actionTarget.getActionTargetGUID() + "_target_for_action_type_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+
+
+    /**
+     * Create the relationship between a governance action process and a pre-defined action target.
+     *
+     * @param governanceActionProcessGUID unique identifier of the governance action type/process step
+     * @param actionTarget details of the action target
+     */
+    public void addTargetForActionProcess(String          governanceActionProcessGUID,
+                                          NewActionTarget actionTarget)
+    {
+        final String methodName = "addTargetForActionProcess";
+
+        EntityDetail actionTypeEntity = archiveBuilder.getEntity(governanceActionProcessGUID);
+        EntityDetail targetEntity = archiveBuilder.getEntity(actionTarget.getActionTargetGUID());
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(actionTypeEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(targetEntity);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ACTION_TARGET_NAME.name, actionTarget.getActionTargetName(), methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TARGET_FOR_ACTION_PROCESS.typeName,
+                                                                     idToGUIDMap.getGUID(governanceActionProcessGUID + "_to_" + actionTarget.getActionTargetGUID() + "_target_for_action_process_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Create the relationship between a referenceable and a data processing purpose.
+     *
+     * @param referenceableGUID unique identifier of the element that is approved
+     * @param dataProcessingPurposeGUID unique identifier of the
+     */
+    public void addApprovedPurpose(String referenceableGUID,
+                                   String dataProcessingPurposeGUID)
+    {
+        EntityDetail referenceableEntity = archiveBuilder.getEntity(referenceableGUID);
+        EntityDetail purposeEntity = archiveBuilder.getEntity(dataProcessingPurposeGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(referenceableEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(purposeEntity);
+
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.APPROVED_PURPOSE_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(referenceableGUID + "_to_" + dataProcessingPurposeGUID + "_approved_purpose_relationship"),
+                                                                     null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));

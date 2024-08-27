@@ -24,11 +24,39 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
     /**
      * EGERIA-CONNECTOR-0001 - The {0} Egeria Connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
-    UNEXPECTED_EXCEPTION("EGERIA-CONNECTOR-0001",
+    UNEXPECTED_EXCEPTION("OMAG-CONNECTORS-0001",
                          AuditLogRecordSeverityLevel.EXCEPTION,
                          "The {0} Egeria Connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector is unable to connector the the OMAG Infrastructure.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
+    /**
+     * The {0} integration connector has been started and will call the platforms with userId {1}.  The monitored platforms are: {2}
+     */
+    EGERIA_CONNECTOR_START("OMAG-CONNECTORS-0002",
+                           AuditLogRecordSeverityLevel.INFO,
+                           "The {0} Egeria Connector has been started and will call the platforms with userId {1}.  The monitored platforms are: {2}",
+                           "The connector is designed to catalog details of Software Server Platforms that have the deployedImplementationType property set to 'OMAG Server Platform'.",
+                           "No specific action is required.  This message is to confirm the start of the integration connector."),
+
+    /**
+     * The {0} integration connector is not able to retrieve platform {1} ({2}) from the catalog
+     */
+    UNKNOWN_PLATFORM("OMAG-CONNECTORS-0003",
+                     AuditLogRecordSeverityLevel.ERROR,
+                     "The {0} integration connector is not able to retrieve platform {1} ({2}) from the catalog",
+                     "The connector continues to catalog platforms.",
+                     "Determine why this platform is not catalogued."),
+
+    /**
+     * The {0} integration connector has stopped its platform monitoring and is shutting down
+     */
+    CONNECTOR_STOPPING("OMAG-CONNECTORS-0004",
+                       AuditLogRecordSeverityLevel.INFO,
+                       "The {0} integration connector has stopped its platform monitoring and is shutting down",
+                       "The connector is disconnecting.",
+                       "No action is required unless there are errors that follow indicating that there were problems shutting down."),
+
     ;
 
     private final String                      logMessageId;

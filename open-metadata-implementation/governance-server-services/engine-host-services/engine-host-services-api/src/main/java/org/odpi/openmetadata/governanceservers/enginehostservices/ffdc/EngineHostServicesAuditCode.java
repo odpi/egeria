@@ -356,12 +356,12 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
      */
     FINISHED_ALL_GOVERNANCE_SERVICE_CONFIG("ENGINE-HOST-SERVICES-0029",
                                            AuditLogRecordSeverityLevel.INFO,
-                                          "Refreshing all governance service configuration has being completed for governance engine {0}",
+                                          "All governance service configuration has been refreshed in governance engine {0}",
                                           "The governance engine is ready to receive governance requests for all successfully loaded " +
                                                   "governance services.",
                                           "No action is required as long as all the expected governance services are loaded." +
                                                   "If there are any governance services missing then validate the configuration of" +
-                                                  "the governance engine in the metadata server."),
+                                                  "the governance engine in the metadata access server."),
 
     /**
      * ENGINE-HOST-SERVICES-0030 - Failed to refresh configuration for governance service registered as {0} for governance request types {1}.

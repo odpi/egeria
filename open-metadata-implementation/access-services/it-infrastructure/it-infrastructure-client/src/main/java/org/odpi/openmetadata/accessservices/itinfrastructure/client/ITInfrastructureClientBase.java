@@ -222,7 +222,7 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
                        String          infrastructureManagerName,
                        boolean         infrastructureManagerIsHome,
                        AssetProperties assetProperties,
-                       ElementStatus initialStatus,
+                       ElementStatus   initialStatus,
                        String          methodName) throws InvalidParameterException,
                                                           UserNotAuthorizedException,
                                                           PropertyServerException

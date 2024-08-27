@@ -6,7 +6,12 @@ package org.odpi.openmetadata.viewservices.runtimemanager.server;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.ConnectedAssetClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.PlatformManagerClient;
 import org.odpi.openmetadata.accessservices.itinfrastructure.client.ServerManagerClient;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.EngineHostConnector;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.IntegrationDaemonConnector;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SoftwareServerPlatformElement;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformConnector;
@@ -20,12 +25,12 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.ConnectorConfigPropertiesRequestBody;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
+import org.odpi.openmetadata.viewservices.runtimemanager.rest.*;
 import org.odpi.openmetadata.viewservices.runtimemanager.rest.EffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.viewservices.runtimemanager.rest.PlatformReportResponse;
-import org.odpi.openmetadata.viewservices.runtimemanager.rest.ServerReportResponse;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -296,6 +301,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerPlatformConnector omagServerPlatformConnector)
             {
+                omagServerPlatformConnector.setClientUserId(userId);
                 omagServerPlatformConnector.start();
                 response.setElement(omagServerPlatformConnector.getPlatformReport());
                 omagServerPlatformConnector.disconnect();
@@ -528,6 +534,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
+                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 response.setElement(omagServerConnector.getServerReport());
                 omagServerConnector.disconnect();
@@ -589,6 +596,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
+                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 response.setSuccessMessage(omagServerConnector.activateServer());
                 omagServerConnector.disconnect();
@@ -644,6 +652,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
+                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.shutdownServer();
                 omagServerConnector.disconnect();
@@ -699,6 +708,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof OMAGServerConnectorBase omagServerConnector)
             {
+                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.shutdownAndUnregisterServer();
                 omagServerConnector.disconnect();
@@ -723,7 +733,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
     /*
      * =============================================================
-     * Services on running instances
+     * Open Metadata Archives
      */
 
 
@@ -762,6 +772,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof MetadataAccessServerConnector omagServerConnector)
             {
+                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.addOpenMetadataArchiveFile(fileName);
                 omagServerConnector.disconnect();
@@ -820,6 +831,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             if (connector instanceof MetadataAccessServerConnector omagServerConnector)
             {
+                omagServerConnector.setClientUserId(userId);
                 omagServerConnector.start();
                 omagServerConnector.addOpenMetadataArchiveContent(openMetadataArchive);
                 omagServerConnector.disconnect();
@@ -827,6 +839,786 @@ public class RuntimeManagerRESTServices extends TokenController
             else
             {
                 restExceptionHandler.handleInvalidCallToServer(MetadataAccessServerConnector.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+    
+
+    /*
+     * =============================================================
+     * Engine Host
+     */
+
+
+    /**
+     * Request that the governance engine refresh its configuration by calling the metadata server.
+     * This request is useful if the metadata server has an outage, particularly while the
+     * governance server is initializing.  This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @param serverName name of the governance server
+     * @param serverGUID unique identifier of the server to call
+     * @param governanceEngineName unique name of the governance engine
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  GovernanceEngineException there was a problem detected by the governance engine.
+     */
+    public  VoidResponse refreshConfig(String serverName,
+                                       String serverGUID,
+                                       String governanceEngineName)
+    {
+        final String methodName = "getGovernanceEngineSummaries";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof EngineHostConnector omagServerConnector)
+            {
+                omagServerConnector.setClientUserId(userId);
+                omagServerConnector.start();
+                omagServerConnector.refreshEngineConfig(governanceEngineName);
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /*
+     * =============================================================
+     * Integration Daemon
+     */
+
+
+    /**
+     * Retrieve the configuration properties of the named integration connector running in the integration daemon.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param connectorName name of a specific connector
+     *
+     * @return properties map or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+    public PropertiesResponse getConfigurationProperties(String serverName,
+                                                         String serverGUID,
+                                                         String connectorName)
+    {
+        final String methodName = "getConfigurationProperties";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        PropertiesResponse response = new PropertiesResponse();
+        AuditLog           auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof IntegrationDaemonConnector omagServerConnector)
+            {
+                omagServerConnector.setClientUserId(userId);
+                omagServerConnector.start();
+                response.setProperties(omagServerConnector.getConfigurationProperties(connectorName));
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the configuration properties of the integration connectors, or specific integration connector if a
+     * connector name is supplied.  This update is in memory and will not persist over a server restart.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param requestBody name of a specific connector or null for all connectors and the properties to change
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+    public  VoidResponse updateConfigurationProperties(String                               serverName,
+                                                       String                               serverGUID,
+                                                       ConnectorConfigPropertiesRequestBody requestBody)
+    {
+        final String methodName = "updateConfigurationProperties";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof IntegrationDaemonConnector omagServerConnector)
+            {
+                omagServerConnector.setClientUserId(userId);
+                omagServerConnector.start();
+                omagServerConnector.updateConfigurationProperties(requestBody.getConnectorName(),
+                                                                  requestBody.getMergeUpdate(),
+                                                                  requestBody.getConfigurationProperties());
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the endpoint network address for a specific integration connector.
+     * This update is in memory and will not persist over a server restart.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param connectorName name of a specific connector
+     * @param requestBody new endpoint address
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+    public  VoidResponse updateEndpointNetworkAddress(String            serverName,
+                                                      String            serverGUID,
+                                                      String            connectorName,
+                                                      StringRequestBody requestBody)
+    {
+        final String methodName = "updateEndpointNetworkAddress";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof IntegrationDaemonConnector omagServerConnector)
+            {
+                omagServerConnector.setClientUserId(userId);
+                omagServerConnector.start();
+
+                if ((requestBody == null) || requestBody.getString() == null)
+                {
+                    restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                }
+                else
+                {
+                    omagServerConnector.updateEndpointNetworkAddress(connectorName, requestBody.getString());
+                }
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the connection for a specific integration connector.
+     * This update is in memory and will not persist over a server restart.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param connectorName name of a specific connector
+     * @param requestBody new connection object
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration service.
+     */
+    public  VoidResponse updateConnectorConnection(String     serverName,
+                                                   String     serverGUID,
+                                                   String     connectorName,
+                                                   Connection requestBody)
+    {
+        final String methodName = "updateConnectorConnection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof IntegrationDaemonConnector omagServerConnector)
+            {
+                omagServerConnector.setClientUserId(userId);
+                omagServerConnector.start();
+                omagServerConnector.updateConnectorConnection(connectorName, requestBody);
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param requestBody optional name of the connector to target - if no connector name is specified, all
+     *                      connectors managed by this integration service are refreshed.
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration daemon.
+     */
+    public VoidResponse refreshConnectors(String          serverName,
+                                          String          serverGUID,
+                                          NameRequestBody requestBody)
+    {
+        final String methodName = "refreshConnectors";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof IntegrationDaemonConnector omagServerConnector)
+            {
+                omagServerConnector.setClientUserId(userId);
+                omagServerConnector.start();
+
+                if ((requestBody == null) || (requestBody.getName() == null))
+                {
+                    omagServerConnector.refreshConnectors();
+                }
+                else
+                {
+                    omagServerConnector.refreshConnector(requestBody.getName());
+                }
+
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Restart all connectors running in the integration daemon, or restart a specific connector if the connector name is specified.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param requestBody optional name of the connector to target - if no connector name is specified, all
+     *                      connectors managed by this integration service are refreshed.
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  PropertyServerException there was a problem detected by the integration daemon.
+     */
+    public VoidResponse restartConnectors(String          serverName,
+                                          String          serverGUID,
+                                          NameRequestBody requestBody)
+    {
+        final String methodName = "restartConnectors";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof IntegrationDaemonConnector omagServerConnector)
+            {
+                omagServerConnector.setClientUserId(userId);
+                omagServerConnector.start();
+
+                if ((requestBody == null) || (requestBody.getName() == null))
+                {
+                    omagServerConnector.restartConnectors();
+                }
+                else
+                {
+                    omagServerConnector.restartConnector(requestBody.getName());
+                }
+
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Request that the integration group refresh its configuration by calling the metadata access server.
+     * Changes to the connector configuration will result in the affected connectors being restarted.
+     * This request is useful if the metadata access server has an outage, particularly while the
+     * integration daemon is initializing.  This request just ensures that the latest configuration
+     * is in use.
+     *
+     * @param serverName name of the governance server
+     * @param serverGUID unique identifier of the server to call
+     * @param integrationGroupName unique name of the integration group
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid or
+     *  UserNotAuthorizedException user not authorized to issue this request or
+     *  IntegrationGroupException there was a problem detected by the integration group.
+     */
+    public  VoidResponse refreshIntegrationGroupConfig(String serverName,
+                                                       String serverGUID,
+                                                       String integrationGroupName)
+    {
+        final String methodName = "refreshIntegrationGroupConfig";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof IntegrationDaemonConnector omagServerConnector)
+            {
+                omagServerConnector.setClientUserId(userId);
+                omagServerConnector.start();
+
+                omagServerConnector.refreshIntegrationGroupConfig(integrationGroupName);
+
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Pass an open lineage event to the integration service.  It will pass it on to the integration connectors that have registered a
+     * listener for open lineage events.
+     *
+     * @param serverName integration daemon server name
+     * @param serverGUID unique identifier of the server to call
+     * @param event open lineage event to publish.
+     */
+    public VoidResponse publishOpenLineageEvent(String serverName,
+                                                String serverGUID,
+                                                String event)
+    {
+        final String methodName = "publishOpenLineageEvent";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof IntegrationDaemonConnector omagServerConnector)
+            {
+                omagServerConnector.setClientUserId(userId);
+                omagServerConnector.start();
+
+                omagServerConnector.publishOpenLineageEvent(event);
+
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /*
+     * =============================================================
+     * Metadata Access Store
+     */
+
+
+    /**
+     * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+     * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+     * event has been sent.
+     * If the server has already registered in the past, it sends a reregistration request.
+     *
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     * @param serverName server to query
+     * @param serverGUID unique identifier of the server to call
+     * @param cohortName name of cohort
+     */
+    public BooleanResponse connectToCohort(String serverName,
+                                           String serverGUID,
+                                           String cohortName)
+    {
+        final String methodName = "connectToCohort";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof OMAGServerConnectorBase omagServerConnector)
+            {
+                omagServerConnector.setClientUserId(userId);
+                omagServerConnector.start();
+
+                response.setFlag(omagServerConnector.connectToCohort(userId, cohortName));
+
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Disconnect communications from a specific cohort.
+     *
+     * @param serverName server to query
+     * @param serverGUID unique identifier of the server to call
+     * @param cohortName name of cohort
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     */
+    public BooleanResponse disconnectFromCohort(String serverName,
+                                                String serverGUID,
+                                                String cohortName)
+    {
+        final String methodName = "disconnectFromCohort";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof OMAGServerConnectorBase omagServerConnector)
+            {
+                omagServerConnector.setClientUserId(userId);
+                omagServerConnector.start();
+
+                response.setFlag(omagServerConnector.disconnectFromCohort(userId, cohortName));
+
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
+                                                               methodName,
+                                                               serverGUID,
+                                                               connector.getClass().getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Unregister from a specific cohort and disconnect from cohort communications.
+     *
+     * @param serverName server to query
+     * @param serverGUID unique identifier of the server to call
+     * @param cohortName name of cohort
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     */
+    public BooleanResponse unregisterFromCohort(String serverName,
+                                                String serverGUID,
+                                                String cohortName)
+    {
+        final String methodName = "unregisterFromCohort";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        BooleanResponse response = new BooleanResponse();
+        AuditLog        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectedAssetClient handler = instanceHandler.getConnectedAssetClient(userId, serverName, methodName);
+
+            Connector connector = handler.getConnectorForAsset(userId, serverGUID);
+
+            if (connector instanceof OMAGServerConnectorBase omagServerConnector)
+            {
+                omagServerConnector.setClientUserId(userId);
+                omagServerConnector.start();
+
+                response.setFlag(omagServerConnector.unregisterFromCohort(userId, cohortName));
+
+                omagServerConnector.disconnect();
+            }
+            else
+            {
+                restExceptionHandler.handleInvalidCallToServer(OMAGServerConnectorBase.class.getName(),
                                                                methodName,
                                                                serverGUID,
                                                                connector.getClass().getName());

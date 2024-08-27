@@ -300,11 +300,65 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
      * GOVERNANCE-ACTION-CONNECTORS-0026 - The {0} governance action service has not been passed a steward as an action target
      */
     NO_STEWARD("GOVERNANCE-ACTION-CONNECTORS-0026",
-             AuditLogRecordSeverityLevel.INFO,
+             AuditLogRecordSeverityLevel.ERROR,
              "The {0} governance action service has not been passed a steward as an action target",
              "The governance action service will stop with a completion status of INVALID.",
              "Rerun the request, but this time add a steward action target."),
 
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0027 - The {0} governance action service has not been passed a survey report as an action target
+     */
+    NO_SURVEY_REPORT("GOVERNANCE-ACTION-CONNECTORS-0027",
+               AuditLogRecordSeverityLevel.ERROR,
+               "The {0} governance action service has not been passed a survey report as an action target",
+               "The governance action service will end with a completion status of INVALID.",
+               "Rerun the request, but this time add a survey report action target."),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0028 - No request for action annotations detected in survey report {0}
+     */
+    NO_RFAS("GOVERNANCE-ACTION-CONNECTORS-0028",
+               AuditLogRecordSeverityLevel.INFO,
+               "No request for action annotations detected in survey report {0}",
+               "The governance action service will stop with a completion status of ACTIONED.",
+               "No action is required since the survey completed successfully."),
+
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0029 - {0} request for action annotations detected in survey report {2}
+     */
+    RFAS_DETECTED("GOVERNANCE-ACTION-CONNECTORS-0029",
+            AuditLogRecordSeverityLevel.INFO,
+            "{0} request for action annotations detected in survey report {2}",
+            "The governance action service will stop with a completion status of ACTIONED. A ToDo has been created for each Request for Action annotation to notify the appropriate steward.",
+            "Instructions for the action to take are in the Todos and the attached requests for action."),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0030 - The {0} governance action service has not been passed the unique identifier of the server's template as a request parameter
+     */
+    NO_TEMPLATE_GUID("GOVERNANCE-ACTION-CONNECTORS-0030",
+                     AuditLogRecordSeverityLevel.ERROR,
+                     "The {0} governance action service has not been passed the unique identifier of the server's template as a request parameter",
+                     "The governance action service will terminate with a completion status of INVALID.",
+                     "Rerun the request, but this time add a templateGUID request parameter."),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-00301- The {0} governance action service has not been passed the unique identifier of an integration connector as an action target
+     */
+    NO_CONNECTOR("GOVERNANCE-ACTION-CONNECTORS-0031",
+                     AuditLogRecordSeverityLevel.ERROR,
+                     "The {0} governance action service has not been passed the unique identifier of an integration connector as an action target",
+                     "The governance action service will immediately end with a completion status of INVALID.",
+                     "Rerun the request, but this time add an integrationConnector action target."),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0032 - Integration connector {0} is now cataloging {1} server at {2}
+     */
+    CONNECTOR_CONFIGURED("GOVERNANCE-ACTION-CONNECTORS-0032",
+                  AuditLogRecordSeverityLevel.INFO,
+                  "Integration connector {0} is now cataloging {1} server {2}",
+                  "The governance action service has completed the setup of the integration connector.  It will exit with a completion status of ACTIONED.",
+                  "Check that the integration connector is able to contact the server and the cataloguing is operating as expected."),
 
     ;
 

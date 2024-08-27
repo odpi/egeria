@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
 import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
@@ -520,9 +520,9 @@ public class OSSUnityCatalogInsideCatalogSyncVolumes extends OSSUnityCatalogInsi
                                                              OpenMetadataProperty.PATH_NAME.name,
                                                              getPathNameFromStorageLocation(info.getStorage_location()));
 
-        elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                info.getProperties());
+       // elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+       //                                                         OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+       //                                                         info.getProperties());
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,

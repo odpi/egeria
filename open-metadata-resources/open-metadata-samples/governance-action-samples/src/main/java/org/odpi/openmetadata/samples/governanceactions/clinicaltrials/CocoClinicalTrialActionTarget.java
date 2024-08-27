@@ -339,7 +339,7 @@ public enum CocoClinicalTrialActionTarget
      */
     public static List<ActionTargetType> getHospitalOnboardingActionTargetTypes()
     {
-        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
+        List<ActionTargetType> actionTargetTypes = getCertifyWeeklyMeasurementsActionTargetTypes();
 
         /*
          * Predefined by ClinicalTrialSetUp
@@ -357,6 +357,31 @@ public enum CocoClinicalTrialActionTarget
 
         return actionTargetTypes;
     }
+
+
+
+    /**
+     * Return the action targets defined for this service.
+     *
+     * @return list
+     */
+    public static List<ActionTargetType> getCertifyWeeklyMeasurementsActionTargetTypes()
+    {
+        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
+
+        /*
+         * Predefined by ClinicalTrialSetUp
+         */
+        actionTargetTypes.add(DATA_QUALITY_CERTIFICATION_TYPE.getActionTargetType());
+
+        /*
+         * Supplied by the caller
+         */
+        actionTargetTypes.add(HOSPITAL.getActionTargetType());
+
+        return actionTargetTypes;
+    }
+
 
 
 

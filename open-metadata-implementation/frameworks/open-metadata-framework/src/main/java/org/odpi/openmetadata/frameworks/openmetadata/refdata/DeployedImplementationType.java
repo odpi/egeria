@@ -509,6 +509,16 @@ public enum DeployedImplementationType
                         "https://atlas.apache.org/"),
 
     /**
+     * A data catalog for data observability.
+     */
+    MARQUEZ_SERVER("Marquez Server",
+                        DeployedImplementationType.SOFTWARE_SERVER,
+                        OpenMetadataType.SOFTWARE_SERVER.typeName,
+                        OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
+                        "A data catalog for data observability.",
+                        "https://marquezproject.ai/"),
+
+    /**
      * A software server supporting an event broker that enables high speed, reliable topic-based event exchange.
      */
     APACHE_KAFKA_SERVER("Apache Kafka Server",

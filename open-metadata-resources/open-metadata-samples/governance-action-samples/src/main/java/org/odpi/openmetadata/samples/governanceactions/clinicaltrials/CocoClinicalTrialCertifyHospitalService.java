@@ -17,7 +17,6 @@ import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamp
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Responsible for adding the certifying that a hospital has completed all the agreements to participate in a clinical trial.
@@ -46,12 +45,7 @@ public class CocoClinicalTrialCertifyHospitalService extends CocoClinicalTrialBa
         String hospitalGUID            = null;
         String hospitalName            = null;
         String certificationTypeGUID   = null;
-        String processOwnerGUID        = null;
-        String processOwnerTypeName    = null;
         String custodianGUID           = null;
-        String custodianTypeName       = null;
-        String hospitalContactGUID     = null;
-        String hospitalContactTypeName = null;
 
         super.start();
 

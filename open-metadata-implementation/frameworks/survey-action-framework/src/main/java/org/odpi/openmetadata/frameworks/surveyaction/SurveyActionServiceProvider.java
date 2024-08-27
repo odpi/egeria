@@ -30,7 +30,7 @@ public abstract class SurveyActionServiceProvider extends GovernanceServiceProvi
     public SurveyActionServiceProvider()
     {
         super.supportedRequestParameters = SurveyRequestParameter.getRequestParameterTypes();
-        super.producedGuards = SurveyActionGuard.getGuardTypes();
+        super.producedGuards = SurveyActionGuard.getSimpleSurveyGuardTypes();
         super.producedActionTargetTypes = SurveyActionTarget.getActionTargetTypes();
     }
 

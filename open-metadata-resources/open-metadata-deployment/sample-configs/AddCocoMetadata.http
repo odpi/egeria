@@ -38,8 +38,22 @@ Content-Type: application/json
       "engineUserId": "generalnpa"
 }
 
+
 ###
-# Restart the engine-host  server on the OMAG Server Platform.
+# Add the AssetQuality at CocoPharmaceuticals engine to engine-host
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/engine
+Content-Type: application/json
+
+{
+  "class": "EngineConfig",
+  "engineId": "76257f18-293f-4e7c-b79f-8b7e5fa44552",
+  "engineQualifiedName": "AssetQuality@CocoPharmaceuticals",
+  "engineUserId": "generalnpa"
+}
+
+
+###
+# Restart the engine-host server on the OMAG Server Platform.
 POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/engine-host/instance
 
 

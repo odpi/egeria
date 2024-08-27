@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,7 +22,12 @@ public class BasicElementProperties
 {
     private String              name       = null;
     private String              comment    = null;
-    private Map<String, String> properties = null;
+
+    /*
+     * This property is being remove temporarily since there are inconsistencies in the API over whether this is a
+     * String or a map. Once this has been resolved, it will be reinstated.
+     */
+    // private Map<String, String> properties = null;
 
 
     /**
@@ -77,26 +81,20 @@ public class BasicElementProperties
     }
 
 
-    /**
+    /*
      * Return arbitrary name-value property pairs.
      *
      * @return property string map
      */
-    public Map<String, String> getProperties()
-    {
-        return properties;
-    }
+    //public Map<String, String> getProperties() {return properties;}
 
 
-    /**
+    /*
      * Set up arbitrary name-value property pairs.
      *
      * @param properties property string map
      */
-    public void setProperties(Map<String, String> properties)
-    {
-        this.properties = properties;
-    }
+    //public void setProperties(Map<String, String> properties) {this.properties = properties;}
 
 
     /**
@@ -110,7 +108,7 @@ public class BasicElementProperties
         return "BasicElementProperties{" +
                 "name='" + name + '\'' +
                 ", comment='" + comment + '\'' +
-                ", properties=" + properties +
+              //  ", properties=" + properties +
                 '}';
     }
 
@@ -127,7 +125,8 @@ public class BasicElementProperties
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         BasicElementProperties that = (BasicElementProperties) objectToCompare;
-        return Objects.equals(name, that.name) && Objects.equals(comment, that.comment) && Objects.equals(properties, that.properties);
+        return Objects.equals(name, that.name) && Objects.equals(comment, that.comment);
+                //&& Objects.equals(properties, that.properties);
     }
 
 
@@ -139,6 +138,6 @@ public class BasicElementProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(name, comment, properties);
+        return Objects.hash(name, comment ); //, properties);
     }
 }
