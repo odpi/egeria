@@ -69,7 +69,7 @@ ext {
     jwtImplVersion = '0.11.5'
     jwtJacksonVersion = '0.11.5'
     kafkaVersion = '3.7.0'
-    lang3Version = '3.14.0'
+    lang3Version = '3.16.0'
     logbackVersion = '1.5.6'
     lettuceVersion = '6.3.2.RELEASE'
     // TODO: Lucene Version 9 now available but changed the naming of Codec files and so does not work with XTDB
