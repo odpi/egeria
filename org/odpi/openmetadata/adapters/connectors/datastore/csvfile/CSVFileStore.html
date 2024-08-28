@@ -113,7 +113,7 @@ extends <a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.
 <div class="block">Return the number of records in the file.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#readRecord(int)" class="member-name-link">readRecord</a><wbr>(int&nbsp;rowNumber)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#readRecord(long)" class="member-name-link">readRecord</a><wbr>(long&nbsp;rowNumber)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the requested data record.</div>
 </div>
@@ -170,9 +170,9 @@ extends <a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.
 </section>
 </li>
 <li>
-<section class="detail" id="readRecord(int)">
+<section class="detail" id="readRecord(long)">
 <h3>readRecord</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">readRecord</span><wbr><span class="parameters">(int&nbsp;rowNumber)</span>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">readRecord</span><wbr><span class="parameters">(long&nbsp;rowNumber)</span>
                  throws <span class="exceptions"><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a>,
 <a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></span></div>
 <div class="block">Return the requested data record.  The first record is record 0.  If the first line of the file is the column
