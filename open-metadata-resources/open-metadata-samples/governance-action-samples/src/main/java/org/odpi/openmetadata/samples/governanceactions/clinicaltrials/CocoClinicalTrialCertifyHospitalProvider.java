@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CocoClinicalTrialCertifyHospitalProvider extends GovernanceActionServiceProviderBase
 {
-    private static final String  connectorTypeGUID = "fb8b3d5a-cbb6-4645-9c64-68ab0bb968f1";
+    private static final String  connectorTypeGUID = "c07a2573-f191-459b-b567-831200702b11";
     private static final String  connectorTypeQualifiedName = "CocoPharmaceuticals:GovernanceActionService:ClinicalTrial:CertifyHospital";
     private static final String  connectorTypeDisplayName = "Clinical Trial Certify Hospital Governance Action Service";
     private static final String  connectorTypeDescription = "Adds a certification to the Hospital organization so that its data can be included in a clinical trial.";

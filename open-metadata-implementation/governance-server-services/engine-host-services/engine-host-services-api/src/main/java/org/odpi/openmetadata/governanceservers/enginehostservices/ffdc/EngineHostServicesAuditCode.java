@@ -476,7 +476,7 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
      * ENGINE-HOST-SERVICES-2000 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}
      */
     ACTION_PROCESSING_ERROR( "ENGINE-HOST-SERVICES-2000",
-                             AuditLogRecordSeverityLevel.ERROR,
+                             AuditLogRecordSeverityLevel.EXCEPTION,
                             "{0} caught an exception {1} while processing engine action {2}; the error message was {3}",
                             "The server is not able to start or complete the requested processing related to the governance service for this engine action.",
                             "Follow the instructions for the message associated with the exception."),

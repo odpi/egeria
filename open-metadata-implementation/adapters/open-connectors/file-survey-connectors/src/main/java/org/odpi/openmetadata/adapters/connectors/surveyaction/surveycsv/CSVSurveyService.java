@@ -291,7 +291,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                     }
                 }
 
-                for (int recordNumber=0; recordNumber < recordCount ; recordNumber++)
+                for (long recordNumber=0; recordNumber < recordCount ; recordNumber++)
                 {
                     List<String>  recordValues = assetConnector.readRecord(recordNumber);
 
