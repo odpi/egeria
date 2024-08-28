@@ -3,22 +3,26 @@
 package org.odpi.openmetadata.engineservices.surveyaction.handlers;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
+import org.odpi.openmetadata.accessservices.assetowner.client.ConnectedAssetClient;
 import org.odpi.openmetadata.accessservices.assetowner.client.FileSystemAssetOwner;
+import org.odpi.openmetadata.accessservices.assetowner.client.SurveyAssetStoreClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.assetowner.client.ConnectedAssetClient;
-import org.odpi.openmetadata.accessservices.assetowner.client.SurveyAssetStoreClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionAuditCode;
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyContext;
@@ -26,7 +30,10 @@ import org.odpi.openmetadata.frameworks.surveyaction.SurveyOpenMetadataStore;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceCache;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The SurveyActionEngineHandler is responsible for running survey action services on demand.  It is initialized
@@ -39,6 +46,8 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
     private final FileSystemAssetOwner fileSystemAssetOwner;    /* Initialized in constructor */
     private final CSVFileAssetOwner    csvFileAssetOwner;    /* Initialized in constructor */
     private final OpenMetadataClient   openMetadataClient;      /* Initialized in constructor */
+
+    private final PropertyHelper propertyHelper = new PropertyHelper();
 
     /**
      * Create a client-side object for calling a survey action engine.
@@ -195,17 +204,34 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
         String assetGUID = null;
         List<String> ignoredAssets = new ArrayList<>();
 
+        /*
+         * First pick out all the assets ...
+         */
+        List<ActionTargetElement> assetTargetElements = new ArrayList<>();
+
         for (ActionTargetElement actionTargetElement : actionTargetElements)
         {
-            if ((actionTargetElement != null)
-                    && (actionTargetElement.getTargetElement() != null)
-                    && (actionTargetElement.getTargetElement().getType() != null))
+            if (actionTargetElement != null)
             {
-                String       typeName       = actionTargetElement.getTargetElement().getType().getTypeName();
-                List<String> superTypeNames = actionTargetElement.getTargetElement().getType().getSuperTypeNames();
+                if (propertyHelper.isTypeOf(actionTargetElement.getTargetElement(), OpenMetadataType.ASSET.typeName))
+                {
+                    assetTargetElements.add(actionTargetElement);
+                }
+            }
+        }
 
-                if ((OpenMetadataType.ASSET.typeName.equals(typeName)) ||
-                        ((superTypeNames != null) && (superTypeNames.contains(OpenMetadataType.ASSET.typeName))))
+        if (assetTargetElements.size() == 1)
+        {
+            assetGUID = assetTargetElements.get(0).getTargetElement().getElementGUID();
+        }
+        else
+        {
+            /*
+             * Since there are multiple assets, only pick out the ones with an action target name of "newAsset".
+             */
+            for (ActionTargetElement actionTargetElement : assetTargetElements)
+            {
+                if (ActionTarget.NEW_ASSET.getName().equals(actionTargetElement.getActionTargetName()))
                 {
                     if (assetGUID == null)
                     {
@@ -223,17 +249,19 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                     }
                 }
             }
+
+            if (! ignoredAssets.isEmpty())
+            {
+                auditLog.logMessage(methodName,
+                                    SurveyActionAuditCode.IGNORING_ASSETS.getMessageDefinition(governanceServiceName,
+                                                                                               governanceRequestType,
+                                                                                               engineActionGUID,
+                                                                                               assetGUID,
+                                                                                               ignoredAssets.toString()));
+            }
         }
 
-        if (! ignoredAssets.isEmpty())
-        {
-            auditLog.logMessage(methodName,
-                                SurveyActionAuditCode.IGNORING_ASSETS.getMessageDefinition(governanceServiceName,
-                                                                                           governanceRequestType,
-                                                                                           engineActionGUID,
-                                                                                           assetGUID,
-                                                                                           ignoredAssets.toString()));
-        }
+
 
         return assetGUID;
     }

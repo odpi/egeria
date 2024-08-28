@@ -159,14 +159,14 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                 schemaAttributes = nestedSchemaType.getSchemaAttributes();
 
                 Map<String,String> expectedColumns = new HashMap<>();
-                List<String> expectedColumnNames = new ArrayList<>();
+                Map<Integer, String> expectedColumnNames = new HashMap<>();
 
                 while (schemaAttributes.hasNext())
                 {
                     SchemaAttribute schemaAttribute = schemaAttributes.next();
 
                     expectedColumns.put(schemaAttribute.getDisplayName(), schemaAttribute.getGUID());
-                    expectedColumnNames.add(schemaAttribute.getElementPosition(), schemaAttribute.getDisplayName());
+                    expectedColumnNames.put(schemaAttribute.getElementPosition(), schemaAttribute.getDisplayName());
                 }
 
                 List<String> actualColumnNames = assetConnector.getColumnNames();
@@ -189,7 +189,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                         for (int i = 0; i < expectedColumnNames.size(); i++)
                         {
                             if ((expectedColumnNames.get(i) == null) || (actualColumnNames.get(i) == null) ||
-                                    (!expectedColumnNames.get(i).equals(actualColumnNames.get(i))))
+                                    (!actualColumnNames.get(i).contains(expectedColumnNames.get(i))))
                             {
                                 errorCount--;
                             }
@@ -219,7 +219,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                     int angleLeftQualityScore = 0;
                     int angleRightQualityScore = 0;
 
-                    for (int recordNumber = 0; recordNumber < recordCount; recordNumber++)
+                    for (long recordNumber = 0; recordNumber < recordCount; recordNumber++)
                     {
                         List<String> recordValues = assetConnector.readRecord(recordNumber);
 

@@ -346,7 +346,6 @@ public class SurveyContext
                 ", openMetadataStore=" + openMetadataStore +
                 ", surveyActionServiceName='" + surveyActionServiceName + '\'' +
                 ", requesterUserId='" + requesterUserId + '\'' +
-                ", auditLog=" + auditLog +
                 ", fileClassifier=" + fileClassifier +
                 ", isActive=" + isActive +
                 ", completionStatus=" + completionStatus +

@@ -105,6 +105,7 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
      * @throws FileException problem accessing the file
      * @throws FileReadException unable to find, open or scan the file.
      */
+    @Override
     public long     getRecordCount() throws FileException, FileReadException
     {
         final String  methodName = "getRecordCount";
@@ -149,6 +150,7 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
      * @throws FileException problem accessing the file
      * @throws FileReadException unable to retrieve the column names
      */
+    @Override
     public List<String>      getColumnNames() throws FileException,
                                                      FileReadException
     {
@@ -176,7 +178,7 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
      * @throws FileException problem accessing the file
      * @throws FileReadException unable to find, open or read the file, or the file does not include the requested record.
      */
-    public List<String>      readRecord(int  dataRecordNumber) throws FileException, FileReadException
+    public List<String>      readRecord(long  dataRecordNumber) throws FileException, FileReadException
     {
         final String  methodName = "readRecord";
 
@@ -200,7 +202,7 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
      * @throws FileException problem accessing the file
      * @throws FileReadException unable to find, open or read the file, or the file does not include the requested record.
      */
-    private List<String>      readRow(int     recordLocation,
+    private List<String>      readRow(long    recordLocation,
                                       String  methodName) throws FileException, FileReadException
     {
 
@@ -224,7 +226,7 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
             }
 
             throw new FileReadException(CSVFileConnectorErrorCode.FILE_TOO_SHORT.getMessageDefinition(fileStoreName,
-                                                                                                      Integer.toString(recordLocation)),
+                                                                                                      Long.toString(recordLocation)),
                                         this.getClass().getName(),
                                         methodName,
                                         fileStoreName);

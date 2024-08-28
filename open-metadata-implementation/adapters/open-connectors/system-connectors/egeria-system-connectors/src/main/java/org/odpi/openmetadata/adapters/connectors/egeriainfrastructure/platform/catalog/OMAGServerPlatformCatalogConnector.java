@@ -71,7 +71,7 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public synchronized void start() throws ConnectorCheckedException
     {
         super.start();
 
@@ -190,6 +190,7 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
     /**
      * Called each time an event that is published by the IT Infrastructure OMAS, it is looking for Software Server Platforms to add to monitoredPlatforms.
      */
+    @Override
     public void processEvent(ITInfrastructureOutTopicEvent event)
     {
         if ((event.getElementProperties() != null) &&

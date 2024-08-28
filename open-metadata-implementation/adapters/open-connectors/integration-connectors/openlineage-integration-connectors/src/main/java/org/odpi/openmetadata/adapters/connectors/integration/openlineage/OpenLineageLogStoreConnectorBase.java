@@ -180,6 +180,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
      *
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the catalog targets.
      */
+    @Override
     public synchronized void refresh() throws ConnectorCheckedException
     {
         final String methodName = "refresh";

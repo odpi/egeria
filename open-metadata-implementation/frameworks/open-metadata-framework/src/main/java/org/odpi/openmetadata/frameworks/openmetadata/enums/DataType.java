@@ -126,6 +126,7 @@ public enum DataType implements OpenMetadataEnum
      *
      * @return int ordinal
      */
+    @Override
     public int getOrdinal() { return ordinal; }
 
 
@@ -133,7 +134,7 @@ public enum DataType implements OpenMetadataEnum
      * Return the default name of the enumeration.
      *
      * @return String name
-     */
+     */@Override
     public String getName() { return name; }
 
 
@@ -142,6 +143,7 @@ public enum DataType implements OpenMetadataEnum
      *
      * @return String description
      */
+    @Override
     public String getDescription() { return description; }
 
 
@@ -150,6 +152,7 @@ public enum DataType implements OpenMetadataEnum
      *
      * @return  guid
      */
+    @Override
     public  String getDescriptionGUID()
     {
         return descriptionGUID;
@@ -161,6 +164,7 @@ public enum DataType implements OpenMetadataEnum
      *
      * @return boolean
      */
+    @Override
     public boolean isDefault()
     {
         return isDefault;

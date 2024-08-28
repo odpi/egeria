@@ -44,7 +44,7 @@ public class CatalogServerGovernanceActionConnector extends GeneralGovernanceAct
      * @throws ConnectorCheckedException there is a problem within the governance action service.
      */
     @Override
-    public void start() throws ConnectorCheckedException
+    public synchronized void start() throws ConnectorCheckedException
     {
         final String methodName = "start";
 
@@ -187,7 +187,7 @@ public class CatalogServerGovernanceActionConnector extends GeneralGovernanceAct
             configurationProperties.putAll(governanceContext.getRequestParameters());
         }
 
-        if (configurationProperties.isEmpty())
+        if ((configurationProperties == null) || (configurationProperties.isEmpty()))
         {
             return null;
         }

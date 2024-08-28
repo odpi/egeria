@@ -750,6 +750,8 @@ public class AnnotationStore
                                                                    null,
                                                                    this.getEffectiveTime());
                 }
+
+                return annotationGUID;
             }
         }
 

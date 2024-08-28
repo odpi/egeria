@@ -36,6 +36,8 @@ DELETE {{ucURL}}/api/2.1/unity-catalog/schemas/clinical_trials.teddy_bear_drop_f
 Content-Type: application/json
 
 ###
+# Remember to delete files in data lake
+###
 # =====================================================================================================================
 # These commands add the CocoComboArchive to active-metadata-store and a new governance engine for clinical trials
 # to engine-host.  They use IntelliJ's HTTP Client.
@@ -383,7 +385,7 @@ Content-Type: application/json
     {
       "class" : "NewActionTarget",
       "actionTargetName": "dataLakeCatalog",
-      "actionTargetGUID": "c861d5e8-1cda-4063-9c89-d79e0e505d05"
+      "actionTargetGUID": "7dc0f1ad-c831-4e53-8d2b-dd503042e259"
     }],
     "requestParameters" : {
        "dataLakeSchemaName" : "teddy_bear_drop_foot",

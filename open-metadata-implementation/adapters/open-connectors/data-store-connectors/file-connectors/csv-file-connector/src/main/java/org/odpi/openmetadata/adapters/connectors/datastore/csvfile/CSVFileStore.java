@@ -50,5 +50,5 @@ public interface CSVFileStore extends BasicFileStore
      * @throws FileException there is a problem accessing the file
      * @throws FileReadException unable to find, open or read the file, or the file does not include the requested record.
      */
-    List<String>      readRecord(int  rowNumber) throws FileException, FileReadException;
+    List<String>      readRecord(long  rowNumber) throws FileException, FileReadException;
 }

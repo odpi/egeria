@@ -95,7 +95,7 @@ public class CSVFileStoreConnectorTest
         assertTrue(columnNames != null);
         assertFalse(columnNames.isEmpty());
 
-        for (int i=0; i<connector.getRecordCount(); i++)
+        for (long i=0; i<connector.getRecordCount(); i++)
         {
             List<String>  columns = connector.readRecord(i);
             assertTrue(columnNames.size() == columns.size());
@@ -103,7 +103,7 @@ public class CSVFileStoreConnectorTest
 
         try
         {
-            connector.readRecord(10000);
+            connector.readRecord(10000L);
             assertTrue(false);
 
         }

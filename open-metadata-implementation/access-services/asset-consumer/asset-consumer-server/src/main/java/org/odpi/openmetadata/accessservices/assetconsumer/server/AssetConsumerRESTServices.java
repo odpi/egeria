@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
@@ -509,15 +510,24 @@ public class AssetConsumerRESTServices
 
                     for (String assetGUID : organizedEntities.keySet())
                     {
-                        AssetElement asset = assetHandler.getBeanFromRepository(userId,
-                                                                                assetGUID,
-                                                                                parameterName,
-                                                                                OpenMetadataType.ASSET.typeName,
-                                                                                methodName);
+                        AssetElement asset;
+
+                        try
+                        {
+                            asset = assetHandler.getBeanFromRepository(userId,
+                                                                       assetGUID,
+                                                                       parameterName,
+                                                                       OpenMetadataType.ASSET.typeName,
+                                                                       methodName);
+                        }
+                        catch (InvalidParameterException notVisible)
+                        {
+                            asset = null;
+                        }
 
                         if (asset != null)
                         {
-                            AssetSearchMatches         assetSearchMatches = new AssetSearchMatches(asset);
+                            AssetSearchMatches           assetSearchMatches = new AssetSearchMatches(asset);
                             Map<String, EntityDetail>    assetEntityMap   = organizedEntities.get(assetGUID);
                             List<MetadataElementSummary> anchoredElements = new ArrayList<>();
 

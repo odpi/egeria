@@ -111,10 +111,11 @@ public class IntegrationConnectorRefreshThread implements Runnable
                 }
                 catch (Exception error)
                 {
-                    auditLog.logMessage(actionDescription,
-                                        IntegrationDaemonServicesAuditCode.REFRESH_THREAD_CONNECTOR_ERROR.getMessageDefinition(connectorHandler.getIntegrationConnectorName(),
-                                                                                                                               error.getClass().getName(),
-                                                                                                                               error.getMessage()));
+                    auditLog.logException(actionDescription,
+                                          IntegrationDaemonServicesAuditCode.REFRESH_THREAD_CONNECTOR_ERROR.getMessageDefinition(connectorHandler.getIntegrationConnectorName(),
+                                                                                                                                 error.getClass().getName(),
+                                                                                                                                 error.getMessage()),
+                                          error);
                 }
             }
 
