@@ -1810,7 +1810,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * @param serverName     name of server instance to route request to
      * @param requestBody properties to initiate the new instance of the process
      *
-     * @return unique identifier of the first governance action of the process or
+     * @return unique identifier of the governance action process instance or
      *  InvalidParameterException null or unrecognized qualified name of the process
      *  UserNotAuthorizedException this governance action service is not authorized to create a governance action process
      *  PropertyServerException there is a problem with the metadata store

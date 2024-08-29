@@ -337,11 +337,22 @@ public class OpenMetadataTypesArchive
 
     private void update0462GovernanceActionProcesses()
     {
+        this.archiveBuilder.addEntityDef(getGovernanceActionProcessInstanceEntity());
         this.archiveBuilder.addRelationshipDef(getTargetForActionType());
         this.archiveBuilder.addRelationshipDef(getTargetForActionProcess());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcessFlow());
     }
 
+
+    private EntityDef getGovernanceActionProcessInstanceEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeGUID,
+                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName),
+                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.description,
+                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.descriptionGUID,
+                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.wikiURL);
+    }
 
     private RelationshipDef getTargetForActionType()
     {

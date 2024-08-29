@@ -207,8 +207,6 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
 
         try
         {
-            super.disconnect();
-
             if (completionActionTargets == null)
             {
                 completionActionTargets = new ArrayList<>();
@@ -229,6 +227,8 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
             surveyContext.getAnnotationStore().setCompletionMessage(messageText);
 
             super.recordCompletionStatus(completionStatus, completionGuards, completionRequestParameters, completionActionTargets, messageText);
+
+            super.disconnect();
         }
         catch (Exception ignore)
         {

@@ -1,8 +1,8 @@
 ###
 # Create the basic structure of the CocoDataLake
 #
-@ucURL=http://localhost:8080
-#@ucURL=http://egeria.pdr-associates.com:8070
+#@ucURL=http://localhost:8080
+@ucURL=http://egeria.pdr-associates.com:8070
 
 @cocoDataLake=/Users/amandachessell/coco_data_lake
 
@@ -67,16 +67,6 @@ Content-Type: application/json
 }
 
 
-###
-# @name create schema
-POST {{ucURL}}/api/2.1/unity-catalog/schemas
-Content-Type: application/json
-
-{
-  "name": "teddy_bear_drop_foot",
-  "catalog_name" : "clinical_trials",
-  "comment": "Observational study on the Teddy Bear Drop Foot condition."
-}
 
 ###
 #----------------------------------------------------------------------------

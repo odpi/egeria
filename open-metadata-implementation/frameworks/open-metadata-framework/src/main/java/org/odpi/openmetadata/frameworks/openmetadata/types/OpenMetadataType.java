@@ -1593,6 +1593,15 @@ public enum OpenMetadataType
                       "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action process.  Additional targets for action can be supplied by the caller."),
 
     /**
+     * Represents a single run of a governance action process.  It is linked to the parent governance action process using the ProcessHierarchy relationship..
+     */
+    GOVERNANCE_ACTION_PROCESS_INSTANCE("206a6e44-ffe7-408b-8e59-79842d362776",
+                              "GovernanceActionProcessInstance",
+                              OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                              "6fcfbc4c-f08d-4946-a311-e76237fa1263",
+                              "Represents a single run of a governance action process.  It is linked to the parent governance action process using the ProcessHierarchy relationship."),
+
+    /**
      * An engine action that has been created to support the active governance of the open metadata ecosystem and/or digital landscape.
      */
     ENGINE_ACTION("c976d88a-2b11-4b40-b972-c38d41bfc6be",

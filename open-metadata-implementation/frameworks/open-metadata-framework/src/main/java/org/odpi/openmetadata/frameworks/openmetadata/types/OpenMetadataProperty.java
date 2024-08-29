@@ -169,6 +169,16 @@ public enum OpenMetadataProperty
     FORMULA_TYPE("formulaType", "string", "Format of the expression provided in the formula attribute.", "SQL", "dd9b24cb-0359-4915-8b6b-9eae251adc1c"),
 
     /**
+     * Time that a transient process started.
+     */
+    PROCESS_START_TIME("processStartTime", "date", "Time that a transient process started.", null, "f2c4180f-a803-42d6-9eb1-2bd29bd20d88"),
+
+    /**
+     * Time that a transient process ended.
+     */
+    PROCESS_END_TIME("processEndTime", "date", "Time that a transient process ended.", null, "2179e4e3-b640-403a-a2bb-10da5c39acf6"),
+
+    /**
      * Is this element visible to all, or only the author?
      */
     IS_PUBLIC("isPublic", "boolean",  "Is this element visible to all, or only the author?", "true", "e7a8eaa8-4358-4dd3-8d82-2ab3c118cfe4"),

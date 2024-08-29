@@ -1,5 +1,7 @@
 
 @ucURL=http://localhost:8080
+#@ucURL=http://egeria.pdr-associates.com:8070
+
 @baseURL=https://localhost:9443
 @viewServer=view-server
 
@@ -544,6 +546,25 @@ Content-Type: application/json
       "class" : "NewActionTarget",
       "actionTargetName": "hospital",
       "actionTargetGUID": "{{oakDeneHospitalGUID}}"
+    }]
+}
+
+
+###
+# @name initiateGovernanceActionProcess certify-hospital
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "ClinicalTrials:PROJ-CT-TBDF:certify-hospital",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "hospital",
+      "actionTargetGUID": "{{hamptonHospitalGUID}}"
     }]
 }
 
