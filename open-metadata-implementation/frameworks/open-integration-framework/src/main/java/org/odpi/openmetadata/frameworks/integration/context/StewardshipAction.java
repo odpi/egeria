@@ -214,7 +214,7 @@ public  class StewardshipAction
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
      *
-     * @return unique identifier of the first engine action of the process
+     * @return unique identifier of the governance action process instance
      * @throws InvalidParameterException null or unrecognized qualified name of the process
      * @throws UserNotAuthorizedException the caller is not authorized to create a governance action process
      * @throws PropertyServerException there is a problem with the metadata store

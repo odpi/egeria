@@ -137,6 +137,34 @@ public class PropertyHelper
 
 
     /**
+     * Return the anchorGUID for an element.
+     *
+     * @param elementHeader header of the element
+     * @return unique identifier or null;
+     */
+    public String getAnchorGUID(ElementHeader elementHeader)
+    {
+        List<ElementClassification> classifications = elementHeader.getClassifications();
+
+        if (classifications != null)
+        {
+            for (ElementClassification classification : classifications)
+            {
+                if ((classification != null) && (OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classification.getClassificationName())))
+                {
+                    if (classification.getClassificationProperties() != null)
+                    {
+                        return classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name).toString();
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Return the search properties that requests elements with an exactly matching name in any of the listed property names.
      *
      * @param propertyNames list of property names

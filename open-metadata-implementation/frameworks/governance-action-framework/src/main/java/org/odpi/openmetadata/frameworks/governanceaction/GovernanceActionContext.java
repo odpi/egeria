@@ -2818,7 +2818,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param actionTargets map of action target names to GUIDs for the resulting governance action service
      * @param startTime future start time or null for "as soon as possible".
      *
-     * @return unique identifier of the first governance action of the process
+     * @return unique identifier of the governance action process instance
      *
      * @throws InvalidParameterException null or unrecognized qualified name of the process
      * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action process
