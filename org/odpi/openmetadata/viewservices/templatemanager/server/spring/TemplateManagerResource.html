@@ -110,16 +110,111 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/gaf/rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTemplates(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.viewservices.templatemanager.rest.TemplateClassificationRequestBody)" class="member-name-link">findTemplates</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementTypeName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
- <a href="../../rest/TemplateClassificationRequestBody.html" title="class in org.odpi.openmetadata.viewservices.templatemanager.rest">TemplateClassificationRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#archiveMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.ArchiveRequestBody)" class="member-name-link">archiveMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="../../../../frameworkservices/gaf/rest/ArchiveRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">ArchiveRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the elements with the template classification.</div>
+<div class="block">Archive a specific metadata element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#classifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.NewClassificationRequestBody)" class="member-name-link">classifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="../../../../frameworkservices/gaf/rest/NewClassificationRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">NewClassificationRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a new classification to the metadata element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementFromTemplate(java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody)" class="member-name-link">createMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../../frameworkservices/gaf/rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">TemplateRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a new metadata element in the metadata store using a template.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.NewOpenMetadataElementRequestBody)" class="member-name-link">createMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../../frameworkservices/gaf/rest/NewOpenMetadataElementRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">NewOpenMetadataElementRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a new metadata element in the metadata store.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createRelatedElementsInStore(java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.NewRelatedElementsRequestBody)" class="member-name-link">createRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../../frameworkservices/gaf/rest/NewRelatedElementsRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">NewRelatedElementsRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a relationship between two metadata elements.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#declassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateRequestBody)" class="member-name-link">declassifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="../../../../frameworkservices/gaf/rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdateRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Remove the named classification from a specific metadata element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateRequestBody)" class="member-name-link">deleteMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="../../../../frameworkservices/gaf/rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdateRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Delete a specific metadata element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteRelatedElementsInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateRequestBody)" class="member-name-link">deleteRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+ <a href="../../../../frameworkservices/gaf/rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdateRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Delete a relationship between two metadata elements.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdatePropertiesRequestBody)" class="member-name-link">reclassifyMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="../../../../frameworkservices/gaf/rest/UpdatePropertiesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdatePropertiesRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateEffectivityDatesRequestBody)" class="member-name-link">updateClassificationEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="../../../../frameworkservices/gaf/rest/UpdateEffectivityDatesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdateEffectivityDatesRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the effectivity dates of a specific classification attached to a metadata element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateEffectivityDatesRequestBody)" class="member-name-link">updateMetadataElementEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="../../../../frameworkservices/gaf/rest/UpdateEffectivityDatesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdateEffectivityDatesRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the effectivity dates control the visibility of the element through specific APIs.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdatePropertiesRequestBody)" class="member-name-link">updateMetadataElementInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="../../../../frameworkservices/gaf/rest/UpdatePropertiesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdatePropertiesRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the properties of a specific metadata element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateMetadataElementStatusInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateStatusRequestBody)" class="member-name-link">updateMetadataElementStatusInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ <a href="../../../../frameworkservices/gaf/rest/UpdateStatusRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdateStatusRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the status of specific metadata element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelatedElementsEffectivityInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateEffectivityDatesRequestBody)" class="member-name-link">updateRelatedElementsEffectivityInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+ <a href="../../../../frameworkservices/gaf/rest/UpdateEffectivityDatesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdateEffectivityDatesRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the effectivity dates of a specific relationship between metadata elements.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateRelatedElementsInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdatePropertiesRequestBody)" class="member-name-link">updateRelatedElementsInStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+ <a href="../../../../frameworkservices/gaf/rest/UpdatePropertiesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdatePropertiesRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the properties associated with a relationship.</div>
 </div>
 </div>
 </div>
@@ -154,38 +249,381 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="findTemplates(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.viewservices.templatemanager.rest.TemplateClassificationRequestBody)">
-<h3>findTemplates</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/templates/by-search-string")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/OpenMetadataElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">OpenMetadataElementsResponse</a></span>&nbsp;<span class="element-name">findTemplates</span><wbr><span class="parameters">(@PathVariable
+<section class="detail" id="createMetadataElementInStore(java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.NewOpenMetadataElementRequestBody)">
+<h3>createMetadataElementInStore</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createMetadataElementInStore</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestParam(required=false)
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementTypeName,
- @RequestParam(required=false)
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
- @RequestParam(required=false,defaultValue="digital-architecture")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;accessServiceURLMarker,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;startFrom,
- @RequestParam(required=false,defaultValue="0")
- int&nbsp;pageSize,
  @RequestBody
- <a href="../../rest/TemplateClassificationRequestBody.html" title="class in org.odpi.openmetadata.viewservices.templatemanager.rest">TemplateClassificationRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the elements with the template classification.  The request can include the .</div>
+ <a href="../../../../frameworkservices/gaf/rest/NewOpenMetadataElementRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">NewOpenMetadataElementRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
+ The selected type also controls the names and types of the properties that are allowed.
+ This version of the method allows access to advanced features such as multiple states and
+ effectivity dates.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
-<dd><code>elementTypeName</code> - optional type name for the template</dd>
-<dd><code>viewServiceURLMarker</code> - optional view service URL marker (overrides accessServiceURLMarker)</dd>
-<dd><code>accessServiceURLMarker</code> - optional access service URL marker used to identify which back end service to call</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
-<dd><code>requestBody</code> - searchString  to retrieve</dd>
+<dd><code>requestBody</code> - properties for the new element</dd>
 <dt>Returns:</dt>
-<dd>list of matching metadata elements (or null if no elements match the name) or
-  InvalidParameterException the qualified name is null
-  UserNotAuthorizedException the governance action service is not able to access the element
-  PropertyServerException there is a problem accessing the metadata store</dd>
+<dd>unique identifier of the new metadata element
+  InvalidParameterException the type name, status or one of the properties is invalid
+  UserNotAuthorizedException the governance action service is not authorized to create this type of element
+  PropertyServerException there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createMetadataElementFromTemplate(java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.TemplateRequestBody)">
+<h3>createMetadataElementFromTemplate</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/from-template")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createMetadataElementFromTemplate</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @RequestBody
+ <a href="../../../../frameworkservices/gaf/rest/TemplateRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">TemplateRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Create a new metadata element in the metadata store using a template.  The type name comes from the open metadata types.
+ The selected type also controls the names and types of the properties that are allowed.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>requestBody</code> - properties for the new element</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the new metadata element
+  InvalidParameterException the type name, status or one of the properties is invalid
+  UserNotAuthorizedException the governance action service is not authorized to create this type of element
+  PropertyServerException there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdatePropertiesRequestBody)">
+<h3>updateMetadataElementInStore</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{metadataElementGUID}/update-properties")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateMetadataElementInStore</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ @RequestBody
+ <a href="../../../../frameworkservices/gaf/rest/UpdatePropertiesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdatePropertiesRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Update the properties of a specific metadata element.  The properties must match the type definition associated with the
+ metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
+ the value used in the replaceProperties flag.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>requestBody</code> - new properties</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException either the unique identifier or the properties are invalid in some way
+  UserNotAuthorizedException the governance action service is not authorized to update this element
+  PropertyServerException there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateMetadataElementStatusInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateStatusRequestBody)">
+<h3>updateMetadataElementStatusInStore</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{metadataElementGUID}/update-status")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateMetadataElementStatusInStore</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ @RequestBody
+ <a href="../../../../frameworkservices/gaf/rest/UpdateStatusRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdateStatusRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
+ assigned when it was created.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>requestBody</code> - new status values - use null to leave as is</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException either the unique identifier or the status are invalid in some way
+  UserNotAuthorizedException the governance action service is not authorized to update this element
+  PropertyServerException there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateMetadataElementEffectivityInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateEffectivityDatesRequestBody)">
+<h3>updateMetadataElementEffectivityInStore</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{metadataElementGUID}/update-effectivity")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateMetadataElementEffectivityInStore</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ @RequestBody
+ <a href="../../../../frameworkservices/gaf/rest/UpdateEffectivityDatesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdateEffectivityDatesRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Update the effectivity dates control the visibility of the element through specific APIs.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>requestBody</code> - new status values - use null to leave as is</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException either the unique identifier or the status are invalid in some way
+  UserNotAuthorizedException the governance action service is not authorized to update this element
+  PropertyServerException there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="deleteMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateRequestBody)">
+<h3>deleteMetadataElementInStore</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{metadataElementGUID}/delete")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deleteMetadataElementInStore</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ @RequestBody(required=false)
+ <a href="../../../../frameworkservices/gaf/rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdateRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Delete a specific metadata element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>requestBody</code> - null request body</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException the unique identifier is null or invalid in some way
+  UserNotAuthorizedException the governance action service is not authorized to delete this element
+  PropertyServerException there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="archiveMetadataElementInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.ArchiveRequestBody)">
+<h3>archiveMetadataElementInStore</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{metadataElementGUID}/archive")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">archiveMetadataElementInStore</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ @RequestBody(required=false)
+ <a href="../../../../frameworkservices/gaf/rest/ArchiveRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">ArchiveRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Archive a specific metadata element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>requestBody</code> - null request body</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException the unique identifier is null or invalid in some way
+  UserNotAuthorizedException the governance action service is not authorized to archive this element
+  PropertyServerException there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="classifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.NewClassificationRequestBody)">
+<h3>classifyMetadataElementInStore</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{metadataElementGUID}/classifications/{classificationName}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">classifyMetadataElementInStore</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ @RequestBody
+ <a href="../../../../frameworkservices/gaf/rest/NewClassificationRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">NewClassificationRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Add a new classification to the metadata element.  Note that only one classification with the same name can be attached to
+ a metadata element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>classificationName</code> - name of the classification to add (if the classification is already present then use reclassify)</dd>
+<dd><code>requestBody</code> - properties to store in the new classification.  These must conform to the valid properties associated with the
+                   classification name</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
+                                   valid properties associated with the classification's type definition
+  UserNotAuthorizedException the governance action service is not authorized to update this element
+  PropertyServerException there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="reclassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdatePropertiesRequestBody)">
+<h3>reclassifyMetadataElementInStore</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/update-properties")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">reclassifyMetadataElementInStore</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ @RequestBody
+ <a href="../../../../frameworkservices/gaf/rest/UpdatePropertiesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdatePropertiesRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Update the properties of a classification that is currently attached to a specific metadata element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>classificationName</code> - unique name of the classification to update</dd>
+<dd><code>requestBody</code> - new properties for the classification</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
+                                   valid properties associated with the classification's type definition
+  UserNotAuthorizedException the governance action service is not authorized to update this element/classification
+  PropertyServerException there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateClassificationEffectivityInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateEffectivityDatesRequestBody)">
+<h3>updateClassificationEffectivityInStore</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/update-effectivity")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateClassificationEffectivityInStore</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ @RequestBody
+ <a href="../../../../frameworkservices/gaf/rest/UpdateEffectivityDatesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdateEffectivityDatesRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Update the effectivity dates of a specific classification attached to a metadata element.
+ The effectivity dates control the visibility of the classification through specific APIs.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>classificationName</code> - unique name of the classification to update</dd>
+<dd><code>requestBody</code> - the dates when this element is active / inactive - null for no restriction</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException either the unique identifier or the status are invalid in some way
+  UserNotAuthorizedException the governance action service is not authorized to update this element
+  PropertyServerException there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="declassifyMetadataElementInStore(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateRequestBody)">
+<h3>declassifyMetadataElementInStore</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/delete")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">declassifyMetadataElementInStore</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementGUID,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ @RequestBody
+ <a href="../../../../frameworkservices/gaf/rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdateRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Remove the named classification from a specific metadata element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>metadataElementGUID</code> - unique identifier of the metadata element to update</dd>
+<dd><code>classificationName</code> - unique name of the classification to remove</dd>
+<dd><code>requestBody</code> - null request body</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException the unique identifier or classification name is null or invalid in some way
+  UserNotAuthorizedException the governance action service is not authorized to remove this classification
+  PropertyServerException there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createRelatedElementsInStore(java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.NewRelatedElementsRequestBody)">
+<h3>createRelatedElementsInStore</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/related-elements")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createRelatedElementsInStore</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @RequestBody
+ <a href="../../../../frameworkservices/gaf/rest/NewRelatedElementsRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">NewRelatedElementsRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Create a relationship between two metadata elements.  It is important to put the right element at each end of the relationship
+ according to the type definition since this will affect how the relationship is interpreted.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>requestBody</code> - the properties of the relationship</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the new relationship or
+  InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
+                                    not valid for this type of relationship
+  UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
+  PropertyServerException there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateRelatedElementsInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdatePropertiesRequestBody)">
+<h3>updateRelatedElementsInStore</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/related-elements/{relationshipGUID}/update-properties")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateRelatedElementsInStore</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+ @RequestBody
+ <a href="../../../../frameworkservices/gaf/rest/UpdatePropertiesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdatePropertiesRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Update the properties associated with a relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>relationshipGUID</code> - unique identifier of the relationship to update</dd>
+<dd><code>requestBody</code> - new properties for the relationship</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
+                                    not valid for this type of relationship
+  UserNotAuthorizedException the governance action service is not authorized to update this relationship
+  PropertyServerException there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateRelatedElementsEffectivityInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateEffectivityDatesRequestBody)">
+<h3>updateRelatedElementsEffectivityInStore</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/related-elements/{relationshipGUID}/update-effectivity")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateRelatedElementsEffectivityInStore</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+ @RequestBody
+ <a href="../../../../frameworkservices/gaf/rest/UpdateEffectivityDatesRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdateEffectivityDatesRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Update the effectivity dates of a specific relationship between metadata elements.
+ The effectivity dates control the visibility of the classification through specific APIs.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>relationshipGUID</code> - unique identifier of the relationship to update</dd>
+<dd><code>requestBody</code> - the dates when this element is active / inactive - null for no restriction</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException either the unique identifier or the status are invalid in some way
+  UserNotAuthorizedException the governance action service is not authorized to update this element
+  PropertyServerException there is a problem with the metadata store</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="deleteRelatedElementsInStore(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateRequestBody)">
+<h3>deleteRelatedElementsInStore</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/related-elements/{relationshipGUID}/delete")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deleteRelatedElementsInStore</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipGUID,
+ @RequestBody
+ <a href="../../../../frameworkservices/gaf/rest/UpdateRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">UpdateRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Delete a relationship between two metadata elements.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of server instance to route request to</dd>
+<dd><code>relationshipGUID</code> - unique identifier of the relationship to delete</dd>
+<dd><code>requestBody</code> - null request body</dd>
+<dt>Returns:</dt>
+<dd>void or
+  InvalidParameterException the unique identifier of the relationship is null or invalid in some way
+  UserNotAuthorizedException the governance action service is not authorized to delete this relationship
+  PropertyServerException there is a problem with the metadata store</dd>
 </dl>
 </section>
 </li>
