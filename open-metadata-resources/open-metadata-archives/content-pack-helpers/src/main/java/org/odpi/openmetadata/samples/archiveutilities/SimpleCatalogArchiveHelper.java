@@ -4828,6 +4828,7 @@ public class SimpleCatalogArchiveHelper
     }
 
 
+
     /**
      * Create a endpoint entity.
      *
@@ -4853,6 +4854,35 @@ public class SimpleCatalogArchiveHelper
                               String              protocol,
                               Map<String, String> additionalProperties)
     {
+        return addEndpoint(anchorGUID, anchorTypeName, anchorDomainName, qualifiedName, displayName, description, networkAddress, protocol, additionalProperties, null);
+    }
+
+    /**
+     * Create a endpoint entity.
+     *
+     * @param anchorGUID unique identifier of the anchor
+     * @param anchorTypeName type of anchor
+     * @param anchorDomainName domain of anchor
+     * @param qualifiedName unique name for the endpoint
+     * @param displayName display name for the endpoint
+     * @param description description about the endpoint
+     * @param networkAddress location of the asset
+     * @param protocol protocol to use to connect to the asset
+     * @param additionalProperties any other properties.
+     *
+     * @return id for the endpoint
+     */
+    public String addEndpoint(String              anchorGUID,
+                              String              anchorTypeName,
+                              String              anchorDomainName,
+                              String              qualifiedName,
+                              String              displayName,
+                              String              description,
+                              String              networkAddress,
+                              String              protocol,
+                              Map<String, String> additionalProperties,
+                              Classification      additionalClassification)
+    {
         final String methodName = "addEndpoint";
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
@@ -4862,16 +4892,24 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PROTOCOL.name, protocol, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
-        List<Classification> classifications = null;
+        List<Classification> classifications = new ArrayList<>();
 
-        if (anchorGUID != null)
+        if (additionalClassification != null)
         {
-            classifications = new ArrayList<>();
+            classifications.add(additionalClassification);
+        }
 
+        if ((anchorGUID != null) || (anchorTypeName != null))
+        {
             classifications.add(this.getAnchorClassification(anchorGUID,
                                                              anchorTypeName,
                                                              anchorDomainName,
                                                              methodName));
+        }
+
+        if (classifications.isEmpty())
+        {
+            classifications = null;
         }
 
         EntityDetail endpointEntity = archiveHelper.getEntityDetail(OpenMetadataType.ENDPOINT.typeName,

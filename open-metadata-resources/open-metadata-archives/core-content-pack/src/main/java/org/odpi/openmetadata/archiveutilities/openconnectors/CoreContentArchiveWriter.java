@@ -817,6 +817,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
          * Add catalog templates
          */
         this.addFileTemplates();
+        this.addEndpointCatalogTemplates();
         this.addSoftwareServerCatalogTemplates();
         this.addPostgresDatabaseCatalogTemplate();
         this.addPostgresDatabaseSchemaCatalogTemplate();
@@ -1526,6 +1527,92 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                OpenMetadataType.ASSET.typeName,
                                                placeholderPropertyTypes);
     }
+
+
+
+    /**
+     * Loop through the server template definitions creating the specified templates.
+     */
+    private void addEndpointCatalogTemplates()
+    {
+        for (EndpointTemplateDefinition templateDefinition : EndpointTemplateDefinition.values())
+        {
+            createEndpointCatalogTemplate(templateDefinition.getTemplateGUID(),
+                                                templateDefinition.getTemplateName(),
+                                                templateDefinition.getTemplateDescription(),
+                                                templateDefinition.getTemplateVersionIdentifier(),
+                                                templateDefinition.getDeployedImplementationType(),
+                                                templateDefinition.getServerName(),
+                                                templateDefinition.getEndpointDescription(),
+                                                templateDefinition.getNetworkAddress(),
+                                                templateDefinition.getProtocol(),
+                                                templateDefinition.getPlaceholders());
+        }
+    }
+
+
+
+
+    /**
+     * Create a template for a software server and link it to the associated deployed implementation type.
+     * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
+     * to the supplied connector type and an endpoint,
+     *
+     * @param guid                             fixed unique identifier
+     * @param templateName                     name of template in Template classification
+     * @param templateDescription              description of the template in the Template classification
+     * @param templateVersion                  version of the template in the Template classification
+     * @param serverName                       name for the server
+     * @param description                      description for the server
+     * @param networkAddress                   network address for the endpoint
+     * @param protocol                         communication protocol for the endpoint
+     * @param placeholderPropertyTypes         placeholder variables used in the supplied parameters
+     */
+    private void createEndpointCatalogTemplate(String                         guid,
+                                               String                         templateName,
+                                               String                         templateDescription,
+                                               String                         templateVersion,
+                                               DeployedImplementationType     deployedImplementationType,
+                                               String                         serverName,
+                                               String                         description,
+                                               String                         networkAddress,
+                                               String                         protocol,
+                                               List<PlaceholderPropertyType>  placeholderPropertyTypes)
+    {
+        final String methodName = "createEndpointCatalogTemplate";
+
+        String         qualifiedName            = deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
+        Classification templateClassification   = archiveHelper.getTemplateClassification(templateName,
+                                                                                          templateDescription,
+                                                                                          templateVersion,
+                                                                                          null,
+                                                                                          methodName);
+
+        archiveHelper.setGUID(qualifiedName, guid);
+
+        String endpointGUID = archiveHelper.addEndpoint(null,
+                                                        OpenMetadataType.ENDPOINT.typeName,
+                                                        OpenMetadataType.ENDPOINT.typeName,
+                                                        qualifiedName,
+                                                        serverName + " endpoint",
+                                                        description,
+                                                        networkAddress,
+                                                        protocol,
+                                                        null,
+                                                        templateClassification);
+
+        assert(guid.equals(endpointGUID));
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, endpointGUID);
+
+        archiveHelper.addPlaceholderProperties(endpointGUID,
+                                               OpenMetadataType.ENDPOINT.typeName,
+                                               OpenMetadataType.ENDPOINT.typeName,
+                                               placeholderPropertyTypes);
+    }
+
 
 
     /**

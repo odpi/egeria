@@ -623,6 +623,39 @@ public enum DeployedImplementationType
                 OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
 
 
+
+    /**
+     * A callable network address.
+     */
+    ENDPOINT("Endpoint",
+                      null,
+                      OpenMetadataType.ENDPOINT.typeName,
+                      null,
+                      "A callable network address.",
+                      OpenMetadataWikiPages.MODEL_0026_ENDPOINTS),
+
+    /**
+     * A callable network address supporting the REST protocol.
+     */
+    REST_API_ENDPOINT("REST API Endpoint",
+                     DeployedImplementationType.ENDPOINT,
+                     OpenMetadataType.ENDPOINT.typeName,
+                     null,
+                     "A callable network address supporting the REST protocol.",
+                     OpenMetadataWikiPages.MODEL_0026_ENDPOINTS),
+
+
+    /**
+     * A callable network address supporting the JDBC protocol.
+     */
+    JDBC_ENDPOINT("JDBC Endpoint",
+                      DeployedImplementationType.ENDPOINT,
+                      OpenMetadataType.ENDPOINT.typeName,
+                      null,
+                      "A callable network address supporting the JDBC protocol.",
+                      OpenMetadataWikiPages.MODEL_0026_ENDPOINTS),
+
+
     /**
      * A software capability that provides callable APIs supporting the REST protocol.
      */
