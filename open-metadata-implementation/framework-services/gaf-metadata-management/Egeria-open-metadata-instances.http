@@ -4,7 +4,7 @@
 @serviceURLMarker=asset-owner
 @userId=erinoverview
 
-@elementGUID=b25a03bd-5dfe-4cb6-828b-cfd78d638824
+@elementGUID=44c05d48-1c99-4298-8740-6318345b7af5
 
 
 ###
@@ -35,7 +35,14 @@ Content-Type: application/json
 
 ###
 
-@metadataElementGUID=add guid here
+relationshipGUID=add guid here
+
+###
+# @name getMetadataElementByGUID
+# Retrieve a specific metadata element.
+
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/metadata-elements/{{elementGUID}}
+Content-Type: application/json
 
 ###
 # @name deleteMetadataElement
