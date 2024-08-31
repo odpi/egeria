@@ -276,12 +276,30 @@ public class OpenMetadataTypesArchive2_6
 
     private EntityDef addEmbeddedProcessEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EMBEDDED_PROCESS.typeGUID,
-                                                 OpenMetadataType.EMBEDDED_PROCESS.typeName,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.PROCESS.typeName),
-                                                 OpenMetadataType.EMBEDDED_PROCESS.description,
-                                                 OpenMetadataType.EMBEDDED_PROCESS.descriptionGUID,
-                                                 OpenMetadataType.EMBEDDED_PROCESS.wikiURL);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.EMBEDDED_PROCESS.typeGUID,
+                                                                OpenMetadataType.EMBEDDED_PROCESS.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.PROCESS.typeName),
+                                                                OpenMetadataType.EMBEDDED_PROCESS.description,
+                                                                OpenMetadataType.EMBEDDED_PROCESS.descriptionGUID,
+                                                                OpenMetadataType.EMBEDDED_PROCESS.wikiURL);
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        property = archiveHelper.getDateTypeDefAttribute(OpenMetadataProperty.PROCESS_START_TIME.name,
+                                                         OpenMetadataProperty.PROCESS_START_TIME.description,
+                                                         OpenMetadataProperty.PROCESS_START_TIME.descriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(OpenMetadataProperty.PROCESS_END_TIME.name,
+                                                         OpenMetadataProperty.PROCESS_END_TIME.description,
+                                                         OpenMetadataProperty.PROCESS_END_TIME.descriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 

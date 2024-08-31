@@ -115,6 +115,8 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
      * @param requestParameters any request parameters
      * @param actionTargets action targets
      * @param governanceActionDescription description of the governance action
+     * @param governanceActionTypeGUID unique identifier of the associated governance action type
+     * @param supportedElementQualifiedName element to link the governance action type to
      */
     private   void addRequestType(String                      governanceEngineGUID,
                                   String                      governanceEngineName,
@@ -644,7 +646,7 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
                                                       null,
                                                       CocoRequestTypeDefinition.CHECK_DATA.getGovernanceEngine().getGUID());
 
-            archiveHelper.addNextGovernanceActionProcessStep(step3GUID, RetentionClassifierGuard.CLASSIFICATION_ASSIGNED.getName(), false, step4GUID);
+            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, MoveCopyFileGuard.PROVISIONING_COMPLETE.getName(), false, step4GUID);
         }
 
         String step5GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
@@ -715,7 +717,8 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
                                                       null,
                                                       RequestTypeDefinition.ZONE_MEMBER.getGovernanceEngine().getGUID());
 
-            archiveHelper.addNextGovernanceActionProcessStep(step5GUID, EvaluateAnnotationsGuard.ACTIONS_ACTIONED.getName(), false, step6GUID);
+            archiveHelper.addNextGovernanceActionProcessStep(step3GUID, RetentionClassifierGuard.CLASSIFICATION_ASSIGNED.getName(), true, step6GUID);
+            archiveHelper.addNextGovernanceActionProcessStep(step5GUID, EvaluateAnnotationsGuard.ACTIONS_ACTIONED.getName(), true, step6GUID);
         }
     }
 

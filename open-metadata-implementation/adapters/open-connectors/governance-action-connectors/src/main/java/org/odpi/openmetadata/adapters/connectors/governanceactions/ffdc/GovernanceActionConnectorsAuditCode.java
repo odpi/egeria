@@ -360,6 +360,27 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                   "The governance action service has completed the setup of the integration connector.  It will exit with a completion status of ACTIONED.",
                   "Check that the integration connector is able to contact the server and the cataloguing is operating as expected."),
 
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0033 - The {0} governance action service has not been passed a {1} action target
+     */
+    MISSING_ACTION_TARGET("GOVERNANCE-ACTION-CONNECTORS-0033",
+               AuditLogRecordSeverityLevel.ERROR,
+               "The {0} governance action service has not been passed a {1} action target",
+               "The governance action service returns an INVALID completion status.",
+               "This is an error in the way that the governance action service has been called since a vital piece of information is missing." +
+                       "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
+                       "or as part of a governance action process.  Then correct this approach so that this action target is set up."),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0034 - The {0} governance action service has created a new {1} asset called {2} ({3})
+     */
+    NEW_ASSET_CREATED("GOVERNANCE-ACTION-CONNECTORS-0034",
+                          AuditLogRecordSeverityLevel.INFO,
+                          "The {0} governance action service has created a new {1} asset called {2} ({3})",
+                          "The governance action service returns an ACTIONED completion status.",
+                          "Ensure follow-on uses of the asset are successful."),
+
     ;
 
     private final String                      logMessageId;

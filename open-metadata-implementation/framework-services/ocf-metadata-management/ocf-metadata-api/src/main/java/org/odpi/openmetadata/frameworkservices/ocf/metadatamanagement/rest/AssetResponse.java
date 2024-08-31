@@ -28,7 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetResponse extends OCFOMASAPIResponse
 {
-    private Asset          asset                      = null;
+    private Asset          asset          = null;
     private SchemaType     schemaType     = null;
 
 

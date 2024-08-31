@@ -17,7 +17,7 @@ import java.util.List;
 public enum CatalogServerGuard
 {
     SET_UP_COMPLETE("set-up-complete", CompletionStatus.ACTIONED, "The integration connector has been configured with the server information as a catalog target."),
-    MISSING_TEMPLATE("missing-template", CompletionStatus.INVALID, "The templateGUID request parameter has not been supplied."),
+    MISSING_ASSET("missing-asset", CompletionStatus.INVALID, "The 'newAsset' asset has not been supplied."),
     MISSING_CONNECTOR("missing-connector", CompletionStatus.INVALID, "The integrationConnector has not been supplied."),
     SERVICE_FAILED("service-failed", CompletionStatus.FAILED, "An unexpected error occurred while the governance service was running.  Messages are logged to the audit log explaining the source of the error."),
     ;
