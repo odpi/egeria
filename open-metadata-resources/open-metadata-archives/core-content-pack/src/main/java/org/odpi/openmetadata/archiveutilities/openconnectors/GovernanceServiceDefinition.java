@@ -11,10 +11,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.O
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.QualifiedNamePeerDuplicateGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.RetentionClassifierGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.CatalogServerGovernanceActionProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.DaysOfWeekGovernanceActionProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.EvaluateAnnotationsGovernanceActionProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.WriteAuditLogMessageGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.*;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.VerifyAssetGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseSurveyActionProvider;
@@ -241,14 +238,24 @@ public enum GovernanceServiceDefinition
 
 
     /**
+     * Create Server Governance Service
+     */
+    CREATE_SERVER("e971749f-4b0e-4c46-b4dd-ca0cf8df3900",
+                        "create-server-governance-service",
+                        "Create Server Governance Service",
+                        new CreateServerGovernanceActionProvider(),
+                        ResourceUse.CATALOG_RESOURCE,
+                        DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
+
+    /**
      * Catalog Server Governance Service
      */
     CATALOG_SERVER("96a01919-a361-404d-bcb7-3855fbbc8cd5",
-                        "catalog-server-governance-service",
-                        "Catalog Server Governance Service",
-                        new CatalogServerGovernanceActionProvider(),
-                        ResourceUse.CATALOG_RESOURCE,
-                        DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
+                   "catalog-server-governance-service",
+                   "Catalog Server Governance Service",
+                   new CatalogServerGovernanceActionProvider(),
+                   ResourceUse.CATALOG_RESOURCE,
+                   DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR),
     ;
     
     private final String            guid;

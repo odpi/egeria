@@ -2795,7 +2795,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                                  0,
                                                                                                  effectiveTime,
                                                                                                  methodName);
-            if (nextActionProcessSteps != null)
+            if ((nextActionProcessSteps != null) && (! nextActionProcessSteps.isEmpty()))
             {
                 /*
                  * There are potential follow-on actions.  Need to loop though each one to evaluate if the output guards
@@ -2859,7 +2859,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                             }
                         }
                     }
-                }
+            }
             else
             {
                 /*

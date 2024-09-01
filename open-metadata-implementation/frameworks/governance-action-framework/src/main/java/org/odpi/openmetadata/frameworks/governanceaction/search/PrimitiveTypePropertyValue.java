@@ -49,7 +49,7 @@ public class PrimitiveTypePropertyValue extends PropertyValue
 
         if (template != null)
         {
-            this.primitiveTypeCategory = template.getPrimitiveTypeCategory();
+            this.setPrimitiveTypeCategory(template.getPrimitiveTypeCategory());
             this.primitiveValue = template.getPrimitiveValue();
         }
     }
@@ -95,6 +95,23 @@ public class PrimitiveTypePropertyValue extends PropertyValue
      * @return PrimitiveTypeCategory
      */
     public PrimitiveTypeCategory getPrimitiveTypeCategory() { return primitiveTypeCategory; }
+
+
+    /**
+     * Set up the name of the type.
+     *
+     * @param typeName String type name
+     */
+    public void setTypeName(String typeName)
+    {
+        for (PrimitiveTypeCategory category : PrimitiveTypeCategory.values())
+        {
+            if (category.getName().equals(typeName))
+            {
+                setPrimitiveTypeCategory(category);
+            }
+        }
+    }
 
 
     /**

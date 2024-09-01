@@ -15,6 +15,7 @@ import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolder
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformProvider;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog.OMAGServerPlatformCatalogProvider;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers.*;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.CreateServerGuard;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.DaysOfWeekGuard;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.WriteAuditLogRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider;
@@ -911,13 +912,17 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                 requestTypeDefinition.getServiceRequestType(),
                                 requestTypeDefinition.getRequestParameters(),
                                 requestTypeDefinition.getActionTargets(),
-                                requestTypeDefinition.getGovernanceService().getGovernanceActionDescription());
+                                requestTypeDefinition.getGovernanceService().getGovernanceActionDescription(),
+                                requestTypeDefinition.getGovernanceActionTypeGUID(),
+                                requestTypeDefinition.getSupportedElementQualifiedName());
         }
 
         /*
          * Create a sample process
          */
-        this.createDailyGovernanceActionProcess(GovernanceEngineDefinition.STEWARDSHIP_ENGINE.getGUID());
+        this.createDailyGovernanceActionProcess();
+        this.createAndSurveyUCGovernanceActionProcess();
+        this.createAndCatalogUCGovernanceActionProcess();
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
@@ -2981,6 +2986,8 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
      * @param requestParameters any request parameters
      * @param actionTargets action targets
      * @param governanceActionDescription description of the governance action if and
+     * @param governanceActionTypeGUID unique identifier of the associated governance action type
+     * @param supportedElementQualifiedName element to link the governance action type to
      */
     private void addRequestType(String                      governanceEngineGUID,
                                 String                      governanceEngineName,
@@ -2989,7 +2996,9 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                 String                      serviceRequestType,
                                 Map<String, String>         requestParameters,
                                 List<NewActionTarget>       actionTargets,
-                                GovernanceActionDescription governanceActionDescription)
+                                GovernanceActionDescription governanceActionDescription,
+                                String                      governanceActionTypeGUID,
+                                String                      supportedElementQualifiedName)
     {
         archiveHelper.addSupportedGovernanceService(governanceEngineGUID,
                                                     governanceRequestType,
@@ -2997,99 +3006,144 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                     requestParameters,
                                                     governanceActionDescription.governanceServiceGUID);
 
-        if (governanceActionDescription.supportedActionTargets != null)
+        this.addGovernanceActionType(governanceEngineGUID,
+                                     governanceEngineName,
+                                     governanceEngineTypeName,
+                                     governanceRequestType,
+                                     requestParameters,
+                                     actionTargets,
+                                     governanceActionDescription,
+                                     governanceActionTypeGUID,
+                                     supportedElementQualifiedName);
+    }
+
+
+
+    /**
+     * Add details of a request type to the engine.
+     *
+     * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineName name of the governance engine
+     * @param governanceEngineTypeName type of engine
+     * @param governanceRequestType name of request type
+     * @param requestParameters any request parameters
+     * @param actionTargets action targets
+     * @param governanceActionDescription description of the governance action if and
+     * @param governanceActionTypeGUID unique identifier of the associated governance action type
+     * @param supportedElementQualifiedName element to link the governance action type to
+     */
+    private void addGovernanceActionType(String                      governanceEngineGUID,
+                                         String                      governanceEngineName,
+                                         String                      governanceEngineTypeName,
+                                         String                      governanceRequestType,
+                                         Map<String, String>         requestParameters,
+                                         List<NewActionTarget>       actionTargets,
+                                         GovernanceActionDescription governanceActionDescription,
+                                         String                      governanceActionTypeGUID,
+                                         String                      supportedElementQualifiedName)
+    {
+        String governanceActionTypeQualifiedName = governanceEngineName + ":" + governanceRequestType;
+
+        archiveHelper.setGUID(governanceActionTypeQualifiedName, governanceActionTypeGUID);
+
+        String guid = archiveHelper.addGovernanceActionType(null,
+                                                            governanceEngineGUID,
+                                                            governanceEngineTypeName,
+                                                            OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                                            governanceEngineName + ":" + governanceRequestType,
+                                                            governanceRequestType + " (" + governanceEngineName + ")",
+                                                            governanceActionDescription.governanceServiceDescription,
+                                                            0,
+                                                            governanceActionDescription.supportedRequestParameters,
+                                                            governanceActionDescription.supportedActionTargets,
+                                                            governanceActionDescription.supportedAnalysisSteps,
+                                                            governanceActionDescription.supportedAnnotationTypes,
+                                                            governanceActionDescription.producedRequestParameters,
+                                                            governanceActionDescription.producedActionTargets,
+                                                            governanceActionDescription.producedGuards,
+                                                            0,
+                                                            null,
+                                                            null,
+                                                            null);
+
+        assert(governanceActionTypeGUID.equals(guid));
+
+        archiveHelper.addGovernanceActionExecutor(governanceActionTypeGUID,
+                                                  governanceRequestType,
+                                                  requestParameters,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  governanceEngineGUID);
+
+        if (actionTargets != null)
         {
-            String governanceActionTypeGUID = archiveHelper.addGovernanceActionType(null,
-                                                                                    governanceEngineGUID,
-                                                                                    governanceEngineTypeName,
-                                                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
-                                                                                    governanceEngineName + ":" + governanceRequestType,
-                                                                                    governanceRequestType + " (" + governanceEngineName + ")",
-                                                                                    governanceActionDescription.governanceServiceDescription,
-                                                                                    0,
-                                                                                    governanceActionDescription.supportedRequestParameters,
-                                                                                    governanceActionDescription.supportedActionTargets,
-                                                                                    governanceActionDescription.supportedAnalysisSteps,
-                                                                                    governanceActionDescription.supportedAnnotationTypes,
-                                                                                    governanceActionDescription.producedRequestParameters,
-                                                                                    governanceActionDescription.producedActionTargets,
-                                                                                    governanceActionDescription.producedGuards,
-                                                                                    0,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null);
-
-            if (governanceActionTypeGUID != null)
+            for (NewActionTarget actionTarget : actionTargets)
             {
-                archiveHelper.addGovernanceActionExecutor(governanceActionTypeGUID,
-                                                          governanceRequestType,
-                                                          requestParameters,
-                                                          null,
-                                                          null,
-                                                          null,
-                                                          null,
-                                                          governanceEngineGUID);
-
-                if (actionTargets != null)
+                if (actionTarget != null)
                 {
-                    for (NewActionTarget actionTarget : actionTargets)
+                    archiveHelper.addTargetForActionType(governanceActionTypeGUID, actionTarget);
+                }
+            }
+        }
+
+        if (governanceActionDescription.supportedTechnologies != null)
+        {
+            for (SupportedTechnologyType supportedTechnology : governanceActionDescription.supportedTechnologies)
+            {
+                if (supportedTechnology != null)
+                {
+                    if (supportedTechnology.getDataType() != null)
                     {
-                        if (actionTarget != null)
+                        String openMetadataTypeGUID = openMetadataTypeGUIDs.get(supportedTechnology.getDataType());
+
+                        if (openMetadataTypeGUID != null)
                         {
-                            archiveHelper.addTargetForActionType(governanceActionTypeGUID, actionTarget);
+                            archiveHelper.addResourceListRelationshipByGUID(openMetadataTypeGUID,
+                                                                            governanceActionTypeGUID,
+                                                                            governanceActionDescription.resourceUse.getResourceUse(),
+                                                                            governanceActionDescription.governanceServiceDescription,
+                                                                            requestParameters,
+                                                                            false);
                         }
                     }
-                }
 
-                if (governanceActionDescription.supportedTechnologies != null)
-                {
-                    for (SupportedTechnologyType supportedTechnology : governanceActionDescription.supportedTechnologies)
+                    if (supportedTechnology.getName() != null)
                     {
-                        if (supportedTechnology != null)
+                        String deployedImplementationTypeGUID = deployedImplementationTypeGUIDs.get(supportedTechnology.getName());
+
+                        if (deployedImplementationTypeGUID != null)
                         {
-                            if (supportedTechnology.getDataType() != null)
-                            {
-                                String openMetadataTypeGUID = openMetadataTypeGUIDs.get(supportedTechnology.getDataType());
-
-                                if (openMetadataTypeGUID != null)
-                                {
-                                    archiveHelper.addResourceListRelationshipByGUID(openMetadataTypeGUID,
-                                                                                    governanceActionTypeGUID,
-                                                                                    governanceActionDescription.resourceUse.getResourceUse(),
-                                                                                    governanceActionDescription.governanceServiceDescription,
-                                                                                    requestParameters,
-                                                                                    false);
-                                }
-                            }
-
-                            if (supportedTechnology.getName() != null)
-                            {
-                                String deployedImplementationTypeGUID = deployedImplementationTypeGUIDs.get(supportedTechnology.getName());
-
-                                if (deployedImplementationTypeGUID != null)
-                                {
-                                    archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
-                                                                                    governanceActionTypeGUID,
-                                                                                    governanceActionDescription.resourceUse.getResourceUse(),
-                                                                                    governanceActionDescription.governanceServiceDescription,
-                                                                                    requestParameters,
-                                                                                    false);
-                                }
-                            }
+                            archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
+                                                                            governanceActionTypeGUID,
+                                                                            governanceActionDescription.resourceUse.getResourceUse(),
+                                                                            governanceActionDescription.governanceServiceDescription,
+                                                                            requestParameters,
+                                                                            false);
                         }
                     }
                 }
             }
+        }
+
+        if (supportedElementQualifiedName != null)
+        {
+            String supportedElementGUID = archiveHelper.queryGUID(supportedElementQualifiedName);
+            archiveHelper.addResourceListRelationshipByGUID(supportedElementGUID,
+                                                            governanceActionTypeGUID,
+                                                            governanceActionDescription.resourceUse.getResourceUse(),
+                                                            governanceActionDescription.governanceServiceDescription,
+                                                            requestParameters,
+                                                            false);
         }
     }
 
 
     /**
      * Create a sample governance action process.
-     *
-     * @param governanceEngineGUID guid of the engine being called
      */
-    private void createDailyGovernanceActionProcess(String governanceEngineGUID)
+    private void createDailyGovernanceActionProcess()
     {
         String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                                       "Egeria:DailyGovernanceActionProcess",
@@ -3132,7 +3186,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                       null,
                                                       null,
                                                       null,
-                                                      governanceEngineGUID);
+                                                      GovernanceEngineDefinition.STEWARDSHIP_ENGINE.getGUID());
 
             archiveHelper.addGovernanceActionProcessFlow(processGUID, null, null, step1GUID);
         }
@@ -3170,7 +3224,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                       null,
                                                       null,
                                                       null,
-                                                      governanceEngineGUID);
+                                                      GovernanceEngineDefinition.STEWARDSHIP_ENGINE.getGUID());
 
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, DaysOfWeekGuard.MONDAY.getName(), false, step2GUID);
         }
@@ -3208,7 +3262,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                       null,
                                                       null,
                                                       null,
-                                                      governanceEngineGUID);
+                                                      GovernanceEngineDefinition.STEWARDSHIP_ENGINE.getGUID());
 
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, DaysOfWeekGuard.TUESDAY.getName(), false, step3GUID);
         }
@@ -3246,7 +3300,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                       null,
                                                       null,
                                                       null,
-                                                      governanceEngineGUID);
+                                                      GovernanceEngineDefinition.STEWARDSHIP_ENGINE.getGUID());
 
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, DaysOfWeekGuard.WEDNESDAY.getName(), false, step4GUID);
         }
@@ -3284,7 +3338,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                       null,
                                                       null,
                                                       null,
-                                                      governanceEngineGUID);
+                                                      GovernanceEngineDefinition.STEWARDSHIP_ENGINE.getGUID());
 
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, DaysOfWeekGuard.THURSDAY.getName(), false, step5GUID);
         }
@@ -3322,7 +3376,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                       null,
                                                       null,
                                                       null,
-                                                      governanceEngineGUID);
+                                                      GovernanceEngineDefinition.STEWARDSHIP_ENGINE.getGUID());
 
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, DaysOfWeekGuard.FRIDAY.getName(), false, step6GUID);
         }
@@ -3360,7 +3414,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                       null,
                                                       null,
                                                       null,
-                                                      governanceEngineGUID);
+                                                      GovernanceEngineDefinition.STEWARDSHIP_ENGINE.getGUID());
 
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, DaysOfWeekGuard.SATURDAY.getName(), false, step7GUID);
         }
@@ -3399,11 +3453,197 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
                                                       null,
                                                       null,
                                                       null,
-                                                      governanceEngineGUID);
+                                                      GovernanceEngineDefinition.STEWARDSHIP_ENGINE.getGUID());
 
             archiveHelper.addNextGovernanceActionProcessStep(step1GUID, DaysOfWeekGuard.SUNDAY.getName(), false, step8GUID);
         }
     }
+
+    
+    /**
+     * Create a sample governance action process.
+     */
+    private void createAndSurveyUCGovernanceActionProcess()
+    {
+        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                      "UnityCatalogServer:CreateAndSurveyGovernanceActionProcess",
+                                                                      "UnityCatalogServer:CreateAndSurvey",
+                                                                      null,
+                                                                      null,
+                                                                      null,
+                                                                      0,
+                                                                      null,
+                                                                      null,
+                                                                      null);
+
+        String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        "UnityCatalogServer:CreateAndSurvey:Step1",
+                                                                        "Create the software server entity",
+                                                                        "Create the description of the Unity Catalog Server",
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step1GUID != null)
+        {
+            archiveHelper.addGovernanceActionExecutor(step1GUID,
+                                                      RequestTypeDefinition.CREATE_UC_SERVER.getGovernanceRequestType(),
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE.getGUID());
+
+            archiveHelper.addGovernanceActionProcessFlow(processGUID, null, null, step1GUID);
+        }
+
+        String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        "UnityCatalogServer:CreateAndSurvey:Step2",
+                                                                        "Run the survey.",
+                                                                        "Create a survey report detailing the contents of the Unity Catalog Server.",
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step2GUID != null)
+        {
+            archiveHelper.addGovernanceActionExecutor(step2GUID,
+                                                      RequestTypeDefinition.SURVEY_UC_SERVER.getGovernanceRequestType(),
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      GovernanceEngineDefinition.UNITY_CATALOG_SURVEY_ENGINE.getGUID());
+
+            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, CreateServerGuard.SET_UP_COMPLETE.getName(), false, step2GUID);
+        }
+    }
+
+
+    /**
+     * Create a sample governance action process.
+     */
+    private void createAndCatalogUCGovernanceActionProcess()
+    {
+        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                      "UnityCatalogServer:CreateAndCatalogGovernanceActionProcess",
+                                                                      "UnityCatalogServer:CreateAndCatalog",
+                                                                      null,
+                                                                      null,
+                                                                      null,
+                                                                      0,
+                                                                      null,
+                                                                      null,
+                                                                      null);
+
+        String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        "UnityCatalogServer:CreateAndCatalog:Step1",
+                                                                        "Create the software server entity",
+                                                                        "Create the description of the Unity Catalog Server",
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step1GUID != null)
+        {
+            archiveHelper.addGovernanceActionExecutor(step1GUID,
+                                                      RequestTypeDefinition.CREATE_UC_SERVER.getGovernanceRequestType(),
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE.getGUID());
+
+            archiveHelper.addGovernanceActionProcessFlow(processGUID, null, null, step1GUID);
+        }
+
+        String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        "UnityCatalogServer:CreateAndCatalog:Step2",
+                                                                        "Run the survey.",
+                                                                        "Connect the server entity for the Unity Catalog Server to the appropriate integration connector.",
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step2GUID != null)
+        {
+            archiveHelper.addGovernanceActionExecutor(step2GUID,
+                                                      RequestTypeDefinition.CATALOG_UC_SERVER.getGovernanceRequestType(),
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      GovernanceEngineDefinition.UNITY_CATALOG_GOVERNANCE_ENGINE.getGUID());
+
+            for (NewActionTarget actionTarget : RequestTypeDefinition.CATALOG_UC_SERVER.getActionTargets())
+            {
+                if (actionTarget != null)
+                {
+                    archiveHelper.addTargetForActionType(step2GUID, actionTarget);
+                }
+            }
+
+
+            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, CreateServerGuard.SET_UP_COMPLETE.getName(), false, step2GUID);
+        }
+    }
+
 
 
 
