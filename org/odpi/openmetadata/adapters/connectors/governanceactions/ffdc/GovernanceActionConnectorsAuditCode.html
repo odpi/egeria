@@ -150,13 +150,21 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0022 - The {0} governance action service encountered an {1} exception initiating governance action process {2}
  with request parameters {3} for action targets {4}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#MISSING_TEMPLATE" class="member-name-link">MISSING_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#MISSING_ACTION_TARGET" class="member-name-link">MISSING_ACTION_TARGET</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0033 - The {0} governance action service has not been passed a {1} action target</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#MISSING_TEMPLATE" class="member-name-link">MISSING_TEMPLATE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0023 - The {0} governance action service is unable to retrieve the template {1} configured in property {2}.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#MOVE_FILE" class="member-name-link">MOVE_FILE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#MOVE_FILE" class="member-name-link">MOVE_FILE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0002 - The {0} governance action service is moving source file {1} to destination file {2}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NEW_ASSET_CREATED" class="member-name-link">NEW_ASSET_CREATED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0034 - The {0} governance action service has created a new {1} asset called {2} ({3})</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#NO_CONNECTOR" class="member-name-link">NO_CONNECTOR</a></code></div>
 <div class="col-last even-row-color">
@@ -547,6 +555,20 @@ the order they are declared.</div>
 <h3>CONNECTOR_CONFIGURED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_CONFIGURED</span></div>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0032 - Integration connector {0} is now cataloging {1} server at {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MISSING_ACTION_TARGET">
+<h3>MISSING_ACTION_TARGET</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">MISSING_ACTION_TARGET</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0033 - The {0} governance action service has not been passed a {1} action target</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NEW_ASSET_CREATED">
+<h3>NEW_ASSET_CREATED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NEW_ASSET_CREATED</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0034 - The {0} governance action service has created a new {1} asset called {2} ({3})</div>
 </section>
 </li>
 </ul>
