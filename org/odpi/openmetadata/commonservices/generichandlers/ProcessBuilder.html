@@ -117,6 +117,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the supplied bean properties in an InstanceProperties object.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProcessHierarchyProperties(int)" class="member-name-link">getProcessHierarchyProperties</a><wbr>(int&nbsp;processContainmentOrdinal)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create the properties for the ProcessHierarchy relationship.</div>
+</div>
 </div>
 </div>
 </div>
@@ -143,6 +148,22 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="getProcessHierarchyProperties(int)">
+<h3>getProcessHierarchyProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></span>&nbsp;<span class="element-name">getProcessHierarchyProperties</span><wbr><span class="parameters">(int&nbsp;processContainmentOrdinal)</span>
+                                                 throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
+<div class="block">Create the properties for the ProcessHierarchy relationship.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>processContainmentOrdinal</code> - ordinal for the containmentType property</dd>
+<dt>Returns:</dt>
+<dd>instance properties</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - enum type not supported (should not happen)</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="getInstanceProperties(java.lang.String)">
 <h3>getInstanceProperties</h3>
