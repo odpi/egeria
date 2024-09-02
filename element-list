@@ -867,7 +867,6 @@ org.odpi.openmetadata.viewservices.glossarybrowser.ffdc
 org.odpi.openmetadata.viewservices.glossarybrowser.rest
 org.odpi.openmetadata.viewservices.glossarybrowser.server
 org.odpi.openmetadata.viewservices.glossarybrowser.server.spring
-org.odpi.openmetadata.viewservices.glossarybrowser.server.spring.beans
 org.odpi.openmetadata.viewservices.glossarymanager.admin
 org.odpi.openmetadata.viewservices.glossarymanager.ffdc
 org.odpi.openmetadata.viewservices.glossarymanager.rest
