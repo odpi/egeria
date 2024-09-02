@@ -3,18 +3,16 @@
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
-import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.multitenant.GovernanceServerServiceInstanceHandler;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationGroupHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -104,23 +102,77 @@ public class IntegrationDaemonInstanceHandler extends GovernanceServerServiceIns
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    public IntegrationContextManager getIntegrationServiceContextManager(String userId,
-                                                                         String serverName,
-                                                                         String serviceURLMarker,
-                                                                         String serviceOperationName) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
+    public List<IntegrationContextManager> getIntegrationServiceContextManagers(String userId,
+                                                                                String serverName,
+                                                                                String serviceURLMarker,
+                                                                                String serviceOperationName) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
     {
         IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            IntegrationServiceHandler handler = instance.getIntegrationServiceHandler(serviceURLMarker, serviceOperationName);
+            /*
+             * There are potentially multiple context managers for a particular service - one may be explicitly
+             * configured as a service; and there will be one in each integration group that has a lineage connector
+             * registered.
+             */
+            List<IntegrationContextManager> contextManagers = new ArrayList<>();
 
-            if (handler != null)
+            IntegrationServiceHandler serviceHandler = null;
+            InvalidParameterException invalidParameterException = null;
+
+            try
             {
-                return handler.getContextManager();
+                serviceHandler = instance.getIntegrationServiceHandler(serviceURLMarker, serviceOperationName);
             }
+            catch (InvalidParameterException notKnownException)
+            {
+                /*
+                 * We will use this exception if there are no context managers for this service in the integration groups.
+                 */
+                invalidParameterException = notKnownException;
+            }
+
+            if (serviceHandler != null)
+            {
+                contextManagers.add(serviceHandler.getContextManager());
+            }
+
+            List<IntegrationGroupHandler> groupHandlers = instance.getAllIntegrationGroupHandlers(serviceOperationName);
+
+            if (groupHandlers != null)
+            {
+                for (IntegrationGroupHandler groupHandler : groupHandlers)
+                {
+                    if (groupHandler != null)
+                    {
+                        IntegrationContextManager contextManager = groupHandler.getContextManager(serviceURLMarker);
+                        if (contextManager != null)
+                        {
+                            contextManagers.add(contextManager);
+                        }
+                    }
+                }
+            }
+
+            if (!contextManagers.isEmpty())
+            {
+                return contextManagers;
+            }
+
+            /*
+             * There are no context managers so throw the saved exception.
+             */
+            if (invalidParameterException != null)
+            {
+                throw invalidParameterException;
+            }
+
+            /*
+             * Technically unreachable.
+             */
         }
 
         return null;
