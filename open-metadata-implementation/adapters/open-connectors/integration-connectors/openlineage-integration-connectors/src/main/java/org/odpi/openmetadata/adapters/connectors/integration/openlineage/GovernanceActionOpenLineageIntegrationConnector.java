@@ -103,7 +103,7 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
             try
             {
                 String previousActionStatus = getActionStatus(event.getPreviousElementProperties());
-                String currentActionStatus = getActionStatus(event.getPreviousElementProperties());
+                String currentActionStatus = getActionStatus(event.getElementProperties());
 
                 /*
                  * Only output an event if the status has changed.

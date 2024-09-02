@@ -968,16 +968,16 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public B getActorProfileForUser(String  userId,
-                                    String  profileUserId,
-                                    String  profileUserIdParameterName,
-                                    String  typeName,
-                                    boolean forLineage,
-                                    boolean forDuplicateProcessing,
-                                    Date    effectiveTime,
-                                    String  methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public EntityDetail getActorProfileEntityForUser(String  userId,
+                                                     String  profileUserId,
+                                                     String  profileUserIdParameterName,
+                                                     String  typeName,
+                                                     boolean forLineage,
+                                                     boolean forDuplicateProcessing,
+                                                     Date    effectiveTime,
+                                                     String  methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         final String userGUIDParameterName = "userIdentity.getGUID";
 
@@ -997,34 +997,77 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
 
         if (userIdentity != null)
         {
-            EntityDetail entity = this.getAttachedEntity(userId,
-                                                         userIdentity.getGUID(),
-                                                         userGUIDParameterName,
-                                                         OpenMetadataType.USER_IDENTITY_TYPE_NAME,
-                                                         OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
-                                                         OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
-                                                         typeName,
-                                                         1,
-                                                         forLineage,
-                                                         forDuplicateProcessing,
-                                                         supportedZones,
-                                                         effectiveTime,
-                                                         methodName);
-
-            if (entity != null)
-            {
-                return getFullProfileBean(userId,
-                                          entity,
+            return this.getAttachedEntity(userId,
+                                          userIdentity.getGUID(),
+                                          userGUIDParameterName,
+                                          OpenMetadataType.USER_IDENTITY_TYPE_NAME,
+                                          OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
+                                          OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
                                           typeName,
+                                          1,
                                           forLineage,
                                           forDuplicateProcessing,
+                                          supportedZones,
                                           effectiveTime,
                                           methodName);
-            }
         }
 
         return null;
     }
+
+
+    /**
+     * Retrieve the profile metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param profileUserId unique name of the linked user id
+     * @param profileUserIdParameterName parameter name of profileUserId
+     * @param typeName unique name of the type of the profile to retrieve
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public B getActorProfileForUser(String  userId,
+                                    String  profileUserId,
+                                    String  profileUserIdParameterName,
+                                    String  typeName,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing,
+                                    Date    effectiveTime,
+                                    String  methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        EntityDetail entity = this.getActorProfileEntityForUser(userId,
+                                                                profileUserId,
+                                                                profileUserIdParameterName,
+                                                                typeName,
+                                                                forLineage,
+                                                                forDuplicateProcessing,
+                                                                effectiveTime,
+                                                                methodName);
+
+        if (entity != null)
+        {
+            return getFullProfileBean(userId,
+                                      entity,
+                                      typeName,
+                                      forLineage,
+                                      forDuplicateProcessing,
+                                      effectiveTime,
+                                      methodName);
+        }
+
+        return null;
+    }
+
 
 
     /**
