@@ -8,9 +8,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.Date;
-import java.util.Map;
 
 /**
  * ProcessBuilder creates the parts of a root repository entity for a process.  The default type of this process
@@ -166,6 +166,33 @@ public class ProcessBuilder extends AssetBuilder
               serverName);
     }
 
+
+    /**
+     * Create the properties for the ProcessHierarchy relationship.
+     *
+     * @param processContainmentOrdinal ordinal for the containmentType property
+     * @return instance properties
+     * @throws InvalidParameterException enum type not supported (should not happen)
+     */
+    public InstanceProperties getProcessHierarchyProperties(int processContainmentOrdinal) throws InvalidParameterException
+    {
+        final String methodName = "getProcessHierarchyProperties";
+
+        try
+        {
+            return repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                              null,
+                                                              OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME,
+                                                              OpenMetadataType.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_GUID,
+                                                              OpenMetadataType.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_NAME,
+                                                              processContainmentOrdinal,
+                                                              methodName);
+        }
+        catch (TypeErrorException classificationNotSupported)
+        {
+            throw new InvalidParameterException(classificationNotSupported, OpenMetadataType.PRIMARY_KEY_PATTERN_PROPERTY_NAME);
+        }
+    }
 
 
     /**

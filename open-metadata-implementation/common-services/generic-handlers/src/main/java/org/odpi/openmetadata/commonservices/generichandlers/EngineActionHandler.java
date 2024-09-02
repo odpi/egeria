@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -584,6 +585,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                            PropertyServerException
     {
         final String qualifiedNameParameterName  = "processQualifiedName";
+        final String governanceActionProcessGUIDParameterName  = "governanceActionProcessEntity.getGUID()";
+        final String governanceActionProcessInstanceGUIDParameterName  = "governanceActionProcessInstanceGUID";
         final String governanceActionProcessStepGUIDParameterName  = "governanceActionProcessFlowRelationship.getEntityTwoProxy().getGUID()";
 
         /*
@@ -763,6 +766,24 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                          false,
                                                                          new Date(),
                                                                          methodName);
+
+                this.uncheckedLinkElementToElement(userId,
+                                                   null,
+                                                   null,
+                                                   governanceActionProcessEntity.getGUID(),
+                                                   governanceActionProcessGUIDParameterName,
+                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                   processInstanceGUID,
+                                                   governanceActionProcessInstanceGUIDParameterName,
+                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName,
+                                                   false,
+                                                   false,
+                                                   serviceSupportedZones,
+                                                   OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
+                                                   OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
+                                                   processBuilder.getProcessHierarchyProperties(ProcessContainmentType.OWNED.getOrdinal()),
+                                                   effectiveTime,
+                                                   methodName);
 
                 prepareEngineActionFromProcessStep(userId,
                                                    processInstanceGUID,
