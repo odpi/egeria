@@ -222,7 +222,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
 
                             if (connectionElement != null)
                             {
-                                RelatedMetadataElement endpointElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(catalogTarget.getCatalogTargetElement().getGUID(),
+                                RelatedMetadataElement endpointElement = myContext.getIntegrationGovernanceContext().getOpenMetadataAccess().getRelatedMetadataElement(connectionElement.getElement().getElementGUID(),
                                                                                                                                                                        2,
                                                                                                                                                                        OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
                                                                                                                                                                        new Date());

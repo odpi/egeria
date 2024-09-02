@@ -393,6 +393,8 @@ GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ser
 GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/configuration
 
 ###
+@accessService=community-profile
+###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Get the configuration for a specific access service
 # Retrieve the configuration information for a specific Open Metadata Access Services (OMASs) configured for this server.

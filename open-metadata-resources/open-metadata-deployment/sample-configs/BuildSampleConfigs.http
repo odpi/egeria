@@ -75,6 +75,11 @@ Content-Type: application/json
 ###
 # Set up all of the registered, undeprecated Open Metadata Access Services (OMASs) with kafka notifications enabled.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/access-services
+Content-Type: application/json
+
+{
+  "KarmaPointIncrement" : "1"
+}
 
 ###
 # Add the file name for an open Metadata Archive that should be loaded each time the server starts.
