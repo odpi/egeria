@@ -114,7 +114,7 @@ public class ActorProfileConverter<B> extends OMFConverter<B>
                                     UserIdentityElement    userBean       = new UserIdentityElement();
                                     UserIdentityProperties userProperties = new UserIdentityProperties();
 
-                                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
+                                    userBean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
 
                                     InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
 

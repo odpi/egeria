@@ -179,7 +179,7 @@ public enum IntegrationConnectorDefinition
                                "OpenLineageFilePublisher",
                                "olfilepubnpa",
                                null,
-                               null,
+                               "logs/openlineage",
                                null,
                                60,
                                new DeployedImplementationType[]{DeployedImplementationType.FILE_FOLDER, DeployedImplementationType.DATA_FOLDER}),
