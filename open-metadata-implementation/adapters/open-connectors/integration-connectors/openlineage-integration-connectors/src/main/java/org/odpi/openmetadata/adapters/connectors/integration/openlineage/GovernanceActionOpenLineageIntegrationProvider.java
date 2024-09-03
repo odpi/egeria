@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls.OpenLineagePublishConfigurationProperty;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
@@ -52,6 +53,8 @@ public class GovernanceActionOpenLineageIntegrationProvider extends IntegrationC
          */
         super.setConnectorClassName(connectorClassName);
 
+        super.supportedConfigurationProperties = OpenLineagePublishConfigurationProperty.getConfigurationPropertyTypes();
+
         /*
          * Set up the connector type that should be included in a connection used to configure this connector.
          */
@@ -63,6 +66,7 @@ public class GovernanceActionOpenLineageIntegrationProvider extends IntegrationC
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setRecognizedConfigurationProperties(OpenLineagePublishConfigurationProperty.getRecognizedConfigurationProperties());
         connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.LINEAGE_INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;

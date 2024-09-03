@@ -32,6 +32,7 @@ public enum PlaceholderProperty
      * The network address of the server
      */
     SERVER_NETWORK_ADDRESS("serverNetworkAddress", "The network address of the server.", "string", "http://localhost:8080"),
+    API_OPERATION("apiOperation", "The name of the operation to append onto the server host name/port number, or set it to an empty string if not needed.", "string", "/api/v1/lineage"),
 
     /**
      * The userId to store in the userId attribute of the connection.
@@ -312,6 +313,7 @@ public enum PlaceholderProperty
 
         placeholderPropertyTypes.add(PlaceholderProperty.HOST_URL.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.API_OPERATION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.DESCRIPTION.getPlaceholderType());
 

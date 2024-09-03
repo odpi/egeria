@@ -30,8 +30,10 @@ import java.util.*;
 public class GovernanceActionOpenLineageIntegrationConnector extends LineageIntegratorConnector implements AssetManagerEventListener
 {
     private static final URI    producer = URI.create("https://egeria-project.org/");
+    private static final String defaultNameSpace = "GovernanceActions";
     private final        ZoneId zoneId   = ZoneId.systemDefault();
 
+    private String namespace = defaultNameSpace;
 
     /**
      * Default constructor
@@ -52,6 +54,13 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
         super.start();
 
         final String methodName = "start";
+
+        namespace = super.getStringConfigurationProperty("namespace", connectionProperties.getConfigurationProperties());
+
+        if (namespace == null || namespace.isBlank())
+        {
+            namespace = defaultNameSpace;
+        }
 
         try
         {
@@ -189,18 +198,6 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
         else if (EngineActionStatus.INVALID.getName().equals(engineActionStatus))
         {
             event.setEventType("ABORT");
-        }
-
-        String namespace = engineAction.getProcessName();
-
-        /*
-         * This is a workaround for Marquez that limits its namespaces to 64 chars.
-         */
-        if (namespace.length() > 64)
-        {
-            String[] tokens = namespace.split(":");
-
-            namespace = tokens[tokens.length - 1];
         }
 
         OpenLineageJob job = new OpenLineageJob();
