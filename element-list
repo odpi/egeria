@@ -339,6 +339,7 @@ org.odpi.openmetadata.adapters.connectors.integration.openapis
 org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.openapis.properties
 org.odpi.openmetadata.adapters.connectors.integration.openlineage
+org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls
 org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc
 org.odpi.openmetadata.adapters.connectors.postgres.catalog
 org.odpi.openmetadata.adapters.connectors.postgres.controls
