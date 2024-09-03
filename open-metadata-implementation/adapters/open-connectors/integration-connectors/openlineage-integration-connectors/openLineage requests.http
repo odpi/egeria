@@ -1,7 +1,8 @@
 # openLineage requests
 
 #@openLineageBackend=http://localhost:5000
-@openLineageBackend=https://localhost:9443/servers/integration-daemon/open-metadata/integration-services/lineage-integrator/users/airflownpa
+@openLineageBackend=http://egeria.pdr-associates.com:5050
+#@openLineageBackend=https://localhost:9443/servers/integration-daemon/open-metadata/integration-services/lineage-integrator/users/airflownpa
 @openLineageNamespace=restTestNameSpace
 @openLineageRunId=001
 
@@ -320,15 +321,15 @@ Content-Type: application/json
   "producer": "https://egeria-project.org/",
   "schemaURL": "https://openlineage.io/spec/1-0-2/OpenLineage.json#/$defs/RunEvent",
   "eventType": "COMPLETE",
-  "eventTime": "2021-11-05T10:28:18.969066Z[Europe/London]",
+  "eventTime": "{{$isoTimestamp}}",
   "run": {
     "runId": "ce649429-2b5d-4897-899d-0e3a0c1fef44",
     "facets": {
       "nominalTime": {
         "_producer": "https://egeria-project.org/",
         "_schemaURL": "https://openlineage.io/spec/facets/1-0-0/NominalTimeRunFacet.json#/$defs/NominalTimeRunFacet",
-        "nominalStartTime": "2021-11-05T10:28:10.076Z[Europe/London]",
-        "nominalEndTime": "2021-11-05T10:28:13.502Z[Europe/London]"
+        "nominalStartTime": "{{$isoTimestamp}}",
+        "nominalEndTime": "{{$isoTimestamp}}"
       },
       "additionalProperties": {}
     },

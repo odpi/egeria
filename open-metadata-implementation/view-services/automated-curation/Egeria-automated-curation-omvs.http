@@ -302,6 +302,27 @@ Content-Type: application/json
 
 
 ###
+# @name createElementFromTemplate - Marquez endpoint
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "9ea4bff4-d193-492f-bcad-6e68c07c6f9e",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "description" : "Link to Marquez",
+    "portNumber" : "5050",
+    "serverName" : "Marquez",
+    "hostURL" : "http://egeria.pdr-associates.com",
+    "apiOperation" : "/api/v1/lineage"
+  }
+}
+
+
+###
 # @name createElementFromTemplate (Apache Kafka Server)
 # Create a new element from a template.
 # Further Information: https://egeria-project.org/features/templated-cataloguing/overview/

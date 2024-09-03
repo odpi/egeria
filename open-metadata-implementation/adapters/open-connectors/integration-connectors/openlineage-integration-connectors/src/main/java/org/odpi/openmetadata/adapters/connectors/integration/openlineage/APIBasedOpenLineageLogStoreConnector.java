@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -103,11 +104,24 @@ public class APIBasedOpenLineageLogStoreConnector extends OpenLineageLogStoreCon
                            String              rawEvent,
                            String              logStoreURL) throws InvalidParameterException
     {
+        final String methodName = "storeEvent";
+
         if (rawEvent != null)
         {
-            HttpEntity<?> request = new HttpEntity<>((Object)rawEvent, header);
+            try
+            {
+                HttpEntity<?> request = new HttpEntity<>((Object) rawEvent, header);
 
-            restTemplate.exchange(logStoreURL, HttpMethod.POST, request, Void.class);
+                restTemplate.exchange(logStoreURL, HttpMethod.POST, request, Void.class);
+            }
+            catch (Exception error)
+            {
+                auditLog.logMessage(methodName, OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                                   error.getClass().getName(),
+                                                                                                                                   methodName,
+                                                                                                                                   error.getMessage()),
+                                    logStoreURL);
+            }
         }
         else
         {
