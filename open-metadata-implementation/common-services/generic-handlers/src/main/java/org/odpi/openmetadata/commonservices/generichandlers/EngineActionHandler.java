@@ -732,7 +732,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 String processInstanceQualifiedName = repositoryHelper.getStringProperty(serviceName,
                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                          governanceActionProcessEntity.getProperties(),
-                                                                                         methodName) + "@" + processInstanceStartTime;
+                                                                                         methodName) + "@" + processInstanceStartTime.getTime() + ":" + UUID.randomUUID();
                 String processInstanceName = repositoryHelper.getStringProperty(serviceName,
                                                                                 OpenMetadataProperty.NAME.name,
                                                                                 governanceActionProcessEntity.getProperties(),
