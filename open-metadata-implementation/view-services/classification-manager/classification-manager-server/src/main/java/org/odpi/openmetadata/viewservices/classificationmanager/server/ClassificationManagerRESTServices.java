@@ -13,11 +13,15 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.FindProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.FindPropertyNamesProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.classificationmanager.rest.ClassificationRequestBody;
 import org.odpi.openmetadata.viewservices.classificationmanager.rest.EffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.viewservices.classificationmanager.rest.RelationshipRequestBody;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 
 
 /**
@@ -1241,6 +1245,204 @@ public class ClassificationManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+
+    /**
+     * Retrieve the metadata element using its unique identifier.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param elementGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public MetadataElementSummaryResponse getMetadataElementByGUID(String                        serverName,
+                                                                   String                        elementGUID,
+                                                                   boolean                       forLineage,
+                                                                   boolean                       forDuplicateProcessing,
+                                                                   EffectiveTimeQueryRequestBody requestBody)
+    {
+        final String methodName = "getMetadataElementByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        MetadataElementSummaryResponse response = new MetadataElementSummaryResponse();
+        AuditLog                       auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                response.setElement(handler.getMetadataElementByGUID(userId,
+                                                                     elementGUID,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     new Date()));
+            }
+            else
+            {
+                response.setElement(handler.getMetadataElementByGUID(userId,
+                                                                     elementGUID,
+                                                                     forLineage,
+                                                                     forDuplicateProcessing,
+                                                                     requestBody.getEffectiveTime()));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param serverName     name of server instance to route request to
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody unique name for the metadata element
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public MetadataElementSummaryResponse getMetadataElementByUniqueName(String          serverName,
+                                                                         boolean         forLineage,
+                                                                         boolean         forDuplicateProcessing,
+                                                                         NameRequestBody requestBody)
+    {
+        final String methodName = "getMetadataElementByUniqueName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        MetadataElementSummaryResponse response = new MetadataElementSummaryResponse();
+        AuditLog                       auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+            else if (requestBody.getNamePropertyName() == null)
+            {
+                response.setElement(handler.getMetadataElementByUniqueName(userId,
+                                                                           requestBody.getName(),
+                                                                           OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElement(handler.getMetadataElementByUniqueName(userId,
+                                                                           requestBody.getName(),
+                                                                           requestBody.getNamePropertyName(),
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           requestBody.getEffectiveTime()));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
+     *
+     * @param serverName     name of server instance to route request to
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody unique name for the metadata element
+     *
+     * @return metadata element unique identifier (guid) or
+     *  InvalidParameterException the unique identifier is null or not known or
+     *  UserNotAuthorizedException the governance action service is not able to access the element or
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public GUIDResponse getMetadataElementGUIDByUniqueName(String          serverName,
+                                                           boolean         forLineage,
+                                                           boolean         forDuplicateProcessing,
+                                                           NameRequestBody requestBody)
+    {
+        final String methodName = "getMetadataElementGUIDByUniqueName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            StewardshipManagementClient handler = instanceHandler.getStewardshipManagementClient(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+            else if (requestBody.getNamePropertyName() == null)
+            {
+                response.setGUID(handler.getMetadataElementGUIDByUniqueName(userId,
+                                                                            requestBody.getName(),
+                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setGUID(handler.getMetadataElementGUIDByUniqueName(userId,
+                                                                            requestBody.getName(),
+                                                                            requestBody.getNamePropertyName(),
+                                                                            forLineage,
+                                                                            forDuplicateProcessing,
+                                                                            requestBody.getEffectiveTime()));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
 
 
     /**
