@@ -682,6 +682,102 @@ public class ClassificationManagerResource
 
 
     /**
+     * Retrieve the metadata element using its unique identifier.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param elementGUID unique identifier for the metadata element
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/elements/{elementGUID}")
+
+    @Operation(summary="getMetadataElementByGUID",
+            description="Retrieve the metadata element using its unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public MetadataElementSummaryResponse getMetadataElementByGUID(@PathVariable String  serverName,
+                                                                   @PathVariable String  elementGUID,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean forLineage,
+                                                                   @RequestParam (required = false, defaultValue = "false")
+                                                                   boolean forDuplicateProcessing,
+                                                                   @RequestBody  (required = false)
+                                                                   EffectiveTimeQueryRequestBody requestBody)
+    {
+        return restAPI.getMetadataElementByGUID(serverName, elementGUID, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param serverName     name of server instance to route request to
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody unique name for the metadata element
+     *
+     * @return metadata element properties or
+     *  InvalidParameterException the unique identifier is null or not known.
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/elements/by-unique-name")
+
+    @Operation(summary="getMetadataElementByUniqueName",
+            description="Retrieve the metadata element using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public MetadataElementSummaryResponse getMetadataElementByUniqueName(@PathVariable String          serverName,
+                                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                         boolean         forLineage,
+                                                                         @RequestParam (required = false, defaultValue = "false")
+                                                                         boolean         forDuplicateProcessing,
+                                                                         @RequestBody (required = false) NameRequestBody requestBody)
+    {
+        return restAPI.getMetadataElementByUniqueName(serverName, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
+     * Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
+     *
+     * @param serverName     name of server instance to route request to
+     * @param forLineage the retrieved element is for lineage processing so include archived elements
+     * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
+     * @param requestBody unique name for the metadata element
+     *
+     * @return metadata element unique identifier (guid) or
+     *  InvalidParameterException the unique identifier is null or not known or
+     *  UserNotAuthorizedException the governance action service is not able to access the element or
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/elements/guid-by-unique-name")
+
+    @Operation(summary="getMetadataElementGUIDByUniqueName",
+            description="Retrieve the metadata element GUID using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
+    public GUIDResponse getMetadataElementGUIDByUniqueName(@PathVariable String          serverName,
+                                                           @RequestParam (required = false, defaultValue = "false")
+                                                           boolean         forLineage,
+                                                           @RequestParam (required = false, defaultValue = "false")
+                                                           boolean         forDuplicateProcessing,
+                                                           @RequestBody (required = false) NameRequestBody requestBody)
+    {
+        return restAPI.getMetadataElementGUIDByUniqueName(serverName, forLineage, forDuplicateProcessing, requestBody);
+    }
+
+
+    /**
      * Retrieve elements of the requested type name.
      *
      * @param serverName  name of the server instance to connect to

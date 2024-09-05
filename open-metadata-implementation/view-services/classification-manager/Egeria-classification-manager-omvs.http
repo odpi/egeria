@@ -20,7 +20,7 @@ Content-Type: application/json
 
 ###
 
-@elementGUID=b359e297-a565-414a-8213-fa423312ab36
+@elementGUID=add guid here
 
 ###
 # =====================================================================================================================
@@ -415,6 +415,47 @@ Content-Type: application/json
 # They are optional and have a default value of "{{$isoTimestamp}}", false and false respectively.
 # The paging request parameters "startFrom" and "pageSize" are also optional and have default values of 0,
 # which attempts to retrieve as much as is available upto the maximum allowed by the server.
+###
+# @name getMetadataElementByGUID
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "EffectiveTimeQueryRequestBody",
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name getMetadataElementByUniqueName
+# Retrieve the metadata element using its unique name (typically the qualified name).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "NameRequestBody",
+    "name" : "Add name here",
+    "namePropertyName" : "qualifiedName",
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name getMetadataElementGUIDByUniqueName
+# Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "NameRequestBody",
+    "name" : "Add name here",
+    "namePropertyName" : "qualifiedName",
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
 
 ###
 # @name getElements
@@ -431,7 +472,6 @@ Content-Type: application/json
     "openMetadataTypeName" : "CertificationType",
     "effectiveTime" : "{{$isoTimestamp}}"
 }
-
 
 
 ###
