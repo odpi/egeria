@@ -72,7 +72,14 @@ public class CocoClinicalTrialSetUpDataLakeService extends GeneralGovernanceActi
              */
             if (governanceContext.getRequestParameters() != null)
             {
-                volumeTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_TEMPLATE.getName());
+                if (governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_TEMPLATE.getName()) != null)
+                {
+                    volumeTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_VOLUME_TEMPLATE.getName());
+                }
+                if (governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_TEMPLATE.getName()) != null)
+                {
+                    schemaTemplateGUID = governanceContext.getRequestParameters().get(CocoClinicalTrialRequestParameter.DATA_LAKE_SCHEMA_TEMPLATE.getName());
+                }
             }
 
             /*

@@ -1410,7 +1410,7 @@ public class StewardshipManagementClient implements StewardshipManagementInterfa
                                                            boolean forDuplicateProcessing,
                                                            Date    effectiveTime) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
-                                                                                                PropertyServerException
+                                                                                         PropertyServerException
     {
         return client.getMetadataElementByGUID(userId, elementGUID, forLineage, forDuplicateProcessing, effectiveTime);
     }
