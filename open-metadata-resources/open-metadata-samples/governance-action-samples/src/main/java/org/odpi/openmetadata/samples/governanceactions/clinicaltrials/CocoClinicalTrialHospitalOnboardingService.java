@@ -260,6 +260,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                 newFileProcessName = this.createNewFileProcess(onboardingProcessGUID,
                                                                clinicalTrialId,
                                                                clinicalTrialName,
+                                                               hospitalName,
                                                                stewardGUID,
                                                                hospitalDataLakeTemplateName,
                                                                dataQualityCertificationTypeGUID);
@@ -597,7 +598,8 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
 
     /**
-     * Add the new folder to the integration connector monitoring the landing area.
+     * Create a new process for onboarding files from a specific hospital.  This is effectively a facade that
+     * adds the specific action targets and templates (request parameters) for the hospital.
      *
      * @param onboardingProcessGUID unique identifier of the generic process
      * @param clinicalTrialId identifier of the clinical trial
@@ -609,6 +611,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
     private String createNewFileProcess(String onboardingProcessGUID,
                                         String clinicalTrialId,
                                         String clinicalTrialName,
+                                        String hospitalName,
                                         String stewardGUID,
                                         String dataLakeTemplateName,
                                         String dataQualityCertificationType) throws InvalidParameterException,
@@ -616,7 +619,8 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                                     UserNotAuthorizedException
     {
         final String methodName = "createNewFileProcess";
-        String processQualifiedName = "Coco:GovernanceActionProcess:" + clinicalTrialId + ":WeeklyMeasurements:Onboarding";
+
+        String processQualifiedName = "Coco:GovernanceActionProcess:" + clinicalTrialId + ":" + hospitalName + ":WeeklyMeasurements:Onboarding";
 
         OpenMetadataElement genericProcess = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(onboardingProcessGUID);
 
