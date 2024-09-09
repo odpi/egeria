@@ -28,7 +28,7 @@ public enum AccessServiceDescription implements Serializable
      * Publish asset lineage.
      */
     ASSET_LINEAGE_OMAS               (203,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.DEPRECATED,
                                       "Asset Lineage",
                                       "Asset Lineage OMAS",
                                       "asset-lineage",

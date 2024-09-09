@@ -13,7 +13,6 @@ import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServi
 import org.odpi.openmetadata.frameworkservices.oif.admin.OIFMetadataOperationalServices;
 import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
-import org.odpi.openmetadata.governanceservers.lineagewarehouse.admin.LineageWarehouseOperationalServices;
 import org.odpi.openmetadata.serveroperations.properties.OMAGServerServiceStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
@@ -45,7 +44,6 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private ConformanceSuiteOperationalServices  operationalConformanceSuiteServices = null;
     private EngineHostOperationalServices        operationalEngineHost               = null;
     private IntegrationDaemonOperationalServices operationalIntegrationDaemon       = null;
-    private LineageWarehouseOperationalServices  openLineageOperationalServices     = null;
     private OMRSAuditLog                         auditLog                            = null;
 
 
@@ -386,29 +384,6 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     {
         this.operationalIntegrationDaemon = operationalIntegrationDaemon;
     }
-
-
-    /**
-     * Set up the running instance of the Open Lineage Services server.
-     *
-     * @param openLineageOperationalServices OpenLineageOperationalServices object
-     */
-    void setOpenLineageOperationalServices(LineageWarehouseOperationalServices openLineageOperationalServices)
-    {
-        this.openLineageOperationalServices = openLineageOperationalServices;
-    }
-
-
-    /**
-     * Return the running instance of the Open Lineage Services server.
-     *
-     * @return DiscoveryServerOperationalServices object
-     */
-    LineageWarehouseOperationalServices getOpenLineageOperationalServices()
-    {
-        return openLineageOperationalServices;
-    }
-
 
 
     /**

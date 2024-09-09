@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -178,9 +180,7 @@ public class OpenMetadataTypesArchive2_8
 
     private TypeDefPatch updateFixedLocation()
     {
-        final String typeName = "FixedLocation";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.FIXED_LOCATION_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -194,25 +194,19 @@ public class OpenMetadataTypesArchive2_8
         final String attribute1Name            = "address";
         final String attribute1Description     = "Postal address of the location (Deprecated).";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "postalAddress";
-        final String attribute2Description     = "Postal address of the location.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "mapProjection";
-        final String attribute3Description     = "The scheme used to define the meaning of the coordinates.";
-        final String attribute3DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.POSTAL_ADDRESS.name,
+                                                           OpenMetadataProperty.POSTAL_ADDRESS.description,
+                                                           OpenMetadataProperty.POSTAL_ADDRESS.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.MAP_PROJECTION.name,
+                                                           OpenMetadataProperty.MAP_PROJECTION.description,
+                                                           OpenMetadataProperty.MAP_PROJECTION.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -222,9 +216,7 @@ public class OpenMetadataTypesArchive2_8
 
     private TypeDefPatch updateCyberLocation()
     {
-        final String typeName = "CyberLocation";
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CYBER_LOCATION_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -238,18 +230,15 @@ public class OpenMetadataTypesArchive2_8
         final String attribute1Name            = "address";
         final String attribute1Description     = "Address of the location (Deprecated).";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "networkAddress";
-        final String attribute2Description     = "Base network address used to connect to the location's endpoint(s).";
-        final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NETWORK_ADDRESS.name,
+                                                           OpenMetadataProperty.NETWORK_ADDRESS.description,
+                                                           OpenMetadataProperty.NETWORK_ADDRESS.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);

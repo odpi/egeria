@@ -92,7 +92,7 @@ public class OperatingPlatformBuilder extends ReferenceableBuilder
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.OPERATING_SYSTEM_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.OPERATING_SYSTEM.name,
                                                                   operatingSystem,
                                                                   methodName);
 

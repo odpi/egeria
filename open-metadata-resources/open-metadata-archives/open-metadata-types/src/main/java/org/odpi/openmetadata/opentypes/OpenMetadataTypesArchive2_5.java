@@ -467,9 +467,6 @@ public class OpenMetadataTypesArchive2_5
         final String attribute1Name            = OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name;
         final String attribute1Description     = OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.description;
         final String attribute1DescriptionGUID = OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
-        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
 
         property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.type,
@@ -477,9 +474,9 @@ public class OpenMetadataTypesArchive2_5
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
+                                                           OpenMetadataProperty.DESCRIPTION.description,
+                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
         properties.add(property);
 
 
@@ -565,21 +562,14 @@ public class OpenMetadataTypesArchive2_5
 
     private ClassificationDef addAssetManagerClassification()
     {
-        final String guid            = "03170ce7-edf1-4e94-b6ab-2d5cbbf1f13c";
-        final String name            = "AssetManager";
-        final String description     = "Defines a capability that manages metadata about assets.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
+        return archiveHelper.getClassificationDef(OpenMetadataType.ASSET_MANAGER.typeGUID,
+                                                  OpenMetadataType.ASSET_MANAGER.typeName,
                                                   null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  OpenMetadataType.ASSET_MANAGER.description,
+                                                  OpenMetadataType.ASSET_MANAGER.descriptionGUID,
+                                                  OpenMetadataType.ASSET_MANAGER.wikiURL,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
-
     }
 
 
@@ -771,23 +761,17 @@ public class OpenMetadataTypesArchive2_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.QUALIFIED_NAME.name;
-        final String attribute1Description     = OpenMetadataProperty.QUALIFIED_NAME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
-        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "formula";
         final String attribute3Description     = "Function that determines the subset of the data that flows.";
         final String attribute3DescriptionGUID = null;
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                           OpenMetadataProperty.QUALIFIED_NAME.description,
+                                                           OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
+                                                           OpenMetadataProperty.DESCRIPTION.description,
+                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
@@ -857,24 +841,18 @@ public class OpenMetadataTypesArchive2_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.QUALIFIED_NAME.name;
-        final String attribute1Description     = OpenMetadataProperty.QUALIFIED_NAME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
-        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "formula";
         final String attribute3Description     = "Function that determines the subset of the data that flows.";
         final String attribute3DescriptionGUID = null;
 
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                           OpenMetadataProperty.QUALIFIED_NAME.description,
+                                                           OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
+                                                           OpenMetadataProperty.DESCRIPTION.description,
+                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
@@ -944,23 +922,17 @@ public class OpenMetadataTypesArchive2_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.QUALIFIED_NAME.name;
-        final String attribute1Description     = OpenMetadataProperty.QUALIFIED_NAME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
-        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "guard";
         final String attribute3Description     = "Function that must be true to travel down this control flow.";
         final String attribute3DescriptionGUID = null;
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                           OpenMetadataProperty.QUALIFIED_NAME.description,
+                                                           OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
+                                                           OpenMetadataProperty.DESCRIPTION.description,
+                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,

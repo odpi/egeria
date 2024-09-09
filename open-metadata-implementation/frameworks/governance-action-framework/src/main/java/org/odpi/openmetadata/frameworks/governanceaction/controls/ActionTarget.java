@@ -54,7 +54,7 @@ public enum ActionTarget
      */
     PROCESS_OWNER("processOwner",
                "A person or team who is accountable for the correct operation of a process.",
-               OpenMetadataType.ACTOR_TYPE_NAME,
+               OpenMetadataType.ACTOR.typeName,
                null),
 
     /**
@@ -62,7 +62,7 @@ public enum ActionTarget
      */
     DATA_OWNER("dataOwner",
               "A person or team who is accountable for the correct management and use of a particular collection of data.",
-              OpenMetadataType.ACTOR_TYPE_NAME,
+              OpenMetadataType.ACTOR.typeName,
               null),
 
 
@@ -71,7 +71,7 @@ public enum ActionTarget
      */
     DATA_SUBJECT("dataSubject",
                "A person that is described by some data.",
-               OpenMetadataType.ACTOR_TYPE_NAME,
+               OpenMetadataType.ACTOR.typeName,
                null),
 
 
@@ -80,7 +80,7 @@ public enum ActionTarget
      */
     CUSTODIAN("custodian",
               "The person, or team who is responsible for the correct management and use of a particular collection of data inside the consuming organization.",
-              OpenMetadataType.ACTOR_TYPE_NAME,
+              OpenMetadataType.ACTOR.typeName,
               null),
 
     /**
@@ -88,7 +88,7 @@ public enum ActionTarget
      */
     STEWARD("steward",
               "The person, or team who is responsible for setting up the governance metadata associated with a resource.",
-              OpenMetadataType.ACTOR_TYPE_NAME,
+              OpenMetadataType.ACTOR.typeName,
               null),
 
     /**

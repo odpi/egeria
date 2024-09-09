@@ -105,7 +105,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                     ActorProfileElement personalProfile = instance.getActorProfileHandler().getActorProfileForUser(serverUserId,
                                                                                                                    contributingUserId,
                                                                                                                    userParameterName,
-                                                                                                                   OpenMetadataType.PERSON_TYPE_NAME,
+                                                                                                                   OpenMetadataType.PERSON.typeName,
                                                                                                                    false,
                                                                                                                    false,
                                                                                                                    new Date(),
@@ -228,8 +228,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
             {
                 ElementStub elementStub = converter.getElementStub(ElementStub.class, entity, methodName);
 
-                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ACTOR_PROFILE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.USER_IDENTITY_TYPE_NAME)) ||
+                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ACTOR_PROFILE.typeName)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.USER_IDENTITY.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PERSON_ROLE_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.CONTACT_DETAILS.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.COMMUNITY_TYPE_NAME)))
@@ -294,8 +294,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
             {
                 ElementStub elementStub = converter.getElementStub(ElementStub.class, entity, methodName);
 
-                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ACTOR_PROFILE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.USER_IDENTITY_TYPE_NAME)) ||
+                if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ACTOR_PROFILE.typeName)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.USER_IDENTITY.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PERSON_ROLE_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.CONTACT_DETAILS.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.COMMUNITY_TYPE_NAME)))
@@ -360,7 +360,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
 
                 if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PEER_RELATIONSHIP_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TEAM_LEADER_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.TEAM_MEMBER_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.COMMUNITY_MEMBERSHIP_TYPE_NAME)))

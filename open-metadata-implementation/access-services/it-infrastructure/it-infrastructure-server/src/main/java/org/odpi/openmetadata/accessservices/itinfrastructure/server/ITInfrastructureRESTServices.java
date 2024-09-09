@@ -3265,8 +3265,8 @@ public class ITInfrastructureRESTServices
                     instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                     instanceProperties,
                                                                                     OpenMetadataProperty.USE_TYPE.name,
-                                                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_GUID,
-                                                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
+                                                                                    ServerAssetUseType.getOpenTypeGUID(),
+                                                                                    ServerAssetUseType.getOpenTypeName(),
                                                                                     properties.getUseType().getOpenTypeOrdinal(),
                                                                                     methodName);
                 }

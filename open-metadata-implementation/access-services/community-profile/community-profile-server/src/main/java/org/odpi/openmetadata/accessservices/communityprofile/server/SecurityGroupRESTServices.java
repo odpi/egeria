@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.security.Securit
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
@@ -293,7 +294,7 @@ public class SecurityGroupRESTServices
                                                                                    OpenMetadataType.SECURITY_GROUP_TYPE_NAME,
                                                                                    distinguishedName,
                                                                                    distinguishedNameParameterName,
-                                                                                   OpenMetadataType.DISTINGUISHED_NAME_PROPERTY_NAME,
+                                                                                   OpenMetadataProperty.DISTINGUISHED_NAME.name,
                                                                                    startFrom,
                                                                                    pageSize,
                                                                                    false,

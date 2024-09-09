@@ -83,8 +83,8 @@ public class LocationBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataType.LOCATION_TYPE_GUID,
-              OpenMetadataType.LOCATION_TYPE_NAME,
+              OpenMetadataType.LOCATION.typeGUID,
+              OpenMetadataType.LOCATION.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -107,8 +107,8 @@ public class LocationBuilder extends ReferenceableBuilder
                     String               serviceName,
                     String               serverName)
     {
-        super(OpenMetadataType.LOCATION_TYPE_GUID,
-              OpenMetadataType.LOCATION_TYPE_NAME,
+        super(OpenMetadataType.LOCATION.typeGUID,
+              OpenMetadataType.LOCATION.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -169,25 +169,25 @@ public class LocationBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataType.COORDINATES_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.COORDINATES.name,
                                                                   coordinates,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.MAP_PROJECTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.MAP_PROJECTION.name,
                                                                   mapProjection,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.POSTAL_ADDRESS_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.POSTAL_ADDRESS.name,
                                                                   postalAddress,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.TIME_ZONE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.TIME_ZONE.name,
                                                                   timeZone,
                                                                   methodName);
 
@@ -219,7 +219,7 @@ public class LocationBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.LEVEL_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.LEVEL.name,
                                                                   level,
                                                                   methodName);
 

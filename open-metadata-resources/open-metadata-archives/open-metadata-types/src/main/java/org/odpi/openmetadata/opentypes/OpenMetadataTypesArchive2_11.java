@@ -389,35 +389,26 @@ public class OpenMetadataTypesArchive2_11
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
-        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "status";
         final String attribute2Description     = "The status of or confidence in the relationship.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = OpenMetadataProperty.STEWARD.name;
-        final String attribute3Description     = OpenMetadataProperty.STEWARD.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
-        final String attribute4Name            = OpenMetadataProperty.SOURCE.name;
-        final String attribute4Description     = OpenMetadataProperty.SOURCE.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
+                                                           OpenMetadataProperty.DESCRIPTION.description,
+                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
         properties.add(property);
         property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
                                                          attribute2Name,
                                                          attribute2Description,
                                                          attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.STEWARD.name,
+                                                           OpenMetadataProperty.STEWARD.description,
+                                                           OpenMetadataProperty.STEWARD.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
+                                                           OpenMetadataProperty.SOURCE.description,
+                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);

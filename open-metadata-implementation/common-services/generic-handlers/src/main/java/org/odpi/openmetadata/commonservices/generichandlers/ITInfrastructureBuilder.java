@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -124,8 +125,8 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
                                                                     OpenMetadataProperty.USE_TYPE.name,
-                                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_GUID,
-                                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
+                                                                    ServerAssetUseType.getOpenTypeGUID(),
+                                                                    ServerAssetUseType.getOpenTypeName(),
                                                                     useType,
                                                                     methodName);
         }
@@ -152,7 +153,7 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataType.PROVIDER_NAME_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.PROVIDER_NAME.name,
                                                                                      providerName,
                                                                                      methodName);
 
@@ -200,13 +201,13 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataType.TENANT_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.TENANT_NAME.name,
                                                                   tenantName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.TENANT_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.TENANT_TYPE.name,
                                                                   tenantType,
                                                                   methodName);
 
@@ -232,13 +233,13 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataType.OFFERING_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.OFFERING_NAME.name,
                                                                   offeringName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SERVICE_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SERVICE_TYPE.name,
                                                                   serviceType,
                                                                   methodName);
 

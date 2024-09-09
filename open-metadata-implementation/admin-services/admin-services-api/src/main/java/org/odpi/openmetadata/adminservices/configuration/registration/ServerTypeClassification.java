@@ -94,22 +94,6 @@ public enum ServerTypeClassification
                 "https://egeria-project.org/concepts/engine-host/"),
 
     /**
-     * Server that manages a warehouse of lineage information.
-     */
-    LINEAGE_WAREHOUSE("Lineage Warehouse",
-                      "Server that manages a warehouse of lineage information.",
-                      ServerTypeClassification.GOVERNANCE_SERVER,
-                      "https://egeria-project.org/concepts/lineage-warehouse/"),
-
-    /**
-     * Server that manages the extraction of metadata from a single data engine.
-     */
-    DATA_ENGINE_PROXY("Data Engine Proxy",
-                "Server that manages the extraction of metadata from a single data engine.",
-                 ServerTypeClassification.GOVERNANCE_SERVER,
-                "https://egeria-project.org/concepts/data-engine-proxy/"),
-
-    /**
      * A View Server is an OMAG Server that hosts the view services to support a User Interface.
      */
     VIEW_SERVER("View Server",

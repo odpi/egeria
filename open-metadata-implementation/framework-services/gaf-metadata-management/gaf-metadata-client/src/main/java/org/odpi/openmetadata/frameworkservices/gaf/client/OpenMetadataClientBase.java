@@ -3986,7 +3986,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                     ToDoStatus.OPEN.getName());
 
         String toDoGUID = this.createMetadataElementInStore(userId,
-                                                            OpenMetadataType.TO_DO_TYPE_NAME,
+                                                            OpenMetadataType.TO_DO.typeName,
                                                             ElementStatus.ACTIVE,
                                                             null,
                                                             null,
@@ -4011,7 +4011,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                     OpenMetadataProperty.ACTION_TARGET_NAME.name,
                                                                                                     actionTarget.getActionTargetName());
                         this.createRelatedElementsInStore(userId,
-                                                          OpenMetadataType.ACTION_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                          OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
                                                           toDoGUID,
                                                           actionTarget.getActionTargetGUID(),
                                                           false,

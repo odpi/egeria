@@ -10,19 +10,6 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 public enum GovernanceServicesDescription
 {
     /**
-     * Store and query asset lineage.
-     */
-    LINEAGE_WAREHOUSE_SERVICES(190,
-                               ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
-                               "Lineage Warehouse Services",
-                               "lineage-warehouse",
-                               "Store and query asset lineage",
-                               "https://egeria-project.org/services/lineage-warehouse-services/",
-                               ServerTypeClassification.LINEAGE_WAREHOUSE.getServerTypeName(),
-                               AccessServiceDescription.ASSET_LINEAGE_OMAS.getAccessServiceFullName(),
-                               ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName()),
-
-    /**
      * Run automated open metadata conformance suite services.
      */
     CONFORMANCE_SUITE_SERVICES       (191,
@@ -34,19 +21,6 @@ public enum GovernanceServicesDescription
                                       ServerTypeClassification.CONFORMANCE_SERVER.getServerTypeName(),
                                       null,
                                       null),
-
-    /**
-     * Integrate Data Engines that are not self-capable of integrating directly with the Data Engine OMAS.
-     */
-    DATA_ENGINE_PROXY_SERVICES       (192,
-                                      ComponentDevelopmentStatus.DEPRECATED,
-                                      "Data Engine Proxy Services",
-                                      "data-engine-proxy",
-                                      "Integrate Data Engines that are not self-capable of integrating directly with the Data Engine OMAS.",
-                                      "https://egeria-project.org/services/data-engine-proxy-services/",
-                                      ServerTypeClassification.DATA_ENGINE_PROXY.getServerTypeName(),
-                                      AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceFullName(),
-                                      ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName()),
 
     /**
      * Host one or more integration services that are exchanging metadata with third party technologies.

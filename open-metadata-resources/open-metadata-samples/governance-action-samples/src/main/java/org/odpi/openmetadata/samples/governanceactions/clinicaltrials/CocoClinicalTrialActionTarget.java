@@ -42,7 +42,7 @@ public enum CocoClinicalTrialActionTarget
      */
     CONTACT_PERSON("hospitalContactPerson",
                    "The person who can be contacted if there are problems with the data from this hospital.",
-                   OpenMetadataType.PERSON_TYPE_NAME,
+                   OpenMetadataType.PERSON.typeName,
                    null,
                    true),
 
@@ -51,7 +51,7 @@ public enum CocoClinicalTrialActionTarget
      */
     PROCESS_OWNER("processOwner",
                   "The person who is accountable for the correct management of the data.",
-                  OpenMetadataType.PERSON_TYPE_NAME,
+                  OpenMetadataType.PERSON.typeName,
                   null,
                   true),
 
@@ -61,7 +61,7 @@ public enum CocoClinicalTrialActionTarget
      */
     CUSTODIAN("custodian",
               "The person who is responsible for the correct management of data and can be contacted inside of Coco pharmaceuticals.",
-              OpenMetadataType.PERSON_TYPE_NAME,
+              OpenMetadataType.PERSON.typeName,
               null,
               true),
 
@@ -70,7 +70,7 @@ public enum CocoClinicalTrialActionTarget
      */
     STEWARD (ActionTarget.STEWARD.getName(),
              "The person, or team in Coco Pharmaceuticals that sets up metadata for data.",
-             OpenMetadataType.ACTOR_TYPE_NAME,
+             OpenMetadataType.ACTOR.typeName,
              null,
              true),
 

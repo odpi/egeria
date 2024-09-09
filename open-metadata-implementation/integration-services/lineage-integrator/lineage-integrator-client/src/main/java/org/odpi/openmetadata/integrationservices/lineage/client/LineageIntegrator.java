@@ -169,7 +169,7 @@ public class LineageIntegrator implements LineageIntegratorAPI
     {
         final String methodName = "publishOpenLineageEvent";
         final String eventParameter = "event";
-        final String urlTemplate = "/servers/{0}/open-metadata/integration-services/lineage-integrator/users/{1}/publish-lineage-warehouse-event";
+        final String urlTemplate = "/servers/{0}/open-metadata/integration-services/lineage-integrator/users/{1}/publish-open-lineage-event";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(event, eventParameter, methodName);
@@ -201,7 +201,7 @@ public class LineageIntegrator implements LineageIntegratorAPI
     {
         final String methodName = "publishOpenLineageEvent";
         final String eventParameter = "event";
-        final String urlTemplate = "/servers/{0}/open-metadata/integration-services/lineage-integrator/users/{1}/publish-lineage-warehouse-event";
+        final String urlTemplate = "/servers/{0}/open-metadata/integration-services/lineage-integrator/users/{1}/publish-open-lineage-event";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(event, eventParameter, methodName);

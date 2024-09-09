@@ -224,12 +224,6 @@ public class OpenMetadataTypesArchive3_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.NAME.name;
-        final String attribute1Description     = OpenMetadataProperty.NAME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
-        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = OpenMetadataProperty.CAPABILITY_TYPE.name;
         final String attribute3Description     = OpenMetadataProperty.CAPABILITY_TYPE.description;
         final String attribute3DescriptionGUID = OpenMetadataProperty.CAPABILITY_TYPE.descriptionGUID;
@@ -239,20 +233,17 @@ public class OpenMetadataTypesArchive3_5
         final String attribute5Name            = OpenMetadataProperty.PATCH_LEVEL.name;
         final String attribute5Description     = OpenMetadataProperty.PATCH_LEVEL.description;
         final String attribute5DescriptionGUID = OpenMetadataProperty.PATCH_LEVEL.descriptionGUID;
-        final String attribute6Name            = OpenMetadataProperty.SOURCE.name;
-        final String attribute6Description     = OpenMetadataProperty.SOURCE.description;
-        final String attribute6DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
         final String attribute7Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
         final String attribute7Description     = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description;
         final String attribute7DescriptionGUID = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NAME.name,
+                                                           OpenMetadataProperty.NAME.description,
+                                                           OpenMetadataProperty.NAME.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
+                                                           OpenMetadataProperty.DESCRIPTION.description,
+                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
@@ -266,9 +257,9 @@ public class OpenMetadataTypesArchive3_5
                                                            attribute5Description,
                                                            attribute5DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
-                                                           attribute6Description,
-                                                           attribute6DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.SOURCE.name,
+                                                           OpenMetadataProperty.SOURCE.description,
+                                                           OpenMetadataProperty.SOURCE.descriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
                                                            attribute7Description,
@@ -625,16 +616,13 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "CloudService";
-        final String attachToEntity = "SoftwareCapability";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CLOUD_SERVICE_CLASSIFICATION.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
 
         List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(attachToEntity)));
+        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.SOFTWARE_CAPABILITY.typeName)));
 
         typeDefPatch.setValidEntityDefs(validEntityDefs);
         return typeDefPatch;

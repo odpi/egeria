@@ -69,7 +69,6 @@ dependencies {
 
         runtimeOnly project(':open-metadata-implementation:access-services:security-manager:security-manager-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:data-manager:data-manager-spring')
-        runtimeOnly project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:governance-program:governance-program-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:governance-engine:governance-engine-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:governance-server:governance-server-spring')
@@ -106,7 +105,6 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:framework-services:oif-metadata-management:oif-metadata-spring')
         runtimeOnly project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-spring')
         runtimeOnly project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-spring')
-        runtimeOnly project(':open-metadata-implementation:governance-server-services:lineage-warehouse-services:lineage-warehouse-services-spring')
     }
 }
 

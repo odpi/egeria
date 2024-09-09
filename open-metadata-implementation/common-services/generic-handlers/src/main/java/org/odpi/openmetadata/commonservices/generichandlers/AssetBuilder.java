@@ -248,11 +248,11 @@ public class AssetBuilder extends ReferenceableBuilder
         {
             if (ownerType == 0)
             {
-                setOwnershipClassification(userId, owner, OpenMetadataType.USER_IDENTITY_TYPE_NAME, null, methodName);
+                setOwnershipClassification(userId, owner, OpenMetadataType.USER_IDENTITY.typeName, null, methodName);
             }
             else if (ownerType == 1)
             {
-                setOwnershipClassification(userId, owner, OpenMetadataType.ACTOR_PROFILE_TYPE_NAME, null, methodName);
+                setOwnershipClassification(userId, owner, OpenMetadataType.ACTOR_PROFILE.typeName, null, methodName);
             }
 
             setOwnershipClassification(userId, owner, null, null, methodName);
@@ -277,11 +277,11 @@ public class AssetBuilder extends ReferenceableBuilder
         {
             if (ownerType == 0)
             {
-                return getOwnershipProperties(owner, OpenMetadataType.USER_IDENTITY_TYPE_NAME, null, methodName);
+                return getOwnershipProperties(owner, OpenMetadataType.USER_IDENTITY.typeName, null, methodName);
             }
             else if (ownerType == 1)
             {
-                return getOwnershipProperties(owner, OpenMetadataType.ACTOR_PROFILE_TYPE_NAME, null, methodName);
+                return getOwnershipProperties(owner, OpenMetadataType.ACTOR_PROFILE.typeName, null, methodName);
             }
 
             return getOwnershipProperties(owner, null, null, methodName);

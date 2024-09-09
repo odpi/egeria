@@ -125,7 +125,7 @@ public class ToDoConverter<B> extends OpenMetadataConverterBase<B>
                                 {
                                     sponsors.add(super.getElementStub(beanClass, relatedMetadataElement.getElement(), methodName));
                                 }
-                                else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ACTION_TARGET_RELATIONSHIP_TYPE_NAME))
+                                else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName))
                                 {
                                     ToDoActionTargetElement actionTargetElement = new ToDoActionTargetElement();
 

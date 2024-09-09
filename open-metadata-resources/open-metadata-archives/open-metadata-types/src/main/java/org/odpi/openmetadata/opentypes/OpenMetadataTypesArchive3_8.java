@@ -419,19 +419,13 @@ public class OpenMetadataTypesArchive3_8
 
     private RelationshipDef getVisibleEndpointRelationship()
     {
-        final String guid            = "5e1722c7-0167-49a0-bd77-fbf9dc5eb5bb";
-        final String name            = "VisibleEndpoint";
-        final String description     = "Shows that network that an endpoint is visible through.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.VISIBLE_ENDPOINT.typeGUID,
+                                                                                OpenMetadataType.VISIBLE_ENDPOINT.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.VISIBLE_ENDPOINT.description,
+                                                                                OpenMetadataType.VISIBLE_ENDPOINT.descriptionGUID,
+                                                                                OpenMetadataType.VISIBLE_ENDPOINT.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -453,17 +447,15 @@ public class OpenMetadataTypesArchive3_8
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Network";
         final String                     end2AttributeName            = "visibleInNetwork";
         final String                     end2AttributeDescription     = "Networks from which the endpoint can be called.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.NETWORK.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
@@ -474,9 +466,7 @@ public class OpenMetadataTypesArchive3_8
         /*
          * Create the Patch
          */
-        final String typeName = "HostNetwork";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.HOST_NETWORK.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -491,9 +481,7 @@ public class OpenMetadataTypesArchive3_8
         /*
          * Create the Patch
          */
-        final String typeName = "NetworkGatewayLink";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.NETWORK_GATEWAY_LINK_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -506,12 +494,6 @@ public class OpenMetadataTypesArchive3_8
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.NAME.name;
-        final String attribute1Description     = OpenMetadataProperty.NAME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
-        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "externalEndpointAddress";
         final String attribute3Description     = "Network address used by callers to the network gateway.";
         final String attribute3DescriptionGUID = null;
@@ -520,13 +502,13 @@ public class OpenMetadataTypesArchive3_8
         final String attribute4DescriptionGUID = null;
 
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NAME.name,
+                                                           OpenMetadataProperty.NAME.description,
+                                                           OpenMetadataProperty.NAME.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
+                                                           OpenMetadataProperty.DESCRIPTION.description,
+                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
