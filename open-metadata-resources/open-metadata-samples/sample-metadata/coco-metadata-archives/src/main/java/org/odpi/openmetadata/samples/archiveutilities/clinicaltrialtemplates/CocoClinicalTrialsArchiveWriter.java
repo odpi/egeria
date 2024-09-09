@@ -186,7 +186,7 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
         classifications.add(archiveHelper.getConfidentialityClassification(3,
                                                                            100,
                                                                            "tanyatidie",
-                                                                           OpenMetadataType.USER_IDENTITY_TYPE_NAME,
+                                                                           OpenMetadataType.USER_IDENTITY.typeName,
                                                                            OpenMetadataProperty.USER_ID.name,
                                                                            "Clinical Trial Board",
                                                                            "Level approved assuming the data remains anonymized.",

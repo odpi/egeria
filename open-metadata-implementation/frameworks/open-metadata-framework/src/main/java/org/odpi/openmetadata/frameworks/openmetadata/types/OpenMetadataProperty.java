@@ -1371,6 +1371,98 @@ public enum OpenMetadataProperty
      * Identifies which type of delete to use.
      */
     DELETE_METHOD("deleteMethod", "DeleteMethod", "Identifies which type of delete to use.", "ARCHIVE", "0028d073-fe1f-482d-b546-28a77dd712e2"),
+
+    /**
+     * Geographical coordinates of this location.
+     */
+    COORDINATES("coordinates", "string", "Geographical coordinates of this location.", null, "bfa8b230-f9ec-4105-a2fd-3159e9715043"),
+
+    /**
+     * The scheme used to define the meaning of the coordinates.
+     */
+    MAP_PROJECTION("mapProjection", "string", "The scheme used to define the meaning of the coordinates.", null, "a4d71daa-6e87-4214-99e9-2db487ee6573"),
+
+    /**
+     * Postal address of the location.
+     */
+    POSTAL_ADDRESS("postalAddress", "string", "Postal address of the location.", null, "a2743556-f1d6-473b-93bd-1615a0f937b8"),
+
+    /**
+     * Timezone for the location.
+     */
+    TIME_ZONE("timezone", "string", "Timezone for the location.", null, "f163935d-78d1-41ab-b00f-b688e110fdc7"),
+
+    /**
+     * Level of security at this location.
+     */
+    LEVEL("level", "string", "Level of security at this location.", null, "82e1a347-ce26-4b35-83ac-e310652572bf"),
+
+    /**
+     * Descriptive name of the association.
+     */
+    ASSOCIATION_NAME("associationName", "string", "Descriptive name of the association.", null, "539b51a4-015d-4f3e-8389-6e73fcfb1555"),
+
+    /**
+     * Type of the association, such as 'containment', 'aggregation' or 'inheritance.'
+     */
+    ASSOCIATION_TYPE("associationType", "string", "Type of the association, such as 'containment', 'aggregation' or 'inheritance.'", null, "6c2665d5-f202-49cb-8ce9-7333501e3072"),
+
+    /**
+     * Name of the operating system running on this operating platform.
+     */
+    OPERATING_SYSTEM("operatingSystem", "string", "Name of the operating system running on this operating platform.", "macOS", "cbd3c5ec-0259-43cf-94b8-0339291e871b"),
+
+    /**
+     * Level of patches applied to the operating system.
+     */
+    OPERATING_SYSTEM_PATCH_LEVEL("operatingSystemPatchLevel", "string", "Level of patches applied to the operating system.", null, "6fdda5ad-488a-477d-a1cc-33bb8267ef4b"),
+
+    /**
+     * Preferred pronouns to use when addressing this person.
+     */
+    PRONOUNS("pronouns", "string", "Preferred pronouns to use when addressing this person.", null, "8eaa378a-f50c-41da-bb1c-867251a63637"),
+
+    /**
+     * Identifier of the tenant.
+     */
+    TENANT_NAME("tenantName", "string", "Identifier of the tenant.", null, "16745cc3-d657-4e99-a030-6c0023878bb1"),
+
+    /**
+     * Description of the type of tenant.
+     */
+    TENANT_TYPE("tenantType", "string", "Description of the type of tenant.", null, "7b5805fe-397d-4171-96a3-f41072c6453b"),
+
+    /**
+     * Commercial name of the service.
+     */
+    OFFERING_NAME("offeringName", "string", "Commercial name of the service.", null, "8294e9c1-2d8d-429f-8ac2-9f361551291c"),
+
+    /**
+     * Description of the type of the service.
+     */
+    SERVICE_TYPE("serviceType", "string", "Description of the type of the service.", null, "7c05c0a8-c2c3-4043-af10-75858616482d"),
+
+    /**
+     * Name of the cloud provider.
+     */
+    PROVIDER_NAME("providerName", "string", "Name of the cloud provider.", null, "2c1df3cd-a043-457d-8a41-72bec6c12855"),
+
+    /**
+     * The LDAP distinguished name (DN) that gives a unique positional name in the LDAP DIT.
+     */
+    DISTINGUISHED_NAME("distinguishedName", "string", "The LDAP distinguished name (DN) that gives a unique positional name in the LDAP DIT.", null, "63d87f10-10c5-41b3-af11-17167e7c7269"),
+
+
+    /**
+     * The type name of the PersonRole that the UserIdentity is used for.
+     */
+    ROLE_TYPE_NAME("roleTypeName", "string", "", null, "3216d40f-58e0-435c-90cd-980af2645ee7"),
+
+    /**
+     * The unique identifier of the specific PersonRole that the UserIdentity is used for.
+     */
+    ROLE_GUID("roleGUID", "string", "The unique identifier of the specific PersonRole that the UserIdentity is used for.", null, "c2b71682-2d08-40b4-a250-96a99c6bc575"),
+
     ;
 
 

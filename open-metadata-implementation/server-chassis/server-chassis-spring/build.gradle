@@ -45,24 +45,8 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:server-operations:server-operations-spring')
 
     if (!project.hasProperty("adminChassisOnly")) {
-        runtimeOnly project(':open-metadata-implementation:view-services:asset-catalog:asset-catalog-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:automated-curation:automated-curation-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:collection-manager:collection-manager-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:data-discovery:data-discovery-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:feedback-manager:feedback-manager-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:glossary-browser:glossary-browser-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:glossary-manager:glossary-manager-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:action-author:action-author-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:project-manager:project-manager-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:classification-manager:classification-manager-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:reference-data:reference-data-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:runtime-manager:runtime-manager-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:my-profile:my-profile-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:template-manager:template-manager-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:valid-metadata:valid-metadata-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:security-manager:security-manager-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:data-manager:data-manager-spring')
-        runtimeOnly project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:governance-program:governance-program-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:governance-engine:governance-engine-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:governance-server:governance-server-spring')
@@ -99,7 +83,6 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:framework-services:oif-metadata-management:oif-metadata-spring')
         runtimeOnly project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-spring')
         runtimeOnly project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-spring')
-        runtimeOnly project(':open-metadata-implementation:governance-server-services:lineage-warehouse-services:lineage-warehouse-services-spring')
     }
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api'

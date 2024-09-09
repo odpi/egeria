@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -251,21 +252,14 @@ public class OpenMetadataTypesArchive2_7
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.USE_TYPE.name;
-        final String attribute1Description     = OpenMetadataProperty.USE_TYPE.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.USE_TYPE.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
-        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
-
-        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
+        property = archiveHelper.getEnumTypeDefAttribute(ServerAssetUseType.getOpenTypeName(),
+                                                         OpenMetadataProperty.USE_TYPE.name,
+                                                         OpenMetadataProperty.USE_TYPE.description,
+                                                         OpenMetadataProperty.USE_TYPE.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
+                                                           OpenMetadataProperty.DESCRIPTION.description,
+                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);

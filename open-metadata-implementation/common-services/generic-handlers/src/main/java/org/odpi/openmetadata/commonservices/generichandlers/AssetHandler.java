@@ -1974,11 +1974,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         if (ownerType == 0)
         {
-            ownerTypeName = OpenMetadataType.USER_IDENTITY_TYPE_NAME;
+            ownerTypeName = OpenMetadataType.USER_IDENTITY.typeName;
         }
         else if (ownerType == 1)
         {
-            ownerTypeName = OpenMetadataType.ACTOR_PROFILE_TYPE_NAME;
+            ownerTypeName = OpenMetadataType.ACTOR_PROFILE.typeName;
         }
 
         this.addOwner(userId,

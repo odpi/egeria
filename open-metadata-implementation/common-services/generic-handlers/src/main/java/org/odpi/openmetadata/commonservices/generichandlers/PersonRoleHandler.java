@@ -299,7 +299,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                          externalSourceName,
                                          profileGUID,
                                          profileGUIDParameterName,
-                                         OpenMetadataType.PERSON_TYPE_NAME,
+                                         OpenMetadataType.PERSON.typeName,
                                          roleGUID,
                                          roleGUIDParameterName,
                                          OpenMetadataType.PERSON_ROLE_TYPE_NAME,

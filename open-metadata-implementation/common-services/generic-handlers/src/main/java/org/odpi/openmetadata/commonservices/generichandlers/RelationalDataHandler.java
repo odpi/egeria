@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -352,9 +353,9 @@ public class RelationalDataHandler<DATABASE,
                 InstanceProperties relationshipProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                                        null,
                                                                                                        OpenMetadataProperty.USE_TYPE.name,
-                                                                                                       OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_GUID,
-                                                                                                       OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
-                                                                                                       OpenMetadataType.SERVER_ASSET_USE_TYPE_OWNS_ORDINAL,
+                                                                                                       ServerAssetUseType.getOpenTypeGUID(),
+                                                                                                       ServerAssetUseType.getOpenTypeName(),
+                                                                                                       ServerAssetUseType.OWNS.getOrdinal(),
                                                                                                        methodName);
 
                 databaseHandler.linkElementToElement(userId,

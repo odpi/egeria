@@ -193,9 +193,6 @@ public class OpenMetadataTypesArchive4_2
         final String attribute1Name            = "userDefinedStatus";
         final String attribute1Description     = "Extend or replace the valid instance statuses with additional statuses controlled through valid metadata values.";
         final String attribute1DescriptionGUID = null;
-        final String attribute5Name            = OpenMetadataProperty.NOTES.name;
-        final String attribute5Description     = OpenMetadataProperty.NOTES.description;
-        final String attribute5DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
         final String attribute6Name            = OpenMetadataProperty.STEWARD_TYPE_NAME.name;
         final String attribute6Description     = OpenMetadataProperty.STEWARD_TYPE_NAME.description;
         final String attribute6DescriptionGUID = OpenMetadataProperty.STEWARD_TYPE_NAME.descriptionGUID;
@@ -207,9 +204,9 @@ public class OpenMetadataTypesArchive4_2
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
-                                                           attribute5Description,
-                                                           attribute5DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.NOTES.name,
+                                                           OpenMetadataProperty.NOTES.description,
+                                                           OpenMetadataProperty.NOTES.descriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
                                                            attribute6Description,

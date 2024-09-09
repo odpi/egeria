@@ -405,9 +405,6 @@ public class OpenMetadataTypesArchive3_15
         final String attribute9Name = OpenMetadataProperty.WITHDRAW_DATE.name;
         final String attribute9Description = OpenMetadataProperty.WITHDRAW_DATE.description;
         final String attribute9DescriptionGUID = OpenMetadataProperty.WITHDRAW_DATE.descriptionGUID;
-        final String attribute10Name = OpenMetadataProperty.ADDITIONAL_PROPERTIES.name;
-        final String attribute10Description = OpenMetadataProperty.ADDITIONAL_PROPERTIES.description;
-        final String attribute10DescriptionGUID = OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID;
 
         property = archiveHelper.getMapStringLongTypeDefAttribute(attribute1Name,
                                                                   attribute1Description,
@@ -447,9 +444,9 @@ public class OpenMetadataTypesArchive3_15
                                                          attribute9Description,
                                                          attribute9DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute10Name,
-                                                                    attribute10Description,
-                                                                    attribute10DescriptionGUID);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.description,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);

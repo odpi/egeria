@@ -580,7 +580,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
             if (commonServicesDescription.getServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
             {
                 String guid = this.addDeployedImplementationType(commonServicesDescription.getServiceName(),
-                                                                 OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
+                                                                 OpenMetadataType.SOFTWARE_SERVICE.typeName,
                                                                  commonServicesDescription.getServiceDescription(),
                                                                  commonServicesDescription.getServiceWiki());
 
@@ -596,7 +596,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
             if (governanceServicesDescription.getServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
             {
                 String guid = this.addDeployedImplementationType(governanceServicesDescription.getServiceName(),
-                                                                 OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
+                                                                 OpenMetadataType.SOFTWARE_SERVICE.typeName,
                                                                  governanceServicesDescription.getServiceDescription(),
                                                                  governanceServicesDescription.getServiceWiki());
 
@@ -614,7 +614,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
             if (accessServiceDescription.getAccessServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
             {
                 String guid = this.addDeployedImplementationType(accessServiceDescription.getAccessServiceFullName(),
-                                                                 OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
+                                                                 OpenMetadataType.SOFTWARE_SERVICE.typeName,
                                                                  accessServiceDescription.getAccessServiceDescription(),
                                                                  accessServiceDescription.getAccessServiceWiki());
 
@@ -637,7 +637,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
             if (viewServiceDescription.getViewServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
             {
                 String guid = this.addDeployedImplementationType(viewServiceDescription.getViewServiceFullName(),
-                                                                 OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
+                                                                 OpenMetadataType.SOFTWARE_SERVICE.typeName,
                                                                  viewServiceDescription.getViewServiceDescription(),
                                                                  viewServiceDescription.getViewServiceWiki());
 
@@ -664,7 +664,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
             if (engineServiceDescription.getEngineServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
             {
                 String guid = this.addDeployedImplementationType(engineServiceDescription.getEngineServiceFullName(),
-                                                                 OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
+                                                                 OpenMetadataType.SOFTWARE_SERVICE.typeName,
                                                                  engineServiceDescription.getEngineServiceDescription(),
                                                                  engineServiceDescription.getEngineServiceWiki());
 
@@ -708,7 +708,7 @@ public class CoreContentArchiveWriter extends OMRSArchiveWriter
             if (integrationServiceDescription.getIntegrationServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
             {
                 String guid = this.addDeployedImplementationType(integrationServiceDescription.getIntegrationServiceFullName(),
-                                                                 OpenMetadataType.SOFTWARE_SERVICE_TYPE_NAME,
+                                                                 OpenMetadataType.SOFTWARE_SERVICE.typeName,
                                                                  integrationServiceDescription.getIntegrationServiceDescription(),
                                                                  integrationServiceDescription.getIntegrationServiceWiki());
 

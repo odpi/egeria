@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -77,8 +78,8 @@ public class UserIdentityBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataType.USER_IDENTITY_TYPE_GUID,
-              OpenMetadataType.USER_IDENTITY_TYPE_NAME,
+              OpenMetadataType.USER_IDENTITY.typeGUID,
+              OpenMetadataType.USER_IDENTITY.typeName,
               extendedProperties,
               repositoryHelper,
               serviceName,
@@ -108,7 +109,7 @@ public class UserIdentityBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.DISTINGUISHED_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DISTINGUISHED_NAME.name,
                                                                   distinguishedName,
                                                                   methodName);
 

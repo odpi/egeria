@@ -16,8 +16,6 @@ for a particular type of governance server.
 
 * **[engine-host-services](engine-host-services)** - running governance engines.
 
-* **[lineage-warehouse-services](lineage-warehouse-services)** - provides a historic reporting warehouse for lineage.
-
 
 ----
 Return to [open-metadata-implementation](..).

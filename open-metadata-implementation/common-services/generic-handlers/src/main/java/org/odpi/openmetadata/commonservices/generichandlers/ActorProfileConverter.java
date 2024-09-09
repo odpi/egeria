@@ -109,7 +109,7 @@ public class ActorProfileConverter<B> extends OMFConverter<B>
                             {
                                 String entityTypeName = entity.getType().getTypeDefName();
 
-                                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.USER_IDENTITY_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.USER_IDENTITY.typeName))
                                 {
                                     UserIdentityElement    userBean       = new UserIdentityElement();
                                     UserIdentityProperties userProperties = new UserIdentityProperties();
@@ -261,7 +261,7 @@ public class ActorProfileConverter<B> extends OMFConverter<B>
 
                                     businessCapabilities.add(relatedElement);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PROFILE_LOCATION_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.typeName))
                                 {
                                     EntityProxy entityProxy = relationship.getEntityTwoProxy();
 
@@ -276,7 +276,7 @@ public class ActorProfileConverter<B> extends OMFConverter<B>
                                     locationElement.setProperties(locationProperties);
                                     locations.add(locationElement);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 

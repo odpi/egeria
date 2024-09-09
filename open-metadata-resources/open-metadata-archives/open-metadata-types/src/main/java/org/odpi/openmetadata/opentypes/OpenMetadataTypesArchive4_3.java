@@ -352,18 +352,14 @@ public class OpenMetadataTypesArchive4_3
         final String attribute1Name            = "memberRole";
         final String attribute1Description     = "The role of the member in the host cluster.  This value is typically defined by the technology of the host cluster.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = OpenMetadataProperty.ADDITIONAL_PROPERTIES.name;
-        final String attribute2Description     = "Additional properties that define the configuration and properties of the member.";
-        final String attribute2DescriptionGUID = null;
-
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
-                                                                    attribute2Description,
-                                                                    attribute2DescriptionGUID);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.description,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);

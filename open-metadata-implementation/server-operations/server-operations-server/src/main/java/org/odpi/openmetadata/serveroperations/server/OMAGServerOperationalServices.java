@@ -40,7 +40,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.governanceservers.lineagewarehouse.admin.LineageWarehouseOperationalServices;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
@@ -1294,32 +1293,6 @@ public class OMAGServerOperationalServices
             activatedServiceList.add(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName());
             instance.setServerServiceActiveStatus(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
         }
-
-        /*
-         * Initialize the Open Lineage Services.  This is supports the storing and querying of asset lineage.
-         */
-        else if (ServerTypeClassification.LINEAGE_WAREHOUSE.equals(serverTypeClassification))
-        {
-            instance.setServerServiceActiveStatus(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(), ServerActiveStatus.STARTING);
-
-            LineageWarehouseOperationalServices
-                    operationalOpenLineageServer = new LineageWarehouseOperationalServices(configuration.getLocalServerId(),
-                                                                                           configuration.getLocalServerName(),
-                                                                                           configuration.getLocalServerUserId(),
-                                                                                           configuration.getLocalServerPassword(),
-                                                                                           configuration.getMaxPageSize());
-            instance.setOpenLineageOperationalServices(operationalOpenLineageServer);
-            operationalOpenLineageServer.initialize(configuration.getOpenLineageServerConfig(),
-                                                    operationalRepositoryServices.getAuditLog(
-                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceCode(),
-                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceDevelopmentStatus(),
-                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
-                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceDescription(),
-                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceWiki()));
-
-            activatedServiceList.add(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName());
-            instance.setServerServiceActiveStatus(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
-        }
     }
 
 
@@ -1479,18 +1452,6 @@ public class OMAGServerOperationalServices
                     instance.getOperationalIntegrationDaemon().terminate();
 
                     instance.setServerServiceActiveStatus(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(), ServerActiveStatus.INACTIVE);
-                }
-
-                /*
-                 * Shutdown the open lineage services
-                 */
-                if (instance.getOpenLineageOperationalServices() != null)
-                {
-                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(), ServerActiveStatus.STOPPING);
-
-                    instance.getOpenLineageOperationalServices().shutdown();
-
-                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(), ServerActiveStatus.INACTIVE);
                 }
 
                 /*

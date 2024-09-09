@@ -266,7 +266,7 @@ public class GovernanceDefinitionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.DISTINGUISHED_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DISTINGUISHED_NAME.name,
                                                                   distinguishedName,
                                                                   methodName);
 

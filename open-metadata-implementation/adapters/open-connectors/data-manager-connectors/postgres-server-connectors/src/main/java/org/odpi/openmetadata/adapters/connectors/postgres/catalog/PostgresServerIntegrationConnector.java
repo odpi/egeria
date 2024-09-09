@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
@@ -357,8 +358,8 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
         OpenMetadataAccess openMetadataAccess = getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
         ElementProperties   serverAssetUseProperties = propertyHelper.addEnumProperty(null,
                                                                                       OpenMetadataProperty.USE_TYPE.name,
-                                                                                      OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
-                                                                                      OpenMetadataType.SERVER_ASSET_USE_TYPE_OWNS_SYMBOLIC_NAME);
+                                                                                      ServerAssetUseType.getOpenTypeName(),
+                                                                                      ServerAssetUseType.OWNS.getName());
         {
             if (catalogTemplateName != null)
             {

@@ -596,7 +596,7 @@ public enum DeployedImplementationType
     ASSET_CATALOG("Asset Metadata Catalog",
                   DeployedImplementationType.SOFTWARE_CAPABILITY,
                   OpenMetadataType.CATALOG.typeName,
-                  OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
+                  OpenMetadataType.ASSET_MANAGER.typeName,
                   "A catalog of metadata that describes assets such as deployed systems, data sources and processes.",
                   OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
 
@@ -607,7 +607,7 @@ public enum DeployedImplementationType
     OSS_UC_CATALOG("Unity Catalog Catalog",
                DeployedImplementationType.ASSET_CATALOG,
                OpenMetadataType.CATALOG.typeName,
-               OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
+               OpenMetadataType.ASSET_MANAGER.typeName,
                "An operational data platform catalog within the Unity Catalog (UC) 'catalog of catalogs'.",
                "https://github.com/unitycatalog/unitycatalog"),
 

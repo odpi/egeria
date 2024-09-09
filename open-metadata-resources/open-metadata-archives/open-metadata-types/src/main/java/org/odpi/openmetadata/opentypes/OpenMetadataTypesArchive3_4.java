@@ -250,9 +250,7 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Create the Patch
          */
-        final String typeName = "UserIdentity";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.USER_IDENTITY.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -263,14 +261,9 @@ public class OpenMetadataTypesArchive3_4
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "distinguishedName";
-        final String attribute1Description     = "The LDAP distinguished name (DN) that gives a unique positional name in the LDAP DIT.";
-        final String attribute1DescriptionGUID = null;
-
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISTINGUISHED_NAME.name,
+                                                           OpenMetadataProperty.DISTINGUISHED_NAME.description,
+                                                           OpenMetadataProperty.DISTINGUISHED_NAME.descriptionGUID);
         properties.add(property);
 
 
@@ -285,9 +278,7 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Create the Patch
          */
-        final String typeName = "ProfileIdentity";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -298,28 +289,18 @@ public class OpenMetadataTypesArchive3_4
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "roleTypeName";
-        final String attribute1Description     = "The type name of the PersonRole that the UserIdentity is used for.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "roleGUID";
-        final String attribute2Description     = "The unique identifier of the specific PersonRole that the UserIdentity is used for.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = OpenMetadataProperty.DESCRIPTION.name;
-        final String attribute3Description     = OpenMetadataProperty.DESCRIPTION.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ROLE_TYPE_NAME.name,
+                                                           OpenMetadataProperty.ROLE_TYPE_NAME.description,
+                                                           OpenMetadataProperty.ROLE_TYPE_NAME.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.ROLE_GUID.name,
+                                                           OpenMetadataProperty.ROLE_GUID.description,
+                                                           OpenMetadataProperty.ROLE_GUID.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DESCRIPTION.name,
+                                                           OpenMetadataProperty.DESCRIPTION.description,
+                                                           OpenMetadataProperty.DESCRIPTION.descriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -549,13 +530,9 @@ public class OpenMetadataTypesArchive3_4
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "distinguishedName";
-        final String attribute1Description     = "The LDAP distinguished name (DN) that gives a unique positional name in the LDAP DIT.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.DISTINGUISHED_NAME.name,
+                                                           OpenMetadataProperty.DISTINGUISHED_NAME.description,
+                                                           OpenMetadataProperty.DISTINGUISHED_NAME.descriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -574,7 +551,7 @@ public class OpenMetadataTypesArchive3_4
 
         final List<TypeDefLink> linkedToEntities = new ArrayList<>();
 
-        linkedToEntities.add(this.archiveBuilder.getEntityDef("UserIdentity"));
+        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.USER_IDENTITY.typeName));
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,

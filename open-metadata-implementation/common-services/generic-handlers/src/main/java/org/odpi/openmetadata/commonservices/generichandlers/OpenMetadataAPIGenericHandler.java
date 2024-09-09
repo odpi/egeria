@@ -2970,7 +2970,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             anchorIdentifiers = this.getAnchorGUIDForGlossaryCategory(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
         else if ((repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.ASSET.typeName)) ||
-                (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.PERSON_TYPE_NAME)))
+                (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.PERSON.typeName)))
         {
             /*
              * Assume this type of Referenceable is its own anchor.
