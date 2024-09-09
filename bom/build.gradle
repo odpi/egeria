@@ -81,7 +81,7 @@ ext {
     plexusVersion = '4.0.1'
     postgresVersion = '42.7.3'
     nettyVersion = '4.1.111.Final'
-    prometheusVersion = '1.13.1'
+    prometheusVersion = '1.13.3'
     quartzVersion = '2.3.2'
     // TODO: May be able to remove as moving to jakarta servlet
     servletVersion = '4.0.1'
