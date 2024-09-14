@@ -22,6 +22,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-file-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-jdbc-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:cohort-registry-store-connectors:cohort-registry-file-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector')
@@ -44,6 +45,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:report-generating-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector')
@@ -187,6 +189,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-file-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-jdbc-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:cohort-registry-store-connectors:cohort-registry-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector').jar }
@@ -204,6 +207,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:file-survey-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:csv-lineage-import-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-audit-integration-connector').jar }

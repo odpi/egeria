@@ -1012,7 +1012,6 @@ public abstract class ITInfrastructureClientBase implements ServerPurposeManager
         final String nameParameterName = "name";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(name, nameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         final String urlTemplate = serverPlatformURLRoot + assetURLTemplatePrefix + "/" + assetTypeName + "/by-deployed-implementation-type?startFrom={2}&pageSize={3}";

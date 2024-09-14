@@ -150,6 +150,33 @@ public class ConfigRepositoryServicesResource
 
 
     /**
+     * Add an audit log destination that creates log records as rows in a JDBC Database.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param connectionString name of directory
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @PostMapping(path = "/audit-log-destinations/jdbc")
+
+    @Operation(summary="addJDBCDatabaseAuditLogDestination",
+            description="Add an audit log destination that creates log records as rows in a JDBC Database.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/audit-log-destination-connector/"))
+
+    public VoidResponse addJDBCAuditLogDestination(@PathVariable String       userId,
+                                                   @PathVariable String       serverName,
+                                                   @RequestParam String       connectionString,
+                                                   @RequestBody  List<String> supportedSeverities)
+    {
+        return adminAPI.addJDBCAuditLogDestination(userId, serverName, connectionString, supportedSeverities);
+    }
+
+
+    /**
      * Add an audit log destination that sends each log record as an event on the supplied event topic.
      *
      * @param userId  user that is issuing the request.

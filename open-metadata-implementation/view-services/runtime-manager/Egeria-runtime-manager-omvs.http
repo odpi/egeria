@@ -332,7 +332,7 @@ Content-Type: application/json
 # event has been sent.
 # If the server has already registered in the past, it sends a reregistration request.
 # See https://egeria-project.org/concepts/cohort-member/
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/cohort-members/{{serverGUID}}/cohorts/{{cohortName}}/connect
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/cohort-members/{{serverGUID}}/cohorts/{{cohortName}}/connect
 Authorization: Bearer {{token}}
 
 
@@ -340,7 +340,7 @@ Authorization: Bearer {{token}}
 # @name disconnectFromCohort
 # Disconnect communications from a specific cohort.
 # See https://egeria-project.org/concepts/cohort-member/
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/cohort-members/{{serverGUID}}/cohorts/{{cohortName}}/disconnect
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/cohort-members/{{serverGUID}}/cohorts/{{cohortName}}/disconnect
 Authorization: Bearer {{token}}
 
 
@@ -348,6 +348,6 @@ Authorization: Bearer {{token}}
 # @name unregisterFromCohort
 # Unregister from a specific cohort and disconnect from cohort communications.
 # See https://egeria-project.org/concepts/cohort-member/
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/cohort-members/{{serverGUID}}/cohorts/{{cohortName}}/unregister
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/cohort-members/{{serverGUID}}/cohorts/{{cohortName}}/unregister
 Authorization: Bearer {{token}}
 

@@ -1,0 +1,41 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-integration-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:survey-action-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:governance-action-framework')
+    compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
+    compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
+    compileOnly project(':open-metadata-implementation:access-services:asset-manager:asset-manager-api')
+    compileOnly project(':open-metadata-implementation:integration-services:catalog-integrator:catalog-integrator-api')
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+    compileOnly 'org.slf4j:slf4j-api'
+    testImplementation 'org.testng:testng'
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+
+}
+
+description = 'Nanny Connectors - for integrating into egeria.git only'
+
+java {
+    withJavadocJar()
+}
+
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
+}

@@ -1466,10 +1466,13 @@ public class RuntimeManagerRESTServices extends TokenController
      * @param serverName server to query
      * @param serverGUID unique identifier of the server to call
      * @param cohortName name of cohort
+     * @param requestBody null request body
      */
-    public BooleanResponse connectToCohort(String serverName,
-                                           String serverGUID,
-                                           String cohortName)
+    @SuppressWarnings(value = "unused")
+    public BooleanResponse connectToCohort(String          serverName,
+                                           String          serverGUID,
+                                           String          cohortName,
+                                           NullRequestBody requestBody)
     {
         final String methodName = "connectToCohort";
 
@@ -1524,11 +1527,14 @@ public class RuntimeManagerRESTServices extends TokenController
      * @param serverName server to query
      * @param serverGUID unique identifier of the server to call
      * @param cohortName name of cohort
+     * @param requestBody null request body
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      */
-    public BooleanResponse disconnectFromCohort(String serverName,
-                                                String serverGUID,
-                                                String cohortName)
+    @SuppressWarnings(value = "unused")
+    public BooleanResponse disconnectFromCohort(String          serverName,
+                                                String          serverGUID,
+                                                String          cohortName,
+                                                NullRequestBody requestBody)
     {
         final String methodName = "disconnectFromCohort";
 
@@ -1582,11 +1588,14 @@ public class RuntimeManagerRESTServices extends TokenController
      * @param serverName server to query
      * @param serverGUID unique identifier of the server to call
      * @param cohortName name of cohort
+     * @param requestBody null request body
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      */
-    public BooleanResponse unregisterFromCohort(String serverName,
-                                                String serverGUID,
-                                                String cohortName)
+    @SuppressWarnings(value = "unused")
+    public BooleanResponse unregisterFromCohort(String          serverName,
+                                                String          serverGUID,
+                                                String          cohortName,
+                                                NullRequestBody requestBody)
     {
         final String methodName = "unregisterFromCohort";
 

@@ -56,6 +56,7 @@ public class ConnectorConfigurationFactory
     private static final String CONSOLE_AUDIT_LOG_STORE_PROVIDER                           = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider";
     private static final String EVENT_TOPIC_AUDIT_LOG_STORE_PROVIDER                       = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic.EventTopicAuditLogStoreProvider";
     private static final String FILE_BASED_AUDIT_LOG_STORE_PROVIDER                        = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider";
+    private static final String JDBC_BASED_AUDIT_LOG_STORE_PROVIDER                        = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.jdbc.JDBCAuditLogDestinationProvider";
     private static final String SLF_4_J_AUDIT_LOG_STORE_PROVIDER                           = "org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j.SLF4JAuditLogStoreProvider";
     private static final String FILE_BASED_REGISTRY_STORE_PROVIDER                         = "org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider";
     private static final String GRAPH_OMRS_REPOSITORY_CONNECTOR_PROVIDER                   = "org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider";
@@ -213,6 +214,36 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(destinationName + " in " + endpointAddress);
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(FILE_BASED_AUDIT_LOG_STORE_PROVIDER));
+
+        setSupportedAuditLogSeverities(supportedSeverities, connection);
+
+        return connection;
+    }
+
+
+    /**
+     * Return the connection for the JDBC-based audit log.
+     * By default, the File-based Audit log is stored in a directory called localServerName.ffdc.
+     *
+     * @param connectionString address of database schema
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @return OCF Connection used to create the file based audit logger
+     */
+    public Connection getJDBCBasedAuditLogConnection(String       connectionString,
+                                                     List<String> supportedSeverities)
+    {
+        final String destinationName = "JDBCDatabase";
+
+        Endpoint endpoint = new Endpoint();
+
+        endpoint.setAddress(connectionString);
+
+        Connection connection = new Connection();
+
+        connection.setQualifiedName(destinationName + " at " + connectionString);
+        connection.setDisplayName(destinationName + " at " + connectionString);
+        connection.setEndpoint(endpoint);
+        connection.setConnectorType(getConnectorType(JDBC_BASED_AUDIT_LOG_STORE_PROVIDER));
 
         setSupportedAuditLogSeverities(supportedSeverities, connection);
 
