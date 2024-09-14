@@ -1,0 +1,233 @@
+# A Nanny Demo
+
+
+@baseURL=https://localhost:9443
+@nannyAuditLogTopic=logging
+@nannyDB=
+
+@nannyMonitor=nanny-monitor
+@nannyStore=nanny-store
+@nannyHarvester=nanny-harvester
+@atlasNannyDB=
+
+@ecosystemServer=active-metadata-store
+@glossaryGUID=xxx
+@glossaryTermGUID=xxx
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Enable the Asset Manager OMAS in cocoMDS2
+# Turn on a specific registered Open Metadata Access Services (OMAS).
+# Change the value of the {{access-service}} variable in the environment to be the URL version of the name.  Typically this is done by taking the access service name, dropping "OMAS", change to lower-case and link two words with a dash "-".  For example, Asset Owner OMAS, would have a url name of asset-owner.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDS2/access-services/asset-manager
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Add topic audit log destination to cocoMDS1
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDS1/audit-log-destinations/event-topic?
+    topicName={{nannyAuditLogTopic}}
+Content-Type: application/json
+
+[]
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Add topic audit log destination to cocoMDS2
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDS2/audit-log-destinations/event-topic?
+    topicName={{nannyAuditLogTopic}}
+Content-Type: application/json
+
+[]
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Add topic audit log destination to cocoMDS3
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDS3/audit-log-destinations/event-topic?
+    topicName={{nannyAuditLogTopic}}
+Content-Type: application/json
+
+[]
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Add topic audit log destination to cocoMDS4
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDS4/audit-log-destinations/event-topic?
+    topicName={{nannyAuditLogTopic}}
+Content-Type: application/json
+
+[]
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Add topic audit log destination to cocoMDS5
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDS5/audit-log-destinations/event-topic?
+    topicName={{nannyAuditLogTopic}}
+Content-Type: application/json
+
+[]
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Add topic audit log destination to cocoMDS6
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDS6/audit-log-destinations/event-topic?
+    topicName={{nannyAuditLogTopic}}
+Content-Type: application/json
+
+[]
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Add topic audit log destination to cocoMDSx
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDSx/audit-log-destinations/event-topic?
+    topicName={{nannyAuditLogTopic}}
+Content-Type: application/json
+
+[]
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Add topic audit log destination to cocoOLS1
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoOLS1/audit-log-destinations/event-topic?
+    topicName={{nannyAuditLogTopic}}
+Content-Type: application/json
+
+[]
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Add topic audit log destination to cocoView1
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoView1/audit-log-destinations/event-topic?
+    topicName={{nannyAuditLogTopic}}
+Content-Type: application/json
+
+[]
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Set up event bus in exchangeDL01
+# Set up the common properties needed to call your event bus.  These properties are passed in the request body.
+# This request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/exchangeDL01/event-bus
+Content-Type: application/json
+
+{
+    "producer": {
+        "bootstrap.servers": "{{kafkaep}}"
+    },
+    "consumer":{
+        "bootstrap.servers": "{{kafkaep}}"
+    }
+}
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Add topic audit log destination to exchangeDL01
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/exchangeDL01/audit-log-destinations/event-topic?
+    topicName={{nannyAuditLogTopic}}
+Content-Type: application/json
+
+[]
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Set up event bus in governDL01
+# Set up the common properties needed to call your event bus.  These properties are passed in the request body.
+# This request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/governDL01/event-bus
+Content-Type: application/json
+
+{
+    "producer": {
+        "bootstrap.servers": "{{kafkaep}}"
+    },
+    "consumer":{
+        "bootstrap.servers": "{{kafkaep}}"
+    }
+}
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Add topic audit log destination to governDL01
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/governDL01/audit-log-destinations/event-topic?
+    topicName={{nannyAuditLogTopic}}
+Content-Type: application/json
+
+[]
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Set up event bus in monitorDev01
+# Set up the common properties needed to call your event bus.  These properties are passed in the request body.
+# This request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/monitorDev01/event-bus
+Content-Type: application/json
+
+{
+    "producer": {
+        "bootstrap.servers": "{{kafkaep}}"
+    },
+    "consumer":{
+        "bootstrap.servers": "{{kafkaep}}"
+    }
+}
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Add topic audit log destination to monitorDev01
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/monitorDev01/audit-log-destinations/event-topic?
+    topicName={{nannyAuditLogTopic}}
+Content-Type: application/json
+
+[]
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Set up event bus in monitorGov01
+# Set up the common properties needed to call your event bus.  These properties are passed in the request body.
+# This request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/monitorGov01/event-bus
+Content-Type: application/json
+
+{
+    "producer": {
+        "bootstrap.servers": "{{kafkaep}}"
+    },
+    "consumer":{
+        "bootstrap.servers": "{{kafkaep}}"
+    }
+}
+
+###
+# group: Configure Coco Servers (ecosystem monitor only)
+# @name Add topic audit log destination to monitorGov01
+# Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.
+# The server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/monitorGov01/audit-log-destinations/event-topic?
+    topicName={{nannyAuditLogTopic}}
+Content-Type: application/json
+
+[]

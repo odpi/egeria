@@ -37,6 +37,9 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
 
     protected final PropertyHelper propertyHelper = new PropertyHelper();
 
+    protected RequestedCatalogTargetsManager catalogTargetsManager = null;
+
+
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
      * with the correct component description and log destinations.
@@ -105,6 +108,21 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     }
 
 
+    /**
+     * Indicates that the connector is completely configured and can begin processing.
+     * This call can be used to register with non-blocking services.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     */
+    public void start() throws ConnectorCheckedException
+    {
+        super.start();
+
+        catalogTargetsManager = new RequestedCatalogTargetsManager(connectionProperties.getConfigurationProperties(),
+                                                                   connectorName,
+                                                                   auditLog);
+    }
+
 
     /**
      * Retrieve the endpoint from the asset connection.
@@ -131,6 +149,17 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
 
 
     /**
+     * Add a new listener for changes to this connector's catalog targets.
+     *
+     * @param listener listener to register
+     */
+    protected void registerCatalogTargetChangeListener(CatalogTargetChangeListener listener)
+    {
+        this.catalogTargetsManager.registerCatalogTargetChangeListener(listener);
+    }
+
+
+    /**
      * Return a list of requested catalog targets for the connector.  These are extracted from the metadata store.
      *
      * @param catalogTargetIntegrator the integration component that will process each catalog target
@@ -139,6 +168,68 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     protected void refreshCatalogTargets(CatalogTargetIntegrator catalogTargetIntegrator) throws ConnectorCheckedException
     {
         final String methodName = "refreshCatalogTargets";
+
+        List<RequestedCatalogTarget> requestedCatalogTargets = catalogTargetsManager.refreshKnownCatalogTargets(integrationContext,
+                                                                                                                catalogTargetIntegrator);
+
+        if ((requestedCatalogTargets == null) || (requestedCatalogTargets.isEmpty()))
+        {
+            auditLog.logMessage(methodName, OIFAuditCode.NO_CATALOG_TARGETS.getMessageDefinition(connectorName));
+        }
+        else
+        {
+            try
+            {
+                for (RequestedCatalogTarget requestedCatalogTarget : requestedCatalogTargets)
+                {
+                    boolean savedExternalSourceIsHome        = integrationContext.getExternalSourceIsHome();
+                    String  savedMetadataSourceQualifiedName = integrationContext.getMetadataSourceQualifiedName();
+
+                    if ((requestedCatalogTarget != null) && (super.isActive()))
+                    {
+                        try
+                        {
+                            if (requestedCatalogTarget.getMetadataSourceQualifiedName() == null)
+                            {
+                                integrationContext.setExternalSourceIsHome(false);
+                            }
+                            else
+                            {
+                                integrationContext.setMetadataSourceQualifiedName(requestedCatalogTarget.getMetadataSourceQualifiedName());
+                                integrationContext.setExternalSourceIsHome(true);
+                            }
+
+                            auditLog.logMessage(methodName,
+                                                OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                                            requestedCatalogTarget.getCatalogTargetName()));
+                            catalogTargetIntegrator.integrateCatalogTarget(requestedCatalogTarget);
+                        }
+                        catch (Exception error)
+                        {
+                            auditLog.logMessage(methodName,
+                                                OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName + ":" + requestedCatalogTarget.getCatalogTargetName(),
+                                                                                                       error.getMessage()));
+                        }
+                    }
+
+                    integrationContext.setExternalSourceIsHome(savedExternalSourceIsHome);
+                    integrationContext.setMetadataSourceQualifiedName(savedMetadataSourceQualifiedName);
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logMessage(methodName,
+                                    OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           error.getClass().getName(),
+                                                                                           methodName,
+                                                                                           error.getMessage()));
+            }
+
+            auditLog.logMessage(methodName, OIFAuditCode.REFRESHED_CATALOG_TARGETS.getMessageDefinition(connectorName,
+                                                                                                        Integer.toString(requestedCatalogTargets.size())));
+        }
 
         try
         {

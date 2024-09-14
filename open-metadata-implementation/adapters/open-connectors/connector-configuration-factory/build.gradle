@@ -16,6 +16,7 @@ dependencies {
     // The following are only included at runtime for the full platform (ie adminChassisOnly is not set as a property)
     if (!project.hasProperty("adminChassisOnly")) {
         implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-file-connector')
+        implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-jdbc-connector')
         implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-console-connector')
         implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-slf4j-connector')
         implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:audit-log-connectors:audit-log-event-topic-connector')

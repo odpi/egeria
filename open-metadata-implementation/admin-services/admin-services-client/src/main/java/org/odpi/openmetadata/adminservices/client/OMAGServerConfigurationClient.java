@@ -582,6 +582,32 @@ public class OMAGServerConfigurationClient
     /**
      * Add an audit log destination that creates log records as JSON files in a shared directory.
      *
+     * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
+     * @param jdbcConnectionString connection string used to connect to the JDBC data base
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void addJDBCAuditLogDestination(List<String> supportedSeverities,
+                                           String       jdbcConnectionString) throws OMAGNotAuthorizedException,
+                                                                                     OMAGInvalidParameterException,
+                                                                                     OMAGConfigurationErrorException
+    {
+        final String methodName  = "addFileAuditLogDestination";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/audit-log-destinations/jdbc?connectionString={2}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        supportedSeverities,
+                                        adminUserId,
+                                        serverName,
+                                        jdbcConnectionString);
+    }
+
+
+    /**
+     * Add an audit log destination that creates log records as JSON files in a shared directory.
+     *
      * @param directoryName optional directory name
      * @param supportedSeverities list of severities that should be logged to this destination (empty list means all)
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.

@@ -63,6 +63,7 @@ public class CatalogTargetConverter<B> extends OMFConverter<B>
                 if (returnBean instanceof CatalogTarget bean)
                 {
                     bean.setRelationshipGUID(relationship.getGUID());
+                    bean.setRelationshipVersions(super.getElementVersions(relationship));
                     bean.setCatalogTargetName(repositoryHelper.getStringProperty(serviceName,
                                                                                  OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
                                                                                  relationship.getProperties(),

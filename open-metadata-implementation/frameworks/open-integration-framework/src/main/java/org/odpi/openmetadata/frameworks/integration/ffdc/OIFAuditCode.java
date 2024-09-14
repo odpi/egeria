@@ -135,6 +135,23 @@ public enum OIFAuditCode implements AuditLogMessageSet
                     "The connector stops processing.",
                     "Using information from the element, the set up of the connector, and the connector's logic to determine why this 'should not occur' case has happened."),
 
+    /**
+     * OIF-CONNECTOR-0012 - The {0} integration connector received an unexpected exception {1} while trying to disconnect connector {2}; the error message was: {3}
+     */
+    DISCONNECT_EXCEPTION("OIF-CONNECTOR-0012",
+                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         "The {0} integration connector received an unexpected exception {1} while trying to disconnect connector {2}; the error message was: {3}",
+                         "The connector is is unable to disconnect a connector to a catalog target.  Although it continues to run, it may have leaked a resource in the remote target.",
+                         "Use the details from the error message to determine the cause of the error.  Check the remote target for errors and correct as needed."),
+
+    /**
+     * OIF-CONNECTOR-0013 - The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}
+     */
+    UNEXPECTED_EXCEPTION("OIF-CONNECTOR-0013",
+                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
+                         "The connector records the error anf tries to continue; subsequent errors may occur as a result of this initial failure",
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
     ;
 
     private final String                      logMessageId;

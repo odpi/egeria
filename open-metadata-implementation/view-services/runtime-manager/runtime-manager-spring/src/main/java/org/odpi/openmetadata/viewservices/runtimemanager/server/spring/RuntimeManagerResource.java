@@ -202,7 +202,7 @@ public class RuntimeManagerResource
                                                                 @RequestParam int startFrom,
                                                                 @RequestParam int pageSize,
                                                                 @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
-                                                                @RequestBody FilterRequestBody requestBody)
+                                                                @RequestBody(required = false) FilterRequestBody requestBody)
     {
         return restAPI.getServersByDeployedImplType(serverName, startFrom, pageSize, getTemplates, requestBody);
     }
@@ -681,12 +681,44 @@ public class RuntimeManagerResource
      * event has been sent.
      * If the server has already registered in the past, it sends a reregistration request.
      *
+     * @param serverName server to query
+     * @param serverGUID unique identifier of the server to call
+     * @param cohortName name of cohort
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     */
+    @GetMapping(path = "/cohort-members/{serverGUID}/cohorts/{cohortName}/connect")
+
+    @Operation(summary = "connectToCohort",
+            description = "A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the" +
+                    " open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration" +
+                    " event has been sent." +
+                    " If the server has already registered in the past, it sends a reregistration request.",
+            externalDocs = @ExternalDocumentation(description = "Cohort Member",
+                    url = "https://egeria-project.org/concepts/cohort-member/"))
+
+    public BooleanResponse connectToCohortGet(@PathVariable String serverName,
+                                              @PathVariable String serverGUID,
+                                              @PathVariable String cohortName)
+    {
+        return restAPI.connectToCohort(serverName, serverGUID, cohortName, null);
+    }
+
+
+
+
+    /**
+     * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
+     * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
+     * event has been sent.
+     * If the server has already registered in the past, it sends a reregistration request.
+     *
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      * @param serverName server to query
      * @param serverGUID unique identifier of the server to call
      * @param cohortName name of cohort
+     * @param requestBody null request body
      */
-    @GetMapping(path = "/cohort-members/{serverGUID}/cohorts/{cohortName}/connect")
+    @PostMapping(path = "/cohort-members/{serverGUID}/cohorts/{cohortName}/connect")
 
     @Operation(summary="connectToCohort",
             description="A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the" +
@@ -696,11 +728,13 @@ public class RuntimeManagerResource
             externalDocs=@ExternalDocumentation(description="Cohort Member",
                     url="https://egeria-project.org/concepts/cohort-member/"))
 
-    public BooleanResponse connectToCohort(@PathVariable String serverName,
-                                           @PathVariable String serverGUID,
-                                           @PathVariable String cohortName)
+    public BooleanResponse connectToCohortPost(@PathVariable String          serverName,
+                                               @PathVariable String          serverGUID,
+                                               @PathVariable String          cohortName,
+                                               @RequestBody (required = false)
+                                                             NullRequestBody requestBody)
     {
-        return restAPI.connectToCohort(serverName, serverGUID, cohortName);
+        return restAPI.connectToCohort(serverName, serverGUID, cohortName, requestBody);
     }
 
 
@@ -719,11 +753,38 @@ public class RuntimeManagerResource
             externalDocs=@ExternalDocumentation(description="Cohort Member",
                     url="https://egeria-project.org/concepts/cohort-member/"))
 
-    public BooleanResponse disconnectFromCohort(@PathVariable String serverName,
-                                                @PathVariable String serverGUID,
-                                                @PathVariable String cohortName)
+    public BooleanResponse disconnectFromCohortGet(@PathVariable String serverName,
+                                                   @PathVariable String serverGUID,
+                                                   @PathVariable String cohortName)
     {
-        return restAPI.disconnectFromCohort(serverName, serverGUID, cohortName);
+        return restAPI.disconnectFromCohort(serverName, serverGUID, cohortName, null);
+    }
+
+
+
+    /**
+     * Disconnect communications from a specific cohort.
+     *
+     * @param serverName server to query
+     * @param serverGUID unique identifier of the server to call
+     * @param cohortName name of cohort
+     * @param requestBody null request body
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     */
+    @PostMapping(path = "/cohort-members/{serverGUID}/cohorts/{cohortName}/disconnect")
+
+    @Operation(summary="disconnectFromCohort",
+            description="Disconnect communications from a specific cohort.",
+            externalDocs=@ExternalDocumentation(description="Cohort Member",
+                    url="https://egeria-project.org/concepts/cohort-member/"))
+
+    public BooleanResponse disconnectFromCohortPost(@PathVariable String          serverName,
+                                                    @PathVariable String          serverGUID,
+                                                    @PathVariable String          cohortName,
+                                                    @RequestBody (required = false)
+                                                                  NullRequestBody requestBody)
+    {
+        return restAPI.disconnectFromCohort(serverName, serverGUID, cohortName, requestBody);
     }
 
 
@@ -742,10 +803,36 @@ public class RuntimeManagerResource
             externalDocs=@ExternalDocumentation(description="Cohort Member",
                     url="https://egeria-project.org/concepts/cohort-member/"))
 
-    public BooleanResponse unregisterFromCohort(@PathVariable String serverName,
-                                                @PathVariable String serverGUID,
-                                                @PathVariable String cohortName)
+    public BooleanResponse unregisterFromCohortGet(@PathVariable String serverName,
+                                                   @PathVariable String serverGUID,
+                                                   @PathVariable String cohortName)
     {
-        return restAPI.unregisterFromCohort(serverName, serverGUID, cohortName);
+        return restAPI.unregisterFromCohort(serverName, serverGUID, cohortName, null);
+    }
+
+
+    /**
+     * Unregister from a specific cohort and disconnect from cohort communications.
+     *
+     * @param serverName server to query
+     * @param serverGUID unique identifier of the server to call
+     * @param cohortName name of cohort
+     * @param requestBody null request body
+     * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
+     */
+    @PostMapping(path = "/cohort-members/{serverGUID}/cohorts/{cohortName}/unregister")
+
+    @Operation(summary="unregisterFromCohort",
+            description="Unregister from a specific cohort and disconnect from cohort communications.",
+            externalDocs=@ExternalDocumentation(description="Cohort Member",
+                    url="https://egeria-project.org/concepts/cohort-member/"))
+
+    public BooleanResponse unregisterFromCohortPost(@PathVariable String          serverName,
+                                                    @PathVariable String          serverGUID,
+                                                    @PathVariable String          cohortName,
+                                                    @RequestBody (required = false)
+                                                                  NullRequestBody requestBody)
+    {
+        return restAPI.unregisterFromCohort(serverName, serverGUID, cohortName, requestBody);
     }
 }

@@ -26,9 +26,9 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
      */
     KAFKA_RECEIVER_CONFIGURATION("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0001",
                                  AuditLogRecordSeverityLevel.INFO,
-                                 "The {0} integration connector has been initialized to monitor Apache Kafka topic {1} with connection: {2}",
+                                 "The {0} integration connector is monitoring Apache Kafka topic {1} with connection: {2}",
                                  "The connector is designed to monitor open lineage events published to an Apache Kafka topic.",
-                                 "No specific action is required.  This message is to confirm the configuration for the Kafka Open Lineage Receiver integration connector."),
+                                 "No specific action is required.  This message is to confirm the configuration for the Kafka Open Lineage Receiver integration connector.  It is output for each unique embedded connector and KafkaTopic catalog target"),
 
     /**
      * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0002 - The {0} integration connector encountered an {1} exception when opening connector to topic {2} during the {3} method.  The exception message included was {4} and the connection was {5}
