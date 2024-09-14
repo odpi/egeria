@@ -73,10 +73,19 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="CatalogTargetIntegrator.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetIntegrator</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="CatalogTargetChangeListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetChangeListener</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab1">
+<div class="block">An optional interface for an integration connector to implement if it needs to know
+ when its catalog targets change.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="CatalogTargetIntegrator.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetIntegrator</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab1">
 <div class="block">CatalogTargetIntegrator is an optional interface that an integration connector can implement to walk through
  the catalog targets assigned to the integration connector.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">Provides the base class for connector code that processes a single catalog target.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab1"><a href="IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab1">
@@ -90,6 +99,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">The IntegrationConnectorProvider provides a base class for the connector provider supporting
  Integration Connectors.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RequestedCatalogTargetsManager.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">RequestedCatalogTargetsManager</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">Manages the map of catalog targets that this integration connector is working with.</div>
 </div>
 </div>
 </div>

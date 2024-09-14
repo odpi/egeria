@@ -118,18 +118,21 @@ implements <a href="IntegrationConnector.html" title="interface in org.odpi.open
 <div class="col-first even-row-color"><code>protected <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a></code></div>
 <div class="col-second even-row-color"><code><a href="#auditLog" class="member-name-link">auditLog</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="RequestedCatalogTargetsManager.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">RequestedCatalogTargetsManager</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#catalogTargetsManager" class="member-name-link">catalogTargetsManager</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#embeddedConnectors" class="member-name-link">embeddedConnectors</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#integrationContext" class="member-name-link">integrationContext</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#embeddedConnectors" class="member-name-link">embeddedConnectors</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="../../governanceaction/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyHelper</a></code></div>
-<div class="col-second even-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a></code></div>
+<div class="col-second even-row-color"><code><a href="#integrationContext" class="member-name-link">integrationContext</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="../../governanceaction/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyHelper</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
@@ -190,27 +193,37 @@ implements <a href="IntegrationConnector.html" title="interface in org.odpi.open
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a list of requested catalog targets for the connector.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerCatalogTargetChangeListener(org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetChangeListener)" class="member-name-link">registerCatalogTargetChangeListener</a><wbr>(<a href="CatalogTargetChangeListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetChangeListener</a>&nbsp;listener)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Receive an audit log object that can be used to record audit log messages.</div>
+<div class="block">Add a new listener for changes to this connector's catalog targets.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectorName(java.lang.String)" class="member-name-link">setConnectorName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the connector name for logging.</div>
+<div class="block">Receive an audit log object that can be used to record audit log messages.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setContext(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext)" class="member-name-link">setContext</a><wbr>(<a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a>&nbsp;integrationContext)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectorName(java.lang.String)" class="member-name-link">setConnectorName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the connector name for logging.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setContext(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext)" class="member-name-link">setContext</a><wbr>(<a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a>&nbsp;integrationContext)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the standard integration context for the connector.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 </div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
-<code><a href="../../connectors/ConnectorBase.html#disconnectConnectors(java.util.List)">disconnectConnectors</a>, <a href="../../connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.util.List)">getArrayConfigurationProperty</a>, <a href="../../connectors/ConnectorBase.html#getAssetTypeName(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse,java.lang.String,java.lang.String)">getAssetTypeName</a>, <a href="../../connectors/ConnectorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../../connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../../connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../../connectors/ConnectorBase.html#getNetworkAddresses(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse)">getNetworkAddresses</a>, <a href="../../connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../../connectors/ConnectorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../../connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a>, <a href="../../connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../../connectors/ConnectorBase.html#initializeSecretsStoreConnector(java.lang.String,org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector)">initializeSecretsStoreConnector</a>, <a href="../../connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../connectors/ConnectorBase.html#start()">start</a>, <a href="../../connectors/ConnectorBase.html#throwMissingConfigurationProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingConfigurationProperty</a>, <a href="../../connectors/ConnectorBase.html#throwMissingResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingResource</a>, <a href="../../connectors/ConnectorBase.html#throwNoAsset(java.lang.String,java.lang.String,java.lang.String)">throwNoAsset</a>, <a href="../../connectors/ConnectorBase.html#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfAsset</a>, <a href="../../connectors/ConnectorBase.html#throwWrongTypeOfResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfResource</a>, <a href="../../connectors/ConnectorBase.html#throwWrongTypeOfRootSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfRootSchema</a>, <a href="../../connectors/ConnectorBase.html#toString()">toString</a></code></div>
+<code><a href="../../connectors/ConnectorBase.html#disconnectConnectors(java.util.List)">disconnectConnectors</a>, <a href="../../connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.util.List)">getArrayConfigurationProperty</a>, <a href="../../connectors/ConnectorBase.html#getAssetTypeName(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse,java.lang.String,java.lang.String)">getAssetTypeName</a>, <a href="../../connectors/ConnectorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../../connectors/ConnectorBase.html#getConnectedAssetProperties(java.lang.String)">getConnectedAssetProperties</a>, <a href="../../connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../../connectors/ConnectorBase.html#getNetworkAddresses(org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse)">getNetworkAddresses</a>, <a href="../../connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../../connectors/ConnectorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../../connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">initialize</a>, <a href="../../connectors/ConnectorBase.html#initializeConnectedAssetProperties(org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties)">initializeConnectedAssetProperties</a>, <a href="../../connectors/ConnectorBase.html#initializeSecretsStoreConnector(java.lang.String,org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector)">initializeSecretsStoreConnector</a>, <a href="../../connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../connectors/ConnectorBase.html#throwMissingConfigurationProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingConfigurationProperty</a>, <a href="../../connectors/ConnectorBase.html#throwMissingResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingResource</a>, <a href="../../connectors/ConnectorBase.html#throwNoAsset(java.lang.String,java.lang.String,java.lang.String)">throwNoAsset</a>, <a href="../../connectors/ConnectorBase.html#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfAsset</a>, <a href="../../connectors/ConnectorBase.html#throwWrongTypeOfResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfResource</a>, <a href="../../connectors/ConnectorBase.html#throwWrongTypeOfRootSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfRootSchema</a>, <a href="../../connectors/ConnectorBase.html#toString()">toString</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.Connector">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></h3>
 <code><a href="../../connectors/Connector.html#clearStatisticProperty(java.lang.String,java.lang.String)">clearStatisticProperty</a>, <a href="../../connectors/Connector.html#clearStatisticTimestamp(java.lang.String,java.lang.String)">clearStatisticTimestamp</a>, <a href="../../connectors/Connector.html#getConnectorStatistics()">getConnectorStatistics</a>, <a href="../../connectors/Connector.html#getStatisticCounter(java.lang.String,java.lang.String)">getStatisticCounter</a>, <a href="../../connectors/Connector.html#getStatisticProperty(java.lang.String,java.lang.String)">getStatisticProperty</a>, <a href="../../connectors/Connector.html#getStatisticTimestamp(java.lang.String,java.lang.String)">getStatisticTimestamp</a>, <a href="../../connectors/Connector.html#incrementStatisticCounter(java.lang.String,java.lang.String)">incrementStatisticCounter</a>, <a href="../../connectors/Connector.html#initializeStatisticCounter(java.lang.String,int,java.lang.String)">initializeStatisticCounter</a>, <a href="../../connectors/Connector.html#setStatisticProperty(java.lang.String,java.lang.String,java.lang.String)">setStatisticProperty</a>, <a href="../../connectors/Connector.html#setStatisticTimestamp(java.lang.String,java.util.Date,java.lang.String)">setStatisticTimestamp</a></code></div>
@@ -219,7 +232,7 @@ implements <a href="IntegrationConnector.html" title="interface in org.odpi.open
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></h3>
-<code><a href="IntegrationConnector.html#refresh()">refresh</a>, <a href="IntegrationConnector.html#start()">start</a></code></div>
+<code><a href="IntegrationConnector.html#refresh()">refresh</a></code></div>
 </section>
 </li>
 </ul>
@@ -259,6 +272,12 @@ implements <a href="IntegrationConnector.html" title="interface in org.odpi.open
 <section class="detail" id="propertyHelper">
 <h3>propertyHelper</h3>
 <div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../governanceaction/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyHelper</a></span>&nbsp;<span class="element-name">propertyHelper</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="catalogTargetsManager">
+<h3>catalogTargetsManager</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="RequestedCatalogTargetsManager.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">RequestedCatalogTargetsManager</a></span>&nbsp;<span class="element-name">catalogTargetsManager</span></div>
 </section>
 </li>
 </ul>
@@ -353,6 +372,23 @@ implements <a href="IntegrationConnector.html" title="interface in org.odpi.open
 </section>
 </li>
 <li>
+<section class="detail" id="start()">
+<h3>start</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">start</span>()
+           throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Indicates that the connector is completely configured and can begin processing.
+ This call can be used to register with non-blocking services.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="IntegrationConnector.html#start()">start</a></code>&nbsp;in interface&nbsp;<code><a href="IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code></dd>
+<dt>Overrides:</dt>
+<dd><code><a href="../../connectors/ConnectorBase.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="../../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getNetworkAddress(org.odpi.openmetadata.frameworks.connectors.Connector)">
 <h3>getNetworkAddress</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getNetworkAddress</span><wbr><span class="parameters">(<a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;assetConnector)</span></div>
@@ -362,6 +398,17 @@ implements <a href="IntegrationConnector.html" title="interface in org.odpi.open
 <dd><code>assetConnector</code> - asset connector</dd>
 <dt>Returns:</dt>
 <dd>endpoint or null</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="registerCatalogTargetChangeListener(org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetChangeListener)">
+<h3>registerCatalogTargetChangeListener</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerCatalogTargetChangeListener</span><wbr><span class="parameters">(<a href="CatalogTargetChangeListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetChangeListener</a>&nbsp;listener)</span></div>
+<div class="block">Add a new listener for changes to this connector's catalog targets.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>listener</code> - listener to register</dd>
 </dl>
 </section>
 </li>

@@ -326,6 +326,10 @@ org.odpi.openmetadata.adapters.connectors.integration.openapis.properties
 org.odpi.openmetadata.adapters.connectors.integration.openlineage
 org.odpi.openmetadata.adapters.connectors.integration.openlineage.controls
 org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc
+org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata
+org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.ffdc
+org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys
+org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.ffdc
 org.odpi.openmetadata.adapters.connectors.postgres.catalog
 org.odpi.openmetadata.adapters.connectors.postgres.controls
 org.odpi.openmetadata.adapters.connectors.postgres.ffdc
@@ -366,6 +370,8 @@ org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console
 org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.eventdisplay
 org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.eventtopic
 org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file
+org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.jdbc
+org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.jdbc.ffdc
 org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.slf4j
 org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file
 org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.ffdc
