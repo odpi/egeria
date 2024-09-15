@@ -152,6 +152,15 @@ public enum OIFAuditCode implements AuditLogMessageSet
                          "The {0} integration connector received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector records the error anf tries to continue; subsequent errors may occur as a result of this initial failure",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
+    /**
+     * OIF-CONNECTOR-0013 - The {0} integration connector has stopped its monitoring and is shutting down
+     */
+    CONNECTOR_STOPPING("OIF-CONNECTOR-0014",
+                       AuditLogRecordSeverityLevel.INFO,
+                       "The {0} integration connector has stopped its monitoring and is shutting down",
+                       "The connector is disconnecting.",
+                       "No action is required unless there are errors that follow indicating that there were problems shutting down."),
     ;
 
     private final String                      logMessageId;

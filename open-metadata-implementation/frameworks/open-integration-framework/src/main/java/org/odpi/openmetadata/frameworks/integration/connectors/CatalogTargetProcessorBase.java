@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.integration.connectors;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
@@ -26,14 +27,16 @@ public abstract class CatalogTargetProcessorBase extends RequestedCatalogTarget
      * Copy/clone constructor
      *
      * @param template object to copy
+     * @param connectorToTarget connector to access the target resource
      * @param connectorName name of this integration connector
      * @param auditLog logging destination
      */
     public CatalogTargetProcessorBase(CatalogTarget template,
+                                      Connector     connectorToTarget,
                                       String        connectorName,
                                       AuditLog      auditLog)
     {
-        super(template);
+        super(template, connectorToTarget);
 
         this.connectorName = connectorName;
         this.auditLog = auditLog;

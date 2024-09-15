@@ -3,11 +3,12 @@
 package org.odpi.openmetadata.samples.archiveutilities.businesssystems;
 
 
+import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
+import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.sustainability.CocoSustainabilityArchiveWriter;
 
@@ -20,7 +21,7 @@ import java.util.Map;
  * CocoBusinessSystemsArchiveWriter creates a physical open metadata archive file containing the descriptions of the
  * data flows from Coco Pharmaceuticals business systems to the data lake.
  */
-public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
+public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
 {
     private static final String archiveFileName = "CocoBusinessSystemsArchive.omarchive";
 
@@ -42,7 +43,8 @@ public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
               archiveDescription,
               new Date(),
               archiveFileName,
-              new OpenMetadataArchive[]{ new CocoOrganizationArchiveWriter().getOpenMetadataArchive(),
+              new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
+                                         new CocoOrganizationArchiveWriter().getOpenMetadataArchive(),
                                          new CocoSustainabilityArchiveWriter().getOpenMetadataArchive() });
     }
 

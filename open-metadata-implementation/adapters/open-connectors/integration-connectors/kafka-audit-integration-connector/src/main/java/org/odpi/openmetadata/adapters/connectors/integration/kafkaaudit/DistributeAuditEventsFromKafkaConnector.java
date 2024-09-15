@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.ffdc.DistributeKafkaAuditCode;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
@@ -90,14 +91,17 @@ public class DistributeAuditEventsFromKafkaConnector extends CatalogIntegratorCo
      * Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).
      *
      * @param retrievedCatalogTarget details of the open metadata elements describing the catalog target
+     * @param connectorToTarget connector to access the target resource
      * @return new processor based on the catalog target information
      */
     @Override
-    public RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget retrievedCatalogTarget)
+    public RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget retrievedCatalogTarget,
+                                                                       Connector     connectorToTarget)
     {
         if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.KAFKA_TOPIC.typeName))
         {
             return new KafkaTopicSourceCatalogTargetProcessor(retrievedCatalogTarget,
+                                                              connectorToTarget,
                                                               connectorName,
                                                               auditLog,
                                                               this);
@@ -106,10 +110,11 @@ public class DistributeAuditEventsFromKafkaConnector extends CatalogIntegratorCo
                  (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.DATABASE.typeName)))
         {
             return new AuditLogDestinationCatalogTargetProcessor(retrievedCatalogTarget,
+                                                                 connectorToTarget,
                                                                  connectorName,
                                                                  auditLog);
         }
 
-        return new RequestedCatalogTarget(retrievedCatalogTarget);
+        return new RequestedCatalogTarget(retrievedCatalogTarget, connectorToTarget);
     }
 }

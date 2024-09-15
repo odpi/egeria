@@ -29,10 +29,14 @@ public class RequestedCatalogTarget extends CatalogTarget
      * Copy/clone constructor
      *
      * @param template object to copy
+     * @param connectorToTarget connector to access the target resource
      */
-    public RequestedCatalogTarget(CatalogTarget template)
+    public RequestedCatalogTarget(CatalogTarget template,
+                                  Connector     connectorToTarget)
     {
         super(template);
+
+        catalogTargetConnector = connectorToTarget;
     }
 
 

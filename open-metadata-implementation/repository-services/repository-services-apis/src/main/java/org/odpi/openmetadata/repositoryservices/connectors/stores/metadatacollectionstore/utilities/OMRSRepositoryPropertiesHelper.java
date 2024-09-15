@@ -547,6 +547,25 @@ public interface OMRSRepositoryPropertiesHelper
      * @param methodName  calling method name
      * @return instance properties object.
      */
+    InstanceProperties addObjectPropertyToInstance(String             sourceName,
+                                                   InstanceProperties properties,
+                                                   String             propertyName,
+                                                   Object             propertyValue,
+                                                   String             methodName);
+
+
+
+    /**
+     * If the supplied property is not null, add it to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
     InstanceProperties addStringPropertyToInstance(String             sourceName,
                                                    InstanceProperties properties,
                                                    String             propertyName,

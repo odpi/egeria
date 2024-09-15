@@ -6,106 +6,27 @@ package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
+import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.lineage.connector.LineageIntegratorContext;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
  * OpenLineageEventReceiverIntegrationConnector receives open lineage events from an event broker such as an Apache Kafka topic.
  * It publishes them to other listening lineage integration connectors.
  */
-public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegratorConnector implements OpenMetadataTopicListener
+public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegratorConnector implements OpenMetadataTopicListener,
+                                                                                                        CatalogTargetIntegrator
 {
-    private LineageIntegratorContext                myContext       = null;
-    private final Map<String, OpenMetadataTopicConnector> topicConnectors = new HashMap<>();
-
-
     /**
      * Default constructor
      */
     public OpenLineageEventReceiverIntegrationConnector()
     {
-    }
-
-
-    /**
-     * Indicates that the connector is completely configured and can begin processing.
-     * This call can be used to register with non-blocking services.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
-     */
-    @Override
-    public void start() throws ConnectorCheckedException
-    {
-        super.start();
-
-        final String methodName = "start";
-
-        myContext = super.getContext();
-
-        if (myContext != null)
-        {
-            if (embeddedConnectors != null)
-            {
-                for (Connector embeddedConnector : embeddedConnectors)
-                {
-                    if (embeddedConnector instanceof OpenMetadataTopicConnector topicConnector)
-                    {
-                        registerTopicConnector(topicConnector);
-                    }
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Add the topic connector to the list of topics this connector is listening on.
-     *
-     * @param topicConnector connector
-     * @throws ConnectorCheckedException unable to start connector
-     */
-    private void registerTopicConnector(OpenMetadataTopicConnector topicConnector) throws ConnectorCheckedException
-    {
-        final String methodName = "registerTopicConnector";
-        /*
-         * Register this connector as a listener of the event bus connector.
-         */
-        topicConnector.registerListener(this);
-
-        ConnectionProperties connectionProperties = topicConnector.getConnection();
-
-        if (connectionProperties != null)
-        {
-            EndpointProperties endpoint = connectionProperties.getEndpoint();
-
-            if ((endpoint != null) && (endpoint.getAddress() != null) && (topicConnectors.get(endpoint.getAddress()) == null))
-            {
-                topicConnectors.put(endpoint.getAddress(), topicConnector);
-                topicConnector.start();
-
-                ConnectionProperties topicConnection = topicConnector.getConnection();
-
-                auditLog.logMessage(methodName,
-                                    OpenLineageIntegrationConnectorAuditCode.KAFKA_RECEIVER_CONFIGURATION.getMessageDefinition(connectorName,
-                                                                                                                               endpoint.getAddress(),
-                                                                                                                               topicConnection.getConnectionName()));
-            }
-        }
     }
 
 
@@ -116,84 +37,75 @@ public class OpenLineageEventReceiverIntegrationConnector extends LineageIntegra
      */
     public void processEvent(String event)
     {
-        if (myContext != null)
-        {
-            myContext.publishOpenLineageRunEvent(event);
-        }
-    }
-
-
-    /**
-     * Maintains the list of catalog targets.
-     *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the catalog targets.
-     */
-    @Override
-    public synchronized void refresh() throws ConnectorCheckedException
-    {
-        final String methodName = "refresh";
+        final String methodName = "processEvent";
 
         try
         {
-            int                 startFrom      = 0;
-            List<CatalogTarget> catalogTargets = myContext.getCatalogTargets(startFrom, myContext.getMaxPageSize());
+            LineageIntegratorContext myContext = super.getContext();
 
-            while (catalogTargets != null)
+            if (myContext != null)
             {
-                for (CatalogTarget catalogTarget : catalogTargets)
-                {
-                    if (catalogTarget != null)
-                    {
-                        if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.TOPIC.typeName))
-                        {
-                            Connector connector = myContext.getConnectedAssetContext().getConnectorToAsset(catalogTarget.getCatalogTargetElement().getGUID());
-
-                            if (connector instanceof OpenMetadataTopicConnector topicConnector)
-                            {
-                                registerTopicConnector(topicConnector);
-                            }
-                        }
-                    }
-                }
-
-                startFrom = startFrom + myContext.getMaxPageSize();
-
-                catalogTargets = myContext.getCatalogTargets(startFrom, myContext.getMaxPageSize());
+                myContext.publishOpenLineageRunEvent(event);
             }
         }
         catch (Exception error)
         {
-            auditLog.logException(methodName,
-                                  OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                     error.getClass().getName(),
-                                                                                                                     methodName,
-                                                                                                                     error.getMessage()),
-                                  error);
+            auditLog.logMessage(methodName,
+                                OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                   error.getClass().getName(),
+                                                                                                                   methodName,
+                                                                                                                   error.getMessage()));
         }
     }
 
 
     /**
-     * Shutdown event monitoring
+     * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
+     * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
+     * as well as any external REST API calls to explicitly refresh the connector.
      *
-     * @throws ConnectorCheckedException something failed in the super class
+     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
      */
     @Override
-    public void disconnect() throws ConnectorCheckedException
+    public void refresh() throws ConnectorCheckedException
     {
-        final String methodName = "disconnect";
+        super.refreshCatalogTargets(this);
+    }
 
-        for (OpenMetadataTopicConnector topicConnector : topicConnectors.values())
+
+    /**
+     * Perform the required integration logic for the assigned catalog target.
+     *
+     * @param requestedCatalogTarget the catalog target
+     * @throws ConnectorCheckedException there is an unrecoverable error and the connector should stop processing.
+     */
+    @Override
+    public void integrateCatalogTarget(RequestedCatalogTarget requestedCatalogTarget) throws ConnectorCheckedException
+    {
+        // Nothing to do
+    }
+
+
+    /**
+     * Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).
+     *
+     * @param retrievedCatalogTarget details of the open metadata elements describing the catalog target
+     * @param connectorToTarget connector to access the target resource
+     * @return new processor based on the catalog target information
+     */
+    @Override
+    public RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget retrievedCatalogTarget,
+                                                                       Connector     connectorToTarget)
+    {
+        if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.KAFKA_TOPIC.typeName))
         {
-            topicConnector.disconnect();
+            return new OpenLineageEventReceiverCatalogTargetProcessor(retrievedCatalogTarget,
+                                                                      connectorToTarget,
+                                                                      connectorName,
+                                                                      auditLog,
+                                                                      this);
         }
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                OpenLineageIntegrationConnectorAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName));
-        }
-
-        super.disconnect();
+        return new RequestedCatalogTarget(retrievedCatalogTarget, connectorToTarget);
     }
 }

@@ -11,13 +11,14 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.Z
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.EvaluateAnnotationsGuard;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition;
+import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionGuard;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
+import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.GovernanceActionDescription;
-import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 
 import java.util.Date;
@@ -30,7 +31,7 @@ import java.util.Map;
  * CocoGovernanceEnginesArchiveWriter creates a physical open metadata archive file containing the governance engine definitions
  * needed by Coco Pharmaceuticals.
  */
-public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
+public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
 {
     private static final String archiveFileName = "CocoGovernanceEngineDefinitionsArchive.omarchive";
 
@@ -52,7 +53,8 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
               archiveDescription,
               new Date(),
               archiveFileName,
-              new OpenMetadataArchive[]{ new CocoGovernanceProgramArchiveWriter().getOpenMetadataArchive() });
+              new OpenMetadataArchive[]{ new CorePackArchiveWriter().getOpenMetadataArchive(),
+                                         new CocoGovernanceProgramArchiveWriter().getOpenMetadataArchive() });
     }
 
 

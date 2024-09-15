@@ -5,7 +5,7 @@ package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
+import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -17,7 +17,7 @@ import java.util.Map;
  * CocoOrganizationArchiveWriter creates a physical open metadata archive file containing basic definitions for Coco Pharmaceuticals'
  * featured persona.  This includes the definition of the organizations they work with and
  */
-public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
+public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
 {
     private static final String archiveFileName = "CocoOrganizationArchive.omarchive";
 

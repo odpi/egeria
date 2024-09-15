@@ -44,6 +44,7 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:nanny-connectors')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:file-survey-connectors')
     runtimeOnly 'ch.qos.logback:logback-classic'
 }

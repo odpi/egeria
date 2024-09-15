@@ -74,15 +74,6 @@ public enum OpenLineageIntegrationConnectorAuditCode implements AuditLogMessageS
                               "No action is required unless there are errors that follow indicating that there are problems access events from the topic."),
 
     /**
-     * OPEN-LINEAGE-INTEGRATION-CONNECTOR-0009 - The {0} integration connector has stopped its monitoring and is shutting down
-     */
-    CONNECTOR_STOPPING("OPEN-LINEAGE-INTEGRATION-CONNECTOR-0009",
-                                  AuditLogRecordSeverityLevel.INFO,
-                                  "The {0} integration connector has stopped its monitoring and is shutting down",
-                                  "The connector is disconnecting.",
-                                  "No action is required unless there are errors that follow indicating that there were problems shutting down."),
-
-    /**
      * OPEN-LINEAGE-INTEGRATION-CONNECTOR-001 - The {0} integration connector received an unexpected {1} exception in method {2} when working with open lineage events; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION( "OPEN-LINEAGE-INTEGRATION-CONNECTOR-0010",

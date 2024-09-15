@@ -248,6 +248,7 @@ public class SimpleCatalogArchiveHelper
         idToGUIDMap.saveUsedGUIDs();
     }
 
+
     /**
      * Create an external reference entity.  This typically describes a publication, webpage book or reference source of information
      * that is from an external organization.

@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class OpenLineageCataloguerIntegrationConnector extends LineageIntegratorConnector implements OpenLineageEventListener
 {
-    protected String                   destinationName = "<Unknown";
+    protected String                   destinationName = "Unknown";
     protected LineageIntegratorContext myContext       = null;
 
 
