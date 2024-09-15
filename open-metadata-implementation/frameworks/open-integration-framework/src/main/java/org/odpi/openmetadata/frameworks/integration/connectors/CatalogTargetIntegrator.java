@@ -33,6 +33,6 @@ public interface CatalogTargetIntegrator
     default RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget retrievedCatalogTarget,
                                                                         Connector     connectorToTarget) throws ConnectorCheckedException
     {
-        return new RequestedCatalogTarget();
+        return new RequestedCatalogTarget(retrievedCatalogTarget, connectorToTarget);
     }
 }
