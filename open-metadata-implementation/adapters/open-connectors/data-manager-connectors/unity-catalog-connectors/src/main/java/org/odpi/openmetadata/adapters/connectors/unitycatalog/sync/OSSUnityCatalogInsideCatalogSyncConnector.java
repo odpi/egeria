@@ -222,7 +222,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
                                 integrationContext.setMetadataSourceQualifiedName(catalogTarget.getMetadataSourceQualifiedName());
                                 integrationContext.setExternalSourceIsHome(true);
 
-                                RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(catalogTarget);
+                                RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(catalogTarget, null);
 
                                 Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
 

@@ -476,6 +476,27 @@ public class OpenMetadataAPIGenericBuilder
                                                                       methodName);
                             }
                         }
+                        else if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN)
+                        {
+                            String newProperty = replacePrimitiveStringWithPlaceholders(primitivePropertyValue,
+                                                                                        placeholderProperties);
+
+                            if ((newProperty != null) && (! newProperty.equals(primitivePropertyValue.valueAsString())))
+                            {
+                                repositoryHelper.addObjectPropertyToInstance(serviceName,
+                                                                             newTemplateProperties,
+                                                                             propertyName,
+                                                                             newProperty,
+                                                                             methodName);
+                            }
+                            else
+                            {
+                                repositoryHelper.removeStringProperty(serviceName,
+                                                                      propertyName,
+                                                                      newTemplateProperties,
+                                                                      methodName);
+                            }
+                        }
                     }
                     else if (instancePropertyValue instanceof ArrayPropertyValue arrayPropertyValue)
                     {

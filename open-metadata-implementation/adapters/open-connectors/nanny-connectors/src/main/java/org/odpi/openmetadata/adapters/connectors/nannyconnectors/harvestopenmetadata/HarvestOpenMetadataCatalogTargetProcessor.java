@@ -14,6 +14,7 @@ import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmeta
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.JDBCDataValue;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.*;
@@ -242,6 +243,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * Constructor
      *
      * @param template catalog target information
+     * @param connectorToTarget connector to access the target resource
      * @param connectorName name of this integration connector
      * @param auditLog logging destination
      * @param dataAssetExchangeService access to data assets
@@ -250,13 +252,14 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @throws ConnectorCheckedException error
      */
     public HarvestOpenMetadataCatalogTargetProcessor(CatalogTarget            template,
+                                                     Connector                connectorToTarget,
                                                      String                   connectorName,
                                                      AuditLog                 auditLog,
                                                      DataAssetExchangeService dataAssetExchangeService,
                                                      GlossaryExchangeService  glossaryExchangeService,
                                                      OpenMetadataAccess       openMetadataAccess) throws ConnectorCheckedException
     {
-        super(template, connectorName, auditLog);
+        super(template, connectorToTarget, connectorName, auditLog);
         
         this.openMetadataAccess = openMetadataAccess;
         this.dataAssetExchangeService = dataAssetExchangeService;

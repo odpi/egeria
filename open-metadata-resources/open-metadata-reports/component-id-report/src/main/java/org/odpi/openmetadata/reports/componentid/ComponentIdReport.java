@@ -84,6 +84,8 @@ public class ComponentIdReport
     private static final String unityCatalogServerSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogServerSurveyProvider";
     private static final String unityCatalogCatalogSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideCatalogSurveyProvider";
     private static final String unityCatalogSchemaSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.unitycatalog.survey.OSSUnityCatalogInsideSchemaSurveyProvider";
+    private static final String harvestOpenMetadataProviderClassName = "org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.HarvestOpenMetadataProvider";
+    private static final String harvestSurveysProviderClassName = "org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.HarvestSurveysProvider";
 
 
     /**
@@ -281,6 +283,8 @@ public class ComponentIdReport
         this.addConnectorDescription(unityCatalogServerSurveyProviderClassName, report);
         this.addConnectorDescription(unityCatalogCatalogSurveyProviderClassName, report);
         this.addConnectorDescription(unityCatalogSchemaSurveyProviderClassName, report);
+        this.addConnectorDescription(harvestOpenMetadataProviderClassName, report);
+        this.addConnectorDescription(harvestSurveysProviderClassName, report);
 
         File reportFile = new File(reportFileName);
 

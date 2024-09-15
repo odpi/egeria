@@ -27,11 +27,6 @@ public enum KafkaPlaceholderProperty
     SHORT_TOPIC_NAME ("shortTopicName", "The display name of the topic.", "string", "AssetConsumer.outTopic on active-metadata-store"),
 
     /**
-     * The description of the topic.
-     */
-    TOPIC_DESCRIPTION ("topicDescription", "The description of the topic.", "string", "Details of changes to assets in the open metadata ecosystem."),
-
-    /**
      * By default, this connector supports both the receiving and sending of events on a particular topic. It is possible to turn off, either the ability to listen for events through the consumer, or send events through the producer. This is achieved by setting the eventDirection configuration property, which can be 'inOut' (default value), 'outOnly' or 'inOnly'.
      */
     EVENT_DIRECTION ("eventDirection", "By default, this connector supports both the receiving and sending of events on a particular topic. It is possible to turn off, either the ability to listen for events through the consumer, or send events through the producer. This is achieved by setting the eventDirection configuration property, which can be 'inOut' (default value), 'outOnly' or 'inOnly'.", "string", "outOnly"),

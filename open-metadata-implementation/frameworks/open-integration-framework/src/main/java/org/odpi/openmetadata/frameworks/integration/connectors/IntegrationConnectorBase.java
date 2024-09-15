@@ -230,94 +230,6 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
             auditLog.logMessage(methodName, OIFAuditCode.REFRESHED_CATALOG_TARGETS.getMessageDefinition(connectorName,
                                                                                                         Integer.toString(requestedCatalogTargets.size())));
         }
-
-        try
-        {
-            int startFrom = 0;
-
-            int catalogTargetCount = 0;
-            List<CatalogTarget> catalogTargetList = integrationContext.getCatalogTargets(startFrom,
-                                                                                         integrationContext.getMaxPageSize());
-
-
-            while (catalogTargetList != null)
-            {
-                for (CatalogTarget catalogTarget : catalogTargetList)
-                {
-                    boolean savedExternalSourceIsHome = integrationContext.getExternalSourceIsHome();
-                    String  savedMetadataSourceQualifiedName = integrationContext.getMetadataSourceQualifiedName();
-
-                    if ((catalogTarget != null) && (super.isActive()))
-                    {
-                        catalogTargetCount = catalogTargetCount + 1;
-
-                        if (catalogTarget.getMetadataSourceQualifiedName() == null)
-                        {
-                            integrationContext.setExternalSourceIsHome(false);
-                        }
-                        else
-                        {
-                            integrationContext.setMetadataSourceQualifiedName(catalogTarget.getMetadataSourceQualifiedName());
-                            integrationContext.setExternalSourceIsHome(true);
-                        }
-
-                        RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(catalogTarget);
-
-                        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
-
-                        if (catalogTarget.getConfigurationProperties() != null)
-                        {
-                            if (configurationProperties == null)
-                            {
-                                configurationProperties = new HashMap<>();
-                            }
-
-                            configurationProperties.putAll(catalogTarget.getConfigurationProperties());
-                        }
-
-                        requestedCatalogTarget.setConfigurationProperties(configurationProperties);
-
-                        if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
-                        {
-                            requestedCatalogTarget.setCatalogTargetConnector(integrationContext.getConnectedAssetContext().getConnectorToAsset(catalogTarget.getCatalogTargetElement().getGUID()));
-                        }
-
-                        auditLog.logMessage(methodName,
-                                            OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
-                                                                                                        requestedCatalogTarget.getCatalogTargetName()));
-                        catalogTargetIntegrator.integrateCatalogTarget(requestedCatalogTarget);
-                    }
-
-                    integrationContext.setExternalSourceIsHome(savedExternalSourceIsHome);
-                    integrationContext.setMetadataSourceQualifiedName(savedMetadataSourceQualifiedName);
-                }
-
-                startFrom = startFrom + integrationContext.getMaxPageSize();
-                catalogTargetList = integrationContext.getCatalogTargets(startFrom, integrationContext.getMaxPageSize());
-
-                if (catalogTargetCount == 0)
-                {
-                    auditLog.logMessage(methodName, OIFAuditCode.NO_CATALOG_TARGETS.getMessageDefinition(connectorName));
-                }
-                else
-                {
-                    auditLog.logMessage(methodName, OIFAuditCode.REFRESHED_CATALOG_TARGETS.getMessageDefinition(connectorName,
-                                                                                                                Integer.toString(catalogTargetCount)));
-                }
-            }
-        }
-        catch (ConnectorCheckedException exception)
-        {
-            throw exception;
-        }
-        catch (Exception exception)
-        {
-            auditLog.logException(methodName,
-                                  OIFAuditCode.GET_CATALOG_TARGET_EXCEPTION.getMessageDefinition(exception.getClass().getName(),
-                                                                                                 connectorName,
-                                                                                                 exception.getMessage()),
-                                  exception);
-        }
     }
 
 
@@ -353,6 +265,12 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     public  synchronized void disconnect() throws ConnectorCheckedException
     {
         super.disconnectConnectors(this.embeddedConnectors);
+
+        if (catalogTargetsManager != null)
+        {
+            catalogTargetsManager.disconnect();
+        }
+
         super.disconnect();
     }
 }

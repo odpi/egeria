@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.integration.connectors;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
@@ -178,13 +179,15 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
                                                                                                                      ConnectionCheckedException,
                                                                                                                      UserNotAuthorizedException
     {
-        RequestedCatalogTarget newRequestedCatalogTarget = catalogTargetIntegrator.getNewRequestedCatalogTargetSkeleton(retrievedCatalogTarget);
-        newRequestedCatalogTarget.setConfigurationProperties(this.getCombinedConfigurationProperties(retrievedCatalogTarget.getConfigurationProperties()));
+        Connector connectorToTarget = null;
 
         if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
         {
-            newRequestedCatalogTarget.setCatalogTargetConnector(integrationContext.getConnectedAssetContext().getConnectorToAsset(retrievedCatalogTarget.getCatalogTargetElement().getGUID()));
+            connectorToTarget = integrationContext.getConnectedAssetContext().getConnectorToAsset(retrievedCatalogTarget.getCatalogTargetElement().getGUID());
         }
+
+        RequestedCatalogTarget newRequestedCatalogTarget = catalogTargetIntegrator.getNewRequestedCatalogTargetSkeleton(retrievedCatalogTarget, connectorToTarget);
+        newRequestedCatalogTarget.setConfigurationProperties(this.getCombinedConfigurationProperties(retrievedCatalogTarget.getConfigurationProperties()));
 
         return newRequestedCatalogTarget;
     }
@@ -300,7 +303,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
             catch (Exception error)
             {
                 auditLog.logMessage(methodName,
-                                    OIFAuditCode.DISCONNECT_EXCEPTION.getMessageDefinition(connectorName,
+                                    OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
                                                                                            error.getClass().getName(),
                                                                                            catalogTarget.getCatalogTargetName(),
                                                                                            error.getMessage()));
@@ -332,6 +335,24 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
                                                                                            error.getClass().getName(),
                                                                                            catalogTarget.getCatalogTargetName(),
                                                                                            error.getMessage()));
+            }
+        }
+    }
+
+    /**
+     * Shutdown event monitoring
+     *
+     * @throws ConnectorCheckedException something failed in the super class
+     */
+    public void disconnect() throws ConnectorCheckedException
+    {
+        final String methodName = "disconnect";
+
+        for (RequestedCatalogTarget catalogTarget : currentCatalogTargetMap.values())
+        {
+            if (catalogTarget.getCatalogTargetConnector() != null)
+            {
+                catalogTarget.getCatalogTargetConnector().disconnect();
             }
         }
     }

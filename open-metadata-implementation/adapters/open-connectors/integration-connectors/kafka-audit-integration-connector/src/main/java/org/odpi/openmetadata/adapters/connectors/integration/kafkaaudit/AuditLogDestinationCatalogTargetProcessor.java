@@ -36,14 +36,16 @@ public class AuditLogDestinationCatalogTargetProcessor extends CatalogTargetProc
      * Copy/clone constructor
      *
      * @param template object to copy
+     * @param connectorToTarget connector to access the target resource
      * @param connectorName name of this integration connector
      * @param auditLog logging destination
      */
     public AuditLogDestinationCatalogTargetProcessor(CatalogTarget template,
+                                                     Connector     connectorToTarget,
                                                      String        connectorName,
                                                      AuditLog      auditLog)
     {
-        super(template, connectorName, auditLog);
+        super(template, connectorToTarget, connectorName, auditLog);
 
         if (super.getCatalogTargetConnector() instanceof OMRSAuditLogStoreConnectorBase auditLogStoreConnectorBase)
         {

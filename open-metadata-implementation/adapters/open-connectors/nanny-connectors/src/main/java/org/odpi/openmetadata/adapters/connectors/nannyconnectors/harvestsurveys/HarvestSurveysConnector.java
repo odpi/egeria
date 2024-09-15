@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys
 
 
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.ffdc.HarvestSurveysErrorCode;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
@@ -52,15 +53,19 @@ public class HarvestSurveysConnector extends CatalogIntegratorConnector implemen
      * Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).
      *
      * @param retrievedCatalogTarget details of the open metadata elements describing the catalog target
+     * @param connectorToTarget connector to access the target resource
      * @return new processor based on the catalog target information
      */
-    public RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget retrievedCatalogTarget) throws ConnectorCheckedException
+    @Override
+    public RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget retrievedCatalogTarget,
+                                                                       Connector     connectorToTarget) throws ConnectorCheckedException
     {
         final String methodName = "getNewRequestedCatalogTargetSkeleton";
 
         try
         {
             return new HarvestSurveysCatalogTargetProcessor(retrievedCatalogTarget,
+                                                            connectorToTarget,
                                                             connectorName,
                                                             auditLog,
                                                             super.getContext().getIntegrationGovernanceContext().getOpenMetadataAccess(),

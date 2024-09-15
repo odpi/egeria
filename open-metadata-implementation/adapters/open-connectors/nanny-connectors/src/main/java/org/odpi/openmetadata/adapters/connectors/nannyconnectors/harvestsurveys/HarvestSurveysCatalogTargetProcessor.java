@@ -139,6 +139,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
      * Constructor
      *
      * @param template catalog target information
+     * @param connectorToTarget connector to access the target resource
      * @param connectorName name of this integration connector
      * @param auditLog logging destination 
      * @param openMetadataAccess access to open metadata
@@ -146,12 +147,13 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
      * @throws ConnectorCheckedException error
      */
     public HarvestSurveysCatalogTargetProcessor(CatalogTarget           template,
+                                                Connector               connectorToTarget,
                                                 String                  connectorName,
                                                 AuditLog                auditLog,
                                                 OpenMetadataAccess      openMetadataAccess,
                                                 ConnectorFactoryService connectorFactoryService) throws ConnectorCheckedException
     {
-        super(template, connectorName, auditLog);
+        super(template, connectorToTarget, connectorName, auditLog);
 
         this.openMetadataAccess = openMetadataAccess;
         this.connectorFactoryService = connectorFactoryService;

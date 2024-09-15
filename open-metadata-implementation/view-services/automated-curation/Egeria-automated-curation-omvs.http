@@ -341,6 +341,29 @@ Content-Type: application/json
 }
 
 ###
+# @name createElementFromTemplate (Apache Kafka Topic)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "ea8f81c9-c59c-47de-9525-7cc59d1251e5",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "serverName": "localKafka",
+    "hostIdentifier": "localhost",
+    "portNumber": "9092",
+    "description": "Open Lineage Events for Backend Proxy",
+    "topicDescription": "Open Lineage Events for Backend Proxy",
+    "fullTopicName": "openlineage.events",
+    "shortTopicName": "openlineage.events",
+    "eventDirection": "inOut"
+  }
+}
+
+###
 # @name createElementFromTemplate (PostgreSQL Server)
 # Create a new element from a template.
 # Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
