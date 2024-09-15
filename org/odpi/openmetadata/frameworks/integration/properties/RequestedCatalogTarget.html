@@ -102,7 +102,8 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Default constructor</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget)" class="member-name-link">RequestedCatalogTarget</a><wbr>(<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;template)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.connectors.Connector)" class="member-name-link">RequestedCatalogTarget</a><wbr>(<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;template,
+ <a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Copy/clone constructor</div>
 </div>
@@ -176,13 +177,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.connectors.Connector)">
 <h3>RequestedCatalogTarget</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">RequestedCatalogTarget</span><wbr><span class="parameters">(<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;template)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">RequestedCatalogTarget</span><wbr><span class="parameters">(<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;template,
+ <a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget)</span></div>
 <div class="block">Copy/clone constructor</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>template</code> - object to copy</dd>
+<dd><code>connectorToTarget</code> - connector to access the target resource</dd>
 </dl>
 </section>
 </li>

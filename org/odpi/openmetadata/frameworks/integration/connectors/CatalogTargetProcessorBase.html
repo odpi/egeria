@@ -83,7 +83,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../../adapters/connectors/integration/kafkaaudit/AuditLogDestinationCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit">AuditLogDestinationCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/nannyconnectors/harvestopenmetadata/HarvestOpenMetadataCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata">HarvestOpenMetadataCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/nannyconnectors/harvestsurveys/HarvestSurveysCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys">HarvestSurveysCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/integration/kafkaaudit/KafkaTopicSourceCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit">KafkaTopicSourceCatalogTargetProcessor</a></code></dd>
+<dd><code><a href="../../../adapters/connectors/integration/kafkaaudit/AuditLogDestinationCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit">AuditLogDestinationCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/nannyconnectors/harvestopenmetadata/HarvestOpenMetadataCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata">HarvestOpenMetadataCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/nannyconnectors/harvestsurveys/HarvestSurveysCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys">HarvestSurveysCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/integration/kafkaaudit/KafkaTopicSourceCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit">KafkaTopicSourceCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/OpenLineageEventReceiverCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageEventReceiverCatalogTargetProcessor</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">CatalogTargetProcessorBase</span>
@@ -125,7 +125,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">CatalogTargetProcessorBase</a><wbr>(<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;template,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.connectors.Connector,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">CatalogTargetProcessorBase</a><wbr>(<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;template,
+ <a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
  <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
@@ -203,15 +204,17 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.connectors.Connector,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>CatalogTargetProcessorBase</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">CatalogTargetProcessorBase</span><wbr><span class="parameters">(<a href="../../governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;template,
+ <a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
  <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span></div>
 <div class="block">Copy/clone constructor</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>template</code> - object to copy</dd>
+<dd><code>connectorToTarget</code> - connector to access the target resource</dd>
 <dd><code>connectorName</code> - name of this integration connector</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 </dl>

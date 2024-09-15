@@ -409,6 +409,7 @@ org.odpi.openmetadata.archiveutilities.designmodels.base.properties
 org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossarymodel
 org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossarymodel.properties
 org.odpi.openmetadata.archiveutilities.openconnectors
+org.odpi.openmetadata.archiveutilities.openconnectors.core
 org.odpi.openmetadata.archiveutilities.simplecatalogs
 org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent
 org.odpi.openmetadata.commonservices.ffdc

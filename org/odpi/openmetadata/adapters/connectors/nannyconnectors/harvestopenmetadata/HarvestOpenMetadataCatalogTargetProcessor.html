@@ -109,7 +109,8 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,org.odpi.openmetadata.integrationservices.catalog.connector.DataAssetExchangeService,org.odpi.openmetadata.integrationservices.catalog.connector.GlossaryExchangeService,org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess)" class="member-name-link">HarvestOpenMetadataCatalogTargetProcessor</a><wbr>(<a href="../../../../frameworks/governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;template,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.connectors.Connector,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,org.odpi.openmetadata.integrationservices.catalog.connector.DataAssetExchangeService,org.odpi.openmetadata.integrationservices.catalog.connector.GlossaryExchangeService,org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess)" class="member-name-link">HarvestOpenMetadataCatalogTargetProcessor</a><wbr>(<a href="../../../../frameworks/governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;template,
+ <a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="../../../../integrationservices/catalog/connector/DataAssetExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">DataAssetExchangeService</a>&nbsp;dataAssetExchangeService,
@@ -164,9 +165,10 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,org.odpi.openmetadata.integrationservices.catalog.connector.DataAssetExchangeService,org.odpi.openmetadata.integrationservices.catalog.connector.GlossaryExchangeService,org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget,org.odpi.openmetadata.frameworks.connectors.Connector,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,org.odpi.openmetadata.integrationservices.catalog.connector.DataAssetExchangeService,org.odpi.openmetadata.integrationservices.catalog.connector.GlossaryExchangeService,org.odpi.openmetadata.frameworks.integration.context.OpenMetadataAccess)">
 <h3>HarvestOpenMetadataCatalogTargetProcessor</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">HarvestOpenMetadataCatalogTargetProcessor</span><wbr><span class="parameters">(<a href="../../../../frameworks/governanceaction/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">CatalogTarget</a>&nbsp;template,
+ <a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="../../../../integrationservices/catalog/connector/DataAssetExchangeService.html" title="class in org.odpi.openmetadata.integrationservices.catalog.connector">DataAssetExchangeService</a>&nbsp;dataAssetExchangeService,
@@ -177,6 +179,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>template</code> - catalog target information</dd>
+<dd><code>connectorToTarget</code> - connector to access the target resource</dd>
 <dd><code>connectorName</code> - name of this integration connector</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>dataAssetExchangeService</code> - access to data assets</dd>
