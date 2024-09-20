@@ -94,17 +94,13 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="GovernanceActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionServiceConnector</a></span></div>
 <div class="block">The provisioning governance action service is responsible for provisioning real-world resources in the digital
  landscape and maintaining the Assets and lineage associated with them.
-
  To create your own provisioning governance action service, create a new class that extends this class
  along with another class that extends the GovernanceActionServiceProviderBase class to act as its connector provider.
  Add a start() method that begins by calling super.start() and then includes the provisioning logic.
  You may also wish to add the metadata for the new assets, a process to represent this governance action service's
  activity that are linked with the source asset(s) using LineageMapping relationships:
-
  <b>sourceAsset -LineageMapping- provisioningProcess -LineageMapping- targetAsset</b>
-
  This is done using the methods available through the governanceContext which is set up just before your start() method is called.
-
  Once the provisioning work is complete, and any lineage metadata is created, your start() method should call
  governanceContext.recordCompletionStatus() and then return.</div>
 </section>
@@ -168,7 +164,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnect()" class="member-name-link">disconnect</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
- or the administer requested this governance action service stop running or the hosting server is shutting down.</div>
+ or the administrator requested this governance action service stop running or the hosting server is shutting down.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceContext(org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionContext)" class="member-name-link">setGovernanceContext</a><wbr>(<a href="GovernanceActionContext.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceActionContext</a>&nbsp;governanceContext)</code></div>
@@ -254,7 +250,6 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">start</span>()
            throws <span class="exceptions"><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Indicates that the governance action service is completely configured and can begin processing.
-
  This is a standard method from the Open Connector Framework (OCF) so
  be sure to call super.start() at the start of your overriding version.</div>
 <dl class="notes">
@@ -271,12 +266,10 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">disconnect</span>()
                 throws <span class="exceptions"><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Disconnect is called either because this governance action service called governanceContext.recordCompletionStatus()
- or the administer requested this governance action service stop running or the hosting server is shutting down.
-
+ or the administrator requested this governance action service stop running or the hosting server is shutting down.
  If disconnect completes before the governance action service records
  its completion status then the governance action service is restarted either at the administrator's request or the next time the server starts.
  If you do not want this governance action service restarted, be sure to record the completion status in disconnect().
-
  The disconnect() method is a standard method from the Open Connector Framework (OCF).  If you need to override this method
  be sure to call super.disconnect() in your version.</div>
 <dl class="notes">
