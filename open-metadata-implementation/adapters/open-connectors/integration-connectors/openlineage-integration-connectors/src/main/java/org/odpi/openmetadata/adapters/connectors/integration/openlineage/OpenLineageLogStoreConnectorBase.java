@@ -154,7 +154,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
         super.start();
 
@@ -181,7 +181,7 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the catalog targets.
      */
     @Override
-    public synchronized void refresh() throws ConnectorCheckedException
+    public void refresh() throws ConnectorCheckedException
     {
         final String methodName = "refresh";
 
@@ -281,8 +281,8 @@ public abstract class OpenLineageLogStoreConnectorBase extends LineageIntegrator
      * @param rawEvent json payload received for the event
      */
     @Override
-    public synchronized void processOpenLineageRunEvent(OpenLineageRunEvent event,
-                                                        String              rawEvent)
+    public void processOpenLineageRunEvent(OpenLineageRunEvent event,
+                                           String              rawEvent)
     {
         final String methodName = "processOpenLineageRunEvent";
 

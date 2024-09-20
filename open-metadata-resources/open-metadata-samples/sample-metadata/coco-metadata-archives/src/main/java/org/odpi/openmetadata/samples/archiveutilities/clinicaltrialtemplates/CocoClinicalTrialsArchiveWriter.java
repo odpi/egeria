@@ -483,6 +483,10 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                  null,
                                  licenseTypeGUID);
 
+        String dataProcessingPurposeGUID = archiveHelper.getGUID(DataProcessingPurposeDefinition.CLINICAL_TRIAL_VALIDATION.getQualifiedName());
+
+        archiveHelper.addApprovedPurpose(assetGUID, dataProcessingPurposeGUID);
+
         String topLevelSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(assetGUID,
                                                                             FileType.CSV_FILE.getAssetSubTypeName(),
                                                                             OpenMetadataType.TABULAR_SCHEMA_TYPE_TYPE_NAME,

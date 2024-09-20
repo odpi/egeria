@@ -25,7 +25,7 @@ public abstract class RemediationGovernanceActionService extends GovernanceActio
      *
      * @param governanceContext specialist context for this type of governance action.
      */
-    public synchronized void setGovernanceContext(GovernanceActionContext governanceContext)
+    public void setGovernanceContext(GovernanceActionContext governanceContext)
     {
         this.governanceContext = governanceContext;
     }

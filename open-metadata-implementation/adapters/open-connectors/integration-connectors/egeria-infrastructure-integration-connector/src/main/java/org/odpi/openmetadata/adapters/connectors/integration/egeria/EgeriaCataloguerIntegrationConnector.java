@@ -979,15 +979,12 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
      * @throws ConnectorCheckedException something failed in the super class
      */
     @Override
-    public synchronized void disconnect() throws ConnectorCheckedException
+    public void disconnect() throws ConnectorCheckedException
     {
         final String methodName = "disconnect";
 
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                EgeriaInfrastructureConnectorAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName));
-        }
+        auditLog.logMessage(methodName,
+                            EgeriaInfrastructureConnectorAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName));
 
         super.disconnect();
     }

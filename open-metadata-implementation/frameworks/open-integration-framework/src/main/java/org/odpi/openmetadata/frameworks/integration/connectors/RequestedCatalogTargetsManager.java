@@ -27,7 +27,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      * A map of relationshipGUID->RequestedCatalogTarget properties to indicate the catalog targets that are known to
      * this connector.
      */
-    private final Map<String, RequestedCatalogTarget> currentCatalogTargetMap = new HashMap<>();
+    private final CatalogTargetMap currentCatalogTargetMap = new CatalogTargetMap();
 
     private final List<CatalogTargetChangeListener>   registeredChangeListeners = new ArrayList<>();
 
@@ -198,9 +198,9 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      *
      * @return list of the current catalog targets
      */
-    public synchronized List<RequestedCatalogTarget> getRequestedCatalogTargets()
+    public List<RequestedCatalogTarget> getRequestedCatalogTargets()
     {
-        return new ArrayList<>(currentCatalogTargetMap.values());
+        return currentCatalogTargetMap.values();
     }
 
 
@@ -209,7 +209,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      *
      * @param listener listener to register
      */
-    synchronized void registerCatalogTargetChangeListener(CatalogTargetChangeListener listener)
+    void registerCatalogTargetChangeListener(CatalogTargetChangeListener listener)
     {
         if (listener != null)
         {
@@ -224,11 +224,11 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      * @param catalogTarget new catalog target
      */
     @Override
-    public synchronized void newCatalogTarget(RequestedCatalogTarget catalogTarget)
+    public void newCatalogTarget(RequestedCatalogTarget catalogTarget)
     {
         final String methodName = "newCatalogTarget";
 
-        currentCatalogTargetMap.put(catalogTarget.getRelationshipGUID(), catalogTarget);
+        currentCatalogTargetMap.put(catalogTarget);
 
         for (CatalogTargetChangeListener listener : registeredChangeListeners)
         {
@@ -246,14 +246,14 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      * @param newCatalogTarget new values
      */
     @Override
-    public synchronized void updatedCatalogTarget(RequestedCatalogTarget oldCatalogTarget,
-                                                  RequestedCatalogTarget newCatalogTarget)
+    public void updatedCatalogTarget(RequestedCatalogTarget oldCatalogTarget,
+                                     RequestedCatalogTarget newCatalogTarget)
     {
         final String methodName = "updatedCatalogTarget";
 
         this.disconnectConnector(oldCatalogTarget, methodName);
 
-        currentCatalogTargetMap.put(newCatalogTarget.getRelationshipGUID(), newCatalogTarget);
+        currentCatalogTargetMap.put(newCatalogTarget);
 
         for (CatalogTargetChangeListener listener : registeredChangeListeners)
         {
@@ -270,7 +270,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      * @param catalogTarget removed relationship
      */
     @Override
-    public synchronized void removedCatalogTarget(RequestedCatalogTarget catalogTarget)
+    public void removedCatalogTarget(RequestedCatalogTarget catalogTarget)
     {
         final String methodName = "removedCatalogTarget";
 
@@ -346,14 +346,65 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      */
     public void disconnect() throws ConnectorCheckedException
     {
-        final String methodName = "disconnect";
-
         for (RequestedCatalogTarget catalogTarget : currentCatalogTargetMap.values())
         {
             if (catalogTarget.getCatalogTargetConnector() != null)
             {
                 catalogTarget.getCatalogTargetConnector().disconnect();
             }
+        }
+    }
+
+
+    /**
+     * Protected map that allows updates and queries from multiple threads.
+     */
+    static class CatalogTargetMap
+    {
+        private final Map<String, RequestedCatalogTarget> currentCatalogTargetMap = new HashMap<>();
+
+
+        /**
+         * Put a catalog target into the map
+         *
+         * @param requestedCatalogTarget details of catalog target
+         */
+        synchronized void put(RequestedCatalogTarget requestedCatalogTarget)
+        {
+            currentCatalogTargetMap.put(requestedCatalogTarget.getRelationshipGUID(), requestedCatalogTarget);
+        }
+
+        /**
+         * Retrieve a catalog target from the map.
+         *
+         * @param relationshipGUID unique identifier of the catalog target relationship
+         * @return details of the catalog target
+         */
+        synchronized RequestedCatalogTarget get(String relationshipGUID)
+        {
+            return currentCatalogTargetMap.get(relationshipGUID);
+        }
+
+
+        /**
+         * Return all the known catalog targets.
+         *
+         * @return list of catalog targets
+         */
+        synchronized List<RequestedCatalogTarget> values()
+        {
+            return new ArrayList<>(currentCatalogTargetMap.values());
+        }
+
+
+        /**
+         * Remove an obsolete catalog target from the map.
+         *
+         * @param relationshipGUID unique identifier of the catalog target relationship
+         */
+        synchronized void remove(String relationshipGUID)
+        {
+            currentCatalogTargetMap.remove(relationshipGUID);
         }
     }
 }

@@ -291,10 +291,10 @@ public class GovernanceActionContext implements GovernanceContext,
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     @Override
-    public synchronized  void recordCompletionStatus(CompletionStatus    status,
-                                                     List<String>        outputGuards) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+    public  void recordCompletionStatus(CompletionStatus    status,
+                                        List<String>        outputGuards) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         this.completionStatus = status;
 
@@ -315,11 +315,11 @@ public class GovernanceActionContext implements GovernanceContext,
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     @Override
-    public synchronized  void recordCompletionStatus(CompletionStatus      status,
-                                                     List<String>          outputGuards,
-                                                     List<NewActionTarget> newActionTargets) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+    public  void recordCompletionStatus(CompletionStatus      status,
+                                        List<String>          outputGuards,
+                                        List<NewActionTarget> newActionTargets) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         this.completionStatus = status;
 
@@ -341,12 +341,12 @@ public class GovernanceActionContext implements GovernanceContext,
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     @Override
-    public synchronized  void recordCompletionStatus(CompletionStatus      status,
-                                                     List<String>          outputGuards,
-                                                     Map<String, String>   newRequestParameters,
-                                                     List<NewActionTarget> newActionTargets) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+    public  void recordCompletionStatus(CompletionStatus      status,
+                                        List<String>          outputGuards,
+                                        Map<String, String>   newRequestParameters,
+                                        List<NewActionTarget> newActionTargets) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         this.recordCompletionStatus(status, outputGuards, newRequestParameters, newActionTargets, (String) null);
     }
@@ -367,13 +367,13 @@ public class GovernanceActionContext implements GovernanceContext,
      * @throws PropertyServerException there is a problem connecting to the metadata store
      */
     @Override
-    public synchronized  void recordCompletionStatus(CompletionStatus      status,
-                                                     List<String>          outputGuards,
-                                                     Map<String, String>   newRequestParameters,
-                                                     List<NewActionTarget> newActionTargets,
-                                                     String                completionMessage) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+    public  void recordCompletionStatus(CompletionStatus      status,
+                                        List<String>          outputGuards,
+                                        Map<String, String>   newRequestParameters,
+                                        List<NewActionTarget> newActionTargets,
+                                        String                completionMessage) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         this.completionStatus = status;
 
@@ -413,13 +413,13 @@ public class GovernanceActionContext implements GovernanceContext,
      * @throws PropertyServerException    there is a problem connecting to the metadata store
      */
     @Override
-    public synchronized void recordCompletionStatus(CompletionStatus          status,
-                                                    List<String>              outputGuards,
-                                                    Map<String, String>       newRequestParameters,
-                                                    List<NewActionTarget>     newActionTargets,
-                                                    AuditLogMessageDefinition completionMessage) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
+    public void recordCompletionStatus(CompletionStatus          status,
+                                       List<String>              outputGuards,
+                                       Map<String, String>       newRequestParameters,
+                                       List<NewActionTarget>     newActionTargets,
+                                       AuditLogMessageDefinition completionMessage) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         if (completionMessage != null)
         {
@@ -445,7 +445,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * @return completion status enum
      */
     @Override
-    public synchronized CompletionStatus getCompletionStatus()
+    public  CompletionStatus getCompletionStatus()
     {
         return completionStatus;
     }

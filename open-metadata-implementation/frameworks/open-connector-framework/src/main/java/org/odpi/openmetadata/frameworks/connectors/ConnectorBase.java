@@ -184,9 +184,9 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
-        isActive = true;
+        setIsActive(true);
     }
 
 
@@ -556,9 +556,9 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public  synchronized void disconnect() throws ConnectorCheckedException
+    public void disconnect() throws ConnectorCheckedException
     {
-        isActive = false;
+        setIsActive(false);
     }
 
 
@@ -599,6 +599,17 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     public synchronized boolean isActive()
     {
         return isActive;
+    }
+
+
+    /**
+     * Set up the is active flag.
+     *
+     * @param flag value
+     */
+    private synchronized void setIsActive(boolean flag)
+    {
+        this.isActive = flag;
     }
 
 
@@ -654,7 +665,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
                 "connectorInstanceId='" + connectorInstanceId + '\'' +
                 ", connectionProperties=" + connectionProperties +
                 ", connectedAssetProperties=" + connectedAssetProperties +
-                ", isActive=" + isActive +
+                ", isActive=" + isActive() +
                 ", hashCode=" + hashCode +
                 '}';
     }

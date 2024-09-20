@@ -133,7 +133,7 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      *                      services run as part of the same survey action service request may also be
      *                      stored in the newAnnotations list.
      */
-    public synchronized void setSurveyContext(SurveyContext surveyContext)
+    public void setSurveyContext(SurveyContext surveyContext)
     {
         this.surveyContext = surveyContext;
     }
@@ -368,7 +368,7 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * @return survey context containing the results discovered (so far) by the survey action service.
      * @throws ConnectorCheckedException the service is no longer active
      */
-    protected synchronized SurveyContext getSurveyContext() throws ConnectorCheckedException
+    protected SurveyContext getSurveyContext() throws ConnectorCheckedException
     {
         final String methodName = "getSurveyContext";
 

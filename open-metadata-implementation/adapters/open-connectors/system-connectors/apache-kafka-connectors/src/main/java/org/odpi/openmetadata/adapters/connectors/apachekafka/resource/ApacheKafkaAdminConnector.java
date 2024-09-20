@@ -186,7 +186,7 @@ public class ApacheKafkaAdminConnector extends ConnectorBase implements AuditLog
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public synchronized void disconnect() throws ConnectorCheckedException
+    public void disconnect() throws ConnectorCheckedException
     {
         if (kafkaAdminClient != null)
         {

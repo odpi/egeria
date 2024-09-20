@@ -1,10 +1,10 @@
 
-#@ucURL=http://localhost:8080
-@ucURL=http://egeria.pdr-associates.com:8070
+@ucURL=http://localhost:8080
+#ucURL=http://egeria.pdr-associates.com:8070
 
 ###
 # @name list volumes
-GET {{ucURL}}/api/2.1/unity-catalog/volumes?catalog_name=unity&schema_name=default&max_results=10
+GET {{ucURL}}/api/2.1/unity-catalog/volumes?catalog_name=clinical_trials&schema_name=teddy_bear_drop_foot&max_results=10
 
 ###
 # @name create volume

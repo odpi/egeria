@@ -1,10 +1,10 @@
 
-#@ucURL=http://localhost:8080
-@ucURL=http://egeria.pdr-associates.com:8070
+@ucURL=http://localhost:8080
+#@ucURL=http://egeria.pdr-associates.com:8070
 
 ###
 # @name list schemas
-GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=unity&max_results=10
+GET {{ucURL}}/api/2.1/unity-catalog/schemas?catalog_name=clinical_trials&max_results=10
 
 ###
 # @name create schema

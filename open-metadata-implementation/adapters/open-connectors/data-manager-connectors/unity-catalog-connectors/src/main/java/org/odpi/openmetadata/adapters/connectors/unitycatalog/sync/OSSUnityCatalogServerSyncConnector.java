@@ -35,7 +35,7 @@ public class    OSSUnityCatalogServerSyncConnector extends CatalogIntegratorConn
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
         final String methodName = "start";
 
