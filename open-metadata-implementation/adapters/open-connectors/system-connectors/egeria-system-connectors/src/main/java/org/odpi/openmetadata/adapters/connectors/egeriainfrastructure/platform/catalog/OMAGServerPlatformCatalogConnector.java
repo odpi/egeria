@@ -71,7 +71,7 @@ public class OMAGServerPlatformCatalogConnector extends InfrastructureIntegrator
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
         super.start();
 

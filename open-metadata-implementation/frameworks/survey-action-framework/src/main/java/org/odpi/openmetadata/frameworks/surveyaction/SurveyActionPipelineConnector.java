@@ -59,7 +59,7 @@ public abstract class SurveyActionPipelineConnector extends SurveyActionServiceC
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public  synchronized void disconnect() throws ConnectorCheckedException
+    public void disconnect() throws ConnectorCheckedException
     {
         super.disconnect();
     }

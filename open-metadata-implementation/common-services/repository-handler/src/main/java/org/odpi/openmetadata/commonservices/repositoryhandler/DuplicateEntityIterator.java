@@ -7,6 +7,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -38,8 +39,6 @@ public class DuplicateEntityIterator
 
     private static final String statusPropertyName            = "statusIdentifier";
     private static final int    statusThreshold               = 1;
-
-    private static final String memento                       = "Memento";
 
     private static final Logger log = LoggerFactory.getLogger(DuplicateEntityIterator.class);
 
@@ -336,7 +335,7 @@ public class DuplicateEntityIterator
                          */
                         if (repositoryHandler.isCorrectEffectiveTime(classification.getProperties(), effectiveTime))
                         {
-                            if (memento.equals(classification.getName()))
+                            if (OpenMetadataType.MEMENTO_CLASSIFICATION.typeName.equals(classification.getName()))
                             {
                                 /*
                                  * The Memento classification means that the element is logically deleted but kept active in the repository

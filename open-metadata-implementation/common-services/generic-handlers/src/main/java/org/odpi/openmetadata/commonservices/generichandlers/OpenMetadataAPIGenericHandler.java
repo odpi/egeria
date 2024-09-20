@@ -10615,30 +10615,37 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
             if (entity != null)
             {
-                AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
-
-                if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (! validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
+                try
                 {
-                    this.validateAnchorEntity(userId,
-                                              entity.getGUID(),
-                                              entity.getType().getTypeDefName(),
-                                              entity,
-                                              entityGUIDParameterName,
-                                              false,
-                                              false,
-                                              forLineage,
-                                              forDuplicateProcessing,
-                                              serviceSupportedZones,
-                                              effectiveTime,
-                                              methodName);
+                    AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
 
-                    if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
+                    if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (!validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
                     {
-                        validatedAnchorGUIDs.add(anchorIdentifiers.anchorGUID);
-                    }
-                }
+                        this.validateAnchorEntity(userId,
+                                                  entity.getGUID(),
+                                                  entity.getType().getTypeDefName(),
+                                                  entity,
+                                                  entityGUIDParameterName,
+                                                  false,
+                                                  false,
+                                                  forLineage,
+                                                  forDuplicateProcessing,
+                                                  serviceSupportedZones,
+                                                  effectiveTime,
+                                                  methodName);
 
-                results.add(entity);
+                        if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
+                        {
+                            validatedAnchorGUIDs.add(anchorIdentifiers.anchorGUID);
+                        }
+                    }
+
+                    results.add(entity);
+                }
+                catch (Exception error)
+                {
+                    // Skip entity
+                }
             }
         }
 

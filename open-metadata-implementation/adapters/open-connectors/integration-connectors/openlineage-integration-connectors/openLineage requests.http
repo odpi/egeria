@@ -1,8 +1,9 @@
 # openLineage requests
 
 #@openLineageBackend=http://localhost:5000
-@openLineageBackend=http://egeria.pdr-associates.com:5050
-#@openLineageBackend=https://localhost:9443/servers/integration-daemon/open-metadata/integration-services/lineage-integrator/users/airflownpa
+#@openLineageBackend=http://localhost:6000
+#@openLineageBackend=http://egeria.pdr-associates.com:5050
+@openLineageBackend=https://localhost:9443/servers/integration-daemon/open-metadata/integration-services/lineage-integrator/users/airflownpa
 @openLineageNamespace=restTestNameSpace
 @openLineageRunId=001
 

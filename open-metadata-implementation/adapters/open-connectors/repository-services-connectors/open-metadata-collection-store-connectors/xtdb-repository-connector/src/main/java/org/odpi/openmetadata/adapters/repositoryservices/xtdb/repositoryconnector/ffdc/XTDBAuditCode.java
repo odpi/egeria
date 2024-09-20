@@ -189,7 +189,7 @@ public enum XTDBAuditCode implements AuditLogMessageSet
      * OMRS-XTDB-REPOSITORY-0016 - A search was requested for property {0} which does not match any of the type restrictions: {1}
      */
     INVALID_PROPERTY("OMRS-XTDB-REPOSITORY-0016",
-                     AuditLogRecordSeverityLevel.INFO,
+                     AuditLogRecordSeverityLevel.TRACE,
                      "A search was requested for property {0} which does not match any of the type restrictions: {1}",
                      "The requested search is for a property which does not exist on any of the types for which the search is restricted, and therefore no results will be returned.",
                      "This message is provided for informational purposes, should a user expect some results to their search " +

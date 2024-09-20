@@ -8,11 +8,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
  * The watchdog governance action service is responsible for monitoring changes to the metadata elements and then initiating
  * further governance activity.  It can be written as a log running service that is detecting multiple events over time, or
  * it may just be looking for a specific change before completing.
- *
  * To create your own watchdog governance action service, create a new class that extends this class
  * along with another class that extends the GovernanceActionServiceProviderBase class to act as its connector provider.
  * Add a start() method that begins by calling super.start() and then registers a listener to wait for the desired event(s).
- *
  * THe listener is called each time an event occurs.  It can use the methods on the governance context to:
  *
  * <ul>
@@ -36,7 +34,7 @@ public abstract class WatchdogGovernanceActionService extends GovernanceActionSe
      *
      * @param governanceContext specialist context for this type of governance action.
      */
-    public synchronized void setGovernanceContext(GovernanceActionContext governanceContext)
+    public void setGovernanceContext(GovernanceActionContext governanceContext)
     {
         this.governanceContext = governanceContext;
     }
@@ -47,7 +45,6 @@ public abstract class WatchdogGovernanceActionService extends GovernanceActionSe
      * This is where the watchdog governance action service registers its listener.  The watchdog listener
      * will then be called for each event.  It can use the context to initiate other governance activity or call
      * governanceContext.recordCompletionStatus() to end.
-     *
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() in your version.
      *

@@ -49,7 +49,7 @@ public class ConnectorConfigurationFactory
     private static final String defaultCohortTopicConnectorRootName     = defaultTopicRootName + "cohort.";
 
 
-    private static final String ENCRYPTED_FILE_BASED_SERVER_CONFIG_STORE_PROVIDER          = "org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile.EncryptedFileBasedServerConfigStoreProvider";
+    private static final String FILE_BASED_SERVER_CONFIG_STORE_PROVIDER                    = "org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider";
     private static final String IN_MEMORY_OPEN_METADATA_TOPIC_PROVIDER                     = "org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider";
     private static final String KAFKA_OPEN_METADATA_TOPIC_PROVIDER                         = "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider";
     private static final String FILE_BASED_OPEN_METADATA_ARCHIVE_STORE_PROVIDER            = "org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider";
@@ -89,9 +89,9 @@ public class ConnectorConfigurationFactory
         endpoint.setAddress("data/servers/" + serverName + "/config/" + serverName + ".config");
 
         Connection connection = new Connection();
-        connection.setDisplayName("Encrypted File Config Store Connection");
+        connection.setDisplayName("File Config Store Connection");
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(ENCRYPTED_FILE_BASED_SERVER_CONFIG_STORE_PROVIDER));
+        connection.setConnectorType(getConnectorType(FILE_BASED_SERVER_CONFIG_STORE_PROVIDER));
         connection.setQualifiedName(endpoint.getAddress());
 
         return connection;
@@ -105,8 +105,8 @@ public class ConnectorConfigurationFactory
    public Connection getServerConfigConnectionForRetrieveAll()
     {
         Connection connection = new Connection();
-        connection.setDisplayName("Encrypted File Config Store Connection");
-        connection.setConnectorType(getConnectorType(ENCRYPTED_FILE_BASED_SERVER_CONFIG_STORE_PROVIDER));
+        connection.setDisplayName("File Config Store Connection");
+        connection.setConnectorType(getConnectorType(FILE_BASED_SERVER_CONFIG_STORE_PROVIDER));
         return connection;
     }
 

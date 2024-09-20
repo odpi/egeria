@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
@@ -520,7 +521,7 @@ public class AssetConsumerRESTServices
                                                                        OpenMetadataType.ASSET.typeName,
                                                                        methodName);
                         }
-                        catch (InvalidParameterException notVisible)
+                        catch (InvalidParameterException | UserNotAuthorizedException notVisible)
                         {
                             asset = null;
                         }

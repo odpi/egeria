@@ -49,7 +49,7 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
         super.start();
 
@@ -68,15 +68,12 @@ public class GovernanceActionOpenLineageIntegrationConnector extends LineageInte
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                         error.getClass().getName(),
-                                                                                                                         methodName,
-                                                                                                                         error.getMessage()),
-                                      error);
-            }
+            auditLog.logException(methodName,
+                                  OpenLineageIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                     error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     error.getMessage()),
+                                  error);
         }
     }
 

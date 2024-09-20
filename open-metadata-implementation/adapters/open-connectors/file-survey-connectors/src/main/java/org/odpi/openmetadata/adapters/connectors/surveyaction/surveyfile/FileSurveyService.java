@@ -74,7 +74,7 @@ public class FileSurveyService extends SurveyActionServiceConnector
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public  synchronized void disconnect() throws ConnectorCheckedException
+    public void disconnect() throws ConnectorCheckedException
     {
         if (connector != null)
         {

@@ -100,7 +100,7 @@ public abstract class DynamicArchiveService extends RepositoryGovernanceServiceC
      * @throws ConnectorCheckedException there is a problem within the archive service.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
         super.start();
 

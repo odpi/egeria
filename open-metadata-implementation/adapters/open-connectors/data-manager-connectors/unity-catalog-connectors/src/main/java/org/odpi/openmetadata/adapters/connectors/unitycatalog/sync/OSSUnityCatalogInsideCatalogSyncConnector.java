@@ -51,7 +51,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends CatalogIntegrator
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
         final String methodName = "start";
 

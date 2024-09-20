@@ -285,7 +285,7 @@ public abstract class GovernanceActionServiceConnector extends ConnectorBase imp
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public  synchronized void disconnect() throws ConnectorCheckedException
+    public void disconnect() throws ConnectorCheckedException
     {
         super.disconnectConnectors(this.embeddedConnectors);
         super.disconnect();

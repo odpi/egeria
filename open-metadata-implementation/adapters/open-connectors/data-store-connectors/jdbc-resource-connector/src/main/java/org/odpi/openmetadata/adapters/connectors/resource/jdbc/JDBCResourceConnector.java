@@ -98,7 +98,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public synchronized void start() throws ConnectorCheckedException
+    public void start() throws ConnectorCheckedException
     {
         super.start();
 
@@ -404,7 +404,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public  synchronized void disconnect() throws ConnectorCheckedException
+    public  void disconnect() throws ConnectorCheckedException
     {
         /*
          * This disconnects any embedded connections such as secrets connectors.
