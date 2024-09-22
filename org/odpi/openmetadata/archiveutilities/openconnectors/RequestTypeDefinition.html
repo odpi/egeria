@@ -106,21 +106,45 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#CATALOG_POSTGRES_SERVER" class="member-name-link">CATALOG_POSTGRES_SERVER</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CATALOG_ATLAS_SERVER" class="member-name-link">CATALOG_ATLAS_SERVER</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">catalog-apache-atlas-server</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CATALOG_KAFKA_SERVER" class="member-name-link">CATALOG_KAFKA_SERVER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">catalog-apache-kafka-server</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#CATALOG_OMAG_SERVER_PLATFORM" class="member-name-link">CATALOG_OMAG_SERVER_PLATFORM</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">catalog-omag-server-platform</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CATALOG_POSTGRES_SERVER" class="member-name-link">CATALOG_POSTGRES_SERVER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">catalog-postgres-server</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CATALOG_SOFTWARE_SERVER" class="member-name-link">CATALOG_SOFTWARE_SERVER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#CATALOG_SOFTWARE_SERVER" class="member-name-link">CATALOG_SOFTWARE_SERVER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">catalog-software-server</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CATALOG_UC_SERVER" class="member-name-link">CATALOG_UC_SERVER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#CATALOG_UC_SERVER" class="member-name-link">CATALOG_UC_SERVER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">catalog-unity-catalog-server</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#COPY_FILE" class="member-name-link">COPY_FILE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#COPY_FILE" class="member-name-link">COPY_FILE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">copy-file</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CREATE_ATLAS_SERVER" class="member-name-link">CREATE_ATLAS_SERVER</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">create-apache-atlas-server</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#CREATE_KAFKA_SERVER" class="member-name-link">CREATE_KAFKA_SERVER</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">create-apache-kafka-server</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#CREATE_OMAG_SERVER_PLATFORM" class="member-name-link">CREATE_OMAG_SERVER_PLATFORM</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">create-omag-server-platform</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#CREATE_POSTGRES_SERVER" class="member-name-link">CREATE_POSTGRES_SERVER</a></code></div>
 <div class="col-last even-row-color">
@@ -253,54 +277,59 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return predefined action targets used by this service.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionTypeGUID()" class="member-name-link">getGovernanceActionTypeGUID</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">ContentPackDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContentPackDefinition()" class="member-name-link">getContentPackDefinition</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Get identifier of content pack where this template should be located.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionTypeGUID()" class="member-name-link">getGovernanceActionTypeGUID</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the unique identifier of the governance action type.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngine()" class="member-name-link">getGovernanceEngine</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngine()" class="member-name-link">getGovernanceEngine</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the governance engine where this request type belongs to.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceRequestType()" class="member-name-link">getGovernanceRequestType</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceRequestType()" class="member-name-link">getGovernanceRequestType</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the Request Type.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GovernanceServiceDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceServiceDefinition</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceService()" class="member-name-link">getGovernanceService</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="GovernanceServiceDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceServiceDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceService()" class="member-name-link">getGovernanceService</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the governance service that this request type maps to,</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequestParameters()" class="member-name-link">getRequestParameters</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequestParameters()" class="member-name-link">getRequestParameters</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the request parameters (if needed).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServiceRequestType()" class="member-name-link">getServiceRequestType</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServiceRequestType()" class="member-name-link">getServiceRequestType</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the service request type to map to.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedElementQualifiedName()" class="member-name-link">getSupportedElementQualifiedName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedElementQualifiedName()" class="member-name-link">getSupportedElementQualifiedName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the element that is supported by this request.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -535,6 +564,48 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="CREATE_ATLAS_SERVER">
+<h3>CREATE_ATLAS_SERVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">CREATE_ATLAS_SERVER</span></div>
+<div class="block">create-apache-atlas-server</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CATALOG_ATLAS_SERVER">
+<h3>CATALOG_ATLAS_SERVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">CATALOG_ATLAS_SERVER</span></div>
+<div class="block">catalog-apache-atlas-server</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CREATE_KAFKA_SERVER">
+<h3>CREATE_KAFKA_SERVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">CREATE_KAFKA_SERVER</span></div>
+<div class="block">create-apache-kafka-server</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CATALOG_KAFKA_SERVER">
+<h3>CATALOG_KAFKA_SERVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">CATALOG_KAFKA_SERVER</span></div>
+<div class="block">catalog-apache-kafka-server</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CREATE_OMAG_SERVER_PLATFORM">
+<h3>CREATE_OMAG_SERVER_PLATFORM</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">CREATE_OMAG_SERVER_PLATFORM</span></div>
+<div class="block">create-omag-server-platform</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CATALOG_OMAG_SERVER_PLATFORM">
+<h3>CATALOG_OMAG_SERVER_PLATFORM</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">CATALOG_OMAG_SERVER_PLATFORM</span></div>
+<div class="block">catalog-omag-server-platform</div>
+</section>
+</li>
+<li>
 <section class="detail" id="CREATE_POSTGRES_SERVER">
 <h3>CREATE_POSTGRES_SERVER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a></span>&nbsp;<span class="element-name">CREATE_POSTGRES_SERVER</span></div>
@@ -672,6 +743,17 @@ not permitted.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>qualified name string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getContentPackDefinition()">
+<h3>getContentPackDefinition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">ContentPackDefinition</a></span>&nbsp;<span class="element-name">getContentPackDefinition</span>()</div>
+<div class="block">Get identifier of content pack where this template should be located.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>content pack definition</dd>
 </dl>
 </section>
 </li>

@@ -261,6 +261,7 @@ org.odpi.openmetadata.accessservices.stewardshipaction.server
 org.odpi.openmetadata.accessservices.stewardshipaction.server.spring
 org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile
 org.odpi.openmetadata.adapters.adminservices.configurationstore.file
+org.odpi.openmetadata.adapters.connectors.apacheatlas.controls
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules
@@ -307,8 +308,6 @@ org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception
 org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter
 org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.ffdc
-org.odpi.openmetadata.adapters.connectors.integration.egeria
-org.odpi.openmetadata.adapters.connectors.integration.egeria.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.jdbc
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.controls
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc
@@ -316,8 +315,6 @@ org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.model
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.requests
-org.odpi.openmetadata.adapters.connectors.integration.kafka
-org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit
 org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.openapis
@@ -409,7 +406,12 @@ org.odpi.openmetadata.archiveutilities.designmodels.base.properties
 org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossarymodel
 org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossarymodel.properties
 org.odpi.openmetadata.archiveutilities.openconnectors
+org.odpi.openmetadata.archiveutilities.openconnectors.apacheatlas
+org.odpi.openmetadata.archiveutilities.openconnectors.apachekafka
+org.odpi.openmetadata.archiveutilities.openconnectors.base
 org.odpi.openmetadata.archiveutilities.openconnectors.core
+org.odpi.openmetadata.archiveutilities.openconnectors.postgres
+org.odpi.openmetadata.archiveutilities.openconnectors.unitycatalog
 org.odpi.openmetadata.archiveutilities.simplecatalogs
 org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent
 org.odpi.openmetadata.commonservices.ffdc

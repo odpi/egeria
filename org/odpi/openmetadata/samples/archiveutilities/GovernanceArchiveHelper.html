@@ -265,7 +265,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a software capability entity for a governance engine.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addGovernanceService(org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">addGovernanceService</a><wbr>(<a href="../../frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&nbsp;deployedImplementationType,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addGovernanceService(java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">addGovernanceService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProviderName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
@@ -632,9 +633,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addGovernanceService(org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
+<section class="detail" id="addGovernanceService(java.lang.String,java.lang.String,java.lang.String,java.util.Map,java.lang.String,java.lang.String,java.lang.String,java.util.Map)">
 <h3>addGovernanceService</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addGovernanceService</span><wbr><span class="parameters">(<a href="../../frameworks/openmetadata/refdata/DeployedImplementationType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">DeployedImplementationType</a>&nbsp;deployedImplementationType,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addGovernanceService</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorProviderName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
@@ -644,7 +646,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a governance service entity.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>deployedImplementationType</code> - name of governance service subtype to use - default is GovernanceService</dd>
+<dd><code>typeName</code> - name of governance service subtype to use - default is GovernanceService</dd>
+<dd><code>deployedImplementationType</code> - deployed implementation type</dd>
 <dd><code>connectorProviderName</code> - name of the connector provider for the governance service</dd>
 <dd><code>configurationProperties</code> - configuration properties for the governance service (goes in the connection)</dd>
 <dd><code>qualifiedName</code> - unique name for the governance service</dd>

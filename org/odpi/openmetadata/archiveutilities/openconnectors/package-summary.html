@@ -75,8 +75,32 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><a href="core/package-summary.html">org.odpi.openmetadata.archiveutilities.openconnectors.core</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><a href="apacheatlas/package-summary.html">org.odpi.openmetadata.archiveutilities.openconnectors.apacheatlas</a></div>
+<div class="col-last even-row-color">
+<div class="block">Builds a content pack to support templates, connectors and services specific for working with Apache Atlas.</div>
+</div>
+<div class="col-first odd-row-color"><a href="apachekafka/package-summary.html">org.odpi.openmetadata.archiveutilities.openconnectors.apachekafka</a></div>
+<div class="col-last odd-row-color">
+<div class="block">Builds a content pack to support templates, connectors and services specific for governing and cataloguing
+ Apache Kafka.</div>
+</div>
+<div class="col-first even-row-color"><a href="base/package-summary.html">org.odpi.openmetadata.archiveutilities.openconnectors.base</a></div>
+<div class="col-last even-row-color">
+<div class="block">Provides the base class for the archive writers.</div>
+</div>
+<div class="col-first odd-row-color"><a href="core/package-summary.html">org.odpi.openmetadata.archiveutilities.openconnectors.core</a></div>
+<div class="col-last odd-row-color">
+<div class="block">Provides the base reference data, templates, connectors and services for a simple deployment of Egeria that is
+ able to catalog and govern files.</div>
+</div>
+<div class="col-first even-row-color"><a href="postgres/package-summary.html">org.odpi.openmetadata.archiveutilities.openconnectors.postgres</a></div>
+<div class="col-last even-row-color">
+<div class="block">Builds a content pack to support templates, connectors and services specific for working with PostgreSQL.</div>
+</div>
+<div class="col-first odd-row-color"><a href="unitycatalog/package-summary.html">org.odpi.openmetadata.archiveutilities.openconnectors.unitycatalog</a></div>
+<div class="col-last odd-row-color">
+<div class="block">Builds a content pack to support templates, connectors and services specific for working with Unity Catalog.</div>
+</div>
 </div>
 </div>
 </li>
@@ -87,27 +111,35 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CorePacksArchivesWriter.html" title="class in org.odpi.openmetadata.archiveutilities.openconnectors">CorePacksArchivesWriter</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">ContentPackDefinition</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="block">Identifies the content pack containing specific templates, integration connectors and governance services belong to.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CorePacksArchivesWriter.html" title="class in org.odpi.openmetadata.archiveutilities.openconnectors">CorePacksArchivesWriter</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">CocoArchivesWriter provides the main method to run the open metadata archive writers
  that create each of the open metadata archives used in the open metadata labs and
  other scenarios with Coco Pharmaceuticals.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="EndpointTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">EndpointTemplateDefinition</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="EndpointTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">EndpointTemplateDefinition</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">A description of the default endpoint templates.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">Describes the standard governance engines shipped with Egeria</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="GovernanceServiceDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceServiceDefinition</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab3">
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="GovernanceServiceDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceServiceDefinition</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">Define the Governance Action Services configuration shipped with Egeria.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab3"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">IntegrationConnectorDefinition</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="IntegrationConnectorDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">IntegrationConnectorDefinition</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">
 <div class="block">Describes the standard integration connector configuration shipped with Egeria.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="IntegrationGroupDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">IntegrationGroupDefinition</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">
+<div class="block">Describes the integration groups in the core content packs.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab3"><a href="RequestTypeDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">RequestTypeDefinition</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab3">
@@ -117,11 +149,6 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color class-summary class-summary-tab3"><a href="SoftwareServerTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">SoftwareServerTemplateDefinition</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab3">
 <div class="block">A description of the default software server templates.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="XCoreContentArchiveWriter.html" title="class in org.odpi.openmetadata.archiveutilities.openconnectors">XCoreContentArchiveWriter</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">XCoreContentArchiveWriter creates an open metadata archive that includes the connector type
- information for all open connectors supplied by the egeria project.</div>
 </div>
 </div>
 </div>

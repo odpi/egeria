@@ -113,6 +113,22 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Extracts information about a digital resource and attaches it to its asset description.</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#ATLAS_GOVERNANCE_ENGINE" class="member-name-link">ATLAS_GOVERNANCE_ENGINE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Provides specialist governance services to Apache Atlas Servers.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ATLAS_SURVEY_ENGINE" class="member-name-link">ATLAS_SURVEY_ENGINE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Provides surveys on Apache Atlas Servers.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#EGERIA_GOVERNANCE_ENGINE" class="member-name-link">EGERIA_GOVERNANCE_ENGINE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Provides specialist governance services to Egeria's OMAG Server Platform and Servers.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#EGERIA_SURVEY_ENGINE" class="member-name-link">EGERIA_SURVEY_ENGINE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Provides surveys on Egeria's OMAG Server Platform and Servers.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#FILE_GOVERNANCE_ENGINE" class="member-name-link">FILE_GOVERNANCE_ENGINE</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Provides specialist governance services for Files and Directories</div>
@@ -124,6 +140,14 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code><a href="#FILE_SURVEY_ENGINE" class="member-name-link">FILE_SURVEY_ENGINE</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Provides surveys on Unity Catalog (UC) servers.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#KAFKA_GOVERNANCE_ENGINE" class="member-name-link">KAFKA_GOVERNANCE_ENGINE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Provides specialist governance services to Apache Kafka Servers.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#KAFKA_SURVEY_ENGINE" class="member-name-link">KAFKA_SURVEY_ENGINE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Provides surveys on Apache Kafka Servers.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#POSTGRES_GOVERNANCE_ENGINE" class="member-name-link">POSTGRES_GOVERNANCE_ENGINE</a></code></div>
 <div class="col-last odd-row-color">
@@ -159,44 +183,49 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">ContentPackDefinition</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContentPackDefinition()" class="member-name-link">getContentPackDefinition</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Get identifier of content pack where this template should be located.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the description of the governance engine.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the display name of the governance engine.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGUID()" class="member-name-link">getGUID</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGUID()" class="member-name-link">getGUID</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the unique identifier of the governance engine.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the unique name of the governance engine.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getType()" class="member-name-link">getType</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getType()" class="member-name-link">getType</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the open metadata type name for this engine.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -290,6 +319,48 @@ the order they are declared.</div>
 <div class="block">Provides specialist governance services on PostgresSQL Servers.</div>
 </section>
 </li>
+<li>
+<section class="detail" id="ATLAS_SURVEY_ENGINE">
+<h3>ATLAS_SURVEY_ENGINE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a></span>&nbsp;<span class="element-name">ATLAS_SURVEY_ENGINE</span></div>
+<div class="block">Provides surveys on Apache Atlas Servers.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ATLAS_GOVERNANCE_ENGINE">
+<h3>ATLAS_GOVERNANCE_ENGINE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a></span>&nbsp;<span class="element-name">ATLAS_GOVERNANCE_ENGINE</span></div>
+<div class="block">Provides specialist governance services to Apache Atlas Servers.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EGERIA_SURVEY_ENGINE">
+<h3>EGERIA_SURVEY_ENGINE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a></span>&nbsp;<span class="element-name">EGERIA_SURVEY_ENGINE</span></div>
+<div class="block">Provides surveys on Egeria's OMAG Server Platform and Servers.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EGERIA_GOVERNANCE_ENGINE">
+<h3>EGERIA_GOVERNANCE_ENGINE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a></span>&nbsp;<span class="element-name">EGERIA_GOVERNANCE_ENGINE</span></div>
+<div class="block">Provides specialist governance services to Egeria's OMAG Server Platform and Servers.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="KAFKA_SURVEY_ENGINE">
+<h3>KAFKA_SURVEY_ENGINE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a></span>&nbsp;<span class="element-name">KAFKA_SURVEY_ENGINE</span></div>
+<div class="block">Provides surveys on Apache Kafka Servers.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="KAFKA_GOVERNANCE_ENGINE">
+<h3>KAFKA_GOVERNANCE_ENGINE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceEngineDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceEngineDefinition</a></span>&nbsp;<span class="element-name">KAFKA_GOVERNANCE_ENGINE</span></div>
+<div class="block">Provides specialist governance services to Apache Kafka Servers.</div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -381,6 +452,17 @@ not permitted.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getContentPackDefinition()">
+<h3>getContentPackDefinition</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ContentPackDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">ContentPackDefinition</a></span>&nbsp;<span class="element-name">getContentPackDefinition</span>()</div>
+<div class="block">Get identifier of content pack where this template should be located.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>content pack definition</dd>
 </dl>
 </section>
 </li>
